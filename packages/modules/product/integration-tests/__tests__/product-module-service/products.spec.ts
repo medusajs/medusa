@@ -286,7 +286,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               eventName: "product.updated",
-              data: { id: productOne.id },
+              body: { data: { id: productOne.id } },
             },
           ])
         })
@@ -634,7 +634,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               eventName: "product.created",
-              data: { id: products[0].id },
+              body: { data: { id: products[0].id } },
             },
           ])
         })
@@ -724,7 +724,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               eventName: "product.created",
-              data: { id: products[0].id },
+              body: { data: { id: products[0].id } },
             },
           ])
         })

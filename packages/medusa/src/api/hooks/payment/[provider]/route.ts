@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { PaymentWebhookEvents } from "@medusajs/utils"
 import { PaymentModuleOptions } from "@medusajs/types"
+import { PaymentWebhookEvents } from "@medusajs/utils"
 
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
@@ -20,10 +20,16 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const eventBus = req.scope.resolve(ModuleRegistrationName.EVENT_BUS)
 
     // we delay the processing of the event to avoid a conflict caused by a race condition
-    await eventBus.emit(PaymentWebhookEvents.WebhookReceived, event, {
-      delay: options.webhook_delay || 5000,
-      attempts: options.webhook_retries || 3,
-    })
+    await eventBus.emit(
+      {
+        eventName: PaymentWebhookEvents.WebhookReceived,
+        body: { data: event },
+      },
+      {
+        delay: options.webhook_delay || 5000,
+        attempts: options.webhook_retries || 3,
+      }
+    )
   } catch (err) {
     res.status(400).send(`Webhook Error: ${err.message}`)
     return

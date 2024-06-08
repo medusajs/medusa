@@ -1,13 +1,23 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { EmitData, Logger, Message } from "@medusajs/types"
-import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
-import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
+import { Logger, Message } from "@medusajs/types"
+import {
+  AbstractEventBusModuleService,
+  isPresent,
+  promiseAll,
+} from "@medusajs/utils"
+import { BulkJobOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
-import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
+import { BullJob, EventBusRedisModuleOptions } from "../types"
 
 type InjectedDependencies = {
   logger: Logger
   eventBusRedisConnection: Redis
+}
+
+type IORedisEventType<T = unknown> = {
+  name: string
+  data: Omit<Message<T>, "body"> & { data: Message<T>["body"]["data"] }
+  opts: BulkJobOptions
 }
 
 /**
@@ -71,78 +81,114 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     },
   }
 
-  /**
-   * Emit a single event
-   * @param {string} eventName - the name of the event to be process.
-   * @param data - the data to send to the subscriber.
-   * @param options - options to add the job with
-   */
-  async emit<T>(
-    eventName: string,
-    data: T,
-    options: Record<string, unknown>
-  ): Promise<void>
-
-  /**
-   * Emit a number of events
-   * @param {EmitData} data - the data to send to the subscriber.
-   */
-  async emit<T>(data: EmitData<T>[]): Promise<void>
-
-  async emit<T>(data: Message<T>[]): Promise<void>
-
-  async emit<T, TInput extends string | EmitData<T>[] | Message<T>[] = string>(
-    eventNameOrData: TInput,
-    data?: T,
-    options: BulkJobOptions | JobsOptions = {}
-  ): Promise<void> {
-    const globalJobOptions = this.moduleOptions_.jobOptions ?? {}
-
-    const isBulkEmit = Array.isArray(eventNameOrData)
-
+  private buildEvents<T>(
+    eventsData: Message<T>[],
+    options: BulkJobOptions = {}
+  ): IORedisEventType<T>[] {
     const opts = {
       // default options
       removeOnComplete: true,
       attempts: 1,
       // global options
-      ...globalJobOptions,
-    } as EmitOptions
+      ...(this.moduleOptions_.jobOptions ?? {}),
+      ...options,
+    }
 
-    const dataBody = isString(eventNameOrData)
-      ? data ?? (data as Message<T>).body
-      : undefined
-
-    const events = isBulkEmit
-      ? eventNameOrData.map((event) => ({
-          name: event.eventName,
-          data: {
-            eventName: event.eventName,
-            data: (event as EmitData).data ?? (event as Message<T>).body,
-          },
-          opts: {
-            ...opts,
-            // local options
-            ...event.options,
-          },
-        }))
-      : [
-          {
-            name: eventNameOrData as string,
-            data: { eventName: eventNameOrData, data: dataBody },
-            opts: {
-              ...opts,
-              // local options
-              ...options,
-            },
-          },
-        ]
-
-    await this.queue_.addBulk(events)
+    return eventsData.map((eventData) => {
+      return {
+        name: eventData.eventName,
+        data: {
+          eventName: eventData.eventName,
+          data: eventData.body.data,
+        },
+        opts: {
+          ...opts,
+          // local options
+          ...eventData.options,
+        },
+      }
+    })
   }
 
-  // TODO: Implement redis based staging + release
-  async releaseGroupedEvents(eventGroupId: string) {}
-  async clearGroupedEvents(eventGroupId: string) {}
+  /**
+   * Emit a single or number of events
+   * @param {Message} data - the data to send to the subscriber.
+   * @param {BulkJobOptions} data - the options to add to bull mq
+   */
+  async emit<T = unknown>(
+    eventsData: Message<T> | Message<T>[],
+    options: BulkJobOptions = {}
+  ): Promise<void> {
+    let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
+
+    const eventsToEmit = eventsDataArray.filter(
+      (eventData) => !isPresent(eventData.body?.metadata?.eventGroupId)
+    )
+
+    const eventsToGroup = eventsDataArray.filter((eventData) =>
+      isPresent(eventData.body?.metadata?.eventGroupId)
+    )
+
+    const groupEventsMap = new Map<string, Message<T>[]>()
+
+    for (const event of eventsToGroup) {
+      const groupId = event.body.metadata?.eventGroupId!
+      const array = groupEventsMap.get(groupId) ?? []
+
+      array.push(event)
+      groupEventsMap.set(groupId, array)
+    }
+
+    const promises: Promise<unknown>[] = []
+
+    if (eventsToEmit.length) {
+      const emitData = this.buildEvents(eventsToEmit, options)
+
+      promises.push(this.queue_.addBulk(emitData))
+    }
+
+    for (const [groupId, events] of groupEventsMap.entries()) {
+      const eventsData = this.buildEvents(events, options)
+
+      promises.push(this.groupEvents(groupId, eventsData))
+    }
+
+    await promiseAll(promises)
+  }
+
+  private async groupEvents<T = unknown>(
+    eventGroupId: string,
+    events: IORedisEventType<T>[]
+  ) {
+    await this.eventBusRedisConnection_.rpush(
+      `staging:${eventGroupId}`,
+      ...events.map((event) => JSON.stringify(event))
+    )
+  }
+
+  private async getGroupedEvents(eventGroupId: string) {
+    return await this.eventBusRedisConnection_
+      .lrange(`staging:${eventGroupId}`, 0, -1)
+      .then((result) => {
+        return result.map((jsonString) => JSON.parse(jsonString))
+      })
+  }
+
+  async releaseGroupedEvents(eventGroupId: string) {
+    const groupedEvents: IORedisEventType[] = await this.getGroupedEvents(
+      eventGroupId
+    )
+
+    await this.queue_.addBulk(groupedEvents)
+
+    await this.clearGroupedEvents(eventGroupId)
+  }
+
+  async clearGroupedEvents(eventGroupId: string) {
+    if (eventGroupId) {
+      await this.eventBusRedisConnection_.del(`staging:${eventGroupId}`)
+    }
+  }
 
   /**
    * Handles incoming jobs.
@@ -190,10 +236,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         return await subscriber(data, eventName)
-          .then(async (data) => {
+          .then(async (test) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
-            return data
+            return test
           })
           .catch((err) => {
             this.logger_.warn(

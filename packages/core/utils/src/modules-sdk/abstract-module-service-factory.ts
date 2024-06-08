@@ -466,9 +466,11 @@ export function abstractModuleServiceFactory<
           await this.eventBusModuleService_?.emit(
             primaryKeyValues_.map((primaryKeyValue) => ({
               eventName: `${kebabCase(model.name)}.deleted`,
-              data: isString(primaryKeyValue)
-                ? { id: primaryKeyValue }
-                : primaryKeyValue,
+              body: {
+                data: isString(primaryKeyValue)
+                  ? { id: primaryKeyValue }
+                  : primaryKeyValue,
+              },
             }))
           )
         }
@@ -501,7 +503,12 @@ export function abstractModuleServiceFactory<
           await this.eventBusModuleService_?.emit(
             softDeletedEntities.map(({ id }) => ({
               eventName: `${kebabCase(model.name)}.deleted`,
-              data: { id },
+              body: {
+                id,
+                // TODO: fulfil these
+                metadata: { source: "", action: "", object: "" },
+                data: {},
+              },
             }))
           )
 

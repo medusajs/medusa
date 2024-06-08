@@ -276,7 +276,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
               eventName: "product-collection.deleted",
-              data: { id: collectionId },
+              body: { data: { id: collectionId } },
             },
           ])
         })
@@ -298,8 +298,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
+              body: { data: { id: collectionId } },
               eventName: "product-collection.updated",
-              data: { id: collectionId },
             },
           ])
         })
@@ -488,16 +488,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
           const collections = await service.createCollections([
-            {
-              title: "New Collection",
-            },
+            { title: "New Collection" },
           ])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
+              body: { data: { id: collections[0].id } },
               eventName: "product-collection.created",
-              data: { id: collections[0].id },
             },
           ])
         })

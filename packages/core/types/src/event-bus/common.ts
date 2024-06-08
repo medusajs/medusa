@@ -26,10 +26,10 @@ export type EmitData<T = unknown> = {
 }
 
 export type MessageBody<T = unknown> = {
-  metadata: {
-    source: string
-    action: string
-    object: string
+  metadata?: {
+    source?: string
+    action?: string
+    object?: string
     eventGroupId?: string
   }
   data: T

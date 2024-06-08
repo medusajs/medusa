@@ -51,8 +51,8 @@ import {
   UpdateTagInput,
   UpdateTypeInput,
 } from "../types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 import { eventBuilders } from "../utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -898,7 +898,7 @@ export default class ProductModuleService<
     await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       collections.map(({ id }) => ({
         eventName: ProductCollectionEvents.COLLECTION_CREATED,
-        data: { id },
+        body: { data: { id } },
       }))
     )
 
@@ -971,7 +971,7 @@ export default class ProductModuleService<
       await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
         created.map(({ id }) => ({
           eventName: ProductCollectionEvents.COLLECTION_CREATED,
-          data: { id },
+          body: { data: { id } },
         }))
       )
     }
@@ -980,7 +980,7 @@ export default class ProductModuleService<
       await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
         updated.map(({ id }) => ({
           eventName: ProductCollectionEvents.COLLECTION_UPDATED,
-          data: { id },
+          body: { data: { id } },
         }))
       )
     }
@@ -1040,7 +1040,7 @@ export default class ProductModuleService<
     await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       updatedCollections.map(({ id }) => ({
         eventName: ProductCollectionEvents.COLLECTION_UPDATED,
-        data: { id },
+        body: { data: { id } },
       }))
     )
 
@@ -1134,10 +1134,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_CREATED,
-      { id: productCategory.id }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_CREATED,
+      body: { data: { id: productCategory.id } },
+    })
 
     return productCategory
   }
@@ -1154,10 +1154,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_UPDATED,
-      { id: productCategory.id }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_UPDATED,
+      body: { data: { id: productCategory.id } },
+    })
 
     return await this.baseRepository_.serialize(productCategory, {
       populate: true,
@@ -1171,10 +1171,10 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_DELETED,
-      { id: categoryId }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_DELETED,
+      body: { data: { id: categoryId } },
+    })
   }
 
   create(
@@ -1201,7 +1201,7 @@ export default class ProductModuleService<
     await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
         eventName: ProductEvents.PRODUCT_CREATED,
-        data: { id },
+        body: { data: { id } },
       }))
     )
 
@@ -1248,7 +1248,7 @@ export default class ProductModuleService<
       await this.eventBusModuleService_?.emit<ProductEventData>(
         created.map(({ id }) => ({
           eventName: ProductEvents.PRODUCT_CREATED,
-          data: { id },
+          body: { data: { id } },
         }))
       )
     }
@@ -1257,7 +1257,7 @@ export default class ProductModuleService<
       await this.eventBusModuleService_?.emit<ProductEventData>(
         updated.map(({ id }) => ({
           eventName: ProductEvents.PRODUCT_UPDATED,
-          data: { id },
+          body: { data: { id } },
         }))
       )
     }
@@ -1310,7 +1310,7 @@ export default class ProductModuleService<
     await this.eventBusModuleService_?.emit<ProductEventData>(
       updatedProducts.map(({ id }) => ({
         eventName: ProductEvents.PRODUCT_UPDATED,
-        data: { id },
+        body: { data: { id } },
       }))
     )
 
