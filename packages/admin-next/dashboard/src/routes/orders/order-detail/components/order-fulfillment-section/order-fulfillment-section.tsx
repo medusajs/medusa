@@ -21,10 +21,10 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import { useCancelFulfillment } from "../../../../../hooks/api/fulfillment"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
+import { useCancelOrderFulfillment } from "../../../../../hooks/api/orders"
 
 type OrderFulfillmentSectionProps = {
   order: AdminOrder
@@ -36,7 +36,7 @@ export const OrderFulfillmentSection = ({
   const fulfillments = order.fulfillments || []
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
         <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
@@ -167,6 +167,7 @@ const Fulfillment = ({
 
   const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
+    undefined,
     {
       enabled: showLocation,
     }
@@ -186,7 +187,7 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = useCancelFulfillment(fulfillment.id)
+  const { mutateAsync } = useCancelOrderFulfillment(order.id, fulfillment.id)
 
   const handleCancel = async () => {
     if (fulfillment.shipped_at) {
@@ -206,7 +207,7 @@ const Fulfillment = ({
 
     if (res) {
       try {
-        await mutateAsync(fulfillment.id)
+        await mutateAsync()
 
         toast.success(t("general.success"), {
           description: t("orders.fulfillment.toast.canceled"),

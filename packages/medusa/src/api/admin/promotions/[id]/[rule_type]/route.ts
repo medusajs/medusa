@@ -10,8 +10,8 @@ import {
   MedusaResponse,
 } from "../../../../../types/routing"
 import {
+  getRuleAttributesMap,
   operatorsMap,
-  ruleAttributesMap,
   ruleQueryConfigurations,
   validateRuleType,
 } from "../../utils"
@@ -33,7 +33,9 @@ export const GET = async (
   })
 
   const [promotion] = await remoteQuery(queryObject)
-  const ruleAttributes = ruleAttributesMap[ruleType]
+  const ruleAttributes = getRuleAttributesMap(
+    promotion?.type || req.query.promotion_type
+  )[ruleType]
   const promotionRules: any[] = []
 
   if (dasherizedRuleType === RuleType.RULES) {
@@ -49,8 +51,19 @@ export const GET = async (
   const requiredRules = ruleAttributes.filter((attr) => !!attr.required)
 
   for (const disguisedRule of disguisedRules) {
-    const value = promotion?.application_method?.[disguisedRule.id]
-    const values = value ? [{ label: value, value }] : []
+    const getValues = () => {
+      const value = promotion?.application_method?.[disguisedRule.id]
+
+      if (disguisedRule.field_type === "number") {
+        return value
+      }
+
+      if (value) {
+        return [{ label: value, value }]
+      }
+
+      return []
+    }
 
     transformedRules.push({
       id: undefined,
@@ -60,7 +73,7 @@ export const GET = async (
       hydrate: disguisedRule.hydrate || false,
       operator: RuleOperator.EQ,
       operator_label: operatorsMap[RuleOperator.EQ].label,
-      values,
+      values: getValues(),
       disguised: true,
       required: true,
     })
@@ -90,7 +103,7 @@ export const GET = async (
         entryPoint: queryConfig.entryPoint,
         variables: {
           filters: {
-            [queryConfig.valueAttr]: promotionRule.values.map((v) => v.value),
+            [queryConfig.valueAttr]: promotionRule.values?.map((v) => v.value),
           },
         },
         fields: [queryConfig.labelAttr, queryConfig.valueAttr],
@@ -104,10 +117,11 @@ export const GET = async (
       ])
     )
 
-    promotionRule.values = promotionRule.values.map((value) => ({
-      value: value.value,
-      label: valueLabelMap.get(value.value) || value.value,
-    }))
+    promotionRule.values =
+      promotionRule.values?.map((value) => ({
+        value: value.value,
+        label: valueLabelMap.get(value.value) || value.value,
+      })) || promotionRule.values
 
     if (!currentRuleAttribute.hydrate) {
       transformedRules.push({

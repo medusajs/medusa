@@ -11,12 +11,17 @@ import {
   validateRuleAttribute,
   validateRuleType,
 } from "../../../utils"
+import { AdminGetPromotionRuleParamsType } from "../../../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetPromotionRuleParamsType>,
   res: MedusaResponse
 ) => {
-  const { rule_type: ruleType, rule_attribute_id: ruleAttributeId } = req.params
+  const {
+    rule_type: ruleType,
+    rule_attribute_id: ruleAttributeId,
+    promotion_type: promotionType,
+  } = req.params
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const filterableFields = req.filterableFields
@@ -28,7 +33,7 @@ export const GET = async (
   }
 
   validateRuleType(ruleType)
-  validateRuleAttribute(ruleType, ruleAttributeId)
+  validateRuleAttribute(promotionType, ruleType, ruleAttributeId)
 
   const { rows } = await remoteQuery(
     remoteQueryObjectFromString({

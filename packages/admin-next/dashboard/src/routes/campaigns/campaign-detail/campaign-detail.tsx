@@ -43,7 +43,7 @@ export const CampaignDetail = () => {
         )
       })}
       <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-2">
+        <div className="flex w-full flex-col gap-y-3">
           <CampaignGeneralSection campaign={campaign} />
           <CampaignPromotionSection campaign={campaign} />
           {after.widgets.map((w, i) => {

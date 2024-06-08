@@ -153,6 +153,7 @@ export function medusaIntegrationTestRunner({
   let isFirstTime = true
 
   const beforeAll_ = async () => {
+    console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)
 
     try {

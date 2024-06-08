@@ -76,6 +76,7 @@
     "back": "Back",
     "close": "Close",
     "continue": "Continue",
+    "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
     "download": "Download",
@@ -183,6 +184,12 @@
         "header": "Variants",
         "subHeadingTitle": "Yes, this is a product with variants",
         "subHeadingDescription": "When unchecked we will create a default variant for you",
+        "optionTitle": {
+          "placeholder": "Size"
+        },
+        "optionValues": {
+          "placeholder": "Small, Medium, Large"
+        },
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect how the variants are ranked in your frontend.",
@@ -200,8 +207,6 @@
     "attributes": "Attributes",
     "editProduct": "Edit Product",
     "editAttributes": "Edit Attributes",
-    "organization": "Organize",
-    "editOrganization": "Edit Organization",
     "editOptions": "Edit Options",
     "editPrices": "Edit prices",
     "media": {
@@ -219,7 +224,11 @@
       "galleryLabel": "Gallery",
       "downloadImageLabel": "Download current image",
       "deleteImageLabel": "Delete current image",
-      "noMediaLabel": "The product has no associated media."
+      "emptyState": {
+        "header": "No media yet",
+        "description": "Add media to the product to showcase it in your storefront.",
+        "action": "Add media"
+      }
     },
     "discountableHint": "When unchecked discounts will not be applied to this product.",
     "noSalesChannels": "Not available in any sales channels",
@@ -291,7 +300,9 @@
         "hint": "Options are used to define the color, size, etc. of the product",
         "add": "Add option",
         "optionTitle": "Option title",
-        "variations": "Variations (comma-separated)"
+        "optionTitlePlaceholder": "Color",
+        "variations": "Variations (comma-separated)",
+        "variantionsPlaceholder": "Red, Blue, Green"
       },
       "variants": {
         "label": "Product variants",
@@ -334,6 +345,15 @@
       "create": {
         "header": "Create Option",
         "successToast": "Option {{title}} was successfully created."
+      }
+    },
+    "organization": {
+      "header": "Organize",
+      "edit": {
+        "header": "Edit Organization",
+        "toasts": {
+          "success": "Successfully updated the organization of {{title}}."
+        }
       }
     },
     "toasts": {
@@ -559,6 +579,7 @@
       "inStock": "In stock",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
+      "sendNotificationHint": "Notify customers about the created fulfillment.",
       "error": {
         "wrongQuantity": "Only one item is available for fulfillment",
         "wrongQuantity_other": "Quantity should be a number between 1 and {{number}}",
@@ -966,15 +987,15 @@
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
-          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched."
         },
         "target-rules": {
-          "title": "What needs to be in the cart to unlock the promotion?",
-          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+          "title": "What will the promotion be applied to?",
+          "description": "The promotion will be applied to items that match the following conditions"
         },
         "buy-rules": {
-          "title": "What will the promotion be applied to?",
-          "description": "The promotion will be applied to items that match these conditions"
+          "title": "What needs to be in the cart to unlock the promotion?",
+          "description": "If these conditions match, we enable the promotion on the target items."
         }
       }
     },

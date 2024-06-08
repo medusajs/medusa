@@ -2,17 +2,19 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { ruleAttributesMap, validateRuleType } from "../../utils"
+import { getRuleAttributesMap, validateRuleType } from "../../utils"
+import { AdminGetPromotionRuleParamsType } from "../../validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetPromotionRuleParamsType>,
   res: MedusaResponse
 ) => {
   const { rule_type: ruleType } = req.params
 
   validateRuleType(ruleType)
 
-  const attributes = ruleAttributesMap[ruleType] || []
+  const attributes =
+    getRuleAttributesMap(req.query.promotion_type as string)[ruleType] || []
 
   res.json({
     attributes,

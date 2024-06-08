@@ -1,9 +1,10 @@
-import { Button, Heading, Switch } from "@medusajs/ui"
+import { Button, Heading } from "@medusajs/ui"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 
 import { ChipGroup } from "../../../../../../../components/common/chip-group"
 import { Form } from "../../../../../../../components/common/form"
+import { SwitchBox } from "../../../../../../../components/common/switch-box"
 import { Combobox } from "../../../../../../../components/inputs/combobox"
 import { useComboboxData } from "../../../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../../../lib/client"
@@ -23,7 +24,7 @@ export const ProductCreateOrganizationSection = ({
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
-    queryFn: sdk.admin.collection.list,
+    queryFn: sdk.admin.productCollection.list,
     getOptions: (data) =>
       data.collections.map((collection) => ({
         label: collection.title!,
@@ -41,6 +42,16 @@ export const ProductCreateOrganizationSection = ({
       })),
   })
 
+  const tags = useComboboxData({
+    queryKey: ["product_tags"],
+    queryFn: client.productTags.list,
+    getOptions: (data) =>
+      data.product_tags.map((tag) => ({
+        label: tag.value,
+        value: tag.id,
+      })),
+  })
+
   const { fields, remove, replace } = useFieldArray({
     control: form.control,
     name: "sales_channels",
@@ -53,38 +64,15 @@ export const ProductCreateOrganizationSection = ({
 
   return (
     <div id="organize" className="flex flex-col gap-y-8">
-      <Heading>{t("products.organization")}</Heading>
-      <div className="grid grid-cols-1 gap-x-4">
-        <Form.Field
-          control={form.control}
-          name="discountable"
-          render={({ field: { value, onChange, ...field } }) => {
-            return (
-              <Form.Item>
-                <div className="shadow-elevation-card-rest bg-ui-bg-field flex flex-row gap-x-4 rounded-xl p-2">
-                  <Form.Control>
-                    <Switch
-                      {...field}
-                      checked={!!value}
-                      onCheckedChange={onChange}
-                      className="mt-1"
-                    />
-                  </Form.Control>
-                  <div className="flex flex-col">
-                    <Form.Label>
-                      {t("products.fields.discountable.label")}
-                    </Form.Label>
-                    <Form.Hint>
-                      {t("products.fields.discountable.hint")}
-                    </Form.Hint>
-                  </div>
-                </div>
-              </Form.Item>
-            )
-          }}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-x-4">
+      <Heading>{t("products.organization.header")}</Heading>
+      <SwitchBox
+        control={form.control}
+        name="discountable"
+        label={t("products.fields.discountable.label")}
+        description={t("products.fields.discountable.hint")}
+        optional
+      />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Form.Field
           control={form.control}
           name="type_id"
@@ -100,8 +88,10 @@ export const ProductCreateOrganizationSection = ({
                     options={types.options}
                     searchValue={types.searchValue}
                     onSearchValueChange={types.onSearchValueChange}
+                    fetchNextPage={types.fetchNextPage}
                   />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -121,14 +111,16 @@ export const ProductCreateOrganizationSection = ({
                     options={collections.options}
                     searchValue={collections.searchValue}
                     onSearchValueChange={collections.onSearchValueChange}
+                    fetchNextPage={collections.fetchNextPage}
                   />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-x-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Form.Field
           control={form.control}
           name="categories"
@@ -141,6 +133,30 @@ export const ProductCreateOrganizationSection = ({
                 <Form.Control>
                   <CategoryCombobox {...field} />
                 </Form.Control>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+        <Form.Field
+          control={form.control}
+          name="tags"
+          render={({ field }) => {
+            return (
+              <Form.Item>
+                <Form.Label optional>
+                  {t("products.fields.tags.label")}
+                </Form.Label>
+                <Form.Control>
+                  <Combobox
+                    {...field}
+                    options={tags.options}
+                    searchValue={tags.searchValue}
+                    onSearchValueChange={tags.onSearchValueChange}
+                    fetchNextPage={tags.fetchNextPage}
+                  />
+                </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}

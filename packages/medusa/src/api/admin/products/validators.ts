@@ -128,27 +128,37 @@ export const AdminCreateProductType = z.object({
 export type AdminCreateProductVariantType = z.infer<
   typeof AdminCreateProductVariant
 >
-export const AdminCreateProductVariant = z.object({
-  title: z.string(),
-  sku: z.string().nullable().optional(),
-  ean: z.string().nullable().optional(),
-  upc: z.string().nullable().optional(),
-  barcode: z.string().nullable().optional(),
-  hs_code: z.string().nullable().optional(),
-  mid_code: z.string().nullable().optional(),
-  allow_backorder: z.boolean().optional().default(false),
-  manage_inventory: z.boolean().optional().default(true),
-  variant_rank: z.number().optional(),
-  weight: z.number().nullable().optional(),
-  length: z.number().nullable().optional(),
-  height: z.number().nullable().optional(),
-  width: z.number().nullable().optional(),
-  origin_country: z.string().nullable().optional(),
-  material: z.string().nullable().optional(),
-  metadata: z.record(z.unknown()).optional(),
-  prices: z.array(AdminCreateVariantPrice),
-  options: z.record(z.string()).optional(),
-})
+export const AdminCreateProductVariant = z
+  .object({
+    title: z.string(),
+    sku: z.string().nullable().optional(),
+    ean: z.string().nullable().optional(),
+    upc: z.string().nullable().optional(),
+    barcode: z.string().nullable().optional(),
+    hs_code: z.string().nullable().optional(),
+    mid_code: z.string().nullable().optional(),
+    allow_backorder: z.boolean().optional().default(false),
+    manage_inventory: z.boolean().optional().default(true),
+    variant_rank: z.number().optional(),
+    weight: z.number().nullable().optional(),
+    length: z.number().nullable().optional(),
+    height: z.number().nullable().optional(),
+    width: z.number().nullable().optional(),
+    origin_country: z.string().nullable().optional(),
+    material: z.string().nullable().optional(),
+    metadata: z.record(z.unknown()).optional(),
+    prices: z.array(AdminCreateVariantPrice),
+    options: z.record(z.string()).optional(),
+    inventory_items: z
+      .array(
+        z.object({
+          inventory_item_id: z.string(),
+          required_quantity: z.number(),
+        })
+      )
+      .optional(),
+  })
+  .strict()
 
 export type AdminUpdateProductVariantType = z.infer<
   typeof AdminUpdateProductVariant

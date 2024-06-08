@@ -11,5 +11,5 @@ export interface PromotionRuleResponse {
 }
 
 export interface AdminPromotionRuleListResponse {
-  attributes: PromotionRuleResponse[]
+  rules: PromotionRuleResponse[]
 }

@@ -113,8 +113,14 @@ export async function zodValidator<T>(
   zodSchema: z.ZodObject<any, any> | z.ZodEffects<any, any>,
   body: T
 ): Promise<z.ZodRawShape> {
+  let strictSchema = zodSchema
+  // ZodEffects doesn't support setting as strict, for all other schemas we want to enforce strictness.
+  if ("strict" in zodSchema) {
+    strictSchema = zodSchema.strict()
+  }
+
   try {
-    return await zodSchema.parseAsync(body)
+    return await strictSchema.parseAsync(body)
   } catch (err) {
     if (err instanceof ZodError) {
       throw new MedusaError(

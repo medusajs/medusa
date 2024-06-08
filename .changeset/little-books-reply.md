@@ -4,7 +4,6 @@
 "medusa-dev-cli": patch
 "@medusajs/medusa-oas-cli": patch
 "@medusajs/oas-github-ci": patch
-"@medusajs/openapi-typescript-codegen": patch
 "@medusajs/core-flows": patch
 "medusa-test-utils": patch
 "@medusajs/modules-sdk": patch

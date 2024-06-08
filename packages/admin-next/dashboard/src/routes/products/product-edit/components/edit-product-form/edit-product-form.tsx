@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@medusajs/medusa"
 import { ProductStatus } from "@medusajs/types"
-import { Button, Input, Select, Switch, Text, Textarea } from "@medusajs/ui"
+import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
-import { Trans, useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
+import { SwitchBox } from "../../../../../components/common/switch-box"
 import {
   RouteDrawer,
   useRouteModal,
@@ -74,8 +75,8 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
         onSubmit={handleSubmit}
         className="flex flex-1 flex-col overflow-hidden"
       >
-        <RouteDrawer.Body className="flex max-w-full flex-1 flex-col gap-y-8 overflow-y-auto">
-          <div className="flex h-full flex-col gap-y-8">
+        <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-y-auto">
+          <div className="flex flex-col gap-y-8">
             <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
@@ -142,19 +143,6 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                   )
                 }}
               />
-              <Text
-                size="small"
-                leading="compact"
-                className="text-ui-fg-subtle"
-              >
-                <Trans
-                  i18nKey="products.fields.title.hint"
-                  t={t}
-                  components={[<br key="break" />]}
-                />
-              </Text>
-            </div>
-            <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
                 name="handle"
@@ -210,43 +198,16 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
                         <Textarea {...field} />
                       </Form.Control>
                       <Form.ErrorMessage />
-                      <Form.Hint>
-                        <Trans
-                          i18nKey="products.fields.description.hint"
-                          t={t}
-                          components={[<br key="break" />]}
-                        />
-                      </Form.Hint>
                     </Form.Item>
                   )
                 }}
               />
             </div>
-            <Form.Field
+            <SwitchBox
               control={form.control}
               name="discountable"
-              render={({ field: { value, onChange, ...field } }) => {
-                return (
-                  <Form.Item>
-                    <div className="flex items-center justify-between">
-                      <Form.Label optional>
-                        {t("fields.discountable")}
-                      </Form.Label>
-                      <Form.Control>
-                        <Switch
-                          {...field}
-                          checked={value}
-                          onCheckedChange={onChange}
-                        />
-                      </Form.Control>
-                    </div>
-                    <Form.Hint className="!mt-1">
-                      {t("products.discountableHint")}
-                    </Form.Hint>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
+              label={t("fields.discountable")}
+              description={t("products.discountableHint")}
             />
           </div>
         </RouteDrawer.Body>

@@ -75,7 +75,7 @@ export const AddProductsToSalesChannelForm = ({
     error,
   } = useProducts(
     {
-      expand: "variants,sales_channels",
+      fields: "*variants,*sales_channels",
       ...searchParams,
     },
     {

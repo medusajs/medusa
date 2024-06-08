@@ -28,11 +28,15 @@ moduleIntegrationTestRunner({
     describe("Auth Module Service", () => {
       beforeEach(async () => {
         await service.create({
-          entity_id: "test@admin.com",
-          provider: "plaintextpass",
-          provider_metadata: {
-            password: "plaintext",
-          },
+          provider_identities: [
+            {
+              entity_id: "test@admin.com",
+              provider: "plaintextpass",
+              provider_metadata: {
+                password: "plaintext",
+              },
+            },
+          ],
         })
       })
 
@@ -65,7 +69,9 @@ moduleIntegrationTestRunner({
             success: true,
             authIdentity: expect.objectContaining({
               id: expect.any(String),
-              entity_id: "test@admin.com",
+              provider_identities: [
+                expect.objectContaining({ entity_id: "test@admin.com" }),
+              ],
             }),
           })
         )
@@ -97,12 +103,17 @@ moduleIntegrationTestRunner({
           },
         })
 
-        const dbAuthIdentity = await service.retrieve(result.authIdentity.id)
+        const dbAuthIdentity = await service.retrieve(
+          result.authIdentity?.id!,
+          { relations: ["provider_identities"] }
+        )
 
         expect(dbAuthIdentity).toEqual(
           expect.objectContaining({
             id: expect.any(String),
-            entity_id: "new@admin.com",
+            provider_identities: [
+              expect.objectContaining({ entity_id: "new@admin.com" }),
+            ],
           })
         )
       })

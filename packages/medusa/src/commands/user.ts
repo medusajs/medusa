@@ -56,8 +56,9 @@ export default async function ({
         process.exit(1)
       }
 
+      // We know the authIdentity is not undefined
       await authService.update({
-        id: authIdentity.id,
+        id: authIdentity!.id,
         app_metadata: {
           user_id: user.id,
         },

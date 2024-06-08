@@ -14,6 +14,11 @@ import { CreatePromotionRuleDTO, PromotionRuleDTO } from "./promotion-rule"
 export type PromotionTypeValues = "standard" | "buyget"
 
 /**
+ * The promotion's possible rule types.
+ */
+export type RuleTypeValues = "rules" | "buy-rules" | "target-rules"
+
+/**
  * The promotion details.
  */
 export interface PromotionDTO {
