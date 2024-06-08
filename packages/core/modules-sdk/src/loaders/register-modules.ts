@@ -1,4 +1,5 @@
 import {
+  CustomModuleDefinition,
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   ModuleDefinition,
@@ -22,12 +23,13 @@ export const registerMedusaModule = (
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
-  const isCustomModule = !definition && !ModulesDefinition[moduleKey]
+  const isCustomModule = !definition?.key && !ModulesDefinition[moduleKey]
 
   let customModuleConfig
   if (isCustomModule) {
     customModuleConfig = getCustomModuleResolution(
       moduleKey,
+      definition,
       moduleDeclaration as Partial<
         InternalModuleDeclaration | ExternalModuleDeclaration
       >
@@ -91,25 +93,29 @@ function normalizePath(path: string | undefined): string {
 
 function getCustomModuleResolution(
   key: string,
+  definition?: CustomModuleDefinition,
   moduleConfig?:
     | Partial<InternalModuleDeclaration>
     | Partial<ExternalModuleDeclaration>
 ): ModuleResolution {
   const conf = isObject(moduleConfig) ? moduleConfig : {}
 
+  const baseCustomDefinition: ModuleDefinition = {
+    key: definition?.key ?? key,
+    registrationName: definition?.registrationName ?? key,
+    label: definition?.label ?? `Custom: ${upperCaseFirst(key)}`,
+    defaultPackage: "",
+    isQueryable: definition?.isQueryable ?? false,
+    defaultModuleDeclaration: {
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+      scope: MODULE_SCOPE.INTERNAL,
+    },
+  }
+
   const confExt_ = conf as ExternalModuleDeclaration
   if (confExt_?.scope === MODULE_SCOPE.EXTERNAL || confExt_?.server) {
     return {
-      definition: {
-        key,
-        registrationName: key,
-        label: `Custom: ${upperCaseFirst(key)}`,
-        defaultPackage: "",
-        defaultModuleDeclaration: {
-          resources: MODULE_RESOURCE_TYPE.SHARED,
-          scope: MODULE_SCOPE.INTERNAL,
-        },
-      },
+      definition: baseCustomDefinition,
       moduleDeclaration: {
         scope: MODULE_SCOPE.EXTERNAL,
         server: confExt_?.server!,
@@ -127,16 +133,7 @@ function getCustomModuleResolution(
 
   return {
     resolutionPath,
-    definition: {
-      key,
-      registrationName: key,
-      label: `Custom: ${upperCaseFirst(key)}`,
-      defaultPackage: "",
-      defaultModuleDeclaration: {
-        resources: MODULE_RESOURCE_TYPE.SHARED,
-        scope: MODULE_SCOPE.INTERNAL,
-      },
-    },
+    definition: baseCustomDefinition,
     moduleDeclaration: {
       resources: conf_?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
       scope: MODULE_SCOPE.INTERNAL,
