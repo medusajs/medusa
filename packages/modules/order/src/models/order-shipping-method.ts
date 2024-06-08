@@ -12,6 +12,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
 import Order from "./order"
 import ShippingMethod from "./shipping-method"
 
@@ -57,14 +58,29 @@ export default class OrderShippingMethod {
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
-  @Property({ columnType: "integer" })
-  @OrderVersionIndex.MikroORMIndex()
-  version: number
-
   @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @OrderIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
+
+  @Property({ columnType: "integer" })
+  @OrderVersionIndex.MikroORMIndex()
+  version: number
 
   @ManyToOne({
     entity: () => ShippingMethod,

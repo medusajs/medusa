@@ -249,6 +249,10 @@ export interface UpdateOrderShippingMethodAdjustmentDTO {
 
 export interface CreateOrderChangeDTO {
   order_id: string
+  return_id?: string
+  swap_id?: string
+  claim_id?: string
+  exchange_id?: string
   description?: string
   internal_note?: string
   requested_by?: string
@@ -298,6 +302,10 @@ export interface ConfirmOrderChangeDTO {
 
 export interface CreateOrderChangeActionDTO {
   order_change_id?: string
+  order_id?: string
+  return_id?: string
+  swap_id?: string
+  claim_id?: string
   version?: number
   reference?: string
   reference_id?: string
@@ -396,11 +404,13 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
 }
 
 export interface CancelOrderReturnDTO {
-  order_id: string
   return_id: string
 }
 
-export interface ReceiveOrderReturnDTO extends BaseOrderBundledActionsDTO {}
+export interface ReceiveOrderReturnDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+  return_id: string
+}
 
 /** ORDER bundled action flows */
 

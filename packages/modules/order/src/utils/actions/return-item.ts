@@ -16,6 +16,11 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
       action.details.quantity
     )
 
+    existing.detail.return_id = action.return_id
+    existing.detail.swap_id = action.swap_id
+    existing.detail.claim_id = action.claim_id
+    existing.detail.exchange_id = action.exchange_id
+
     return MathBN.mult(existing.unit_price, action.details.quantity)
   },
   revert({ action, currentOrder }) {

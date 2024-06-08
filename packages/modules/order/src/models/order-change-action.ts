@@ -14,6 +14,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
 import Order from "./order"
 import OrderChange from "./order-change"
 
@@ -27,6 +28,12 @@ const OrderChangeIdIndex = createPsqlIndexStatementHelper({
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
   columns: "order_id",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 const ActionOrderingIndex = createPsqlIndexStatementHelper({
@@ -61,6 +68,21 @@ export default class OrderChangeAction {
     nullable: true,
   })
   order: Order | null = null
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @OrderIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
 
   @Property({ columnType: "integer", nullable: true })
   version: number | null = null
@@ -132,6 +154,10 @@ export default class OrderChangeAction {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

@@ -233,12 +233,16 @@ moduleIntegrationTestRunner({
         )
 
         // Return
-        await service.createReturn({
+        const orderReturn = await service.createReturn({
           order_id: createdOrder.id,
           reference: Modules.FULFILLMENT,
           description: "Return all the items",
           internal_note: "user wants to return all items",
-          shipping_method: createdOrder.shipping_methods![0].id,
+          shipping_method: {
+            order_id: createdOrder.id,
+            name: "Return method",
+            amount: 35,
+          },
           items: createdOrder.items!.map((item) => {
             return {
               id: item.id,
@@ -246,6 +250,17 @@ moduleIntegrationTestRunner({
             }
           }),
         })
+
+        console.log(
+          JSON.stringify(
+            await service.retrieveReturn(orderReturn.id, {
+              relations: ["items", "shipping_methods"],
+            }),
+            null,
+            2
+          )
+        )
+        process.exit(0)
 
         getOrder = await service.retrieve(createdOrder.id, {
           select: [
@@ -297,6 +312,242 @@ moduleIntegrationTestRunner({
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
                   return_requested_quantity: 1,
+                }),
+              }),
+            ],
+          })
+        )
+
+        // Receive Return
+        const allItems = createdOrder.items!.map((item) => {
+          return {
+            id: item.id,
+            quantity: item.quantity,
+          }
+        })
+        const lastItem = allItems.pop()!
+        const receive = await service.receiveReturn({
+          return_id: orderReturn.id,
+          internal_note: "received some items",
+          items: allItems,
+        })
+
+        const receiveComplete = await service.receiveReturn({
+          return_id: orderReturn.id,
+          internal_note: "received remaining items",
+          items: [lastItem],
+        })
+
+        expect(receive).toEqual(
+          expect.objectContaining({
+            id: orderReturn.id,
+            status: "partially_received",
+            received_at: null,
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: allItems[0].id,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                  return_received_quantity: 1,
+                }),
+              }),
+              expect.objectContaining({
+                id: allItems[1].id,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                  return_received_quantity: 2,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        expect(receiveComplete).toEqual(
+          expect.objectContaining({
+            id: orderReturn.id,
+            status: "received",
+            received_at: expect.any(Date),
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                id: allItems[0].id,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                  return_received_quantity: 1,
+                }),
+              }),
+              expect.objectContaining({
+                id: allItems[1].id,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                  return_received_quantity: 2,
+                }),
+              }),
+              expect.objectContaining({
+                id: lastItem.id,
+                detail: expect.objectContaining({
+                  return_requested_quantity: 0,
+                  return_received_quantity: 1,
+                }),
+              }),
+            ]),
+          })
+        )
+
+        getOrder = await service.retrieve(createdOrder.id, {
+          select: [
+            "id",
+            "version",
+            "items.id",
+            "items.quantity",
+            "items.detail.id",
+            "items.detail.version",
+            "items.detail.quantity",
+            "items.detail.shipped_quantity",
+            "items.detail.fulfilled_quantity",
+            "items.detail.return_requested_quantity",
+            "items.detail.return_received_quantity",
+          ],
+          relations: ["items", "items.detail"],
+        })
+
+        serializedOrder = JSON.parse(JSON.stringify(getOrder))
+
+        expect(serializedOrder).toEqual(
+          expect.objectContaining({
+            version: 6,
+            items: [
+              expect.objectContaining({
+                quantity: 1,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 1,
+                  fulfilled_quantity: 1,
+                  shipped_quantity: 1,
+                  return_requested_quantity: 0,
+                  return_received_quantity: 1,
+                }),
+              }),
+              expect.objectContaining({
+                quantity: 2,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 2,
+                  fulfilled_quantity: 2,
+                  shipped_quantity: 2,
+                  return_requested_quantity: 0,
+                  return_received_quantity: 2,
+                }),
+              }),
+              expect.objectContaining({
+                quantity: 1,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 1,
+                  fulfilled_quantity: 1,
+                  shipped_quantity: 1,
+                  return_requested_quantity: 0,
+                  return_received_quantity: 1,
+                }),
+              }),
+            ],
+          })
+        )
+      })
+
+      // *****************************************
+
+      it.skip("should create an order, fulfill, ship, return the items and revert the last version when failing", async function () {
+        const createdOrder = await service.create(input)
+
+        await service.registerFulfillment({
+          order_id: createdOrder.id,
+          items: createdOrder.items!.map((item) => {
+            return {
+              id: item.id,
+              quantity: item.quantity,
+            }
+          }),
+        })
+        // Shipment
+        await service.registerShipment({
+          order_id: createdOrder.id,
+          reference: Modules.FULFILLMENT,
+          items: createdOrder.items!.map((item) => {
+            return {
+              id: item.id,
+              quantity: item.quantity,
+            }
+          }),
+        })
+
+        // Return
+        await service.createReturn({
+          order_id: createdOrder.id,
+          reference: Modules.FULFILLMENT,
+          description: "Return all the items",
+          internal_note: "user wants to return all items",
+          shipping_method: createdOrder.shipping_methods![0].id,
+          items: createdOrder.items!.map((item) => {
+            return {
+              id: item.id,
+              quantity: item.quantity,
+            }
+          }),
+        })
+
+        // Revert last version
+
+        const getOrder = await service.retrieve(createdOrder.id, {
+          select: [
+            "id",
+            "version",
+            "items.id",
+            "items.quantity",
+            "items.detail.id",
+            "items.detail.version",
+            "items.detail.quantity",
+            "items.detail.shipped_quantity",
+            "items.detail.fulfilled_quantity",
+            "items.detail.return_requested_quantity",
+            "items.detail.return_received_quantity",
+          ],
+          relations: ["items", "items.detail"],
+        })
+
+        const serializedOrder = JSON.parse(JSON.stringify(getOrder))
+
+        expect(serializedOrder).toEqual(
+          expect.objectContaining({
+            version: 6,
+            items: [
+              expect.objectContaining({
+                quantity: 1,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 1,
+                  fulfilled_quantity: 1,
+                  shipped_quantity: 1,
+                  return_requested_quantity: 0,
+                }),
+              }),
+              expect.objectContaining({
+                quantity: 2,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 2,
+                  fulfilled_quantity: 2,
+                  shipped_quantity: 2,
+                  return_requested_quantity: 0,
+                }),
+              }),
+              expect.objectContaining({
+                quantity: 1,
+                detail: expect.objectContaining({
+                  version: 6,
+                  quantity: 1,
+                  fulfilled_quantity: 1,
+                  shipped_quantity: 1,
+                  return_requested_quantity: 0,
                 }),
               }),
             ],

@@ -9,7 +9,13 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
       : [currentOrder.shipping_methods]
 
     shipping.push({
-      id: action.reference_id!,
+      shipping_method_id: action.reference_id!,
+      order_id: currentOrder.id,
+      return_id: action.return_id,
+      swap_id: action.swap_id,
+      claim_id: action.claim_id,
+      exchange_id: action.exchange_id,
+
       price: action.amount as number,
     })
 
@@ -21,7 +27,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.SHIPPING_ADD, {
       : [currentOrder.shipping_methods]
 
     const existingIndex = shipping.findIndex(
-      (item) => item.id === action.reference_id
+      (item) => item.shipping_method_id === action.reference_id
     )
 
     if (existingIndex > -1) {
