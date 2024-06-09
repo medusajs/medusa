@@ -46,11 +46,15 @@ jobs:
         working-directory: www
         run: yarn install
 
+      - name: Build Docs packages
+        working-directory: www
+        run: yarn build:packages
+
       - name: Install Workspace dependencies
         run: yarn install
         working-directory: www/utils
 
-      - name: Build Workspace dependencies
+      - name: Build Workspace packages
         run: yarn build
         working-directory: www/utils
 
@@ -63,6 +67,10 @@ jobs:
         if: ${{ github.event_name != 'workflow_dispatch' }}
         run: "yarn start generate all --merge"
         working-directory: www/utils/packages/typedoc-generate-references
+
+      - name: Generate Sidebar and File Map
+        run: "yarn prep"
+        working-directory: www/apps/resources
 
       - name: Generate Changeset
         run: "yarn generate:changeset"

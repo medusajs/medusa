@@ -1,0 +1,92 @@
+import { AcademicCapSolid, BoltSolid } from "@medusajs/icons"
+import { LearningPath } from "docs-ui"
+
+export const metadata = {
+  title: `Omnichannel Commerce Recipe`,
+}
+
+# {metadata.title}
+
+This recipe provides the general steps to build an omnichannel store with Medusa.
+
+## Overview
+
+Merchants selling across different channels need an efficient way to manage their commerce data and operations across these channels. Omnichannel commerce solves this problem by allowing merchants to support multiple channels through a single system while maintaining layers of separation.
+
+Omnichannel commerce also provides customers a seamless shopping experience, regardless of where they’re shopping. Whether they’re buying your products from your online store, a marketplace like Amazon, or through social media, you provide them with a good experience and handle orders consistently.
+
+Medusa’s modular architecture facilitates building omnichannel commerce, as your server and storefront aren’t tightly coupled. You can also use the Sales Channel Module's features to expand your business into other avenues like marketplaces and social commerce.
+
+---
+
+## Create Multiple Storefronts with One Server
+
+When creating an omnichannel commerce, you build multiple webshops or mobile apps. All these storefronts should provide your customers with a similar experience, allow them to browse products, and place orders.
+
+Medusa's commerce features are available as REST APIs that storefronts can access to provide these features for customers. This separation also gives you freedom in choosing the tech stack of the storefronts you’re creating.
+
+<Card
+  href="!api!/store"
+  title="Store REST APIs"
+  text="Check out available Store REST APIs in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+---
+
+## Integrate with Marketplaces and Social Commerce
+
+Businesses are no longer bound to sell in their stores. They can reach their customers through their different shopping channels.
+
+One example is marketplaces like Amazon. Customers searching through Amazon to find products are inadvertently searching through many third-party stores connected to Amazon’s marketplace.
+
+You can implement this example in Medusa with the Sales Channel Module and a custom module. Use the Sales Channel Module's features to set different product availability across sales channels. Then, in the custom module, integrate with Amazon’s seller program and use their APIs to push your products on Amazon.
+
+Another channel that attracts customer sales is social media. You can create a custom module that integrates with social media apps to show your products and sell them to customers.
+
+<CardList itemsPerRow={2} items={[
+  {
+    href: "/commerce-modules/sales-channels",
+    title: "Sales Channels",
+    text: "Learn about the Sales Channel Module.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/modules-and-services",
+    title: "Create a Module",
+    text: "Learn how to create a module.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Optimize Customer Experience
+
+Implement the customer journey and design for your storefronts that leads to the best customer experience. The Medusa application doesn't impose any restrictions on how the frontend is built.
+
+Medusa’s architecture also makes it easier to integrate any third-party services to provide a better customer experience:
+
+- Create a module that integrates the third-party service.
+- Expose the module's features in API routes.
+- Send requests to these API routes from your storefront.
+
+<CardList itemsPerRow={2} items={[
+  {
+    href: "!docs!/basics/modules-and-services",
+    title: "Create a Module",
+    text: "Learn how to create a module.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/api-routes",
+    title: "Create an API Route",
+    text: "Learn how to create an API route.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />

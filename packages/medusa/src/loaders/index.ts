@@ -1,10 +1,12 @@
 import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { ConfigModule, MedusaContainer, PluginDetails } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+  promiseAll,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
-import glob from "glob"
-import { createMedusaContainer } from "@medusajs/utils"
 import path from "path"
 import requestIp from "request-ip"
 import { v4 } from "uuid"
@@ -15,11 +17,11 @@ import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
+import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
-import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
 
 type Options = {
   directory: string
@@ -47,17 +49,10 @@ async function subscribersLoader(
    */
   await Promise.all(
     plugins.map(async (pluginDetails) => {
-      const files = glob.sync(
-        `${pluginDetails.resolve}/subscribers/*.{ts,js,mjs,mts}`,
-        {
-          ignore: ["**/*.d.ts", "**/*.map"],
-        }
-      )
-      return await Promise.all(
-        files.map(
-          async (file) => await new SubscriberLoader(file, container).load()
-        )
-      )
+      await new SubscriberLoader(
+        path.join(pluginDetails.resolve, "subscribers"),
+        container
+      ).load()
     })
   )
 }

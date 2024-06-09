@@ -1,0 +1,19 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Regions in Storefront`,
+}
+
+# {metadata.title}
+
+A customer chooses their region in a storefront. The selected region is later used when retrieving prices for products and during checkout.
+
+In the storefront, you implement the following:
+
+- Show customers available regions, with ability to select their region.
+- Store selected region in local storage.
+- Pass the selected region's ID in other requests, such as when retrieving products, to retrieve the relevant price.
+
+The first two points are explained in the following guides, and the last one is explained in guides relevant to the topic (for example, the guide explaining how to retrieve products).
+
+<ChildDocs type="item" onlyTopLevel={true} />

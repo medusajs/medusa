@@ -26,10 +26,9 @@ const { success, authIdentity, error } =
   } as AuthenticationInput)
 
 if (!success) {
+  // incorrect authentication details
   throw new Error(error)
 }
-
-// user is authenticated
 ```
 
 ### Third-Party and Social Authentication
