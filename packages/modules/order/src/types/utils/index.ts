@@ -7,7 +7,6 @@ export type VirtualOrder = {
     id: string
     order_id: string
     return_id?: string
-    swap_id?: string
     claim_id?: string
     exchange_id?: string
 
@@ -18,7 +17,6 @@ export type VirtualOrder = {
       id?: string
       order_id: string
       return_id?: string
-      swap_id?: string
       claim_id?: string
       exchange_id?: string
 
@@ -37,7 +35,6 @@ export type VirtualOrder = {
     shipping_method_id: string
     order_id: string
     return_id?: string
-    swap_id?: string
     claim_id?: string
     exchange_id?: string
 
@@ -45,7 +42,6 @@ export type VirtualOrder = {
       id?: string
       order_id: string
       return_id?: string
-      swap_id?: string
       claim_id?: string
       exchange_id?: string
     }
@@ -90,7 +86,6 @@ export interface OrderChangeEvent {
   reference_id?: string
 
   return_id?: string
-  swap_id?: string
   claim_id?: string
   exchange_id?: string
 

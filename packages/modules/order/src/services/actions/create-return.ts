@@ -40,7 +40,6 @@ export async function createReturn(
 
   if (!isString(data.shipping_method)) {
     const methods = await this.createShippingMethods(
-      data.order_id,
       [
         {
           order_id: data.order_id,

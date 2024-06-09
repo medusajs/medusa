@@ -12,6 +12,8 @@ export async function cancelFulfillment(
       internal_note: item.internal_note,
       reference: data.reference,
       reference_id: data.reference_id,
+      claim_id: data.claim_id,
+      exchange_id: data.exchange_id,
       details: {
         reference_id: item.id,
         quantity: item.quantity,

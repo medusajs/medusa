@@ -1,6 +1,7 @@
 import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
   operation({ action, currentOrder }) {
@@ -15,10 +16,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
       action.details.quantity
     )
 
-    existing.detail.return_id = action.return_id
-    existing.detail.swap_id = action.swap_id
-    existing.detail.claim_id = action.claim_id
-    existing.detail.exchange_id = action.exchange_id
+    setActionReference(existing, action)
 
     return action.details.unit_price * action.details.quantity
   },

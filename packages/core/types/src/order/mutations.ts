@@ -250,7 +250,6 @@ export interface UpdateOrderShippingMethodAdjustmentDTO {
 export interface CreateOrderChangeDTO {
   order_id: string
   return_id?: string
-  swap_id?: string
   claim_id?: string
   exchange_id?: string
   description?: string
@@ -304,8 +303,8 @@ export interface CreateOrderChangeActionDTO {
   order_change_id?: string
   order_id?: string
   return_id?: string
-  swap_id?: string
   claim_id?: string
+  exchange_id?: string
   version?: number
   reference?: string
   reference_id?: string
@@ -376,30 +375,41 @@ export interface UpdateOrderItemWithSelectorDTO {
 
 /** ORDER bundled action flows  */
 
+interface BaseOrderBundledItemActionsDTO {
+  id: string
+  quantity: BigNumberInput
+  internal_note?: string
+  metadata?: Record<string, unknown> | null
+}
 interface BaseOrderBundledActionsDTO {
   order_id: string
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
+
   description?: string
   internal_note?: string
   reference?: string
   reference_id?: string
   created_by?: string
-  items: {
-    id: string
-    quantity: BigNumberInput
-    internal_note?: string
-    metadata?: Record<string, unknown> | null
-  }[]
   metadata?: Record<string, unknown> | null
 }
 
 export interface RegisterOrderFulfillmentDTO
-  extends BaseOrderBundledActionsDTO {}
+  extends BaseOrderBundledActionsDTO {
+  items: BaseOrderBundledItemActionsDTO[]
+}
 
-export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {}
+export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
+  items: BaseOrderBundledItemActionsDTO[]
+}
 
-export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {}
+export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
+  items: BaseOrderBundledItemActionsDTO[]
+}
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
+  items: BaseOrderBundledItemActionsDTO[]
   shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
 }
 
@@ -409,6 +419,7 @@ export interface CancelOrderReturnDTO {
 
 export interface ReceiveOrderReturnDTO
   extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+  items: BaseOrderBundledItemActionsDTO[]
   return_id: string
 }
 

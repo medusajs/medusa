@@ -38,7 +38,6 @@ export function applyChangesToOrder(
         order_id: order.id,
         version,
         return_id: item.detail.return_id,
-        swap_id: item.detail.swap_id,
         claim_id: item.detail.claim_id,
         exchange_id: item.detail.exchange_id,
         quantity: item.detail.quantity,

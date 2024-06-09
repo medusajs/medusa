@@ -1,6 +1,6 @@
 import { Context, OrderTypes } from "@medusajs/types"
-import { MathBN, ReturnStatus, promiseAll } from "@medusajs/utils"
-import { ChangeActionType, applyChangesToOrder } from "../../utils"
+import { MathBN, ReturnStatus } from "@medusajs/utils"
+import { ChangeActionType } from "../../utils"
 
 export async function receiveReturn(
   this: any,
@@ -59,38 +59,8 @@ export async function receiveReturn(
     }
   }
 
-  const returnCopy = JSON.parse(JSON.stringify(returnEntry))
-  returnCopy.items = returnCopy.items.filter((item) =>
-    presentItems.includes(item.id)
-  )
-
-  const { itemsToUpsert, shippingMethodsToInsert } = applyChangesToOrder(
-    [returnCopy],
-    {
-      [returnCopy.id]: items,
-    }
-  )
-
-  await promiseAll([
-    itemsToUpsert.length
-      ? this.returnItemService_.upsert(itemsToUpsert, sharedContext)
-      : null,
-    /*
-    shippingMethodsToInsert.length
-      ? this.orderShippingMethodService_.create(
-          shippingMethodsToInsert,
-          sharedContext
-        )
-      : null,
-      */
-  ])
-
   const hasReceivedAllItems = returnEntry.items.every((item) => {
-    const refItem =
-      itemsToUpsert.find((i) => i.item_id === item.detail.item_id) ??
-      item.detail
-
-    return MathBN.eq(refItem.return_requested_quantity, 0)
+    return MathBN.eq(item.return_requested_quantity, 0)
   })
 
   const retData = hasReceivedAllItems

@@ -1700,7 +1700,6 @@ export default class OrderModuleService<
           version: change.version,
           order_id: change.order_id,
           return_id: change.return_id,
-          swap_id: change.swap_id,
           claim_id: change.claim_id,
           exchange_id: change.exchange_id,
         }

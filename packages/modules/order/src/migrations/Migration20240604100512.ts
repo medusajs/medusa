@@ -23,9 +23,6 @@ export class Migration20240604100512 extends Migration {
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
 
     ALTER TABLE "order_item"
-    ADD COLUMN if NOT exists "swap_id" TEXT NULL;
-
-    ALTER TABLE "order_item"
     ADD COLUMN if NOT exists "claim_id" TEXT NULL;
 
     ALTER TABLE "order_item"
@@ -35,11 +32,6 @@ export class Migration20240604100512 extends Migration {
         return_id
     )
     WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_item_swap_id" ON "order_item" (
-        swap_id
-    )
-    WHERE swap_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_item_claim_id" ON "order_item" (
         claim_id
@@ -57,9 +49,6 @@ export class Migration20240604100512 extends Migration {
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
 
     ALTER TABLE "order_shipping"
-    ADD COLUMN if NOT exists "swap_id" TEXT NULL;
-
-    ALTER TABLE "order_shipping"
     ADD COLUMN if NOT exists "claim_id" TEXT NULL;
 
     ALTER TABLE "order_shipping"
@@ -69,11 +58,6 @@ export class Migration20240604100512 extends Migration {
         return_id
     )
     WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_shipping_swap_id" ON "order_shipping" (
-        swap_id
-    )
-    WHERE swap_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_shipping_claim_id" ON "order_shipping" (
         claim_id
@@ -92,9 +76,6 @@ export class Migration20240604100512 extends Migration {
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
 
     ALTER TABLE "order_change"
-    ADD COLUMN if NOT exists "swap_id" TEXT NULL;
-
-    ALTER TABLE "order_change"
     ADD COLUMN if NOT exists "claim_id" TEXT NULL;
 
     ALTER TABLE "order_change"
@@ -104,11 +85,6 @@ export class Migration20240604100512 extends Migration {
         return_id
     )
     WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_change_swap_id" ON "order_change" (
-        swap_id
-    )
-    WHERE swap_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_claim_id" ON "order_change" (
         claim_id
@@ -133,9 +109,6 @@ export class Migration20240604100512 extends Migration {
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
 
     ALTER TABLE "order_change_action"
-    ADD COLUMN if NOT exists "swap_id" TEXT NULL;
-
-    ALTER TABLE "order_change_action"
     ADD COLUMN if NOT exists "claim_id" TEXT NULL;
 
     ALTER TABLE "order_change_action"
@@ -145,11 +118,6 @@ export class Migration20240604100512 extends Migration {
         return_id
     )
     WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_change_action_swap_id" ON "order_change_action" (
-        swap_id
-    )
-    WHERE swap_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_order_change_action_claim_id" ON "order_change_action" (
         claim_id
