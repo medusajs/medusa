@@ -7,7 +7,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this recipe, you'll find resources to guide you in using Medusa as an Order Management System (OMS).
+This recipe provides an overview of Medusa's features and how to use it as an Order Management System (OMS).
 
 ## Overview
 
@@ -29,7 +29,7 @@ Sales channels in your commerce ecosystem must route their orders into the OMS.
 
 ![Routing orders into Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032160/Medusa%20Book/oms-orders_zf5ta9.jpg)
 
-Medusa's [Store REST APIs](https://docs.medusajs.com/api/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](https://docs.medusajs.com/api/admin#draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
+Medusa's [Store REST APIs](!api!/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](!api!/admin#draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
 
 In addition, you can customize the Medusa application to accept orders through a third-party checkout system. This gives you more flexibility over adding orders to Medusa.
 
@@ -37,21 +37,21 @@ For example, you can support importing orders into Medusa through a custom API R
 
 <CardList items={[
   {
-    href: "https://docs.medusajs.com/api/store#carts",
+    href: "!api!/store#carts",
     title: "Store REST APIs",
     text: "Learn how to use the Store REST APIs to create an order.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/basics/api-routes",
     title: "Create API Route",
     text: "Learn how to create a custom API Route.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
+    href: "!docs!/basics/scheduled-jobs",
     title: "Create Scheduled Jobs",
     text: "Learn how to create a scheduled job.",
     startIcon: <AcademicCapSolid />,
@@ -63,26 +63,32 @@ For example, you can support importing orders into Medusa through a custom API R
 
 ## Route Orders to Third-party Fulfillment Services
 
-To integrate third-party fulfillment providers with the Medusa application, create a fulfillment service or use a fulfillment plugin.
+To integrate third-party fulfillment providers with the Medusa application, create a fulfillment provider module.
 
-Medusa uses the fulfillment service whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The service's methods interact with the third-party provider to handle the desired fulfillment actions.
+Medusa uses the Fulfillment Module whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The module's main service's methods use the associated fulfillment provider module to handle the desired fulfillment actions.
 
 ![Fulfilling orders with Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032184/Medusa%20Book/oms-fulfillment_qfrpdd.jpg)
 
-In addition, create a subscriber that listen to fulfillment-related events, such as the `order.fulfillment_created` event, to perform actions in the third-party fulfillment provider.
+In addition, create a subscriber that listen to fulfillment-related events, such as the `order.fulfillment_created` event, to perform actions with the third-party fulfillment provider.
+
+<Note type="soon">
+
+Emitting of event `order.fulfillment_created` isn't implemented yet.
+
+</Note>
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "#",
-    title: "Create a Fulfillment Provider",
+    href: "/references/fulfillment/provider",
+    title: "Create a Fulfillment Provider Module",
     text: "Learn how to create a fulfillment provider in Medusa.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Events",
-    text: "Learn about the event bus and how to listen to events.",
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
@@ -92,22 +98,28 @@ In addition, create a subscriber that listen to fulfillment-related events, such
 
 ## Process Payment with Third-Party Providers
 
-To integrate third-party payment providers with the Medusa application, create a payment processor or use payment plugins.
+To integrate third-party payment providers with the Medusa application, create a payment provider module.
 
 In addition, create a subscriber that listen to payment-related events, such as the `order.payment_captured` event, to perform actions in the third-party payment provider.
 
+<Note type="soon">
+
+Emitting of event `order.payment_captured` isn't implemented yet.
+
+</Note>
+
 <CardList itemsPerRow={2} items={[
   {
-    href: "#",
-    title: "Payment Plugins",
-    text: "Check out available official payment plugins.",
-    startIcon: <BoltSolid />,
+    href: "/references/payment/provider",
+    title: "Create a Payment Provider Module",
+    text: "Learn how to create a payment provider module.",
+    startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Create a Payment Processor",
-    text: "Learn how to create a payment processor.",
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
@@ -123,71 +135,65 @@ When an order is placed, the item's quantity is reserved from the stock location
 
 <CardList items={[
   {
-    href: "#",
-    title: "Multi-warehouse",
-    text: "Learn about the Multi-warehouse architecture and features.",
+    href: "/commerce-modules/inventory",
+    title: "Inventory Module",
+    text: "Learn about the Inventory Module's concepts and features.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Sales Channels",
-    text: "Learn about the Sales Channel architecture and features.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Create a Plugin",
-    text: "Learn how to create a plugin.",
+    href: "/commerce-modules/stock-location",
+    title: "Stock Location Module",
+    text: "Learn about the Stock Location Module's concepts and features.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
 ]} />
 
+<Card
+  href="/commerce-modules/sales-channel"
+  title="Sales Channel Module"
+  text="Learn about the Sales Channel Module's concepts and features."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+  className="mt-1"
+/>
+
 ---
 
-## Handle Returns, Exchanges, and Edits
+## Handle Returns, Exchanges, and Changes
+
+<Note type="soon">
+
+All types of order changes are coming soon.
+
+</Note>
 
 In Medusa, items in an order can be returned or exchanged; these can be created by the merchant or requested by the customer. A merchant can also edit an order to add, update, or delete items.
 
-When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment providers are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
+When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment provider modules are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
 
 Medusa also emits events related to these actions, such as `order.return_requested`. So, you can create a subscriber that listens to these events and perform asynchronous actions, such as communicating with third-party services.
 
-<CardList itemsPerRow={2} items={[
+<Note type="soon">
+
+Emitting of event `order.return_requested` isn't implemented yet.
+
+</Note>
+
+<CardList items={[
   {
-    href: "#",
-    title: "Order Returns",
-    text: "Learn about the Order Return architecture and features.",
+    href: "/commerce-modules/order/order-change",
+    title: "Order Changes",
+    text: "Learn about how to use order changes.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "#",
-    title: "Exchanges (Swaps)",
-    text: "Learn about the Exchange or Swap architecture and features.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Order Edits",
-    text: "Learn about the Order Edit feature and how it works.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "#",
-    title: "Event Reference",
-    text: "Check out triggered events in Medusa and their payloads.",
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   }
 ]} />
-
----
-
-## Additional Development
-
-Refer to other guides in the Medusa Resources or the Medusa Book for additional guidance during your development.
