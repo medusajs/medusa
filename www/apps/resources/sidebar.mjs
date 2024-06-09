@@ -1782,6 +1782,32 @@ export const sidebar = sidebarAttachHrefCommonOptions([
     ],
   },
   {
+    path: "/storefront-development",
+    title: "Storefront Development",
+    hasTitleStyling: true,
+    isChildSidebar: true,
+    children: [
+      {
+        path: "/storefront-development/tips",
+        title: "Tips",
+      },
+      {
+        path: "/storefront-development/regions",
+        title: "Regions",
+        children: [
+          {
+            path: "/storefront-development/regions/list",
+            title: "List Regions",
+          },
+          {
+            path: "/storefront-development/regions/store-retrieve-region",
+            title: "Store and Retrieve Regions",
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "Configurations",
     hasTitleStyling: true,
     children: [

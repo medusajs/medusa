@@ -872,6 +872,26 @@ export const filesMap = [
     "pathname": "/references/[...slug]"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/page.mdx",
+    "pathname": "/storefront-development"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/list/page.mdx",
+    "pathname": "/storefront-development/regions/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/page.mdx",
+    "pathname": "/storefront-development/regions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/store-retrieve-region/page.mdx",
+    "pathname": "/storefront-development/regions/store-retrieve-region"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/tips/page.mdx",
+    "pathname": "/storefront-development/tips"
+  },
+  {
     "filePath": "/www/apps/resources/app/troubleshooting/_s3-plugin-acl-error/page.mdx",
     "pathname": "/troubleshooting/_s3-plugin-acl-error"
   },

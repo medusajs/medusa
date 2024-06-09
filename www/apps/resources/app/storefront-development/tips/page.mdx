@@ -1,10 +1,10 @@
 export const metadata = {
-  title: `${pageNumber} Storefront Development Tips`,
+  title: `Storefront Development Tips`,
 }
 
 # {metadata.title}
 
-In this chapter, you’ll find tips to help you build a storefront.
+In this document, you’ll find tips useful when building a storefront.
 
 ## Connect to the Medusa Application
 
@@ -16,9 +16,21 @@ Support for Medusa v2 in Medusa React and the JS Client is coming soon.
 
 To send requests from the storefront to the Medusa application’s Store API Routes, you have three options:
 
+- **For other frontend technologies**: interact directly with the Medusa application by sending requests to its [Store REST APIs](https://docs.medusajs.com/api/store).
 - **For React-based storefronts**: use Medusa React. It provides you with the necessary hooks to retrieve or manipulate data from your Medusa application.
 - **For JavaScript frameworks**: use Medusa’s JavaScript Client in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs.
-- **For other frontend technologies**:  interact directly with the Medusa application by sending requests to its [Store REST APIs](https://docs.medusajs.com/api/store).
+
+---
+
+## Install Types Package
+
+The `@medusajs/types` package provide API routes' request and response types.
+
+If you're not using the JS Client or Medusa React, install `@medusajs/types` to use the correct request and response types:
+
+```bash npm2yarn
+npm install @medusajs/types@preview
+```
 
 ---
 
@@ -54,10 +66,6 @@ Products, carts, and orders are associated with a sales channel. If you don’t 
 
 </Note>
 
-Publishable API keys are provided by the [API key commerce module](!resources!/commerce-modules/api-key).
+{/* TODO replace link with admin how-to guide once available. */}
 
----
-
-## Implement Commerce Functionalities
-
-Refer to the [Commerce Modules reference](!resources!/commerce-modules) for how-to guides on common commerce functionalities.
+Create a publishable API key either using the Medusa Admin or the [Admin API routes](!api!/admin#api-keys_postapikeys).

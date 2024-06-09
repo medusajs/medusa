@@ -7099,6 +7099,45 @@ export const generatedSidebar = [
   {
     "loaded": true,
     "isPathHref": true,
+    "path": "/storefront-development",
+    "title": "Storefront Development",
+    "hasTitleStyling": true,
+    "isChildSidebar": true,
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/tips",
+        "title": "Tips",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/regions",
+        "title": "Regions",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/regions/list",
+            "title": "List Regions",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/regions/store-retrieve-region",
+            "title": "Store and Retrieve Regions",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
     "title": "Configurations",
     "hasTitleStyling": true,
     "children": [
