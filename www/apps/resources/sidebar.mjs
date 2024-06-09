@@ -79,6 +79,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         hasTitleStyling: true,
         children: [
           {
+            path: "/commerce-modules/auth/module-options",
+            title: "Module Options",
+          },
+          {
             path: "/commerce-modules/auth/examples",
             title: "Examples",
           },
@@ -86,16 +90,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Concepts",
             children: [
               {
+                path: "/commerce-modules/auth/auth-identity-and-actor-types",
+                title: "Identity and Actor Types",
+              },
+              {
                 path: "/commerce-modules/auth/auth-providers",
                 title: "Auth Providers",
+                children: [
+                  {
+                    path: "/commerce-modules/auth/auth-providers/emailpass",
+                    title: "Emailpass Auth Provider Module",
+                  },
+                ],
+              },
+              {
+                path: "/commerce-modules/auth/authentication-route",
+                title: "Authentication Route",
               },
               {
                 path: "/commerce-modules/auth/auth-flows",
                 title: "Auth Flows",
               },
+            ],
+          },
+          {
+            title: "Guides",
+            children: [
               {
-                path: "/commerce-modules/auth/user-creation",
-                title: "User Creation",
+                path: "/commerce-modules/auth/create-actor-type",
+                title: "Create an Actor Type",
               },
             ],
           },
@@ -284,6 +307,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 path: "/commerce-modules/customer/relations-to-other-modules",
                 title: "Relations to Other Modules",
+              },
+            ],
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/commerce-modules/customer/register-customer-email",
+                title: "Register a Customer with Email",
               },
             ],
           },

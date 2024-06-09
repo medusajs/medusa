@@ -256,8 +256,28 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-flows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-identity-and-actor-types"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/_google/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/_google"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/emailpass"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/authentication-route/page.mdx",
+    "pathname": "/commerce-modules/auth/authentication-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/create-actor-type/page.mdx",
+    "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/events/_events-table/page.mdx",
@@ -278,10 +298,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/page.mdx",
     "pathname": "/commerce-modules/auth"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/user-creation/page.mdx",
-    "pathname": "/commerce-modules/auth/user-creation"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/concepts/page.mdx",
@@ -354,6 +370,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/page.mdx",
     "pathname": "/commerce-modules/customer"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/register-customer-email/page.mdx",
+    "pathname": "/commerce-modules/customer/register-customer-email"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",

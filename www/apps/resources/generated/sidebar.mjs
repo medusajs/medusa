@@ -184,6 +184,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/commerce-modules/auth/module-options",
+            "title": "Module Options",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "path": "/commerce-modules/auth/examples",
             "title": "Examples",
             "children": []
@@ -196,8 +203,30 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/commerce-modules/auth/auth-identity-and-actor-types",
+                "title": "Identity and Actor Types",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "path": "/commerce-modules/auth/auth-providers/emailpass",
+                    "title": "Emailpass Auth Provider Module",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/auth/authentication-route",
+                "title": "Authentication Route",
                 "children": []
               },
               {
@@ -206,12 +235,19 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/auth-flows",
                 "title": "Auth Flows",
                 "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/auth/user-creation",
-                "title": "User Creation",
+                "path": "/commerce-modules/auth/create-actor-type",
+                "title": "Create an Actor Type",
                 "children": []
               }
             ]
@@ -990,6 +1026,20 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/customer/relations-to-other-modules",
                 "title": "Relations to Other Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/customer/register-customer-email",
+                "title": "Register a Customer with Email",
                 "children": []
               }
             ]
