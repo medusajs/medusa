@@ -65,7 +65,9 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     if (eventGroupId) {
       await this.groupEvent(eventGroupId, eventData)
     } else {
-      this.eventEmitter_.emit(eventData.eventName, eventData.body.data)
+      this.eventEmitter_.emit(eventData.eventName, {
+        data: eventData.body.data,
+      })
     }
   }
 
@@ -90,7 +92,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     for (const event of groupedEvents) {
       const { eventName, data } = event
 
-      this.eventEmitter_.emit(eventName, data)
+      this.eventEmitter_.emit(eventName, { data })
     }
 
     this.clearGroupedEvents(eventGroupId)
