@@ -56,6 +56,12 @@ export const LINKS = {
     Modules.PROMOTION,
     "promotion_id"
   ),
+  OrderCart: composeLinkName(
+    Modules.ORDER,
+    "order_id",
+    Modules.CART,
+    "cart_id"
+  ),
   OrderSalesChannel: composeLinkName(
     Modules.ORDER,
     "order_id",

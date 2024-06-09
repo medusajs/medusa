@@ -1,0 +1,79 @@
+import { AcademicCapSolid, UsersSolid, PuzzleSolid } from "@medusajs/icons"
+import { LearningPath } from "docs-ui"
+
+export const metadata = {
+  title: `Ecommerce Recipe`,
+}
+
+# {metadata.title}
+
+This recipe provides the general steps to create an ecommerce store with Medusa.
+
+## Overview
+
+Businesses use ecommerce stores to:
+
+- Provide an online catalog for customers.
+- Accept customer orders and payment.
+- Manage their store's data and logistics.
+
+Medusa provides all essential commerce features out-of-the-box. Businesses can go live and start selling without making any adjustments. They can also power-up their store by integrating third-party services for payments, fulfillment, and more.
+
+<Note title="Related use-case">
+
+[How Tekla created an ecommerce store using Medusa](https://medusajs.com/blog/tekla/).
+
+</Note>
+
+---
+
+## Install Ecommerce Store Powered by Medusa
+
+Use the following command to install an ecommerce store with Medusa:
+
+```bash
+npx create-medusa-app@preview --with-nextjs-starter
+```
+
+This installs:
+
+- The Medusa application, which is composed of a Node.js server and a Medusa Admin dashboard. The dashboard opens right after the installation finishes, where you can create a user and start managing your store's data.
+- A [Next.js starter storefront](../../nextjs-starter/page.mdx) that connects to your Medusa application to provide customers with ecommerce features.
+
+---
+
+## Integrate Third-Party Services
+
+You can integrate third-party services and tools, customizing the architecture and commerce features of your store.
+
+For example, you can integrate Stripe for payment, or SendGrid for notifications.
+
+<Card
+  href="/integrations"
+  title="Integrations"
+  text="Check out available integrations for your Medusa application."
+  startIcon={<PuzzleSolid />}
+  showLinkIcon={false}
+/>
+
+---
+
+## Deploy the Medusa Application
+
+Our documentation has step-by-step guides to deploy your Medusa application, Medusa Admin, and the Next.js starter storefront.
+
+<Card
+  href="/deployment"
+  title="Deployment Guides"
+  text="Learn how to deploy the Medusa application, Medusa Admin, and Next.js starter storefront."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+---
+
+## Add Custom Features
+
+Along with the extensive ecommerce features, Medusa also provides the architecture and tools to customize and add new features.
+
+To learn how to develop customziations with Medusa, refer to the [Medusa documentation](!docs!)

@@ -199,17 +199,7 @@ x-no-compression: true
 ## Select Fields and Relations
 
 Many API Routes accept a `fields` query that allows you to select which fields and relations should be returned in a record.
-
-
-<Note type="warning">
-
-When you pass the `fields` query, only specified fields and relations, along with the `id`, are retrieved in the result.
-
-</Note>
-
-### Select Multiple Fields
-
-Separate the fields and relations you want to select with a comma.
+Fields and relations are separated by a comma `,`.
 
 For example:
 
@@ -220,12 +210,21 @@ curl 'localhost:9000/admin/products?fields=title,handle' \
 
 This returns only the `title` and `handle` fields of a product.
 
+### Fields Operator
+
+By default, only the selected fields and relations are returned in the response.
+
+Before every field or relation, you can pass one of the following operators to change the default behavior:
+
+- `+`: Add the field to the fields returned by default. For example, `+title` returns the `title` field along with the fields returned by default.
+- `-`: Remove the field from the fields returned by default. For example, `-title` removes the `title` field from the fields returned by default.
+
 ### Select Relations
 
-To select a relation, pass to `fields` the relation name prefixed by `.*`. For example:
+To select a relation, pass to `fields` the relation name prefixed by `*`. For example:
 
 ```bash
-curl 'localhost:9000/admin/products?fields=variants.*' \
+curl 'localhost:9000/admin/products?fields=*variants' \
 -H 'Authorization: Bearer {jwt_token}'
 ```
 
@@ -233,9 +232,9 @@ This returns the variants of each product.
 
 ### Select Fields in a Relation
 
-The `.*` suffix selects all fields of the relation's data model.
+The `*` prefix selects all fields of the relation's data model.
 
-To select a specific field, change the `*` to the field's name.
+To select a specific field, pass a `.<field>` suffix instead of the `*` prefix. For example, `variants.title`.
 
 To specify multiple fields, pass each of the fields with the `<relation>.<field>` format, separated by a comma.
 

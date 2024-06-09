@@ -1,0 +1,316 @@
+export const metadata = {
+  title: `How to Create an Actor Type`,
+}
+
+# {metadata.title}
+
+In this document, learn how to create an actor type and authenticate its associated data model.
+
+## 0. Create Module with Data Model
+
+Before creating an actor type, you must define a data model the actor type belongs to. The data model is defined in a custom module.
+
+The rest of this guide uses this `Manager` data model as an example:
+
+```ts title="src/modules/manager/models/manager.ts"
+import { BaseEntity } from "@medusajs/utils"
+import { 
+  Entity, 
+  PrimaryKey, 
+  Property,
+} from "@mikro-orm/core"
+
+@Entity()
+export class Manager extends BaseEntity {
+  @PrimaryKey({ columnType: "text" })
+  id!: string
+
+  @Property({ columnType: "text" })
+  first_name: string
+
+  @Property({ columnType: "text" })
+  last_name: string
+
+  @Property({ columnType: "text" })
+  email: string
+}
+```
+
+The module’s main service must also have a `create` method to create a record of the `Manager` data model.
+
+---
+
+## 1. Create Workflow
+
+Start by creating a workflow that does two things:
+
+- Create a record of the `Manager` data model.
+- Sets the `app_metadata` field of the associated `AuthIdentity` record based on the new actor type.
+
+For example, create the file `src/workflows/create-manager.ts`. with the following content:
+
+export const workflowHighlights = [
+  ["27", "createManagerStep", "Thi step creates a manager."],
+  ["44", "createManagerWorkflow", "The workflow used to create a manager and set its auth identity's actor type."],
+  ["53", "setAuthAppMetadataStep", "Set the actor type of the manager's associated auth identity."],
+  ["55", '"manager"', "The actor type of the manager."]
+]
+
+```ts title="src/workflows/create-manager.ts" highlights={workflowHighlights}
+import { 
+  createWorkflow, 
+  createStep,
+  StepResponse
+} from "@medusajs/workflows-sdk"
+import { 
+  setAuthAppMetadataStep
+} from "@medusajs/core-flows"
+import ManagerModuleService from "../modules/manager/service"
+
+type CreateManagerWorkflowInput = {
+  manager: {
+    first_name: string
+    last_name: string
+    email: string
+  }
+  authIdentityId: string
+}
+
+type CreateManagerWorkflowOutput = {
+  id: string
+  first_name: string
+  last_name: string
+  email: string
+}
+
+const createManagerStep = createStep(
+  "create-manager-step",
+  async ({ 
+    manager: managerData
+  }: Pick<CreateManagerWorkflowInput, "manager">, 
+  { container }) => {
+    const managerModuleService: ManagerModuleService = 
+      container.resolve("managerModuleService")
+
+    const manager = await managerModuleService.create(
+      managerData
+    )
+
+    return new StepResponse(manager)
+  }
+)
+
+const createManagerWorkflow = createWorkflow<
+  CreateManagerWorkflowInput, CreateManagerWorkflowOutput
+>(
+  "create-manager",
+  function (input) {
+    const manager = createManagerStep({
+      manager: input.manager
+    })
+
+    setAuthAppMetadataStep({
+      authIdentityId: input.authIdentityId,
+      actorType: "manager",
+      value: manager.id
+    })
+
+    return manager
+  }
+)
+
+export default createManagerWorkflow
+```
+
+This workflow accepts the manager’s data and the associated auth identity’s ID as inputs. The next sections explain how the auth identity ID is retrieved.
+
+The workflow has two steps:
+
+1. Create the manager using the `createManagerStep`.
+2. Set the `app_metadata` field of the associated auth identity using the `setAuthAppMetadataStep` step imported from `@medusajs/core-flows`. You specify the actor type `manager` in the `actorType` property of the step’s input.
+
+---
+
+## 2. Define the Create API Route
+
+Next, you’ll use the workflow defined in the previous section in an API route that creates a manager.
+
+So, create the file `src/api/manager/route.ts` with the following content:
+
+export const createRouteHighlights = [
+  ["15", "AuthenticatedMedusaRequest", "The request must be authenticated to associate the manager with an auth identity."],
+  ["27", "createManagerWorkflow", "Use the workflow created previously to create the manager."],
+  ["31", "auth_identity_id", "Access the associated auth identity's ID in `req.auth_context.auth_identity_id`."]
+]
+
+```ts title="src/api/manager/route.ts" highlights={createRouteHighlights}
+import type { 
+  AuthenticatedMedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa"
+import { MedusaError } from "@medusajs/utils"
+import createManagerWorkflow from "../../workflows/create-manager"
+
+type RequestBody = {
+  first_name: string
+  last_name: string
+  email: string
+}
+
+export async function POST(
+  req: AuthenticatedMedusaRequest<RequestBody>, 
+  res: MedusaResponse
+) {
+  // If `actor_id` is present, the request carries 
+  // authentication for an existing manager
+  if (req.auth_context.actor_id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Request already authenticated as a manager."
+    )
+  }
+
+  const { result } = await createManagerWorkflow(req.scope)
+    .run({
+      input: {
+        manager: req.body,
+        authIdentityId: req.auth_context.auth_identity_id
+      }
+    })
+  
+    res.status(200).json({ manager: result })
+}
+```
+
+Since the manager must be associated with an `AuthIdentity` record, the request is expected to be authenticated, even if the manager isn’t created yet. This can be achieved by:
+
+1. Obtaining a token usng the [/auth route](../authentication-route/page.mdx).
+2. Passing the token in the bearer header of the request to this route.
+
+In the API route, you create the manager using the workflow from the previous section and return it in the response.
+
+---
+
+## 3. Apply the `authenticate` Middleware
+
+The last step is to apply the `authenticate` middleware on the API routes that require a manager’s authentication.
+
+To do that, create the file `src/api/middlewares.ts` with the following content:
+
+export const middlewareHighlights = [
+  ["9", "authenticate", "Require the user to be authenticated to access the `/manager` API route when sending a `POST` request."],
+  ["10", "allowUnregistered", "The user doesn't need to be registered to access the API route."],
+  ["17", "authenticate", "Require the user to be authenticated as a manager when accessing `/manager/me` API routes."]
+]
+
+```ts title="src/api/middlewares.ts" highlights={middlewareHighlights}
+import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/manager",
+      method: "POST",
+      middlewares: [
+        authenticate("manager", ["session", "bearer"], {
+          allowUnregistered: true
+        }),
+      ],
+    },
+    {
+      matcher: "/manager/me*",
+      middlewares: [
+        authenticate("manager", ["session", "bearer"]),
+      ],
+    },
+  ],
+}
+```
+
+This applies middlewares on two route patterns:
+
+1. The `authenticate` middleware is applied on the `/manager` API route for `POST` requests while allowing unregistered managers. This requires that a bearer token be passed in the request to access the manager’s auth identity but doesn’t require the manager to be registered.
+2. The `authenticate` middleware is applied on all routes starting with `/manager/me`, restricting these routes to authenticated managers only.
+
+### Retrieve Manager API Route
+
+For example, create the file `src/api/manager/me/route.ts` with the following content:
+
+```ts title="src/api/manager/me/route.ts"
+import { 
+  AuthenticatedMedusaRequest,
+  MedusaResponse
+} from "@medusajs/medusa";
+import ManagerModuleService from "../../../modules/manager/service";
+
+export async function GET(
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const managerModuleService: ManagerModuleService = 
+    req.scope.resolve("managerModuleService")
+
+  const manager = await managerModuleService.retrieve(
+    req.auth_context.actor_id
+  )
+
+  res.json({ manager })
+}
+
+```
+
+This route is only accessible by authenticated managers. You access the manager’s ID using `req.auth_context.actor_id`.
+
+---
+
+## Test Custom Actor Type Authentication Flow
+
+To authenticate managers:
+
+1. Send a `POST` request to `/auth/manager/emailpass` to create an auth identity for the manager:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/manager/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "manager@gmail.com",
+    "password": "supersecret"
+}'
+```
+
+Copy the returned token to use it in the next request.
+
+2. Send a `POST` request to `/manager` to create a manager:
+
+```bash
+curl -X POST 'http://localhost:9000/manager' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "manager@gmail.com"
+}'
+```
+
+Replace `{token}` with the token returned in the previous step.
+
+3. Send a `POST` request to `/auth/manager/emailpass` again to retrieve an authenticated token for the manager:
+
+```bash
+curl -X POST 'http://localhost:9000/auth/manager/emailpass' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "email": "manager@gmail.com",
+    "password": "supersecret"
+}'
+```
+
+4. You can now send authenticated requests as a manager. For example, send a `GET` request to `/manager/me` to retrieve the authenticated manager’s details:
+
+```bash
+curl 'http://localhost:9000/manager/me' \
+-H 'Authorization: Bearer {token}'
+```
+
+Whenever you want to log in as a manager, use the `/auth/manager/emailpass` API route, as explained in step 3.
