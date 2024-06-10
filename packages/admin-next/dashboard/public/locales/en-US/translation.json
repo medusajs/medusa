@@ -107,14 +107,14 @@
     "addFilter": "أضف عامل تصفية"
   },
   "errorBoundary": {
-    "badRequestTitle": "Bad request",
-    "badRequestMessage": "The request was invalid.",
-    "notFoundTitle": "Not found",
-    "notFoundMessage": "The page you are looking for does not exist.",
-    "internalServerErrorTitle": "Internal server error",
-    "internalServerErrorMessage": "An error occurred on the server.",
-    "defaultTitle": "An error occurred",
-    "defaultMessage": "An error occurred while rendering this page."
+    "badRequestTitle": "طلب غير صالح",
+    "badRequestMessage": ".الطلب كان غير صالح",
+    "notFoundTitle": "غير موجود",
+    "notFoundMessage": ".الصفحة التي تبحث عنها غير موجودة",
+    "internalServerErrorTitle": "خطأ داخلي في الخادم",
+    "internalServerErrorMessage": ".لقد حدث خطأ على الخادم",
+    "defaultTitle": "لقد حدث خطأ",
+    "defaultMessage": ".لقد حدث خطأ أثناء عرض هذه الصفحة"
   },
   "addresses": {
     "shippingAddress": {
