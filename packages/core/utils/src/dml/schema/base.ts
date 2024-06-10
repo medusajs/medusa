@@ -1,4 +1,4 @@
-import { SchemaMetadata } from "../types"
+import { SchemaMetadata, SchemaType } from "../types"
 import { NullableModifier } from "../modifiers/nullable"
 import { OptionalModifier } from "../modifiers/optional"
 
@@ -6,7 +6,7 @@ import { OptionalModifier } from "../modifiers/optional"
  * The base schema class offers shared affordances to define
  * schema classes
  */
-export abstract class BaseSchema<T> {
+export abstract class BaseSchema<T> implements SchemaType<T> {
   #indexes: SchemaMetadata["indexes"] = []
   #relationships: SchemaMetadata["relationships"] = []
 
