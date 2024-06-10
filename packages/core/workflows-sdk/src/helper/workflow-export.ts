@@ -491,7 +491,7 @@ function attachOnFinishReleaseEvents(
       ModuleRegistrationName.EVENT_BUS,
       { allowUnregistered: true }
     )
-    if (!eventBusService) {
+    if (!eventBusService || !eventGroupId) {
       return
     }
 
