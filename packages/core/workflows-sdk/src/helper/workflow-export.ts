@@ -1,11 +1,17 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import {
+  DistributedTransaction,
+  DistributedTransactionEvents,
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
-import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { isPresent, MedusaContextType } from "@medusajs/utils"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
+import {
+  isPresent,
+  MedusaContextType,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -59,7 +65,10 @@ function createContextualWorkflowRunner<
       isCancel = false,
       container: executionContainer,
     },
-    ...args
+    transactionOrId: string | DistributedTransaction | undefined,
+    input: unknown,
+    context: Context,
+    events: DistributedTransactionEvents | undefined = {}
   ) => {
     if (!executionContainer) {
       const container_ = flow.container as MedusaContainer
@@ -74,6 +83,13 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
+    attachOnFinishReleaseEvents(
+      events,
+      context.eventGroupId!,
+      flow.container as MedusaContainer
+    )
+
+    const args = [transactionOrId, input, context, events]
     const transaction = await method.apply(method, args)
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
@@ -136,7 +152,7 @@ function createContextualWorkflowRunner<
 
     const context = {
       ...outerContext,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.transactionId ??= ulid()
@@ -191,7 +207,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -229,7 +245,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -262,7 +278,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -276,6 +292,7 @@ function createContextualWorkflowRunner<
         container,
       },
       transaction ?? transactionId,
+      undefined,
       context,
       events
     )
@@ -447,4 +464,32 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   MedusaWorkflow.registerWorkflow(workflowId, exportedWorkflow)
   return exportedWorkflow as MainExportedWorkflow<TData, TResult>
+}
+
+function attachOnFinishReleaseEvents(
+  events: DistributedTransactionEvents = {},
+  eventGroupId: string,
+  container: MedusaContainer
+) {
+  const onFinish = events.onFinish
+
+  const wrappedOnFinish = async (args: {
+    transaction: DistributedTransaction
+    result?: unknown
+    errors?: unknown[]
+  }) => {
+    await onFinish?.(args)
+
+    const eventBusService = container.resolve(
+      ModuleRegistrationName.EVENT_BUS,
+      { allowUnregistered: true }
+    )
+    if (!eventBusService) {
+      return
+    }
+
+    await eventBusService.releaseGroupedEvents(eventGroupId)
+  }
+
+  events.onFinish = wrappedOnFinish
 }
