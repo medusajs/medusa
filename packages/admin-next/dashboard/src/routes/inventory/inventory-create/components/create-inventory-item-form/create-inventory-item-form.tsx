@@ -21,11 +21,15 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { CreateInventoryAvailabilityForm } from "./create-inventory-availability-form"
-import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
-import { useCreateInventoryItem } from "../../../../../hooks/api/inventory"
+import { Form } from "../../../../../components/common/form"
+import {
+  inventoryItemsQueryKeys,
+  useCreateInventoryItem,
+} from "../../../../../hooks/api/inventory"
 import { sdk } from "../../../../../lib/client"
 import { optionalInt } from "../../../../../lib/validation"
+import { queryClient } from "../../../../../lib/query-client"
 
 enum Tab {
   DETAILS = "details",
@@ -109,6 +113,10 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
               location_id,
               stocked_quantity,
             })),
+        })
+
+        await queryClient.invalidateQueries({
+          queryKey: inventoryItemsQueryKeys.lists(),
         })
       } catch (e) {
         toast.error(t("general.error"), {
