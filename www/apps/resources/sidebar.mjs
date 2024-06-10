@@ -1805,6 +1805,28 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        path: "/storefront-development/cart",
+        title: "Carts",
+        children: [
+          {
+            path: "/storefront-development/cart/create",
+            title: "Create Cart",
+          },
+          {
+            path: "/storefront-development/cart/retrieve",
+            title: "Retrieve Cart",
+          },
+          {
+            path: "/storefront-development/cart/update",
+            title: "Update Cart",
+          },
+          {
+            path: "/storefront-development/cart/manage-items",
+            title: "Manage Line Items",
+          },
+        ],
+      },
     ],
   },
   {

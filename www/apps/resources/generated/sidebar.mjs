@@ -7132,6 +7132,42 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/cart",
+        "title": "Carts",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/create",
+            "title": "Create Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/retrieve",
+            "title": "Retrieve Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/update",
+            "title": "Update Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/manage-items",
+            "title": "Manage Line Items",
+            "children": []
+          }
+        ]
       }
     ]
   },
