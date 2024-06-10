@@ -10,6 +10,7 @@ import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import { createScheduled } from "../__fixtures__/workflow_scheduled"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -295,6 +296,25 @@ describe("Workflow Orchestrator module", function () {
       })
 
       expect(onFinish).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  // Note: These tests depend on actual Redis instance and waiting for the scheduled jobs to run, which isn't great.
+  // Mocking bullmq, however, would make the tests close to useless, so we can keep them very minimal and serve as smoke tests.
+  describe("Scheduled workflows", () => {
+    it("should execute a scheduled workflow", async () => {
+      const spy = createScheduled("standard")
+      await setTimeout(3100)
+      expect(spy).toHaveBeenCalledTimes(3)
+    })
+
+    it("should stop executions after the set number of executions", async () => {
+      const spy = await createScheduled("num-executions", {
+        cron: "* * * * * *",
+        numberOfExecutions: 2,
+      })
+      await setTimeout(3100)
+      expect(spy).toHaveBeenCalledTimes(2)
     })
   })
 })

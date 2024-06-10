@@ -3,6 +3,7 @@ import {
   DistributedTransactionEvents,
   TransactionHandlerType,
   TransactionStep,
+  WorkflowScheduler,
 } from "@medusajs/orchestration"
 import {
   ContainerLike,
@@ -110,6 +111,7 @@ export class WorkflowOrchestratorService {
 
     if (!dataLoaderOnly) {
       DistributedTransaction.setStorage(redisDistributedTransactionStorage)
+      WorkflowScheduler.setStorage(redisDistributedTransactionStorage)
     }
 
     this.redisDistributedTransactionStorage_ =

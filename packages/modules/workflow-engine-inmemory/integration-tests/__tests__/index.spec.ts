@@ -6,9 +6,10 @@ import {
 } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
 import { knex } from "knex"
-import { setTimeout } from "timers/promises"
+import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
+import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
 import {
   eventGroupWorkflowId,
@@ -32,104 +33,102 @@ const afterEach_ = async () => {
 jest.setTimeout(50000)
 
 describe("Workflow Orchestrator module", function () {
+  let workflowOrcModule: IWorkflowEngineService
+  let query: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
+
+  afterEach(afterEach_)
+
+  beforeAll(async () => {
+    const {
+      runMigrations,
+      query: remoteQuery,
+      modules,
+    } = await MedusaApp({
+      sharedResourcesConfig: {
+        database: {
+          connection: sharedPgConnection,
+        },
+      },
+      modulesConfig: {
+        workflows: {
+          resolve: __dirname + "/../..",
+        },
+      },
+    })
+
+    query = remoteQuery
+
+    await runMigrations()
+
+    workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+  })
+
+  it("should execute an async workflow keeping track of the event group id provided in the context", async () => {
+    const eventGroupId = "event-group-id"
+
+    await workflowOrcModule.run(eventGroupWorkflowId, {
+      input: {},
+      context: {
+        eventGroupId,
+        transactionId: "transaction_id",
+      },
+      throwOnError: true,
+    })
+
+    await workflowOrcModule.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        stepId: "step_1_event_group_id_background",
+        workflowId: eventGroupWorkflowId,
+        transactionId: "transaction_id",
+      },
+      stepResponse: { hey: "oh" },
+    })
+
+    // Validate context event group id
+    expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId })
+    )
+    expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId })
+    )
+  })
+
+  it("should execute an async workflow keeping track of the event group id that has been auto generated", async () => {
+    await workflowOrcModule.run(eventGroupWorkflowId, {
+      input: {},
+      context: {
+        transactionId: "transaction_id",
+      },
+      throwOnError: true,
+    })
+
+    await workflowOrcModule.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        stepId: "step_1_event_group_id_background",
+        workflowId: eventGroupWorkflowId,
+        transactionId: "transaction_id",
+      },
+      stepResponse: { hey: "oh" },
+    })
+
+    const generatedEventGroupId = (workflowEventGroupIdStep1Mock.mock
+      .calls[0][1] as unknown as Context)!.eventGroupId
+
+    // Validate context event group id
+    expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId: generatedEventGroupId })
+    )
+    expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId: generatedEventGroupId })
+    )
+  })
+
   describe("Testing basic workflow", function () {
-    let workflowOrcModule: IWorkflowEngineService
-    let query: (
-      query: string | RemoteJoinerQuery | object,
-      variables?: Record<string, unknown>
-    ) => Promise<any>
-
-    afterEach(afterEach_)
-
-    beforeAll(async () => {
-      const {
-        runMigrations,
-        query: remoteQuery,
-        modules,
-      } = await MedusaApp({
-        sharedResourcesConfig: {
-          database: {
-            connection: sharedPgConnection,
-          },
-        },
-        modulesConfig: {
-          workflows: {
-            resolve: __dirname + "/../..",
-          },
-        },
-      })
-
-      query = remoteQuery
-
-      await runMigrations()
-
-      workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
-    })
-
-    afterEach(afterEach_)
-
-    it("should execute an async workflow keeping track of the event group id provided in the context", async () => {
-      const eventGroupId = "event-group-id"
-
-      await workflowOrcModule.run(eventGroupWorkflowId, {
-        input: {},
-        context: {
-          eventGroupId,
-          transactionId: "transaction_id",
-        },
-        throwOnError: true,
-      })
-
-      await workflowOrcModule.setStepSuccess({
-        idempotencyKey: {
-          action: TransactionHandlerType.INVOKE,
-          stepId: "step_1_event_group_id_background",
-          workflowId: eventGroupWorkflowId,
-          transactionId: "transaction_id",
-        },
-        stepResponse: { hey: "oh" },
-      })
-
-      // Validate context event group id
-      expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
-        expect.objectContaining({ eventGroupId })
-      )
-      expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
-        expect.objectContaining({ eventGroupId })
-      )
-    })
-
-    it("should execute an async workflow keeping track of the event group id that has been auto generated", async () => {
-      await workflowOrcModule.run(eventGroupWorkflowId, {
-        input: {},
-        context: {
-          transactionId: "transaction_id",
-        },
-        throwOnError: true,
-      })
-
-      await workflowOrcModule.setStepSuccess({
-        idempotencyKey: {
-          action: TransactionHandlerType.INVOKE,
-          stepId: "step_1_event_group_id_background",
-          workflowId: eventGroupWorkflowId,
-          transactionId: "transaction_id",
-        },
-        stepResponse: { hey: "oh" },
-      })
-
-      const generatedEventGroupId = (workflowEventGroupIdStep1Mock.mock
-        .calls[0][1] as unknown as Context)!.eventGroupId
-
-      // Validate context event group id
-      expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
-        expect.objectContaining({ eventGroupId: generatedEventGroupId })
-      )
-      expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
-        expect.objectContaining({ eventGroupId: generatedEventGroupId })
-      )
-    })
-
     it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
         input: {
@@ -238,7 +237,7 @@ describe("Workflow Orchestrator module", function () {
         }
       )
 
-      await setTimeout(200)
+      await setTimeoutPromise(200)
 
       expect(transaction.flow.state).toEqual("reverted")
     })
@@ -269,6 +268,45 @@ describe("Workflow Orchestrator module", function () {
       })
 
       expect(onFinish).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("Scheduled workflows", () => {
+    beforeAll(() => {
+      jest.useFakeTimers()
+      jest.spyOn(global, "setTimeout")
+    })
+
+    afterAll(() => {
+      jest.useRealTimers()
+    })
+
+    it("should execute a scheduled workflow", async () => {
+      const spy = createScheduled("standard")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(setTimeout).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(setTimeout).toHaveBeenCalledTimes(3)
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should stop executions after the set number of executions", async () => {
+      const spy = await createScheduled("num-executions", {
+        cron: "* * * * * *",
+        numberOfExecutions: 2,
+      })
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(2)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(2)
     })
   })
 })
