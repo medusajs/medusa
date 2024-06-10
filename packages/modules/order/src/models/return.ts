@@ -42,6 +42,18 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const ClaimIdIndex = createPsqlIndexStatementHelper({
+  tableName: "return",
+  columns: ["claim_id"],
+  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const ExchageIdIndex = createPsqlIndexStatementHelper({
+  tableName: "return",
+  columns: ["exchange_id"],
+  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "return" })
 export default class Return {
   [OptionalProps]?: OptionalReturnProps
@@ -62,6 +74,38 @@ export default class Return {
     persist: false,
   })
   order: Order
+
+  /*
+  @ManyToOne({
+    entity: () => Claim,
+    mapToPk: true,
+    fieldName: "claim_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ClaimIdIndex.MikroORMIndex()
+  claim_id: string | null
+
+  @ManyToOne(() => Claim, {
+    persist: false,
+  })
+  claim: Claim | null
+
+  @ManyToOne({
+    entity: () => Exchange,
+    mapToPk: true,
+    fieldName: "exchange_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ExchangeIdIndex.MikroORMIndex()
+  exchange_id: string | null
+
+  @ManyToOne(() => Exchange, {
+    persist: false,
+  })
+  exchange: Exchange | null
+  */
 
   @Property({
     columnType: "integer",

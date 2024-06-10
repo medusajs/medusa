@@ -44,7 +44,7 @@ export class Migration20240604100512 extends Migration {
     WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
 
 
-    
+
     ALTER TABLE "order_transaction"
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
 
@@ -160,6 +160,8 @@ export class Migration20240604100512 extends Migration {
     CREATE TABLE IF NOT EXISTS "return" (
         "id" TEXT NOT NULL,
         "order_id" TEXT NOT NULL,
+        "claim_id" TEXT NULL,
+        "exchange_id" TEXT NULL,
         "order_version" INTEGER NOT NULL,
         "display_id" SERIAL,
         "status" text NOT NULL,
@@ -189,6 +191,16 @@ export class Migration20240604100512 extends Migration {
         order_id
     )
     WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_claim_id" ON "return" (
+        claim_id
+    )
+    WHERE claim_id IS NOT NULL deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_exchange_id" ON "return" (
+        exchange_id
+    )
+    WHERE exchange_id IS NOT NULL deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_display_id" ON "return" (
         display_id
