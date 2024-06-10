@@ -13,8 +13,15 @@ export const releaseEventsStep = createStep(
       },
     }
   ) => {
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
-    // await eventBus.release
+    const eventBusService = container.resolve(
+      ModuleRegistrationName.EVENT_BUS,
+      { allowUnregistered: true }
+    )
+    if (!eventBusService) {
+      return
+    }
+
+    await eventBusService.releaseGroupedEvents(eventGroupId)
   },
   async (data: void) => {}
 )
