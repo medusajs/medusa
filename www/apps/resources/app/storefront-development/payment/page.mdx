@@ -1,0 +1,27 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout Step 4: Choose Payment Provider`,
+}
+
+# {metadata.title}
+
+The last step before completing the order is choosing the payment provider and performing any necessary actions.
+
+The actions required after choosing the payment provider are different for each provider. So, this guide doesn't cover that.
+
+## Payment Step Flow
+
+The payment step requires implementing the following flow:
+
+![A diagram illustrating the flow of the payment step](https://res.cloudinary.com/dza7lstvk/image/upload/v1718029777/Medusa%20Resources/storefront-payment_dxry7l.jpg)
+
+1. Retrieve the payment providers using the [List Payment Providers API route](!api!/store#payment-providers_getpaymentproviders).
+2. Customer chooses the payment provider to use.
+3. If the cart doesn't have an associated payment collection, create a payment collection for it.
+4. Initialize the payment sessions of the cart's payment collection using the [Initialize Payment Sessions API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+5. Optionally perform additional actions for payment based on the chosen payment provider. For example, if the customer chooses stripe, you show them the UI to enter their card details.
+
+---
+
+## 

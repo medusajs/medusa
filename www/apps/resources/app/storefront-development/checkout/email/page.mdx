@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The first step of the checkout process is to enter the customer's email. Then, use the [Update Cart API route](!api!/store#carts_postcartsid) to update the cart with the email.
+The first step of the checkout flow is to enter the customer's email. Then, use the [Update Cart API route](!api!/store#carts_postcartsid) to update the cart with the email.
 
 <Note title="Tip">
 
@@ -20,13 +20,22 @@ For example:
   <CodeTab label="Fetch API" value="fetch">
 
   ```ts
-  fetch(`http://localhost:9000/store/regions`, {
-    credentials: "include"
+  const cartId = localStorage.getItem("cart_id")
+
+  fetch(`http://localhost:9000/store/carts/${cartId}`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email
+    })
   })
   .then((res) => res.json())
-  .then(({ regions }) => {
-    // use regions...
-    console.log(regions)
+  .then(({ cart }) => {
+    // use cart...
+    console.log(cart)
   })
   ```
 
@@ -34,46 +43,27 @@ For example:
   <CodeTab label="React" value="react">
 
 export const highlights = [
-  ["18", "cartId", "Retrieve the cart's ID from `localStorage`."],
-  ["20", "TODO", "Redirect your storefront to another page, such as the home page."],
-  ["24", "fetch", "Retrieve the cart's details."],
-  ["17"], ["18"], ["19"], ["20"], ["21"], ["22"], ["23"], ["24"]
+  ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["13", "TODO", "Cart must have at least one item. If not, redirect to another page."],
+  ["27"], ["28"], ["29"], ["30"], ["31"], ["32"], ["33"], ["34"],
+  ["35"], ["36"], ["37"], ["38"], ["39"], ["40"]
 ]
 
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react"
-  import { HttpTypes } from "@medusajs/types"
+  import { useState } from "react"
+  import { useCart } from "../../../providers/cart"
 
   export default function CheckoutEmailStep () {
-    const [cart, setCart] = useState<
-      HttpTypes.StoreCart
-    >()
+    const { cart, setCart } = useCart()
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-      if (cart) {
-        return
+      if (cart && !cart.items?.length) {
+        // TODO redirect to another path
       }
-
-      const cartId = localStorage.getItem("cart_id")
-      if (!cartId) {
-        // TODO redirect to another page
-        return
-      }
-
-      fetch(`http://localhost:9000/store/carts/${cartId}`, {
-        credentials: "include"
-      })
-      .then((res) => res.json())
-      .then(({ cart: dataCart }) => {
-        setCart(dataCart)
-        if (dataCart.email) {
-          setEmail(dataCart.email)
-        }
-      })
     }, [cart])
 
     const updateCartEmail = (
@@ -127,6 +117,6 @@ export const highlights = [
   </CodeTab>
 </CodeTabs>
 
-{/* TODO add a link to regions object in API reference (once available). */}
+After the customer enters and submits their email, you send a request to the Update Cart API route passing it the email in the request body.
 
-The response has a `regions` field, which is an array of regions.
+Notice that if the cart doesn't have items, you should redirect to another page as the checkout requires at least one item in the cart.
