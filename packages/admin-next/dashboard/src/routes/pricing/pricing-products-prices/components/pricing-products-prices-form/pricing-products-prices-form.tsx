@@ -23,10 +23,6 @@ import {
 } from "../../../../../hooks/api/price-lists"
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
-import {
-  getDbAmount,
-  getPresentationalAmount,
-} from "../../../../../lib/money-amount-helpers"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import {
@@ -268,13 +264,8 @@ function initDefaultValues(
           variants[variant.id] = {
             currency_prices: currencyPrices.reduce(
               (prices, { currency_code, amount, id }) => {
-                const presentationAmount = getPresentationalAmount(
-                  amount,
-                  currency_code
-                ).toString()
-
                 prices[currency_code] = {
-                  amount: presentationAmount,
+                  amount: amount.toString(),
                   id,
                 }
                 return prices
@@ -350,15 +341,14 @@ function sortPrices(
           // If the price has not changed, we don't need to update it
           if (
             originalPrice &&
-            originalPrice.amount ===
-              getDbAmount(castNumber(currencyPrice.amount), currencyCode)
+            originalPrice.amount === castNumber(currencyPrice.amount)
           ) {
             continue
           }
 
           pricesToUpdate.push({
             id: currencyPrice.id,
-            amount: getDbAmount(castNumber(currencyPrice.amount), currencyCode),
+            amount: castNumber(currencyPrice.amount),
             currency_code: currencyCode,
             // @ts-expect-error type is wrong
             variant_id: variantId,
@@ -374,7 +364,7 @@ function sortPrices(
 
         if (!currencyPrice.id && currencyPrice.amount) {
           pricesToCreate.push({
-            amount: getDbAmount(castNumber(currencyPrice.amount), currencyCode),
+            amount: castNumber(currencyPrice.amount),
             currency_code: currencyCode,
             // @ts-expect-error type is wrong
             variant_id: variantId,
