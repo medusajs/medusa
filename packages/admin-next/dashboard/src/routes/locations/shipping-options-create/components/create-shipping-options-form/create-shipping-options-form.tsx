@@ -28,8 +28,8 @@ import { useRegions } from "../../../../../hooks/api/regions"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
 import { formatProvider } from "../../../../../lib/format-provider"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
+import { castNumber } from "../../../../../lib/cast-number"
 
 enum Tab {
   DETAILS = "details",
@@ -103,8 +103,7 @@ export function CreateShippingOptionsForm({
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
-        const amount =
-          value === "" ? undefined : getDbAmount(Number(value), code)
+        const amount = value === "" ? undefined : castNumber(value)
 
         return {
           currency_code: code,
@@ -119,8 +118,7 @@ export function CreateShippingOptionsForm({
       .map(([region_id, value]) => {
         const code = regionsMap.get(region_id)
 
-        const amount =
-          value === "" ? undefined : getDbAmount(Number(value), code)
+        const amount = value === "" ? undefined : castNumber(value)
 
         return {
           region_id,
