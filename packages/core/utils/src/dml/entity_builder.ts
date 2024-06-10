@@ -1,9 +1,9 @@
 import { DmlEntity } from "./entity"
+import { TextSchema } from "./schema/text"
 import { JSONSchema } from "./schema/json"
 import { HasOne } from "./relations/has_one"
 import { HasMany } from "./relations/has_many"
 import { NumberSchema } from "./schema/number"
-import { StringSchema } from "./schema/string"
 import { BooleanSchema } from "./schema/boolean"
 import { DateTimeSchema } from "./schema/date_time"
 import { ManyToMany } from "./relations/many_to_many"
@@ -16,8 +16,8 @@ export class EntityBuilder {
     return new DmlEntity(name, schema)
   }
 
-  string() {
-    return new StringSchema()
+  text() {
+    return new TextSchema()
   }
 
   boolean() {

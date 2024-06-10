@@ -7,8 +7,8 @@ describe("Entity builder", () => {
     const model = new EntityBuilder()
     const user = model.define("user", {
       id: model.number(),
-      username: model.string(),
-      email: model.string(),
+      username: model.text(),
+      email: model.text(),
     })
 
     expectTypeOf<InstanceType<Infer<typeof user>>>().toMatchTypeOf<{
@@ -21,13 +21,13 @@ describe("Entity builder", () => {
   test("define an entity with relationships", () => {
     const model = new EntityBuilder()
     const email = model.define("email", {
-      email: model.string(),
+      email: model.text(),
       isVerified: model.boolean(),
     })
 
     const user = model.define("user", {
       id: model.number(),
-      username: model.string(),
+      username: model.text(),
       emails: model.hasMany(() => email),
     })
 
@@ -47,7 +47,7 @@ describe("Entity builder", () => {
 
     const user = model.define("user", {
       id: model.number(),
-      username: model.string(),
+      username: model.text(),
       orders: model.hasMany(() => order),
     })
 

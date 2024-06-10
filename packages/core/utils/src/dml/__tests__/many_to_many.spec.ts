@@ -1,11 +1,11 @@
 import { expectTypeOf } from "expect-type"
+import { TextSchema } from "../schema/text"
 import { ManyToMany } from "../relations/many_to_many"
-import { StringSchema } from "../schema/string"
 
 describe("ManyToMany relationship", () => {
   test("define manyToMany relationship", () => {
     const user = {
-      username: new StringSchema(),
+      username: new TextSchema(),
     }
 
     const entityRef = () => user

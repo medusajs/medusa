@@ -1,5 +1,5 @@
 import { expectTypeOf } from "expect-type"
-import { StringSchema } from "../schema/string"
+import { TextSchema } from "../schema/text"
 import { BaseRelationship } from "../relations/base"
 
 describe("Base relationship", () => {
@@ -9,7 +9,7 @@ describe("Base relationship", () => {
     }
 
     const user = {
-      username: new StringSchema(),
+      username: new TextSchema(),
     }
 
     const entityRef = () => user
