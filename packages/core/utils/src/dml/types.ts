@@ -1,3 +1,5 @@
+import { DmlEntity } from "./entity"
+
 /**
  * The supported data types
  */
@@ -58,3 +60,14 @@ export type RelationshipType<T> = {
   $dataType: T
   parse(relationshipName: string): RelationshipMetadata
 }
+
+/**
+ * Helper to infer the schema type of a DmlEntity
+ */
+export type Infer<T> = T extends DmlEntity<infer Schema>
+  ? {
+      [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
+        ? Infer<R>
+        : Schema[K]["$dataType"]
+    }
+  : never
