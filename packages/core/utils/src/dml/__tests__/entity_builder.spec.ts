@@ -1,10 +1,14 @@
 import { expectTypeOf } from "expect-type"
 import { MetadataStorage } from "@mikro-orm/core"
-import { Infer, MikroORMEntity } from "../types"
+import { MikroORMEntity } from "../types"
 import { EntityBuilder } from "../entity_builder"
 import { createMikrORMEntity } from "../helpers/create_mikro_orm_entity"
 
 describe("Entity builder", () => {
+  beforeEach(() => {
+    MetadataStorage.clear()
+  })
+
   test("define an entity", () => {
     const model = new EntityBuilder()
     const user = model.define("user", {
