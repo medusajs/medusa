@@ -1,14 +1,20 @@
 import { WorkflowManager } from "@medusajs/orchestration"
-import { promiseAll } from "@medusajs/utils"
+import {
+  composeMessage,
+  createMedusaContainer,
+  ModuleRegistrationName,
+  promiseAll,
+} from "@medusajs/utils"
 import {
   createStep,
   createWorkflow,
   hook,
-  MedusaWorkflow,
   parallelize,
   StepResponse,
   transform,
-} from "../.."
+} from ".."
+import { MedusaWorkflow } from "../../../medusa-workflow"
+import { asValue } from "awilix"
 
 jest.setTimeout(30000)
 
@@ -2067,5 +2073,58 @@ describe("Workflow composer", function () {
 
       return [{ step1_nested_obj: obj.nested }, s2]
     })
+  })
+
+  it("should emit grouped events once the workflow is executed and finished", async () => {
+    const container = createMedusaContainer()
+    container.register({
+      [ModuleRegistrationName.EVENT_BUS]: asValue({
+        releaseGroupedEvents: jest.fn(),
+        emit: jest.fn(),
+      }),
+    })
+
+    const mockStep1Fn = jest
+      .fn()
+      .mockImplementation(
+        async (input, { context: stepContext, container }) => {
+          const eventBusService = container.resolve(
+            ModuleRegistrationName.EVENT_BUS
+          )
+
+          await eventBusService.emit(
+            "event1",
+            composeMessage("event1", {
+              data: { eventGroupId: stepContext.eventGroupId },
+              context: stepContext,
+              object: "object",
+              source: "service",
+              action: "action",
+            })
+          )
+        }
+      )
+
+    const step1 = createStep("step1", mockStep1Fn)
+
+    const workflow = createWorkflow("workflow1", function (input) {
+      step1(input)
+    })
+
+    await workflow(container).run({
+      context: {
+        eventGroupId: "event-group-id",
+      },
+    })
+
+    expect(mockStep1Fn).toHaveBeenCalledTimes(1)
+    expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
+
+    const eventBusMock = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
+    expect(eventBusMock.emit.mock.calls[0][0]).toEqual("event1")
+
+    expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(1)
+    expect(eventBusMock.releaseGroupedEvents.mock.calls[0][0]).toEqual("event-group-id")
   })
 })

@@ -480,6 +480,13 @@ function attachOnFinishReleaseEvents(
   }) => {
     await onFinish?.(args)
 
+    const { transaction } = args
+    const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
+
+    if (failedStatus.includes(transaction.getState())) {
+      return
+    }
+
     const eventBusService = container.resolve(
       ModuleRegistrationName.EVENT_BUS,
       { allowUnregistered: true }
