@@ -6,14 +6,14 @@ import { TransactionStep } from "../transaction-step"
 import { SchedulerOptions } from "../types"
 
 export interface IDistributedSchedulerStorage {
-  scheduleJob(
+  schedule(
     jobDefinition: string | { jobId: string },
     schedulerOptions: SchedulerOptions
   ): Promise<void>
 
-  cancelJob(jobId: string): Promise<void>
+  remove(jobId: string): Promise<void>
 
-  cancelAllJobs(): Promise<void>
+  removeAll(): Promise<void>
 }
 
 export interface IDistributedTransactionStorage {
@@ -55,19 +55,19 @@ export abstract class DistributedSchedulerStorage
     /* noop */
   }
 
-  async scheduleJob(
+  async schedule(
     jobDefinition: string | { jobId: string },
     schedulerOptions: SchedulerOptions
   ): Promise<void> {
-    throw new Error("Method 'scheduleExecution' not implemented.")
+    throw new Error("Method 'schedule' not implemented.")
   }
 
-  async cancelJob(jobId: string): Promise<void> {
-    throw new Error("Method 'cancelJob' not implemented.")
+  async remove(jobId: string): Promise<void> {
+    throw new Error("Method 'remove' not implemented.")
   }
 
-  async cancelAllJobs(): Promise<void> {
-    throw new Error("Method 'cancelAllJobs' not implemented.")
+  async removeAll(): Promise<void> {
+    throw new Error("Method 'removeAll' not implemented.")
   }
 }
 

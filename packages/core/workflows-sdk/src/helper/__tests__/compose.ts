@@ -1,4 +1,4 @@
-import { WorkflowManager } from "@medusajs/orchestration"
+import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
 import { promiseAll } from "@medusajs/utils"
 import {
   createStep,
@@ -11,6 +11,24 @@ import {
 } from "../.."
 
 jest.setTimeout(30000)
+import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
+
+class MockSchedulerStorage implements IDistributedSchedulerStorage {
+  async schedule(
+    jobDefinition: string | { jobId: string },
+    schedulerOptions: SchedulerOptions
+  ): Promise<void> {
+    return Promise.resolve()
+  }
+  async remove(jobId: string): Promise<void> {
+    return Promise.resolve()
+  }
+  async removeAll(): Promise<void> {
+    return Promise.resolve()
+  }
+}
+
+WorkflowScheduler.setStorage(new MockSchedulerStorage())
 
 const afterEach_ = () => {
   jest.clearAllMocks()

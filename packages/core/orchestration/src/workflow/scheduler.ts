@@ -3,9 +3,9 @@ import { IDistributedSchedulerStorage, SchedulerOptions } from "../transaction"
 import { WorkflowDefinition } from "./workflow-manager"
 
 export class WorkflowScheduler {
-  private static keyValueStore: IDistributedSchedulerStorage
+  private static storage: IDistributedSchedulerStorage
   public static setStorage(storage: IDistributedSchedulerStorage) {
-    this.keyValueStore = storage
+    this.storage = storage
   }
 
   public async scheduleWorkflow(workflow: WorkflowDefinition) {
@@ -29,17 +29,14 @@ export class WorkflowScheduler {
             numberOfExecutions: schedule.numberOfExecutions,
           }
 
-    await WorkflowScheduler.keyValueStore.scheduleJob(
-      workflow.id,
-      normalizedSchedule
-    )
+    await WorkflowScheduler.storage.schedule(workflow.id, normalizedSchedule)
   }
 
   public async clearWorkflow(workflow: WorkflowDefinition) {
-    await WorkflowScheduler.keyValueStore.cancelJob(workflow.id)
+    await WorkflowScheduler.storage.remove(workflow.id)
   }
 
   public async clear() {
-    await WorkflowScheduler.keyValueStore.cancelAllJobs()
+    await WorkflowScheduler.storage.removeAll()
   }
 }

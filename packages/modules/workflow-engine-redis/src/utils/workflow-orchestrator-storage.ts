@@ -313,7 +313,8 @@ export class RedisDistributedTransactionStorage
     }
   }
 
-  async scheduleJob(
+  /* Scheduler storage methods */
+  async schedule(
     jobDefinition: string | { jobId: string },
     schedulerOptions: SchedulerOptions
   ): Promise<void> {
@@ -322,7 +323,7 @@ export class RedisDistributedTransactionStorage
 
     // In order to ensure that the schedule configuration is always up to date, we first cancel an existing job, if there was one
     // any only then we add the new one.
-    await this.cancelJob(jobId)
+    await this.remove(jobId)
 
     await this.queue.add(
       JobType.SCHEDULE,
@@ -340,11 +341,11 @@ export class RedisDistributedTransactionStorage
     )
   }
 
-  async cancelJob(jobId: string): Promise<void> {
+  async remove(jobId: string): Promise<void> {
     await this.queue.removeRepeatableByKey(`${JobType.SCHEDULE}_${jobId}`)
   }
 
-  async cancelAllJobs(): Promise<void> {
+  async removeAll(): Promise<void> {
     const repeatableJobs = await this.queue.getRepeatableJobs()
     await promiseAll(
       repeatableJobs.map((job) => this.queue.removeRepeatableByKey(job.key))
