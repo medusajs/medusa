@@ -159,7 +159,7 @@
     }
   },
   "sales_channels": {
-    "availableIn": "Available in <0>{{x}}</0> of <1>{{y}}</1> sales channels"
+    "availableIn": "قناة بيع <1>{{y}}</1> من أصل <0>{{x}}</0> متوفر في"
   },
   "products": {
     "domain": "Products",
