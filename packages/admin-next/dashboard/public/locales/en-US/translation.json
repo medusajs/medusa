@@ -86,25 +86,25 @@
   },
   "filters": {
     "date": {
-      "today": "Today",
-      "lastSevenDays": "Last 7 days",
-      "lastThirtyDays": "Last 30 days",
-      "lastNinetyDays": "Last 90 days",
-      "lastTwelveMonths": "Last 12 months",
-      "custom": "Custom",
-      "from": "From",
-      "to": "To"
+      "today": "اليوم",
+      "lastSevenDays": "آخر ٧ أيام",
+      "lastThirtyDays": "آخر ٣٠  يوم",
+      "lastNinetyDays": "آخر ٩٠ يوم",
+      "lastTwelveMonths": "آخر ١٢ شهر",
+      "custom": "مخصص",
+      "from": "من",
+      "to": "إلى"
     },
     "compare": {
-      "lessThan": "Less than",
-      "greaterThan": "Greater than",
-      "exact": "Exact",
-      "range": "Range",
-      "lessThanLabel": "less than {{value}}",
-      "greaterThanLabel": "greater than {{value}}",
-      "andLabel": "and"
+      "lessThan": "أقل من",
+      "greaterThan": "أكثر من",
+      "exact": "بالضبط",
+      "range": "مدى",
+      "lessThanLabel": "{{value}} أقل من",
+      "greaterThanLabel": "{{value}} أكثر من",
+      "andLabel": "و"
     },
-    "addFilter": "Add filter"
+    "addFilter": "أضف عامل تصفية"
   },
   "errorBoundary": {
     "badRequestTitle": "Bad request",
