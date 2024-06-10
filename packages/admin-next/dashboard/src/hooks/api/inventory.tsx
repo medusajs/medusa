@@ -1,4 +1,4 @@
-import { DeleteResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -72,7 +72,8 @@ export const useCreateInventoryItem = (
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => sdk.admin.inventoryItem.create(payload),
+    mutationFn: (payload: HttpTypes.AdminCreateInventoryItem) =>
+      sdk.admin.inventoryItem.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),
@@ -109,7 +110,11 @@ export const useUpdateInventoryItem = (
 
 export const useDeleteInventoryItem = (
   id: string,
-  options?: UseMutationOptions<DeleteResponse<"inventory_item">, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminInventoryItemDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.inventoryItem.delete(id),
@@ -129,7 +134,11 @@ export const useDeleteInventoryItem = (
 export const useDeleteInventoryItemLevel = (
   inventoryItemId: string,
   locationId: string,
-  options?: UseMutationOptions<DeleteResponse<"inventory_item">, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminInventoryItemDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
     mutationFn: () =>
@@ -205,12 +214,12 @@ export const useBatchInventoryLevels = (
   options?: UseMutationOptions<
     HttpTypes.AdminInventoryItemResponse,
     Error,
-    HttpTypes.AdminInventoryItemResponse
+    HttpTypes.AdminBatchUpdateInventoryLevelLocation
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: HttpTypes.AdminBatchPostInventoryLevelLocation) =>
-      sdk.admin.inventoryItem.batchPostLevels(inventoryItemId, payload),
+    mutationFn: (payload: HttpTypes.AdminBatchUpdateInventoryLevelLocation) =>
+      sdk.admin.inventoryItem.batchUpdateLevels(inventoryItemId, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: inventoryItemsQueryKeys.lists(),

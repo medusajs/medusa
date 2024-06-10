@@ -1,9 +1,4 @@
-import {
-  DeleteResponse,
-  FindParams,
-  HttpTypes,
-  SelectParams,
-} from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -47,7 +42,7 @@ export class InventoryItem {
   }
 
   async list(
-    query?: FindParams & HttpTypes.AdminInventoryItemFilters,
+    query?: HttpTypes.AdminInventoryItemParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminInventoryItemListResponse>(
@@ -70,7 +65,7 @@ export class InventoryItem {
   }
 
   async delete(id: string, headers?: ClientHeaders) {
-    return await this.client.fetch<DeleteResponse<"inventory_item">>(
+    return await this.client.fetch<HttpTypes.AdminInventoryItemDeleteResponse>(
       `/admin/inventory-items/${id}`,
       {
         method: "DELETE",
@@ -81,7 +76,7 @@ export class InventoryItem {
 
   async listLevels(
     id: string,
-    query?: FindParams & HttpTypes.AdminInventoryLevelFilters,
+    query?: HttpTypes.AdminInventoryLevelFilters,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminInventoryLevelListResponse>(
@@ -112,7 +107,7 @@ export class InventoryItem {
   }
 
   async deleteLevel(id: string, locationId: string, headers?: ClientHeaders) {
-    return await this.client.fetch<DeleteResponse<"inventory_item">>(
+    return await this.client.fetch<HttpTypes.AdminInventoryItemDeleteResponse>(
       `/admin/inventory-items/${id}/location-levels/${locationId}`,
       {
         method: "DELETE",
@@ -121,9 +116,9 @@ export class InventoryItem {
     )
   }
 
-  async batchPostLevels(
+  async batchUpdateLevels(
     id: string,
-    body: HttpTypes.AdminBatchPostInventoryLevelLocation,
+    body: HttpTypes.AdminBatchUpdateInventoryLevelLocation,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {

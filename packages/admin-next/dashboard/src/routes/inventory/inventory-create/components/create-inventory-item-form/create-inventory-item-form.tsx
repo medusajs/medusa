@@ -102,7 +102,7 @@ export function CreateInventoryItemForm({}: CreateInventoryItemFormProps) {
       const { inventory_item } = await createInventoryItem(payload)
 
       try {
-        await sdk.admin.inventoryItem.batchPostLevels(inventory_item.id, {
+        await sdk.admin.inventoryItem.batchUpdateLevels(inventory_item.id, {
           create: Object.entries(locations)
             .filter(([_, quantiy]) => !!quantiy)
             .map(([location_id, stocked_quantity]) => ({

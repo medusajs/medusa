@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "../../common"
+import { DeleteResponse, PaginatedResponse } from "../../common"
 import { AdminInventoryItem } from "./entities"
 
 export interface AdminInventoryItemResponse {
@@ -8,3 +8,5 @@ export interface AdminInventoryItemResponse {
 export type AdminInventoryItemListResponse = PaginatedResponse<{
   inventory_items: AdminInventoryItem[]
 }>
+
+export type AdminInventoryItemDeleteResponse = DeleteResponse<"inventory_item">

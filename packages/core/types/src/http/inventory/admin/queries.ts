@@ -1,7 +1,7 @@
 import { FindParams } from "../../common"
 import { OperatorMap } from "../../../dal"
 
-export interface AdminInventoryItemFilters extends FindParams {
+export interface AdminInventoryItemParams extends FindParams {
   id?: string | string[]
   q?: string
   sku?: string | string[]
