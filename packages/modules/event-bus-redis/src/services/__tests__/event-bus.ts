@@ -101,10 +101,8 @@ describe("RedisEventBusService", () => {
         await eventBus.emit([
           {
             eventName: "eventName",
-            body: {
-              data: {
-                hi: "1234",
-              },
+            data: {
+              hi: "1234",
             },
           },
         ])
@@ -124,16 +122,7 @@ describe("RedisEventBusService", () => {
 
       it("should add job to queue with custom options passed directly upon emitting", async () => {
         await eventBus.emit(
-          [
-            {
-              eventName: "eventName",
-              body: {
-                data: {
-                  hi: "1234",
-                },
-              },
-            },
-          ],
+          [{ eventName: "eventName", data: { hi: "1234" } }],
           { attempts: 3, backoff: 5000, delay: 1000 }
         )
 
@@ -175,7 +164,7 @@ describe("RedisEventBusService", () => {
           [
             {
               eventName: "eventName",
-              body: { data: { hi: "1234" } },
+              data: { hi: "1234" },
             },
           ],
           { attempts: 3, backoff: 5000, delay: 1000 }
@@ -219,7 +208,7 @@ describe("RedisEventBusService", () => {
         await eventBus.emit(
           {
             eventName: "eventName",
-            body: { data: { hi: "1234" } },
+            data: { hi: "1234" },
           },
           { delay: 1000 }
         )
@@ -242,10 +231,8 @@ describe("RedisEventBusService", () => {
         const options = { delay: 1000 }
         const event = {
           eventName: "eventName",
-          body: {
-            data: { hi: "1234" },
-            metadata: { eventGroupId: "test-group-1" },
-          },
+          data: { hi: "1234" },
+          metadata: { eventGroupId: "test-group-1" },
         }
 
         const [builtEvent] = (eventBus as any).buildEvents([event], options)
@@ -265,30 +252,22 @@ describe("RedisEventBusService", () => {
         const events = [
           {
             eventName: "grouped-event-1",
-            body: {
-              data: { hi: "1234" },
-              metadata: { eventGroupId: "test-group-1" },
-            },
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-1" },
           },
           {
             eventName: "ungrouped-event-2",
-            body: {
-              data: { hi: "1234" },
-            },
+            data: { hi: "1234" },
           },
           {
             eventName: "grouped-event-2",
-            body: {
-              data: { hi: "1234" },
-              metadata: { eventGroupId: "test-group-2" },
-            },
+            data: { hi: "1234" },
+            metadata: { eventGroupId: "test-group-2" },
           },
           {
             eventName: "grouped-event-3",
-            body: {
-              data: { hi: "1235" },
-              metadata: { eventGroupId: "test-group-2" },
-            },
+            data: { hi: "1235" },
+            metadata: { eventGroupId: "test-group-2" },
           },
         ]
 

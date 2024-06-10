@@ -1,5 +1,5 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { Logger, Message } from "@medusajs/types"
+import { Logger, Message, MessageBody } from "@medusajs/types"
 import {
   AbstractEventBusModuleService,
   isPresent,
@@ -16,7 +16,7 @@ type InjectedDependencies = {
 
 type IORedisEventType<T = unknown> = {
   name: string
-  data: Omit<Message<T>, "body"> & { data: Message<T>["body"]["data"] }
+  data: MessageBody<T>
   opts: BulkJobOptions
 }
 
@@ -95,16 +95,16 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     }
 
     return eventsData.map((eventData) => {
+      const { options, ...eventBody } = eventData
+
       return {
         name: eventData.eventName,
-        data: {
-          eventName: eventData.eventName,
-          data: eventData.body.data,
-        },
+        data: eventBody,
         opts: {
+          // options for event group
           ...opts,
-          // local options
-          ...eventData.options,
+          // options for a particular event
+          ...options,
         },
       }
     })
@@ -122,17 +122,17 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
 
     const eventsToEmit = eventsDataArray.filter(
-      (eventData) => !isPresent(eventData.body?.metadata?.eventGroupId)
+      (eventData) => !isPresent(eventData.metadata?.eventGroupId)
     )
 
     const eventsToGroup = eventsDataArray.filter((eventData) =>
-      isPresent(eventData.body?.metadata?.eventGroupId)
+      isPresent(eventData.metadata?.eventGroupId)
     )
 
     const groupEventsMap = new Map<string, Message<T>[]>()
 
     for (const event of eventsToGroup) {
-      const groupId = event.body.metadata?.eventGroupId!
+      const groupId = event.metadata?.eventGroupId!
       const array = groupEventsMap.get(groupId) ?? []
 
       array.push(event)
@@ -237,10 +237,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const subscribersResult = await Promise.all(
       subscribersInCurrentAttempt.map(async ({ id, subscriber }) => {
         return await subscriber(data, eventName)
-          .then(async (test) => {
+          .then(async (data) => {
             // For every subscriber that completes successfully, add their id to the list of completed subscribers
             completedSubscribersInCurrentAttempt.push(id)
-            return test
+            return data
           })
           .catch((err) => {
             this.logger_.warn(

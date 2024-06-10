@@ -1,5 +1,11 @@
 import { MedusaContainer } from "@medusajs/modules-sdk"
-import { EventBusTypes, Logger, Message, Subscriber } from "@medusajs/types"
+import {
+  EventBusTypes,
+  Logger,
+  Message,
+  MessageBody,
+  Subscriber,
+} from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { ulid } from "ulid"
@@ -60,13 +66,14 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   // This is useful in the event of a distributed transaction where you'd want to emit
   // events only once the transaction ends.
   private async groupOrEmitEvent<T = unknown>(eventData: Message<T>) {
-    const eventGroupId = eventData.body?.metadata?.eventGroupId
+    const { options, ...eventBody } = eventData
+    const eventGroupId = eventBody.metadata?.eventGroupId
 
     if (eventGroupId) {
       await this.groupEvent(eventGroupId, eventData)
     } else {
       this.eventEmitter_.emit(eventData.eventName, {
-        data: eventData.body.data,
+        data: eventData.data,
       })
     }
   }
@@ -74,14 +81,11 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   // Groups an event to a queue to be emitted upon explicit release
   private async groupEvent<T = unknown>(
     eventGroupId: string,
-    eventData: Message<T>
+    eventData: MessageBody<T>
   ) {
     const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
-    groupedEvents.push({
-      eventName: eventData.eventName,
-      data: eventData.body.data,
-    })
+    groupedEvents.push(eventData)
 
     this.groupedEventsMap_.set(eventGroupId, groupedEvents)
   }

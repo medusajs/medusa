@@ -31,7 +31,7 @@ describe("LocalEventBusService", () => {
 
         await eventBus.emit({
           eventName: "eventName",
-          body: { data: { hi: "1234" } },
+          data: { hi: "1234" },
         })
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
@@ -44,8 +44,8 @@ describe("LocalEventBusService", () => {
         eventEmitter.emit = jest.fn((data) => data)
 
         await eventBus.emit([
-          { eventName: "event-1", body: { data: { hi: "1234" } } },
-          { eventName: "event-2", body: { data: { hi: "5678" } } },
+          { eventName: "event-1", data: { hi: "1234" } },
+          { eventName: "event-2", data: { hi: "5678" } },
         ])
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(2)
@@ -63,20 +63,19 @@ describe("LocalEventBusService", () => {
 
         await eventBus.emit({
           eventName: "test-event",
-          body: {
-            data: {
-              test: "1234",
-            },
-            metadata: {
-              eventGroupId: "test",
-            },
+          data: {
+            test: "1234",
+          },
+          metadata: {
+            eventGroupId: "test",
           },
         })
 
         expect(eventEmitter.emit).not.toHaveBeenCalled()
         expect(groupEventFn).toHaveBeenCalledTimes(1)
         expect(groupEventFn).toHaveBeenCalledWith("test", {
-          body: { data: { test: "1234" }, metadata: { eventGroupId: "test" } },
+          data: { test: "1234" },
+          metadata: { eventGroupId: "test" },
           eventName: "test-event",
         })
 
@@ -88,14 +87,12 @@ describe("LocalEventBusService", () => {
         eventBus.emit([
           {
             eventName: "test-event",
-            body: {
-              data: { test: "1234" },
-              metadata: { eventGroupId: "test" },
-            },
+            data: { test: "1234" },
+            metadata: { eventGroupId: "test" },
           },
           {
             eventName: "test-event",
-            body: { data: { test: "test-1" } },
+            data: { test: "test-1" },
           },
         ])
 
@@ -108,10 +105,8 @@ describe("LocalEventBusService", () => {
 
         await eventBus.emit({
           eventName: "test-event",
-          body: {
-            data: { test: "1234" },
-            metadata: { eventGroupId: "test-2" },
-          },
+          data: { test: "1234" },
+          metadata: { eventGroupId: "test-2" },
         })
 
         expect((eventBus as any).groupedEventsMap_.get("test-2")).toEqual([
@@ -125,33 +120,25 @@ describe("LocalEventBusService", () => {
         await eventBus.emit([
           {
             eventName: "event-1",
-            body: {
-              data: { test: "1" },
-              metadata: { eventGroupId: "group-1" },
-            },
+            data: { test: "1" },
+            metadata: { eventGroupId: "group-1" },
           },
           {
             eventName: "event-2",
-            body: {
-              data: { test: "2" },
-              metadata: { eventGroupId: "group-1" },
-            },
+            data: { test: "2" },
+            metadata: { eventGroupId: "group-1" },
           },
           {
             eventName: "event-1",
-            body: {
-              data: { test: "1" },
-              metadata: { eventGroupId: "group-2" },
-            },
+            data: { test: "1" },
+            metadata: { eventGroupId: "group-2" },
           },
           {
             eventName: "event-2",
-            body: {
-              data: { test: "2" },
-              metadata: { eventGroupId: "group-2" },
-            },
+            data: { test: "2" },
+            metadata: { eventGroupId: "group-2" },
           },
-          { eventName: "event-1", body: { data: { test: "1" } } },
+          { eventName: "event-1", data: { test: "1" } },
         ])
 
         expect(eventEmitter.emit).toHaveBeenCalledTimes(1)
@@ -193,17 +180,13 @@ describe("LocalEventBusService", () => {
         await eventBus.emit([
           {
             eventName: "event-1",
-            body: {
-              data: { test: "1" },
-              metadata: { eventGroupId: "group-1" },
-            },
+            data: { test: "1" },
+            metadata: { eventGroupId: "group-1" },
           },
           {
             eventName: "event-1",
-            body: {
-              data: { test: "1" },
-              metadata: { eventGroupId: "group-2" },
-            },
+            data: { test: "1" },
+            metadata: { eventGroupId: "group-2" },
           },
         ])
 
