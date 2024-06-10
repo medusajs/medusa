@@ -134,9 +134,9 @@
     "locationHeading": "الموقع"
   },
   "email": {
-    "editHeader": "Edit Email",
-    "editLabel": "Email",
-    "label": "Email"
+    "editHeader": "تعديل البريد الإلكتروني",
+    "editLabel": "البريد الإلكتروني",
+    "label": "البريد الإلكتروني"
   },
   "transferOwnership": {
     "header": "Transfer Ownership",
