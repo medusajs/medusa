@@ -22,8 +22,8 @@ export const highlights = [
   ["36", "setItem", "Set the cart's ID in `localStorage` in case it changed."],
   ["44", "fetch", "If the customer doesn't have a cart, create a new one."],
   ["48", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
-  ["61", "fetch", "Retrieve the customer's cart."],
-  ["81", "useCart", "The hook that child components of the provider use to access the cart."]
+  ["62", "fetch", "Retrieve the customer's cart."],
+  ["82", "useCart", "The hook that child components of the provider use to access the cart."]
 ]
 
 ```tsx highlights={highlights}
@@ -51,9 +51,7 @@ type CartProviderProps = {
   children: React.ReactNode
 }
 
-export const CartProvider = (
-  { children }: CartProviderProps
-) => {
+export const CartProvider = ({ children }: CartProviderProps) => {
   const [cart, setCart] = useState<
     HttpTypes.StoreCart
   >()
@@ -61,9 +59,6 @@ export const CartProvider = (
 
   useEffect(() => {
     if (cart || !region) {
-      if (cart) {
-        localStorage.setItem("cart_id", cart.id)
-      }
       return
     }
 
@@ -83,6 +78,7 @@ export const CartProvider = (
       })
       .then((res) => res.json())
       .then(({ cart: dataCart }) => {
+        localStorage.setItem("cart_id", dataCart.id)
         setCart(dataCart)
       })
     } else {
