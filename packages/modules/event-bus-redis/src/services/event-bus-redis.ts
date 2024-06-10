@@ -185,9 +185,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   }
 
   async clearGroupedEvents(eventGroupId: string) {
-    if (eventGroupId) {
-      await this.eventBusRedisConnection_.del(`staging:${eventGroupId}`)
+    if (!eventGroupId) {
+      return
     }
+    await this.eventBusRedisConnection_.del(`staging:${eventGroupId}`)
   }
 
   /**
