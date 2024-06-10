@@ -80,7 +80,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     return await manager.find(entity, config.where, config.options)
   }
 
-  klass.prototype.findAndCound = async function findAndCount(
+  klass.prototype.findAndCount = async function findAndCount(
     this: any,
     findOptions: DAL.FindOptions<T> = { where: {} },
     context: Context = {}

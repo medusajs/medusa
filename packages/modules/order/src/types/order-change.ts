@@ -25,9 +25,9 @@ export enum OrderChangeStatus {
 
 export enum OrderChangeType {
   RETURN = "return",
-  SWAP = "swap",
+  EXCHANGE = "exchange",
   CLAIM = "claim",
-  ORDER_EDIT = "order_edit",
+  EDIT = "edit",
 }
 
 export interface CreateOrderChangeDTO extends OrderTypes.CreateOrderChangeDTO {
