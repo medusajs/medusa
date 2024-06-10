@@ -26,6 +26,7 @@ const redisMock = {
   rpush: () => jest.fn(),
   lrange: () => jest.fn(),
   disconnect: () => jest.fn(),
+  expire: () => jest.fn(),
 } as unknown as Redis
 
 const simpleModuleOptions = { redisUrl: "test-url" }

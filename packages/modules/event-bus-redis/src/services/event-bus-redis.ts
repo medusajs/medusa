@@ -117,9 +117,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    */
   async emit<T = unknown>(
     eventsData: Message<T> | Message<T>[],
-    options: BulkJobOptions = {}
+    options: BulkJobOptions & { groupedEventsTTL?: number } = {}
   ): Promise<void> {
     let eventsDataArray = Array.isArray(eventsData) ? eventsData : [eventsData]
+
+    const { groupedEventsTTL = 600 } = options
+    delete options.groupedEventsTTL
 
     const eventsToEmit = eventsDataArray.filter(
       (eventData) => !isPresent(eventData.metadata?.eventGroupId)
@@ -152,12 +155,26 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         continue
       }
 
+      // Set a TTL for the key of the list that is scoped to a group
+      // This will be helpful in preventing stale data from staying in redis for too long
+      // in the event the module fails to cleanup events. For long running workflows, setting a much higher
+      // TTL or even skipping the TTL would be required
+      this.setExpire(groupId, groupedEventsTTL)
+
       const eventsData = this.buildEvents(events, options)
 
       promises.push(this.groupEvents(groupId, eventsData))
     }
 
     await promiseAll(promises)
+  }
+
+  private async setExpire(eventGroupId: string, ttl: number) {
+    if (!eventGroupId) {
+      return
+    }
+
+    await this.eventBusRedisConnection_.expire(`staging:${eventGroupId}`, ttl)
   }
 
   private async groupEvents<T = unknown>(
@@ -170,7 +187,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     )
   }
 
-  private async getGroupedEvents(eventGroupId: string) {
+  private async getGroupedEvents(
+    eventGroupId: string
+  ): Promise<IORedisEventType[]> {
     return await this.eventBusRedisConnection_
       .lrange(`staging:${eventGroupId}`, 0, -1)
       .then((result) => {
@@ -179,9 +198,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   }
 
   async releaseGroupedEvents(eventGroupId: string) {
-    const groupedEvents: IORedisEventType[] = await this.getGroupedEvents(
-      eventGroupId
-    )
+    const groupedEvents = await this.getGroupedEvents(eventGroupId)
 
     await this.queue_.addBulk(groupedEvents)
 
@@ -192,6 +209,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     if (!eventGroupId) {
       return
     }
+
     await this.eventBusRedisConnection_.del(`staging:${eventGroupId}`)
   }
 
