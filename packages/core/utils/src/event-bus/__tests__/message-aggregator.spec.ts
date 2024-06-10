@@ -59,10 +59,10 @@ describe("MessageAggregator", function () {
     })
 
     const format = {
-      groupBy: ["eventName", "body.metadata.object", "body.metadata.action"],
+      groupBy: ["eventName", "metadata.object", "metadata.action"],
       sortBy: {
-        "body.metadata.object": ["ProductType", "ProductVariant", "Product"],
-        "body.data.id": "asc",
+        "metadata.object": ["ProductType", "ProductVariant", "Product"],
+        "data.id": "asc",
       },
     }
 
