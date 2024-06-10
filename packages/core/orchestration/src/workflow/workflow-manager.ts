@@ -10,6 +10,7 @@ import {
   TransactionStepHandler,
   TransactionStepsDefinition,
 } from "../transaction"
+import { WorkflowScheduler } from "./scheduler"
 
 export interface WorkflowDefinition {
   id: string
@@ -51,13 +52,20 @@ export type WorkflowStepHandler = (
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
+  protected static scheduler = new WorkflowScheduler()
 
   static unregister(workflowId: string) {
+    const workflow = WorkflowManager.workflows.get(workflowId)
+    if (workflow?.options.schedule) {
+      this.scheduler.clearWorkflow(workflow)
+    }
+
     WorkflowManager.workflows.delete(workflowId)
   }
 
   static unregisterAll() {
     WorkflowManager.workflows.clear()
+    this.scheduler.clear()
   }
 
   static getWorkflows() {
@@ -111,7 +119,7 @@ export class WorkflowManager {
       }
     }
 
-    WorkflowManager.workflows.set(workflowId, {
+    const workflow = {
       id: workflowId,
       flow_: finalFlow!,
       orchestrator: new TransactionOrchestrator(
@@ -124,7 +132,12 @@ export class WorkflowManager {
       options,
       requiredModules,
       optionalModules,
-    })
+    }
+
+    WorkflowManager.workflows.set(workflowId, workflow)
+    if (options.schedule) {
+      this.scheduler.scheduleWorkflow(workflow)
+    }
   }
 
   static update(

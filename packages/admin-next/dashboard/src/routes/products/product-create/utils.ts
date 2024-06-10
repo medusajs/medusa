@@ -1,7 +1,6 @@
 import { CreateProductDTO } from "@medusajs/types"
 import { ProductCreateSchemaType } from "./types"
-import { getDbAmount } from "../../../lib/money-amount-helpers.ts"
-import { castNumber } from "../../../lib/cast-number.ts"
+import { castNumber } from "../../../lib/cast-number"
 
 export const normalizeProductFormValues = (
   values: ProductCreateSchemaType & { status: CreateProductDTO["status"] }
@@ -64,7 +63,7 @@ export const normalizeVariants = (
         } else {
           return {
             currency_code: key,
-            amount: getDbAmount(castNumber(value), key),
+            amount: castNumber(value),
           }
         }
       })

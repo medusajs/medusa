@@ -3,6 +3,7 @@ import {
   DistributedTransactionEvents,
   TransactionHandlerType,
   TransactionStep,
+  WorkflowScheduler,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
 import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
@@ -83,6 +84,7 @@ export class WorkflowOrchestratorService {
   }) {
     inMemoryDistributedTransactionStorage.setWorkflowOrchestratorService(this)
     DistributedTransaction.setStorage(inMemoryDistributedTransactionStorage)
+    WorkflowScheduler.setStorage(inMemoryDistributedTransactionStorage)
   }
 
   @InjectSharedContext()

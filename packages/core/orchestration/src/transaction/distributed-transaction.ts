@@ -7,7 +7,11 @@ import {
   TransactionOrchestrator,
 } from "./transaction-orchestrator"
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
-import { TransactionHandlerType, TransactionState } from "./types"
+import {
+  SchedulerOptions,
+  TransactionHandlerType,
+  TransactionState,
+} from "./types"
 
 /**
  * @typedef TransactionMetadata
