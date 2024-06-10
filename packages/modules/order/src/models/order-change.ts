@@ -26,16 +26,25 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "order_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const OrderChangeStatusIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "status",
+  where: "deleted_at IS NOT NULL",
 })
 
 const OrderChangeTypeIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "change_type",
+  where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
@@ -47,6 +56,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
 const VersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: ["order_id", "version"],
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_change" })
@@ -79,7 +89,7 @@ export default class OrderChange {
     columnType: "text",
     nullable: true,
   })
-  @OrderIdIndex.MikroORMIndex()
+  @ReturnIdIndex.MikroORMIndex()
   return_id: string | null = null
 
   @ManyToOne(() => Return, {

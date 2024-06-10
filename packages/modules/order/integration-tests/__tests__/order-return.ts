@@ -329,8 +329,8 @@ moduleIntegrationTestRunner({
         expect(receive).toEqual(
           expect.objectContaining({
             id: orderReturn.id,
-            status: "received",
-            //received_at: null,
+            status: "partially_received",
+            received_at: null,
             items: expect.arrayContaining([
               expect.objectContaining({
                 id: allItems[0].id,

@@ -46,21 +46,15 @@ export async function receiveReturn(
 
   await this.confirmOrderChange(change[0].id, sharedContext)
 
-  const orderItemMap = {}
-  const presentItems: string[] = []
-  for (const item of items) {
-    const retItem = returnEntry.items.find((i) => {
-      return i.detail.item_id === item.details.reference_id
-    })
-    presentItems.push(retItem.id)
-    orderItemMap[retItem.id] = {
-      id: retItem.detail.id,
-      return_id: retItem.detail.return_id,
-    }
-  }
-
   const hasReceivedAllItems = returnEntry.items.every((item) => {
-    return MathBN.eq(item.return_requested_quantity, 0)
+    const retItem = items.find((dtItem) => {
+      return item.detail.item_id === dtItem.details.reference_id
+    })
+    const quantity = retItem ? retItem.details.quantity : 0
+    return MathBN.eq(
+      MathBN.sub(item.detail.return_requested_quantity, quantity),
+      0
+    )
   })
 
   const retData = hasReceivedAllItems

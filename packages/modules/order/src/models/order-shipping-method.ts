@@ -24,6 +24,12 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_shipping",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
 const OrderVersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_shipping",
   columns: ["version"],
@@ -70,7 +76,7 @@ export default class OrderShippingMethod {
     columnType: "text",
     nullable: true,
   })
-  @OrderIdIndex.MikroORMIndex()
+  @ReturnIdIndex.MikroORMIndex()
   return_id: string | null = null
 
   @ManyToOne(() => Return, {
