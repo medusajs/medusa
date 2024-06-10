@@ -1,30 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import {
-  Fulfillment,
-  FulfillmentProvider,
-  FulfillmentSet,
-  GeoZone,
-  ServiceZone,
-  ShippingOption,
-  ShippingOptionRule,
-  ShippingProfile,
-} from "@models"
-import {
   buildEntitiesNameToLinkableKeysMap,
   defineJoinerConfig,
 } from "@medusajs/utils/src"
+import { FulfillmentSet } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-  publicEntityObjects: [
-    FulfillmentSet,
-    ShippingOption,
-    ShippingProfile,
-    Fulfillment,
-    FulfillmentProvider,
-    ServiceZone,
-    GeoZone,
-    ShippingOptionRule,
-  ],
+  mainEntity: FulfillmentSet,
 })
 
 export const entityNameToLinkableKeysMap = buildEntitiesNameToLinkableKeysMap(
