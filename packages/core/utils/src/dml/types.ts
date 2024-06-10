@@ -62,12 +62,21 @@ export type RelationshipType<T> = {
 }
 
 /**
+ * A type-only representation of a MikroORM entity. Since we generate
+ * entities on the fly, we need a way to represent a type-safe
+ * constructor and its instance properties.
+ */
+export interface MikroORMEntity<Props> extends Function {
+  new (): Props
+}
+
+/**
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends DmlEntity<infer Schema>
-  ? {
+  ? MikroORMEntity<{
       [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
         ? Infer<R>
         : Schema[K]["$dataType"]
-    }
+    }>
   : never

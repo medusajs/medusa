@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
+import { Infer, MikroORMEntity } from "../types"
 import { EntityBuilder } from "../entity_builder"
-import { Infer } from "../types"
 
 describe("Entity builder", () => {
   test("define an entity", () => {
@@ -11,7 +11,7 @@ describe("Entity builder", () => {
       email: model.string(),
     })
 
-    expectTypeOf<Infer<typeof user>>().toEqualTypeOf<{
+    expectTypeOf<InstanceType<Infer<typeof user>>>().toMatchTypeOf<{
       id: number
       username: string
       email: string
@@ -31,10 +31,10 @@ describe("Entity builder", () => {
       emails: model.hasMany(() => email),
     })
 
-    expectTypeOf<Infer<typeof user>>().toEqualTypeOf<{
+    expectTypeOf<InstanceType<Infer<typeof user>>>().toEqualTypeOf<{
       id: number
       username: string
-      emails: { email: string; isVerified: boolean }
+      emails: MikroORMEntity<{ email: string; isVerified: boolean }>
     }>()
   })
 
@@ -51,16 +51,16 @@ describe("Entity builder", () => {
       orders: model.hasMany(() => order),
     })
 
-    expectTypeOf<Infer<typeof user>>().toMatchTypeOf<{
+    expectTypeOf<InstanceType<Infer<typeof user>>>().toMatchTypeOf<{
       id: number
       username: string
-      orders: {
+      orders: MikroORMEntity<{
         amount: number
-        user: {
+        user: MikroORMEntity<{
           id: number
           username: string
-        }
-      }
+        }>
+      }>
     }>()
   })
 })
