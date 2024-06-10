@@ -1,6 +1,5 @@
 import { DAL } from "@medusajs/types"
 import {
-  OrderChangeStatus,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -17,6 +16,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
+import { OrderChangeStatus, OrderChangeType } from "@types"
 import Order from "./order"
 import OrderChangeAction from "./order-change-action"
 
@@ -25,16 +26,37 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "order_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const OrderChangeStatusIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: "status",
+  where: "deleted_at IS NOT NULL",
+})
+
+const OrderChangeTypeIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: "change_type",
+  where: "deleted_at IS NOT NULL",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 const VersionIndex = createPsqlIndexStatementHelper({
   tableName: "order_change",
   columns: ["order_id", "version"],
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_change" })
@@ -60,9 +82,28 @@ export default class OrderChange {
   })
   order: Order
 
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
+
   @Property({ columnType: "integer" })
   @VersionIndex.MikroORMIndex()
   version: number
+
+  @Enum({ items: () => OrderChangeType, nullable: true })
+  @OrderChangeTypeIndex.MikroORMIndex()
+  change_type: OrderChangeType | null = null
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
     cascade: [Cascade.PERSIST, "sotf-remove" as Cascade],
@@ -141,6 +182,10 @@ export default class OrderChange {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

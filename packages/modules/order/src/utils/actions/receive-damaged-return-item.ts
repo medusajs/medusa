@@ -2,6 +2,7 @@ import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { EVENT_STATUS } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(
   ChangeActionType.RECEIVE_DAMAGED_RETURN_ITEM,
@@ -26,6 +27,8 @@ OrderChangeProcessing.registerActionType(
         existing.detail.return_requested_quantity,
         toReturn
       )
+
+      setActionReference(existing, action)
 
       if (previousEvents) {
         for (const previousEvent of previousEvents) {
