@@ -25,7 +25,12 @@ export const DataGridNumberCell = <TData, TValue = any>({
           valueAsNumber: true,
           onChange: (e) => {
             if (e.target.value) {
-              return parseInt(e.target.value)
+              const parsedValue = Number(e.target.value)
+              if (Number.isNaN(parsedValue)) {
+                return undefined
+              }
+
+              return parsedValue
             }
           },
         })}
