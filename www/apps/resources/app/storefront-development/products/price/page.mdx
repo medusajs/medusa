@@ -32,17 +32,18 @@ The examples in this guide only pass the `region_id` query parameter. Learn how 
 The following React-based storefront example retrieves the product's price based on the selected variant:
 
 export const priceHighlights = [
-  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
-  ["19", "region", "The Regions guides cover how to store and retrieve regions. It's omitted here for simplicity."],
-  ["28", "queryParams", "Build the pricing query parameters."],
-  ["60", "formatPrice", "A utility function to format an amount with its currency."],
-  ["61", `"en-US"`, "If you use a different locale change it here."],
-  ["68", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
-  ["70", "selectedVariant", "Use the selected variant for pricing."],
-  ["73", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
-  ["81", "price", "Compute the price of the selected or cheapest variant."],
-  ["125", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
-  ["126", "price", "Display the computed price."]
+  ["5", "useRegion", "The `useRegion` hook is implemented in the Region React Context guide."],
+  ["13", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["19", "region", "Access the region using the `useRegion` hook."],
+  ["26", "queryParams", "Build the pricing query parameters."],
+  ["58", "formatPrice", "A utility function to format an amount with its currency."],
+  ["59", `"en-US"`, "If you use a different locale change it here."],
+  ["66", "variantPrice", "Assign the variant to compute its price, which is either the selected or cheapest variant."],
+  ["68", "selectedVariant", "Use the selected variant for pricing."],
+  ["71", "", "If there isn't a selected variant, retrieve the variant with the cheapest price."],
+  ["79", "price", "Compute the price of the selected or cheapest variant."],
+  ["123", "", "If there's a computed price but no selected variant, show a `From` prefix to the price."],
+  ["124", "price", "Display the computed price."]
 ]
 
 ```tsx highlights={priceHighlights}
@@ -50,6 +51,7 @@ export const priceHighlights = [
 
 import { useEffect, useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
+import { useRegion } from "../providers/region"
 
 type Params = {
   params: {
@@ -63,10 +65,7 @@ export default function Product({ params: { id } }: Params) {
     HttpTypes.StoreProduct | undefined
   >()
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
-  // TODO assuming you have the region stored/retrieved somewhere
-  const region = {
-    // ...
-  }
+  const { region } = useRegion
 
   useEffect(() => {
     if (!loading) {
@@ -186,6 +185,9 @@ export default function Product({ params: { id } }: Params) {
 
 In the example above, you:
 
+{/* TODO add link to Region React Context guide. */}
+
+- Use the `useRegion` hook defined in the previous Region React Context guide.
 - Pass the pricing query parameters to the request retrieving the product. This retrieves for every variant a new `calculated_price` field holding details about the variant's price.
 - Choose the variant to show its price:
     - If there's a selected variant, choose it.
@@ -195,7 +197,7 @@ In the example above, you:
 
 ### Price Formatting
 
-To format the price, use JavaScript's [NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) utility. You pass it the amount and the currency code (which you retrieve from the customer's region):
+To format the price, use JavaScript's [NumberFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) utility. You pass it the amount and the currency code (which you retrieve from the selected region):
 
 ```ts
 const formatPrice = (amount: number): string => {
@@ -218,10 +220,12 @@ In that case, the original price is in the variant's `calculated_price.original_
 For example, in a React-based storefront:
 
 export const saleHighlights = [
-  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
-  ["90", "isSale", "Determine whether the price is a sale price based on the value of the variant's `calculated_price.calculated_price.price_list_type` field."],
-  ["99", "originalPrice", "Retrieve the original price from the variant's `calculated_price.original_amount` field if the price is a sale price."],
-  ["144", "", "If the price is a sale price, show that to the customer along with the original price."]
+  ["5", "useRegion", "The `useRegion` hook is implemented in the Region React Context guide."],
+  ["13", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["19", "region", "Access the region using the `useRegion` hook."],
+  ["88", "isSale", "Determine whether the price is a sale price based on the value of the variant's `calculated_price.calculated_price.price_list_type` field."],
+  ["97", "originalPrice", "Retrieve the original price from the variant's `calculated_price.original_amount` field if the price is a sale price."],
+  ["143", "", "If the price is a sale price, show that to the customer along with the original price."]
 ]
 
 ```tsx highlights={saleHighlights}
@@ -229,6 +233,7 @@ export const saleHighlights = [
 
 import { useEffect, useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
+import { useRegion } from "../providers/region"
 
 type Params = {
   params: {
@@ -242,10 +247,7 @@ export default function Product({ params: { id } }: Params) {
     HttpTypes.StoreProduct | undefined
   >()
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
-  // TODO assuming you have the region stored/retrieved somewhere
-  const region = {
-    // ...
-  }
+  const { region } = useRegion()
 
   useEffect(() => {
     if (!loading) {
