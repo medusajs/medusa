@@ -279,7 +279,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_tag_updated, {
               data: { id: productTag.id },
               object: "product_tag",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
             }),
           ])
@@ -321,7 +321,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_tag_created, {
               data: { id: productTag[0].id },
               object: "product_tag",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
             }),
           ])
@@ -375,13 +375,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
             composeMessage(ProductEvents.product_tag_created, {
               data: { id: newTag.id },
               object: "product_tag",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
             }),
             composeMessage(ProductEvents.product_tag_updated, {
               data: { id: updatedTag.id },
               object: "product_tag",
-              service: Modules.PRODUCT,
+              source: Modules.PRODUCT,
               action: CommonEvents.UPDATED,
             }),
           ])

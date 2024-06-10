@@ -10,13 +10,13 @@ const getNewWorkflowId = () => `workflow-${count++}`
 describe("Workflow composer", () => {
   describe("running sub workflows", () => {
     it("should succeed", async function () {
-      const step1 = createStep("step1", async () => {
+      const step1 = createStep("step1", async (_, context) => {
         return new StepResponse({ result: "step1" })
       })
-      const step2 = createStep("step2", async (input: string) => {
+      const step2 = createStep("step2", async (input: string, context) => {
         return new StepResponse({ result: input })
       })
-      const step3 = createStep("step3", async (input: string) => {
+      const step3 = createStep("step3", async (input: string, context) => {
         return new StepResponse({ result: input })
       })
 
@@ -102,6 +102,102 @@ describe("Workflow composer", () => {
       expect(step1Mock).toHaveBeenCalledTimes(1)
       expect(step2Mock).toHaveBeenCalledTimes(1)
       expect(step3Mock).toHaveBeenCalledTimes(1)
+    })
+
+    it("should succeed and pass down the transaction id and event group id when provided from the context", async function () {
+      let parentContext, childContext
+
+      const childWorkflowStep1 = createStep("step1", async (_, context) => {
+        childContext = context
+        return new StepResponse({ result: "step1" })
+      })
+      const childWorkflowStep2 = createStep(
+        "step2",
+        async (input: string, context) => {
+          return new StepResponse({ result: input })
+        }
+      )
+      const step1 = createStep("step3", async (input: string, context) => {
+        parentContext = context
+        return new StepResponse({ result: input })
+      })
+
+      const subWorkflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: WorkflowData<string>) {
+          childWorkflowStep1()
+          return childWorkflowStep2(input)
+        }
+      )
+
+      const workflow = createWorkflow(getNewWorkflowId(), function () {
+        const subWorkflowRes = subWorkflow.runAsStep({
+          input: "hi from outside",
+        })
+        return step1(subWorkflowRes.result)
+      })
+
+      const { result } = await workflow.run({
+        input: {},
+        context: {
+          eventGroupId: "eventGroupId",
+          transactionId: "transactionId",
+        },
+      })
+
+      expect(result).toEqual({ result: "hi from outside" })
+
+      expect(parentContext.transactionId).toEqual("transactionId")
+      expect(parentContext.transactionId).toEqual(childContext.transactionId)
+
+      expect(parentContext.eventGroupId).toEqual("eventGroupId")
+      expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)
+    })
+
+    it("should succeed and pass down the transaction id and event group id when not provided from the context", async function () {
+      let parentContext, childContext
+
+      const childWorkflowStep1 = createStep("step1", async (_, context) => {
+        childContext = context
+        return new StepResponse({ result: "step1" })
+      })
+      const childWorkflowStep2 = createStep(
+        "step2",
+        async (input: string, context) => {
+          return new StepResponse({ result: input })
+        }
+      )
+      const step1 = createStep("step3", async (input: string, context) => {
+        parentContext = context
+        return new StepResponse({ result: input })
+      })
+
+      const subWorkflow = createWorkflow(
+        getNewWorkflowId(),
+        function (input: WorkflowData<string>) {
+          childWorkflowStep1()
+          return childWorkflowStep2(input)
+        }
+      )
+
+      const workflow = createWorkflow(getNewWorkflowId(), function () {
+        const subWorkflowRes = subWorkflow.runAsStep({
+          input: "hi from outside",
+        })
+        return step1(subWorkflowRes.result)
+      })
+
+      const { result } = await workflow.run({
+        input: {},
+      })
+
+      expect(result).toEqual({ result: "hi from outside" })
+
+      expect(parentContext.transactionId).toBeTruthy()
+      expect(parentContext.transactionId).toEqual(childContext.transactionId)
+
+      expect(parentContext.eventGroupId).toBeTruthy()
+      expect(parentContext.eventGroupId).toEqual(childContext.eventGroupId)
     })
   })
 
