@@ -1,0 +1,1018 @@
+import { AcademicCapSolid } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Marketplace Recipe`,
+}
+
+# {metadata.title}
+
+This recipe provides the general steps to implement a marketplace in your Medusa application.
+
+<Note type="soon" title="In Development">
+
+This recipe is a work in progress, as some features are not ready yet in Medusa V2.
+
+</Note>
+
+## Overview
+
+A marketplace is an online commerce store that allows different vendors to sell their products within the same commerce system. Customers can purchase products from any of these vendors, and vendors can manage their orders separately.
+
+In Medusa, you can create a Marketplace Module that establishes the relations between a store, users, products, and orders. Using these relations, you can implement different stores for different users, with products and orders associated with that store.
+
+<Note title="Related use-case">
+
+[How Goodchef built subscription-based purchases with Medusa](https://medusajs.com/blog/foraged/).
+
+</Note>
+
+---
+
+## Create Relationships Between Data Models
+
+In a marketplace, an admin user has a store where they manage their products and orders, among other details.
+
+Create a Marketplace Module that holds and manages these relationships.
+
+<CardList items={[
+  {
+    href: "/v2/basics/modules-and-services",
+    title: "Create a Module",
+    text: "Learn how to create a module",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "/v2/advanced-development/modules/module-relationships",
+    title: "Module Relationships",
+    text: "Create relationships between modules.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+<Details summaryContent="Example">
+
+  In this section, you’ll create a Marketplace Module with the necessary relationships and functionalities in the main service.
+  
+  Start by creating the directory `src/modules/marketplace`.
+  
+  Then, create the file `src/modules/marketplace/models/store-user.ts` with the following content:
+  
+  ```ts title="src/modules/marketplace/models/store-user.ts"
+  import { BaseEntity } from "@medusajs/utils";
+  import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
+  
+  @Entity()
+  class StoreUser extends BaseEntity {
+    @PrimaryKey()
+    id!: string
+  
+    @Property({ columnType: "text" })
+    store_id: string
+  
+    @Property({ columnType: "text" })
+    user_id: string
+  }
+  
+  export default StoreUser
+  ```
+  
+  This creates a `StoreUser` data model with the `store_id` and `user_id` fields. These fields will be used later to establish relationships to the Store and User modules.
+  
+  Next, create the file `src/modules/marketplace/models/store-product.ts` with the following content:
+  
+  ```ts title="src/modules/marketplace/models/store-product.ts"
+  import { BaseEntity } from "@medusajs/utils";
+  import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
+  
+  @Entity()
+  class StoreProduct extends BaseEntity {
+    @PrimaryKey()
+    id!: string
+  
+    @Property({ columnType: "text" })
+    store_id: string
+  
+    @Property({ columnType: "text" })
+    product_id: string
+  }
+  
+  export default StoreProduct
+  ```
+  
+  This creates a `StoreProduct` data model with the `store_id` and `product_id` fields. These fields will be used later to establish relationships to the Store and Product modules.
+  
+  Finally, create the file `src/modules/marketplace/models/store-order.ts` with the following content:
+  
+  ```ts title="src/modules/marketplace/models/store-order.ts"
+  import { BaseEntity } from "@medusajs/utils";
+  import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
+  
+  @Entity()
+  class StoreOrder extends BaseEntity {
+    @PrimaryKey()
+    id!: string
+  
+    @Property({ columnType: "text" })
+    store_id: string
+  
+    @Property({ columnType: "text" })
+    order_id: string
+  
+    @Property({ columnType: "text" })
+    parent_order_id?: string
+  }
+  
+  export default StoreOrder
+  ```
+  
+  This creates a `StoreOrder` data model with the `store_id`, `order_id`, and `parent_order_id` fields. The `store_id` and `order_id` fields will be used to establish relationships to the Store and Order modules. You’ll learn about the use of `parent_order_id` in a later section.
+  
+  <Note title="Tip">
+
+  You can add relationships to data models of other modules in a similar manner.
+  
+  </Note>
+  
+  To reflect these changes on the database, create the migration `src/modules/marketplace/migrations/Migration20240514143248.ts` with the following content:
+  
+  ```ts title="src/modules/marketplace/migrations/Migration20240514143248.ts"
+  import { Migration } from '@mikro-orm/migrations';
+  
+  export class Migration20240514143248 extends Migration {
+  
+    async up(): Promise<void> {
+      this.addSql('create table if not exists "store_order" ("id" varchar(255) not null, "store_id" text not null, "order_id" text not null, "parent_order_id" text not null, constraint "store_order_pkey" primary key ("id"));');
+  
+      this.addSql('create table if not exists "store_product" ("id" varchar(255) not null, "store_id" text not null, "product_id" text not null, constraint "store_product_pkey" primary key ("id"));');
+  
+      this.addSql('create table if not exists "store_user" ("id" varchar(255) not null, "store_id" text not null, "user_id" text not null, constraint "store_user_pkey" primary key ("id"));');
+    }
+  
+    async down(): Promise<void> {
+      this.addSql('drop table if exists "store_order" cascade;');
+  
+      this.addSql('drop table if exists "store_product" cascade;');
+  
+      this.addSql('drop table if exists "store_user" cascade;');
+    }
+  
+  }
+  
+  ```
+  
+  You’ll run the migration after registering the module in the Medusa configurations.
+  
+  Next, you’ll create types that you’ll use throughout your customizations.
+  
+  Create the file `src/types/marketplace/index.ts` with the following content:
+  
+  ```ts title="src/types/marketplace/index.ts"
+  import { 
+    StoreDTO, 
+    UserDTO,
+    ProductDTO,
+    OrderDTO
+  } from "@medusajs/types"
+  
+  export type StoreUserDTO = {
+    id: string
+    store_id: string
+    user_id: string
+    store?: StoreDTO
+    user?: UserDTO
+  }
+  
+  export type StoreProductDTO = {
+    id: string
+    store_id: string
+    product_id: string
+    store?: StoreDTO
+    product?: ProductDTO
+  }
+  
+  export type StoreOrderDTO = {
+    id: string
+    store_id: string
+    order_id: string
+    parent_order_id?: string
+    store?: StoreDTO
+    order?: OrderDTO
+  }
+  
+  export type CreateStoreUserDTO = {
+    store_id: string
+    user_id: string
+  }
+  
+  export type CreateStoreProductDTO = {
+    store_id: string
+    product_id: string
+  }
+  
+  export type CreateStoreOrderDTO = {
+    store_id: string
+    order_id: string
+    parent_order_id?: string
+  }
+
+  ```
+  
+  Then, create the module’s main service at `src/modules/marketplace/service.ts` with the following content:
+
+export const mainServiceHighlights = [
+  ["48", "abstractModuleServiceFactory", "Extends the service factory to generate basic data management features."],
+  ["102", "relationships", "Defines relationships to the Store, User, Product, and Order modules."],
+  ["131", "create", "Method to create a `StoreUser`."],
+  ["141", "createStoreProduct", "Method to create a `StoreProduct`."],
+  ["150", "createStoreOrder", "Method to create a `StoreOrder`."]
+]
+  
+  ```ts title="src/modules/marketplace/service.ts" highlights={mainServiceHighlights} collapsibleLines="1-17" expandButtonLabel="Show Imports"
+  import { ModulesSdkUtils, Modules } from "@medusajs/utils"
+  import StoreUser from "./models/store-user";
+  import StoreProduct from "./models/store-product";
+  import StoreOrder from "./models/store-order";
+  import { 
+    CreateStoreOrderDTO, 
+    CreateStoreProductDTO, 
+    CreateStoreUserDTO, 
+    StoreOrderDTO, 
+    StoreProductDTO, 
+    StoreUserDTO
+  } from "../../types/marketplace";
+  import { 
+    ModuleJoinerConfig, 
+    ModulesSdkTypes
+  } from "@medusajs/types";
+  
+  type InjectedDependencies = {
+    storeUserService: ModulesSdkTypes.InternalModuleService<
+      any
+    >
+    storeProductService: ModulesSdkTypes.InternalModuleService<
+      any
+    >
+    storeOrderService: ModulesSdkTypes.InternalModuleService<
+      any
+    >
+  }
+  
+  type AllModelsDTO = {
+    StoreUser: {
+      dto: StoreUserDTO
+    },
+    StoreProduct: {
+      dto: StoreProductDTO
+    },
+    StoreOrder: {
+      dto: StoreOrderDTO
+    }
+  }
+  
+  const generateMethodsFor = [
+    StoreProduct,
+    StoreOrder
+  ]
+  
+  class MarketplaceModuleService extends ModulesSdkUtils
+    .abstractModuleServiceFactory<
+      InjectedDependencies,
+      StoreUserDTO,
+      AllModelsDTO
+    >(
+      StoreUser, generateMethodsFor
+    ) {
+      storeUserService_: ModulesSdkTypes.InternalModuleService<
+        StoreUser
+      >
+      storeProductService_: ModulesSdkTypes.InternalModuleService<
+        StoreProduct
+      >
+      storeOrderService_: ModulesSdkTypes.InternalModuleService<
+        StoreOrder
+      >
+  
+      constructor({ 
+        storeUserService, 
+        storeProductService, 
+        storeOrderService
+      }: InjectedDependencies) {
+        // @ts-ignore
+        super(...arguments)
+        this.storeUserService_ = storeUserService
+        this.storeProductService_ = storeProductService
+        this.storeOrderService_ = storeOrderService
+      }
+  
+      __joinerConfig(): ModuleJoinerConfig {
+        return {
+          serviceName: "marketplaceModuleService",
+          alias: [
+            {
+              name: ["store_user"],
+              args: {
+                entity: StoreUser.name
+              }
+            },
+            {
+              name: ["store_product"],
+              args: {
+                entity: StoreProduct.name,
+                methodSuffix: "StoreProducts"
+              }
+            },
+            {
+              name: ["store_order"],
+              args: {
+                entity: StoreOrder.name,
+                methodSuffix: "StoreOrders"
+              }
+            }
+          ],
+          relationships: [
+            {
+              serviceName: Modules.STORE,
+              alias: "store",
+              primaryKey: "id",
+              foreignKey: "store_id"
+            },
+            {
+              serviceName: Modules.USER,
+              alias: "user",
+              primaryKey: "id",
+              foreignKey: "user_id"
+            },
+            {
+              serviceName: Modules.PRODUCT,
+              alias: "product",
+              primaryKey: "id",
+              foreignKey: "product_id"
+            },
+            {
+              serviceName: Modules.ORDER,
+              alias: "order",
+              primaryKey: "id",
+              foreignKey: "order_id"
+            }
+          ]
+        }
+      }
+  
+      async create(
+        data: CreateStoreUserDTO
+      ): Promise<StoreUserDTO> {
+        const storeUser = await this.storeUserService_.create(
+          data
+        )
+  
+        return storeUser
+      }
+  
+      async createStoreProduct(
+        data: CreateStoreProductDTO
+      ): Promise<StoreProductDTO> {
+        const storeProduct = await this.storeProductService_
+          .create(data)
+  
+        return storeProduct
+      }
+  
+      async createStoreOrder(
+        data: CreateStoreOrderDTO
+      ): Promise<StoreOrderDTO> {
+        const storeOrder = await this.storeOrderService_
+          .create(data)
+  
+        return storeOrder
+      }
+    }
+  
+  export default MarketplaceModuleService
+  ```
+  
+  The module’s main service:
+  
+  - Extends the service factory to generate basic data management features.
+  - Defines relationships to the Store, User, Product, and Order modules.
+  - Defines `create` methods for the `StoreUser`, `StoreProduct`, and `StoreOrder` data models.
+  
+  Finally, create the module definition at `src/modules/marketplace/index.ts` with the following content:
+  
+  ```ts title="src/modules/marketplace/index.ts"
+  import MarketplaceModuleService from "./service";
+  
+  export default {
+    service: MarketplaceModuleService,
+  } 
+  ```
+  
+  To use the module, add it to the `modules` object in `medusa-config.js`:
+  
+  ```js title="medusa-config.js"
+  module.exports = defineConfig({
+    // ...
+    modules: {
+      marketplaceModuleService: {
+        resolve: "./modules/marketplace",
+        definition: {
+          isQueryable: true
+        }
+      },
+    }
+  })
+  ```
+  
+  Then, run the migrations of the module:
+  
+  ```bash npm2yarn
+  npx medusa migrations run
+  ```
+
+</Details>
+    
+
+---
+
+## Attach Users to Stores
+
+To attach admin users to their own stores, create a subscriber that listens to the `user.created` event and attaches the user to the store.
+
+<Card
+  href="/v2/basics/events-and-subscribers"
+  title="Create a Subscriber"
+  text="Learn how to create a subscriber in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+<Details summaryContent="Example">
+
+  Create the file `src/subscribers/user-created.ts` with the following content:
+  
+export const userSubscriberHighlights = [
+  ["10", "", "The event data payload with the created user's ID."],
+  ["24", "", "Retrieve the created user."],
+  ["26", "", "Create a store for that user using the Store Module."],
+  ["30", "", "Create a relationship between the user and the store by creating a `StoreUser` record."]
+]
+  
+  ```ts title="src/subscribers/user-created.ts" highlights={userSubscriberHighlights} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+  import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    IUserModuleService,
+    IStoreModuleService
+  } from "@medusajs/types"
+  import MarketplaceModuleService from "../modules/marketplace/service"
+  
+  export default async function userCreatedHandler({
+    data,
+    container
+  }: SubscriberArgs<{ id: string }>) {
+    const { id } = data.data || { data }
+    const userModuleService: IUserModuleService = container.resolve(
+      ModuleRegistrationName.USER
+    )
+    const storeModuleService: IStoreModuleService = container.resolve(
+      ModuleRegistrationName.STORE
+    )
+    const marketplaceModuleService: MarketplaceModuleService = container.resolve(
+      "marketplaceModuleService"
+    )
+  
+    const user = await userModuleService.retrieve(id)
+  
+    const store = await storeModuleService.create({
+      name: `${user.first_name}'s Store`
+    })
+    
+    const storeUser = await marketplaceModuleService.create({
+      store_id: store.id,
+      user_id: user.id
+    })
+  
+    console.log(`Created StoreUser ${storeUser.id}`)
+  }
+  
+  export const config: SubscriberConfig = {
+    event: "user.created",
+  }
+  ```
+  
+  This adds a subscriber to the `user.created` event. In the subscriber, you:
+  
+  - Retrieve the created user. The created user’s ID is passed in the event’s data payload.
+  - Create a store for that user using the Store Module.
+  - Create a relationship between the user and the store by creating a `StoreUser` record.
+  
+  To test it out, use the `medusa user` command to create a user:
+  
+  ```bash npm2yarn
+  npx medusa user -e my-admin@medusa-test.com -p supersecret
+  ```
+  
+  At the end of the output, you should see the message `Created StoreUser {store_user_id}` where the `{store_user_id}` is the ID of the created `StoreUser`.
+
+</Details>
+
+---
+
+## Attach Products to Stores
+
+Similar to the previous section, to attach products to stores, create a subscriber that listens to the `product.created` event. In the subscriber, you attach the product to the store it’s created in.
+
+<Card
+  href="/v2/basics/events-and-subscribers"
+  title="Create a Subscriber"
+  text="Learn how to create a subscriber in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+<Details summaryContent="Example">
+
+  Create the file `src/subscribers/product-created.ts` with the following content:
+
+export const productSubscriberHighlights = [
+  ["21", "", "Retrieve the created product."],
+  ["23", "", "This subscriber requires the store ID to be set in `product.metadata.store_id`. If not, the subscriber ends execution."],
+  ["27", "", "Create a relationship between the product and the store by creating a `StoreProduct` record."]
+]
+    
+  ```ts title="src/subscribers/product-created.ts" highlights={productSubscriberHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+  import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    IProductModuleService,
+  } from "@medusajs/types"
+  import MarketplaceModuleService from "../modules/marketplace/service"
+  
+  export default async function productCreateHandler({
+    data,
+    container
+  }: SubscriberArgs<{ id: string }>) {
+    const { id } = data.data || data
+    const productModuleService: IProductModuleService = container.resolve(
+      ModuleRegistrationName.PRODUCT
+    )
+    
+    const marketplaceModuleService: MarketplaceModuleService = container.resolve(
+      "marketplaceModuleService"
+    )
+  
+    const product = await productModuleService.retrieve(id)
+  
+    if (!product.metadata?.store_id) {
+      return
+    }
+  
+    await marketplaceModuleService.createStoreProduct({
+      store_id: product.metadata.store_id as string,
+      product_id: id
+    })
+  }
+  
+  export const config: SubscriberConfig = {
+    event: "product.created",
+  }
+  ```
+  
+  This adds a subscriber to the `product.created` event. In the subscriber, you:
+  
+  - Retrieve the created product.
+  - This subscriber requires the store ID to be set in `product.metadata.store_id`. If not, the subscriber ends execution.
+  - If the store ID is found, create a relationship between the product and the store by creating a `StoreProduct` record.
+  
+  To test it out, start the Medusa application:
+  
+  ```bash npm2yarn
+  npm run dev
+  ```
+  
+  Then, send an authenticated `POST` request to `/admin/products`:
+  
+  ```bash
+  curl -X POST 'http://localhost:9000/admin/products' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {jwt_token}' \
+  --data '{
+      "title": "My Shirt 13",
+      "metadata": {
+          "store_id": "store_01HXV74JCCAHA3F2X3EWZTZG5R"
+      }
+  }' 
+  ```
+  
+  This returns the created product. In the next section, you’ll implement the API route to fetch the products of a store.
+
+</Details>
+    
+
+---
+
+## Retrieve Store’s Products
+
+To allow admin users to view their store’s products, create an API route that uses the remote query to fetch the products based on the logged-in user’s store.
+
+<CardList items={[
+  {
+    href: "/v2/basics/api-routes",
+    title: "API Routes",
+    text: "Learn how to create an API Route in Medusa.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "/v2/advanced-development/modules/remote-query",
+    title: "Remote Query",
+    text: "Use the remote query to fetch data across modules.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+<Details summaryContent="Example">
+
+  Create the file `src/api/admin/marketplace/products/route.ts` with the following content:
+
+export const productRoutesHighlights = [
+  ["26", "", "Retrieve the store of the logged-in user."],
+  ["37", "", "Build a query that retrieves the products of that store."],
+  ["49", "", "Retrieve the products using remote query."]
+]
+    
+  ```ts title="src/api/admin/marketplace/products/route.ts" highlights={productRoutesHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse
+  } from "@medusajs/medusa"
+  import { RemoteQueryFunction } from "@medusajs/modules-sdk"
+  import { 
+    remoteQueryObjectFromString,
+    ContainerRegistrationKeys,
+    MedusaError
+  } from "@medusajs/utils"
+  import MarketplaceModuleService 
+    from "../../../../modules/marketplace/service"
+  
+  export async function GET(
+    req: AuthenticatedMedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const marketplaceModuleService: MarketplaceModuleService = 
+      req.scope.resolve(
+        "marketplaceModuleService"
+      )
+    const remoteQuery: RemoteQueryFunction = req.scope.resolve(
+      ContainerRegistrationKeys.REMOTE_QUERY
+    )
+  
+    const storeUsers = await marketplaceModuleService.list({
+      user_id: req.auth.actor_id
+    })
+  
+    if (!storeUsers.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        "This user doesn't have an associated store."
+      )
+    }
+  
+    const query = remoteQueryObjectFromString({
+      entryPoint: "store_product",
+      fields: [
+        "product.*"
+      ],
+      variables: {
+        filters: {
+          store_id: storeUsers[0].store_id
+        }
+      }
+    })
+  
+    const result = await remoteQuery(query)
+  
+    res.json({
+      store_id: storeUsers[0].store_id,
+      products: result.map((data) => data.product)
+    })
+  }
+  ```
+  
+  This creates a `GET` API route at `/admin/marketplace/products`. In the API route, you:
+  
+  - Retrieve the store of the logged-in user.
+  - Build a query that retrieves the products of that store.
+  - Retrieve the products using remote query and return them.
+  
+  Next, create the file `src/api/middlewares.ts` with the following content:
+  
+  ```ts title="src/api/middlewares.ts"
+  import { 
+    MiddlewaresConfig, 
+    authenticate
+  } from "@medusajs/medusa"
+  
+  export const config: MiddlewaresConfig = {
+    routes: [
+      {
+        matcher: "/admin/marketplace*",
+        middlewares: [
+          authenticate(
+            "admin", 
+            ["session", "bearer", "api-key"]
+          ),
+        ],
+      },
+    ],
+  }
+  ```
+  
+  This ensures that only authenticated admin users can access your API route.
+  
+  To test it out, start the Medusa application. Then, send a `GET` request to `/admin/marketplace/products`:
+  
+  ```bash
+  curl 'localhost:9000/admin/marketplace/products' \
+  -H 'Authorization: Bearer {jwt_token}'
+  ```
+  
+  This will return the product you created in the previous section, if the `{jwt_token}` belongs to the user of the same store ID.
+
+</Details>
+    
+
+---
+
+## Split Orders Based on Stores
+
+<Note type="soon">
+
+While this section showcases the implementation, the `order.placed` event is still not emitted in Medusa V2.
+
+</Note>
+
+An order may contain items from different stores. To ensure that users can only view and manage their orders, create a subscriber that listens to the `order.placed` event and handles splitting the order into multiple orders based on the items’ stores.
+
+<Card
+  href="/v2/basics/events-and-subscribers"
+  title="Create a Subscriber"
+  text="Learn how to create a subscriber in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+<Details summaryContent="Example">
+
+  Create the file `src/subscribers/order-created.ts` with the following content:
+
+export const orderSubscriberHighlights = [
+  ["35", "", "Loop over the created order’s items."],
+  ["57", "", "Group the items by their store ID."],
+  ["72", "", "If the items have the same store ID, then associate the created order with the store."],
+  ["88", "", "If there are items from more than one store in the order, create child orders and associate each of them with the store."],
+  ["91", "parent_order_id", "The `parent_order_id` field in the `StoreOrder` data model points to the original order."]
+]
+    
+  ```ts title="src/subscribers/order-created.ts" highlights={orderSubscriberHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
+  import type { 
+    SubscriberArgs, 
+    SubscriberConfig
+  } from "@medusajs/medusa"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { 
+    IOrderModuleService,
+    CreateOrderDTO
+  } from "@medusajs/types"
+  import MarketplaceModuleService 
+    from "../modules/marketplace/service"
+  import { createOrdersWorkflow } from "@medusajs/core-flows"
+  
+  export default async function orderCreatedHandler({
+    data,
+    container
+  }: SubscriberArgs<{ id: string }>) {
+    const { id } = data.data || data
+    const orderModuleService: IOrderModuleService = 
+      container.resolve(
+        ModuleRegistrationName.ORDER
+      )
+    
+    const marketplaceModuleService: MarketplaceModuleService = 
+      container.resolve(
+        "marketplaceModuleService"
+      )
+  
+    const storeToOrders: Record<string, CreateOrderDTO> = {}
+  
+    const order = await orderModuleService.retrieve(id, {
+      relations: ["items"]
+    })
+  
+    await Promise.all(order.items?.map(async (item) => {
+      const storeProduct = await marketplaceModuleService
+        .listStoreProducts({
+          product_id: item.product_id
+        })
+  
+      if (!storeProduct.length) {
+        return
+      }
+  
+      const storeId = storeProduct[0].store_id
+      
+      if (!storeToOrders[storeId]) {
+        const { id, ...orderDetails } = order
+        storeToOrders[storeId] = {
+          ...orderDetails,
+          items: []
+        }
+      }
+  
+      const { id, ...itemDetails } = item
+  
+      storeToOrders[storeId].items.push(itemDetails)
+    }))
+  
+    const storeToOrdersKeys = Object.keys(storeToOrders)
+  
+    if (!storeToOrdersKeys.length) {
+      return
+    }
+  
+    if (
+      storeToOrdersKeys.length === 1 && 
+      storeToOrders[0].items.length === order.items.length
+    ) {
+      // The order is composed of items from one store, so 
+      // associate the order as-is with the store.
+      await marketplaceModuleService.createStoreOrder({
+        store_id: storeToOrdersKeys[0],
+        order_id: order.id
+      })
+  
+      return
+    }
+  
+    // create store orders for each child order
+    await Promise.all(
+      storeToOrdersKeys.map(async (storeId) => {
+        const { result } = await createOrdersWorkflow(container)
+          .run({
+            input: storeToOrders[storeId]
+          })
+  
+        await marketplaceModuleService.createStoreOrder({
+          store_id: storeId,
+          order_id: result.id,
+          parent_order_id: order.id
+        })
+      })
+    )
+  }
+  
+  export const config: SubscriberConfig = {
+    event: "order.placed",
+  }
+  ```
+  
+  This adds a subscriber to the `order.placed` event. In the subscriber, you:
+  
+  - Loop over the created order’s items.
+  - Group the items by their store ID.
+  - If the items have the same store ID, then associate the created order with the store.
+  - If there are items from more than one store in the order, create child orders and associate each of them with the store. Here, you use the `parent_order_id` field in the `StoreOrder` data model to point to the original order.
+  
+  To test this out, create an order in your store. That will run the subscriber and create the child orders.
+  
+  The next section covers how to retrieve the store’s orders.
+
+</Details>
+    
+
+---
+
+## Retrieve Store’s Orders
+
+Similar to products, to allow admin users to view their store’s orders, create an API route that uses the remote query to fetch the orders based on the logged-in user’s store.
+
+<CardList items={[
+  {
+    href: "/v2/basics/api-routes",
+    title: "API Routes",
+    text: "Learn how to create an API Route in Medusa.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "/v2/advanced-development/modules/remote-query",
+    title: "Remote Query",
+    text: "Use the remote query to fetch data across modules.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+<Details summaryContent="Example">
+
+  Create the file `src/api/admin/marketplace/orders/route.ts` with the following content:
+
+export const orderRoutesHighlights = [
+  ["25", "", "Retrieve the store of the logged-in user."],
+  ["29", "", "Build a query that retrieves the orders of that store."],
+  ["41", "", "Retrieve the orders using remote query."]
+]
+    
+  ```ts title="src/api/admin/marketplace/orders/route.ts" highlights={orderRoutesHighlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse
+  } from "@medusajs/medusa"
+  import { RemoteQueryFunction } from "@medusajs/modules-sdk"
+  import { 
+    remoteQueryObjectFromString,
+    ContainerRegistrationKeys,
+  } from "@medusajs/utils"
+  import MarketplaceModuleService 
+    from "../../../../modules/marketplace/service"
+  
+  export async function GET(
+    req: AuthenticatedMedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const marketplaceModuleService: MarketplaceModuleService = 
+      req.scope.resolve(
+        "marketplaceModuleService"
+      )
+    const remoteQuery: RemoteQueryFunction = req.scope.resolve(
+      ContainerRegistrationKeys.REMOTE_QUERY
+    )
+  
+    const storeUsers = await marketplaceModuleService.list({
+      user_id: req.auth.actor_id
+    })
+  
+    const query = remoteQueryObjectFromString({
+      entryPoint: "store_order",
+      fields: [
+        "order.*"
+      ],
+      variables: {
+        filters: {
+          store_id: storeUsers[0].store_id
+        }
+      }
+    })
+  
+    const result = await remoteQuery(query)
+  
+    res.json({
+      orders: result.map((data) => data.order)
+    })
+  }
+  
+  ```
+  
+  This creates a `GET` API route at `/admin/marketplace/orders`. In the API route, you:
+  
+  - Retrieve the store of the logged-in user.
+  - Build a query that retrieves the orders of that store.
+  - Retrieve the orders using remote query and return them.
+  
+  To test it out, start the Medusa application. Then, send a `GET` request to `/admin/marketplace/orders`:
+  
+  ```bash
+  curl 'localhost:9000/admin/marketplace/orders' \
+  -H 'Authorization: Bearer {jwt_token}'
+  ```
+  
+  This will return the orders you created in the previous section if the `{jwt_token}` belongs to the user of the same store ID.
+
+</Details>
+
+---
+
+## Customize Storefront
+
+Medusa provides a Next.js storefront to use with your application. You can either customize it or build your own to represent your marketplace features.
+
+For example, you can create an API route that retrieves available stores and another API route that retrieves the products of each store using the remote query as done in previous sections.
+
+<CardList items={[
+  {
+    href: "/nextjs-starter",
+    title: "Next.js Storefront",
+    text: "Learn how to install and customize the Next.js storefront.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/storefront-development/tips",
+    title: "Storefront Tips",
+    text: "Find tips on developing a custom storefront.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
