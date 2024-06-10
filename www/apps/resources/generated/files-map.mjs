@@ -872,6 +872,10 @@ export const filesMap = [
     "pathname": "/references/[...slug]"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
+    "pathname": "/storefront-development/cart/context"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/cart/create/page.mdx",
     "pathname": "/storefront-development/cart/create"
   },
@@ -894,6 +898,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/storefront-development/page.mdx",
     "pathname": "/storefront-development"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/context/page.mdx",
+    "pathname": "/storefront-development/regions/context"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/regions/list/page.mdx",

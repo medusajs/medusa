@@ -7130,6 +7130,13 @@ export const generatedSidebar = [
             "path": "/storefront-development/regions/store-retrieve-region",
             "title": "Store and Retrieve Regions",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/regions/context",
+            "title": "Region React Context",
+            "children": []
           }
         ]
       },
@@ -7151,6 +7158,13 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/cart/retrieve",
             "title": "Retrieve Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/context",
+            "title": "Cart React Context",
             "children": []
           },
           {

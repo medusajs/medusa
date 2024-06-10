@@ -1803,6 +1803,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/storefront-development/regions/store-retrieve-region",
             title: "Store and Retrieve Regions",
           },
+          {
+            path: "/storefront-development/regions/context",
+            title: "Region React Context",
+          },
         ],
       },
       {
@@ -1816,6 +1820,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/cart/retrieve",
             title: "Retrieve Cart",
+          },
+          {
+            path: "/storefront-development/cart/context",
+            title: "Cart React Context",
           },
           {
             path: "/storefront-development/cart/update",
