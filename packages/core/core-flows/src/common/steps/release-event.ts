@@ -9,7 +9,7 @@ export const releaseEventsStep = createStep(
       ModuleRegistrationName.EVENT_BUS,
       { allowUnregistered: true }
     )
-    if (!eventBusService) {
+    if (!eventBusService || !eventGroupId) {
       return
     }
 
