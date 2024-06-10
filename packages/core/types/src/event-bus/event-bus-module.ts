@@ -20,4 +20,6 @@ export interface IEventBusModuleService {
     subscriber: Subscriber,
     context?: SubscriberContext
   ): this
+
+  releaseGroupedEvents(eventGroupId: string): Promise<void>
 }

@@ -134,11 +134,11 @@ export interface StepExecutionContext {
   /**
    * A string indicating the ID of the group to aggregate the events to be emitted at a later point.
    */
-  eventGroupId?: string
+  eventGroupId: string
   /**
    * A string indicating the ID of the current transaction.
    */
-  transactionId?: string
+  transactionId: string
 }
 
 export type WorkflowTransactionContext = StepExecutionContext &
