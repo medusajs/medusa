@@ -13,7 +13,6 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { AdminBatchVariantInventoryItemsType } from "./validators"
-import { refetchEntity } from "../../utils/refetch-entity"
 
 const isPricing = (fieldName: string) =>
   fieldName.startsWith("variants.prices") ||
@@ -54,6 +53,7 @@ export const remapProductResponse = (
   return {
     ...product,
     variants: product.variants?.map(remapVariantResponse),
+    // TODO: Remove any once all typings are cleaned up
   } as any
 }
 
@@ -79,20 +79,8 @@ export const remapVariantResponse = (
   }
 
   delete (resp as any).price_set
+  // TODO: Remove any once all typings are cleaned up
   return resp as any
-}
-
-export const refetchProduct = async (
-  productId: string,
-  scope: MedusaContainer,
-  fields: string[]
-) => {
-  return refetchEntity(
-    "product",
-    productId,
-    scope,
-    remapKeysForProduct(fields ?? [])
-  )
 }
 
 export const refetchVariant = async (

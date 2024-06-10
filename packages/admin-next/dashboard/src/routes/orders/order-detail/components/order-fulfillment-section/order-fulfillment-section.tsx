@@ -1,10 +1,5 @@
 import { Buildings, XCircle } from "@medusajs/icons"
-import {
-  AdminOrder,
-  FulfillmentDTO,
-  OrderLineItemDTO,
-  ProductVariantDTO,
-} from "@medusajs/types"
+import { AdminOrder, FulfillmentDTO, OrderLineItemDTO } from "@medusajs/types"
 import {
   Container,
   Copy,
@@ -49,7 +44,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: OrderLineItemDTO & { variant: ProductVariantDTO }
+  item: OrderLineItemDTO & { variant: HttpTypes.AdminProductVariant }
   currencyCode: string
 }) => {
   return (

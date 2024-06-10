@@ -170,59 +170,59 @@ export interface ProductVariantDTO {
   /**
    * The SKU of the product variant.
    */
-  sku?: string | null
+  sku: string | null
   /**
    * The barcode of the product variant.
    */
-  barcode?: string | null
+  barcode: string | null
   /**
    * The EAN of the product variant.
    */
-  ean?: string | null
+  ean: string | null
   /**
    * The UPC of the product variant.
    */
-  upc?: string | null
+  upc: string | null
   /**
    * Whether the product variant can be ordered when it's out of stock.
    */
-  allow_backorder?: boolean
+  allow_backorder: boolean
   /**
    * Whether the product variant's inventory should be managed by the core system.
    */
-  manage_inventory?: boolean
+  manage_inventory: boolean
   /**
    * The HS Code of the product variant.
    */
-  hs_code?: string | null
+  hs_code: string | null
   /**
    * The origin country of the product variant.
    */
-  origin_country?: string | null
+  origin_country: string | null
   /**
    * The MID Code of the product variant.
    */
-  mid_code?: string | null
+  mid_code: string | null
   /**
    * The material of the product variant.
    */
-  material?: string | null
+  material: string | null
   /**
    * The weight of the product variant.
    */
-  weight?: number | null
+  weight: number | null
   /**
    * The length of the product variant.
    */
-  length?: number | null
+  length: number | null
   /**
    * The height of the product variant.
    */
-  height?: number | null
+  height: number | null
   /**
    * The width of the product variant.
    */
-  width?: number | null
+  width: number | null
   /**
    * The associated product options.
    *
@@ -232,7 +232,7 @@ export interface ProductVariantDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null
   /**
    * The associated product.
    *
@@ -242,7 +242,7 @@ export interface ProductVariantDTO {
   /**
    * The associated product id.
    */
-  product_id?: string | null
+  product_id: string | null
   /**
    * he ranking of the variant among other variants associated with the product.
    */

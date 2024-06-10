@@ -10,7 +10,6 @@ import { invites } from "./invites"
 import { payments } from "./payments"
 import { priceLists } from "./price-lists"
 import { productTypes } from "./product-types"
-import { products } from "./products"
 import { promotions } from "./promotions"
 import { reservations } from "./reservations"
 import { salesChannels } from "./sales-channels"
@@ -42,7 +41,6 @@ export const client = {
   reservations: reservations,
   fulfillments: fulfillments,
   fulfillmentProviders: fulfillmentProviders,
-  products: products,
   productTypes: productTypes,
   priceLists: priceLists,
   stockLocations: stockLocations,

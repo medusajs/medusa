@@ -13,9 +13,9 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { PricingProductsRecordType } from "../../../common/schemas"
 import { PricingCreateSchemaType } from "./schema"
+import { HttpTypes } from "@medusajs/types"
 
 type PricingProductsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -132,7 +132,7 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<ExtendedProductDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = () => {
   const base = useProductTableColumns()

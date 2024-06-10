@@ -12,7 +12,7 @@ export const POST = async (
 ) => {
   const productId = req.params.id
 
-  const normalizedInput: any = {
+  const normalizedInput = {
     create: req.validatedBody.create?.map((c) => ({
       ...c,
       product_id: productId,

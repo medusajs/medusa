@@ -2,6 +2,7 @@ import {
   CreatePriceListPriceDTO,
   PriceListDTO,
   UpdatePriceListPriceDTO,
+  HttpTypes,
 } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
 import { UseFormReturn, useForm, useWatch } from "react-hook-form"
@@ -23,7 +24,6 @@ import {
 } from "../../../../../hooks/api/price-lists"
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import {
   PricingProductsRecordSchema,
@@ -33,7 +33,7 @@ import { isProductRow } from "../../../common/utils"
 
 type PricingProductPricesFormProps = {
   priceList: PriceListDTO
-  products: ExtendedProductDTO[]
+  products: HttpTypes.AdminProduct[]
 }
 
 const PricingProductPricesSchema = z.object({
@@ -245,7 +245,7 @@ export const PricingProductPricesForm = ({
 }
 
 function initDefaultValues(
-  products: ExtendedProductDTO[],
+  products: HttpTypes.AdminProduct[],
   existingProducts: any,
   form: UseFormReturn<z.infer<typeof PricingProductPricesSchema>>,
   record: VariantsPriceRecord

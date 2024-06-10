@@ -9,6 +9,7 @@ import {
   BaseProductTag,
   BaseProductType,
   BaseProductVariant,
+  ProductStatus,
 } from "../common"
 
 export interface AdminProductCategory extends BaseProductCategory {
@@ -29,3 +30,4 @@ export interface AdminProduct
   sales_channels?: AdminSalesChannel[] | null
   variants?: AdminProductVariant[] | null
 }
+export type AdminProductStatus = ProductStatus

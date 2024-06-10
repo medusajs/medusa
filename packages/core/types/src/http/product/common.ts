@@ -10,7 +10,7 @@ export interface BaseProduct {
   subtitle: string | null
   description: string | null
   is_giftcard: boolean
-  status: ProductStatus | null
+  status: ProductStatus
   thumbnail: string | null
   width: number | null
   weight: number | null
@@ -55,7 +55,7 @@ export interface BaseProductVariant {
   height: number | null
   width: number | null
   options: BaseProductOptionValue[] | null
-  product?: BaseProduct
+  product?: BaseProduct | null
   product_id?: string
   variant_rank?: number | null
   created_at: string
@@ -98,8 +98,8 @@ export interface BaseProductType {
 export interface BaseProductOption {
   id: string
   title: string
-  product?: BaseProduct
-  product_id?: string
+  product?: BaseProduct | null
+  product_id?: string | null
   values?: BaseProductOptionValue[]
   metadata?: Record<string, unknown> | null
   created_at?: string
@@ -119,8 +119,8 @@ export interface BaseProductImage {
 export interface BaseProductOptionValue {
   id: string
   value: string
-  option?: BaseProductOption
-  option_id?: string
+  option?: BaseProductOption | null
+  option_id?: string | null
   metadata?: Record<string, unknown> | null
   created_at?: string
   updated_at?: string
@@ -132,6 +132,7 @@ export interface BaseProductParams
     BaseFilterable<BaseProductParams> {
   q?: string
   status?: ProductStatus | ProductStatus[]
+  sales_channel_id?: string | string[]
   title?: string | string[]
   handle?: string | string[]
   id?: string | string[]

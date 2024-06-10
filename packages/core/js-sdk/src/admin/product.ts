@@ -8,7 +8,7 @@ export class Product {
     this.client = client
   }
 
-  async batchCreate(
+  async batch(
     body: HttpTypes.AdminBatchProductRequest,
     query?: SelectParams,
     headers?: ClientHeaders
@@ -44,7 +44,7 @@ export class Product {
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${id}`,
       {
         method: "POST",
@@ -58,7 +58,7 @@ export class Product {
     queryParams?: HttpTypes.AdminProductParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductListResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductListResponse>(
       `/admin/products`,
       {
         headers,
@@ -67,7 +67,7 @@ export class Product {
     )
   }
   async retrieve(id: string, query?: SelectParams, headers?: ClientHeaders) {
-    return this.client.fetch<HttpTypes.AdminProductResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${id}`,
       {
         query,
@@ -76,7 +76,7 @@ export class Product {
     )
   }
   async delete(id: string, headers?: ClientHeaders) {
-    return this.client.fetch<HttpTypes.AdminProductDeleteResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductDeleteResponse>(
       `/admin/products/${id}`,
       {
         method: "DELETE",
@@ -85,7 +85,7 @@ export class Product {
     )
   }
 
-  async batchCreateVariants(
+  async batchVariants(
     productId: string,
     body: HttpTypes.AdminBatchProductVariantRequest,
     query?: SelectParams,
@@ -101,13 +101,13 @@ export class Product {
       }
     )
   }
-  async createVariants(
+  async createVariant(
     productId: string,
     body: HttpTypes.AdminCreateProductVariant,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminProductVariantResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${productId}/variants`,
       {
         method: "POST",
@@ -117,14 +117,14 @@ export class Product {
       }
     )
   }
-  async updateVariants(
+  async updateVariant(
     productId: string,
     id: string,
     body: HttpTypes.AdminUpdateProductVariant,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductVariantResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "POST",
@@ -139,7 +139,7 @@ export class Product {
     queryParams?: HttpTypes.AdminProductVariantParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductVariantListResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductVariantListResponse>(
       `/admin/products/${productId}/variants`,
       {
         headers,
@@ -147,13 +147,13 @@ export class Product {
       }
     )
   }
-  async retrieveVariants(
+  async retrieveVariant(
     productId: string,
     id: string,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductVariantResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductVariantResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         query,
@@ -161,8 +161,8 @@ export class Product {
       }
     )
   }
-  async deleteVariants(productId: string, id: string, headers?: ClientHeaders) {
-    return this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
+  async deleteVariant(productId: string, id: string, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminProductVariantDeleteResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "DELETE",
@@ -170,13 +170,13 @@ export class Product {
       }
     )
   }
-  async createOptions(
+  async createOption(
     productId: string,
     body: HttpTypes.AdminCreateProductOption,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminProductOptionResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${productId}/options`,
       {
         method: "POST",
@@ -186,14 +186,14 @@ export class Product {
       }
     )
   }
-  async updateOptions(
+  async updateOption(
     productId: string,
     id: string,
     body: HttpTypes.AdminUpdateProductOption,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductOptionResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductResponse>(
       `/admin/products/${productId}/variants/${id}`,
       {
         method: "POST",
@@ -208,7 +208,7 @@ export class Product {
     queryParams?: HttpTypes.AdminProductOptionParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductOptionListResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductOptionListResponse>(
       `/admin/products/${productId}/options`,
       {
         headers,
@@ -216,13 +216,13 @@ export class Product {
       }
     )
   }
-  async retrieveOptions(
+  async retrieveOption(
     productId: string,
     id: string,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
-    return this.client.fetch<HttpTypes.AdminProductOptionResponse>(
+    return await this.client.fetch<HttpTypes.AdminProductOptionResponse>(
       `/admin/products/${productId}/options/${id}`,
       {
         query,
@@ -230,8 +230,8 @@ export class Product {
       }
     )
   }
-  async deleteOptions(productId: string, id: string, headers?: ClientHeaders) {
-    return this.client.fetch<HttpTypes.AdminProductOptionDeleteResponse>(
+  async deleteOption(productId: string, id: string, headers?: ClientHeaders) {
+    return await this.client.fetch<HttpTypes.AdminProductOptionDeleteResponse>(
       `/admin/products/${productId}/options/${id}`,
       {
         method: "DELETE",

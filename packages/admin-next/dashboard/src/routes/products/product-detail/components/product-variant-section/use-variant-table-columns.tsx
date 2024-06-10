@@ -1,5 +1,4 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Product, ProductVariant } from "@medusajs/medusa"
 import { Badge, usePrompt } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -8,13 +7,14 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 const VariantActions = ({
   variant,
   product,
 }: {
-  variant: ProductVariant
-  product: Product
+  variant: HttpTypes.AdminProductVariant
+  product: HttpTypes.AdminProduct
 }) => {
   const { mutateAsync } = useDeleteVariant(product.id, variant.id)
   const { t } = useTranslation()
@@ -63,9 +63,11 @@ const VariantActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<ProductVariant>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProductVariant>()
 
-export const useProductVariantTableColumns = (product?: Product) => {
+export const useProductVariantTableColumns = (
+  product?: HttpTypes.AdminProduct
+) => {
   const { t } = useTranslation()
 
   const optionColumns = useMemo(() => {
@@ -141,7 +143,9 @@ export const useProductVariantTableColumns = (product?: Product) => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { product } = table.options.meta as { product: Product }
+          const { product } = table.options.meta as {
+            product: HttpTypes.AdminProduct
+          }
 
           return <VariantActions variant={row.original} product={product} />
         },

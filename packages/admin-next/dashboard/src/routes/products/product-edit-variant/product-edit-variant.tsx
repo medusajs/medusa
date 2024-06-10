@@ -1,4 +1,3 @@
-import { ProductVariant } from "@medusajs/medusa"
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { json, useLoaderData, useParams } from "react-router-dom"
@@ -6,6 +5,7 @@ import { RouteDrawer } from "../../../components/route-modal"
 import { useProduct } from "../../../hooks/api/products"
 import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 import { editProductVariantLoader } from "./loader"
+import { HttpTypes } from "@medusajs/types"
 
 export const ProductEditVariant = () => {
   const initialData = useLoaderData() as Awaited<
@@ -20,7 +20,7 @@ export const ProductEditVariant = () => {
   })
 
   const variant = product?.variants.find(
-    (v: ProductVariant) => v.id === variant_id
+    (v: HttpTypes.AdminProductVariant) => v.id === variant_id
   )
 
   if (!isLoading && !variant) {
@@ -44,7 +44,7 @@ export const ProductEditVariant = () => {
       {ready && (
         <ProductEditVariantForm
           product={product}
-          variant={variant as unknown as ProductVariant}
+          variant={variant as unknown as HttpTypes.AdminProductVariant}
         />
       )}
     </RouteDrawer>

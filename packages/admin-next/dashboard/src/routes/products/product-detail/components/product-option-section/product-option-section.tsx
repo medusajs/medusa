@@ -1,17 +1,17 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Badge, Container, Heading, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProductOption } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 const OptionActions = ({
   product,
   option,
 }: {
-  product: Product
-  option: any
+  product: HttpTypes.AdminProduct
+  option: HttpTypes.AdminProductOption
 }) => {
   const { t } = useTranslation()
   const { mutateAsync } = useDeleteProductOption(product.id, option.id)
@@ -61,7 +61,7 @@ const OptionActions = ({
 }
 
 type ProductOptionSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductOptionSection = ({
@@ -88,12 +88,12 @@ export const ProductOptionSection = ({
         />
       </div>
 
-      {product.options.map((option) => {
+      {product.options?.map((option) => {
         return (
           <SectionRow
             title={option.title}
             key={option.id}
-            value={option.values.map((val) => {
+            value={option.values?.map((val) => {
               return (
                 <Badge
                   key={val.value}
