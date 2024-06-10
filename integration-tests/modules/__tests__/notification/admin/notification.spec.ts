@@ -167,12 +167,10 @@ medusaIntegrationTestRunner({
 
           await eventBus.emit({
             eventName: "order.created",
-            body: {
-              data: {
-                order: {
-                  id: "1234",
-                  email: "test@medusajs.com",
-                },
+            data: {
+              order: {
+                id: "1234",
+                email: "test@medusajs.com",
               },
             },
           })

@@ -23,7 +23,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     await eventBus.emit(
       {
         eventName: PaymentWebhookEvents.WebhookReceived,
-        body: { data: event },
+        data: event,
       },
       {
         delay: options.webhook_delay || 5000,

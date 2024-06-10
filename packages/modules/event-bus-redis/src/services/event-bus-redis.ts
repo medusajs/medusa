@@ -148,6 +148,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     }
 
     for (const [groupId, events] of groupEventsMap.entries()) {
+      if (!events?.length) {
+        continue
+      }
+
       const eventsData = this.buildEvents(events, options)
 
       promises.push(this.groupEvents(groupId, eventsData))

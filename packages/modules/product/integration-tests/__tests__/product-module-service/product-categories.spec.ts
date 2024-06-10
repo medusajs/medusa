@@ -292,7 +292,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith({
-            body: { data: { id: category.id } },
+            data: { id: category.id },
             eventName: "product-category.created",
           })
         })
@@ -382,7 +382,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith({
-            body: { data: { id: productCategoryZero.id } },
+            data: { id: productCategoryZero.id },
             eventName: "product-category.updated",
           })
         })
@@ -550,7 +550,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith({
-            body: { data: { id: productCategoryOne.id } },
+            data: { id: productCategoryOne.id },
             eventName: "product-category.deleted",
           })
         })
