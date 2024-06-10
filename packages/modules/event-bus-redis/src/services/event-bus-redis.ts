@@ -1,13 +1,7 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import { EmitData, Logger, Message } from "@medusajs/types"
 import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
-import {
-  BulkJobOptions,
-  FlowProducer,
-  JobsOptions,
-  Queue,
-  Worker,
-} from "bullmq"
+import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
 
@@ -50,11 +44,6 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       ...(moduleOptions.queueOptions ?? {}),
       connection: eventBusRedisConnection,
     })
-
-    const eventGroupIdQueue = new Queue("eventGroupId1", {})
-    eventGroupIdQueue.add("eventGroupId1", { eventGroupId: "eventGroupId1" })
-
-    const flow = FlowProducer()
 
     // Register our worker to handle emit calls
     const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
