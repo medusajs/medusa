@@ -4,6 +4,7 @@ import {
   MedusaContainer,
   ProductDTO,
   ProductVariantDTO,
+  HttpTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -12,6 +13,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { AdminBatchVariantInventoryItemsType } from "./validators"
+import { refetchEntity } from "../../utils/refetch-entity"
 
 const isPricing = (fieldName: string) =>
   fieldName.startsWith("variants.prices") ||
@@ -46,19 +48,23 @@ export const remapKeysForVariant = (selectFields: string[]) => {
   return [...variantFields, ...pricingFields]
 }
 
-export const remapProductResponse = (product: ProductDTO) => {
+export const remapProductResponse = (
+  product: ProductDTO
+): HttpTypes.AdminProduct => {
   return {
     ...product,
     variants: product.variants?.map(remapVariantResponse),
-  }
+  } as any
 }
 
-export const remapVariantResponse = (variant: ProductVariantDTO) => {
+export const remapVariantResponse = (
+  variant: ProductVariantDTO
+): HttpTypes.AdminProductVariant => {
   if (!variant) {
     return variant
   }
 
-  return {
+  const resp = {
     ...variant,
     prices: (variant as any).price_set?.prices?.map((price) => ({
       id: price.id,
@@ -70,8 +76,10 @@ export const remapVariantResponse = (variant: ProductVariantDTO) => {
       created_at: price.created_at,
       updated_at: price.updated_at,
     })),
-    price_set: undefined,
   }
+
+  delete (resp as any).price_set
+  return resp as any
 }
 
 export const refetchProduct = async (
@@ -79,17 +87,12 @@ export const refetchProduct = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product",
-    variables: {
-      filters: { id: productId },
-    },
-    fields: remapKeysForProduct(fields ?? []),
-  })
-
-  const products = await remoteQuery(queryObject)
-  return products[0]
+  return refetchEntity(
+    "product",
+    productId,
+    scope,
+    remapKeysForProduct(fields ?? [])
+  )
 }
 
 export const refetchVariant = async (

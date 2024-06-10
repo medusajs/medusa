@@ -3,25 +3,16 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import {
-  AdminBatchUpdateProductVariantType,
-  AdminCreateProductType,
-} from "../../../validators"
-import { BatchMethodRequest } from "@medusajs/types"
 import { refetchBatchVariants, remapVariantResponse } from "../../../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<
-    BatchMethodRequest<
-      AdminCreateProductType,
-      AdminBatchUpdateProductVariantType
-    >
-  >,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchProductVariantRequest>,
+  res: MedusaResponse<HttpTypes.AdminBatchProductVariantResponse>
 ) => {
   const productId = req.params.id
 
-  const normalizedInput = {
+  const normalizedInput: any = {
     create: req.validatedBody.create?.map((c) => ({
       ...c,
       product_id: productId,
@@ -31,8 +22,7 @@ export const POST = async (
       product_id: productId,
     })),
     delete: req.validatedBody.delete,
-    // TODO: Fix types
-  } as any
+  }
 
   const { result } = await batchProductVariantsWorkflow(req.scope).run({
     input: normalizedInput,
