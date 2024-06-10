@@ -1,12 +1,20 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
-import { RemoteJoinerQuery } from "@medusajs/types"
+import {
+  Context,
+  IWorkflowEngineService,
+  RemoteJoinerQuery,
+} from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import {
+  eventGroupWorkflowId,
+  workflowEventGroupIdStep1Mock,
+  workflowEventGroupIdStep2Mock,
+} from "../__fixtures__/workflow_event_group_id"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -59,6 +67,68 @@ describe("Workflow Orchestrator module", function () {
     })
 
     afterEach(afterEach_)
+
+    it("should execute an async workflow keeping track of the event group id provided in the context", async () => {
+      const eventGroupId = "event-group-id"
+
+      await workflowOrcModule.run(eventGroupWorkflowId, {
+        input: {},
+        context: {
+          eventGroupId,
+          transactionId: "transaction_id",
+        },
+        throwOnError: true,
+      })
+
+      await workflowOrcModule.setStepSuccess({
+        idempotencyKey: {
+          action: TransactionHandlerType.INVOKE,
+          stepId: "step_1_event_group_id_background",
+          workflowId: eventGroupWorkflowId,
+          transactionId: "transaction_id",
+        },
+        stepResponse: { hey: "oh" },
+      })
+
+      // Validate context event group id
+      expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+        expect.objectContaining({ eventGroupId })
+      )
+      expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+        expect.objectContaining({ eventGroupId })
+      )
+    })
+
+    it("should execute an async workflow keeping track of the event group id that has been auto generated", async () => {
+      await workflowOrcModule.run(eventGroupWorkflowId, {
+        input: {},
+        context: {
+          transactionId: "transaction_id",
+        },
+        throwOnError: true,
+      })
+
+      await workflowOrcModule.setStepSuccess({
+        idempotencyKey: {
+          action: TransactionHandlerType.INVOKE,
+          stepId: "step_1_event_group_id_background",
+          workflowId: eventGroupWorkflowId,
+          transactionId: "transaction_id",
+        },
+        stepResponse: { hey: "oh" },
+      })
+
+      const generatedEventGroupId = (workflowEventGroupIdStep1Mock.mock
+        .calls[0][1] as unknown as Context)!.eventGroupId
+
+      // Validate context event group id
+      expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+        expect.objectContaining({ eventGroupId: generatedEventGroupId })
+      )
+      expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+        expect.objectContaining({ eventGroupId: generatedEventGroupId })
+      )
+    })
 
     it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
@@ -173,7 +243,7 @@ describe("Workflow Orchestrator module", function () {
       expect(transaction.flow.state).toEqual("reverted")
     })
 
-    it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+    it("should subscribe to a async workflow and receive the response when it finishes", (done) => {
       const transactionId = "trx_123"
 
       const onFinish = jest.fn(() => {

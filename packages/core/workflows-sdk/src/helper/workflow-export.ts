@@ -1,10 +1,12 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import {
+  DistributedTransaction,
+  DistributedTransactionEvents,
   LocalWorkflow,
   TransactionHandlerType,
   TransactionState,
 } from "@medusajs/orchestration"
-import { LoadedModule, MedusaContainer } from "@medusajs/types"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { isPresent, MedusaContextType } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
@@ -59,7 +61,10 @@ function createContextualWorkflowRunner<
       isCancel = false,
       container: executionContainer,
     },
-    ...args
+    transactionOrIdOrIdempotencyKey: DistributedTransaction | string,
+    input: unknown,
+    context: Context,
+    events: DistributedTransactionEvents | undefined = {}
   ) => {
     if (!executionContainer) {
       const container_ = flow.container as MedusaContainer
@@ -74,6 +79,18 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
+    const { eventGroupId } = context
+    const flowMetadata = {
+      eventGroupId,
+    }
+
+    const args = [
+      transactionOrIdOrIdempotencyKey,
+      input,
+      context,
+      events,
+      flowMetadata,
+    ]
     const transaction = await method.apply(method, args)
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
@@ -136,7 +153,7 @@ function createContextualWorkflowRunner<
 
     const context = {
       ...outerContext,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.transactionId ??= ulid()
@@ -191,7 +208,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -229,7 +246,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -262,7 +279,7 @@ function createContextualWorkflowRunner<
     const context = {
       ...outerContext,
       transactionId,
-      __type: MedusaContextType,
+      __type: MedusaContextType as Context["__type"],
     }
 
     context.eventGroupId ??= ulid()
@@ -275,7 +292,8 @@ function createContextualWorkflowRunner<
         isCancel: true,
         container,
       },
-      transaction ?? transactionId,
+      transaction ?? transactionId!,
+      undefined,
       context,
       events
     )

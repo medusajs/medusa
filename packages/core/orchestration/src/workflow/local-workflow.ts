@@ -12,6 +12,7 @@ import {
   DistributedTransaction,
   DistributedTransactionEvent,
   DistributedTransactionEvents,
+  TransactionFlow,
   TransactionModelOptions,
   TransactionOrchestrator,
   TransactionStepsDefinition,
@@ -328,7 +329,8 @@ export class LocalWorkflow {
     uniqueTransactionId: string,
     input?: unknown,
     context?: Context,
-    subscribe?: DistributedTransactionEvents
+    subscribe?: DistributedTransactionEvents,
+    flowMetadata?: TransactionFlow["metadata"]
   ) {
     if (this.flow.hasChanges) {
       this.commit()
@@ -339,7 +341,8 @@ export class LocalWorkflow {
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
       handler(this.container_, context),
-      input
+      input,
+      flowMetadata
     )
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
