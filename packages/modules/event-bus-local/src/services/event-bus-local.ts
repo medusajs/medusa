@@ -1,9 +1,9 @@
 import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
-  EmitData,
   EventBusTypes,
   Logger,
   Message,
+  MessageBody,
   Subscriber,
 } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
@@ -35,47 +35,28 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     this.groupedEventsMap_ = new Map()
   }
 
-  async emit<T>(
-    eventName: string,
-    data: T,
-    options: Record<string, unknown>
-  ): Promise<void>
-
-  /**
-   * Emit a number of events
-   * @param {EmitData} data - the data to send to the subscriber.
-   */
-  async emit<T>(data: EmitData<T>[]): Promise<void>
-
-  async emit<T>(data: Message<T>[]): Promise<void>
-
-  async emit<T, TInput extends string | EmitData<T>[] | Message<T>[] = string>(
-    eventOrData: TInput,
-    data?: T,
+  async emit<T = unknown>(
+    eventsData: Message<T> | Message<T>[],
     options: Record<string, unknown> = {}
   ): Promise<void> {
-    const isBulkEmit = Array.isArray(eventOrData)
+    const normalizedEventsData = Array.isArray(eventsData)
+      ? eventsData
+      : [eventsData]
 
-    const events: EmitData[] | Message<T>[] = isBulkEmit
-      ? eventOrData
-      : [{ eventName: eventOrData, data }]
-
-    for (const event of events) {
+    for (const eventData of normalizedEventsData) {
       const eventListenersCount = this.eventEmitter_.listenerCount(
-        event.eventName
+        eventData.eventName
       )
 
       this.logger_?.info(
-        `Processing ${event.eventName} which has ${eventListenersCount} subscribers`
+        `Processing ${eventData.eventName} which has ${eventListenersCount} subscribers`
       )
 
       if (eventListenersCount === 0) {
         continue
       }
 
-      const data = (event as EmitData).data ?? (event as Message<T>).body
-
-      await this.groupOrEmitEvent(event.eventName, data)
+      await this.groupOrEmitEvent(eventData)
     }
   }
 
@@ -84,28 +65,27 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
   // explicitly requested.
   // This is useful in the event of a distributed transaction where you'd want to emit
   // events only once the transaction ends.
-  private async groupOrEmitEvent(
-    eventName: string,
-    data: unknown & { eventGroupId?: string }
-  ) {
-    const { eventGroupId, ...eventData } = data
+  private async groupOrEmitEvent<T = unknown>(eventData: Message<T>) {
+    const { options, ...eventBody } = eventData
+    const eventGroupId = eventBody.metadata?.eventGroupId
 
     if (eventGroupId) {
-      await this.groupEvent(eventGroupId, eventName, eventData)
+      await this.groupEvent(eventGroupId, eventData)
     } else {
-      this.eventEmitter_.emit(eventName, data)
+      this.eventEmitter_.emit(eventData.eventName, {
+        data: eventData.data,
+      })
     }
   }
 
   // Groups an event to a queue to be emitted upon explicit release
-  private async groupEvent(
+  private async groupEvent<T = unknown>(
     eventGroupId: string,
-    eventName: string,
-    data: unknown
+    eventData: MessageBody<T>
   ) {
     const groupedEvents = this.groupedEventsMap_.get(eventGroupId) || []
 
-    groupedEvents.push({ eventName, data })
+    groupedEvents.push(eventData)
 
     this.groupedEventsMap_.set(eventGroupId, groupedEvents)
   }
@@ -116,7 +96,7 @@ export default class LocalEventBusService extends AbstractEventBusModuleService 
     for (const event of groupedEvents) {
       const { eventName, data } = event
 
-      this.eventEmitter_.emit(eventName, data)
+      this.eventEmitter_.emit(eventName, { data })
     }
 
     this.clearGroupedEvents(eventGroupId)
