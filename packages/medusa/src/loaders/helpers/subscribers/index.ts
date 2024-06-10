@@ -24,7 +24,7 @@ export class SubscriberLoader {
   protected rootDir_: string
   protected excludes: RegExp[] = [
     /\.DS_Store/,
-    /(\.ts\.map|\.js\.map|\.d\.ts)/,
+    /(\.ts\.map|\.js\.map|\.d\.ts|\.md)/,
     /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
 
@@ -216,6 +216,7 @@ export class SubscriberLoader {
       await readdir(this.rootDir_)
       hasSubscriberDir = true
     } catch (err) {
+      logger.debug(`No subscriber directory found in ${this.rootDir_}`)
       hasSubscriberDir = false
     }
 
