@@ -51,8 +51,8 @@
     "includesTaxTooltip": ".قم بإدخال المبلغ الكامل متضمنا الضريبة. المبلغ الصافي بدون الضريبة سيحتسب تلقائيا و يخزن"
   },
   "validation": {
-    "mustBeInt": "The value must be a whole number.",
-    "mustBePositive": "The value must be a positive number."
+    "mustBeInt": ".يجب أن تكون القيمة عددًا صحيحًا",
+    "mustBePositive": ".يجب أن تكون القيمة رقمًا موجبًا"
   },
   "nav": {
     "general": "General",
