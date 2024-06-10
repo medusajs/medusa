@@ -118,20 +118,20 @@
   },
   "addresses": {
     "shippingAddress": {
-      "header": "Shipping Address",
-      "editHeader": "Edit Shipping Address",
-      "editLabel": "Shipping address",
-      "label": "Shipping address"
+      "header": "عنوان الشحن",
+      "editHeader": "تعديل عنوان الشحن",
+      "editLabel": "عنوان الشحن",
+      "label": "عنوان الشحن"
     },
     "billingAddress": {
-      "header": "Billing Address",
-      "editHeader": "Edit Billing Address",
-      "editLabel": "Billing address",
-      "label": "Billing address",
-      "sameAsShipping": "Same as shipping address"
+      "header": "عنوان الفوترة",
+      "editHeader": "تعديل عنوان الفوترة",
+      "editLabel": "عنوان الفوترة",
+      "label": "عنوان الفوترة",
+      "sameAsShipping": "مثل عنوان الشحن"
     },
-    "contactHeading": "Contact",
-    "locationHeading": "Location"
+    "contactHeading": "جهة الاتصال",
+    "locationHeading": "الموقع"
   },
   "email": {
     "editHeader": "Edit Email",
