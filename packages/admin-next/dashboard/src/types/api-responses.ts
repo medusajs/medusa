@@ -176,27 +176,6 @@ export type WorkflowExecutionListRes = {
 export type TaxRegionDeleteRes = DeleteRes
 export type TaxRateDeleteRes = DeleteRes
 
-// Inventory Items
-export type InventoryItemRes = {
-  inventory_item: InventoryNext.InventoryItemDTO & {
-    stocked_quantity: number
-    reserved_quantity: number
-    location_levels?: InventoryNext.InventoryLevelDTO[]
-    variant?: ProductVariantDTO | ProductVariantDTO[]
-  }
-}
-
-export type InventoryItemListRes = {
-  inventory_items: InventoryNext.InventoryItemDTO[]
-} & ListRes
-export type InventoryItemDeleteRes = DeleteRes
-
-export type InventoryItemLocationLevelsRes = {
-  inventory_levels: InventoryNext.InventoryLevelDTO[]
-} & ListRes
-
-export type InventoryItemLevelDeleteRes = DeleteRes
-
 // Reservations
 export type ReservationItemDeleteRes = DeleteRes
 

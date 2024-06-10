@@ -1,22 +1,20 @@
 import * as zod from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button, Input, Text, toast } from "@medusajs/ui"
-import { InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
+import { InventoryLevelDTO, StockLocationDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../../components/route-modal"
 
 import { Form } from "../../../../../../components/common/form"
-import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useUpdateInventoryItemLevel } from "../../../../../../hooks/api/inventory"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useUpdateInventoryLevel } from "../../../../../../hooks/api/inventory"
 
 type AdjustInventoryFormProps = {
-  item: InventoryItemRes["inventory_item"]
+  item: HttpTypes.AdminInventoryItem
   level: InventoryLevelDTO
   location: StockLocationDTO
 }
@@ -48,8 +46,8 @@ export const AdjustInventoryForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const AdjustInventorySchema = z.object({
-    stocked_quantity: z.number().min(level.reserved_quantity),
+  const AdjustInventorySchema = zod.object({
+    stocked_quantity: zod.number().min(level.reserved_quantity),
   })
 
   const form = useForm<zod.infer<typeof AdjustInventorySchema>>({
@@ -61,7 +59,7 @@ export const AdjustInventoryForm = ({
 
   const stockedQuantityUpdate = form.watch("stocked_quantity")
 
-  const { mutateAsync, isPending: isLoading } = useUpdateInventoryItemLevel(
+  const { mutateAsync, isPending: isLoading } = useUpdateInventoryLevel(
     item.id,
     level.location_id
   )

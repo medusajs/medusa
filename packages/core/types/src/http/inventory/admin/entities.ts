@@ -1,6 +1,4 @@
-import { PaginatedResponse } from "../common"
-
-interface InventoryItemResponse {
+export interface AdminInventoryItem {
   id: string
   sku?: string | null
   origin_country?: string | null
@@ -17,11 +15,3 @@ interface InventoryItemResponse {
   thumbnail?: string | null
   metadata?: Record<string, unknown> | null
 }
-
-export interface AdminInventoryItemResponse {
-  inventory_item: InventoryItemResponse
-}
-
-export type AdminInventoryItemListResponse = PaginatedResponse<{
-  inventory_items: InventoryItemResponse[]
-}>
