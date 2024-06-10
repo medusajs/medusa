@@ -1,6 +1,8 @@
 import { expectTypeOf } from "expect-type"
+import { MetadataStorage } from "@mikro-orm/core"
 import { Infer, MikroORMEntity } from "../types"
 import { EntityBuilder } from "../entity_builder"
+import { createMikrORMEntity } from "../helpers/create_mikro_orm_entity"
 
 describe("Entity builder", () => {
   test("define an entity", () => {
@@ -11,11 +13,42 @@ describe("Entity builder", () => {
       email: model.text(),
     })
 
-    expectTypeOf<InstanceType<Infer<typeof user>>>().toMatchTypeOf<{
+    const User = createMikrORMEntity(user)
+    expectTypeOf(new User()).toMatchTypeOf<{
       id: number
       username: string
       email: string
     }>()
+
+    const metaData = MetadataStorage.getMetadataFromDecorator(User)
+    expect(metaData.className).toEqual("User")
+    expect(metaData.path).toEqual("User")
+    expect(metaData.properties).toEqual({
+      id: {
+        reference: "scalar",
+        type: "number",
+        columnType: "number",
+        name: "id",
+        getter: false,
+        setter: false,
+      },
+      username: {
+        reference: "scalar",
+        type: "string",
+        columnType: "string",
+        name: "username",
+        getter: false,
+        setter: false,
+      },
+      email: {
+        reference: "scalar",
+        type: "string",
+        columnType: "string",
+        name: "email",
+        getter: false,
+        setter: false,
+      },
+    })
   })
 
   test("define an entity with relationships", () => {
@@ -31,11 +64,40 @@ describe("Entity builder", () => {
       emails: model.hasMany(() => email),
     })
 
-    expectTypeOf<InstanceType<Infer<typeof user>>>().toEqualTypeOf<{
+    const User = createMikrORMEntity(user)
+    expectTypeOf(new User()).toMatchTypeOf<{
       id: number
       username: string
       emails: MikroORMEntity<{ email: string; isVerified: boolean }>
     }>()
+
+    const metaData = MetadataStorage.getMetadataFromDecorator(User)
+    expect(metaData.className).toEqual("User")
+    expect(metaData.path).toEqual("User")
+    expect(metaData.properties).toEqual({
+      id: {
+        reference: "scalar",
+        type: "number",
+        columnType: "number",
+        name: "id",
+        getter: false,
+        setter: false,
+      },
+      username: {
+        reference: "scalar",
+        type: "string",
+        columnType: "string",
+        name: "username",
+        getter: false,
+        setter: false,
+      },
+      emails: {
+        reference: "1:m",
+        name: "emails",
+        mappedBy: "",
+        entity: "Email",
+      },
+    })
   })
 
   test("define an entity with recursive relationships", () => {
@@ -51,7 +113,9 @@ describe("Entity builder", () => {
       orders: model.hasMany(() => order),
     })
 
-    expectTypeOf<InstanceType<Infer<typeof user>>>().toMatchTypeOf<{
+    const User = createMikrORMEntity(user)
+    const Order = createMikrORMEntity(order)
+    expectTypeOf(new User()).toMatchTypeOf<{
       id: number
       username: string
       orders: MikroORMEntity<{
@@ -62,5 +126,53 @@ describe("Entity builder", () => {
         }>
       }>
     }>()
+
+    const metaData = MetadataStorage.getMetadataFromDecorator(User)
+    expect(metaData.className).toEqual("User")
+    expect(metaData.path).toEqual("User")
+    expect(metaData.properties).toEqual({
+      id: {
+        reference: "scalar",
+        type: "number",
+        columnType: "number",
+        name: "id",
+        getter: false,
+        setter: false,
+      },
+      username: {
+        reference: "scalar",
+        type: "string",
+        columnType: "string",
+        name: "username",
+        getter: false,
+        setter: false,
+      },
+      orders: {
+        reference: "1:m",
+        name: "orders",
+        mappedBy: "",
+        entity: "Order",
+      },
+    })
+
+    const orderMetaDdata = MetadataStorage.getMetadataFromDecorator(Order)
+    expect(orderMetaDdata.className).toEqual("Order")
+    expect(orderMetaDdata.path).toEqual("Order")
+    expect(orderMetaDdata.properties).toEqual({
+      amount: {
+        reference: "scalar",
+        type: "number",
+        columnType: "number",
+        name: "amount",
+        getter: false,
+        setter: false,
+      },
+      user: {
+        reference: "1:1",
+        name: "user",
+        mappedBy: "",
+        entity: "User",
+      },
+    })
   })
 })
