@@ -55,10 +55,10 @@
     "mustBePositive": ".يجب أن تكون القيمة رقمًا موجبًا"
   },
   "nav": {
-    "general": "General",
-    "developer": "Developer",
-    "extensions": "Extensions",
-    "settings": "Settings"
+    "general": "عام",
+    "developer": "مبرمج",
+    "extensions": "ملحقات",
+    "settings": "إعدادات"
   },
   "actions": {
     "save": "Save",
