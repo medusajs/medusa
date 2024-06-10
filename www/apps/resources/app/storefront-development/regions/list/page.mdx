@@ -1,7 +1,7 @@
 import { CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
-  title: `List Regions`,
+  title: `List Regions in Storefront`,
 }
 
 # {metadata.title}
@@ -16,8 +16,9 @@ To list regions in your storefront, send a request to the [List Regions API rout
     credentials: "include"
   })
   .then((res) => res.json())
-  .then((data) => {
-    setRegions(data.regions)
+  .then(({ regions }) => {
+    // use regions...
+    console.log(regions)
   })
   ```
 
@@ -49,8 +50,8 @@ export const highlights = [
         credentials: "include"
       })
       .then((res) => res.json())
-      .then((data) => {
-        setRegions(data.regions)
+      .then(({ regions: dataRegions }) => {
+        setRegions(dataRegions)
         setLoading(false)
       })
     }, [loading])

@@ -184,6 +184,13 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
+            "path": "/commerce-modules/auth/module-options",
+            "title": "Module Options",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
             "path": "/commerce-modules/auth/examples",
             "title": "Examples",
             "children": []
@@ -196,8 +203,30 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/commerce-modules/auth/auth-identity-and-actor-types",
+                "title": "Identity and Actor Types",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/commerce-modules/auth/auth-providers",
                 "title": "Auth Providers",
+                "children": [
+                  {
+                    "loaded": true,
+                    "isPathHref": true,
+                    "path": "/commerce-modules/auth/auth-providers/emailpass",
+                    "title": "Emailpass Auth Provider Module",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/auth/authentication-route",
+                "title": "Authentication Route",
                 "children": []
               },
               {
@@ -206,12 +235,19 @@ export const generatedSidebar = [
                 "path": "/commerce-modules/auth/auth-flows",
                 "title": "Auth Flows",
                 "children": []
-              },
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/auth/user-creation",
-                "title": "User Creation",
+                "path": "/commerce-modules/auth/create-actor-type",
+                "title": "Create an Actor Type",
                 "children": []
               }
             ]
@@ -990,6 +1026,20 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/commerce-modules/customer/relations-to-other-modules",
                 "title": "Relations to Other Modules",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "title": "Guides",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/customer/register-customer-email",
+                "title": "Register a Customer with Email",
                 "children": []
               }
             ]
@@ -5774,6 +5824,98 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      }
+    ]
+  },
+  {
+    "loaded": true,
+    "isPathHref": true,
+    "title": "Recipes",
+    "hasTitleStyling": true,
+    "children": [
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/b2b",
+        "title": "B2B",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/commerce-automation",
+        "title": "Commerce Automation",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/digital-products",
+        "title": "Digital Products",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/ecommerce",
+        "title": "Ecommerce",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/integrate-ecommerce-stack",
+        "title": "Integrate Ecommerce Stack",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/marketplace",
+        "title": "Marketplace",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/multi-region-store",
+        "title": "Multi-Region Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/omnichannel",
+        "title": "Omnichannel Store",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/oms",
+        "title": "OMS",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/personalized-products",
+        "title": "Personalized Products",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/pos",
+        "title": "POS",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/recipes/subscriptions",
+        "title": "Subscriptions",
+        "children": []
       }
     ]
   },

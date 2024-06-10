@@ -14,6 +14,12 @@ In this document, you'll learn about the options of the Auth Module.
 
 ## providers
 
+The `providers` option is an array of auth provider modules.
+
+When the Medusa application starts, these providers are registered and can be used to handle authentication.
+
+For example:
+
 ```js title="medusa-config.js"
 const { Modules } = require("@medusajs/modules-sdk")
 
@@ -22,212 +28,30 @@ const { Modules } = require("@medusajs/modules-sdk")
 module.exports = defineConfig({
   // ...
   modules: {
-    [Modules.AUTH]: {
-      resolve: "@medusajs/auth",
-      options: {
-        providers: [
-          {
-            name: "emailpass",
-            scopes: {
-              store: {},
-              admin: {},
-            },
+    resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/auth-google",
+          options: {
+            config: {
+              google: {
+                // provider options...
+              }
+            }
           },
-          {
-            name: "google",
-            scopes: {
-              admin: {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: process.env.GOOGLE_CALLBACK_URL,
-                successRedirectUrl:
-                  process.env.GOOGLE_SUCCESS_REDIRECT_URL,
-              },
-            },
-          },
-        ],
-      },
-    }
-  }
+        },
+      ],
+    },
+  },
 })
 ```
 
-The `providers` option is an array of objects indicating the auth providers to register, their scopes, and configurations.
+The `providers` option is an array of objects that accept the following properties:
 
-Each object accepts the following properties:
-
-- `name`: The provider's name, which is set in the auth provider class's `PROVIDER` field. For example, `emailpass` or `google`.
-- `scopes`: An object of scopes. The keys are a scope's name, which in the Medusa application would be either `admin` or `store`. The value is an object of configurations for that scope. Each provider accepts different scope configurations as detailed below.
-
-### emailpass Scope Configurations
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>Configuration</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-      
-      `hashConfig`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      An object of configurations to use when hashing the user's 
-      password. Refer to [scrypt-kdf](https://www.npmjs.com/package/scrypt-kdf#-hash)'s
-      documentation for accepted options. 
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      No
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      ```ts noCopy noReport noLineNumbers
-      const hashConfig = {
-        logN: 15,
-        r: 8,
-        p: 1
-      }
-      ```
-      
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-### google Scope Configurations
-
-<Note type="check">
-
-Follow [this Google documentation](https://developers.google.com/identity/protocols/oauth2/web-server#prerequisites) to enable Google's APIs and retrieve the necessary credentials.
-
-</Note>
-
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>Configuration</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
-      <Table.HeaderCell>Required</Table.HeaderCell>
-      <Table.HeaderCell>Default</Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-      
-      `clientID`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      A string indicating the [Google API Client ID](https://developers.google.com/identity/oauth2/web/guides/get-google-api-clientid).
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      Yes
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `clientSecret`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      A string indicating the [Google Client Secret](https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cstep-create-a-new-client-secret).
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      Yes
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `callbackURL`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      A string indicating the URL to redirect to in your app after the user completes their authentication in Google.
-
-      The Medusa application provides the API route `/auth/[scope]/google/callback` that you can use, where `[scope]` is the scope this config belongs to.
-      For example, `/auth/store/google/callback`.
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      Yes
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-      
-      `successRedirectUrl`
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      A string indicating the URL to redirect to in your app after the authentication has been successful.
-
-      If not provided, the Medusa application's callback route just returns a JSON with the JWT token of the auth identity.
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      No
-      
-      </Table.Cell>
-      <Table.Cell>
-      
-      \-
-      
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
-
-### Environment Variables
-
-Make sure to add the necessary environment variables for the above options in `.env`:
-
-```bash
-GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
-GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
-GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
-GOOGLE_SUCCESS_REDIRECT_URL=<YOUR_GOOGLE_SUCCESS_REDIRECT_URL>
-```
+- `resolve`: A string indicating the package name of the auth provider module or the path to it.
+- `options`: An optional object of the auth provider module's options. The object must have the following property:
+  - `config`: An object whose key is the ID of the auth provider, and its value is an object of options to pass to the provider module.
 
 ---
 
@@ -236,3 +60,11 @@ GOOGLE_SUCCESS_REDIRECT_URL=<YOUR_GOOGLE_SUCCESS_REDIRECT_URL>
 The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration. So, before using these routes, make sure to set that configuration.
 
 Refer to [Medusa's configuration guide](/references/medusa-config#authCors) for more details.
+
+---
+
+## authMethodsPerActor Configuration
+
+The Medusa application's configuration accept an `authMethodsPerActor` configuration which restricts the allowed auth providers used with an actor type.
+
+Learn more about the `authMethodsPerActor` configuration in [this guide](../auth-providers/page.mdx#configure-allowed-auth-providers-of-actor-types).

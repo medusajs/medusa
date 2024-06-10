@@ -1,0 +1,37 @@
+export const metadata = {
+  title: `Authentication Route`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the `/auth` route and how to use it to create or log-in users.
+
+## `/auth` Route
+
+The Medusa application defines an API route at `/auth/{actor_type}/{provider}` used to obtain a token used later for authentication purposes.
+
+Its path parameters are:
+
+- `{actor_type}`: the actor type of the user you're authenticating. For example, `customer`.
+- `{provider}`: the auth provider to handle the authentication. For example, `emailpass`.
+
+This route accepts in the request body the data that the specified authentication provider requires to handle authentication.
+
+For example, the EmailPass provider requires an `email` and `password` fields in the request body.
+
+If the authentication is successful, you'll receive a `token` field in the response body.
+
+---
+
+## How to Use the Authentication Token
+
+There are two ways the returned authentication token is useful:
+
+1. Send authenticated requests to restricted routes. For example, if the token is of an admin user, you use it in the bearer header of subsequent requests to the admin API routes.
+2. Before creating a user of an actor type, such as a `customer` or a custom actor type. You use it in the bearer header of the request to the API route that creates the user.
+
+<Note title="Example">
+
+[How to register Customers using the authentication route](../../customer/register-customer-email/page.mdx).
+
+</Note>
