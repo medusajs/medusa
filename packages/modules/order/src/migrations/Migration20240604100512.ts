@@ -195,12 +195,12 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_return_claim_id" ON "return" (
         claim_id
     )
-    WHERE claim_id IS NOT NULL deleted_at IS NOT NULL;
+    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_exchange_id" ON "return" (
         exchange_id
     )
-    WHERE exchange_id IS NOT NULL deleted_at IS NOT NULL;
+    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
 
     CREATE INDEX IF NOT EXISTS "IDX_return_display_id" ON "return" (
         display_id
