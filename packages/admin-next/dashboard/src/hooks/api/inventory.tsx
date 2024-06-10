@@ -209,7 +209,7 @@ export const useUpdateInventoryLevel = (
   })
 }
 
-export const useBatchInventoryLevels = (
+export const useBatchUpdateInventoryLevels = (
   inventoryItemId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminInventoryItemResponse,
