@@ -139,23 +139,23 @@
     "label": "البريد الإلكتروني"
   },
   "transferOwnership": {
-    "header": "Transfer Ownership",
-    "label": "Transfer ownership",
+    "header": "نقل ملكية",
+    "label": "نقل ملكية",
     "details": {
-      "order": "Order details",
-      "draft": "Draft details"
+      "order": "تفاصيل الطلب",
+      "draft": "تفاصيل مسودة الطلب"
     },
     "currentOwner": {
-      "label": "Current owner",
-      "hint": "The current owner of the order."
+      "label": "المالك الحالي",
+      "hint": ".المالك الحالي للطلب"
     },
     "newOwner": {
-      "label": "New owner",
-      "hint": "The new owner to transfer the order to."
+      "label": "المالك الجديد",
+      "hint": ".المالك الجديد الذي سينقل إليه الطلب"
     },
     "validation": {
-      "mustBeDifferent": "The new owner must be different from the current owner.",
-      "required": "New owner is required."
+      "mustBeDifferent": ".المالك الجديد يجب أن يكون مختلف عن مالك الطلب الحالي",
+      "required": ".خانة المالك الجديد لا يجب أن تبقى فارغة."
     }
   },
   "sales_channels": {
