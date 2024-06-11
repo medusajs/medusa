@@ -7,7 +7,11 @@ import {
   TransactionState,
 } from "@medusajs/orchestration"
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { isPresent, MedusaContextType } from "@medusajs/utils"
+import {
+  isPresent,
+  MedusaContextType,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { MedusaWorkflow } from "../medusa-workflow"
@@ -21,6 +25,7 @@ import {
   MainExportedWorkflow,
   WorkflowResult,
 } from "./type"
+import { ContainerRegistrationKeys } from "@medusajs/utils/dist"
 
 function createContextualWorkflowRunner<
   TData = unknown,
@@ -80,6 +85,9 @@ function createContextualWorkflowRunner<
     }
 
     const { eventGroupId } = context
+
+    attachOnFinishReleaseEvents(events, eventGroupId!, flow)
+
     const flowMetadata = {
       eventGroupId,
     }
@@ -465,4 +473,59 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
   MedusaWorkflow.registerWorkflow(workflowId, exportedWorkflow)
   return exportedWorkflow as MainExportedWorkflow<TData, TResult>
+}
+
+function attachOnFinishReleaseEvents(
+  events: DistributedTransactionEvents = {},
+  eventGroupId: string,
+  flow: LocalWorkflow
+) {
+  const onFinish = events.onFinish
+
+  const wrappedOnFinish = async (args: {
+    transaction: DistributedTransaction
+    result?: unknown
+    errors?: unknown[]
+  }) => {
+    await onFinish?.(args)
+
+    const eventBusService = (flow.container as MedusaContainer).resolve(
+      ModuleRegistrationName.EVENT_BUS,
+      { allowUnregistered: true }
+    )
+
+    if (!eventBusService || !eventGroupId) {
+      return
+    }
+
+    const logger =
+      (flow.container as MedusaContainer).resolve(
+        ContainerRegistrationKeys.LOGGER,
+        { allowUnregistered: true }
+      ) || console
+
+    const { transaction } = args
+    const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
+
+    if (failedStatus.includes(transaction.getState())) {
+      return await eventBusService
+        .clearGroupedEvents(eventGroupId)
+        .catch(() => {
+          logger.warn(
+            `Failed to clear events for eventGroupId - ${eventGroupId}`
+          )
+        })
+    }
+
+    await eventBusService.releaseGroupedEvents(eventGroupId).catch((e) => {
+      logger.error(
+        `Failed to release grouped events for eventGroupId: ${eventGroupId}`,
+        e
+      )
+
+      return flow.cancel(transaction)
+    })
+  }
+
+  events.onFinish = wrappedOnFinish
 }
