@@ -26,4 +26,8 @@ export default class EventBusService implements IEventBusModuleService {
   releaseGroupedEvents(eventGroupId: string): Promise<void> {
     return Promise.resolve()
   }
+
+  clearGroupedEvents(eventGroupId: string): Promise<void> {
+    return Promise.resolve()
+  }
 }
