@@ -1,13 +1,14 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
+import { IWorkflowEngineService, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
+import { WorkflowManager } from "@medusajs/orchestration"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -238,6 +239,24 @@ describe("Workflow Orchestrator module", function () {
 
       await jest.runOnlyPendingTimersAsync()
       expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const spy = await createScheduled("remove-scheduled", {
+        cron: "* * * * * *",
+      })
+      const logSpy = jest.spyOn(console, "warn")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      WorkflowManager["workflows"].delete("remove-scheduled")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
     })
   })
 })
