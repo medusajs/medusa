@@ -34,7 +34,10 @@ tags:
     externalDocs:
       description: How to manage customers
       url: https://docs.medusajs.com/modules/customers/admin/manage-customers
-  - name: Fulfillment
+  - name: Draft Orders
+  - name: Fulfillment Providers
+  - name: Fulfillment Sets
+  - name: Fulfillments
   - name: Inventory Items
     description: >
       Inventory items, provided by the [Inventory
@@ -50,6 +53,7 @@ tags:
     externalDocs:
       description: How to manage invites
       url: https://docs.medusajs.com/modules/users/admin/manage-invites
+  - name: Orders
   - name: Payments
     description: >
       A payment can be related to an order, swap, return, or more. It can be
@@ -62,6 +66,8 @@ tags:
       description: How to manage price lists
       url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
   - name: Pricing
+  - name: Product Categories
+  - name: Product Types
   - name: Products
     description: >
       Products are saleable items in a store. This also includes [saleable gift
@@ -80,6 +86,7 @@ tags:
     externalDocs:
       description: How to manage regions
       url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
+  - name: Reservations
   - name: Sales Channels
     description: >
       A sales channel indicates a channel where products can be sold in. For
@@ -89,6 +96,8 @@ tags:
     externalDocs:
       description: How to manage sales channels
       url: https://docs.medusajs.com/modules/sales-channels/admin/manage
+  - name: Shipping Options
+  - name: Shipping Profiles
   - name: Stock Locations
   - name: Stores
   - name: Tax Rates
@@ -100,6 +109,7 @@ tags:
       description: How to manage tax rates
       url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Tax Regions
+  - name: Uploads
   - name: Users
     description: >
       A store can have more than one user, each having the same privileges.

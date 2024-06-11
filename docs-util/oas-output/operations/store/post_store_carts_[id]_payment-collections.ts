@@ -11,46 +11,6 @@
  *     required: true
  *     schema:
  *       type: string
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -73,7 +33,169 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - region_id
+ *           - email
+ *           - billing_address
+ *           - shipping_address
+ *           - sales_channel_id
+ *           - metadata
+ *           - promo_codes
+ *         properties:
+ *           region_id:
+ *             type: string
+ *             title: region_id
+ *             description: The cart's region id.
+ *           email:
+ *             type: string
+ *             title: email
+ *             description: The cart's email.
+ *             format: email
+ *           billing_address:
+ *             oneOf:
+ *               - type: string
+ *                 title: billing_address
+ *                 description: The cart's billing address.
+ *               - type: object
+ *                 description: The cart's billing address.
+ *                 required:
+ *                   - first_name
+ *                   - last_name
+ *                   - phone
+ *                   - company
+ *                   - address_1
+ *                   - address_2
+ *                   - city
+ *                   - country_code
+ *                   - province
+ *                   - postal_code
+ *                   - metadata
+ *                 properties:
+ *                   first_name:
+ *                     type: string
+ *                     title: first_name
+ *                     description: The billing address's first name.
+ *                   last_name:
+ *                     type: string
+ *                     title: last_name
+ *                     description: The billing address's last name.
+ *                   phone:
+ *                     type: string
+ *                     title: phone
+ *                     description: The billing address's phone.
+ *                   company:
+ *                     type: string
+ *                     title: company
+ *                     description: The billing address's company.
+ *                   address_1:
+ *                     type: string
+ *                     title: address_1
+ *                     description: The billing address's address 1.
+ *                   address_2:
+ *                     type: string
+ *                     title: address_2
+ *                     description: The billing address's address 2.
+ *                   city:
+ *                     type: string
+ *                     title: city
+ *                     description: The billing address's city.
+ *                   country_code:
+ *                     type: string
+ *                     title: country_code
+ *                     description: The billing address's country code.
+ *                   province:
+ *                     type: string
+ *                     title: province
+ *                     description: The billing address's province.
+ *                   postal_code:
+ *                     type: string
+ *                     title: postal_code
+ *                     description: The billing address's postal code.
+ *                   metadata:
+ *                     type: object
+ *                     description: The billing address's metadata.
+ *                     properties: {}
+ *           shipping_address:
+ *             oneOf:
+ *               - type: string
+ *                 title: shipping_address
+ *                 description: The cart's shipping address.
+ *               - type: object
+ *                 description: The cart's shipping address.
+ *                 required:
+ *                   - first_name
+ *                   - last_name
+ *                   - phone
+ *                   - company
+ *                   - address_1
+ *                   - address_2
+ *                   - city
+ *                   - country_code
+ *                   - province
+ *                   - postal_code
+ *                   - metadata
+ *                 properties:
+ *                   first_name:
+ *                     type: string
+ *                     title: first_name
+ *                     description: The shipping address's first name.
+ *                   last_name:
+ *                     type: string
+ *                     title: last_name
+ *                     description: The shipping address's last name.
+ *                   phone:
+ *                     type: string
+ *                     title: phone
+ *                     description: The shipping address's phone.
+ *                   company:
+ *                     type: string
+ *                     title: company
+ *                     description: The shipping address's company.
+ *                   address_1:
+ *                     type: string
+ *                     title: address_1
+ *                     description: The shipping address's address 1.
+ *                   address_2:
+ *                     type: string
+ *                     title: address_2
+ *                     description: The shipping address's address 2.
+ *                   city:
+ *                     type: string
+ *                     title: city
+ *                     description: The shipping address's city.
+ *                   country_code:
+ *                     type: string
+ *                     title: country_code
+ *                     description: The shipping address's country code.
+ *                   province:
+ *                     type: string
+ *                     title: province
+ *                     description: The shipping address's province.
+ *                   postal_code:
+ *                     type: string
+ *                     title: postal_code
+ *                     description: The shipping address's postal code.
+ *                   metadata:
+ *                     type: object
+ *                     description: The shipping address's metadata.
+ *                     properties: {}
+ *           sales_channel_id:
+ *             type: string
+ *             title: sales_channel_id
+ *             description: The cart's sales channel id.
+ *           metadata:
+ *             type: object
+ *             description: The cart's metadata.
+ *             properties: {}
+ *           promo_codes:
+ *             type: array
+ *             description: The cart's promo codes.
+ *             items:
+ *               type: string
+ *               title: promo_codes
+ *               description: The promo code's promo codes.
  * 
 */
 

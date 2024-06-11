@@ -4,47 +4,7 @@
  * summary: Create Customer
  * description: Create a customer.
  * x-authenticated: true
- * parameters:
- *   - name: expand
- *     in: query
- *     description: Comma-separated relations that should be expanded in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: expand
- *       description: Comma-separated relations that should be expanded in the returned data.
- *   - name: fields
- *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
- *     required: false
- *     schema:
- *       type: string
- *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
- *   - name: offset
- *     in: query
- *     description: The number of items to skip when retrieving a list.
- *     required: false
- *     schema:
- *       type: number
- *       title: offset
- *       description: The number of items to skip when retrieving a list.
- *   - name: limit
- *     in: query
- *     description: Limit the number of items returned in the list.
- *     required: false
- *     schema:
- *       type: number
- *       title: limit
- *       description: Limit the number of items returned in the list.
- *   - name: order
- *     in: query
- *     description: Field to sort items in the list by.
- *     required: false
- *     schema:
- *       type: string
- *       title: order
- *       description: Field to sort items in the list by.
+ * parameters: []
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -58,6 +18,11 @@
  * tags:
  *   - Customers
  * responses:
+ *   "200":
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema: {}
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -73,7 +38,36 @@
  * requestBody:
  *   content:
  *     application/json:
- *       schema: {}
+ *       schema:
+ *         type: object
+ *         required:
+ *           - email
+ *           - company_name
+ *           - first_name
+ *           - last_name
+ *           - phone
+ *         properties:
+ *           email:
+ *             type: string
+ *             title: email
+ *             description: The customer's email.
+ *             format: email
+ *           company_name:
+ *             type: string
+ *             title: company_name
+ *             description: The customer's company name.
+ *           first_name:
+ *             type: string
+ *             title: first_name
+ *             description: The customer's first name.
+ *           last_name:
+ *             type: string
+ *             title: last_name
+ *             description: The customer's last name.
+ *           phone:
+ *             type: string
+ *             title: phone
+ *             description: The customer's phone.
  * 
 */
 
