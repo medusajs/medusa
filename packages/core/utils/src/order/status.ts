@@ -33,27 +33,23 @@ export enum OrderStatus {
 /**
  * @enum
  *
- * The order change's status.
+ * The return's status.
  */
-export enum OrderChangeStatus {
+export enum ReturnStatus {
   /**
-   * The order change is confirmed.
-   */
-  CONFIRMED = "confirmed",
-  /**
-   * The order change is declined.
-   */
-  DECLINED = "declined",
-  /**
-   * The order change is requested.
+   * The return is requested.
    */
   REQUESTED = "requested",
   /**
-   * The order change is pending.
+   * The return is received.
    */
-  PENDING = "pending",
+  RECEIVED = "received",
   /**
-   * The order change is canceled.
+   * The return is partially received.
+   */
+  PARTIALLY_RECEIVED = "partially_received",
+  /**
+   * The return is canceled.
    */
   CANCELED = "canceled",
 }

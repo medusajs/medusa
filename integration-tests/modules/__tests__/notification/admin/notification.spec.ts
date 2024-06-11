@@ -165,7 +165,8 @@ medusaIntegrationTestRunner({
           )
           const logSpy = jest.spyOn(logger, "info")
 
-          await eventBus.emit("order.created", {
+          await eventBus.emit({
+            eventName: "order.created",
             data: {
               order: {
                 id: "1234",

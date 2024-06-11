@@ -17,12 +17,9 @@ export abstract class AbstractEventBusModuleService
   }
 
   abstract emit<T>(
-    eventName: string,
-    data: T,
+    data: EventBusTypes.Message<T> | EventBusTypes.Message<T>[],
     options: Record<string, unknown>
   ): Promise<void>
-  abstract emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
-  abstract emit<T>(data: EventBusTypes.Message<T>[]): Promise<void>
 
   /*
     Grouped events are useful when you have distributed transactions

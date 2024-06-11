@@ -1,6 +1,7 @@
 import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
   operation({ action, currentOrder }) {
@@ -13,6 +14,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.WRITE_OFF_ITEM, {
       existing.detail.written_off_quantity,
       action.details.quantity
     )
+
+    setActionReference(existing, action)
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(

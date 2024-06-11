@@ -208,15 +208,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (data as { id: unknown }[]).map(({ id }) => ({
         eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
-        body: {
-          metadata: {
-            source: this.serviceName_,
-            action: CommonEvents.ATTACHED,
-            object: this.entityName_,
-            eventGroupId: sharedContext.eventGroupId,
-          },
-          data: { id },
+        metadata: {
+          source: this.serviceName_,
+          action: CommonEvents.ATTACHED,
+          object: this.entityName_,
+          eventGroupId: sharedContext.eventGroupId,
         },
+        data: { id },
       }))
     )
 
@@ -261,15 +259,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       allData.map(({ id }) => ({
         eventName: this.entityName_ + "." + CommonEvents.DETACHED,
-        body: {
-          metadata: {
-            source: this.serviceName_,
-            action: CommonEvents.DETACHED,
-            object: this.entityName_,
-            eventGroupId: sharedContext.eventGroupId,
-          },
-          data: { id },
+        metadata: {
+          source: this.serviceName_,
+          action: CommonEvents.DETACHED,
+          object: this.entityName_,
+          eventGroupId: sharedContext.eventGroupId,
         },
+        data: { id },
       }))
     )
   }
@@ -312,15 +308,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (deletedEntities as { id: string }[]).map(({ id }) => ({
         eventName: this.entityName_ + "." + CommonEvents.DETACHED,
-        body: {
-          metadata: {
-            source: this.serviceName_,
-            action: CommonEvents.DETACHED,
-            object: this.entityName_,
-            eventGroupId: sharedContext.eventGroupId,
-          },
-          data: { id },
+        metadata: {
+          source: this.serviceName_,
+          action: CommonEvents.DETACHED,
+          object: this.entityName_,
+          eventGroupId: sharedContext.eventGroupId,
         },
+        data: { id },
       }))
     )
 
@@ -372,15 +366,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
     await this.eventBusModuleService_?.emit<Record<string, unknown>>(
       (restoredEntities as { id: string }[]).map(({ id }) => ({
         eventName: this.entityName_ + "." + CommonEvents.ATTACHED,
-        body: {
-          metadata: {
-            source: this.serviceName_,
-            action: CommonEvents.ATTACHED,
-            object: this.entityName_,
-            eventGroupId: sharedContext.eventGroupId,
-          },
-          data: { id },
+        metadata: {
+          source: this.serviceName_,
+          action: CommonEvents.ATTACHED,
+          object: this.entityName_,
+          eventGroupId: sharedContext.eventGroupId,
         },
+        data: { id },
       }))
     )
 
