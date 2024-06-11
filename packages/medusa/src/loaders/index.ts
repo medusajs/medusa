@@ -22,6 +22,7 @@ import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
+import { registerJobs } from "./helpers/register-jobs"
 
 type Options = {
   directory: string
@@ -57,6 +58,14 @@ async function subscribersLoader(
   )
 }
 
+async function jobsLoader(plugins: PluginDetails[]) {
+  /**
+   * Load jobs from the medusa/medusa package. Remove once the medusa core is converted to a plugin
+   */
+  await registerJobs([{ resolve: path.join(__dirname, "../") }])
+  await registerJobs(plugins)
+}
+
 async function loadEntrypoints(
   plugins: PluginDetails[],
   container: MedusaContainer,
@@ -89,6 +98,7 @@ async function loadEntrypoints(
 
   await adminLoader({ app: expressApp, configModule, rootDirectory })
   await subscribersLoader(plugins, container)
+  await jobsLoader(plugins)
   await apiLoader({
     container,
     plugins,
@@ -128,9 +138,9 @@ export default async ({
   )
 
   const plugins = getResolvedPlugins(rootDirectory, configModule, true) || []
+  const pluginLinks = await resolvePluginsLinks(plugins, container)
   await registerWorkflows(plugins)
 
-  const pluginLinks = await resolvePluginsLinks(plugins, container)
   const { onApplicationShutdown, onApplicationPrepareShutdown } =
     await loadMedusaApp({
       container,
