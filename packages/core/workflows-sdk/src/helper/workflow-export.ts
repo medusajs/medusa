@@ -486,22 +486,24 @@ function attachOnFinishReleaseEvents(
       return
     }
 
+    const logger =
+      (flow.container as MedusaContainer).resolve(
+        ContainerRegistrationKeys.LOGGER,
+        { allowUnregistered: true }
+      ) || console
+
     const { transaction } = args
     const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
 
     if (failedStatus.includes(transaction.getState())) {
-      return await eventBusService.clearGroupedEvents(eventGroupId)
+      await eventBusService.clearGroupedEvents(eventGroupId).catch(() => {
+        logger.warn(`Failed to clear events for eventGroupId - ${eventGroupId}`)
+      })
     }
 
     await eventBusService
       .releaseGroupedEvents(eventGroupId)
       .catch(async (e) => {
-        const logger =
-          (flow.container as MedusaContainer).resolve(
-            ContainerRegistrationKeys.LOGGER,
-            { allowUnregistered: true }
-          ) || console
-
         logger.error(
           `Failed to release grouped events for eventGroupId: ${eventGroupId}`,
           e
