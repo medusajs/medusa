@@ -1,27 +1,7 @@
 import EmailPassProvider from "@medusajs/auth-emailpass"
-
-import { LoaderOptions, ModulesSdkTypes, ModuleProvider } from "@medusajs/types"
-import { Lifetime, asFunction, asValue } from "awilix"
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
-import {
-  AuthIdentifiersRegistrationName,
-  AuthProviderRegistrationPrefix,
-} from "@types"
-
-const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    container.register({
-      [AuthProviderRegistrationPrefix + name]: asFunction(
-        (cradle) => new klass(cradle, config),
-        {
-          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-        }
-      ),
-    })
-
-    container.registerAdd(AuthIdentifiersRegistrationName, asValue(name))
-  })
-}
+import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
+import { AuthProviderRegistrationPrefix } from "@types"
 
 export default async ({
   container,
@@ -52,6 +32,8 @@ export default async ({
   await moduleProviderLoader({
     container,
     providers: providerConfig,
-    registerServiceFn: registrationFn,
+    options: {
+      registrationPrefix: AuthProviderRegistrationPrefix,
+    },
   })
 }

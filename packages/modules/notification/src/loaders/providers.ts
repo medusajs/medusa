@@ -7,29 +7,7 @@ import {
 } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderService } from "@services"
-import {
-  NotificationIdentifiersRegistrationName,
-  NotificationProviderRegistrationPrefix,
-} from "@types"
-import { Lifetime, asFunction, asValue } from "awilix"
-
-const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    container.register({
-      [NotificationProviderRegistrationPrefix + name]: asFunction(
-        (cradle) => new klass(cradle, config),
-        {
-          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-        }
-      ),
-    })
-
-    container.registerAdd(
-      NotificationIdentifiersRegistrationName,
-      asValue(name)
-    )
-  })
-}
+import { NotificationProviderRegistrationPrefix } from "@types"
 
 export default async ({
   container,
@@ -43,7 +21,9 @@ export default async ({
   await moduleProviderLoader({
     container,
     providers: options?.providers || [],
-    registerServiceFn: registrationFn,
+    options: {
+      registrationPrefix: NotificationProviderRegistrationPrefix,
+    },
   })
 
   await syncDatabaseProviders({

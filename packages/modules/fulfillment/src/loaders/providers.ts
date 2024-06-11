@@ -7,24 +7,6 @@ import {
 } from "@medusajs/utils"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentIdentifiersRegistrationName } from "@types"
-import { Lifetime, asFunction, asValue } from "awilix"
-
-const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = FulfillmentProviderService.getRegistrationIdentifier(
-      klass,
-      name
-    )
-
-    container.register({
-      ["fp_" + key]: asFunction((cradle) => new klass(cradle, config), {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }),
-    })
-
-    container.registerAdd(FulfillmentIdentifiersRegistrationName, asValue(key))
-  })
-}
 
 export default async ({
   container,
@@ -35,18 +17,12 @@ export default async ({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   ) & { providers: ModuleProvider[] }
 >): Promise<void> => {
-  container.registerAdd(
-    FulfillmentIdentifiersRegistrationName,
-    asValue(undefined)
-  )
-
-  // Local providers
-  // TODO
-
   await moduleProviderLoader({
     container,
     providers: options?.providers || [],
-    registerServiceFn: registrationFn,
+    options: {
+      registrationPrefix: "fp_",
+    },
   })
 
   await syncDatabaseProviders({

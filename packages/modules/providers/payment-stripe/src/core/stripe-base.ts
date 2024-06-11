@@ -25,11 +25,10 @@ import {
   ErrorCodes,
   ErrorIntentStatus,
   PaymentIntentOptions,
-  StripeCredentials,
   StripeOptions,
 } from "../types"
 
-abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
+abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
   protected readonly options_: StripeOptions
   protected stripe_: Stripe
   protected container_: MedusaContainer
@@ -52,7 +51,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
 
-  private validateOptions(options: StripeCredentials): void {
+  private validateOptions(options: StripeOptions): void {
     if (!isDefined(options.apiKey)) {
       throw new Error("Required option `apiKey` is missing in Stripe plugin")
     }
@@ -112,7 +111,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const { currency_code, amount } = input
 
     const description = (extra?.payment_description ??
-      this.options_?.payment_description) as string
+      this.options_?.paymentDescription) as string
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
@@ -123,7 +122,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
       ...intentRequestData,
     }
 
-    if (this.options_?.automatic_payment_methods) {
+    if (this.options_?.automaticPaymentMethods) {
       intentRequest.automatic_payment_methods = { enabled: true }
     }
 
