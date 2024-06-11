@@ -2,6 +2,7 @@ import { MedusaApp } from "@medusajs/modules-sdk"
 import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
+  WorkflowManager,
 } from "@medusajs/orchestration"
 import { RemoteQueryFunction } from "@medusajs/types"
 import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
@@ -315,6 +316,24 @@ describe("Workflow Orchestrator module", function () {
       })
       await setTimeout(3100)
       expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const spy = await createScheduled("remove-scheduled", {
+        cron: "* * * * * *",
+      })
+      const logSpy = jest.spyOn(console, "warn")
+
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      WorkflowManager["workflows"].delete("remove-scheduled")
+
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
     })
   })
 })

@@ -66,7 +66,7 @@ function createContextualWorkflowRunner<
       isCancel = false,
       container: executionContainer,
     },
-    transactionOrId: string | DistributedTransaction | undefined,
+    transactionOrIdOrIdempotencyKey: DistributedTransaction | string,
     input: unknown,
     context: Context,
     events: DistributedTransactionEvents | undefined = {}
@@ -84,9 +84,21 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    attachOnFinishReleaseEvents(events, context.eventGroupId!, flow)
+    const { eventGroupId } = context
 
-    const args = [transactionOrId, input, context, events]
+    attachOnFinishReleaseEvents(events, eventGroupId!, flow)
+
+    const flowMetadata = {
+      eventGroupId,
+    }
+
+    const args = [
+      transactionOrIdOrIdempotencyKey,
+      input,
+      context,
+      events,
+      flowMetadata,
+    ]
     const transaction = await method.apply(method, args)
 
     let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
@@ -288,7 +300,7 @@ function createContextualWorkflowRunner<
         isCancel: true,
         container,
       },
-      transaction ?? transactionId,
+      transaction ?? transactionId!,
       undefined,
       context,
       events
