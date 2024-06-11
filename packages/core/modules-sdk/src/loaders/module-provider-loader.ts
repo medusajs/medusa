@@ -15,18 +15,15 @@ const defaultProviderLoader = ({
       )
     }
 
-    const key = `${klass.identifier}_${name}`
+    const key = `${providerPrefix}${klass.identifier}_${name}` // e.g. pp_stripe_blik
 
     container.register({
-      [`${providerPrefix}_${key}}`]: asFunction(
-        (cradle) => new klass(cradle, config),
-        {
-          lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-        }
-      ),
+      [key]: asFunction((cradle) => new klass(cradle, config), {
+        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+      }),
     })
 
-    container.registerAdd(`${providerPrefix}_providers`, asValue(key))
+    container.registerAdd(`${providerPrefix}_providers`, asValue(key)) // e.g. pp_providers for payment providers
   })
 }
 
