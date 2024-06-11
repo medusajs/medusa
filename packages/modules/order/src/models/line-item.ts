@@ -19,12 +19,7 @@ import {
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
-type OptionalLineItemProps =
-  | "is_discoutable"
-  | "is_tax_inclusive"
-  | "compare_at_unit_price"
-  | "requires_shipping"
-  | DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.EntityDateColumns
 
 const ProductIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",
