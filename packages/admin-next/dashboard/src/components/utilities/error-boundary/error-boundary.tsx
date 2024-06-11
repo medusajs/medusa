@@ -13,8 +13,6 @@ export const ErrorBoundary = () => {
 
   let code: number | null = null
 
-  console.log(JSON.stringify(error))
-
   if (isFetchError(error)) {
     if (error.status === 401) {
       return <Navigate to="/login" state={{ from: location }} replace />
