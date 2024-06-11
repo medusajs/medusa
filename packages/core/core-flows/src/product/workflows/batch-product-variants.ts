@@ -26,15 +26,23 @@ export const batchProductVariantsWorkflow = createWorkflow(
       >
     >
   ): WorkflowData<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
+    const normalizedInput = transform({ input }, (data) => {
+      return {
+        create: data.input.create ?? [],
+        update: data.input.update ?? [],
+        delete: data.input.delete ?? [],
+      }
+    })
+
     const res = parallelize(
       createProductVariantsWorkflow.runAsStep({
-        input: { product_variants: input.create ?? [] },
+        input: { product_variants: normalizedInput.create },
       }),
       updateProductVariantsWorkflow.runAsStep({
-        input: { product_variants: input.update ?? [] },
+        input: { product_variants: normalizedInput.update },
       }),
       deleteProductVariantsWorkflow.runAsStep({
-        input: { ids: input.delete ?? [] },
+        input: { ids: normalizedInput.delete },
       })
     )
 
