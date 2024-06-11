@@ -83,11 +83,7 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    attachOnFinishReleaseEvents(
-      events,
-      context.eventGroupId!,
-      flow.container as MedusaContainer
-    )
+    attachOnFinishReleaseEvents(events, context.eventGroupId!, flow)
 
     const args = [transactionOrId, input, context, events]
     const transaction = await method.apply(method, args)
@@ -469,7 +465,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 function attachOnFinishReleaseEvents(
   events: DistributedTransactionEvents = {},
   eventGroupId: string,
-  container: MedusaContainer
+  flow: LocalWorkflow
 ) {
   const onFinish = events.onFinish
 
@@ -487,7 +483,7 @@ function attachOnFinishReleaseEvents(
       return
     }
 
-    const eventBusService = container.resolve(
+    const eventBusService = (flow.container as MedusaContainer).resolve(
       ModuleRegistrationName.EVENT_BUS,
       { allowUnregistered: true }
     )
@@ -495,7 +491,11 @@ function attachOnFinishReleaseEvents(
       return
     }
 
-    await eventBusService.releaseGroupedEvents(eventGroupId)
+    await eventBusService
+      .releaseGroupedEvents(eventGroupId)
+      .catch(async (e) => {
+        await flow.cancel(transaction)
+      })
   }
 
   events.onFinish = wrappedOnFinish
