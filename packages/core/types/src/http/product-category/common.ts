@@ -19,9 +19,9 @@ export interface BaseProductCategory {
   deleted_at: string | null
 }
 
-export interface BaseProductCategoryParams
+export interface BaseProductCategoryListParams
   extends FindParams,
-    BaseFilterable<BaseProductCategoryParams> {
+    BaseFilterable<BaseProductCategoryListParams> {
   q?: string
   id?: string | string[]
   name?: string | string[]

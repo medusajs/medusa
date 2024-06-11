@@ -1,6 +1,9 @@
-import { BaseProductCategoryParams } from "../common"
+import {
+  BaseProductCategoryListParams,
+  BaseProductCategoryParams,
+} from "../common"
 
 export interface StoreProductCategoryListParams
-  extends BaseProductCategoryParams {}
+  extends BaseProductCategoryListParams {}
 
 export interface StoreProductCategoryParams extends BaseProductCategoryParams {}

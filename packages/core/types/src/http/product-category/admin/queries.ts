@@ -1,7 +1,10 @@
-import { BaseProductCategoryParams } from "../common"
+import {
+  BaseProductCategoryListParams,
+  BaseProductCategoryParams,
+} from "../common"
 
 export interface AdminProductCategoryListParams
-  extends BaseProductCategoryParams {
+  extends BaseProductCategoryListParams {
   is_internal?: boolean
   is_active?: boolean
 }
