@@ -1,9 +1,12 @@
-import { IUserModuleService } from "@medusajs/types/dist/user"
-import { MockEventBusService } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
+import { IUserModuleService } from "@medusajs/types/dist/user"
 import { UserEvents } from "@medusajs/utils"
+import {
+  MockEventBusService,
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils"
 import { createInvites } from "../../../__fixtures__/invite"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -178,9 +181,7 @@ moduleIntegrationTestRunner({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "1" },
-              }),
+              data: { id: "1" },
               eventName: UserEvents.invite_updated,
             }),
           ])
@@ -197,9 +198,7 @@ moduleIntegrationTestRunner({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "1" },
-              }),
+              data: { id: "1" },
               eventName: UserEvents.invite_token_generated,
             }),
           ])
@@ -228,27 +227,19 @@ moduleIntegrationTestRunner({
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "1" },
-              }),
+              data: { id: "1" },
               eventName: UserEvents.invite_created,
             }),
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "2" },
-              }),
+              data: { id: "2" },
               eventName: UserEvents.invite_created,
             }),
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "1" },
-              }),
+              data: { id: "1" },
               eventName: UserEvents.invite_token_generated,
             }),
             expect.objectContaining({
-              body: expect.objectContaining({
-                data: { id: "2" },
-              }),
+              data: { id: "2" },
               eventName: UserEvents.invite_token_generated,
             }),
           ])

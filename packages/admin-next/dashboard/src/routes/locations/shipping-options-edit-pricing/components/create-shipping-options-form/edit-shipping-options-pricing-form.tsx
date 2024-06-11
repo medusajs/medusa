@@ -25,11 +25,8 @@ import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStore } from "../../../../../hooks/api/store"
-import {
-  getDbAmount,
-  getPresentationalAmount,
-} from "../../../../../lib/money-amount-helpers"
 import { ExtendedProductDTO } from "../../../../../types/api-responses"
+import { castNumber } from "../../../../../lib/cast-number.ts"
 
 const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
   const ret: Record<string, number> = {}
@@ -38,10 +35,7 @@ const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
       // this is a region price
       return
     }
-    ret[p.currency_code!] = getPresentationalAmount(
-      p.amount as number,
-      p.currency_code!
-    )
+    ret[p.currency_code!] = castNumber(p.amount)
   })
   return ret
 }
@@ -51,10 +45,7 @@ const getInitialRegionPrices = (prices: PriceDTO[]) => {
   prices.forEach((p) => {
     if (p.price_rules!.length) {
       const regionId = p.price_rules![0].value
-      ret[regionId] = getPresentationalAmount(
-        p.amount as number,
-        p.currency_code!
-      )
+      ret[regionId] = castNumber(p.amount)
     }
   })
 
@@ -145,7 +136,7 @@ export function EditShippingOptionsPricingForm({
           return undefined
         }
 
-        const amount = getDbAmount(Number(value), code)
+        const amount = castNumber(value)
 
         const priceRecord = {
           currency_code: code,
