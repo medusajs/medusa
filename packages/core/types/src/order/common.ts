@@ -1109,6 +1109,12 @@ export interface OrderDTO {
   raw_original_shipping_tax_total: BigNumberRawValue
 }
 
+type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
+
+export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
+  status: ReturnStatus
+}
+
 export type PaymentStatus =
   | "not_paid"
   | "awaiting"

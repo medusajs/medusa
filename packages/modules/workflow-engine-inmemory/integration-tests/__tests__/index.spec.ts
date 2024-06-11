@@ -1,12 +1,14 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
 import { RemoteJoinerQuery } from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
+import { IWorkflowEngineService, MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
-import { setTimeout } from "timers/promises"
+import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
+import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
+import { WorkflowManager } from "@medusajs/orchestration"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -24,42 +26,41 @@ const afterEach_ = async () => {
 jest.setTimeout(50000)
 
 describe("Workflow Orchestrator module", function () {
-  describe("Testing basic workflow", function () {
-    let workflowOrcModule: IWorkflowEngineService
-    let query: (
-      query: string | RemoteJoinerQuery | object,
-      variables?: Record<string, unknown>
-    ) => Promise<any>
+  let workflowOrcModule: IWorkflowEngineService
+  let query: (
+    query: string | RemoteJoinerQuery | object,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
 
-    afterEach(afterEach_)
+  afterEach(afterEach_)
 
-    beforeAll(async () => {
-      const {
-        runMigrations,
-        query: remoteQuery,
-        modules,
-      } = await MedusaApp({
-        sharedResourcesConfig: {
-          database: {
-            connection: sharedPgConnection,
-          },
+  beforeAll(async () => {
+    const {
+      runMigrations,
+      query: remoteQuery,
+      modules,
+    } = await MedusaApp({
+      sharedResourcesConfig: {
+        database: {
+          connection: sharedPgConnection,
         },
-        modulesConfig: {
-          workflows: {
-            resolve: __dirname + "/../..",
-          },
+      },
+      modulesConfig: {
+        workflows: {
+          resolve: __dirname + "/../..",
         },
-      })
-
-      query = remoteQuery
-
-      await runMigrations()
-
-      workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+      },
     })
 
-    afterEach(afterEach_)
+    query = remoteQuery
 
+    await runMigrations()
+
+    workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
+  })
+
+  afterEach(afterEach_)
+  describe("Testing basic workflow", function () {
     it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
         input: {
@@ -168,7 +169,7 @@ describe("Workflow Orchestrator module", function () {
         }
       )
 
-      await setTimeout(200)
+      await setTimeoutPromise(200)
 
       expect(transaction.flow.state).toEqual("reverted")
     })
@@ -199,6 +200,63 @@ describe("Workflow Orchestrator module", function () {
       })
 
       expect(onFinish).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  describe("Scheduled workflows", () => {
+    beforeAll(() => {
+      jest.useFakeTimers()
+      jest.spyOn(global, "setTimeout")
+    })
+
+    afterAll(() => {
+      jest.useRealTimers()
+    })
+
+    it("should execute a scheduled workflow", async () => {
+      const spy = createScheduled("standard")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(setTimeout).toHaveBeenCalledTimes(2)
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(setTimeout).toHaveBeenCalledTimes(3)
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should stop executions after the set number of executions", async () => {
+      const spy = await createScheduled("num-executions", {
+        cron: "* * * * * *",
+        numberOfExecutions: 2,
+      })
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(2)
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const spy = await createScheduled("remove-scheduled", {
+        cron: "* * * * * *",
+      })
+      const logSpy = jest.spyOn(console, "warn")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      WorkflowManager["workflows"].delete("remove-scheduled")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
     })
   })
 })

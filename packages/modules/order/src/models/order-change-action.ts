@@ -14,6 +14,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
 import Order from "./order"
 import OrderChange from "./order-change"
 
@@ -22,16 +23,31 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const OrderChangeIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
   columns: "order_change_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
   columns: "order_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 const ActionOrderingIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
   columns: "ordering",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_change_action" })
@@ -61,6 +77,21 @@ export default class OrderChangeAction {
     nullable: true,
   })
   order: Order | null = null
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
 
   @Property({ columnType: "integer", nullable: true })
   version: number | null = null
@@ -132,6 +163,10 @@ export default class OrderChangeAction {
     defaultRaw: "now()",
   })
   updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

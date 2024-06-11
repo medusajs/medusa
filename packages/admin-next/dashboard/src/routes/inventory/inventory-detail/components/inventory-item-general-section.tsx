@@ -1,15 +1,15 @@
 import { Container, Heading } from "@medusajs/ui"
-import { ProductVariantDTO } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { InventoryItemRes } from "../../../../types/api-responses"
 import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../components/common/section"
 import { useTranslation } from "react-i18next"
+import { HttpTypes } from "@medusajs/types"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: InventoryItemRes["inventory_item"] & {
-    variant: ProductVariantDTO | ProductVariantDTO[]
+    variant: HttpTypes.AdminProductVariant | HttpTypes.AdminProductVariant[]
   }
 }
 export const InventoryItemGeneralSection = ({
@@ -74,7 +74,7 @@ export const InventoryItemGeneralSection = ({
   )
 }
 
-const getQuantityFormat = (quantity: number, locations: number) => {
+const getQuantityFormat = (quantity: number, locations?: number) => {
   return `${quantity ?? "-"}
-   ${quantity ? `across ${locations} locations` : ""}`
+   ${quantity ? `across ${locations ?? "-"} locations` : ""}`
 }

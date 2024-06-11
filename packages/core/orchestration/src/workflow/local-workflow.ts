@@ -5,6 +5,7 @@ import {
   isString,
   MedusaContext,
   MedusaContextType,
+  MedusaError,
   MedusaModuleType,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -51,7 +52,10 @@ export class LocalWorkflow {
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     this.flow = new OrchestratorBuilder(globalWorkflow.flow_)

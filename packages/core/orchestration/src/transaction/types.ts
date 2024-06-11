@@ -118,7 +118,30 @@ export type TransactionModelOptions = {
    */
   storeExecution?: boolean
 
+  /**
+   * Defines the workflow as a scheduled workflow that executes based on the cron configuration passed.
+   * The value can either by a cron expression string, or an object that also allows to define the concurrency behavior.
+   */
+  schedule?: string | SchedulerOptions
+
   // TODO: add metadata field for customizations
+}
+
+export type SchedulerOptions = {
+  /**
+   * The cron expression to schedule the workflow execution.
+   */
+  cron: string
+  /**
+   * Setting whether to allow concurrent executions (eg. if the previous execution is still running, should the new one be allowed to run or not)
+   * By default concurrent executions are not allowed.
+   */
+  concurrency?: "allow" | "forbid"
+
+  /**
+   * Optionally limit the number of executions for the scheduled workflow. If not set, the workflow will run indefinitely.
+   */
+  numberOfExecutions?: number
 }
 
 export type TransactionModel = {

@@ -5,13 +5,9 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
-import { ExtendedProductDTO } from "../../../types/api-responses"
 import { VariantPricingForm } from "../common/variant-pricing-form"
-import {
-  getDbAmount,
-  getPresentationalAmount,
-} from "../../../lib/money-amount-helpers.ts"
-import { castNumber } from "../../../lib/cast-number.ts"
+import { castNumber } from "../../../lib/cast-number"
+import { HttpTypes } from "@medusajs/types"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -27,7 +23,11 @@ export type UpdateVariantPricesSchemaType = zod.infer<
   typeof UpdateVariantPricesSchema
 >
 
-export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
+export const PricingEdit = ({
+  product,
+}: {
+  product: HttpTypes.AdminProduct
+}) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const form = useForm<UpdateVariantPricesSchemaType>({
@@ -35,10 +35,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
       variants: product.variants.map((variant: any) => ({
         title: variant.title,
         prices: variant.prices.reduce((acc: any, price: any) => {
-          acc[price.currency_code] = getPresentationalAmount(
-            price.amount,
-            price.currency_code
-          )
+          acc[price.currency_code] = price.amount
           return acc
         }, {}),
       })) as any,
@@ -57,7 +54,7 @@ export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
           prices: Object.entries(variant.prices || {}).map(
             ([key, value]: any) => ({
               currency_code: key,
-              amount: getDbAmount(castNumber(value), key),
+              amount: castNumber(value),
             })
           ),
         })),

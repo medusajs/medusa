@@ -163,13 +163,30 @@ export const AdminCreateProductVariant = z
 export type AdminUpdateProductVariantType = z.infer<
   typeof AdminUpdateProductVariant
 >
-export const AdminUpdateProductVariant = AdminCreateProductVariant.extend({
-  id: z.string().optional(),
-  title: z.string().optional(),
-  prices: z.array(AdminUpdateVariantPrice).optional(),
-  allow_backorder: z.boolean().optional(),
-  manage_inventory: z.boolean().optional(),
-}).strict()
+export const AdminUpdateProductVariant = z
+  .object({
+    id: z.string().optional(),
+    title: z.string().optional(),
+    prices: z.array(AdminUpdateVariantPrice).optional(),
+    sku: z.string().nullable().optional().nullable(),
+    ean: z.string().nullable().optional().nullable(),
+    upc: z.string().nullable().optional().nullable(),
+    barcode: z.string().nullable().optional().nullable(),
+    hs_code: z.string().nullable().optional().nullable(),
+    mid_code: z.string().nullable().optional().nullable(),
+    allow_backorder: z.boolean().optional(),
+    manage_inventory: z.boolean().optional(),
+    variant_rank: z.number().optional(),
+    weight: z.number().nullable().optional().nullable(),
+    length: z.number().nullable().optional().nullable(),
+    height: z.number().nullable().optional().nullable(),
+    width: z.number().nullable().optional().nullable(),
+    origin_country: z.string().nullable().optional().nullable(),
+    material: z.string().nullable().optional().nullable(),
+    metadata: z.record(z.unknown()).optional().nullable(),
+    options: z.record(z.string()).optional(),
+  })
+  .strict()
 
 export type AdminBatchUpdateProductVariantType = z.infer<
   typeof AdminBatchUpdateProductVariant
@@ -190,46 +207,57 @@ export const AdminCreateProduct = z
     description: z.string().nullable().optional(),
     is_giftcard: z.boolean().optional().default(false),
     discountable: z.boolean().optional().default(true),
-    images: z
-      .array(z.object({ url: z.string() }))
-      .nullable()
-      .optional(),
-    thumbnail: z.string().nullable().optional(),
+    images: z.array(z.object({ url: z.string() })).optional(),
+    thumbnail: z.string().optional(),
     handle: z.string().optional(),
     status: statusEnum.optional().default(ProductStatus.DRAFT),
-    type_id: z.string().nullable().optional(),
-    collection_id: z.string().nullable().optional(),
-    categories: z
-      .array(AdminCreateProductProductCategory)
-      .nullable()
-      .optional(),
-    tags: z.array(AdminUpdateProductTag).nullable().optional(),
+    type_id: z.string().optional(),
+    collection_id: z.string().optional(),
+    categories: z.array(AdminCreateProductProductCategory).optional(),
+    tags: z.array(AdminUpdateProductTag).optional(),
     options: z.array(AdminCreateProductOption).optional(),
     variants: z.array(AdminCreateProductVariant).optional(),
-    sales_channels: z
-      .array(z.object({ id: z.string() }))
-      .nullable()
-      .optional(),
-    weight: z.number().nullable().optional(),
-    length: z.number().nullable().optional(),
-    height: z.number().nullable().optional(),
-    width: z.number().nullable().optional(),
-    hs_code: z.string().nullable().optional(),
-    mid_code: z.string().nullable().optional(),
-    origin_country: z.string().nullable().optional(),
-    material: z.string().nullable().optional(),
+    sales_channels: z.array(z.object({ id: z.string() })).optional(),
+    weight: z.number().optional(),
+    length: z.number().optional(),
+    height: z.number().optional(),
+    width: z.number().optional(),
+    hs_code: z.string().optional(),
+    mid_code: z.string().optional(),
+    origin_country: z.string().optional(),
+    material: z.string().optional(),
     metadata: z.record(z.unknown()).optional(),
   })
   .strict()
 
 export type AdminUpdateProductType = z.infer<typeof AdminUpdateProduct>
-export const AdminUpdateProduct = AdminCreateProduct.omit({ is_giftcard: true })
-  .extend({
+export const AdminUpdateProduct = z
+  .object({
     title: z.string().optional(),
     discountable: z.boolean().optional(),
+    is_giftcard: z.boolean().optional(),
     options: z.array(AdminUpdateProductOption).optional(),
     variants: z.array(AdminUpdateProductVariant).optional(),
     status: statusEnum.optional(),
+    subtitle: z.string().optional().nullable(),
+    description: z.string().optional().nullable(),
+    images: z.array(z.object({ url: z.string() })).optional(),
+    thumbnail: z.string().optional().nullable(),
+    handle: z.string().optional(),
+    type_id: z.string().optional().nullable(),
+    collection_id: z.string().optional().nullable(),
+    categories: z.array(AdminCreateProductProductCategory).optional(),
+    tags: z.array(AdminUpdateProductTag).nullable().optional(),
+    sales_channels: z.array(z.object({ id: z.string() })).optional(),
+    weight: z.number().optional().nullable(),
+    length: z.number().optional().nullable(),
+    height: z.number().optional().nullable(),
+    width: z.number().optional().nullable(),
+    hs_code: z.string().optional().nullable(),
+    mid_code: z.string().optional().nullable(),
+    origin_country: z.string().optional().nullable(),
+    material: z.string().optional().nullable(),
+    metadata: z.record(z.unknown()).optional().nullable(),
   })
   .strict()
 

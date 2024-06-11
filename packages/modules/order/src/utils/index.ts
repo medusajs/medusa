@@ -1,3 +1,6 @@
 export * from "./action-key"
 export * from "./actions"
+export * from "./apply-order-changes"
 export * from "./calculate-order-change"
+export * from "./set-action-reference"
+export * from "./transform-order"

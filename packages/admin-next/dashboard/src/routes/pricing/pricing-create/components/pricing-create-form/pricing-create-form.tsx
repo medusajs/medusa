@@ -12,7 +12,6 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreatePriceList } from "../../../../../hooks/api/price-lists"
 import { castNumber } from "../../../../../lib/cast-number"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers"
 import { PricingDetailsForm } from "./pricing-details-form"
 import { PricingPricesForm } from "./pricing-prices-form"
 import { PricingProductsForm } from "./pricing-products-form"
@@ -89,10 +88,7 @@ export const PricingCreateForm = () => {
             }
 
             prices.push({
-              amount: getDbAmount(
-                castNumber(currencyPrice.amount),
-                currencyCode
-              ),
+              amount: castNumber(currencyPrice.amount),
               currency_code: currencyCode,
               // @ts-expect-error type is wrong
               variant_id: variantId,
@@ -127,13 +123,10 @@ export const PricingCreateForm = () => {
   ) => {
     form.clearErrors(fields)
 
-    const values = fields.reduce(
-      (acc, key) => {
-        acc[key] = form.getValues(key)
-        return acc
-      },
-      {} as Record<string, unknown>
-    )
+    const values = fields.reduce((acc, key) => {
+      acc[key] = form.getValues(key)
+      return acc
+    }, {} as Record<string, unknown>)
 
     const validationResult = schema.safeParse(values)
 

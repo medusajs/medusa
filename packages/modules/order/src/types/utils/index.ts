@@ -1,13 +1,25 @@
 import { BigNumberInput } from "@medusajs/types"
 
 export type VirtualOrder = {
+  id: string
+
   items: {
     id: string
+    order_id: string
+    return_id?: string
+    claim_id?: string
+    exchange_id?: string
+
     unit_price: BigNumberInput
     quantity: BigNumberInput
 
     detail: {
       id?: string
+      order_id: string
+      return_id?: string
+      claim_id?: string
+      exchange_id?: string
+
       quantity: BigNumberInput
       shipped_quantity: BigNumberInput
       fulfilled_quantity: BigNumberInput
@@ -20,12 +32,26 @@ export type VirtualOrder = {
   }[]
 
   shipping_methods: {
-    id: string
+    shipping_method_id: string
+    order_id: string
+    return_id?: string
+    claim_id?: string
+    exchange_id?: string
+
+    detail?: {
+      id?: string
+      order_id: string
+      return_id?: string
+      claim_id?: string
+      exchange_id?: string
+    }
+
     price: BigNumberInput
   }[]
 
   total: BigNumberInput
 
+  transactions?: OrderTransaction[]
   metadata?: Record<string, unknown>
 }
 
@@ -58,6 +84,10 @@ export interface OrderChangeEvent {
 
   reference?: string
   reference_id?: string
+
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
 
   group_id?: string
 

@@ -1,6 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@medusajs/medusa"
-import { ProductStatus } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -14,9 +12,10 @@ import {
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { parseOptionalFormData } from "../../../../../lib/form-helpers"
+import { HttpTypes } from "@medusajs/types"
 
 type EditProductFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 const EditProductSchema = zod.object({
@@ -58,7 +57,7 @@ export const EditProductForm = ({ product }: EditProductFormProps) => {
         title,
         discountable,
         handle,
-        status: status as ProductStatus,
+        status: status as HttpTypes.AdminProductStatus,
         ...nullableData,
       },
       {
