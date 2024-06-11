@@ -476,19 +476,20 @@ function attachOnFinishReleaseEvents(
   }) => {
     await onFinish?.(args)
 
-    const { transaction } = args
-    const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
-
-    if (failedStatus.includes(transaction.getState())) {
-      return
-    }
-
     const eventBusService = (flow.container as MedusaContainer).resolve(
       ModuleRegistrationName.EVENT_BUS,
       { allowUnregistered: true }
     )
+
     if (!eventBusService || !eventGroupId) {
       return
+    }
+
+    const { transaction } = args
+    const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
+
+    if (failedStatus.includes(transaction.getState())) {
+      return await eventBusService.clearGroupedEvents(eventGroupId)
     }
 
     await eventBusService
