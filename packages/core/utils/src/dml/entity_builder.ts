@@ -8,6 +8,7 @@ import { BooleanSchema } from "./schema/boolean"
 import { DateTimeSchema } from "./schema/date_time"
 import { ManyToMany } from "./relations/many_to_many"
 import { RelationshipType, SchemaType } from "./types"
+import { EnumSchema } from "./schema/enum"
 
 export class EntityBuilder {
   define<
@@ -34,6 +35,10 @@ export class EntityBuilder {
 
   json() {
     return new JSONSchema()
+  }
+
+  enum<const Values extends unknown>(values: Values[]) {
+    return new EnumSchema<Values>(values)
   }
 
   hasOne<T>(entityBuilder: T, options?: Record<string, any>) {

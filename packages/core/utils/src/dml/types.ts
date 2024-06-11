@@ -10,7 +10,6 @@ export type KnownDataTypes =
   | "number"
   | "dateTime"
   | "json"
-  | "any"
 
 /**
  * The meta-data returned by the relationship parse
@@ -66,7 +65,7 @@ export type RelationshipType<T> = {
  * entities on the fly, we need a way to represent a type-safe
  * constructor and its instance properties.
  */
-export interface MikroORMEntity<Props> extends Function {
+export interface EntityConstructor<Props> extends Function {
   new (): Props
 }
 
@@ -74,7 +73,7 @@ export interface MikroORMEntity<Props> extends Function {
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends DmlEntity<infer Schema>
-  ? MikroORMEntity<{
+  ? EntityConstructor<{
       [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
         ? Infer<R>
         : Schema[K]["$dataType"]

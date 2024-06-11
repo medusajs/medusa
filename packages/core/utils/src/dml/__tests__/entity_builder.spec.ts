@@ -1,8 +1,8 @@
 import { expectTypeOf } from "expect-type"
 import { MetadataStorage } from "@mikro-orm/core"
-import { MikroORMEntity } from "../types"
 import { EntityBuilder } from "../entity_builder"
 import { createMikrORMEntity } from "../helpers/create_mikro_orm_entity"
+import { EntityConstructor } from "../types"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -31,7 +31,7 @@ describe("Entity builder", () => {
       id: {
         reference: "scalar",
         type: "number",
-        columnType: "number",
+        columnType: "integer",
         name: "id",
         getter: false,
         setter: false,
@@ -39,7 +39,7 @@ describe("Entity builder", () => {
       username: {
         reference: "scalar",
         type: "string",
-        columnType: "string",
+        columnType: "text",
         name: "username",
         getter: false,
         setter: false,
@@ -47,12 +47,71 @@ describe("Entity builder", () => {
       email: {
         reference: "scalar",
         type: "string",
-        columnType: "string",
+        columnType: "text",
         name: "email",
         getter: false,
         setter: false,
       },
     })
+  })
+
+  test.only("define an entity with enum property", () => {
+    const model = new EntityBuilder()
+    const user = model.define("user", {
+      id: model.number(),
+      username: model.text(),
+      email: model.text(),
+      role: model.enum(["moderator", "admin", "guest"]),
+    })
+
+    const User = createMikrORMEntity(user)
+    expectTypeOf(new User()).toMatchTypeOf<{
+      id: number
+      username: string
+      email: string
+      role: "moderator" | "admin" | "guest"
+    }>()
+
+    const metaData = MetadataStorage.getMetadataFromDecorator(User)
+    expect(metaData.className).toEqual("User")
+    expect(metaData.path).toEqual("User")
+    expect(metaData.properties).toEqual({
+      id: {
+        reference: "scalar",
+        type: "number",
+        columnType: "integer",
+        name: "id",
+        getter: false,
+        setter: false,
+      },
+      username: {
+        reference: "scalar",
+        type: "string",
+        columnType: "text",
+        name: "username",
+        getter: false,
+        setter: false,
+      },
+      email: {
+        reference: "scalar",
+        type: "string",
+        columnType: "text",
+        name: "email",
+        getter: false,
+        setter: false,
+      },
+      role: {
+        reference: "scalar",
+        enum: true,
+        items: expect.any(Function),
+        name: "role",
+      },
+    })
+    expect(metaData.properties["role"].items()).toEqual([
+      "moderator",
+      "admin",
+      "guest",
+    ])
   })
 
   test("define an entity with relationships", () => {
@@ -72,7 +131,7 @@ describe("Entity builder", () => {
     expectTypeOf(new User()).toMatchTypeOf<{
       id: number
       username: string
-      emails: MikroORMEntity<{ email: string; isVerified: boolean }>
+      emails: EntityConstructor<{ email: string; isVerified: boolean }>
     }>()
 
     const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -82,7 +141,7 @@ describe("Entity builder", () => {
       id: {
         reference: "scalar",
         type: "number",
-        columnType: "number",
+        columnType: "integer",
         name: "id",
         getter: false,
         setter: false,
@@ -90,7 +149,7 @@ describe("Entity builder", () => {
       username: {
         reference: "scalar",
         type: "string",
-        columnType: "string",
+        columnType: "text",
         name: "username",
         getter: false,
         setter: false,
@@ -122,9 +181,9 @@ describe("Entity builder", () => {
     expectTypeOf(new User()).toMatchTypeOf<{
       id: number
       username: string
-      orders: MikroORMEntity<{
+      orders: EntityConstructor<{
         amount: number
-        user: MikroORMEntity<{
+        user: EntityConstructor<{
           id: number
           username: string
         }>
@@ -138,7 +197,7 @@ describe("Entity builder", () => {
       id: {
         reference: "scalar",
         type: "number",
-        columnType: "number",
+        columnType: "integer",
         name: "id",
         getter: false,
         setter: false,
@@ -146,7 +205,7 @@ describe("Entity builder", () => {
       username: {
         reference: "scalar",
         type: "string",
-        columnType: "string",
+        columnType: "text",
         name: "username",
         getter: false,
         setter: false,
@@ -166,7 +225,7 @@ describe("Entity builder", () => {
       amount: {
         reference: "scalar",
         type: "number",
-        columnType: "number",
+        columnType: "integer",
         name: "amount",
         getter: false,
         setter: false,
