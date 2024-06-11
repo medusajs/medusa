@@ -1,6 +1,8 @@
-import { ModuleProviderExports } from "@medusajs/types"
-import { ModuleServiceInitializeOptions } from "@medusajs/types"
-import { Logger } from "@medusajs/types"
+import {
+  Logger,
+  ModuleProviderExports,
+  ModuleServiceInitializeOptions,
+} from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
   logger?: Logger

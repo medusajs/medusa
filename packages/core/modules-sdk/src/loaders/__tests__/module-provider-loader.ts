@@ -22,13 +22,40 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/default",
-        options: {},
+        options: {
+          config: {
+            test: "test",
+          },
+        },
       },
     ]
 
     await moduleProviderLoader({ container, providers: moduleProviders })
 
-    const testService = container.resolve("testService")
+    const testService = container.resolve("test_test")
+    expect(testService).toBeTruthy()
+    expect(testService.constructor.name).toEqual("TestService")
+  })
+
+  it("should register the provider service with a prefix", async () => {
+    const moduleProviders = [
+      {
+        resolve: "@providers/default",
+        options: {
+          config: {
+            test: "test",
+          },
+        },
+      },
+    ]
+
+    await moduleProviderLoader({
+      container,
+      providers: moduleProviders,
+      options: { registrationPrefix: "ts_" },
+    })
+
+    const testService = container.resolve("ts_test_test")
     expect(testService).toBeTruthy()
     expect(testService.constructor.name).toEqual("TestService")
   })
@@ -47,7 +74,11 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/default",
-        options: {},
+        options: {
+          config: {
+            test: "test",
+          },
+        },
       },
     ]
 
@@ -62,11 +93,15 @@ describe("modules loader", () => {
     expect(testService.constructor.name).toEqual("TestService")
   })
 
-  it("should log the errors if no service is defined", async () => {
+  it("should throw if no identifier is present on the provider service", async () => {
     const moduleProviders = [
       {
-        resolve: "@providers/no-service",
-        options: {},
+        resolve: "@providers/no-identifier",
+        options: {
+          config: {
+            test: "test",
+          },
+        },
       },
     ]
 
@@ -74,7 +109,28 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "@providers/no-service doesn't seem to have a main service exported -- make sure your module has a default export of a service."
+        "The provider Function is missing an identifier"
+      )
+    }
+  })
+
+  it("should log the errors if no service is defined", async () => {
+    const moduleProviders = [
+      {
+        resolve: "@providers/no-service",
+        options: {
+          config: {
+            test: "test",
+          },
+        },
+      },
+    ]
+
+    try {
+      await moduleProviderLoader({ container, providers: moduleProviders })
+    } catch (error) {
+      expect(error.message).toBe(
+        "@providers/no-service doesn't seem to have a main service exported -- make sure your provider package has a default export of a service."
       )
     }
   })
@@ -83,7 +139,11 @@ describe("modules loader", () => {
     const moduleProviders = [
       {
         resolve: "@providers/no-default",
-        options: {},
+        options: {
+          config: {
+            test: "test",
+          },
+        },
       },
     ]
 
@@ -91,7 +151,7 @@ describe("modules loader", () => {
       await moduleProviderLoader({ container, providers: moduleProviders })
     } catch (error) {
       expect(error.message).toBe(
-        "@providers/no-default doesn't seem to have a main service exported -- make sure your module has a default export of a service."
+        "@providers/no-default doesn't seem to have a main service exported -- make sure your provider package has a default export of a service."
       )
     }
   })

@@ -11,7 +11,7 @@ const defaultProviderLoader = ({
   Object.entries(providerOptions.config || []).map(([name, config]) => {
     if (!klass.identifier) {
       throw new Error(
-        `The provider ${klass.constructor} is missing an identifier`
+        `The provider ${klass.constructor.name} is missing an identifier`
       )
     }
 
@@ -40,7 +40,7 @@ export async function moduleProviderLoader({
     container: MedusaContainer,
     moduleDetails: any
   ) => Promise<void>
-  options: {
+  options?: {
     registrationPrefix?: string
   }
 }) {

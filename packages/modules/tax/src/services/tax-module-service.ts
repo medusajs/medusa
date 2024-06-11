@@ -727,7 +727,7 @@ export default class TaxModuleService<
 
   // @InjectTransactionManager("baseRepository_")
   // async createProvidersOnLoad(@MedusaContext() sharedContext: Context = {}) {
-  //   const providersToLoad = this.container_["tx_providers"] as ITaxProvider[]
+  //   const providersToLoad = this.container_["tp_providers"] as ITaxProvider[]
 
   //   const ids = providersToLoad.map((p) => p.getIdentifier())
 

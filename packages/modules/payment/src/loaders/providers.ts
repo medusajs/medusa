@@ -1,7 +1,7 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
-import { PaymentProviderRegistrationPrefix } from "src/types"
 import * as providers from "../providers"
+import { PaymentProviderRegistrationPrefix } from "../types"
 
 export default async ({
   container,
