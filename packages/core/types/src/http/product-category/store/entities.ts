@@ -1,6 +1,6 @@
 import { StoreProduct } from "../../product/store"
-import { ProductCategory } from "../common"
+import { BaseProductCategory } from "../common"
 
-export interface StoreProductCategory extends ProductCategory {
+export interface StoreProductCategory extends BaseProductCategory {
   products?: StoreProduct[]
 }

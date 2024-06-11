@@ -10,15 +10,13 @@ export function buildExpectedEventMessageShape(options: {
 }): EventBusTypes.Message {
   return {
     eventName: options.eventName,
-    body: {
-      metadata: {
-        action: options.action,
-        eventGroupId: options.eventGroupId,
-        service: "fulfillment",
-        object: options.object,
-      },
-      data: options.data,
+    metadata: {
+      action: options.action,
+      eventGroupId: options.eventGroupId,
+      source: "fulfillment",
+      object: options.object,
     },
+    data: options.data,
     options: options.options,
   }
 }

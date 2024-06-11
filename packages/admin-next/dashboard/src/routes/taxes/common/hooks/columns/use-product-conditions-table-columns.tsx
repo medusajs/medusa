@@ -1,10 +1,10 @@
-import { Product } from "@medusajs/medusa"
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 export const useProductConditionsTableColumns = () => {
   const base = useProductTableColumns()

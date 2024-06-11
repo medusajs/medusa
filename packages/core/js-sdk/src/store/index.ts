@@ -71,7 +71,7 @@ export class Store {
 
   public category = {
     list: async (
-      query?: FindParams & HttpTypes.StoreProductCategoryFilters,
+      query?: HttpTypes.StoreProductCategoryParams,
       headers?: ClientHeaders
     ) => {
       return this.client.fetch<
@@ -99,22 +99,23 @@ export class Store {
 
   public product = {
     list: async (
-      query?: FindParams & HttpTypes.StoreProductFilters,
+      query?: HttpTypes.StoreProductParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<
-        PaginatedResponse<{ products: HttpTypes.StoreProduct[] }>
-      >(`/store/products`, {
-        query,
-        headers,
-      })
+      return this.client.fetch<HttpTypes.StoreProductListResponse>(
+        `/store/products`,
+        {
+          query,
+          headers,
+        }
+      )
     },
     retrieve: async (
       id: string,
       query?: SelectParams,
       headers?: ClientHeaders
     ) => {
-      return this.client.fetch<{ product: HttpTypes.StoreProduct }>(
+      return this.client.fetch<HttpTypes.StoreProductResponse>(
         `/store/products/${id}`,
         {
           query,

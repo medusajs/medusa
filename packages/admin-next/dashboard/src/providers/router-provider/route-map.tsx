@@ -13,7 +13,7 @@ import { ProtectedRoute } from "../../components/authentication/protected-route"
 import { MainLayout } from "../../components/layout/main-layout"
 import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
-import { InventoryItemRes, PriceListRes } from "../../types/api-responses"
+import { PriceListRes } from "../../types/api-responses"
 
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
@@ -63,7 +63,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/products/product-detail"),
                 handle: {
-                  crumb: (data: { product: HttpTypes.AdminProduct }) =>
+                  crumb: (data: HttpTypes.AdminProductResponse) =>
                     data.product.title,
                 },
                 children: [
@@ -495,12 +495,19 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../routes/inventory/inventory-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/inventory/inventory-create"),
+                  },
+                ],
               },
               {
                 path: ":id",
                 lazy: () => import("../../routes/inventory/inventory-detail"),
                 handle: {
-                  crumb: (data: InventoryItemRes) =>
+                  crumb: (data: HttpTypes.AdminInventoryItemResponse) =>
                     data.inventory_item.title ?? data.inventory_item.sku,
                 },
                 children: [

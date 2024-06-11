@@ -1,0 +1,199 @@
+import { AcademicCapSolid, BoltSolid } from "@medusajs/icons"
+import { LearningPath } from "docs-ui"
+
+export const metadata = {
+  title: `Order Management System (OMS) Recipe`,
+}
+
+# {metadata.title}
+
+This recipe provides an overview of Medusa's features and how to use it as an Order Management System (OMS).
+
+## Overview
+
+Building or integrating an OMS brings certain challenges: accepting orders from different sales channels, tracking inventory across the sales channels, integrating third-party fulfillment and payment providers with the OMS, and more.
+
+Medusa's commerce modules and customization toolkit lets you integrate it within a larger ecosystem. The commerce modules provide features to allow businesses to accept orders from any sales channel, benefit from multi-warehouse inventory features, and integrate third-party services for fulfillment, payment, and more.
+
+<Note title="Related use-case">
+
+[How Siam Makro used Medusa an OMS](https://medusajs.com/blog/makro-pro/).
+
+</Note>
+
+---
+
+## Source Orders into Medusa
+
+Sales channels in your commerce ecosystem must route their orders into the OMS.
+
+![Routing orders into Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032160/Medusa%20Book/oms-orders_zf5ta9.jpg)
+
+Medusa's [Store REST APIs](!api!/store) let you integrate a checkout experience in any storefront. Alternatively, you can use Medusa's [Draft Order APIs](!api!/admin#draft-orders) to place an order without direct involvement from the customer, such as when placing an order through a POS.
+
+In addition, you can customize the Medusa application to accept orders through a third-party checkout system. This gives you more flexibility over adding orders to Medusa.
+
+For example, you can support importing orders into Medusa through a custom API Route that allows batch-inserting orders. Another example is creating a scheduled job that runs at a specified interval and imports orders from a third-party service.
+
+<CardList items={[
+  {
+    href: "!api!/store#carts",
+    title: "Store REST APIs",
+    text: "Learn how to use the Store REST APIs to create an order.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/api-routes",
+    title: "Create API Route",
+    text: "Learn how to create a custom API Route.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/scheduled-jobs",
+    title: "Create Scheduled Jobs",
+    text: "Learn how to create a scheduled job.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  }
+]} />
+
+---
+
+## Route Orders to Third-party Fulfillment Services
+
+To integrate third-party fulfillment providers with the Medusa application, create a fulfillment provider module.
+
+Medusa uses the Fulfillment Module whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The module's main service's methods use the associated fulfillment provider module to handle the desired fulfillment actions.
+
+![Fulfilling orders with Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032184/Medusa%20Book/oms-fulfillment_qfrpdd.jpg)
+
+In addition, create a subscriber that listen to fulfillment-related events, such as the `order.fulfillment_created` event, to perform actions with the third-party fulfillment provider.
+
+<Note type="soon">
+
+Emitting of event `order.fulfillment_created` isn't implemented yet.
+
+</Note>
+
+<CardList itemsPerRow={2} items={[
+  {
+    href: "/references/fulfillment/provider",
+    title: "Create a Fulfillment Provider Module",
+    text: "Learn how to create a fulfillment provider in Medusa.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  }
+]} />
+
+---
+
+## Process Payment with Third-Party Providers
+
+To integrate third-party payment providers with the Medusa application, create a payment provider module.
+
+In addition, create a subscriber that listen to payment-related events, such as the `order.payment_captured` event, to perform actions in the third-party payment provider.
+
+<Note type="soon">
+
+Emitting of event `order.payment_captured` isn't implemented yet.
+
+</Note>
+
+<CardList itemsPerRow={2} items={[
+  {
+    href: "/references/payment/provider",
+    title: "Create a Payment Provider Module",
+    text: "Learn how to create a payment provider module.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  }
+]} />
+
+---
+
+## Track Inventory Across Sales Channels
+
+Medusa's Inventory, Stock Location, and Sales Channel modules allow merchants to track inventory levels tied to sales channels across stock locations.
+
+When an order is placed, the item's quantity is reserved from the stock location associated with the order's sales channel. Once the item is fulfilled, the reserved quantity is deducted from the item's inventory quantity.
+
+<CardList items={[
+  {
+    href: "/commerce-modules/inventory",
+    title: "Inventory Module",
+    text: "Learn about the Inventory Module's concepts and features.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "/commerce-modules/stock-location",
+    title: "Stock Location Module",
+    text: "Learn about the Stock Location Module's concepts and features.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  }
+]} />
+
+<Card
+  href="/commerce-modules/sales-channel"
+  title="Sales Channel Module"
+  text="Learn about the Sales Channel Module's concepts and features."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+  className="mt-1"
+/>
+
+---
+
+## Handle Returns, Exchanges, and Changes
+
+<Note type="soon">
+
+All types of order changes are coming soon.
+
+</Note>
+
+In Medusa, items in an order can be returned or exchanged; these can be created by the merchant or requested by the customer. A merchant can also edit an order to add, update, or delete items.
+
+When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment provider modules are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
+
+Medusa also emits events related to these actions, such as `order.return_requested`. So, you can create a subscriber that listens to these events and perform asynchronous actions, such as communicating with third-party services.
+
+<Note type="soon">
+
+Emitting of event `order.return_requested` isn't implemented yet.
+
+</Note>
+
+<CardList items={[
+  {
+    href: "/commerce-modules/order/order-change",
+    title: "Order Changes",
+    text: "Learn about how to use order changes.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/events-and-subscribers",
+    title: "Create a Subscriber",
+    text: "Learn about create a subscriber",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  }
+]} />

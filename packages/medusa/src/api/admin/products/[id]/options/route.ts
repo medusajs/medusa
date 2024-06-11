@@ -4,30 +4,25 @@ import {
 } from "../../../../../types/routing"
 
 import { createProductOptionsWorkflow } from "@medusajs/core-flows"
+import { remapKeysForProduct, remapProductResponse } from "../../helpers"
+import { HttpTypes } from "@medusajs/types"
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { refetchProduct, remapProductResponse } from "../../helpers"
-import { AdminCreateProductOptionType } from "../../validators"
+  refetchEntities,
+  refetchEntity,
+} from "../../../../utils/refetch-entity"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductOptionParams>,
+  res: MedusaResponse<HttpTypes.AdminProductOptionListResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const productId = req.params.id
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_option",
-    variables: {
-      filters: { ...req.filterableFields, product_id: productId },
-      ...req.remoteQueryConfig.pagination,
-    },
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const { rows: product_options, metadata } = await remoteQuery(queryObject)
+  const { rows: product_options, metadata } = await refetchEntities(
+    "product_option",
+    { ...req.filterableFields, product_id: productId },
+    req.scope,
+    req.remoteQueryConfig.fields,
+    req.remoteQueryConfig.pagination
+  )
 
   res.json({
     product_options,
@@ -38,25 +33,26 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminCreateProductOptionType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminCreateProductOption>,
+  res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const productId = req.params.id
-  const input = [
-    {
-      ...req.validatedBody,
-      product_id: productId,
-    },
-  ]
-
   await createProductOptionsWorkflow(req.scope).run({
-    input: { product_options: input },
+    input: {
+      product_options: [
+        {
+          ...req.validatedBody,
+          product_id: productId,
+        },
+      ],
+    },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     productId,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
   res.status(200).json({ product: remapProductResponse(product) })
 }

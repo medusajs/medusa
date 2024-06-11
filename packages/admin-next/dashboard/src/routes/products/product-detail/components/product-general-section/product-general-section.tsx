@@ -1,11 +1,11 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 const productStatusColor = (status: string) => {
   switch (status) {
@@ -23,7 +23,7 @@ const productStatusColor = (status: string) => {
 }
 
 type ProductGeneralSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductGeneralSection = ({

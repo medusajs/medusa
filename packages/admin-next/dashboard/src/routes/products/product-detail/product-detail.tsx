@@ -48,8 +48,8 @@ export const ProductDetail = () => {
           </div>
         )
       })}
-      <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-2">
+      <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
+        <div className="flex w-full flex-col gap-y-3">
           <ProductGeneralSection product={product} />
           <ProductMediaSection product={product} />
           <ProductOptionSection product={product} />
@@ -65,7 +65,7 @@ export const ProductDetail = () => {
             <JsonViewSection data={product} root="product" />
           </div>
         </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[400px]">
+        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>

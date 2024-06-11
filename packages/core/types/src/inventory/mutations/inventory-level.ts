@@ -12,10 +12,6 @@ export interface CreateInventoryLevelInput {
    */
   stocked_quantity?: number
   /**
-   * The reserved quantity of the associated inventory item in the associated location.
-   */
-  reserved_quantity?: number
-  /**
    * The incoming quantity of the associated inventory item in the associated location.
    */
   incoming_quantity?: number

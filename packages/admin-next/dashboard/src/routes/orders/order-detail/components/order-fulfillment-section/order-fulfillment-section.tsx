@@ -1,10 +1,5 @@
 import { Buildings, XCircle } from "@medusajs/icons"
-import {
-  AdminOrder,
-  FulfillmentDTO,
-  OrderLineItemDTO,
-  ProductVariantDTO,
-} from "@medusajs/types"
+import { AdminOrder, FulfillmentDTO, OrderLineItemDTO } from "@medusajs/types"
 import {
   Container,
   Copy,
@@ -36,7 +31,7 @@ export const OrderFulfillmentSection = ({
   const fulfillments = order.fulfillments || []
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       <UnfulfilledItemBreakdown order={order} />
       {fulfillments.map((f, index) => (
         <Fulfillment key={f.id} index={index} fulfillment={f} order={order} />
@@ -49,7 +44,7 @@ const UnfulfilledItem = ({
   item,
   currencyCode,
 }: {
-  item: OrderLineItemDTO & { variant: ProductVariantDTO }
+  item: OrderLineItemDTO & { variant: HttpTypes.AdminProductVariant }
   currencyCode: string
 }) => {
   return (

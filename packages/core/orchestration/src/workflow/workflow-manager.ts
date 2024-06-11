@@ -10,6 +10,8 @@ import {
   TransactionStepHandler,
   TransactionStepsDefinition,
 } from "../transaction"
+import { WorkflowScheduler } from "./scheduler"
+import { MedusaError } from "@medusajs/utils"
 
 export interface WorkflowDefinition {
   id: string
@@ -51,13 +53,20 @@ export type WorkflowStepHandler = (
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
+  protected static scheduler = new WorkflowScheduler()
 
   static unregister(workflowId: string) {
+    const workflow = WorkflowManager.workflows.get(workflowId)
+    if (workflow?.options.schedule) {
+      this.scheduler.clearWorkflow(workflow)
+    }
+
     WorkflowManager.workflows.delete(workflowId)
   }
 
   static unregisterAll() {
     WorkflowManager.workflows.clear()
+    this.scheduler.clear()
   }
 
   static getWorkflows() {
@@ -70,7 +79,10 @@ export class WorkflowManager {
 
   static getTransactionDefinition(workflowId): OrchestratorBuilder {
     if (!WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     const workflow = WorkflowManager.workflows.get(workflowId)!
@@ -111,7 +123,7 @@ export class WorkflowManager {
       }
     }
 
-    WorkflowManager.workflows.set(workflowId, {
+    const workflow = {
       id: workflowId,
       flow_: finalFlow!,
       orchestrator: new TransactionOrchestrator(
@@ -124,7 +136,12 @@ export class WorkflowManager {
       options,
       requiredModules,
       optionalModules,
-    })
+    }
+
+    WorkflowManager.workflows.set(workflowId, workflow)
+    if (options.schedule) {
+      this.scheduler.scheduleWorkflow(workflow)
+    }
   }
 
   static update(

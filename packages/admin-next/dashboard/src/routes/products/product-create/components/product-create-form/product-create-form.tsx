@@ -3,6 +3,7 @@ import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { SalesChannelDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -20,7 +21,6 @@ import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-f
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import { sdk } from "../../../../../lib/client"
-import { HttpTypes } from "@medusajs/types"
 
 enum Tab {
   DETAILS = "details",
@@ -35,7 +35,11 @@ const SAVE_DRAFT_BUTTON = "save-draft-button"
 
 let LAST_VISITED_TAB: Tab | null = null
 
-export const ProductCreateForm = () => {
+type ProductCreateFormProps = { defaultChannel?: SalesChannelDTO }
+
+export const ProductCreateForm = ({
+  defaultChannel,
+}: ProductCreateFormProps) => {
   const [tab, setTab] = useState<Tab>(Tab.DETAILS)
   const [tabState, setTabState] = useState<TabState>({
     [Tab.DETAILS]: "in-progress",
@@ -48,7 +52,12 @@ export const ProductCreateForm = () => {
   const { handleSuccess } = useRouteModal()
 
   const form = useForm<ProductCreateSchemaType>({
-    defaultValues: PRODUCT_CREATE_FORM_DEFAULTS,
+    defaultValues: {
+      ...PRODUCT_CREATE_FORM_DEFAULTS,
+      sales_channels: defaultChannel
+        ? [{ id: defaultChannel.id, name: defaultChannel.name }]
+        : [],
+    },
     resolver: zodResolver(ProductCreateSchema),
   })
 
@@ -94,14 +103,14 @@ export const ProductCreateForm = () => {
           const fileReqs = []
           if (thumbnailReq) {
             fileReqs.push(
-              sdk.admin.uploads
+              sdk.admin.upload
                 .create({ files: [thumbnailReq.file] })
                 .then((r) => r.files.map((f) => ({ ...f, isThumbnail: true })))
             )
           }
           if (otherMediaReq?.length) {
             fileReqs.push(
-              sdk.admin.uploads
+              sdk.admin.upload
                 .create({
                   files: otherMediaReq.map((m) => m.file),
                 })

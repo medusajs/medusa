@@ -79,6 +79,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         hasTitleStyling: true,
         children: [
           {
+            path: "/commerce-modules/auth/module-options",
+            title: "Module Options",
+          },
+          {
             path: "/commerce-modules/auth/examples",
             title: "Examples",
           },
@@ -86,16 +90,35 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             title: "Concepts",
             children: [
               {
+                path: "/commerce-modules/auth/auth-identity-and-actor-types",
+                title: "Identity and Actor Types",
+              },
+              {
                 path: "/commerce-modules/auth/auth-providers",
                 title: "Auth Providers",
+                children: [
+                  {
+                    path: "/commerce-modules/auth/auth-providers/emailpass",
+                    title: "Emailpass Auth Provider Module",
+                  },
+                ],
+              },
+              {
+                path: "/commerce-modules/auth/authentication-route",
+                title: "Authentication Route",
               },
               {
                 path: "/commerce-modules/auth/auth-flows",
                 title: "Auth Flows",
               },
+            ],
+          },
+          {
+            title: "Guides",
+            children: [
               {
-                path: "/commerce-modules/auth/user-creation",
-                title: "User Creation",
+                path: "/commerce-modules/auth/create-actor-type",
+                title: "Create an Actor Type",
               },
             ],
           },
@@ -284,6 +307,15 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               {
                 path: "/commerce-modules/customer/relations-to-other-modules",
                 title: "Relations to Other Modules",
+              },
+            ],
+          },
+          {
+            title: "Guides",
+            children: [
+              {
+                path: "/commerce-modules/customer/register-customer-email",
+                title: "Register a Customer with Email",
               },
             ],
           },
@@ -1247,6 +1279,61 @@ export const sidebar = sidebarAttachHrefCommonOptions([
       },
     ],
   },
+
+  {
+    title: "Recipes",
+    hasTitleStyling: true,
+    children: [
+      {
+        path: "/recipes/b2b",
+        title: "B2B",
+      },
+      {
+        path: "/recipes/commerce-automation",
+        title: "Commerce Automation",
+      },
+      {
+        path: "/recipes/digital-products",
+        title: "Digital Products",
+      },
+      {
+        path: "/recipes/ecommerce",
+        title: "Ecommerce",
+      },
+      {
+        path: "/recipes/integrate-ecommerce-stack",
+        title: "Integrate Ecommerce Stack",
+      },
+      {
+        path: "/recipes/marketplace",
+        title: "Marketplace",
+      },
+      {
+        path: "/recipes/multi-region-store",
+        title: "Multi-Region Store",
+      },
+      {
+        path: "/recipes/omnichannel",
+        title: "Omnichannel Store",
+      },
+      {
+        path: "/recipes/oms",
+        title: "OMS",
+      },
+      {
+        path: "/recipes/personalized-products",
+        title: "Personalized Products",
+      },
+      {
+        path: "/recipes/pos",
+        title: "POS",
+      },
+      {
+        path: "/recipes/subscriptions",
+        title: "Subscriptions",
+      },
+    ],
+  },
   {
     title: "SDKs and Tools",
     hasTitleStyling: true,
@@ -1689,6 +1776,62 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/architectural-modules/workflow-engine/redis",
             title: "Redis",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "/storefront-development",
+    title: "Storefront Development",
+    hasTitleStyling: true,
+    isChildSidebar: true,
+    children: [
+      {
+        path: "/storefront-development/tips",
+        title: "Tips",
+      },
+      {
+        path: "/storefront-development/regions",
+        title: "Regions",
+        children: [
+          {
+            path: "/storefront-development/regions/list",
+            title: "List Regions",
+          },
+          {
+            path: "/storefront-development/regions/store-retrieve-region",
+            title: "Store and Retrieve Regions",
+          },
+          {
+            path: "/storefront-development/regions/context",
+            title: "Region React Context",
+          },
+        ],
+      },
+      {
+        path: "/storefront-development/cart",
+        title: "Carts",
+        children: [
+          {
+            path: "/storefront-development/cart/create",
+            title: "Create Cart",
+          },
+          {
+            path: "/storefront-development/cart/retrieve",
+            title: "Retrieve Cart",
+          },
+          {
+            path: "/storefront-development/cart/context",
+            title: "Cart React Context",
+          },
+          {
+            path: "/storefront-development/cart/update",
+            title: "Update Cart",
+          },
+          {
+            path: "/storefront-development/cart/manage-items",
+            title: "Manage Line Items",
           },
         ],
       },

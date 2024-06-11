@@ -1,4 +1,4 @@
-import { ProductVariantDTO } from "@medusajs/types"
+import { HttpTypes, RegionDTO } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -10,7 +10,7 @@ import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
-import { DataGridCountrySelectCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-country-select-cell"
+import { useRegions } from "../../../../../hooks/api/regions"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -19,9 +19,10 @@ type ProductCreateVariantsFormProps = {
 export const ProductCreateVariantsForm = ({
   form,
 }: ProductCreateVariantsFormProps) => {
+  const { regions } = useRegions({ limit: 9999 })
+
   const { store, isPending, isError, error } = useStore({
     fields: "supported_currency_codes",
-    limit: 9999,
   })
 
   const variants = useWatch({
@@ -39,6 +40,7 @@ export const ProductCreateVariantsForm = ({
   const columns = useColumns({
     options,
     currencies: store?.supported_currency_codes,
+    regions,
   })
 
   const variantData = useMemo(
@@ -61,14 +63,16 @@ export const ProductCreateVariantsForm = ({
   )
 }
 
-const columnHelper = createDataGridHelper<ProductVariantDTO>()
+const columnHelper = createDataGridHelper<HttpTypes.AdminProductVariant>()
 
 const useColumns = ({
   options,
   currencies = [],
+  regions = [],
 }: {
   options: any // CreateProductOptionSchemaType[]
   currencies?: string[]
+  regions: RegionDTO[]
 }) => {
   const { t } = useTranslation()
 
@@ -90,7 +94,7 @@ const useColumns = ({
             </DataGridReadOnlyCell>
           )
         },
-        disableHidding: true,
+        disableHiding: true,
       }),
       columnHelper.column({
         id: "title",
@@ -114,45 +118,6 @@ const useColumns = ({
             <DataGridTextCell
               context={context}
               field={`variants.${context.row.index}.sku`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "ean",
-        name: t("fields.ean"),
-        header: t("fields.ean"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.ean`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "upc",
-        name: t("fields.upc"),
-        header: t("fields.upc"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.upc`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "barcode",
-        name: t("fields.barcode"),
-        header: t("fields.barcode"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.barcode`}
             />
           )
         },
@@ -189,7 +154,7 @@ const useColumns = ({
 
       columnHelper.column({
         id: "inventory_kit",
-        name: t("fields.allowBackorder"),
+        name: t("fields.inventoryKit"),
         header: t("fields.inventoryKit"),
         cell: (context) => {
           return (
@@ -220,111 +185,23 @@ const useColumns = ({
         })
       }),
 
-      columnHelper.column({
-        id: "mid_code",
-        name: t("fields.midCode"),
-        header: t("fields.midCode"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.mid_code`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "hs_code",
-        name: t("fields.hsCode"),
-        header: t("fields.hsCode"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.hs_code`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "width",
-        name: t("fields.width"),
-        header: t("fields.width"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.width`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "length",
-        name: t("fields.length"),
-        header: t("fields.length"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.length`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "height",
-        name: t("fields.height"),
-        header: t("fields.height"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.height`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "weight",
-        name: t("fields.weight"),
-        header: t("fields.weight"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.weight`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "material",
-        name: t("fields.material"),
-        header: t("fields.material"),
-        cell: (context) => {
-          return (
-            <DataGridTextCell
-              context={context}
-              field={`variants.${context.row.index}.material`}
-            />
-          )
-        },
-      }),
-      columnHelper.column({
-        id: "origin_country",
-        name: t("fields.countryOfOrigin"),
-        header: t("fields.countryOfOrigin"),
-        cell: (context) => {
-          return (
-            <DataGridCountrySelectCell
-              context={context}
-              field={`variants.${context.row.index}.origin_country`}
-            />
-          )
-        },
+      ...regions.map((region) => {
+        return columnHelper.column({
+          id: `price_${region.id}`,
+          name: `Price ${region.name}`,
+          header: `Price ${region.name}`,
+          cell: (context) => {
+            return (
+              <DataGridCurrencyCell
+                code={region.currency_code}
+                context={context}
+                field={`variants.${context.row.index}.prices.${region.id}`}
+              />
+            )
+          },
+        })
       }),
     ],
-    [currencies, options, t]
+    [currencies, regions, options, t]
   )
 }

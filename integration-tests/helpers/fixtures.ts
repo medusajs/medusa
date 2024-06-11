@@ -40,3 +40,20 @@ export const getProductFixture = (
   ],
   ...(overrides ?? {}),
 })
+
+export const getPricelistFixture = (overrides: Partial<any>) => {
+  return {
+    // BREAKING: `name` field was renamed to `title`
+    title: "Winter sales",
+    description: "Winter sale. 25% off selected items.",
+    type: "sale",
+    status: "active",
+    starts_at: "2022-07-01T00:00:00.000Z",
+    ends_at: "2022-07-31T00:00:00.000Z",
+    // BREAKING: There is no explicit customer_groups field in v2, we use rules instead
+    // BREAKING: Variant ID is required in prices
+    // BREAKING: Currency code is required in prices
+    prices: [],
+    ...overrides,
+  }
+}

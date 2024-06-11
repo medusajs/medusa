@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
+import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { StepResponse, resolveValue } from "./helpers"
+import { resolveValue, StepResponse } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -135,6 +135,10 @@ function applyStep<
           attempt: metadata.attempt,
           container: stepArguments.container,
           metadata,
+          eventGroupId:
+            stepArguments.transaction.getFlow()?.metadata?.eventGroupId ??
+            stepArguments.context!.eventGroupId,
+          transactionId: stepArguments.context!.transactionId,
           context: stepArguments.context!,
         }
 

@@ -18,7 +18,9 @@ import {
   CreditCardSolid,
   ClockSolid,
   DocumentTextSolid,
-  Stripe
+  Stripe,
+  PhotoSolid,
+  BuildingsSolid
 } from "@medusajs/icons"
 
 # Medusa Learning Resources
@@ -43,11 +45,13 @@ Follow the [Medusa Book](https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app)
   {
     startIcon: <CheckCircleSolid />,
     title: "Order Module",
+    href: "/commerce-modules/order",
     showLinkIcon: false
   },
   {
     startIcon: <ShoppingCartSolid />,
     title: "Cart Module",
+    href: "/commerce-modules/product",
     showLinkIcon: false
   },
   {
@@ -97,6 +101,49 @@ Follow the [Medusa Book](https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app)
     startIcon: <SquaresPlusSolid />,
     title: "More Integrations",
     href: "/integrations",
+    showLinkIcon: false
+  }
+]} />
+
+---
+
+## Recipes
+
+<CardList items={[
+  {
+    startIcon: <ShoppingCartSolid />,
+    title: "Ecommerce",
+    href: "/recipes/ecommerce",
+    showLinkIcon: false
+  },
+  {
+    startIcon: <BuildingStorefront />,
+    title: "Marketplace",
+    href: "/recipes/marketplace",
+    showLinkIcon: false
+  },
+  {
+    startIcon: <PhotoSolid />,
+    title: "Digital Products",
+    href: "/recipes/digital-products",
+    showLinkIcon: false
+  },
+  {
+    startIcon: <PuzzleSolid />,
+    title: "Integrate Ecommerce Stack",
+    href: "/recipes/integrate-ecommerce-stack",
+    showLinkIcon: false
+  },
+  {
+    startIcon: <ClockSolid />,
+    title: "Commerce Automation",
+    href: "/recipes/commerce-automation",
+    showLinkIcon: false
+  },
+  {
+    startIcon: <BuildingsSolid />,
+    title: "B2B",
+    href: "/recipes/b2b",
     showLinkIcon: false
   }
 ]} />

@@ -864,7 +864,7 @@ medusaIntegrationTestRunner({
 
       it("successfully creates, updates and deletes an inventory item link from a variant", async () => {
         const res = await api.post(
-          `/admin/products/${baseProduct.id}/variants/inventory-items/batch`,
+          `/admin/products/${inventoryProduct.id}/variants/inventory-items/batch`,
           {
             create: [
               {
@@ -894,7 +894,7 @@ medusaIntegrationTestRunner({
 
         const createdLinkVariant = (
           await api.get(
-            `/admin/products/${baseProduct.id}/variants/${inventoryVariant3.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+            `/admin/products/${inventoryProduct.id}/variants/${inventoryVariant3.id}?fields=inventory_items.inventory.*,inventory_items.*`,
             adminHeaders
           )
         ).data.variant
@@ -911,7 +911,7 @@ medusaIntegrationTestRunner({
 
         const updatedLinkVariant = (
           await api.get(
-            `/admin/products/${baseProduct.id}/variants/${inventoryVariant1.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+            `/admin/products/${inventoryProduct.id}/variants/${inventoryVariant1.id}?fields=inventory_items.inventory.*,inventory_items.*`,
             adminHeaders
           )
         ).data.variant
@@ -928,7 +928,7 @@ medusaIntegrationTestRunner({
 
         const deletedLinkVariant = (
           await api.get(
-            `/admin/products/${baseProduct.id}/variants/${inventoryVariant2.id}?fields=inventory_items.inventory.*,inventory_items.*`,
+            `/admin/products/${inventoryProduct.id}/variants/${inventoryVariant2.id}?fields=inventory_items.inventory.*,inventory_items.*`,
             adminHeaders
           )
         ).data.variant

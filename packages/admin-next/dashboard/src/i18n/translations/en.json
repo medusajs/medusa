@@ -184,6 +184,12 @@
         "header": "Variants",
         "subHeadingTitle": "Yes, this is a product with variants",
         "subHeadingDescription": "When unchecked we will create a default variant for you",
+        "optionTitle": {
+          "placeholder": "Size"
+        },
+        "optionValues": {
+          "placeholder": "Small, Medium, Large"
+        },
         "productVariants": {
           "label": "Product variants",
           "hint": "This ranking will affect how the variants are ranked in your frontend.",
@@ -436,6 +442,15 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "create": {
+      "title": "Add item",
+      "details": "Details",
+      "availability": "Availability",
+      "locations": "Locations",
+      "attributes": "Attributes",
+      "requiresShipping": "Requires shipping",
+      "requiresShippingHint": "Does the inventory item require shipping?"
+    },
     "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit item details",
@@ -1020,15 +1035,15 @@
       "conditions": {
         "rules": {
           "title": "Who can use this code?",
-          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched. Choose between attributes, operators, and values to set up the conditions."
+          "description": "Is the customer allowed to add the promotion code? Discount code can be used by all customers if left untouched."
         },
         "target-rules": {
-          "title": "What needs to be in the cart to unlock the promotion?",
-          "description": "If these conditions match, we enable a promotion action on the target items. Choose between attributes, operators, and values to set up the conditions."
+          "title": "What will the promotion be applied to?",
+          "description": "The promotion will be applied to items that match the following conditions"
         },
         "buy-rules": {
-          "title": "What will the promotion be applied to?",
-          "description": "The promotion will be applied to items that match these conditions"
+          "title": "What needs to be in the cart to unlock the promotion?",
+          "description": "If these conditions match, we enable the promotion on the target items."
         }
       }
     },

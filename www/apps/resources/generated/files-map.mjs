@@ -100,54 +100,6 @@ export const filesMap = [
     "pathname": "/_plugins/storage/spaces"
   },
   {
-    "filePath": "/www/apps/resources/app/_recipes/b2b/page.mdx",
-    "pathname": "/_recipes/b2b"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/commerce-automation/page.mdx",
-    "pathname": "/_recipes/commerce-automation"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/digital-products/page.mdx",
-    "pathname": "/_recipes/digital-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/ecommerce/page.mdx",
-    "pathname": "/_recipes/ecommerce"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/integrate-ecommerce-stack/page.mdx",
-    "pathname": "/_recipes/integrate-ecommerce-stack"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/marketplace/page.mdx",
-    "pathname": "/_recipes/marketplace"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/multi-region-store/page.mdx",
-    "pathname": "/_recipes/multi-region-store"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/omnichannel/page.mdx",
-    "pathname": "/_recipes/omnichannel"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/oms/page.mdx",
-    "pathname": "/_recipes/oms"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/personalized-products/page.mdx",
-    "pathname": "/_recipes/personalized-products"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/pos/page.mdx",
-    "pathname": "/_recipes/pos"
-  },
-  {
-    "filePath": "/www/apps/resources/app/_recipes/subscriptions/page.mdx",
-    "pathname": "/_recipes/subscriptions"
-  },
-  {
     "filePath": "/www/apps/resources/app/admin-widget-injection-zones/page.mdx",
     "pathname": "/admin-widget-injection-zones"
   },
@@ -256,8 +208,28 @@ export const filesMap = [
     "pathname": "/commerce-modules/auth/auth-flows"
   },
   {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-identity-and-actor-types"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/_google/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/_google"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/emailpass/page.mdx",
+    "pathname": "/commerce-modules/auth/auth-providers/emailpass"
+  },
+  {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/auth-providers/page.mdx",
     "pathname": "/commerce-modules/auth/auth-providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/authentication-route/page.mdx",
+    "pathname": "/commerce-modules/auth/authentication-route"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/auth/create-actor-type/page.mdx",
+    "pathname": "/commerce-modules/auth/create-actor-type"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/events/_events-table/page.mdx",
@@ -278,10 +250,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/auth/page.mdx",
     "pathname": "/commerce-modules/auth"
-  },
-  {
-    "filePath": "/www/apps/resources/app/commerce-modules/auth/user-creation/page.mdx",
-    "pathname": "/commerce-modules/auth/user-creation"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/cart/concepts/page.mdx",
@@ -354,6 +322,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/page.mdx",
     "pathname": "/commerce-modules/customer"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/customer/register-customer-email/page.mdx",
+    "pathname": "/commerce-modules/customer/register-customer-email"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
@@ -848,8 +820,104 @@ export const filesMap = [
     "pathname": "/"
   },
   {
+    "filePath": "/www/apps/resources/app/recipes/b2b/page.mdx",
+    "pathname": "/recipes/b2b"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/commerce-automation/page.mdx",
+    "pathname": "/recipes/commerce-automation"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/digital-products/page.mdx",
+    "pathname": "/recipes/digital-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/ecommerce/page.mdx",
+    "pathname": "/recipes/ecommerce"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/integrate-ecommerce-stack/page.mdx",
+    "pathname": "/recipes/integrate-ecommerce-stack"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/marketplace/page.mdx",
+    "pathname": "/recipes/marketplace"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/multi-region-store/page.mdx",
+    "pathname": "/recipes/multi-region-store"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/omnichannel/page.mdx",
+    "pathname": "/recipes/omnichannel"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/oms/page.mdx",
+    "pathname": "/recipes/oms"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/personalized-products/page.mdx",
+    "pathname": "/recipes/personalized-products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/pos/page.mdx",
+    "pathname": "/recipes/pos"
+  },
+  {
+    "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
+    "pathname": "/recipes/subscriptions"
+  },
+  {
     "filePath": "/www/apps/resources/app/references/[...slug]/page.tsx",
     "pathname": "/references/[...slug]"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
+    "pathname": "/storefront-development/cart/context"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/create/page.mdx",
+    "pathname": "/storefront-development/cart/create"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/manage-items/page.mdx",
+    "pathname": "/storefront-development/cart/manage-items"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/page.mdx",
+    "pathname": "/storefront-development/cart"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/retrieve/page.mdx",
+    "pathname": "/storefront-development/cart/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/cart/update/page.mdx",
+    "pathname": "/storefront-development/cart/update"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/page.mdx",
+    "pathname": "/storefront-development"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/context/page.mdx",
+    "pathname": "/storefront-development/regions/context"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/list/page.mdx",
+    "pathname": "/storefront-development/regions/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/page.mdx",
+    "pathname": "/storefront-development/regions"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/regions/store-retrieve-region/page.mdx",
+    "pathname": "/storefront-development/regions/store-retrieve-region"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/tips/page.mdx",
+    "pathname": "/storefront-development/tips"
   },
   {
     "filePath": "/www/apps/resources/app/troubleshooting/_s3-plugin-acl-error/page.mdx",

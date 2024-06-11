@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@medusajs/medusa"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -12,9 +11,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateProductOption } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type EditProductOptionsFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 const CreateProductOptionSchema = z.object({

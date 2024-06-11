@@ -11,7 +11,7 @@ export interface AdminCreateProductCategory {
 
 export interface AdminUpdateProductCategory {
   name?: string
-  description?: string | null
+  description?: string
   handle?: string
   is_internal?: boolean
   is_active?: boolean

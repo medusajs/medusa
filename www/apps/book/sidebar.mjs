@@ -232,10 +232,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           path: "/storefront-development/nextjs-starter",
           title: "Next.js Starter",
         },
-        {
-          path: "/storefront-development/tips",
-          title: "Storefront Tips",
-        },
       ],
     },
     {

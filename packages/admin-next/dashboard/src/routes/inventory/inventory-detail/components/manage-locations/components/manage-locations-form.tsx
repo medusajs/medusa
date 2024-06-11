@@ -5,7 +5,7 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../../components/route-modal"
-import { useBatchInventoryItemLevels } from "../../../../../../hooks/api/inventory"
+import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
 import { useFieldArray, useForm } from "react-hook-form"
 
 import { InventoryItemRes } from "../../../../../../types/api-responses"
@@ -64,7 +64,7 @@ export const ManageLocationsForm = ({
     name: "locations",
   })
 
-  const { mutateAsync } = useBatchInventoryItemLevels(item.id)
+  const { mutateAsync } = useBatchUpdateInventoryLevels(item.id)
 
   const handleSubmit = form.handleSubmit(async ({ locations }) => {
     // Changes in selected locations
@@ -96,10 +96,10 @@ export const ManageLocationsForm = ({
 
     try {
       await mutateAsync({
-        creates: selectedLocations.map((location_id) => ({
+        create: selectedLocations.map((location_id) => ({
           location_id,
         })),
-        deletes: unselectedLocations,
+        delete: unselectedLocations,
       })
 
       handleSuccess()

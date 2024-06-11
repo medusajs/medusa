@@ -61,7 +61,7 @@ export type AdminCreateProductCategoryType = z.infer<
 export const AdminUpdateProductCategory = z
   .object({
     name: z.string().optional(),
-    description: z.string().nullable().optional(),
+    description: z.string().optional(),
     handle: z.string().optional(),
     is_internal: z.boolean().optional(),
     is_active: z.boolean().optional(),

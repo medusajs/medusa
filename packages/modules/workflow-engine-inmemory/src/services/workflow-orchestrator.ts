@@ -3,14 +3,20 @@ import {
   DistributedTransactionEvents,
   TransactionHandlerType,
   TransactionStep,
+  WorkflowScheduler,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
 import {
-  type FlowRunOptions,
+  InjectSharedContext,
+  MedusaContext,
+  MedusaError,
+  isString,
+} from "@medusajs/utils"
+import {
   MedusaWorkflow,
-  resolveValue,
   ReturnWorkflow,
+  resolveValue,
+  type FlowRunOptions,
 } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
@@ -83,6 +89,7 @@ export class WorkflowOrchestratorService {
   }) {
     inMemoryDistributedTransactionStorage.setWorkflowOrchestratorService(this)
     DistributedTransaction.setStorage(inMemoryDistributedTransactionStorage)
+    WorkflowScheduler.setStorage(inMemoryDistributedTransactionStorage)
   }
 
   @InjectSharedContext()
@@ -106,7 +113,10 @@ export class WorkflowOrchestratorService {
       : workflowIdOrWorkflow.getName()
 
     if (!workflowId) {
-      throw new Error("Workflow ID is required")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow ID is required`
+      )
     }
 
     context ??= {}
@@ -120,7 +130,10 @@ export class WorkflowOrchestratorService {
 
     const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
     if (!exportedWorkflow) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     const flow = exportedWorkflow(container as MedusaContainer)

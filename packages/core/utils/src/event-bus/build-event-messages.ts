@@ -12,14 +12,14 @@ export function composeMessage(
   eventName: string,
   {
     data,
-    service,
+    source,
     object,
     action,
     context = {},
     options,
   }: {
     data: any
-    service: string
+    source: string
     object: string
     action?: string
     context?: Context
@@ -34,7 +34,7 @@ export function composeMessage(
   }
 
   const metadata: EventBusTypes.MessageBody["metadata"] = {
-    service,
+    source,
     object,
     action: act!,
   }
@@ -45,10 +45,8 @@ export function composeMessage(
 
   return {
     eventName,
-    body: {
-      metadata,
-      data,
-    },
+    metadata,
+    data,
     options,
   }
 }

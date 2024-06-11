@@ -1,0 +1,189 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Google Auth Provider Module`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about the Google auth provider module and how to install and use it in the Auth Module.
+
+## Features
+
+The Google auth provider module handles authenticating users with their Google accounts.
+
+By integrating the Google auth provider, you provide your users and customers with the ability to login with their Google account.
+
+---
+
+## Install the Google Auth Provider Module
+
+<Note type="check">
+
+- [Create a project in Google Cloud.](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+- [Create authorization credentials](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred).
+    - Set the Redirect Uri of your Oauth Client ID to `{medusa_url}/auth/{actor_type}/google/callback`, where:
+        - `{medusa_url}` is the URL of your Medusa backend.
+        - `{actor_type}` is the actor type that the Google auth provider can authenticate. For example, `customer`.
+
+</Note>
+
+To install the Google auth provider module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/auth-google
+```
+
+Next, add the module to the array of providers passed to the Auth Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+const modules = {
+  // ...
+  [Modules.AUTH]: {
+    resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/auth-google",
+          options: {
+            config: {
+              google: {
+                clientID: process.env.GOOGLE_CLIENT_ID,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+                callbackURL: process.env.GOOGLE_CALLBACK_URL,
+                successRedirectUrl:
+                  process.env.GOOGLE_SUCCESS_REDIRECT_URL,
+              }
+            }
+          }
+        },
+      ],
+    },
+  },
+}
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
+GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
+GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
+GOOGLE_SUCCESS_REDIRECT_URL=<YOUR_GOOGLE_SUCCESS_REDIRECT_URL>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Configuration</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `clientID`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [Google API Client ID](https://developers.google.com/identity/oauth2/web/guides/get-google-api-clientid).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `clientSecret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [Google Client Secret](https://support.google.com/cloud/answer/6158849?hl=en#zippy=%2Cstep-create-a-new-client-secret).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `callbackURL`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL to redirect to in your app after the user completes their authentication in Google.
+
+      The Medusa application provides the API route `/auth/[scope]/google/callback` that you can use, where `[scope]` is the scope this config belongs to.
+      For example, `/auth/store/google/callback`.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `successRedirectUrl`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL to redirect to in your app after the authentication has been successful.
+
+      If not provided, the Medusa application's callback route just returns a JSON with the JWT token of the auth identity.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* TODO add how to implement authentication flow with google */}
