@@ -1,4 +1,4 @@
-import { ProductVariantDTO, RegionDTO } from "@medusajs/types"
+import { HttpTypes, RegionDTO } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -10,7 +10,6 @@ import { DataGridTextCell } from "../../../../../components/data-grid/data-grid-
 import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
-import { DataGridCountrySelectCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-country-select-cell"
 import { useRegions } from "../../../../../hooks/api/regions"
 
 type ProductCreateVariantsFormProps = {
@@ -64,7 +63,7 @@ export const ProductCreateVariantsForm = ({
   )
 }
 
-const columnHelper = createDataGridHelper<ProductVariantDTO>()
+const columnHelper = createDataGridHelper<HttpTypes.AdminProductVariant>()
 
 const useColumns = ({
   options,

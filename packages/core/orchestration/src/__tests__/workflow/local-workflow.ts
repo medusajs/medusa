@@ -1,6 +1,10 @@
+import { MockSchedulerStorage } from "../../__fixtures__/mock-scheduler-storage"
 import { TransactionState } from "../../transaction/types"
 import { LocalWorkflow } from "../../workflow/local-workflow"
+import { WorkflowScheduler } from "../../workflow/scheduler"
 import { WorkflowManager } from "../../workflow/workflow-manager"
+
+WorkflowScheduler.setStorage(new MockSchedulerStorage())
 
 describe("WorkflowManager", () => {
   const container: any = {}

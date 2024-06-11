@@ -26,6 +26,7 @@ import {
   OrderShippingMethodDTO,
   OrderShippingMethodTaxLineDTO,
   OrderTransactionDTO,
+  ReturnDTO,
 } from "./common"
 import {
   CancelOrderChangeDTO,
@@ -129,6 +130,24 @@ export interface IOrderModuleService extends IModuleService {
     config?: FindConfig<OrderDTO>,
     sharedContext?: Context
   ): Promise<[OrderDTO[], number]>
+
+  retrieveReturn(
+    returnId: string,
+    config?: FindConfig<ReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO>
+
+  listReturns(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<ReturnDTO>,
+    sharedContext?: Context
+  ): Promise<ReturnDTO[]>
+
+  listAndCountReturns(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<ReturnDTO>,
+    sharedContext?: Context
+  ): Promise<[ReturnDTO[], number]>
 
   /**
    * This method creates {return type}(s)
@@ -1513,7 +1532,7 @@ export interface IOrderModuleService extends IModuleService {
   createReturn(
     returnData: CreateOrderReturnDTO,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<any> // TODO: ReturnDTO
 
   /*
   cancelReturn(
@@ -1525,5 +1544,5 @@ export interface IOrderModuleService extends IModuleService {
   receiveReturn(
     returnData: ReceiveOrderReturnDTO,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<any> // TODO: ReturnDTO
 }

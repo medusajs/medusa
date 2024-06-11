@@ -110,27 +110,9 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
 
-// Inventory Items
-export type CreateInventoryItemReq = InventoryNext.CreateInventoryItemInput
-export type UpdateInventoryItemReq = Omit<
-  InventoryNext.UpdateInventoryItemInput,
-  "id"
->
-
 // Reservations
 export type UpdateReservationReq = Omit<
   InventoryNext.UpdateReservationItemInput,
   "id"
 >
 export type CreateReservationReq = InventoryNext.CreateReservationItemInput
-
-// Inventory Item Levels
-export type InventoryItemLocationBatch = {
-  creates: { location_id: string; stocked_quantity?: number }[]
-  deletes: string[]
-}
-
-export type UpdateInventoryLevelReq = {
-  reserved_quantity?: number
-  stocked_quantity?: number
-}

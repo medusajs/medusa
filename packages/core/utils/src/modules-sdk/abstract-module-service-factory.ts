@@ -501,6 +501,7 @@ export function abstractModuleServiceFactory<
           await this.eventBusModuleService_?.emit(
             softDeletedEntities.map(({ id }) => ({
               eventName: `${kebabCase(model.name)}.deleted`,
+              metadata: { source: "", action: "", object: "" },
               data: { id },
             }))
           )

@@ -14,6 +14,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
 import Order from "./order"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
@@ -21,16 +22,25 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const ReferenceIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_transaction",
   columns: "reference_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_transaction",
   columns: "order_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_transaction",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const CurrencyCodeIndex = createPsqlIndexStatementHelper({
   tableName: "order_transaction",
   columns: "currency_code",
+  where: "deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
@@ -67,6 +77,21 @@ export default class Transaction {
     persist: false,
   })
   order: Order
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
 
   @Property({
     columnType: "integer",

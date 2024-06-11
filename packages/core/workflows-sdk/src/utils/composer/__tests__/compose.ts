@@ -1,4 +1,4 @@
-import { WorkflowManager } from "@medusajs/orchestration"
+import { WorkflowManager, WorkflowScheduler } from "@medusajs/orchestration"
 import {
   composeMessage,
   createMedusaContainer,
@@ -15,8 +15,26 @@ import {
 } from ".."
 import { MedusaWorkflow } from "../../../medusa-workflow"
 import { asValue } from "awilix"
+import { IDistributedSchedulerStorage, SchedulerOptions } from "../../dist"
 
 jest.setTimeout(30000)
+
+class MockSchedulerStorage implements IDistributedSchedulerStorage {
+  async schedule(
+    jobDefinition: string | { jobId: string },
+    schedulerOptions: SchedulerOptions
+  ): Promise<void> {
+    return Promise.resolve()
+  }
+  async remove(jobId: string): Promise<void> {
+    return Promise.resolve()
+  }
+  async removeAll(): Promise<void> {
+    return Promise.resolve()
+  }
+}
+
+WorkflowScheduler.setStorage(new MockSchedulerStorage())
 
 const afterEach_ = () => {
   jest.clearAllMocks()
@@ -2125,6 +2143,8 @@ describe("Workflow composer", function () {
     expect(eventBusMock.emit.mock.calls[0][0]).toEqual("event1")
 
     expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(1)
-    expect(eventBusMock.releaseGroupedEvents.mock.calls[0][0]).toEqual("event-group-id")
+    expect(eventBusMock.releaseGroupedEvents.mock.calls[0][0]).toEqual(
+      "event-group-id"
+    )
   })
 })

@@ -1,0 +1,150 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Cart's Items in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to manage a cart's line items, including adding, updating, and removing them.
+
+## Add Product Variant to Cart
+
+{/* TODO add section on checking variant quantity once it's fixed in v2. */}
+
+To add a product variant to a cart, use the [Add Line Item API route](!api!/store#carts_postcartsidlineitems).
+
+For example:
+
+export const addHighlights = [
+  ["1", "variant_id", "The ID of the selected variant."],
+  ["2", "cartId", "Retrieve the cart ID from the `localStorage`."],
+  ["16", "quantity", "You can also allow customers to specify the quantity."]
+]
+
+```ts highlights={addHighlights}
+const addToCart = (variant_id: string) => {
+  const cartId = localStorage.getItem("cart_id")
+
+  if (!cartId) {
+    return
+  }
+
+  fetch(`http://localhost:9000/store/carts/${cartId}/line-items`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      variant_id,
+      quantity: 1,
+    })
+  })
+  .then((res) => res.json())
+  .then(({ cart }) => {
+    // use cart
+    console.log(cart)
+    alert("Product added to cart")
+  })
+}
+```
+
+The Add Line Item API route requires two request body parameters:
+
+- `variant_id`: The ID of the product variant to add to the cart. This is the variant selected by the customer.
+- `quantity`: The quantity to add to cart.
+
+The API route returns the updated cart object.
+
+---
+
+## Update Line Item in Cart
+
+You can update the quantity of a line item in the cart using the [Update Line Item API route](!api!/store#carts_postcartsidlineitemsline_id).
+
+For example:
+
+export const updateHighlights = [
+  ["2", "itemId", "The ID of the item to update."],
+  ["3", "quantity", "The new quantity of the item."],
+  ["5", "cartId", "Retrieve the cart ID from the `localStorage`."],
+  ["12", "itemId", "Pass the item's ID as a path parameter."],
+]
+
+```ts highlights={updateHighlights}
+const updateQuantity = (
+  itemId: string,
+  quantity: number
+) => {
+  const cartId = localStorage.getItem("cart_id")
+
+  if (!cartId) {
+    return
+  }
+
+  fetch(`http://localhost:9000/store/carts/${cartId}/line-items/${
+    itemId
+  }`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      quantity
+    })
+  })
+  .then((res) => res.json())
+  .then(({ cart }) => {
+    // use cart
+    console.log(cart)
+  })
+}
+```
+
+The Update Line Item API route requires:
+
+- The line item's ID to be passed as a path parameter.
+- The `quantity` request body parameter, which is the new quantity of the item.
+
+The API route returns the updated cart object.
+
+---
+
+## Remove Line Item from Cart
+
+To remove a line item from the cart, send a request to the [Remove Line Item API route](!api!/store#carts_deletecartsidlineitemsline_id).
+
+For example:
+
+export const deleteHighlights = [
+  ["1", "itemId", "The ID of the line item to remove."],
+  ["2", "cartId", "Retrieve the cart ID from the `localStorage`."],
+  ["9", "itemId", "Pass the item's ID as a path parameter."],
+  ["15", "parent", "The updated cart is returned as the `parent` field."]
+]
+
+```ts highlights={deleteHighlights}
+const removeItem = (itemId: string) => {
+  const cartId = localStorage.getItem("cart_id")
+
+  if (!cartId) {
+    return
+  }
+
+  fetch(`http://localhost:9000/store/carts/${cartId}/line-items/${
+    itemId
+  }`, {
+    credentials: "include",
+    method: "DELETE",
+  })
+  .then((res) => res.json())
+  .then(({ parent: cart }) => {
+    // use cart
+    console.log(cart)
+  })
+}
+```
+
+The Delete Line Item API route returns the updated cart object as the `parent` field.

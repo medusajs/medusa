@@ -1,10 +1,10 @@
-import { ProductStatus } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
 
 import { StatusCell } from "../../common/status-cell"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductStatusCellProps = {
-  status: ProductStatus
+  status: HttpTypes.AdminProductStatus
 }
 
 export const ProductStatusCell = ({ status }: ProductStatusCellProps) => {

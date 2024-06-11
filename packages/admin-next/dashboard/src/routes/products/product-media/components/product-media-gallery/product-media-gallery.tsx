@@ -5,7 +5,6 @@ import {
   TriangleLeftMini,
   TriangleRightMini,
 } from "@medusajs/icons"
-import { Image, Product } from "@medusajs/medusa"
 import { Button, IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -13,9 +12,10 @@ import { Link, useLocation } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductMediaGalleryProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
@@ -303,7 +303,10 @@ type Media = {
   isThumbnail: boolean
 }
 
-const getMedia = (images: Image[] | null, thumbnail: string | null) => {
+const getMedia = (
+  images: HttpTypes.AdminProductImage[] | null,
+  thumbnail: string | null
+) => {
   const media: Media[] =
     images?.map((image) => ({
       id: image.id,

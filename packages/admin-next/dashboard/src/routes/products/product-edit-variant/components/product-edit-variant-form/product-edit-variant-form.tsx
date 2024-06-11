@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product, ProductVariant } from "@medusajs/medusa"
 import { Button, Heading, Input, Switch } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -19,10 +18,11 @@ import {
   parseOptionalFormNumber,
 } from "../../../../../lib/form-helpers"
 import { optionalInt } from "../../../../../lib/validation"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductEditVariantFormProps = {
-  product: Product
-  variant: ProductVariant
+  product: HttpTypes.AdminProduct
+  variant: HttpTypes.AdminProductVariant
 }
 
 const ProductEditVariantSchema = z.object({
