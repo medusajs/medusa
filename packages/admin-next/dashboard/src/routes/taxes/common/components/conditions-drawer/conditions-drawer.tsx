@@ -1,4 +1,4 @@
-import { CustomerGroup, Product, ProductType } from "@medusajs/medusa"
+import { CustomerGroup } from "@medusajs/medusa"
 import { Button } from "@medusajs/ui"
 import { OnChangeFn, RowSelectionState } from "@tanstack/react-table"
 import { useState } from "react"
@@ -25,7 +25,6 @@ import { useProductCollectionConditionsTableColumns } from "../../hooks/columns/
 import { useProductCollectionConditionsTableFilters } from "../../hooks/filters/use-product-collection-conditions-table-filters"
 import { useProductCollectionConditionsTableQuery } from "../../hooks/query/use-product-collection-conditions-table-query"
 
-import { ProductCollectionDTO } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useCollections } from "../../../../../hooks/api/collections"
 import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
@@ -33,6 +32,7 @@ import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { ConditionEntities } from "../../constants"
 import { ConditionsOption } from "../../types"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 50
 
@@ -102,7 +102,7 @@ const ProductConditionsTable = ({ selected = [], onSave }: ConditionsProps) => {
 
     if (added.length) {
       const addedProducts = (products?.filter((p) => added.includes(p.id!)) ??
-        []) as Product[]
+        []) as HttpTypes.AdminProduct[]
 
       if (addedProducts.length > 0) {
         const newConditions = addedProducts.map((p) => ({
@@ -322,7 +322,7 @@ const ProductTypeConditionsTable = ({
 
     if (added.length) {
       const addedTypes = (product_types?.filter((p) => added.includes(p.id!)) ??
-        []) as ProductType[]
+        []) as HttpTypes.AdminProductType[]
 
       if (addedTypes.length > 0) {
         const newConditions = addedTypes.map((p) => ({
@@ -431,7 +431,7 @@ const ProductCollectionConditionsTable = ({
     if (added.length) {
       const addedCollections = (collections?.filter((p) =>
         added.includes(p.id!)
-      ) ?? []) as ProductCollectionDTO[]
+      ) ?? []) as HttpTypes.AdminCollection[]
 
       if (addedCollections.length > 0) {
         const newConditions = addedCollections.map((p) => ({

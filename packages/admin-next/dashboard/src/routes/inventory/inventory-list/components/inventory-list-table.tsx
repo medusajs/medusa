@@ -1,4 +1,4 @@
-import { Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading } from "@medusajs/ui"
 import { InventoryNext } from "@medusajs/types"
 
 import { DataTable } from "../../../../components/table/data-table"
@@ -8,6 +8,7 @@ import { useInventoryTableColumns } from "./use-inventory-table-columns"
 import { useInventoryTableFilters } from "./use-inventory-table-filters"
 import { useInventoryTableQuery } from "./use-inventory-table-query"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
 const PAGE_SIZE = 20
 
@@ -48,6 +49,9 @@ export const InventoryListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("inventory.domain")}</Heading>
+        <Button size="small" variant="secondary" asChild>
+          <Link to="create">{t("actions.create")}</Link>
+        </Button>
       </div>
       <DataTable
         table={table}

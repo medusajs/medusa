@@ -1,2 +1,3 @@
 export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
-export * from "./order"
+export { OrderRepository } from "./order"
+export { ReturnRepository } from "./return"

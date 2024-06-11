@@ -2,6 +2,7 @@ import { MedusaApp } from "@medusajs/modules-sdk"
 import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
+  WorkflowManager,
 } from "@medusajs/orchestration"
 import { RemoteQueryFunction } from "@medusajs/types"
 import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
@@ -10,6 +11,7 @@ import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
 import { DB_URL, TestDatabase } from "../utils"
+import { createScheduled } from "../__fixtures__/workflow_scheduled"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -295,6 +297,43 @@ describe("Workflow Orchestrator module", function () {
       })
 
       expect(onFinish).toHaveBeenCalledTimes(0)
+    })
+  })
+
+  // Note: These tests depend on actual Redis instance and waiting for the scheduled jobs to run, which isn't great.
+  // Mocking bullmq, however, would make the tests close to useless, so we can keep them very minimal and serve as smoke tests.
+  describe("Scheduled workflows", () => {
+    it("should execute a scheduled workflow", async () => {
+      const spy = createScheduled("standard")
+      await setTimeout(3100)
+      expect(spy).toHaveBeenCalledTimes(3)
+    })
+
+    it("should stop executions after the set number of executions", async () => {
+      const spy = await createScheduled("num-executions", {
+        cron: "* * * * * *",
+        numberOfExecutions: 2,
+      })
+      await setTimeout(3100)
+      expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const spy = await createScheduled("remove-scheduled", {
+        cron: "* * * * * *",
+      })
+      const logSpy = jest.spyOn(console, "warn")
+
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      WorkflowManager["workflows"].delete("remove-scheduled")
+
+      await setTimeout(1100)
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
     })
   })
 })

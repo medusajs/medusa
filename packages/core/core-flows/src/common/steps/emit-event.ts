@@ -35,7 +35,7 @@ export const emitEventStep = createStep(
       context,
     })
 
-    await eventBus.emit([message])
+    await eventBus.emit(message)
   },
   async (data: void) => {}
 )

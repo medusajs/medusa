@@ -1,0 +1,140 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Create Cart in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to create and store a cart.
+
+## Create Cart on First Access
+
+It's recommended to create a cart the first time a customer accesses a page, then store the cart's ID in the `localStorage`.
+
+To create a cart, send a request to the [Create Cart API route](!api!/store#carts_postcarts).
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["5", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["9", "region_id", "Associate the cart with the chosen region for accurate pricing."],
+  ["14", "setItem", "Set the cart's ID in the `localStorage`."]
+]
+
+  ```ts highlights={fetchHighlights}
+  fetch(`http://localhost:9000/store/carts`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      region_id: region.id,
+    })
+  })
+  .then((res) => res.json())
+  .then(({ cart }) => {
+    localStorage.setItem("cart_id", cart.id)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["8", "region", "Assuming you previously retrieved the chosen region."],
+  ["15", "cartId", "Retrieve the cart ID from `localStorage`, if exists."],
+  ["21", "", "Send a request to create the cart."],
+  ["26", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["30", "region_id", "Associate the cart with the chosen region for accurate pricing."],
+  ["35", "setItem", "Set the cart's ID in the `localStorage`."]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react";
+  // other imports...
+
+  export default function Home() {
+    // TODO assuming you have the region retrieved
+    const region = {
+      // ...
+    }
+
+    // ...
+
+    useEffect(() => {
+      const cartId = localStorage.getItem("cart_id")
+      if (cartId) {
+        // customer already has a cart created
+        return
+      }
+
+      // create a cart and store it in the localStorage
+      fetch(`http://localhost:9000/store/carts`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          region_id: region.id,
+        })
+      })
+      .then((res) => res.json())
+      .then(({ cart }) => {
+        localStorage.setItem("cart_id", cart.id)
+      })
+    }, [])
+
+    // ...
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add a link to cart object in API reference (once available). */}
+
+The response of the Create Cart API route has a `cart` field, which is a cart object.
+
+Refer to the [Create Cart API reference](!api!/store#carts_postcarts) for details on other available request parameters.
+
+### Publishable API Key
+
+When you create a cart, you pass the publishable API key in the header of the request. This associates the cart with the sales channel(s) of the publishable API key.
+
+This is necessary, as only products matching the cart's sales channel(s) can be added to the cart.
+
+---
+
+## Associate Customer with Cart
+
+When creating the cart, you can associate the logged-in customer's ID with the cart by passing a `customer_id` request body parameter.
+
+For example:
+
+export const customerHighlights = [
+  ["5", "customer.id", "Assuming you have the customer object."]
+]
+
+```ts highlights={customerHighlights}
+fetch(`http://localhost:9000/store/carts`, {
+  // ...
+  body: JSON.stringify({
+    // ...
+    customer_id: customer.id
+  })
+})
+.then((res) => res.json())
+.then(({ cart }) => {
+  localStorage.setItem("cart_id", cart.id)
+})
+```

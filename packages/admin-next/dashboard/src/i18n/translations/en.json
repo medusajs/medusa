@@ -403,6 +403,15 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "create": {
+      "title": "Add item",
+      "details": "Details",
+      "availability": "Availability",
+      "locations": "Locations",
+      "attributes": "Attributes",
+      "requiresShipping": "Requires shipping",
+      "requiresShippingHint": "Does the inventory item require shipping?"
+    },
     "reservation": {
       "header": "Reservation of {{itemName}}",
       "editItemDetails": "Edit item details",

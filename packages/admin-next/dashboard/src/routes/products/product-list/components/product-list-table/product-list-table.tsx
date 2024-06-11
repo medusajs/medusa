@@ -16,8 +16,8 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
 import { productsLoader } from "../../loader"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -43,7 +43,7 @@ export const ProductListTable = () => {
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (products ?? []) as ExtendedProductDTO[],
+    data: (products ?? []) as HttpTypes.AdminProduct[],
     columns,
     count,
     enablePagination: true,
@@ -81,7 +81,7 @@ export const ProductListTable = () => {
   )
 }
 
-const ProductActions = ({ product }: { product: ExtendedProductDTO }) => {
+const ProductActions = ({ product }: { product: HttpTypes.AdminProduct }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useDeleteProduct(product.id)
@@ -144,7 +144,7 @@ const ProductActions = ({ product }: { product: ExtendedProductDTO }) => {
   )
 }
 
-const columnHelper = createColumnHelper<ExtendedProductDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = () => {
   const base = useProductTableColumns()

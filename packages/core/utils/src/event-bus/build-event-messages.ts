@@ -45,10 +45,8 @@ export function composeMessage(
 
   return {
     eventName,
-    body: {
-      metadata,
-      data,
-    },
+    metadata,
+    data,
     options,
   }
 }
