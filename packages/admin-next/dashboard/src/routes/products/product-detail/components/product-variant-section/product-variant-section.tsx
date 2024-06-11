@@ -1,7 +1,6 @@
 import { PencilSquare, Plus } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { ProductDTO } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -11,9 +10,10 @@ import { useProductVariantTableColumns } from "./use-variant-table-columns"
 import { useProductVariantTableFilters } from "./use-variant-table-filters"
 import { useProductVariantTableQuery } from "./use-variant-table-query"
 import { useProductVariants } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductVariantSectionProps = {
-  product: ProductDTO
+  product: HttpTypes.AdminProduct
 }
 
 const PAGE_SIZE = 10

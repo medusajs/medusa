@@ -1,4 +1,4 @@
-import { AdminGetProductsVariantsParams } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useProductVariantTableQuery = ({
@@ -31,7 +31,7 @@ export const useProductVariantTableQuery = ({
     order,
   } = queryObject
 
-  const searchParams: AdminGetProductsVariantsParams = {
+  const searchParams: HttpTypes.AdminProductVariantParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     manage_inventory: manage_inventory

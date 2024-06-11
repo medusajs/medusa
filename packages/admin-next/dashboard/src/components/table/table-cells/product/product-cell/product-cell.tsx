@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next"
 
-import { ProductDTO } from "@medusajs/types"
 import { Thumbnail } from "../../../../common/thumbnail"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductCellProps = {
-  product: ProductDTO
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductCell = ({ product }: ProductCellProps) => {

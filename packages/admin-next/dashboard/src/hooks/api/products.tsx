@@ -5,14 +5,9 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { client, sdk } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  ProductDeleteRes,
-  ProductListRes,
-  ProductRes,
-} from "../../types/api-responses"
 import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
@@ -29,8 +24,8 @@ export const useCreateProductOption = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
-      client.products.createOption(productId, payload),
+    mutationFn: (payload: HttpTypes.AdminCreateProductOption) =>
+      sdk.admin.product.createOption(productId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -48,8 +43,8 @@ export const useUpdateProductOption = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
-      client.products.updateOption(productId, optionId, payload),
+    mutationFn: (payload: HttpTypes.AdminUpdateProductOption) =>
+      sdk.admin.product.updateOption(productId, optionId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -71,7 +66,7 @@ export const useDeleteProductOption = (
   options?: UseMutationOptions<any, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.products.deleteOption(productId, optionId),
+    mutationFn: () => sdk.admin.product.deleteOption(productId, optionId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: optionsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -97,7 +92,8 @@ export const useProductVariant = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.products.retrieveVariant(productId, variantId, query),
+    queryFn: () =>
+      sdk.admin.product.retrieveVariant(productId, variantId, query),
     queryKey: variantsQueryKeys.detail(variantId),
     ...options,
   })
@@ -114,7 +110,7 @@ export const useProductVariants = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.products.listVariants(productId, query),
+    queryFn: () => sdk.admin.product.listVariants(productId, query),
     queryKey: variantsQueryKeys.list({ productId, ...query }),
     ...options,
   })
@@ -127,8 +123,8 @@ export const useCreateProductVariant = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
-      client.products.createVariant(productId, payload),
+    mutationFn: (payload: HttpTypes.AdminCreateProductVariant) =>
+      sdk.admin.product.createVariant(productId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -146,8 +142,8 @@ export const useUpdateProductVariant = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
-      client.products.updateVariant(productId, variantId, payload),
+    mutationFn: (payload: HttpTypes.AdminUpdateProductVariant) =>
+      sdk.admin.product.updateVariant(productId, variantId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -168,8 +164,9 @@ export const useUpdateProductVariantsBatch = (
   options?: UseMutationOptions<any, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
-      client.products.updateVariantsBatch(productId, payload),
+    mutationFn: (
+      payload: HttpTypes.AdminBatchProductVariantRequest["update"]
+    ) => sdk.admin.product.batchVariants(productId, { update: payload }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -188,7 +185,7 @@ export const useDeleteVariant = (
   options?: UseMutationOptions<any, Error, void>
 ) => {
   return useMutation({
-    mutationFn: () => client.products.deleteVariant(productId, variantId),
+    mutationFn: () => sdk.admin.product.deleteVariant(productId, variantId),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -213,7 +210,7 @@ export const useProduct = (
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.products.retrieve(id, query),
+    queryFn: () => sdk.admin.product.retrieve(id, query),
     queryKey: productsQueryKeys.detail(id),
     ...options,
   })
@@ -224,12 +221,17 @@ export const useProduct = (
 export const useProducts = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<ProductListRes, Error, ProductListRes, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminProductListResponse,
+      Error,
+      HttpTypes.AdminProductListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.products.list(query),
+    queryFn: () => sdk.admin.product.list(query),
     queryKey: productsQueryKeys.list(query),
     ...options,
   })
@@ -245,7 +247,8 @@ export const useCreateProduct = (
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => sdk.admin.product.create(payload),
+    mutationFn: (payload: HttpTypes.AdminCreateProduct) =>
+      sdk.admin.product.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
@@ -256,10 +259,11 @@ export const useCreateProduct = (
 
 export const useUpdateProduct = (
   id: string,
-  options?: UseMutationOptions<ProductRes, Error, any>
+  options?: UseMutationOptions<HttpTypes.AdminProductResponse, Error, any>
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => client.products.update(id, payload),
+    mutationFn: (payload: HttpTypes.AdminUpdateProduct) =>
+      sdk.admin.product.update(id, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })
@@ -272,10 +276,14 @@ export const useUpdateProduct = (
 
 export const useDeleteProduct = (
   id: string,
-  options?: UseMutationOptions<ProductDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.AdminProductDeleteResponse,
+    Error,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.products.delete(id),
+    mutationFn: () => sdk.admin.product.delete(id),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.detail(id) })

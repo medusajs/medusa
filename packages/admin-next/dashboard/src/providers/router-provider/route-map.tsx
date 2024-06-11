@@ -63,7 +63,7 @@ export const RouteMap: RouteObject[] = [
                 path: ":id",
                 lazy: () => import("../../routes/products/product-detail"),
                 handle: {
-                  crumb: (data: { product: HttpTypes.AdminProduct }) =>
+                  crumb: (data: HttpTypes.AdminProductResponse) =>
                     data.product.title,
                 },
                 children: [

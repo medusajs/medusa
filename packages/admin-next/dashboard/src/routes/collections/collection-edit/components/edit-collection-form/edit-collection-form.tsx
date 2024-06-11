@@ -4,16 +4,16 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { ProductCollectionDTO } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCollection } from "../../../../../hooks/api/collections"
+import { HttpTypes } from "@medusajs/types"
 
 type EditCollectionFormProps = {
-  collection: ProductCollectionDTO
+  collection: HttpTypes.AdminCollection
 }
 
 const EditCollectionSchema = zod.object({
