@@ -2097,7 +2097,9 @@ describe("Workflow composer", function () {
     const container = createMedusaContainer()
     container.register({
       [ModuleRegistrationName.EVENT_BUS]: asValue({
-        releaseGroupedEvents: jest.fn(),
+        releaseGroupedEvents: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
         emit: jest.fn(),
       }),
     })
@@ -2152,8 +2154,12 @@ describe("Workflow composer", function () {
     const container = createMedusaContainer()
     container.register({
       [ModuleRegistrationName.EVENT_BUS]: asValue({
-        releaseGroupedEvents: jest.fn(),
-        clearGroupedEvents: jest.fn(),
+        releaseGroupedEvents: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
+        clearGroupedEvents: jest
+          .fn()
+          .mockImplementation(() => Promise.resolve()),
         emit: jest.fn(),
       }),
     })
