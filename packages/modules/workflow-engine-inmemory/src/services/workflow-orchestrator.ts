@@ -6,7 +6,12 @@ import {
   WorkflowScheduler,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
+import {
+  InjectSharedContext,
+  MedusaContext,
+  MedusaError,
+  isString,
+} from "@medusajs/utils"
 import {
   MedusaWorkflow,
   ReturnWorkflow,
@@ -108,7 +113,10 @@ export class WorkflowOrchestratorService {
       : workflowIdOrWorkflow.getName()
 
     if (!workflowId) {
-      throw new Error("Workflow ID is required")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow ID is required`
+      )
     }
 
     context ??= {}
@@ -122,7 +130,10 @@ export class WorkflowOrchestratorService {
 
     const exportedWorkflow: any = MedusaWorkflow.getWorkflow(workflowId)
     if (!exportedWorkflow) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     const flow = exportedWorkflow(container as MedusaContainer)
