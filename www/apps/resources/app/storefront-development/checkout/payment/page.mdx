@@ -40,10 +40,10 @@ export const fetchHighlights = [
   ["65", "fetch", "Retrieve the cart again to update its data."],
   ["76", "getPaymentUi", "This function shows the necessary UI based on the selected payment provider."],
   ["77", "activePaymentSession", "The active session is the first in the payment collection's sessions."],
-  ["82", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
-  ["83", "pp_stripe_", "Check if the chosen provider is Stripe."],
-  ["86", "pp_system_default", "Check if the chosen provider is the default systen provider."],
-  ["88", "default", "Handle unrecognized providers."],
+  ["83", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
+  ["84", `"pp_stripe_"`, "Check if the chosen provider is Stripe."],
+  ["88", `"pp_system_default"`, "Check if the chosen provider is the default systen provider."],
+  ["90", "default", "Handle unrecognized providers."],
 ]
 
   ```ts highlights={fetchHighlights}
@@ -123,7 +123,8 @@ export const fetchHighlights = [
   }
 
   const getPaymentUi = () => {
-    const activePaymentSession = cart?.payment_collection?.payment_sessions?.[0]
+    const activePaymentSession = cart?.payment_collection?.
+      payment_sessions?.[0]
     if (!activePaymentSession) {
       return
     }
@@ -132,7 +133,8 @@ export const fetchHighlights = [
       case activePaymentSession.provider_id.startsWith("pp_stripe_"):
         // TODO handle Stripe UI
         return "You chose stripe!"
-      case activePaymentSession.provider_id.startsWith("pp_system_default"):
+      case activePaymentSession.provider_id
+        .startsWith("pp_system_default"):
         return "You chose manual payment! No additional actions required."
       default:
         return `You chose ${
@@ -153,13 +155,13 @@ export const highlights = [
   ["50", "fetch", "Create a payment collection for the cart when it doesn't have one."],
   ["72", "fetch", "Initialize the payment session in the payment collection for the chosen provider."],
   ["90", "fetch", "Retrieve the cart again to update its data."],
-  ["102", "getPaymentUi", "This function shows the necessary UI based on the selected payment provider."],
-  ["103", "activePaymentSession", "The active session is the first in the payment collection's sessions."],
-  ["108", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
-  ["109", "pp_stripe_", "Check if the chosen provider is Stripe."],
-  ["116", "pp_system_default", "Check if the chosen provider is the default systen provider."],
-  ["122", "default", "Handle unrecognized providers."],
-  ["157", "getPaymentUi", "If a provider is chosen, render its UI."]
+  ["103", "getPaymentUi", "This function shows the necessary UI based on the selected payment provider."],
+  ["104", "activePaymentSession", "The active session is the first in the payment collection's sessions."],
+  ["110", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
+  ["111", `"pp_stripe_"`, "Check if the chosen provider is Stripe."],
+  ["119", `"pp_system_default"`, "Check if the chosen provider is the default systen provider."],
+  ["125", "default", "Handle unrecognized providers."],
+  ["160", "getPaymentUi", "If a provider is chosen, render its UI."]
 ]
 
   ```tsx highlights={highlights}
@@ -266,7 +268,8 @@ export const highlights = [
     }
 
     const getPaymentUi = useCallback(() => {
-      const activePaymentSession = cart?.payment_collection?.payment_sessions?.[0]
+      const activePaymentSession = cart?.payment_collection?.
+        payment_sessions?.[0]
       if (!activePaymentSession) {
         return
       }
@@ -279,7 +282,8 @@ export const highlights = [
               {/* TODO add stripe UI */}
             </span>
           )
-        case activePaymentSession.provider_id.startsWith("pp_system_default"):
+        case activePaymentSession.provider_id
+          .startsWith("pp_system_default"):
           return (
             <span>
               You chose manual payment! No additional actions required.

@@ -43,7 +43,7 @@ export const Tooltip = ({
           "!text-compact-x-small !shadow-elevation-tooltip dark:!shadow-elevation-tooltip-dark !rounded-docs_DEFAULT",
           "!py-docs_0.25 !z-[399] hidden !px-docs_0.5 lg:block",
           "!bg-medusa-bg-component",
-          "!text-medusa-fg-base",
+          "!text-medusa-fg-base text-center",
           tooltipClassName
         )}
         wrapper="span"

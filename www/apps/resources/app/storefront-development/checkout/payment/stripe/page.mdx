@@ -16,7 +16,7 @@ For other types of storefronts, the steps are similar. However, refer to [Stripe
 
 <Note type="check">
 
-- [Stripe Provider Module](../../../commerce-modules/payment/payment-provider/stripe/page.mdx) installed and configured in your Medusa application.
+- [Stripe Provider Module](../../../../commerce-modules/payment/payment-provider/stripe/page.mdx) installed and configured in your Medusa application.
 - [Stripe publishable API key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
 
 </Note>
@@ -38,7 +38,7 @@ Next, add an environment variable holding your Stripe publishable API key.
 For example:
 
 ```bash
-NEXT_PUBLIC_STRIPE_PK=pk_test_51KjJGAIHkWOooVrmfXEklGL1pTL54WQrXUe5Imi1QIDMaIrP76JtmiRp0D3IXTQQnaBYMCKcvcKOmf1peq5kbe5U00HbH7FFbN
+NEXT_PUBLIC_STRIPE_PK=pk_test_51Kj...
 ```
 
 <Note title="Tip">
@@ -56,16 +56,16 @@ Then, create a file holding the following Stripe component:
 export const highlights = [
   ["10", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
   ["13", "stripePromise", "Initialize stripe using the environment variable added in the previous step."],
-  ["19", "clientSecret", "After initializing the payment session of Stripe in the Medusa application, the client secret is available in the payment session's `data`."],
+  ["19", "clientSecret", "After initializing the payment session of Stripe in the Medusa application,\nthe client secret is available in the payment session's `data`."],
   ["27", "StripeForm", "The actual form must be a different component nested inside `Elements`."],
-  ["44", "handlePayment", "This function is used to show Stripe's UI to accept payment, then send the request to the Medusa application to complete the cart."],
+  ["44", "handlePayment", "This function is used to show Stripe's UI to accept payment,\nthen send the request to the Medusa application to complete the cart."],
   ["61", "confirmCardPayment", "This function shows the UI to the customer to accept the card payment."],
-  ["78", "", "Once the customer enters their card details and submits the form, the Promise resolves and executes this function."],
-  ["85", "fetch", "Send a request to the Medusa application to complete the cart and place the order."],
-  ["94", `type === "cart"`, "If the `type` returned is `cart`, it means an error occurred and the cart wasn't completed."],
-  ["97", `type === "order"`, "If the `type` returned is `order`, it means the cart was completed and the order was placed successfully."],
-  ["102", "removeItem", "remove the cart ID from the `localStorage` as the cart is no longer usable."],
-  ["112", "button", "This button triggers the `handlePayment` function when clicked."]
+  ["78", "", "Once the customer enters their card details and submits the form,\nthe Promise resolves and executes this function."],
+  ["85", "fetch", "Send a request to the Medusa application\nto complete the cart and place the order."],
+  ["94", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
+  ["97", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
+  ["101", "refreshCart", "Unset and reset the cart."],
+  ["111", "button", "This button triggers the `handlePayment` function when clicked."]
 ]
 
 ```tsx highlights={highlights}
@@ -106,7 +106,7 @@ const StripeForm = ({
 }: {
   clientSecret: string | undefined
 }) => {
-  const { cart } = useCart()
+  const { cart, refreshCart } = useCart()
   const [loading, setLoading] = useState(false)
 
   const stripe = useStripe()
@@ -169,8 +169,7 @@ const StripeForm = ({
           // TODO redirect to order success page
           alert("Order placed.")
           console.log(order)
-          // reset cart
-          localStorage.removeItem("cart_id")
+          refreshCart()
         }
       })
     })
@@ -201,11 +200,34 @@ In the code snippet above, you:
     - In the resolution function, you send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) to complete the cart and place the order.
     - In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
     - If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
-    - When the order is placed, you must unset the `cart_id` from the `localStorage`. You can redirect the customer to an order success page at this point.
+    - When the order is placed, you refresh the cart. You can redirect the customer to an order success page at this point.
+
+---
+
+## 4. Use the Stripe Component
+
+You can now use the Stripe component in the checkout flow. You should render it after the customer chooses Stripe as a payment provider.
+
+For example, you can use it in the `getPaymentUi` function defined in the [Payment Checkout Step guide](../page.mdx):
+
+```tsx highlights={[["10"]]}
+const getPaymentUi = useCallback(() => {
+  const activePaymentSession = cart?.payment_collection?.
+    payment_sessions?.[0]
+  if (!activePaymentSession) {
+    return
+  }
+
+  switch(true) {
+    case activePaymentSession.provider_id.startsWith("pp_stripe_"):
+      return <StripePayment />
+    // ...
+  }
+} , [cart])
+```
 
 ---
 
 ## More Resources
 
-- Refer to [Stripe's documentation](https://docs.stripe.com/) for more details on integrating it in your storefront.
-- Refer to the last step of the checkout flow to learn more about completing the order.
+Refer to [Stripe's documentation](https://docs.stripe.com/) for more details on integrating it in your storefront.
