@@ -1,12 +1,16 @@
 import { OrderDTO } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Modules, OrderEvents } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../../common"
+import {
+  createRemoteLinkStep,
+  emitEventStep,
+  useRemoteQueryStep,
+} from "../../../common"
 import { authorizePaymentSessionStep } from "../../../payment/steps/authorize-payment-session"
 import { createOrderFromCartStep, validateCartPaymentsStep } from "../steps"
 import { reserveInventoryStep } from "../steps/reserve-inventory"
@@ -87,6 +91,8 @@ export const completeCartWorkflow = createWorkflow(
         },
       },
     ])
+
+    emitEventStep({ eventName: OrderEvents.placed, data: { id: order.id } })
 
     return order
   }
