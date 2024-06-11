@@ -3,24 +3,15 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import {
-  AdminBatchUpdateProductType,
-  AdminCreateProductType,
-} from "../validators"
-import { BatchMethodRequest } from "@medusajs/types"
 import { refetchBatchProducts, remapProductResponse } from "../helpers"
+import { HttpTypes } from "@medusajs/types"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<
-    BatchMethodRequest<AdminCreateProductType, AdminBatchUpdateProductType>
-  >,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminBatchProductRequest>,
+  res: MedusaResponse<HttpTypes.AdminBatchProductResponse>
 ) => {
-  // TODO: Fix types
-  const input = req.validatedBody as any
-
   const { result } = await batchProductsWorkflow(req.scope).run({
-    input,
+    input: req.validatedBody,
   })
 
   const batchResults = await refetchBatchProducts(

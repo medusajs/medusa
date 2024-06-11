@@ -2,6 +2,7 @@ import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
   operation({ action, currentOrder }) {
@@ -18,9 +19,16 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_ADD, {
         existing.detail.quantity,
         action.details.quantity
       )
+
+      setActionReference(existing, action)
     } else {
       currentOrder.items.push({
         id: action.reference_id!,
+        order_id: currentOrder.id,
+        return_id: action.details.return_id,
+        claim_id: action.details.claim_id,
+        exchange_id: action.details.exchange_id,
+
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,
       } as VirtualOrder["items"][0])

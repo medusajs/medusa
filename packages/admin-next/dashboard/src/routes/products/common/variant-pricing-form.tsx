@@ -1,4 +1,4 @@
-import { CurrencyDTO, ProductVariantDTO } from "@medusajs/types"
+import { CurrencyDTO, HttpTypes } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -48,7 +48,7 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<ProductVariantDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProductVariant>()
 
 export const useVariantPriceGridColumns = ({
   currencies = [],
@@ -57,7 +57,7 @@ export const useVariantPriceGridColumns = ({
 }) => {
   const { t } = useTranslation()
 
-  const colDefs: ColumnDef<ProductVariantDTO>[] = useMemo(() => {
+  const colDefs: ColumnDef<HttpTypes.AdminProductVariant>[] = useMemo(() => {
     return [
       columnHelper.display({
         id: t("fields.title"),

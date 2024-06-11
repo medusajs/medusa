@@ -5,6 +5,7 @@ import {
   isString,
   MedusaContext,
   MedusaContextType,
+  MedusaError,
   MedusaModuleType,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -12,6 +13,7 @@ import {
   DistributedTransaction,
   DistributedTransactionEvent,
   DistributedTransactionEvents,
+  TransactionFlow,
   TransactionModelOptions,
   TransactionOrchestrator,
   TransactionStepsDefinition,
@@ -37,7 +39,7 @@ export class LocalWorkflow {
   protected handlers: Map<string, StepHandler>
   protected medusaContext?: Context
 
-  get container() {
+  get container(): MedusaContainer {
     return this.container_
   }
 
@@ -51,7 +53,10 @@ export class LocalWorkflow {
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     this.flow = new OrchestratorBuilder(globalWorkflow.flow_)
@@ -328,7 +333,8 @@ export class LocalWorkflow {
     uniqueTransactionId: string,
     input?: unknown,
     context?: Context,
-    subscribe?: DistributedTransactionEvents
+    subscribe?: DistributedTransactionEvents,
+    flowMetadata?: TransactionFlow["metadata"]
   ) {
     if (this.flow.hasChanges) {
       this.commit()
@@ -339,7 +345,8 @@ export class LocalWorkflow {
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
       handler(this.container_, context),
-      input
+      input,
+      flowMetadata
     )
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({

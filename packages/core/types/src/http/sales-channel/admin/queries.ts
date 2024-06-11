@@ -1,7 +1,9 @@
-import { OperatorMap } from "../../../dal"
+import { BaseFilterable, OperatorMap } from "../../../dal"
 import { FindParams } from "../../common"
 
-export interface AdminSalesChannelListParams extends FindParams {
+export interface AdminSalesChannelListParams
+  extends FindParams,
+    BaseFilterable<AdminSalesChannelListParams> {
   id?: string | string[]
   q?: string
   name?: string | string[]
@@ -12,6 +14,4 @@ export interface AdminSalesChannelListParams extends FindParams {
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
   deleted_at?: OperatorMap<string>
-  $and?: AdminSalesChannelListParams[]
-  $or?: AdminSalesChannelListParams[]
 }

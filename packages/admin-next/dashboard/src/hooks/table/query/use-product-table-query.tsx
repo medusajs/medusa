@@ -1,6 +1,4 @@
-import { AdminGetProductsParams } from "@medusajs/medusa"
-import { ProductStatus } from "@medusajs/types"
-
+import { HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseProductTableQueryProps = {
@@ -46,7 +44,7 @@ export const useProductTableQuery = ({
     q,
   } = queryObject
 
-  const searchParams: AdminGetProductsParams = {
+  const searchParams: HttpTypes.AdminProductParams = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     sales_channel_id: sales_channel_id?.split(","),
@@ -56,9 +54,9 @@ export const useProductTableQuery = ({
     collection_id: collection_id?.split(","),
     is_giftcard: is_giftcard ? is_giftcard === "true" : undefined,
     order: order,
-    tags: tags?.split(","),
+    tags: tags ? { value: tags.split(",") } : undefined,
     type_id: type_id?.split(","),
-    status: status?.split(",") as ProductStatus[],
+    status: status?.split(",") as HttpTypes.AdminProductStatus[],
     q,
   }
 

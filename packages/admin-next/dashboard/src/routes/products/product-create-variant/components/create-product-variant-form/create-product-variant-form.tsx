@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@medusajs/medusa"
 import { Button, Heading, Input, Switch } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -17,9 +16,10 @@ import {
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
+import { HttpTypes } from "@medusajs/types"
 
 type CreateProductVariantFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
   isStockAndInventoryEnabled?: boolean
 }
 

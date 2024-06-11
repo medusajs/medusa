@@ -14,6 +14,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { Return } from "@models"
 import LineItem from "./line-item"
 import Order from "./order"
 
@@ -23,6 +24,12 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
+})
+
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_item",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
@@ -59,14 +66,29 @@ export default class OrderItem {
   @OrderIdIndex.MikroORMIndex()
   order_id: string
 
-  @Property({ columnType: "integer" })
-  @OrderVersionIndex.MikroORMIndex()
-  version: number
-
   @ManyToOne(() => Order, {
     persist: false,
   })
   order: Order
+
+  @ManyToOne({
+    entity: () => Return,
+    mapToPk: true,
+    fieldName: "return_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
+
+  @ManyToOne(() => Return, {
+    persist: false,
+  })
+  return: Return
+
+  @Property({ columnType: "integer" })
+  @OrderVersionIndex.MikroORMIndex()
+  version: number
 
   @ManyToOne({
     entity: () => LineItem,

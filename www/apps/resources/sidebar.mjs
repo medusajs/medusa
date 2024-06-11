@@ -1803,6 +1803,98 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             path: "/storefront-development/regions/store-retrieve-region",
             title: "Store and Retrieve Regions",
           },
+          {
+            path: "/storefront-development/regions/context",
+            title: "Region React Context",
+          },
+        ],
+      },
+      {
+        path: "/storefront-development/cart",
+        title: "Carts",
+        children: [
+          {
+            path: "/storefront-development/cart/create",
+            title: "Create Cart",
+          },
+          {
+            path: "/storefront-development/cart/retrieve",
+            title: "Retrieve Cart",
+          },
+          {
+            path: "/storefront-development/cart/context",
+            title: "Cart React Context",
+          },
+          {
+            path: "/storefront-development/cart/update",
+            title: "Update Cart",
+          },
+          {
+            path: "/storefront-development/cart/manage-items",
+            title: "Manage Line Items",
+          },
+        ],
+      },
+      {
+        path: "/storefront-development/products",
+        title: "Products",
+        children: [
+          {
+            path: "/storefront-development/products/list",
+            title: "List Products",
+          },
+          {
+            path: "/storefront-development/products/retrieve",
+            title: "Retrieve a Product",
+          },
+          {
+            path: "/storefront-development/products/variants",
+            title: "Select a Variant",
+          },
+          {
+            path: "/storefront-development/products/price",
+            title: "Retrieve Variant Prices",
+          },
+          {
+            path: "/storefront-development/products/categories",
+            title: "Categories",
+            children: [
+              {
+                path: "/storefront-development/products/categories/list",
+                title: "List Categories",
+              },
+              {
+                path: "/storefront-development/products/categories/retrieve",
+                title: "Retrieve a Category",
+              },
+              {
+                path: "/storefront-development/products/categories/products",
+                title: "Retrieve a Category's Products",
+              },
+              {
+                path: "/storefront-development/products/categories/nested-categories",
+                title: "Retrieve Nested Categories",
+              },
+            ],
+          },
+          {
+            path: "/storefront-development/products/collections",
+            title: "Collections",
+            children: [
+              {
+                path: "/storefront-development/products/collections/list",
+                title: "List Collections",
+              },
+              {
+                path: "/storefront-development/products/collections/retrieve",
+                title: "Retrieve a Collection",
+              },
+              {
+                path: "/storefront-development/products/collections/products",
+                title: "Retrieve a Collection's Products",
+              },
+            ],
+          },
         ],
       },
     ],

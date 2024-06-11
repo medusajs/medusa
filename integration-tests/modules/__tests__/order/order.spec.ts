@@ -257,7 +257,7 @@ medusaIntegrationTestRunner({
                 value: "1",
                 precision: 20,
               },
-              detail: {
+              detail: expect.objectContaining({
                 id: expect.any(String),
                 order_id: expect.any(String),
                 version: 1,
@@ -301,7 +301,7 @@ medusaIntegrationTestRunner({
                 return_received_quantity: 0,
                 return_dismissed_quantity: 0,
                 written_off_quantity: 0,
-              },
+              }),
               subtotal: 50,
               total: 50,
               original_total: 50,

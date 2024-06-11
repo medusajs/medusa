@@ -1,4 +1,4 @@
-import { Product, SalesChannel } from "@medusajs/medusa"
+import { SalesChannel } from "@medusajs/medusa"
 import { Button, Checkbox } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
@@ -18,9 +18,10 @@ import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type EditSalesChannelsFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 const EditSalesChannelsSchema = zod.object({
