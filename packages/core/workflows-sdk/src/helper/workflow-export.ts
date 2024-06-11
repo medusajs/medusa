@@ -25,6 +25,7 @@ import {
   MainExportedWorkflow,
   WorkflowResult,
 } from "./type"
+import { ContainerRegistrationKeys } from "@medusajs/utils/dist"
 
 function createContextualWorkflowRunner<
   TData = unknown,
@@ -495,6 +496,17 @@ function attachOnFinishReleaseEvents(
     await eventBusService
       .releaseGroupedEvents(eventGroupId)
       .catch(async (e) => {
+        const logger =
+          (flow.container as MedusaContainer).resolve(
+            ContainerRegistrationKeys.LOGGER,
+            { allowUnregistered: true }
+          ) || console
+
+        logger.error(
+          `Failed to release grouped events for eventGroupId: ${eventGroupId}`,
+          e
+        )
+
         await flow.cancel(transaction)
       })
   }
