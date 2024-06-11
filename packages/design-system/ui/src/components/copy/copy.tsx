@@ -1,6 +1,6 @@
 "use client"
 
-import { Tooltip } from "@/components/tooltip"
+import { Tooltip, TooltipProvider } from "@/components/tooltip"
 import { clx } from "@/utils/clx"
 import {
   CheckCircleMiniSolid,
@@ -84,6 +84,7 @@ const Copy = React.forwardRef<HTMLButtonElement, CopyProps>(
     const Component = asChild ? Slot : "button"
 
     return (
+      <TooltipProvider>
       <Tooltip content={text} open={done || open} onOpenChange={setOpen}>
         <Component
           ref={ref}
@@ -108,6 +109,7 @@ const Copy = React.forwardRef<HTMLButtonElement, CopyProps>(
           )}
         </Component>
       </Tooltip>
+      </TooltipProvider>
     )
   }
 )
