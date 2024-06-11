@@ -19,4 +19,5 @@ export interface IEventBusModuleService {
   ): this
 
   releaseGroupedEvents(eventGroupId: string): Promise<void>
+  clearGroupedEvents(eventGroupId: string): Promise<void>
 }
