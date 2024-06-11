@@ -7,7 +7,7 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ModulesSdkTypes } from "@medusajs/types"
-import { TransactionState, promiseAll } from "@medusajs/utils"
+import { MedusaError, TransactionState, promiseAll } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
@@ -123,11 +123,24 @@ export class RedisDistributedTransactionStorage
     jobId: string,
     schedulerOptions: SchedulerOptions
   ) {
-    // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
-    // of the transaction to ensure that the transaction is only executed once.
-    return await this.workflowOrchestratorService_.run(jobId, {
-      throwOnError: false,
-    })
+    try {
+      // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
+      // of the transaction to ensure that the transaction is only executed once.
+      return await this.workflowOrchestratorService_.run(jobId, {
+        throwOnError: false,
+      })
+    } catch (e) {
+      if (e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND) {
+        console.warn(
+          `Tried to execute a scheduled workflow with ID ${jobId} that does not exist, removing it from the scheduler.`
+        )
+
+        await this.remove(jobId)
+        return
+      }
+
+      throw e
+    }
   }
 
   async get(key: string): Promise<TransactionCheckpoint | undefined> {

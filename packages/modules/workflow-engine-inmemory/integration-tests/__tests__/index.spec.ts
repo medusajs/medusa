@@ -1,11 +1,20 @@
 import { MedusaApp } from "@medusajs/modules-sdk"
-import { RemoteJoinerQuery } from "@medusajs/types"
+import { WorkflowManager } from "@medusajs/orchestration"
+import {
+  Context,
+  IWorkflowEngineService,
+  RemoteJoinerQuery,
+} from "@medusajs/types"
 import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
+import {
+  eventGroupWorkflowId,
+  workflowEventGroupIdStep1Mock,
+  workflowEventGroupIdStep2Mock,
+} from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
 
@@ -58,7 +67,68 @@ describe("Workflow Orchestrator module", function () {
     workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
   })
 
-  afterEach(afterEach_)
+  it("should execute an async workflow keeping track of the event group id provided in the context", async () => {
+    const eventGroupId = "event-group-id"
+
+    await workflowOrcModule.run(eventGroupWorkflowId, {
+      input: {},
+      context: {
+        eventGroupId,
+        transactionId: "transaction_id",
+      },
+      throwOnError: true,
+    })
+
+    await workflowOrcModule.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        stepId: "step_1_event_group_id_background",
+        workflowId: eventGroupWorkflowId,
+        transactionId: "transaction_id",
+      },
+      stepResponse: { hey: "oh" },
+    })
+
+    // Validate context event group id
+    expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId })
+    )
+    expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId })
+    )
+  })
+
+  it("should execute an async workflow keeping track of the event group id that has been auto generated", async () => {
+    await workflowOrcModule.run(eventGroupWorkflowId, {
+      input: {},
+      context: {
+        transactionId: "transaction_id_2",
+      },
+      throwOnError: true,
+    })
+
+    await workflowOrcModule.setStepSuccess({
+      idempotencyKey: {
+        action: TransactionHandlerType.INVOKE,
+        stepId: "step_1_event_group_id_background",
+        workflowId: eventGroupWorkflowId,
+        transactionId: "transaction_id_2",
+      },
+      stepResponse: { hey: "oh" },
+    })
+
+    const generatedEventGroupId = (workflowEventGroupIdStep1Mock.mock
+      .calls[0][1] as unknown as Context)!.eventGroupId
+
+    // Validate context event group id
+    expect(workflowEventGroupIdStep1Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId: generatedEventGroupId })
+    )
+    expect(workflowEventGroupIdStep2Mock.mock.calls[0][1]).toEqual(
+      expect.objectContaining({ eventGroupId: generatedEventGroupId })
+    )
+  })
+
   describe("Testing basic workflow", function () {
     it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
       await workflowOrcModule.run("workflow_1", {
@@ -173,7 +243,7 @@ describe("Workflow Orchestrator module", function () {
       expect(transaction.flow.state).toEqual("reverted")
     })
 
-    it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+    it("should subscribe to a async workflow and receive the response when it finishes", (done) => {
       const transactionId = "trx_123"
 
       const onFinish = jest.fn(() => {
@@ -238,6 +308,24 @@ describe("Workflow Orchestrator module", function () {
 
       await jest.runOnlyPendingTimersAsync()
       expect(spy).toHaveBeenCalledTimes(2)
+    })
+
+    it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const spy = await createScheduled("remove-scheduled", {
+        cron: "* * * * * *",
+      })
+      const logSpy = jest.spyOn(console, "warn")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+
+      WorkflowManager["workflows"].delete("remove-scheduled")
+
+      await jest.runOnlyPendingTimersAsync()
+      expect(spy).toHaveBeenCalledTimes(1)
+      expect(logSpy).toHaveBeenCalledWith(
+        "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
+      )
     })
   })
 })
