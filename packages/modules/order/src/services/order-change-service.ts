@@ -11,10 +11,10 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  OrderChangeStatus,
   deduplicate,
 } from "@medusajs/utils"
 import { OrderChange } from "@models"
+import { OrderChangeStatus } from "@types"
 
 type InjectedDependencies = {
   orderChangeRepository: DAL.RepositoryService

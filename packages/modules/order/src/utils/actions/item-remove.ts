@@ -2,6 +2,7 @@ import { MathBN, MedusaError, isDefined } from "@medusajs/utils"
 import { VirtualOrder } from "@types"
 import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
+import { setActionReference } from "../set-action-reference"
 
 OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
   isDeduction: true,
@@ -19,6 +20,8 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       existing.detail.quantity,
       action.details.quantity
     )
+
+    setActionReference(existing, action)
 
     if (MathBN.lte(existing.quantity, 0)) {
       currentOrder.items.splice(existingIndex, 1)

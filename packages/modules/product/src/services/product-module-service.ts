@@ -51,8 +51,8 @@ import {
   UpdateTagInput,
   UpdateTypeInput,
 } from "../types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 import { eventBuilders } from "../utils"
+import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -1134,10 +1134,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_CREATED,
-      { id: productCategory.id }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_CREATED,
+      data: { id: productCategory.id },
+    })
 
     return productCategory
   }
@@ -1154,10 +1154,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_UPDATED,
-      { id: productCategory.id }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_UPDATED,
+      data: { id: productCategory.id },
+    })
 
     return await this.baseRepository_.serialize(productCategory, {
       populate: true,
@@ -1171,10 +1171,10 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
-      ProductCategoryEvents.CATEGORY_DELETED,
-      { id: categoryId }
-    )
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
+      eventName: ProductCategoryEvents.CATEGORY_DELETED,
+      data: { id: categoryId },
+    })
   }
 
   create(
