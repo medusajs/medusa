@@ -8,12 +8,12 @@ export function getIsActiveProps(
   switch (isActive) {
     case true:
       return {
-        label: t("categories.fields.active"),
+        label: t("categories.fields.status.active"),
         color: "green",
       }
     case false:
       return {
-        label: t("categories.fields.inactive"),
+        label: t("categories.fields.status.inactive"),
         color: "red",
       }
   }
@@ -26,12 +26,12 @@ export function getIsInternalProps(
   switch (isInternal) {
     case true:
       return {
-        label: t("categories.fields.internal"),
+        label: t("categories.fields.visibility.internal"),
         color: "blue",
       }
     case false:
       return {
-        label: t("categories.fields.public"),
+        label: t("categories.fields.visibility.public"),
         color: "green",
       }
   }

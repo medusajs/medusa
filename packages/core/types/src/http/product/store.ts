@@ -1,6 +1,5 @@
 import {
   BaseProduct,
-  BaseProductCategory,
   BaseProductCategoryFilters,
   BaseProductFilters,
   BaseProductImage,
@@ -16,7 +15,6 @@ import {
 } from "./common"
 
 export interface StoreProduct extends BaseProduct {}
-export interface StoreProductCategory extends BaseProductCategory {}
 export interface StoreProductVariant extends BaseProductVariant {}
 export interface StoreProductTag extends BaseProductTag {}
 export interface StoreProductType extends BaseProductType {}

@@ -101,7 +101,9 @@ export const useCategoryTableColumns = () => {
         },
       }),
       columnHelper.accessor("is_internal", {
-        header: () => <TextHeader text={t("categories.fields.visibility")} />,
+        header: () => (
+          <TextHeader text={t("categories.fields.visibility.label")} />
+        ),
         cell: ({ getValue }) => {
           const { color, label } = getIsInternalProps(getValue(), t)
 

@@ -5200,6 +5200,7 @@ __metadata:
     i18next: 23.7.11
     i18next-browser-languagedetector: 7.2.0
     i18next-http-backend: 2.4.2
+    lodash: ^4.17.21
     match-sorter: ^6.3.4
     postcss: ^8.4.33
     prettier: ^3.1.1
@@ -5211,6 +5212,7 @@ __metadata:
     react-hook-form: 7.49.1
     react-i18next: 13.5.0
     react-jwt: ^1.2.0
+    react-nestable: ^3.0.2
     react-resizable-panels: ^2.0.16
     react-router-dom: 6.20.1
     tailwindcss: ^3.4.1
@@ -27325,6 +27327,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-addons-shallow-compare@npm:^15.6.3":
+  version: 15.6.3
+  resolution: "react-addons-shallow-compare@npm:15.6.3"
+  dependencies:
+    object-assign: ^4.1.0
+  checksum: ad1a2ef7adf1a307b55de58a99ccf40998a1f7c84dcaadb1a2dd40c0e21e911b84fe04ab5f3494a1118846fc7537043287d54bcaffc2daf819b6c45eef5635ce
+  languageName: node
+  linkType: hard
+
+"react-addons-update@npm:^15.6.3":
+  version: 15.6.3
+  resolution: "react-addons-update@npm:15.6.3"
+  dependencies:
+    object-assign: ^4.1.0
+  checksum: b6d98b459eb37393b8103309090b36649c0a0e95c7dbe010e692616eb025baf62b53cb187925ecce0c3ed0377357ce03c3a45a8ec2d91e6886f8d2eb55b0dfd1
+  languageName: node
+  linkType: hard
+
 "react-colorful@npm:^5.1.2":
   version: 5.6.1
   resolution: "react-colorful@npm:5.6.1"
@@ -27495,6 +27515,19 @@ __metadata:
     fsevents:
       optional: true
   checksum: cbe27de003233f42126cb55ad6e8f368cc67d477f0b316afab2f9750f66b5f0b65703f682f6e2f85149427aa74c4674f548e64707fdfcbbf7146fec0659b8324
+  languageName: node
+  linkType: hard
+
+"react-nestable@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-nestable@npm:3.0.2"
+  dependencies:
+    classnames: ^2.3.2
+    react: ^18.2.0
+    react-addons-shallow-compare: ^15.6.3
+    react-addons-update: ^15.6.3
+    react-dom: ^18.2.0
+  checksum: e2a7947382ca28e12048c534a2ad6e544dff60a56e712b7a1b00838434c5b5444b4c50c1fd652e032710b567674b4eff36ee4c3a5021c02f933d11c7b88ce7b9
   languageName: node
   linkType: hard
 

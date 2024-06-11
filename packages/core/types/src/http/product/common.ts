@@ -1,12 +1,13 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
+import { ProductCategory } from "../product-category/common"
 
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
 
 export interface BaseProduct {
   id?: string
   title?: string
-  handle?: string
+  handle: string
   subtitle?: string | null
   description?: string | null
   is_giftcard?: boolean
@@ -22,7 +23,7 @@ export interface BaseProduct {
   material?: string
   collection?: BaseCollection
   collection_id?: string | null
-  categories?: BaseProductCategory[]
+  categories?: ProductCategory[]
   type?: BaseProductType | null
   type_id?: string | null
   tags?: BaseProductTag[]
@@ -62,21 +63,6 @@ export interface BaseProductVariant {
   updated_at?: string
   deleted_at?: string | null
   metadata?: Record<string, unknown> | null
-}
-
-export interface BaseProductCategory {
-  id?: string
-  name?: string
-  description?: string | null
-  handle?: string
-  rank?: number
-  parent_category?: BaseProductCategory
-  parent_category_id?: string
-  category_children?: BaseProductCategory[]
-  products?: BaseProduct[]
-  created_at?: string
-  updated_at?: string
-  metadata?: Record<string, unknown>
 }
 
 export interface BaseProductTag {

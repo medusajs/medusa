@@ -1,15 +1,18 @@
-export interface ProductCategoryResponse {
+import { BaseProduct } from "../product/common"
+
+export interface ProductCategory {
   id: string
   name: string
   description: string | null
-  handle: string | null
+  handle: string
   is_active: boolean
   is_internal: boolean
   rank: number | null
   parent_category_id: string | null
-  created_at: string | Date
-  updated_at: string | Date
-
-  parent_category: ProductCategoryResponse
-  category_children: ProductCategoryResponse[]
+  parent_category: ProductCategory | null
+  category_children: ProductCategory[]
+  products?: BaseProduct[]
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
 }

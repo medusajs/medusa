@@ -1,8 +1,8 @@
-import { useLoaderData, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useCategory } from "../../../hooks/api/categories"
+import { useProductCategory } from "../../../hooks/api/categories"
 import { CategoryGeneralSection } from "./components/category-general-section"
-import { CategoryOrganizationSection } from "./components/category-organization-section"
+import { CategoryOrganizeSection } from "./components/category-organize-section"
 import { CategoryProductSection } from "./components/category-product-section"
 import { categoryLoader } from "./loader"
 
@@ -18,7 +18,7 @@ export const CategoryDetail = () => {
     ReturnType<typeof categoryLoader>
   >
 
-  const { product_category, isLoading, isError, error } = useCategory(
+  const { product_category, isLoading, isError, error } = useProductCategory(
     id!,
     undefined,
     {
@@ -66,7 +66,7 @@ export const CategoryDetail = () => {
               </div>
             )
           })}
-          <CategoryOrganizationSection category={product_category} />
+          <CategoryOrganizeSection category={product_category} />
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
@@ -79,6 +79,7 @@ export const CategoryDetail = () => {
           </div>
         </div>
       </div>
+      <Outlet />
     </div>
   )
 }

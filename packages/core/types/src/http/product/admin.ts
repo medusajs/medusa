@@ -1,6 +1,6 @@
+import { AdminProductCategory } from "../product-category"
 import {
   BaseProduct,
-  BaseProductCategory,
   BaseProductCategoryFilters,
   BaseProductFilters,
   BaseProductImage,
@@ -19,10 +19,6 @@ export interface AdminProduct extends Omit<BaseProduct, "categories"> {
   categories?: AdminProductCategory[]
 }
 
-export interface AdminProductCategory extends BaseProductCategory {
-  is_active?: boolean
-  is_internal?: boolean
-}
 export interface AdminProductVariant extends BaseProductVariant {}
 export interface AdminProductTag extends BaseProductTag {}
 export interface AdminProductType extends BaseProductType {}

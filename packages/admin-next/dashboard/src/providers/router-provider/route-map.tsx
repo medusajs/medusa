@@ -127,6 +127,18 @@ export const RouteMap: RouteObject[] = [
               {
                 path: "",
                 lazy: () => import("../../routes/categories/category-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/categories/category-create"),
+                  },
+                  {
+                    path: "organize",
+                    lazy: () =>
+                      import("../../routes/categories/category-organize"),
+                  },
+                ],
               },
               {
                 path: ":id",
@@ -135,6 +147,22 @@ export const RouteMap: RouteObject[] = [
                   crumb: (data: AdminProductCategoryResponse) =>
                     data.product_category.name,
                 },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/categories/category-edit"),
+                  },
+                  {
+                    path: "products",
+                    lazy: () =>
+                      import("../../routes/categories/category-products"),
+                  },
+                  {
+                    path: "organize",
+                    lazy: () =>
+                      import("../../routes/categories/category-organize"),
+                  },
+                ],
               },
             ],
           },

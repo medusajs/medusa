@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -13,7 +14,6 @@ import {
   ProductListRes,
   ProductRes,
 } from "../../types/api-responses"
-import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -245,7 +245,7 @@ export const useCreateProduct = (
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) => sdk.admin.products.create(payload),
+    mutationFn: (payload: any) => sdk.admin.product.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
       options?.onSuccess?.(data, variables, context)
