@@ -900,6 +900,62 @@ export const filesMap = [
     "pathname": "/storefront-development"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/list/page.mdx",
+    "pathname": "/storefront-development/products/categories/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/nested-categories/page.mdx",
+    "pathname": "/storefront-development/products/categories/nested-categories"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/page.mdx",
+    "pathname": "/storefront-development/products/categories"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/products/page.mdx",
+    "pathname": "/storefront-development/products/categories/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/categories/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/list/page.mdx",
+    "pathname": "/storefront-development/products/collections/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/page.mdx",
+    "pathname": "/storefront-development/products/collections"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/products/page.mdx",
+    "pathname": "/storefront-development/products/collections/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/collections/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/list/page.mdx",
+    "pathname": "/storefront-development/products/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/page.mdx",
+    "pathname": "/storefront-development/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
+    "pathname": "/storefront-development/products/price"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/variants/page.mdx",
+    "pathname": "/storefront-development/products/variants"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/regions/context/page.mdx",
     "pathname": "/storefront-development/regions/context"
   },
