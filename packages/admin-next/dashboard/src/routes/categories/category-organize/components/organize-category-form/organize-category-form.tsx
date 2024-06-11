@@ -19,10 +19,12 @@ type OrganizeCategoryFormProps = {
   categoryId?: string
 }
 
+// TODO: Add some focus/highlight state if we enter this form from a specific category. Awaiting design.
 export const OrganizeCategoryForm = ({
   categoryId,
 }: OrganizeCategoryFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
+  // TODO: Display error message to the user, might be in a toast or in the header. Awaiting design.
   const [error, setError] = useState<FetchError | null>(null)
 
   const {
@@ -44,6 +46,7 @@ export const OrganizeCategoryForm = ({
 
   const handleRankChange = async (value: CategoryTreeItem) => {
     setIsLoading(true)
+    setError(null)
 
     await sdk.admin.productCategory
       .update(value.id, {

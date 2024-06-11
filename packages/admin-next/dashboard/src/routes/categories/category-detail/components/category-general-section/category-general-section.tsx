@@ -98,8 +98,6 @@ export const CategoryGeneralSection = ({
                     label: t("actions.delete"),
                     icon: <Trash />,
                     onClick: handleDelete,
-                    // TODO: Enable once we have a delete endpoint
-                    disabled: true,
                   },
                 ],
               },
