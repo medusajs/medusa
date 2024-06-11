@@ -508,9 +508,13 @@ function attachOnFinishReleaseEvents(
     const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
 
     if (failedStatus.includes(transaction.getState())) {
-      await eventBusService.clearGroupedEvents(eventGroupId).catch(() => {
-        logger.warn(`Failed to clear events for eventGroupId - ${eventGroupId}`)
-      })
+      return await eventBusService
+        .clearGroupedEvents(eventGroupId)
+        .catch(() => {
+          logger.warn(
+            `Failed to clear events for eventGroupId - ${eventGroupId}`
+          )
+        })
     }
 
     await eventBusService
