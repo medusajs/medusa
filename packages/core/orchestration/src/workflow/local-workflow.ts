@@ -39,7 +39,7 @@ export class LocalWorkflow {
   protected handlers: Map<string, StepHandler>
   protected medusaContext?: Context
 
-  get container() {
+  get container(): MedusaContainer {
     return this.container_
   }
 
