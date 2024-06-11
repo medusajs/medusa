@@ -8,9 +8,6 @@ export type InitializeModuleInjectableDependencies = {
   logger?: Logger
 }
 
-export const NotificationIdentifiersRegistrationName =
-  "notification_providers_identifier"
-
 export const NotificationProviderRegistrationPrefix = "np_"
 
 export type NotificationModuleOptions =

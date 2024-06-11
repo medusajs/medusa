@@ -8,6 +8,8 @@ export type InitializeModuleInjectableDependencies = {
   logger?: Logger
 }
 
+export const PaymentProviderRegistrationPrefix = "pp_"
+
 export type PaymentModuleOptions = Partial<ModuleServiceInitializeOptions> & {
   /**
    * Providers to be registered

@@ -6,7 +6,10 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { FulfillmentProviderService } from "@services"
-import { FulfillmentIdentifiersRegistrationName } from "@types"
+import {
+  FulfillmentIdentifiersRegistrationName,
+  FulfillmentProviderRegistrationPrefix,
+} from "@types"
 
 export default async ({
   container,
@@ -21,7 +24,7 @@ export default async ({
     container,
     providers: options?.providers || [],
     options: {
-      registrationPrefix: "fp_",
+      registrationPrefix: FulfillmentProviderRegistrationPrefix,
     },
   })
 

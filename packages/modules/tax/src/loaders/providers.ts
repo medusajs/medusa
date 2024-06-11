@@ -1,5 +1,6 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
 import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
+import { TaxProviderRegistrationPrefix } from "@types"
 import * as providers from "../providers"
 
 export default async ({
@@ -20,7 +21,7 @@ export default async ({
     container,
     providers: taxProviders,
     options: {
-      registrationPrefix: "tp_",
+      registrationPrefix: TaxProviderRegistrationPrefix,
     },
   })
 }

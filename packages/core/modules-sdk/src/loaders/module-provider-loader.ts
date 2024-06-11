@@ -9,6 +9,12 @@ const defaultProviderLoader = ({
   providerOptions,
 }) => {
   Object.entries(providerOptions.config || []).map(([name, config]) => {
+    if (!klass.identifier) {
+      throw new Error(
+        `The provider ${klass.constructor} is missing an identifier`
+      )
+    }
+
     const key = `${klass.identifier}_${name}`
 
     container.register({
