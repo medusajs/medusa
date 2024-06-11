@@ -7,37 +7,29 @@ import {
   updateProductOptionsWorkflow,
 } from "@medusajs/core-flows"
 
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import { refetchProduct, remapProductResponse } from "../../../helpers"
-import { AdminUpdateProductOptionType } from "../../../validators"
+import { remapKeysForProduct, remapProductResponse } from "../../../helpers"
+import { HttpTypes } from "@medusajs/types"
+import { refetchEntity } from "../../../../../utils/refetch-entity"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductOptionResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
   const productId = req.params.id
   const optionId = req.params.option_id
+  const productOption = await refetchEntity(
+    "product_option",
+    { id: optionId, product_id: productId },
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const variables = { id: optionId, product_id: productId }
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product_option",
-    variables,
-    fields: req.remoteQueryConfig.fields,
-  })
-
-  const [product_option] = await remoteQuery(queryObject)
-  res.status(200).json({ product_option })
+  res.status(200).json({ product_option: productOption })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateProductOptionType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProductOption>,
+  res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const productId = req.params.id
   const optionId = req.params.option_id
@@ -49,17 +41,19 @@ export const POST = async (
     },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     productId,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
+
   res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductOptionDeleteResponse>
 ) => {
   const productId = req.params.id
   const optionId = req.params.option_id
@@ -69,10 +63,11 @@ export const DELETE = async (
     input: { ids: [optionId] /* product_id: productId */ },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     productId,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
 
   res.status(200).json({

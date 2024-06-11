@@ -1,5 +1,5 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { PriceListDTO } from "@medusajs/types"
+import { PriceListDTO, HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
@@ -13,7 +13,6 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 type PricingProductSectionProps = {
   priceList: PriceListDTO
@@ -145,7 +144,7 @@ export const PricingProductSection = ({
   )
 }
 
-const ProductRowAction = ({ product }: { product: ExtendedProductDTO }) => {
+const ProductRowAction = ({ product }: { product: HttpTypes.AdminProduct }) => {
   const { t } = useTranslation()
 
   // TODO: The endpoint to remove prices by product id is not implemented in v2.
@@ -171,7 +170,7 @@ const ProductRowAction = ({ product }: { product: ExtendedProductDTO }) => {
   )
 }
 
-const columnHelper = createColumnHelper<ExtendedProductDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 const useColumns = () => {
   const base = useProductTableColumns()

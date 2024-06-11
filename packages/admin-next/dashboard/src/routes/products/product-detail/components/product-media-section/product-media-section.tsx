@@ -1,5 +1,4 @@
 import { PencilSquare, ThumbnailBadge } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
@@ -16,9 +15,10 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductMedisaSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductMediaSection = ({ product }: ProductMedisaSectionProps) => {
