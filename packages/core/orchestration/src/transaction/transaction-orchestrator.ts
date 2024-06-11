@@ -28,6 +28,10 @@ export type TransactionFlow = {
   options?: TransactionModelOptions
   definition: TransactionStepsDefinition
   transactionId: string
+  metadata?: {
+    eventGroupId?: string
+    [key: string]: unknown
+  }
   hasAsyncSteps: boolean
   hasFailedSteps: boolean
   hasWaitingSteps: boolean
@@ -839,7 +843,7 @@ export class TransactionOrchestrator extends EventEmitter {
     await this.executeNext(transaction)
   }
 
-  private createTransactionFlow(transactionId: string): TransactionFlow {
+  private createTransactionFlow(transactionId: string, flowMetadata?: TransactionFlow['metadata']): TransactionFlow {
     const [steps, features] = TransactionOrchestrator.buildSteps(
       this.definition
     )
@@ -864,6 +868,7 @@ export class TransactionOrchestrator extends EventEmitter {
       modelId: this.id,
       options: this.options,
       transactionId: transactionId,
+      metadata: flowMetadata,
       hasAsyncSteps,
       hasFailedSteps: false,
       hasSkippedSteps: false,
@@ -1006,11 +1011,13 @@ export class TransactionOrchestrator extends EventEmitter {
    * @param transactionId - unique identifier of the transaction
    * @param handler - function to handle action of the transaction
    * @param payload - payload to be passed to all the transaction steps
+   * @param flowMetadata - flow metadata which can include event group id for example
    */
   public async beginTransaction(
     transactionId: string,
     handler: TransactionStepHandler,
-    payload?: unknown
+    payload?: unknown,
+    flowMetadata?: TransactionFlow["metadata"]
   ): Promise<DistributedTransaction> {
     const existingTransaction =
       await TransactionOrchestrator.loadTransactionById(this.id, transactionId)
@@ -1018,7 +1025,7 @@ export class TransactionOrchestrator extends EventEmitter {
     let newTransaction = false
     let modelFlow: TransactionFlow
     if (!existingTransaction) {
-      modelFlow = this.createTransactionFlow(transactionId)
+      modelFlow = this.createTransactionFlow(transactionId, flowMetadata)
       newTransaction = true
     } else {
       modelFlow = existingTransaction.flow

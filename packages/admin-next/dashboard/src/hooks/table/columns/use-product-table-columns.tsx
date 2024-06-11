@@ -21,9 +21,9 @@ import {
   VariantCell,
   VariantHeader,
 } from "../../../components/table/table-cells/product/variant-cell"
-import { ExtendedProductDTO } from "../../../types/api-responses"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<ExtendedProductDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
 export const useProductTableColumns = () => {
   return useMemo(

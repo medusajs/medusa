@@ -1,7 +1,7 @@
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query"
 import { client } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { ProductTypeListRes, ProductTypeRes } from "../../types/api-responses"
+import { HttpTypes } from "@medusajs/types"
 
 const PRODUCT_TYPES_QUERY_KEY = "product_types" as const
 const productTypesQueryKeys = queryKeysFactory(PRODUCT_TYPES_QUERY_KEY)
@@ -10,7 +10,12 @@ export const useProductType = (
   id: string,
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<ProductTypeRes, Error, ProductTypeRes, QueryKey>,
+    UseQueryOptions<
+      { product_type: HttpTypes.AdminProductType },
+      Error,
+      { product_type: HttpTypes.AdminProductType },
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {
@@ -26,7 +31,12 @@ export const useProductType = (
 export const useProductTypes = (
   query?: Record<string, any>,
   options?: Omit<
-    UseQueryOptions<ProductTypeListRes, Error, ProductTypeListRes, QueryKey>,
+    UseQueryOptions<
+      { product_types: HttpTypes.AdminProductType[] },
+      Error,
+      { product_types: HttpTypes.AdminProductType[] },
+      QueryKey
+    >,
     "queryKey" | "queryFn"
   >
 ) => {

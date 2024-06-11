@@ -135,7 +135,9 @@ function applyStep<
           attempt: metadata.attempt,
           container: stepArguments.container,
           metadata,
-          eventGroupId: stepArguments.context!.eventGroupId,
+          eventGroupId:
+            stepArguments.transaction.getFlow()?.metadata?.eventGroupId ??
+            stepArguments.context!.eventGroupId,
           transactionId: stepArguments.context!.transactionId,
           context: stepArguments.context!,
         }

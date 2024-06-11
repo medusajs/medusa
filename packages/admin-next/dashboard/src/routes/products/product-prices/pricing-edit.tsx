@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
-import { ExtendedProductDTO } from "../../../types/api-responses"
 import { VariantPricingForm } from "../common/variant-pricing-form"
 import { castNumber } from "../../../lib/cast-number"
+import { HttpTypes } from "@medusajs/types"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -23,7 +23,11 @@ export type UpdateVariantPricesSchemaType = zod.infer<
   typeof UpdateVariantPricesSchema
 >
 
-export const PricingEdit = ({ product }: { product: ExtendedProductDTO }) => {
+export const PricingEdit = ({
+  product,
+}: {
+  product: HttpTypes.AdminProduct
+}) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const form = useForm<UpdateVariantPricesSchemaType>({

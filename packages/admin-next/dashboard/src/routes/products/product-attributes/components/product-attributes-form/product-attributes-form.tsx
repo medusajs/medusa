@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@medusajs/medusa"
 import { Button, Input } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -11,9 +10,10 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductAttributesFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 const dimension = zod

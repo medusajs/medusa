@@ -8,7 +8,7 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ModulesSdkTypes } from "@medusajs/types"
-import { TransactionState } from "@medusajs/utils"
+import { MedusaError, TransactionState } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { CronExpression, parseExpression } from "cron-parser"
 
@@ -266,9 +266,9 @@ export class InMemoryDistributedTransactionStorage
   }
 
   async removeAll(): Promise<void> {
-    this.scheduled.forEach((_, key) => {
-      this.remove(key)
-    })
+    for (const [key, job] of this.scheduled) {
+      await this.remove(key)
+    }
   }
 
   async jobHandler(jobId: string) {
@@ -297,9 +297,22 @@ export class InMemoryDistributedTransactionStorage
       config: job.config,
     })
 
-    // With running the job after setting a new timer we basically allow for concurrent runs, unless we add idempotency keys once they are supported.
-    await this.workflowOrchestratorService_.run(jobId, {
-      throwOnError: false,
-    })
+    try {
+      // With running the job after setting a new timer we basically allow for concurrent runs, unless we add idempotency keys once they are supported.
+      await this.workflowOrchestratorService_.run(jobId, {
+        throwOnError: false,
+      })
+    } catch (e) {
+      if (e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND) {
+        console.warn(
+          `Tried to execute a scheduled workflow with ID ${jobId} that does not exist, removing it from the scheduler.`
+        )
+
+        await this.remove(jobId)
+        return
+      }
+
+      throw e
+    }
   }
 }

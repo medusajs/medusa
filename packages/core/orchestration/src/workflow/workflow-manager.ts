@@ -11,6 +11,7 @@ import {
   TransactionStepsDefinition,
 } from "../transaction"
 import { WorkflowScheduler } from "./scheduler"
+import { MedusaError } from "@medusajs/utils"
 
 export interface WorkflowDefinition {
   id: string
@@ -78,7 +79,10 @@ export class WorkflowManager {
 
   static getTransactionDefinition(workflowId): OrchestratorBuilder {
     if (!WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Workflow with id "${workflowId}" not found.`
+      )
     }
 
     const workflow = WorkflowManager.workflows.get(workflowId)!
