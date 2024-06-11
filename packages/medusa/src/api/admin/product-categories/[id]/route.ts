@@ -1,4 +1,7 @@
-import { updateProductCategoryWorkflow } from "@medusajs/core-flows"
+import {
+  deleteProductCategoryWorkflow,
+  updateProductCategoryWorkflow,
+} from "@medusajs/core-flows"
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
@@ -9,6 +12,7 @@ import {
   AdminProductCategoryParamsType,
   AdminUpdateProductCategoryType,
 } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminProductCategoryParamsType>,
@@ -20,6 +24,13 @@ export const GET = async (
     req.scope,
     req.remoteQueryConfig.fields
   )
+
+  if (!category) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product category with id: ${req.params.id} was not found`
+    )
+  }
 
   res.json({ product_category: category })
 }
@@ -43,4 +54,21 @@ export const POST = async (
   )
 
   res.status(200).json({ product_category: category })
+}
+
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const id = req.params.id
+
+  await deleteProductCategoryWorkflow(req.scope).run({
+    input: id,
+  })
+
+  res.status(200).json({
+    id,
+    object: "product_category",
+    deleted: true,
+  })
 }
