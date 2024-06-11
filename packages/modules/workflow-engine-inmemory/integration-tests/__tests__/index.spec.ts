@@ -101,7 +101,7 @@ describe("Workflow Orchestrator module", function () {
     await workflowOrcModule.run(eventGroupWorkflowId, {
       input: {},
       context: {
-        transactionId: "transaction_id",
+        transactionId: "transaction_id_2",
       },
       throwOnError: true,
     })
@@ -111,7 +111,7 @@ describe("Workflow Orchestrator module", function () {
         action: TransactionHandlerType.INVOKE,
         stepId: "step_1_event_group_id_background",
         workflowId: eventGroupWorkflowId,
-        transactionId: "transaction_id",
+        transactionId: "transaction_id_2",
       },
       stepResponse: { hey: "oh" },
     })
