@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@medusajs/medusa"
 import { Button, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -14,9 +13,10 @@ import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../lib/client"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductOrganizationFormProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 const ProductOrganizationSchema = zod.object({

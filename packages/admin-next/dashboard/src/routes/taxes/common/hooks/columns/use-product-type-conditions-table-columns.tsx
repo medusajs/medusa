@@ -1,10 +1,10 @@
-import { ProductType } from "@medusajs/medusa"
+import { HttpTypes } from "@medusajs/types"
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-const columnHelper = createColumnHelper<ProductType>()
+const columnHelper = createColumnHelper<HttpTypes.AdminProductType>()
 
 export const useProductTypeConditionsTableColumns = () => {
   const { t } = useTranslation()

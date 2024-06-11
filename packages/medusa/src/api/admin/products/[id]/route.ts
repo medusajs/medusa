@@ -6,36 +6,23 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-
-import { UpdateProductDTO } from "@medusajs/types"
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import {
-  refetchProduct,
-  remapKeysForProduct,
-  remapProductResponse,
-} from "../helpers"
-import { AdminUpdateProductType } from "../validators"
+import { remapKeysForProduct, remapProductResponse } from "../helpers"
 import { MedusaError } from "@medusajs/utils"
+import { HttpTypes } from "@medusajs/types"
+import { refetchEntity } from "../../../utils/refetch-entity"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const variables = { id: req.params.id }
-
   const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product",
-    variables,
-    fields: selectFields,
-  })
+  const product = await refetchEntity(
+    "product",
+    req.params.id,
+    req.scope,
+    selectFields
+  )
 
-  const [product] = await remoteQuery(queryObject)
   if (!product) {
     throw new MedusaError(MedusaError.Types.NOT_FOUND, "Product not found")
   }
@@ -44,27 +31,29 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateProductType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProduct>,
+  res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const { result } = await updateProductsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
-      update: req.validatedBody as UpdateProductDTO,
+      update: req.validatedBody,
     },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     result[0].id,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
+
   res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductDeleteResponse>
 ) => {
   const id = req.params.id
 

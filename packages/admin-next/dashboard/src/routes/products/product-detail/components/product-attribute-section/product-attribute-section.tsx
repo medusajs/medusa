@@ -1,13 +1,13 @@
 import { PencilSquare } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { getFormattedCountry } from "../../../../../lib/addresses"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductAttributeSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductAttributeSection = ({

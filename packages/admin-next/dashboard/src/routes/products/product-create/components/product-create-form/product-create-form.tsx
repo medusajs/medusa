@@ -3,7 +3,7 @@ import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { SalesChannelDTO } from "@medusajs/types"
+import { SalesChannelDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -21,7 +21,6 @@ import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-f
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import { sdk } from "../../../../../lib/client"
-import { HttpTypes } from "@medusajs/types"
 
 enum Tab {
   DETAILS = "details",

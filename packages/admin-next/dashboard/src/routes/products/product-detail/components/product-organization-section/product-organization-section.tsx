@@ -1,13 +1,13 @@
 import { PencilSquare } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Badge, Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductOrganizationSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 export const ProductOrganizationSection = ({
@@ -37,7 +37,7 @@ export const ProductOrganizationSection = ({
       <SectionRow
         title={t("fields.tags")}
         value={
-          product.tags.length > 0
+          product.tags?.length
             ? product.tags.map((tag) => (
                 <Badge key={tag.id} className="w-fit" size="2xsmall" asChild>
                   <Link to={`/products?tags=${tag.id}`}>{tag.value}</Link>
@@ -75,7 +75,7 @@ export const ProductOrganizationSection = ({
       <SectionRow
         title={t("fields.categories")}
         value={
-          product.categories?.length > 0
+          product.categories?.length
             ? product.categories.map((pcat) => (
                 <Badge
                   key={pcat.id}

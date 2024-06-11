@@ -1,9 +1,9 @@
-import { CreateProductDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { ProductCreateSchemaType } from "./types"
 import { castNumber } from "../../../lib/cast-number"
 
 export const normalizeProductFormValues = (
-  values: ProductCreateSchemaType & { status: CreateProductDTO["status"] }
+  values: ProductCreateSchemaType & { status: HttpTypes.AdminProductStatus }
 ) => {
   const thumbnail = values.media?.find((media) => media.isThumbnail)?.url
   const images = values.media

@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from "react-router-dom"
 
 import { productsQueryKeys } from "../../../hooks/api/products"
-import { client } from "../../../lib/client"
+import { sdk } from "../../../lib/client"
 import { queryClient } from "../../../lib/query-client"
 
 const queryKey = (id: string) => {
@@ -9,7 +9,7 @@ const queryKey = (id: string) => {
 }
 
 const queryFn = async (id: string) => {
-  return await client.products.retrieve(id)
+  return await sdk.admin.product.retrieve(id)
 }
 
 const editProductVariantQuery = (id: string) => ({

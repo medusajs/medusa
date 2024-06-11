@@ -1,12 +1,12 @@
 import { Channels, PencilSquare } from "@medusajs/icons"
-import { Product } from "@medusajs/medusa"
 import { Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { Trans, useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import { HttpTypes } from "@medusajs/types"
 
 type ProductSalesChannelSectionProps = {
-  product: Product
+  product: HttpTypes.AdminProduct
 }
 
 // TODO: The fetched sales channel doesn't contain all necessary info

@@ -8,44 +8,36 @@ import {
 } from "@medusajs/core-flows"
 
 import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
-import {
-  refetchProduct,
+  remapKeysForProduct,
   remapKeysForVariant,
   remapProductResponse,
   remapVariantResponse,
 } from "../../../helpers"
-import { AdminUpdateProductVariantType } from "../../../validators"
+import { HttpTypes } from "@medusajs/types"
+import { refetchEntity } from "../../../../../utils/refetch-entity"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantResponse>
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  // TODO: Should we allow fetching a variant without knowing the product ID? In such case we'll need to change the route to /admin/products/variants/:id
   const productId = req.params.id
   const variantId = req.params.variant_id
-
   const variables = { id: variantId, product_id: productId }
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "variant",
+  const variant = await refetchEntity(
+    "variant",
     variables,
-    fields: remapKeysForVariant(req.remoteQueryConfig.fields ?? []),
-  })
+    req.scope,
+    remapKeysForVariant(req.remoteQueryConfig.fields ?? [])
+  )
 
-  const [variant] = await remoteQuery(queryObject)
   res.status(200).json({ variant: remapVariantResponse(variant) })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminUpdateProductVariantType>,
-  res: MedusaResponse
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminUpdateProductVariant>,
+  res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
-  // TODO: Should we allow fetching a variant without knowing the product ID? In such case we'll need to change the route to /admin/products/variants/:id
   const productId = req.params.id
   const variantId = req.params.variant_id
 
@@ -56,19 +48,19 @@ export const POST = async (
     },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     productId,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
   res.status(200).json({ product: remapProductResponse(product) })
 }
 
 export const DELETE = async (
   req: AuthenticatedMedusaRequest,
-  res: MedusaResponse
+  res: MedusaResponse<HttpTypes.AdminProductVariantDeleteResponse>
 ) => {
-  // TODO: Should we allow fetching a variant without knowing the product ID? In such case we'll need to change the route to /admin/products/variants/:id
   const productId = req.params.id
   const variantId = req.params.variant_id
 
@@ -77,16 +69,17 @@ export const DELETE = async (
     input: { ids: [variantId] /* product_id: productId */ },
   })
 
-  const product = await refetchProduct(
+  const product = await refetchEntity(
+    "product",
     productId,
     req.scope,
-    req.remoteQueryConfig.fields
+    remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
 
   res.status(200).json({
     id: variantId,
     object: "variant",
     deleted: true,
-    parent: product,
+    parent: remapProductResponse(product),
   })
 }
