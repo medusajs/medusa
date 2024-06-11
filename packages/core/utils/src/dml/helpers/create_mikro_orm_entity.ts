@@ -5,6 +5,8 @@ import {
   OneToOne,
   ManyToMany,
   Enum,
+  Cascade,
+  ManyToOne,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
 import { camelToSnakeCase, pluralize } from "../../common"
@@ -31,7 +33,22 @@ const COLUMN_TYPES: {
   number: "integer",
   string: "text",
   json: "jsonb",
-  enum: "enum",
+  enum: "enum", // ignore for now
+}
+
+/**
+ * DML entity data types to Mikro ORM property
+ * types
+ */
+const PROPERTY_TYPES: {
+  [K in KnownDataTypes]: string
+} = {
+  boolean: "boolean",
+  dateTime: "date",
+  number: "number",
+  string: "string",
+  json: "any",
+  enum: "enum", // ignore for now
 }
 
 /**
@@ -45,15 +62,20 @@ function defineProperty(
    * Defining an enum property
    */
   if (field.dataType.name === "enum") {
-    Enum({ items: () => field.dataType.options!.choices })(
-      MikroORMEntity.prototype,
-      field.fieldName
-    )
+    Enum({
+      items: () => field.dataType.options!.choices,
+      nullable: field.nullable,
+    })(MikroORMEntity.prototype, field.fieldName)
     return
   }
 
   const columnType = COLUMN_TYPES[field.dataType.name]
-  Property({ columnType, type: field.dataType.name })(
+  const propertyType = PROPERTY_TYPES[field.dataType.name]
+
+  /**
+   * @todo: Add support for default value
+   */
+  Property({ columnType, type: propertyType, nullable: field.nullable })(
     MikroORMEntity.prototype,
     field.fieldName
   )
@@ -100,22 +122,44 @@ function defineRelationship(
    */
   switch (relationship.type) {
     case "hasOne":
-      OneToOne({ entity: relatedModelName, mappedBy: "" })(
-        MikroORMEntity.prototype,
-        relationship.name
-      )
+      OneToOne({
+        entity: relatedModelName,
+        cascade: [Cascade.PERSIST], // accept via options
+        owner: true, // accept via options
+        onDelete: "cascade", // accept via options
+        nullable: false, // accept via options
+      })(MikroORMEntity.prototype, relationship.name)
       break
     case "hasMany":
-      OneToMany({ entity: relatedModelName, mappedBy: "" })(
-        MikroORMEntity.prototype,
-        relationship.name
-      )
+      OneToMany({
+        entity: relatedModelName,
+        cascade: [Cascade.PERSIST], // accept via options
+        orphanRemoval: true,
+        mappedBy: (related: any) =>
+          related[camelToSnakeCase(MikroORMEntity.name)], // optionally via options,
+      })(MikroORMEntity.prototype, relationship.name)
+      break
+    case "hasOneThroughMany":
+      ManyToOne({
+        entity: relatedModelName,
+        columnType: "text", // infer from primary key data-type
+        mapToPk: true,
+        nullable: false, // accept via options
+        fieldName: camelToSnakeCase(`${relationship.name}Id`),
+        onDelete: "cascade", // accept via options
+      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
+
+      ManyToOne({
+        entity: relatedModelName,
+        persist: false,
+      })(MikroORMEntity.prototype, relationship.name)
       break
     case "manyToMany":
-      ManyToMany({ entity: relatedModelName, mappedBy: "" })(
-        MikroORMEntity.prototype,
-        relationship.name
-      )
+      ManyToMany({
+        entity: relatedModelName,
+        mappedBy: (related: any) =>
+          related[camelToSnakeCase(MikroORMEntity.name)], // optionally via options,
+      })(MikroORMEntity.prototype, relationship.name)
       break
   }
 }
@@ -123,6 +167,8 @@ function defineRelationship(
 /**
  * A helper function to define a Mikro ORM entity from a
  * DML entity.
+ * @todo: Handle soft deleted indexes and filters
+ * @todo: Finalize if custom pivot entities are needed
  */
 export function createMikrORMEntity<
   T extends DmlEntity<Record<string, SchemaType<any> | RelationshipType<any>>>

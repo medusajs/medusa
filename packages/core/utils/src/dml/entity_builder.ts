@@ -9,6 +9,7 @@ import { DateTimeSchema } from "./schema/date_time"
 import { ManyToMany } from "./relations/many_to_many"
 import { RelationshipType, SchemaType } from "./types"
 import { EnumSchema } from "./schema/enum"
+import { HasOneThroughMany } from "./relations/has_one_through_many"
 
 export class EntityBuilder {
   define<
@@ -47,6 +48,10 @@ export class EntityBuilder {
 
   hasMany<T>(entityBuilder: T, options?: Record<string, any>) {
     return new HasMany<T>(entityBuilder, options || {})
+  }
+
+  hasOneThroughMany<T>(entityBuilder: T, options?: Record<string, any>) {
+    return new HasOneThroughMany<T>(entityBuilder, options || {})
   }
 
   manyToMany<T>(entityBuilder: T, options?: Record<string, any>) {

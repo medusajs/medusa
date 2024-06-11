@@ -17,7 +17,7 @@ export type KnownDataTypes =
  */
 export type RelationshipMetadata = {
   name: string
-  type: "hasOne" | "hasMany" | "manyToMany"
+  type: "hasOne" | "hasMany" | "hasOneThroughMany" | "manyToMany"
   entity: unknown
   options: Record<string, any>
 }
