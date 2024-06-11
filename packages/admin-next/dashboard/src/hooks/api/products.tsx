@@ -166,7 +166,12 @@ export const useUpdateProductVariantsBatch = (
   return useMutation({
     mutationFn: (
       payload: HttpTypes.AdminBatchProductVariantRequest["update"]
-    ) => sdk.admin.product.batchVariants(productId, { update: payload }),
+    ) =>
+      sdk.admin.product.batchVariants(productId, {
+        create: [], // TEMP FIX until the workflow is fixed
+        update: payload,
+        delete: [], // TEMP FIX until the workflow is fixed
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({

@@ -28,6 +28,7 @@ export const batchProductVariantsWorkflow = createWorkflow(
   ): WorkflowData<BatchWorkflowOutput<ProductTypes.ProductVariantDTO>> => {
     const res = parallelize(
       createProductVariantsWorkflow.runAsStep({
+        // TODO: fix this check, `input.create` is a proxy object so check will pass but wrong data will be send as an argument
         input: { product_variants: input.create ?? [] },
       }),
       updateProductVariantsWorkflow.runAsStep({

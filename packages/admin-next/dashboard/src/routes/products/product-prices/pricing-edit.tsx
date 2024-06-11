@@ -48,25 +48,22 @@ export const PricingEdit = ({
 
   const handleSubmit = form.handleSubmit(
     async (values) => {
-      const reqData = {
-        create: [],
-        update: values.variants.map((variant, ind) => ({
-          id: product.variants[ind].id,
-          prices: Object.entries(variant.prices || {}).map(
-            ([currency_code, value]: any) => {
-              const id = product.variants[ind].prices.find(
-                (p) => p.currency_code === currency_code
-              )?.id
+      const reqData = values.variants.map((variant, ind) => ({
+        id: product.variants[ind].id,
+        prices: Object.entries(variant.prices || {}).map(
+          ([currency_code, value]: any) => {
+            const id = product.variants[ind].prices.find(
+              (p) => p.currency_code === currency_code
+            )?.id
 
-              const amount = castNumber(value)
+            const amount = castNumber(value)
 
-              return id
-                ? { id, amount, currency_code }
-                : { currency_code, amount }
-            }
-          ),
-        })),
-      }
+            return id
+              ? { id, amount, currency_code }
+              : { currency_code, amount }
+          }
+        ),
+      }))
       await mutateAsync(reqData, {
         onSuccess: () => {
           handleSuccess(`/products/${product.id}`)
