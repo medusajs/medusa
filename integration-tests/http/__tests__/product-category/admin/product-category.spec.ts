@@ -639,18 +639,79 @@ medusaIntegrationTestRunner({
       })
     })
 
-    // TODO: Should be migrate to V2
-    describe.skip("DELETE /admin/product-categories/:id", () => {
-      it("returns successfully with an invalid ID", async () => {
-        const response = await api.delete(
-          `/admin/product-categories/invalid-id`,
-          adminHeaders
-        )
+    describe("DELETE /admin/product-categories/:id", () => {
+      beforeEach(async () => {
+        productCategoryParent = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category parent",
+              description: "category parent",
+            },
+            adminHeaders
+          )
+        ).data.product_category
 
-        expect(response.status).toEqual(200)
-        expect(response.data.id).toEqual("invalid-id")
-        expect(response.data.deleted).toBeTruthy()
-        expect(response.data.object).toEqual("product-category")
+        productCategory = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category-0",
+              parent_category_id: productCategoryParent.id,
+              rank: 0,
+              description: "category-0",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        productCategoryChild = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category child",
+              parent_category_id: productCategory.id,
+              rank: 0,
+              description: "category child",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        productCategoryChild2 = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category child 2",
+              parent_category_id: productCategoryChild.id,
+              rank: 2,
+              description: "category child 2",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        productCategoryChild3 = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category child 3",
+              parent_category_id: productCategoryChild.id,
+              rank: 2,
+              description: "category child 3",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+      })
+
+      // BREAKING: In v1 we would return 200 on an invalid ID, in v2 we return 404
+      it("returns successfully with an invalid ID", async () => {
+        const err = await api
+          .delete(`/admin/product-categories/invalid-id`, adminHeaders)
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(404)
       })
 
       it("throws a not allowed error for a category with children", async () => {
@@ -669,49 +730,43 @@ medusaIntegrationTestRunner({
       })
 
       it("deletes a product category with no children successfully", async () => {
-        const deleteResponse = await api
-          .delete(
-            `/admin/product-categories/${productCategory.id}`,
-            adminHeaders
-          )
-          .catch((e) => e)
+        const deleteResponse = await api.delete(
+          `/admin/product-categories/${productCategoryChild2.id}`,
+          adminHeaders
+        )
 
         expect(deleteResponse.status).toEqual(200)
-        expect(deleteResponse.data.id).toEqual(productCategory.id)
+        expect(deleteResponse.data.id).toEqual(productCategoryChild2.id)
         expect(deleteResponse.data.deleted).toBeTruthy()
-        expect(deleteResponse.data.object).toEqual("product-category")
+        expect(deleteResponse.data.object).toEqual("product_category")
 
         const errorFetchingDeleted = await api
-          .get(`/admin/product-categories/${productCategory.id}`, adminHeaders)
+          .get(
+            `/admin/product-categories/${productCategoryChild2.id}`,
+            adminHeaders
+          )
           .catch((e) => e)
 
         expect(errorFetchingDeleted.response.status).toEqual(404)
       })
 
       it("deleting a product category reorders siblings accurately", async () => {
-        const deleteResponse = await api
-          .delete(
-            `/admin/product-categories/${productCategory.id}`,
-            adminHeaders
-          )
-          .catch((e) => e)
+        const deleteResponse = await api.delete(
+          `/admin/product-categories/${productCategoryChild2.id}`,
+          adminHeaders
+        )
 
         expect(deleteResponse.status).toEqual(200)
-
         const siblingsResponse = await api
           .get(
-            `/admin/product-categories?parent_category_id=${productCategoryParent.id}`,
+            `/admin/product-categories?parent_category_id=${productCategoryChild.id}`,
             adminHeaders
           )
           .catch((e) => e)
 
         expect(siblingsResponse.data.product_categories).toEqual([
           expect.objectContaining({
-            id: productCategory1.id,
-            rank: 0,
-          }),
-          expect.objectContaining({
-            id: productCategory2.id,
+            id: productCategoryChild3.id,
             rank: 1,
           }),
         ])
