@@ -9162,7 +9162,7 @@ __metadata:
     "@medusajs/orchestration": ^0.5.7
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
-    "@medusajs/workflows-sdk": ^0.1.6
+    "@medusajs/workflows-sdk": ^0.1.7
     "@swc/core": ^1.4.8
     "@swc/jest": ^0.2.36
     "@types/express": ^4.17.17
@@ -9881,7 +9881,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows-sdk@^0.1.6, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
+"@medusajs/workflows-sdk@^0.1.6, @medusajs/workflows-sdk@^0.1.7, @medusajs/workflows-sdk@workspace:packages/workflows-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows-sdk@workspace:packages/workflows-sdk"
   dependencies:
