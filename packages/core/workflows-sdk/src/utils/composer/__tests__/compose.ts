@@ -2147,4 +2147,64 @@ describe("Workflow composer", function () {
       "event-group-id"
     )
   })
+
+  it("should clear grouped events on fail state", async () => {
+    const container = createMedusaContainer()
+    container.register({
+      [ModuleRegistrationName.EVENT_BUS]: asValue({
+        releaseGroupedEvents: jest.fn(),
+        clearGroupedEvents: jest.fn(),
+        emit: jest.fn(),
+      }),
+    })
+
+    const mockStep1Fn = jest
+      .fn()
+      .mockImplementation(
+        async (input, { context: stepContext, container }) => {
+          const eventBusService = container.resolve(
+            ModuleRegistrationName.EVENT_BUS
+          )
+
+          await eventBusService.emit(
+            "event1",
+            composeMessage("event1", {
+              data: { eventGroupId: stepContext.eventGroupId },
+              context: stepContext,
+              object: "object",
+              source: "service",
+              action: "action",
+            })
+          )
+        }
+      )
+
+    const mockStep2Fn = jest.fn().mockImplementation(() => {
+      throw new Error("invoke fail")
+    })
+
+    const step1 = createStep("step1", mockStep1Fn)
+    const step2 = createStep("step2", mockStep2Fn)
+
+    const workflow = createWorkflow("workflow1", function (input) {
+      step1(input)
+      step2()
+    })
+
+    await workflow(container).run({
+      context: {
+        eventGroupId: "event-group-id",
+      },
+      throwOnError: false,
+    })
+
+    const eventBusMock = container.resolve(ModuleRegistrationName.EVENT_BUS)
+
+    expect(eventBusMock.emit).toHaveBeenCalledTimes(1)
+    expect(eventBusMock.releaseGroupedEvents).toHaveBeenCalledTimes(0)
+    expect(eventBusMock.clearGroupedEvents).toHaveBeenCalledTimes(1)
+    expect(eventBusMock.clearGroupedEvents).toHaveBeenCalledWith(
+      "event-group-id"
+    )
+  })
 })
