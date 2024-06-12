@@ -12,7 +12,6 @@ describe("DateTime schema", () => {
         name: "dateTime",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })

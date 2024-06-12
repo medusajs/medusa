@@ -17,19 +17,16 @@ describe("Enum schema", () => {
         },
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
   })
 
-  test("apply nullable and optional modifiers", () => {
-    const schema = new EnumSchema(["admin", "moderator", "editor"])
-      .nullable()
-      .optional()
+  test("apply nullable modifier", () => {
+    const schema = new EnumSchema(["admin", "moderator", "editor"]).nullable()
 
     expectTypeOf(schema["$dataType"]).toEqualTypeOf<
-      "admin" | "moderator" | "editor" | null | undefined
+      "admin" | "moderator" | "editor" | null
     >()
 
     expect(schema.parse("role")).toEqual({
@@ -41,7 +38,6 @@ describe("Enum schema", () => {
         },
       },
       nullable: true,
-      optional: true,
       indexes: [],
       relationships: [],
     })

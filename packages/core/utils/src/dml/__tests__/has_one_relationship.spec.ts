@@ -15,6 +15,7 @@ describe("HasOne relationship", () => {
     expect(relationship.parse("user")).toEqual({
       name: "user",
       type: "hasOne",
+      nullable: false,
       entity: entityRef,
       options: {},
     })

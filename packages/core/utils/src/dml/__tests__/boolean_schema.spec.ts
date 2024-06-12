@@ -12,7 +12,6 @@ describe("Boolean schema", () => {
         name: "boolean",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
