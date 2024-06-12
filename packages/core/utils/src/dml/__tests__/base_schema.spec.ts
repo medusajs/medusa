@@ -52,7 +52,7 @@ describe("Base schema", () => {
       }
     }
 
-    const schema = new StringSchema().defaultsTo("foo")
+    const schema = new StringSchema().default("foo")
 
     expectTypeOf(schema["$dataType"]).toEqualTypeOf<string>()
     expect(schema.parse("username")).toEqual({

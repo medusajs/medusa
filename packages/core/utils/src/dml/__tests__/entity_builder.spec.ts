@@ -126,7 +126,7 @@ describe("Entity builder", () => {
     const model = new EntityBuilder()
     const user = model.define("user", {
       id: model.number(),
-      username: model.text().defaultsTo("foo"),
+      username: model.text().default("foo"),
       email: model.text(),
     })
 

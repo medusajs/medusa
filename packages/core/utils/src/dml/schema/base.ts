@@ -32,7 +32,7 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
   /**
    * Define default value for the property
    */
-  defaultsTo(value: T) {
+  default(value: T) {
     this.#defaultValue = value
     return this
   }
