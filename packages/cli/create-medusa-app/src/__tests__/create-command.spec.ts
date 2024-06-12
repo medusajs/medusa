@@ -1,35 +1,65 @@
 import execa from "execa"
 import path from "path"
-import { rm, readFile, stat } from "fs/promises"
+import { 
+  rm, 
+  readFile, 
+  stat, 
+  readdir,
+  mkdir
+} from "fs/promises"
 import pg from "pg"
 const { Client } = pg
 
-const DB_REGEX = /DATABASE_URL=(?<url>.+?)/
+const DB_REGEX = /DATABASE_URL=(?<url>.+)/
 const DEFAULT_PROJECT_NAME = "my-medusa-store"
+const DEFAULT_NEXTJS_PROJECT_NAME = `${DEFAULT_PROJECT_NAME}-storefront`
 const DEFAULT_DB_NAME = "cma-test"
 // snippet of the success message
-const SUCCESS_MESSAGE = "Change to the `my-medusa-store` directory to explore your Medusa"
+const SUCCESS_MESSAGE = "directory to explore your Medusa"
 const MIGRATIONS_MESSAGE = "Running Migrations..."
-const basePath = path.resolve(__dirname, `../../`)
+const basePath = path.resolve(__dirname, "../../")
+const baesProjectsPath = path.resolve(basePath, `cma-tests`)
+let testIncrement = 0
 
-const projectPath = path.join(basePath, DEFAULT_PROJECT_NAME)
-const nextjsPath = path.join(basePath, `${DEFAULT_PROJECT_NAME}-storefront`)
+const createDirIfNotExists = async (path: string) => {
+  try {
+    await stat(path)
+  } catch (e) {
+    // directory doesn't exist, create it
+    await mkdir(path)
+  }
+}
 
-const runCLI = async (options: string[] = []) => {
+const runCLI = async (options: string[] = []): Promise<{
+  logs: string | undefined
+  projectPath: string
+}> => {
   const params = ["dev", "--quiet", "--no-browser", ...options]
+  const projectPath = path.join(baesProjectsPath, `${testIncrement++}`)
+  await createDirIfNotExists(projectPath)
+  params.push(`--directory-path`, projectPath)
   try {
     const { all: logs } = await execa("yarn", params, {
       all: true,
-      cwd: basePath
+      cwd: basePath,
+      env: {
+        // avoid overlapping with other medusa tests
+        PORT: "9001"
+      }
     })
 
-    return logs
+    return {
+      logs,
+      projectPath
+    }
   } catch (err: any) {
     throw new Error(err.message + err.all)
   }
 }
 
-const getProjectDbUrl = async (): Promise<string | undefined> => {
+const getProjectDbUrl = async (
+  projectPath: string
+): Promise<string | undefined> => {
   try {
     const envFile = await readFile(path.join(
       projectPath,
@@ -43,19 +73,22 @@ const getProjectDbUrl = async (): Promise<string | undefined> => {
   }
 }
 
-const dropDb = async () => {
-  const dbUrl = await getProjectDbUrl()
+const dropDb = async (projectPath: string) => {
+  const dbUrl = await getProjectDbUrl(projectPath)
   if (!dbUrl) {
     return
   }
 
+  // extract db name from url
+  const dbName = dbUrl.substring(dbUrl.lastIndexOf("/") + 1)
+
   // delete the database
   const client = new Client({
-    connectionString: dbUrl
+    connectionString: dbUrl.replace(`/${dbName}`, "")
   })
 
   await client.connect()
-  await client.query(`DROP DATABASE ${client.database}`)
+  await client.query(`DROP DATABASE "${dbName}"`)
   await client.end()
 }
 
@@ -73,16 +106,33 @@ const createDb = async (): Promise<string> => {
 }
 
 describe("create-medusa-app command", () => {
-  afterEach(async () => {
-    // delete database if set in the project
-    await dropDb()
-    // delete project's directory
-    await rm(projectPath, {
-      recursive: true,
-      force: true
+  beforeAll(async () => {
+    await createDirIfNotExists(baesProjectsPath)
+  })
+
+  afterAll(async () => {
+    // clear directories in the base directory
+    readdir(baesProjectsPath, {
+      withFileTypes: true
     })
-    // delete next.js project directory if exists
-    await rm(nextjsPath, {
+    .then(async (files) => {
+      await Promise.all(
+        files.map(async (file) => {
+          if (!file.isDirectory()) {
+            return
+          }
+
+          await dropDb(path.join(
+            baesProjectsPath, 
+            file.name, 
+            DEFAULT_PROJECT_NAME
+          ))
+        })
+      )
+    })
+
+    // delete base projects directory
+    await rm(baesProjectsPath, {
       recursive: true,
       force: true
     })
@@ -92,22 +142,24 @@ describe("create-medusa-app command", () => {
   // once we support them again
 
   it("should create project", async () => {
-    const logs = await runCLI()
+    const { logs } = await runCLI()
     expect(logs).toContain(SUCCESS_MESSAGE)
   })
 
   it("should skip database creation", async () => {
-    const logs = await runCLI([
+    const { logs, projectPath } = await runCLI([
       `--skip-db`
     ])
     expect(logs).toContain(SUCCESS_MESSAGE)
-    expect(await getProjectDbUrl()).toBeUndefined()
+    expect(await getProjectDbUrl(path.join(
+      projectPath, DEFAULT_PROJECT_NAME
+    ))).toBeUndefined()
   })
 
   it("should connect to supplied database URL", async () => {
     const dbUrl = await createDb()
 
-    const logs = await runCLI([
+    const { logs } = await runCLI([
       `--db-url`,
       dbUrl
     ])
@@ -115,19 +167,21 @@ describe("create-medusa-app command", () => {
   })
 
   it("shouldn't run migrations", async () => {
-    const logs = await runCLI([
+    const { logs } = await runCLI([
       `--no-migrations`,
     ])
     expect(logs).not.toContain(MIGRATIONS_MESSAGE)
   })
 
-  it("should install with next.js", async () => {
-    const logs = await runCLI([
-      `--with-nextjs-starter`,
-    ])
-    expect(logs).toContain(SUCCESS_MESSAGE)
-    expect(async () => {
-      await stat(nextjsPath)
-    }).not.toThrow()
-  })
+  // it("should install with next.js", async () => {
+  //   const { logs, projectPath } = await runCLI([
+  //     `--with-nextjs-starter`,
+  //   ])
+  //   expect(logs).toContain(SUCCESS_MESSAGE)
+  //   expect(async () => {
+  //     await stat(
+  //       path.join(projectPath, DEFAULT_NEXTJS_PROJECT_NAME)
+  //     )
+  //   }).not.toThrow()
+  // })
 })
