@@ -129,8 +129,7 @@ export default class OrderModuleService<
     TReturnReason extends ReturnReason = ReturnReason,
     TReturn extends Return = Return
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     OrderTypes.OrderDTO,
     {
       Address: { dto: OrderTypes.OrderAddressDTO }
@@ -553,6 +552,7 @@ export default class OrderModuleService<
     return result
   }
 
+  // @ts-ignore
   createLineItems(
     data: OrderTypes.CreateOrderLineItemForOrderDTO
   ): Promise<OrderTypes.OrderLineItemDTO[]>
@@ -670,6 +670,7 @@ export default class OrderModuleService<
     return lineItems
   }
 
+  // @ts-ignore
   updateLineItems(
     data: OrderTypes.UpdateOrderLineItemWithSelectorDTO[]
   ): Promise<OrderTypes.OrderLineItemDTO[]>
@@ -883,6 +884,7 @@ export default class OrderModuleService<
     return await this.orderItemService_.update(toUpdate, sharedContext)
   }
 
+  // @ts-ignore
   async createAddresses(
     data: OrderTypes.CreateOrderAddressDTO,
     sharedContext?: Context
@@ -919,6 +921,7 @@ export default class OrderModuleService<
     return await this.addressService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   async updateAddresses(
     data: OrderTypes.UpdateOrderAddressDTO,
     sharedContext?: Context
@@ -955,6 +958,7 @@ export default class OrderModuleService<
     return await this.addressService_.update(data, sharedContext)
   }
 
+  // @ts-ignore
   async createShippingMethods(
     data: OrderTypes.CreateOrderShippingMethodDTO
   ): Promise<OrderTypes.OrderShippingMethodDTO>
@@ -1059,6 +1063,7 @@ export default class OrderModuleService<
     return sm.map((s) => s.shipping_method)
   }
 
+  // @ts-ignore
   async createLineItemAdjustments(
     adjustments: OrderTypes.CreateOrderLineItemAdjustmentDTO[]
   ): Promise<OrderTypes.OrderLineItemAdjustmentDTO[]>
@@ -1228,6 +1233,7 @@ export default class OrderModuleService<
     })
   }
 
+  // @ts-ignore
   async createShippingMethodAdjustments(
     adjustments: OrderTypes.CreateOrderShippingMethodAdjustmentDTO[]
   ): Promise<OrderTypes.OrderShippingMethodAdjustmentDTO[]>
@@ -1302,6 +1308,7 @@ export default class OrderModuleService<
     })
   }
 
+  // @ts-ignore
   createLineItemTaxLines(
     taxLines: OrderTypes.CreateOrderLineItemTaxLineDTO[]
   ): Promise<OrderTypes.OrderLineItemTaxLineDTO[]>
@@ -1412,6 +1419,7 @@ export default class OrderModuleService<
     })
   }
 
+  // @ts-ignore
   createShippingMethodTaxLines(
     taxLines: OrderTypes.CreateOrderShippingMethodTaxLineDTO[]
   ): Promise<OrderTypes.OrderShippingMethodTaxLineDTO[]>
@@ -2319,6 +2327,7 @@ export default class OrderModuleService<
     await this.orderSummaryService_.update(summaries, sharedContext)
   }
 
+  // @ts-ignore
   async createReturnReasons(
     transactionData: OrderTypes.CreateOrderReturnReasonDTO,
     sharedContext?: Context
@@ -2352,6 +2361,7 @@ export default class OrderModuleService<
     )
   }
 
+  // @ts-ignore
   updateReturnReasons(
     data: OrderTypes.UpdateOrderReturnReasonWithSelectorDTO[]
   ): Promise<OrderTypes.OrderReturnReasonDTO[]>

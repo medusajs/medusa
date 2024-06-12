@@ -1,4 +1,4 @@
-import { internalModuleServiceFactory } from "../internal-module-service-factory"
+import { MedusaInternalService } from "../medusa-internal-service"
 import { lowerCaseFirst } from "../../common"
 
 const defaultContext = { __type: "MedusaContext" }
@@ -39,7 +39,7 @@ describe("Internal Module Service Factory", () => {
     },
   }
 
-  const internalModuleService = internalModuleServiceFactory<any>(Model)
+  const internalModuleService = MedusaInternalService<any>(Model)
 
   describe("Internal Module Service Methods", () => {
     let instance
@@ -63,7 +63,7 @@ describe("Internal Module Service Factory", () => {
       }
 
       const compositeInternalModuleService =
-        internalModuleServiceFactory<any>(CompositeModel)
+        MedusaInternalService<any>(CompositeModel)
 
       const instance = new compositeInternalModuleService(containerMock)
 
@@ -95,7 +95,7 @@ describe("Internal Module Service Factory", () => {
       }
 
       const compositeInternalModuleService =
-        internalModuleServiceFactory<any>(CompositeModel)
+        MedusaInternalService<any>(CompositeModel)
 
       const instance = new compositeInternalModuleService(containerMock)
 

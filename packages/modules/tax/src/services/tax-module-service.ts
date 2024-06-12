@@ -44,7 +44,7 @@ export default class TaxModuleService<
     TTaxRateRule extends TaxRateRule = TaxRateRule,
     TTaxProvider extends TaxProvider = TaxProvider
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     TaxTypes.TaxRateDTO,
     {

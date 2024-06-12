@@ -48,7 +48,7 @@ import {
 } from "@models"
 
 import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates, eventBuilders } from "@utils"
+import { eventBuilders, validatePriceListDates } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { PriceListIdPrefix } from "../models/price-list"
 import { PriceSetIdPrefix } from "../models/price-set"
@@ -67,7 +67,7 @@ type InjectedDependencies = {
   priceListRuleValueService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   PriceList,
   PriceListRule,
   PriceListRuleValue,
@@ -75,7 +75,7 @@ const generateMethodForModels = [
   Price,
   PriceSetRuleType,
   RuleType,
-]
+}
 
 export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
@@ -87,8 +87,7 @@ export default class PricingModuleService<
     TPriceListRule extends PriceListRule = PriceListRule,
     TPriceListRuleValue extends PriceListRuleValue = PriceListRuleValue
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     PricingTypes.PriceSetDTO,
     {
       Price: { dto: PricingTypes.PriceDTO }
@@ -641,6 +640,7 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   @EmitEvents()
+  // @ts-ignore
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -653,6 +653,7 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  // @ts-ignore
   async updatePriceLists(
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}

@@ -34,7 +34,7 @@ export default class UserModuleService<
     TUser extends User = User,
     TInvite extends Invite = Invite
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     UserTypes.UserDTO,
     {

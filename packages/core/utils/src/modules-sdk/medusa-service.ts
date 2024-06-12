@@ -50,13 +50,13 @@ const methods: BaseMethods[] = [...readMethods, ...writeMethods]
 
 type ModelDTOConfig = {
   dto: object
-  create?: object
-  update?: object
+  create?: any
+  update?: any
   singular?: string
   plural?: string
 }
 
-type EntitiesConfigTemplate = Record<string, ModelDTOConfig>
+type EntitiesConfigTemplate = { [key: string]: ModelDTOConfig }
 
 type ModelConfigurationToDto<T extends ModelConfiguration> =
   T extends abstract new (...args: any) => infer R
@@ -70,24 +70,39 @@ type ModelConfigurationsToConfigTemplate<
 > = {
   [Key in keyof T as `${Capitalize<Key & string>}`]: {
     dto: ModelConfigurationToDto<T[Key]>
+    create: any
+    update: any
   }
 }
 
-type ExtractSingularName<
-  T extends Record<any, any>,
-  K = keyof T
-> = T[K] extends { singular?: string } ? T[K]["singular"] : K & string
+type EntitiesConfigTemplateToFullEntitiesConfigTemplate<
+  T extends EntitiesConfigTemplate
+> = {
+  [Key in keyof T]: {
+    dto: T[Key]["dto"]
+    create: T[Key]["create"] extends unknown ? any : T[Key]["create"]
+    update: T[Key]["update"] extends unknown ? any : T[Key]["update"]
+    singular: T[Key]["singular"] extends string ? T[Key]["singular"] : never
+    plural: T[Key]["plural"] extends string ? T[Key]["plural"] : never
+  }
+}
+
+type ExtractSingularName<T extends Record<any, any>, K = keyof T> = Capitalize<
+  T[K] extends { singular?: string } ? T[K]["singular"] & string : K & string
+>
 
 type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   plural?: string
 }
-  ? T[K]["plural"]
+  ? T[K]["plural"] & string
   : Pluralize<K & string>
 
 type ModelConfiguration =
   | Constructor<any>
-  | (new (...args) => any)
   | (ModelDTOConfig & { name: string })
+  | any
+
+type ExtractMutationDtoOrAny<T> = T extends never ? any : T
 
 export interface AbstractModuleServiceBase<TEntryEntityConfig> {
   new (container: Record<any, any>, ...args: any[]): this
@@ -197,20 +212,18 @@ export type AbstractModuleService<
     TEntitiesDtoConfig,
     TEntityName
   >}`]: {
-    (
-      data: TEntitiesDtoConfig[TEntityName]["create"][],
-      sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
+    (data: any[], sharedContext?: Context): Promise<
+      TEntitiesDtoConfig[TEntityName]["dto"][]
+    >
   }
 } & {
   [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
     TEntitiesDtoConfig,
     TEntityName
   >}`]: {
-    (
-      data: TEntitiesDtoConfig[TEntityName]["create"],
-      sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
+    (data: any, sharedContext?: Context): Promise<
+      TEntitiesDtoConfig[TEntityName]["dto"][]
+    >
   }
 } & {
   [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
@@ -277,7 +290,7 @@ function buildMethodNamesFromModel(
  *   RuleType,
  * }
  *
- * class MyService extends ModulesSdkUtils.abstractModuleServiceFactory<
+ * class MyService extends ModulesSdkUtils.MedusaService<
  *   PricingTypes.PriceSetDTO,
  *   {
  *     Currency: { dto: PricingTypes.CurrencyDTO }
@@ -304,13 +317,13 @@ function buildMethodNamesFromModel(
  *   RuleType,
  * }
  *
- * class MyService extends ModulesSdkUtils.abstractModuleServiceFactory(PriceSet, entities, entityNameToLinkableKeysMap) {}
+ * class MyService extends ModulesSdkUtils.MedusaService(PriceSet, entities, entityNameToLinkableKeysMap) {}
  *
  * @param entryEntity
  * @param entities
  * @param entityNameToLinkableKeysMap
  */
-export function abstractModuleServiceFactory<
+export function MedusaService<
   TEntryEntityConfig extends ModelConfiguration = ModelConfiguration,
   EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
   TEntities extends Record<string, ModelConfiguration> = Record<
@@ -321,12 +334,14 @@ export function abstractModuleServiceFactory<
   entryEntity: TEntryEntityConfig | Constructor<any>,
   entities: TEntities,
   entityNameToLinkableKeysMap: MapToConfig = {}
-): new (...args: any[]) => AbstractModuleService<
-  ModelConfigurationToDto<TEntryEntityConfig>,
-  EntitiesConfig extends { __empty: any }
-    ? ModelConfigurationsToConfigTemplate<TEntities>
-    : EntitiesConfig
-> {
+): {
+  new (...args: any[]): AbstractModuleService<
+    ModelConfigurationToDto<TEntryEntityConfig>,
+    EntitiesConfig extends { __empty: any }
+      ? ModelConfigurationsToConfigTemplate<TEntities>
+      : EntitiesConfig
+  >
+} {
   const buildAndAssignMethodImpl = function (
     klassPrototype: any,
     method: string,
@@ -640,7 +655,6 @@ export function abstractModuleServiceFactory<
 
   return AbstractModuleService_ as any
 }
-
 /*
 type InjectedDependencies = {
   baseRepository: RepositoryService
@@ -656,7 +670,7 @@ export class OtherModel {
   id: string
 }
 
-class Service extends abstractModuleServiceFactory(TestModel, { OtherModel }) {
+class Service extends MedusaService(TestModel, { OtherModel }) {
   constructor(container: InjectedDependencies) {
     super(container)
   }
@@ -667,7 +681,7 @@ class Service extends abstractModuleServiceFactory(TestModel, { OtherModel }) {
   }
 }
 
-class Service2 extends abstractModuleServiceFactory<
+class Service2 extends MedusaService<
   {
     dto: { id: string }
     name: "test"
@@ -684,5 +698,4 @@ class Service2 extends abstractModuleServiceFactory<
     const entities = await super.listOtherModels()
     const id = entities[0].title
   }
-}
-*/
+}*/

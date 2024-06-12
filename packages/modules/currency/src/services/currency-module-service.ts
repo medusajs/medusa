@@ -1,21 +1,21 @@
 import {
+  BaseFilterable,
+  Context,
+  CurrencyTypes,
   DAL,
+  FilterableCurrencyProps,
+  FindConfig,
+  ICurrencyModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  ICurrencyModuleService,
-  CurrencyTypes,
-  Context,
-  FindConfig,
-  FilterableCurrencyProps,
-  BaseFilterable,
 } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 
 import { Currency } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
-const generateMethodForModels = []
+const generateMethodForModels = {}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -23,8 +23,7 @@ type InjectedDependencies = {
 }
 
 export default class CurrencyModuleService<TEntity extends Currency = Currency>
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     CurrencyTypes.CurrencyDTO,
     {
       Currency: { dto: CurrencyTypes.CurrencyDTO }

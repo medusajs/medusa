@@ -41,7 +41,7 @@ export default class StockLocationModuleService<
     TEntity extends StockLocation = StockLocation,
     TStockLocationAddress extends StockLocationAddress = StockLocationAddress
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     StockLocationTypes.StockLocationDTO,
     {

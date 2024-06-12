@@ -1,15 +1,15 @@
 import crypto from "crypto"
 import util from "util"
 import {
+  ApiKeyTypes,
   Context,
   DAL,
-  ApiKeyTypes,
+  FilterableApiKeyProps,
+  FindConfig,
   IApiKeyModuleService,
-  ModulesSdkTypes,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  FindConfig,
-  FilterableApiKeyProps,
+  ModulesSdkTypes,
 } from "@medusajs/types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { ApiKey } from "@models"
@@ -23,17 +23,15 @@ import {
   ApiKeyType,
   InjectManager,
   InjectTransactionManager,
+  isObject,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isObject,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 
 const scrypt = util.promisify(crypto.scrypt)
-
-const generateMethodForModels = []
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -41,13 +39,12 @@ type InjectedDependencies = {
 }
 
 export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     ApiKeyTypes.ApiKeyDTO,
     {
       ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
     }
-  >(ApiKey, generateMethodForModels, entityNameToLinkableKeysMap)
+  >(ApiKey, {}, entityNameToLinkableKeysMap)
   implements IApiKeyModuleService
 {
   protected baseRepository_: DAL.RepositoryService

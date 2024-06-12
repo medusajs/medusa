@@ -33,7 +33,7 @@ type InjectedDependencies = {
 export default class SalesChannelModuleService<
     TEntity extends SalesChannel = SalesChannel
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     SalesChannelDTO,
     {}

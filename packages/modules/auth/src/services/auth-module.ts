@@ -21,7 +21,6 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import AuthProviderService from "./auth-provider"
-import { populate } from "dotenv"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -30,14 +29,13 @@ type InjectedDependencies = {
   authProviderService: AuthProviderService
 }
 
-const generateMethodForModels = [AuthIdentity, ProviderIdentity]
+const generateMethodForModels = { AuthIdentity, ProviderIdentity }
 
 export default class AuthModuleService<
     TAuthIdentity extends AuthIdentity = AuthIdentity,
     TProviderIdentity extends ProviderIdentity = ProviderIdentity
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     AuthTypes.AuthIdentityDTO,
     {
       AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }

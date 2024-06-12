@@ -1,5 +1,3 @@
-import { abstractModuleServiceFactory } from "../abstract-module-service-factory"
-
 const baseRepoMock = {
   serialize: jest.fn().mockImplementation((item) => item),
   transaction: (task) => task("transactionManager"),

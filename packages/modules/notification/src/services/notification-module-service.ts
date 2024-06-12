@@ -1,25 +1,25 @@
 import {
   Context,
   DAL,
-  NotificationTypes,
   INotificationModuleService,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  NotificationTypes,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
   ModulesSdkUtils,
   promiseAll,
-  MedusaError,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import NotificationProviderService from "./notification-provider"
 import { NotificationModel, NotificationProvider } from "@models"
 
-const generateMethodForModels = [NotificationProvider]
+const generateMethodForModels = { NotificationProvider }
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -30,8 +30,7 @@ type InjectedDependencies = {
 export default class NotificationModuleService<
     TEntity extends NotificationModel = NotificationModel
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     NotificationTypes.NotificationDTO,
     {
       NotificationProvider: { dto: NotificationTypes.NotificationProviderDTO }

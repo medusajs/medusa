@@ -10,16 +10,16 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   deduplicate,
+  InjectManager,
+  InjectTransactionManager,
   isObject,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import {
   Address,
@@ -53,7 +53,7 @@ type InjectedDependencies = {
   shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   Address,
   LineItem,
   LineItemAdjustment,
@@ -61,7 +61,7 @@ const generateMethodForModels = [
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
-]
+}
 
 export default class CartModuleService<
     TCart extends Cart = Cart,
@@ -73,8 +73,7 @@ export default class CartModuleService<
     TShippingMethodTaxLine extends ShippingMethodTaxLine = ShippingMethodTaxLine,
     TShippingMethod extends ShippingMethod = ShippingMethod
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     CartTypes.CartDTO,
     {
       Address: { dto: CartTypes.CartAddressDTO }
@@ -449,6 +448,7 @@ export default class CartModuleService<
     return await this.lineItemService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   updateLineItems(
     data: CartTypes.UpdateLineItemWithSelectorDTO[]
   ): Promise<CartTypes.CartLineItemDTO[]>
@@ -541,6 +541,7 @@ export default class CartModuleService<
     return await this.lineItemService_.update(toUpdate, sharedContext)
   }
 
+  // @ts-ignore
   async createAddresses(
     data: CartTypes.CreateAddressDTO,
     sharedContext?: Context
@@ -577,6 +578,7 @@ export default class CartModuleService<
     return await this.addressService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO,
     sharedContext?: Context

@@ -33,9 +33,7 @@ type SelectorAndData = {
   data: any
 }
 
-export function internalModuleServiceFactory<
-  TContainer extends object = object
->(
+export function MedusaInternalService<TContainer extends object = object>(
   model: any
 ): {
   new <TEntity extends object = any>(

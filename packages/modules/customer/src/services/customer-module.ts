@@ -45,8 +45,7 @@ export default class CustomerModuleService<
     TCustomerGroup extends CustomerGroup = CustomerGroup,
     TCustomerGroupCustomer extends CustomerGroupCustomer = CustomerGroupCustomer
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     CustomerDTO,
     {
       Address: { dto: any }
@@ -233,6 +232,7 @@ export default class CustomerModuleService<
     })
   }
 
+  // @ts-ignore
   async updateCustomerGroups(
     groupId: string,
     data: CustomerTypes.CustomerGroupUpdatableFields,
@@ -372,6 +372,7 @@ export default class CustomerModuleService<
     )
   }
 
+  // @ts-ignore
   async updateAddresses(
     addressId: string,
     data: CustomerTypes.UpdateCustomerAddressDTO,

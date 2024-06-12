@@ -82,7 +82,7 @@ export default class PromotionModuleService<
     TCampaign extends Campaign = Campaign,
     TCampaignBudget extends CampaignBudget = CampaignBudget
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     PromotionTypes.PromotionDTO,
     {

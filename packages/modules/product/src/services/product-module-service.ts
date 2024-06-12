@@ -88,7 +88,7 @@ export default class ProductModuleService<
     TProductOption extends ProductOption = ProductOption,
     TProductOptionValue extends ProductOptionValue = ProductOptionValue
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     ProductTypes.ProductDTO,
     {

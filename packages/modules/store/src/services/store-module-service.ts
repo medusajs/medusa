@@ -30,7 +30,7 @@ type InjectedDependencies = {
 }
 
 export default class StoreModuleService<TEntity extends Store = Store>
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
+  extends ModulesSdkUtils.MedusaService<
     InjectedDependencies,
     StoreTypes.StoreDTO,
     {
