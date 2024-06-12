@@ -56,7 +56,7 @@ type ModelDTOConfig = {
   plural?: string
 }
 
-type EntityConfigTemplate = Record<string, ModelDTOConfig>
+type EntitiesConfigTemplate = Record<string, ModelDTOConfig>
 
 type ModelConfigurationToDto<T extends ModelConfiguration> =
   T extends abstract new (...args: any) => infer R
@@ -86,7 +86,7 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
 
 type ModelConfiguration = Constructor<any> | (ModelDTOConfig & { name: string })
 
-export interface AbstractModuleServiceBase<TEntryEntityDTO> {
+export interface AbstractModuleServiceBase<TEntryEntityConfig> {
   new (container: Record<any, any>, ...args: any[]): this
 
   get __container__(): Record<any, any>
@@ -95,19 +95,19 @@ export interface AbstractModuleServiceBase<TEntryEntityDTO> {
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TEntryEntityDTO>
+  ): Promise<TEntryEntityConfig>
 
   list(
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TEntryEntityDTO[]>
+  ): Promise<TEntryEntityConfig[]>
 
   listAndCount(
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<[TEntryEntityDTO[], number]>
+  ): Promise<[TEntryEntityConfig[], number]>
 
   delete(
     primaryKeyValues: string | object | string[] | object[],
@@ -128,9 +128,9 @@ export interface AbstractModuleServiceBase<TEntryEntityDTO> {
 }
 
 export type AbstractModuleService<
-  TEntryEntityDTO extends ModelConfiguration,
-  TEntitiesDtoConfig extends EntityConfigTemplate
-> = AbstractModuleServiceBase<TEntryEntityDTO> & {
+  TEntryEntityConfig extends ModelConfiguration,
+  TEntitiesDtoConfig extends EntitiesConfigTemplate
+> = AbstractModuleServiceBase<TEntryEntityConfig> & {
   [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
     TEntitiesDtoConfig,
     TEntityName
@@ -308,21 +308,21 @@ function buildMethodNamesFromModel(
  * @param entityNameToLinkableKeysMap
  */
 export function abstractModuleServiceFactory<
-  TEntryEntityDTO extends ModelConfiguration = ModelConfiguration,
-  EntityConfig extends EntityConfigTemplate = {},
+  TEntryEntityConfig extends ModelConfiguration = ModelConfiguration,
+  EntitiesConfig extends EntitiesConfigTemplate = {},
   TEntities extends Record<string, ModelConfiguration> = Record<
     string,
     ModelConfiguration
   >
 >(
-  entryEntity: TEntryEntityDTO,
+  entryEntity: TEntryEntityConfig,
   entities: TEntities,
   entityNameToLinkableKeysMap: MapToConfig = {}
 ): AbstractModuleService<
-  ModelConfigurationToDto<TEntryEntityDTO>,
-  EntityConfig extends {}
+  ModelConfigurationToDto<TEntryEntityConfig>,
+  EntitiesConfig extends {}
     ? ModelConfigurationsToConfigTemplate<TEntities>
-    : EntityConfig
+    : EntitiesConfig
 > {
   const buildAndAssignMethodImpl = function (
     klassPrototype: any,
