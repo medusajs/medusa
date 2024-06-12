@@ -38,12 +38,12 @@ export const useComboboxData = <
 }) => {
   const { searchValue, onSearchValueChange, query } = useDebouncedSearch()
 
-  const queryIntialDataBy = defaultValueKey || "id"
+  const queryInitialDataBy = defaultValueKey || "id"
   const { data: initialData } = useQuery({
     queryKey: queryKey,
     queryFn: async () => {
       return queryFn({
-        [queryIntialDataBy]: defaultValue,
+        [queryInitialDataBy]: defaultValue,
         limit: Array.isArray(defaultValue) ? defaultValue.length : 1,
       } as TParams)
     },

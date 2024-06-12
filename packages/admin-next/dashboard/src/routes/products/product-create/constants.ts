@@ -71,7 +71,12 @@ export const ProductCreateSchema = z
           variant_rank: z.number(),
           prices: z.record(z.string(), z.string().optional()).optional(),
           inventory: z
-            .array(z.object({ title: z.string(), quantity: z.number() }))
+            .array(
+              z.object({
+                inventory_item_id: z.string(),
+                required_quantity: optionalInt,
+              })
+            )
             .optional(),
         })
       )
@@ -112,7 +117,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
       options: {
         "Default option": "Default option value",
       },
-      inventory: [{ title: "", quantity: 0 }],
+      inventory: [{ inventory_item_id: "", required_quantity: "" }],
       is_default: true,
     },
   ]),

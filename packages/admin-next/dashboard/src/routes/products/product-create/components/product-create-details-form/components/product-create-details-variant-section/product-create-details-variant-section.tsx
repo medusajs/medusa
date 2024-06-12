@@ -141,7 +141,7 @@ export const ProductCreateVariantsSection = ({
         should_create: hasUserSelectedVariants ? false : true,
         variant_rank: newVariants.length,
         // NOTE - prepare inventory array here for now so we prevent rendering issue if we append the items later
-        inventory: [{ title: "", quantity: 0 }],
+        inventory: [{ inventory_item_id: "", required_quantity: "" }],
       })
     })
 
@@ -276,7 +276,7 @@ export const ProductCreateVariantsSection = ({
           options: {
             "Default option": "Default option value",
           },
-          inventory: [{ title: "", quantity: 0 }],
+          inventory: [{ inventory_item_id: "", required_quantity: "" }],
           is_default: true,
         },
       ])
