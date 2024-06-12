@@ -6,7 +6,7 @@ describe("Base schema", () => {
   test("create a schema type from base schema", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -16,10 +16,9 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
@@ -28,7 +27,7 @@ describe("Base schema", () => {
   test("apply nullable modifier", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -38,54 +37,31 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: true,
-      optional: false,
       indexes: [],
       relationships: [],
     })
   })
 
-  test("apply optional modifier", () => {
+  test("define default value", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
-    const schema = new StringSchema().optional()
+    const schema = new StringSchema().default("foo")
 
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string | undefined>()
+    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string>()
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
+      defaultValue: "foo",
       nullable: false,
-      optional: true,
-      indexes: [],
-      relationships: [],
-    })
-  })
-
-  test("apply optional + nullable modifier", () => {
-    class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
-      }
-    }
-
-    const schema = new StringSchema().optional().nullable()
-
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string | undefined | null>()
-    expect(schema.parse("username")).toEqual({
-      fieldName: "username",
-      dataType: {
-        name: "string",
-      },
-      nullable: true,
-      optional: true,
       indexes: [],
       relationships: [],
     })

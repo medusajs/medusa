@@ -12,7 +12,6 @@ describe("JSON schema", () => {
         name: "json",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })

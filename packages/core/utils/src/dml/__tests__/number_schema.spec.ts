@@ -12,7 +12,6 @@ describe("Number schema", () => {
         name: "number",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
