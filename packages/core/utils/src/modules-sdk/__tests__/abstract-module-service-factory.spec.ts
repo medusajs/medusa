@@ -41,13 +41,12 @@ describe("Abstract Module Service Factory", () => {
     },
   }
 
-  const mainModelMock = class MainModelMock {}
-  const otherModelMock1 = class OtherModelMock1 {}
-  const otherModelMock2 = class OtherModelMock2 {}
+  class MainModelMock {}
+  class OtherModelMock1 {}
+  class OtherModelMock2 {}
 
   const abstractModuleService = abstractModuleServiceFactory<
-    any,
-    any,
+    MainModelMock,
     {
       OtherModelMock1: {
         dto: any
@@ -60,22 +59,10 @@ describe("Abstract Module Service Factory", () => {
         plural: "OtherModelMock2s"
       }
     }
-  >(
-    mainModelMock,
-    [
-      {
-        model: otherModelMock1,
-        plural: "otherModelMock1s",
-        singular: "otherModelMock1",
-      },
-      {
-        model: otherModelMock2,
-        plural: "otherModelMock2s",
-        singular: "otherModelMock2",
-      },
-    ]
-    // Add more parameters as needed
-  )
+  >(MainModelMock, {
+    OtherModelMock1,
+    OtherModelMock2,
+  })
 
   describe("Main Model Methods", () => {
     let instance

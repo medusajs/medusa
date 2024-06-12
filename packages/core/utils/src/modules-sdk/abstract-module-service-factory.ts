@@ -84,7 +84,10 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   ? T[K]["plural"]
   : Pluralize<K & string>
 
-type ModelConfiguration = Constructor<any> | (ModelDTOConfig & { name: string })
+type ModelConfiguration =
+  | Constructor<any>
+  | (new (...args) => any)
+  | (ModelDTOConfig & { name: string })
 
 export interface AbstractModuleServiceBase<TEntryEntityConfig> {
   new (container: Record<any, any>, ...args: any[]): this
@@ -309,18 +312,18 @@ function buildMethodNamesFromModel(
  */
 export function abstractModuleServiceFactory<
   TEntryEntityConfig extends ModelConfiguration = ModelConfiguration,
-  EntitiesConfig extends EntitiesConfigTemplate = {},
+  EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
   TEntities extends Record<string, ModelConfiguration> = Record<
     string,
     ModelConfiguration
   >
 >(
-  entryEntity: TEntryEntityConfig,
+  entryEntity: TEntryEntityConfig | Constructor<any>,
   entities: TEntities,
   entityNameToLinkableKeysMap: MapToConfig = {}
-): AbstractModuleService<
+): new (...args: any[]) => AbstractModuleService<
   ModelConfigurationToDto<TEntryEntityConfig>,
-  EntitiesConfig extends {}
+  EntitiesConfig extends { __empty: any }
     ? ModelConfigurationsToConfigTemplate<TEntities>
     : EntitiesConfig
 > {
@@ -638,6 +641,7 @@ export function abstractModuleServiceFactory<
   return AbstractModuleService_ as any
 }
 
+/*
 type InjectedDependencies = {
   baseRepository: RepositoryService
   eventBusModuleService: IEventBusModuleService
@@ -662,3 +666,23 @@ class Service extends abstractModuleServiceFactory(TestModel, { OtherModel }) {
     const id = entities[0].title
   }
 }
+
+class Service2 extends abstractModuleServiceFactory<
+  {
+    dto: { id: string }
+    name: "test"
+  },
+  {
+    OtherModel: { dto: { title: string } }
+  }
+>(TestModel, { OtherModel }) {
+  constructor(container: InjectedDependencies) {
+    super(container)
+  }
+
+  async test() {
+    const entities = await super.listOtherModels()
+    const id = entities[0].title
+  }
+}
+*/
