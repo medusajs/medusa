@@ -212,6 +212,28 @@ export type AbstractModuleService<
     TEntitiesDtoConfig,
     TEntityName
   >}`]: {
+    (...args: any[]): Promise<
+      any
+    >
+  }
+} & {
+  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
+    (...args: any[]): Promise<
+      any
+    >
+  }
+}
+
+// TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface
+// are not consistent accross modules
+/* & {
+  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (data: any[], sharedContext?: Context): Promise<
       TEntitiesDtoConfig[TEntityName]["dto"][]
     >
@@ -245,7 +267,18 @@ export type AbstractModuleService<
       sharedContext?: Context
     ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
   }
-}
+} & {
+  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
+    (
+      idOrdSelector: any,
+      data: TEntitiesDtoConfig[TEntityName]["update"],
+      sharedContext?: Context
+    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
+  }
+}*/
 
 function buildMethodNamesFromModel(
   model: ModelConfiguration,
