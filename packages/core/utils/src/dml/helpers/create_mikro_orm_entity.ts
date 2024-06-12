@@ -23,32 +23,36 @@ import type {
 
 /**
  * DML entity data types to PostgreSQL data types via
- * Mikro ORM
+ * Mikro ORM.
+ *
+ * We remove "enum" type from here, because we use a dedicated
+ * mikro orm decorator for that
  */
 const COLUMN_TYPES: {
-  [K in KnownDataTypes]: string
+  [K in Exclude<KnownDataTypes, "enum">]: string
 } = {
   boolean: "boolean",
   dateTime: "timestamptz",
   number: "integer",
-  string: "text",
+  text: "text",
   json: "jsonb",
-  enum: "enum", // ignore for now
 }
 
 /**
  * DML entity data types to Mikro ORM property
- * types
+ * types.
+ *
+ * We remove "enum" type from here, because we use a dedicated
+ * mikro orm decorator for that
  */
 const PROPERTY_TYPES: {
-  [K in KnownDataTypes]: string
+  [K in Exclude<KnownDataTypes, "enum">]: string
 } = {
   boolean: "boolean",
   dateTime: "date",
   number: "number",
-  string: "string",
+  text: "string",
   json: "any",
-  enum: "enum", // ignore for now
 }
 
 /**
@@ -65,10 +69,14 @@ function defineProperty(
     Enum({
       items: () => field.dataType.options!.choices,
       nullable: field.nullable,
+      default: field.defaultValue,
     })(MikroORMEntity.prototype, field.fieldName)
     return
   }
 
+  /**
+   * Define rest of properties
+   */
   const columnType = COLUMN_TYPES[field.dataType.name]
   const propertyType = PROPERTY_TYPES[field.dataType.name]
 
@@ -88,7 +96,8 @@ function defineRelationship(
   relationship: RelationshipMetadata
 ) {
   /**
-   * Defining relationships
+   * We expect the relationship.entity to be a function that
+   * lazily returns the related entity
    */
   const relatedEntity =
     typeof relationship.entity === "function"
@@ -114,6 +123,10 @@ function defineRelationship(
     )
   }
 
+  /**
+   * Converting the related entity name (which should be in camelCase)
+   * to "PascalCase"
+   */
   const relatedModelName = upperCaseFirst(relatedEntity.name)
 
   /**

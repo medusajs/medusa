@@ -15,6 +15,8 @@ describe("ManyToMany relationship", () => {
     expect(relationship.parse("user")).toEqual({
       name: "user",
       type: "manyToMany",
+      nullable: false,
+      optional: false,
       entity: entityRef,
       options: {},
     })

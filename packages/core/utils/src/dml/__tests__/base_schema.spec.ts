@@ -6,7 +6,7 @@ describe("Base schema", () => {
   test("create a schema type from base schema", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -16,7 +16,7 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: false,
       optional: false,
@@ -28,7 +28,7 @@ describe("Base schema", () => {
   test("apply nullable modifier", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -38,7 +38,7 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: true,
       optional: false,
@@ -50,7 +50,7 @@ describe("Base schema", () => {
   test("apply optional modifier", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -60,7 +60,7 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: false,
       optional: true,
@@ -72,7 +72,7 @@ describe("Base schema", () => {
   test("apply optional + nullable modifier", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -82,7 +82,7 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: true,
       optional: true,
@@ -94,7 +94,7 @@ describe("Base schema", () => {
   test("define default value", () => {
     class StringSchema extends BaseSchema<string> {
       protected dataType: SchemaMetadata["dataType"] = {
-        name: "string",
+        name: "text",
       }
     }
 
@@ -104,7 +104,7 @@ describe("Base schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       defaultValue: "foo",
       nullable: false,

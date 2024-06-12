@@ -1,6 +1,9 @@
-import { SchemaType } from "../types"
+import { MaybeFieldMetadata } from "../types"
 import { NullableModifier } from "./nullable"
 
+/**
+ * Optional modifier marks a schema node as optional/undefined.
+ */
 export class OptionalModifier<T> {
   /**
    * A type-only property to infer the JavScript data-type
@@ -12,9 +15,11 @@ export class OptionalModifier<T> {
    * The parent schema on which the nullable modifier is
    * applied
    */
-  #schema: SchemaType<T>
+  #schema: {
+    parse(fieldName: string): MaybeFieldMetadata
+  }
 
-  constructor(schema: SchemaType<T>) {
+  constructor(schema: { parse(fieldName: string): MaybeFieldMetadata }) {
     this.#schema = schema
   }
 

@@ -9,7 +9,7 @@ describe("String schema", () => {
     expect(schema.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
-        name: "string",
+        name: "text",
       },
       nullable: false,
       optional: false,

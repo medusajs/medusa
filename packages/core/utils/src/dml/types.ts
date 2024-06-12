@@ -4,7 +4,7 @@ import { DmlEntity } from "./entity"
  * The supported data types
  */
 export type KnownDataTypes =
-  | "string"
+  | "text"
   | "boolean"
   | "enum"
   | "number"
@@ -12,22 +12,21 @@ export type KnownDataTypes =
   | "json"
 
 /**
- * The meta-data returned by the relationship parse
- * method
+ * Any field that contains "nullable" and "optional" properties
+ * in their metadata are qualified as maybe fields.
+ *
+ * This allows us to wrap them inside "NullableModifier" and
+ * "OptionalModifier" classes.
  */
-export type RelationshipMetadata = {
-  name: string
-  type: "hasOne" | "hasMany" | "hasOneThroughMany" | "manyToMany"
-  entity: unknown
-  options: Record<string, any>
+export type MaybeFieldMetadata = {
+  nullable: boolean
+  optional: boolean
 }
 
 /**
  * The meta-data returned by the schema parse method
  */
-export type SchemaMetadata = {
-  nullable: boolean
-  optional: boolean
+export type SchemaMetadata = MaybeFieldMetadata & {
   fieldName: string
   defaultValue?: any
   dataType: {
@@ -49,6 +48,17 @@ export type SchemaMetadata = {
 export type SchemaType<T> = {
   $dataType: T
   parse(fieldName: string): SchemaMetadata
+}
+
+/**
+ * The meta-data returned by the relationship parse
+ * method
+ */
+export type RelationshipMetadata = MaybeFieldMetadata & {
+  name: string
+  type: "hasOne" | "hasMany" | "hasOneThroughMany" | "manyToMany"
+  entity: unknown
+  options: Record<string, any>
 }
 
 /**
