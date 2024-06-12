@@ -53,3 +53,31 @@ export enum ReturnStatus {
    */
   CANCELED = "canceled",
 }
+
+/**
+ * @enum
+ *
+ * The claim's type.
+ */
+export enum ClaimType {
+  /**
+   * The claim refunds an amount to the customer.
+   */
+  REFUND = "refund",
+  /**
+   * The claim replaces the returned item with a new one.
+   */
+  REPLACE = "replace",
+}
+
+/**
+ * @enum
+ *
+ * The claim's item reason.
+ */
+export enum ClaimReason {
+  MISSING_ITEM = "missing_item",
+  WRONG_ITEM = "wrong_item",
+  PRODUCTION_FAILURE = "production_failure",
+  OTHER = "other",
+}
