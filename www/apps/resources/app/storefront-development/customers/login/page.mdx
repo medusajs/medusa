@@ -1,0 +1,347 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Login Customer in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the two ways to login a customer in a storefront.
+
+## 1. Using a JWT Token
+
+Using the `/auth/customer/emailpass` API route, you obtain a JSON Web Token (JWT) for the customer. Then, use that token as a bearer token in the authorization header of subsequent requests, and the customer is considered authenticated.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["3", "fetch", "Send a request to obtain a JWT token."],
+  ["21", "fetch", "Send a request as an authenticated customer."],
+  ["27", "token", "Pass as a Bearer token in the authorization header."],
+]
+
+  ```ts highlights={fetchHighlights}
+  const handleLogin = async () => {
+    // obtain JWT token
+    const { token } = await fetch(
+      `http://localhost:9000/auth/customer/emailpass`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    )
+    .then((res) => res.json())
+
+    // use token in the authorization header of 
+    // all follow up requests. For example:
+    const { customer } = await fetch(
+      `http://localhost:9000/store/customers/me`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      }
+    )
+    .then((res) => res.json())
+
+    console.log(customer)
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["21", "fetch", "Send a request to obtain a JWT token."],
+  ["39", "fetch", "Send a request as an authenticated customer."],
+  ["45", "token", "Pass as a Bearer token in the authorization header."],
+]
+
+  ```tsx highlights={highlights} collapsibleLines="55-79" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react"
+
+  export default function Login () {
+    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    
+    const handleLogin = async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      if (!email || !password) {
+        return
+      }
+
+      setLoading(true)
+
+      // obtain JWT token
+      const { token } = await fetch(
+        `http://localhost:9000/auth/customer/emailpass`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      )
+      .then((res) => res.json())
+
+      // use token in the authorization header of 
+      // all follow up requests. For example:
+      const { customer } = await fetch(
+        `http://localhost:9000/store/customers/me`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+        }
+      )
+      .then((res) => res.json())
+
+      console.log(customer)
+      setLoading(false)
+    }
+
+    return (
+      <form>
+        <input 
+          type="email" 
+          name="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input 
+          type="password" 
+          name="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleLogin}
+        >
+          Login
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you:
+
+1. Create a `handleLogin` function that logs in a customer.
+2. In the function, you obtain a JWT token by sending a request to the `/auth/customer/emailpass`.
+3. You can then use that token in the authorization header of subsequent requests, and the customer is considered authenticated. As an example, you send a request to obtain the customer's details.
+
+---
+
+## 2. Using a Cookie Session
+
+Authenticating the customer with a cookie session means the customer is authenticated in subsequent requests that use that cookie.
+
+If you're using the Fetch API, using the `credentials: include` option ensures that your cookie session is passed in every request.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchSessionHighlights = [
+  ["3", "fetch", "Send a request to obtain a JWT token."],
+  ["20", "fetch", "Send a request to set the authenticated session ID in the cookies."],
+  ["27", "token", "Pass as a Bearer token in the authorization header."],
+  ["35", "fetch", "Retrieve the customer's details as an example of testing authentication."],
+]
+
+  ```ts highlights={fetchSessionHighlights}
+  const handleLogin = async () => {
+    // obtain JWT token
+    const { token } = await fetch(
+      `http://localhost:9000/auth/customer/emailpass`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    )
+    .then((res) => res.json())
+
+    // set session
+    await fetch(
+      `http://localhost:9000/auth/session`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      }
+    )
+    .then((res) => res.json())
+
+    // customer is now authenticated using the
+    // cookie session. For example
+    const { customer } = await fetch(
+      `http://localhost:9000/store/customers/me`,
+      {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((res) => res.json())
+
+    console.log(customer)
+    setLoading(false)
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const sessionHighlights = [
+  ["21", "fetch", "Send a request to obtain a JWT token."],
+  ["38", "fetch", "Send a request to set the authenticated session ID in the cookies."],
+  ["45", "token", "Pass as a Bearer token in the authorization header."],
+  ["53", "fetch", "Retrieve the customer's details as an example of testing authentication."],
+]
+
+  ```tsx highlights={sessionHighlights} collapsibleLines="68-92" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+  
+  import { useState } from "react"
+
+  export default function Login () {
+    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    
+    const handleLogin = async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      if (!email || !password) {
+        return
+      }
+
+      setLoading(true)
+
+      // obtain JWT token
+      const { token } = await fetch(
+        `http://localhost:9000/auth/customer/emailpass`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      )
+      .then((res) => res.json())
+
+      // set session
+      await fetch(
+        `http://localhost:9000/auth/session`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+        }
+      )
+      .then((res) => res.json())
+
+      // customer is now authenticated using the
+      // cookie session. For example
+      const { customer } = await fetch(
+        `http://localhost:9000/store/customers/me`,
+        {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => res.json())
+
+      console.log(customer)
+      setLoading(false)
+    }
+
+    return (
+      <form>
+        <input 
+          type="email" 
+          name="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input 
+          type="password" 
+          name="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleLogin}
+        >
+          Login
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you:
+
+1. Create a `handleLogin` function that logs in a customer.
+2. In the function, you obtain a JWT token by sending a request to the `/auth/customer/emailpass`.
+3. You send a request to the `/auth/session` API route passing in the authorization header the token as a Bearer token. This sets the authenticated session ID in the cookies.
+4. You can now send authenticated requests, as long as you include the `credentials: include` option in your fetch requests. For example, you send a request to retrieve the customer's details.

@@ -1,0 +1,66 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Customer in Storefront`,
+}
+
+# {metadata.title}
+
+To retrieve a customer after it's been authenticated in your storefront, send a request to the [Get Customer API route](!api!/store#customers_getcustomersme):
+
+<CodeTabs group="authenticated-request">
+  <CodeTab label="Using Bearer Token" value="bearer">
+
+export const bearerHighlights = [
+  ["7", "", "Pass JWT token as bearer token in authorization header."],
+]
+
+  ```ts highlights={bearerHighlights}
+  fetch(
+    `http://localhost:9000/store/customers/me`,
+    {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    }
+  )
+  .then((res) => res.json())
+  .then(({ customer }) => {
+    // use customer...
+    console.log(customer)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="Using Cookie Session" value="session">
+
+export const sessionHighlights = [
+  ["4", "", "Pass this option to ensure the cookie session is passed in the request."],
+]
+
+  ```ts highlights={sessionHighlights}
+  fetch(
+    `http://localhost:9000/store/customers/me`,
+    {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  )
+  .then((res) => res.json())
+  .then(({ customer }) => {
+    // use customer...
+    console.log(customer)
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+- If you authenticate the customer with bearer authorization, pass the token in the authorization header of the request.
+- If you authenticate the customer with cookie session, pass the `credentials: include` option to the `fetch` function.
+
+The Get Customer API route returns a `customer` field, which is a [customer object](!api!/store#customers_customer_schema).

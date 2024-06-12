@@ -1,0 +1,145 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Edit Customer Profile in Storefront`,
+}
+
+# {metadata.title}
+
+To edit the customer's profile in the storefront, send a request to the [Update Customer API route](!api!/store#customers_postcustomersme).
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(`http://localhost:9000/store/customers/me`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      first_name,
+      last_name,
+      company_name,
+      phone
+    })
+  })
+  .then((res) => res.json())
+  .then(({ customer }) => {
+    // use customer...
+    console.log(customer)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["4", "useCustomer", "Use the hook defined in the Customer Context guide."],
+  ["33"], ["34"], ["35"], ["36"], ["37"], ["38"], ["39"], ["40"], ["41"], ["42"],
+  ["43"], ["44"], ["45"], ["46"], ["47"], ["48"], ["49"]
+]
+
+  ```tsx highlights={highlights} collapsibleLines="53-91" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react"
+  import { useCustomer } from "../../../providers/customer"
+
+  export default function EditProfile () {
+    const { customer, setCustomer } = useCustomer()
+    const [firstName, setFirstName] = useState(
+      customer?.first_name || ""
+    )
+    const [lastName, setLastName] = useState(
+      customer?.last_name || ""
+    )
+    const [company, setCompany] = useState(
+      customer?.company_name || ""
+    )
+    const [phone, setPhone] = useState(
+      customer?.phone || ""
+    )
+    const [loading, setLoading] = useState(false)
+
+    const handleEdit = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+
+      if (!customer) {
+        return
+      }
+
+      setLoading(true)
+
+      fetch(`http://localhost:9000/store/customers/me`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          company_name: company,
+          phone
+        })
+      })
+      .then((res) => res.json())
+      .then(({ customer: updatedCustomer }) => {
+        setCustomer(updatedCustomer)
+      })
+      .finally(() => setLoading(false))
+    }
+
+    return (
+      <form>
+        <input 
+          type="text" 
+          name="first_name"
+          value={firstName}
+          placeholder="First Name"
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          name="last_name"
+          value={lastName}
+          placeholder="Last Name"
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          name="company"
+          value={company}
+          placeholder="Company"
+          onChange={(e) => setCompany(e.target.value)}
+        />
+        <input 
+          type="text" 
+          name="phone"
+          value={phone}
+          placeholder="Phone Number"
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleEdit}
+        >
+          Edit
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you send a request to the Update Customer API route to update the customer's details.
+
+The response of the request has a `customer` field which is a [customer object](!api!/store#customers_customer_schema).

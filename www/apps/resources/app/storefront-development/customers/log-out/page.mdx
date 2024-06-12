@@ -1,0 +1,89 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Log-out Customer in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to log-out a customer in the storefront based on the authentication method.
+
+## Log-Out for JWT Token
+
+If you're authenticating the customer with their JWT token, remove the stored token from the browser.
+
+For example, if you've stored the JWT token in the `localStorage`, remove the item from it:
+
+```ts
+localStorage.removeItem(`token`)
+```
+
+---
+
+## Log-Out for Cookie Session
+
+If you're authenticating the customer with their cookie session ID, send a `DELETE` request to the `/auth/session`.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(`http://localhost:9000/auth/session`, {
+    credentials: "include",
+    method: "DELETE"
+  })
+  .then((res) => res.json())
+  .then(() => {
+    // TODO redirect customer to login page
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["3", "useCustomer", "Use the hook defined in the Customer Context guide."],
+  ["9"], ["10"], ["11"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"], ["18"],
+  ["19"],
+]
+
+  ```tsx highlights={highlights}
+    "use client" // include with Next.js 13+
+
+  import { useCustomer } from "../../../providers/customer"
+
+  export default function Profile () {
+    const { setCustomer } = useCustomer()
+
+    const handleLogOut = () => {
+      fetch(`http://localhost:9000/auth/session`, {
+        credentials: "include",
+        method: "DELETE"
+      })
+      .then((res) => res.json())
+      .then(() => {
+        setCustomer(undefined)
+        // TODO redirect to login page
+        alert("Logged out")
+      })
+    }
+
+    return (
+      <div>
+        {/* Profile details... */}
+        <button
+          onClick={handleLogOut}
+        >
+          Log Out
+        </button>
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The API route returns nothing in the response. If the request was successful, you can perform any necessary work to unset the customer and redirect them to the login page.

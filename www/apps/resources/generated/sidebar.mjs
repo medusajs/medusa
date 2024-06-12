@@ -7182,6 +7182,63 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/customers",
+        "title": "Customers",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/register",
+            "title": "Register Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/login",
+            "title": "Login Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/retrieve",
+            "title": "Retrieve Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/context",
+            "title": "Customer React Context",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/profile",
+            "title": "Edit Customer Profile",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/addresses",
+            "title": "Manage Customer Addresses",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/log-out",
+            "title": "Log-out Customer",
+            "children": []
+          }
+        ]
       }
     ]
   },

@@ -1835,6 +1835,40 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        path: "/storefront-development/customers",
+        title: "Customers",
+        children: [
+          {
+            path: "/storefront-development/customers/register",
+            title: "Register Customer",
+          },
+          {
+            path: "/storefront-development/customers/login",
+            title: "Login Customer",
+          },
+          {
+            path: "/storefront-development/customers/retrieve",
+            title: "Retrieve Customer",
+          },
+          {
+            path: "/storefront-development/customers/context",
+            title: "Customer React Context",
+          },
+          {
+            path: "/storefront-development/customers/profile",
+            title: "Edit Customer Profile",
+          },
+          {
+            path: "/storefront-development/customers/addresses",
+            title: "Manage Customer Addresses",
+          },
+          {
+            path: "/storefront-development/customers/log-out",
+            title: "Log-out Customer",
+          },
+        ],
+      },
     ],
   },
   {
