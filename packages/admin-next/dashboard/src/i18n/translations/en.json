@@ -179,7 +179,8 @@
       "inventory": {
         "heading": "Inventory kits",
         "label": "Inventory kit",
-        "itemPlaceholder": "Select inventory item"
+        "itemPlaceholder": "Select inventory item",
+        "quantityPlaceholder": "How many of these are needed for the kit?"
       },
       "variants": {
         "header": "Variants",

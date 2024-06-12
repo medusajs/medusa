@@ -129,7 +129,7 @@ function VariantSection({ form, variant, index }: VariantSectionProps) {
                         }}
                         {...field}
                         placeholder={t(
-                          "inventory.reservation.quantityPlaceholder"
+                          "products.create.inventory.quantityPlaceholder"
                         )}
                       />
                     </Form.Control>
