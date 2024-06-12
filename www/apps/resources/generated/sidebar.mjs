@@ -7283,6 +7283,57 @@ export const generatedSidebar = [
             ]
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/checkout",
+        "title": "Checkout",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/email",
+            "title": "1. Enter Email",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/address",
+            "title": "2. Enter Address",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/shipping",
+            "title": "3. Choose Shipping Method",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/payment",
+            "title": "4. Choose Payment Provider",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/checkout/payment/stripe",
+                "title": "Example: Stripe",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/complete-cart",
+            "title": "5. Complete Cart",
+            "children": []
+          }
+        ]
       }
     ]
   },
