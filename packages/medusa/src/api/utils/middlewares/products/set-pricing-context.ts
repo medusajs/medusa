@@ -6,28 +6,30 @@ import { refetchEntities, refetchEntity } from "../../refetch-entity"
 
 export function setPricingContext() {
   return async (req: AuthenticatedMedusaRequest, _, next: NextFunction) => {
-    // If the endpoint doesn't request prices, we can exit early
+    const withCalculatedPrice = req.remoteQueryConfig.fields.some((field) =>
+      field.startsWith("variants.calculated_price")
+    )
+
+    // If the endpoint doesn't pass region_id and currency_code, we can exit early
     if (
-      !req.remoteQueryConfig.fields.some((field) =>
-        field.startsWith("variants.calculated_price")
-      ) &&
+      !withCalculatedPrice &&
       !req.filterableFields.region_id &&
       !req.filterableFields.currency_code
     ) {
       return next()
     }
 
-    // If pricing parameters are passed, but pricing fields are not passed, throw an error
+    // If the endpoint requested the field variants.calculated_price, we should throw
+    // an error if region or currency is not passed
     if (
-      !req.remoteQueryConfig.fields.some((field) =>
-        field.startsWith("variants.calculated_price")
-      ) &&
-      (req.filterableFields.region_id || req.filterableFields.currency_code)
+      withCalculatedPrice &&
+      !req.filterableFields.region_id &&
+      !req.filterableFields.currency_code
     ) {
       try {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Missing required pricing fields to calculate prices`
+          `Missing required pricing context to calculate prices - currency_code or region_id`
         )
       } catch (e) {
         return next(e)
@@ -87,11 +89,14 @@ export function setPricingContext() {
     }
 
     // If a currency_code is not present in the context, we will not be able to calculate prices
-    if (!isPresent(pricingContext.currency_code)) {
+    if (
+      !isPresent(pricingContext) ||
+      !isPresent(pricingContext.currency_code)
+    ) {
       try {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Pricing parameters (currency_code or region_id) are required to calculate prices`
+          `Valid pricing parameters (currency_code or region_id) are required to calculate prices`
         )
       } catch (e) {
         return next(e)
@@ -99,6 +104,10 @@ export function setPricingContext() {
     }
 
     req.pricingContext = pricingContext
+
+    if (!withCalculatedPrice) {
+      req.remoteQueryConfig.fields.push("variants.calculated_price.*")
+    }
 
     return next()
   }
