@@ -6,7 +6,6 @@ import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
-import { createProductCategories } from "../../__fixtures__/product-category"
 import { productCategoriesRankData } from "../../__fixtures__/product-category/data"
 
 jest.setTimeout(30000)
@@ -52,18 +51,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           },
         ]
 
-        productCategories = await createProductCategories(
-          testManager,
-          productCategoriesData
-        )
-
+        productCategories = []
+        for (const entry of productCategoriesData) {
+          productCategories.push(await service.createCategories(entry))
+        }
         productCategoryOne = productCategories[0]
         productCategoryTwo = productCategories[1]
-
-        await testManager.persistAndFlush([
-          productCategoryOne,
-          productCategoryTwo,
-        ])
       })
 
       afterEach(async () => {
@@ -260,7 +253,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createCategory", () => {
         it("should create a category successfully", async () => {
-          await service.createCategory({
+          await service.createCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
           })
@@ -285,26 +278,28 @@ moduleIntegrationTestRunner<IProductModuleService>({
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
-          const category = await service.createCategory({
+          const category = await service.createCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
           })
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith({
-            data: { id: category.id },
-            eventName: "product-category.created",
-          })
+          expect(eventBusSpy).toHaveBeenCalledWith([
+            expect.objectContaining({
+              data: { id: category.id },
+              eventName: "productService.product-category.created",
+            }),
+          ])
         })
 
         it("should append rank from an existing category depending on parent", async () => {
-          await service.createCategory({
+          await service.createCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
             rank: 0,
           })
 
-          await service.createCategory({
+          await service.createCategories({
             name: "New Category 2",
             parent_category_id: productCategoryOne.id,
           })
@@ -325,7 +320,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             })
           )
 
-          await service.createCategory({
+          await service.createCategories({
             name: "New Category 2.1",
             parent_category_id: productCategoryNew.id,
           })
@@ -359,12 +354,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
         let categories
 
         beforeEach(async () => {
-          const testManager = await MikroOrmWrapper.forkManager()
-
-          categories = await createProductCategories(
-            testManager,
-            productCategoriesRankData
-          )
+          categories = []
+          for (const entry of productCategoriesRankData) {
+            categories.push(await service.createCategories(entry))
+          }
 
           productCategoryZero = categories[0]
           productCategoryOne = categories[1]
@@ -376,19 +369,23 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-          await service.updateCategory(productCategoryZero.id, {
+          eventBusSpy.mockClear()
+
+          await service.updateCategories(productCategoryZero.id, {
             name: "New Category",
           })
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith({
-            data: { id: productCategoryZero.id },
-            eventName: "product-category.updated",
-          })
+          expect(eventBusSpy).toHaveBeenCalledWith([
+            expect.objectContaining({
+              data: { id: productCategoryZero.id },
+              eventName: "productService.product-category.updated",
+            }),
+          ])
         })
 
         it("should update the name of the category successfully", async () => {
-          await service.updateCategory(productCategoryZero.id, {
+          await service.updateCategories(productCategoryZero.id, {
             name: "New Category",
           })
 
@@ -406,7 +403,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateCategory("does-not-exist", {
+            await service.updateCategories("does-not-exist", {
               name: "New Category",
             })
           } catch (e) {
@@ -414,12 +411,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
           }
 
           expect(error.message).toEqual(
-            `ProductCategory not found ({ id: 'does-not-exist' })`
+            `ProductCategory with id: does-not-exist was not found`
           )
         })
 
         it("should reorder rank successfully in the same parent", async () => {
-          await service.updateCategory(productCategoryTwo.id, {
+          await service.updateCategories(productCategoryTwo.id, {
             rank: 0,
           })
 
@@ -451,7 +448,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder rank successfully when changing parent", async () => {
-          await service.updateCategory(productCategoryTwo.id, {
+          await service.updateCategories(productCategoryTwo.id, {
             rank: 0,
             parent_category_id: productCategoryZero.id,
           })
@@ -488,7 +485,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder rank successfully when changing parent and in first position", async () => {
-          await service.updateCategory(productCategoryTwo.id, {
+          await service.updateCategories(productCategoryTwo.id, {
             rank: 0,
             parent_category_id: productCategoryZero.id,
           })
@@ -532,34 +529,37 @@ moduleIntegrationTestRunner<IProductModuleService>({
         let categories
 
         beforeEach(async () => {
-          const testManager = await MikroOrmWrapper.forkManager()
-
-          categories = await createProductCategories(
-            testManager,
-            productCategoriesRankData
-          )
+          categories = []
+          for (const entry of productCategoriesRankData) {
+            categories.push(await service.createCategories(entry))
+          }
 
           productCategoryZero = categories[0]
           productCategoryOne = categories[1]
           productCategoryTwo = categories[2]
         })
 
+        // TODO: Normalize delete events as well
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-          await service.deleteCategory(productCategoryOne.id)
+          eventBusSpy.mockClear()
+
+          await service.deleteCategories([productCategoryOne.id])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
-          expect(eventBusSpy).toHaveBeenCalledWith({
-            data: { id: productCategoryOne.id },
-            eventName: "product-category.deleted",
-          })
+          expect(eventBusSpy).toHaveBeenCalledWith([
+            expect.objectContaining({
+              data: { id: productCategoryOne.id },
+              eventName: "product-category.deleted",
+            }),
+          ])
         })
 
         it("should throw an error when an id does not exist", async () => {
           let error
 
           try {
-            await service.deleteCategory("does-not-exist")
+            await service.deleteCategories(["does-not-exist"])
           } catch (e) {
             error = e
           }
@@ -573,7 +573,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.deleteCategory(productCategoryZero.id)
+            await service.deleteCategories([productCategoryZero.id])
           } catch (e) {
             error = e
           }
@@ -584,7 +584,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder siblings rank successfully on deleting", async () => {
-          await service.deleteCategory(productCategoryOne.id)
+          await service.deleteCategories([productCategoryOne.id])
 
           const productCategories = await service.listCategories(
             {

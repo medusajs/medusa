@@ -12,20 +12,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCategory } from "@models"
-
-export type ReorderConditions = {
-  targetCategoryId: string
-  originalParentId: string | null
-  targetParentId: string | null | undefined
-  originalRank: number
-  targetRank: number | undefined
-  shouldChangeParent: boolean
-  shouldChangeRank: boolean
-  shouldIncrementRank: boolean
-  shouldDeleteElement: boolean
-}
-
-export const tempReorderRank = 99999
+import { UpdateCategoryInput } from "@types"
 
 // eslint-disable-next-line max-len
 export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository<ProductCategory> {
@@ -144,10 +131,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       if (include.ancestors) {
         let parent = ""
         cat.mpath?.split(".").forEach((mpath) => {
-          if (mpath === "") {
-            return
-          }
-          parentMpaths.add(parent + mpath + ".")
+          parentMpaths.add(parent + mpath)
           parent += mpath + "."
         })
       }
@@ -257,249 +241,251 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     ]
   }
 
-  async delete(id: string, context: Context = {}): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-    const productCategory = await manager.findOneOrFail(
-      ProductCategory,
-      { id },
-      {
-        populate: ["category_children"],
-      }
+    await this.baseDelete(ids, context)
+    await manager.nativeDelete(ProductCategory, { id: ids }, {})
+  }
+
+  async softDelete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = super.getActiveManager<SqlEntityManager>(context)
+    await this.baseDelete(ids, context)
+
+    const categories = await Promise.all(
+      ids.map(async (id) => {
+        const productCategory = await manager.findOneOrFail(ProductCategory, {
+          id,
+        })
+        manager.assign(productCategory, { deleted_at: new Date() })
+      })
     )
 
-    if (productCategory.category_children.length > 0) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `Deleting ProductCategory (${id}) with category children is not allowed`
-      )
-    }
+    manager.persist(categories)
+  }
 
-    const conditions = this.fetchReorderConditions(
-      productCategory,
-      {
-        parent_category_id: productCategory.parent_category_id,
-        rank: productCategory.rank,
-      },
-      true
+  async restore(ids: string[], context: Context = {}): Promise<void> {
+    const manager = super.getActiveManager<SqlEntityManager>(context)
+    const categories = await Promise.all(
+      ids.map(async (id) => {
+        const productCategory = await manager.findOneOrFail(ProductCategory, {
+          id,
+        })
+        manager.assign(productCategory, { deleted_at: null })
+      })
     )
 
-    await this.performReordering(manager, conditions)
-    await manager.nativeDelete(ProductCategory, { id: id }, {})
+    manager.persist(categories)
+  }
+
+  async baseDelete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = super.getActiveManager<SqlEntityManager>(context)
+
+    await Promise.all(
+      ids.map(async (id) => {
+        const productCategory = await manager.findOneOrFail(
+          ProductCategory,
+          { id },
+          {
+            populate: ["category_children"],
+          }
+        )
+
+        if (productCategory.category_children.length > 0) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Deleting ProductCategory (${id}) with category children is not allowed`
+          )
+        }
+
+        await this.rerankSiblingsAfterDeletion(manager, productCategory)
+      })
+    )
   }
 
   async create(
-    data: ProductTypes.CreateProductCategoryDTO,
+    data: ProductTypes.CreateProductCategoryDTO[],
     context: Context = {}
-  ): Promise<ProductCategory> {
-    const categoryData = { ...data }
+  ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-    const siblings = await manager.find(ProductCategory, {
-      parent_category_id: categoryData?.parent_category_id || null,
-    })
 
-    if (!isDefined(categoryData.rank)) {
-      categoryData.rank = siblings.length
-    }
+    const categories = await Promise.all(
+      data.map(async (entry, i) => {
+        const categoryData: Partial<ProductCategory> = { ...entry }
+        const siblingsCount = await manager.count(ProductCategory, {
+          parent_category_id: categoryData?.parent_category_id || null,
+        })
 
-    const productCategory = manager.create(ProductCategory, categoryData)
+        if (!isDefined(categoryData.rank)) {
+          categoryData.rank = siblingsCount + i
+        } else {
+          await this.rerankSiblingsAfterCreation(manager, categoryData)
+        }
 
-    manager.persist(productCategory)
+        // Set the base mpath if the category has a parent. The model `create` hook will append the own id to the base mpath.
+        const parentCategoryId =
+          categoryData.parent_category_id ?? categoryData.parent_category?.id
 
-    return productCategory
+        if (parentCategoryId) {
+          const parentCategory = await manager.findOne(
+            ProductCategory,
+            parentCategoryId
+          )
+
+          if (!parentCategory) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              `Parent category with id: '${parentCategoryId}' does not exist`
+            )
+          }
+
+          categoryData.mpath = parentCategory.mpath
+        }
+
+        return manager.create(ProductCategory, categoryData as ProductCategory)
+      })
+    )
+
+    manager.persist(categories)
+    return categories
   }
 
   async update(
-    id: string,
-    data: ProductTypes.UpdateProductCategoryDTO,
+    data: UpdateCategoryInput[],
     context: Context = {}
-  ): Promise<ProductCategory> {
-    const categoryData = { ...data }
+  ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-    const productCategory = await manager.findOneOrFail(ProductCategory, { id })
+    const categories = await Promise.all(
+      data.map(async (entry) => {
+        const categoryData: Partial<ProductCategory> = { ...entry }
+        const productCategory = await manager.findOneOrFail(ProductCategory, {
+          id: categoryData.id,
+        })
 
-    const conditions = this.fetchReorderConditions(
-      productCategory,
-      categoryData
+        if (categoryData.parent_category_id) {
+          const newParentCategory = await manager.findOne(
+            ProductCategory,
+            categoryData.parent_category_id
+          )
+          if (!newParentCategory) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_ARGUMENT,
+              `Parent category with id: '${categoryData.parent_category_id}' does not exist`
+            )
+          }
+
+          categoryData.mpath = `${newParentCategory.mpath}.${productCategory.id}`
+          await this.rerankSiblingsAfterDeletion(manager, productCategory)
+          await this.rerankSiblingsAfterCreation(manager, categoryData)
+        }
+        // In the case of the parent being updated, we do a delete/create reranking. If only the rank was updated, we need to shift all siblings
+        else if (isDefined(categoryData.rank)) {
+          await this.rerankAllSiblings(
+            manager,
+            productCategory,
+            categoryData as ProductCategory
+          )
+        }
+
+        for (const key in categoryData) {
+          if (isDefined(categoryData[key])) {
+            productCategory[key] = categoryData[key]
+          }
+        }
+
+        manager.assign(productCategory, categoryData)
+        return productCategory
+      })
     )
 
-    if (conditions.shouldChangeRank || conditions.shouldChangeParent) {
-      categoryData.rank = tempReorderRank
-    }
-
-    // await this.transformParentIdToEntity(categoryData)
-
-    for (const key in categoryData) {
-      if (isDefined(categoryData[key])) {
-        productCategory[key] = categoryData[key]
-      }
-    }
-
-    manager.assign(productCategory, categoryData)
-    manager.persist(productCategory)
-
-    await this.performReordering(manager, conditions)
-
-    return productCategory
+    manager.persist(categories)
+    return categories
   }
 
-  protected fetchReorderConditions(
-    productCategory: ProductCategory,
-    data: ProductTypes.UpdateProductCategoryDTO,
-    shouldDeleteElement = false
-  ): ReorderConditions {
-    const originalParentId = productCategory.parent_category_id || null
-    const targetParentId = data.parent_category_id
-    const originalRank = productCategory.rank || 0
-    const targetRank = data.rank
-    const shouldChangeParent =
-      targetParentId !== undefined && targetParentId !== originalParentId
-    const shouldChangeRank =
-      shouldChangeParent ||
-      (isDefined(targetRank) && originalRank !== targetRank)
-
-    return {
-      targetCategoryId: productCategory.id,
-      originalParentId,
-      targetParentId,
-      originalRank,
-      targetRank,
-      shouldChangeParent,
-      shouldChangeRank,
-      shouldIncrementRank: false,
-      shouldDeleteElement,
-    }
-  }
-
-  protected async performReordering(
+  protected async rerankSiblingsAfterDeletion(
     manager: SqlEntityManager,
-    conditions: ReorderConditions
-  ): Promise<void> {
-    const { shouldChangeParent, shouldChangeRank, shouldDeleteElement } =
-      conditions
+    removedSibling: Partial<ProductCategory>
+  ) {
+    const affectedSiblings = await manager.find(ProductCategory, {
+      parent_category_id: removedSibling.parent_category_id,
+      rank: { $gte: removedSibling.rank },
+    })
 
-    if (!(shouldChangeParent || shouldChangeRank || shouldDeleteElement)) {
+    const updatedSiblings = affectedSiblings.map((sibling) => {
+      manager.assign(sibling, { rank: sibling.rank - 1 })
+      return sibling
+    })
+
+    manager.persist(updatedSiblings)
+  }
+
+  protected async rerankSiblingsAfterCreation(
+    manager: SqlEntityManager,
+    addedSibling: Partial<ProductCategory>
+  ) {
+    const affectedSiblings = await manager.find(ProductCategory, {
+      parent_category_id: addedSibling.parent_category_id,
+      rank: { $gte: addedSibling.rank },
+    })
+
+    const updatedSiblings = affectedSiblings.map((sibling) => {
+      manager.assign(sibling, { rank: sibling.rank + 1 })
+      return sibling
+    })
+
+    manager.persist(updatedSiblings)
+  }
+
+  protected async rerankAllSiblings(
+    manager: SqlEntityManager,
+    originalSibling: Partial<ProductCategory> & { rank: number },
+    updatedSibling: Partial<ProductCategory> & { rank: number }
+  ) {
+    if (originalSibling.rank === updatedSibling.rank) {
       return
     }
 
-    // If we change parent, we need to shift the siblings to eliminate the
-    // rank occupied by the targetCategory in the original parent.
-    shouldChangeParent &&
-      (await this.shiftSiblings(manager, {
-        ...conditions,
-        targetRank: conditions.originalRank,
-        targetParentId: conditions.originalParentId,
-      }))
+    if (originalSibling.rank < updatedSibling.rank) {
+      const siblings = await manager.find(
+        ProductCategory,
+        {
+          parent_category_id: originalSibling.parent_category_id,
+          rank: { $gte: originalSibling.rank },
+        },
+        { orderBy: { rank: "ASC" } }
+      )
 
-    // If we change parent, we need to shift the siblings of the new parent
-    // to create a rank that the targetCategory will occupy.
-    shouldChangeParent &&
-      shouldChangeRank &&
-      (await this.shiftSiblings(manager, {
-        ...conditions,
-        shouldIncrementRank: true,
-      }))
+      const updatedSiblings = siblings.map((sibling) => {
+        // If it is before the updated rank, we shift all siblings to the left, otherwise we shift everything to the right
+        if (sibling.rank <= updatedSibling.rank) {
+          manager.assign(sibling, { rank: sibling.rank - 1 })
+        } else {
+          manager.assign(sibling, { rank: sibling.rank + 1 })
+        }
+        return sibling
+      })
 
-    // If we only change rank, we need to shift the siblings
-    // to create a rank that the targetCategory will occupy.
-    ;((!shouldChangeParent && shouldChangeRank) || shouldDeleteElement) &&
-      (await this.shiftSiblings(manager, {
-        ...conditions,
-        targetParentId: conditions.originalParentId,
-      }))
-  }
-
-  protected async shiftSiblings(
-    manager: SqlEntityManager,
-    conditions: ReorderConditions
-  ): Promise<void> {
-    let { shouldIncrementRank, targetRank } = conditions
-    const {
-      shouldChangeParent,
-      originalRank,
-      targetParentId,
-      targetCategoryId,
-      shouldDeleteElement,
-    } = conditions
-
-    // The current sibling count will replace targetRank if
-    // targetRank is greater than the count of siblings.
-    const siblingCount = await manager.count(ProductCategory, {
-      parent_category_id: targetParentId || null,
-      id: { $ne: targetCategoryId },
-    })
-
-    // The category record that will be placed at the requested rank
-    // We've temporarily placed it at a temporary rank that is
-    // beyond a reasonable value (tempReorderRank)
-    const targetCategory = await manager.findOne(ProductCategory, {
-      id: targetCategoryId,
-      parent_category_id: targetParentId || null,
-      rank: tempReorderRank,
-    })
-
-    // If the targetRank is not present, or if targetRank is beyond the
-    // rank of the last category, we set the rank as the last rank
-    if (targetRank === undefined || targetRank > siblingCount) {
-      targetRank = siblingCount
-    }
-
-    let rankCondition
-
-    // If parent doesn't change, we only need to get the ranks
-    // in between the original rank and the target rank.
-    if (shouldChangeParent || shouldDeleteElement) {
-      rankCondition = { $gte: targetRank }
-    } else if (originalRank > targetRank) {
-      shouldIncrementRank = true
-      rankCondition = { $gte: targetRank, $lte: originalRank }
+      manager.persist(updatedSiblings)
     } else {
-      shouldIncrementRank = false
-      rankCondition = { $gte: originalRank, $lte: targetRank }
+      const siblings = await manager.find(
+        ProductCategory,
+        {
+          parent_category_id: originalSibling.parent_category_id,
+          rank: { $gte: updatedSibling.rank },
+        },
+        { orderBy: { rank: "ASC" } }
+      )
+
+      const updatedSiblings = siblings.map((sibling) => {
+        // If it is before the original rank, we shift all siblings to the right, otherwise we shift everything to the left
+        if (sibling.rank <= originalSibling.rank) {
+          manager.assign(sibling, { rank: sibling.rank + 1 })
+        } else {
+          manager.assign(sibling, { rank: sibling.rank - 1 })
+        }
+        return sibling
+      })
+
+      manager.persist(updatedSiblings)
     }
-
-    // Scope out the list of siblings that we need to shift up or down
-    const siblingsToShift = await manager.find(
-      ProductCategory,
-      {
-        parent_category_id: targetParentId || null,
-        rank: rankCondition,
-        id: { $ne: targetCategoryId },
-      },
-      {
-        orderBy: { rank: shouldIncrementRank ? "DESC" : "ASC" },
-      }
-    )
-
-    // Depending on the conditions, we get a subset of the siblings
-    // and independently shift them up or down a rank
-    for (let index = 0; index < siblingsToShift.length; index++) {
-      const sibling = siblingsToShift[index]
-
-      // Depending on the condition, we could also have the targetCategory
-      // in the siblings list, we skip shifting the target until all other siblings
-      // have been shifted.
-      if (sibling.id === targetCategoryId) {
-        continue
-      }
-
-      if (!isDefined(sibling.rank)) {
-        throw new Error("sibling rank is not defined")
-      }
-
-      const rank = shouldIncrementRank ? ++sibling.rank! : --sibling.rank!
-
-      manager.assign(sibling, { rank })
-      manager.persist(sibling)
-    }
-
-    // The targetCategory will not be present in the query when we are shifting
-    // siblings of the old parent of the targetCategory.
-    if (!targetCategory) {
-      return
-    }
-
-    // Place the targetCategory in the requested rank
-    manager.assign(targetCategory, { rank: targetRank })
-    manager.persist(targetCategory)
   }
 }
