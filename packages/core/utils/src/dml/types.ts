@@ -29,6 +29,7 @@ export type SchemaMetadata = {
   nullable: boolean
   optional: boolean
   fieldName: string
+  defaultValue?: any
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>

@@ -9,6 +9,7 @@ import { OptionalModifier } from "../modifiers/optional"
 export abstract class BaseSchema<T> implements SchemaType<T> {
   #indexes: SchemaMetadata["indexes"] = []
   #relationships: SchemaMetadata["relationships"] = []
+  #defaultValue?: T
 
   /**
    * The runtime dataType for the schema. It is not the same as
@@ -37,6 +38,14 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
   }
 
   /**
+   * Define default value for the property
+   */
+  defaultsTo(value: T) {
+    this.#defaultValue = value
+    return this
+  }
+
+  /**
    * Returns the serialized metadata
    */
   parse(fieldName: string): SchemaMetadata {
@@ -45,6 +54,7 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
       dataType: this.dataType,
       nullable: false,
       optional: false,
+      defaultValue: this.#defaultValue,
       indexes: this.#indexes,
       relationships: this.#relationships,
     }

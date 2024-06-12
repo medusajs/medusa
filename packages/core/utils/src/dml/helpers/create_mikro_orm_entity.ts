@@ -72,13 +72,12 @@ function defineProperty(
   const columnType = COLUMN_TYPES[field.dataType.name]
   const propertyType = PROPERTY_TYPES[field.dataType.name]
 
-  /**
-   * @todo: Add support for default value
-   */
-  Property({ columnType, type: propertyType, nullable: field.nullable })(
-    MikroORMEntity.prototype,
-    field.fieldName
-  )
+  Property({
+    columnType,
+    type: propertyType,
+    nullable: field.nullable,
+    default: field.defaultValue,
+  })(MikroORMEntity.prototype, field.fieldName)
 }
 
 /**

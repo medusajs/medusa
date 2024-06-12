@@ -90,4 +90,27 @@ describe("Base schema", () => {
       relationships: [],
     })
   })
+
+  test("define default value", () => {
+    class StringSchema extends BaseSchema<string> {
+      protected dataType: SchemaMetadata["dataType"] = {
+        name: "string",
+      }
+    }
+
+    const schema = new StringSchema().defaultsTo("foo")
+
+    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string>()
+    expect(schema.parse("username")).toEqual({
+      fieldName: "username",
+      dataType: {
+        name: "string",
+      },
+      defaultValue: "foo",
+      nullable: false,
+      optional: false,
+      indexes: [],
+      relationships: [],
+    })
+  })
 })
