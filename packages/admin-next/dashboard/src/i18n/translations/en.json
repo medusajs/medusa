@@ -178,7 +178,8 @@
       },
       "inventory": {
         "heading": "Inventory kits",
-        "label": "Inventory kit"
+        "label": "Inventory kit",
+        "itemPlaceholder": "Select inventory item"
       },
       "variants": {
         "header": "Variants",
@@ -1620,6 +1621,7 @@
     "discountable": "Discountable",
     "handle": "Handle",
     "subtitle": "Subtitle",
+    "item": "Item",
     "limit": "Limit",
     "tags": "Tags",
     "type": "Type",
