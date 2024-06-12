@@ -247,7 +247,10 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     await manager.nativeDelete(ProductCategory, { id: ids }, {})
   }
 
-  async softDelete(ids: string[], context: Context = {}): Promise<void> {
+  async softDelete(
+    ids: string[],
+    context: Context = {}
+  ): Promise<[ProductCategory[], Record<string, unknown[]>]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
     await this.baseDelete(ids, context)
 
@@ -257,13 +260,18 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           id,
         })
         manager.assign(productCategory, { deleted_at: new Date() })
+        return productCategory
       })
     )
 
     manager.persist(categories)
+    return [categories, {}]
   }
 
-  async restore(ids: string[], context: Context = {}): Promise<void> {
+  async restore(
+    ids: string[],
+    context: Context = {}
+  ): Promise<[ProductCategory[], Record<string, unknown[]>]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
     const categories = await Promise.all(
       ids.map(async (id) => {
@@ -271,10 +279,12 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           id,
         })
         manager.assign(productCategory, { deleted_at: null })
+        return productCategory
       })
     )
 
     manager.persist(categories)
+    return [categories, {}]
   }
 
   async baseDelete(ids: string[], context: Context = {}): Promise<void> {
@@ -318,6 +328,10 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         if (!isDefined(categoryData.rank)) {
           categoryData.rank = siblingsCount + i
         } else {
+          if (categoryData.rank > siblingsCount + i) {
+            categoryData.rank = siblingsCount + i
+          }
+
           await this.rerankSiblingsAfterCreation(manager, categoryData)
         }
 
@@ -355,13 +369,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
     const categories = await Promise.all(
-      data.map(async (entry) => {
+      data.map(async (entry, i) => {
         const categoryData: Partial<ProductCategory> = { ...entry }
         const productCategory = await manager.findOneOrFail(ProductCategory, {
           id: categoryData.id,
         })
 
-        if (categoryData.parent_category_id) {
+        if (
+          categoryData.parent_category_id &&
+          categoryData.parent_category_id !== productCategory.parent_category_id
+        ) {
           const newParentCategory = await manager.findOne(
             ProductCategory,
             categoryData.parent_category_id
@@ -374,11 +391,33 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           }
 
           categoryData.mpath = `${newParentCategory.mpath}.${productCategory.id}`
+
+          const siblingsCount = await manager.count(ProductCategory, {
+            parent_category_id: categoryData.parent_category_id,
+          })
+          if (!isDefined(categoryData.rank)) {
+            categoryData.rank = siblingsCount + i
+          } else {
+            if (categoryData.rank > siblingsCount + i) {
+              categoryData.rank = siblingsCount + i
+            }
+
+            await this.rerankSiblingsAfterCreation(manager, categoryData)
+          }
+
           await this.rerankSiblingsAfterDeletion(manager, productCategory)
-          await this.rerankSiblingsAfterCreation(manager, categoryData)
         }
         // In the case of the parent being updated, we do a delete/create reranking. If only the rank was updated, we need to shift all siblings
         else if (isDefined(categoryData.rank)) {
+          const siblingsCount = await manager.count(ProductCategory, {
+            parent_category_id: productCategory.parent_category_id,
+          })
+
+          // We don't cout the updated category itself.
+          if (categoryData.rank > siblingsCount - 1 + i) {
+            categoryData.rank = siblingsCount - 1 + i
+          }
+
           await this.rerankAllSiblings(
             manager,
             productCategory,
@@ -407,7 +446,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
   ) {
     const affectedSiblings = await manager.find(ProductCategory, {
       parent_category_id: removedSibling.parent_category_id,
-      rank: { $gte: removedSibling.rank },
+      rank: { $gt: removedSibling.rank },
     })
 
     const updatedSiblings = affectedSiblings.map((sibling) => {
@@ -449,18 +488,13 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         ProductCategory,
         {
           parent_category_id: originalSibling.parent_category_id,
-          rank: { $gte: originalSibling.rank },
+          rank: { $gt: originalSibling.rank, $lte: updatedSibling.rank },
         },
         { orderBy: { rank: "ASC" } }
       )
 
       const updatedSiblings = siblings.map((sibling) => {
-        // If it is before the updated rank, we shift all siblings to the left, otherwise we shift everything to the right
-        if (sibling.rank <= updatedSibling.rank) {
-          manager.assign(sibling, { rank: sibling.rank - 1 })
-        } else {
-          manager.assign(sibling, { rank: sibling.rank + 1 })
-        }
+        manager.assign(sibling, { rank: sibling.rank - 1 })
         return sibling
       })
 
@@ -470,18 +504,13 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
         ProductCategory,
         {
           parent_category_id: originalSibling.parent_category_id,
-          rank: { $gte: updatedSibling.rank },
+          rank: { $gte: updatedSibling.rank, $lt: originalSibling.rank },
         },
         { orderBy: { rank: "ASC" } }
       )
 
       const updatedSiblings = siblings.map((sibling) => {
-        // If it is before the original rank, we shift all siblings to the right, otherwise we shift everything to the left
-        if (sibling.rank <= originalSibling.rank) {
-          manager.assign(sibling, { rank: sibling.rank + 1 })
-        } else {
-          manager.assign(sibling, { rank: sibling.rank - 1 })
-        }
+        manager.assign(sibling, { rank: sibling.rank + 1 })
         return sibling
       })
 

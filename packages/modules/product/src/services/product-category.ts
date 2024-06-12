@@ -172,18 +172,18 @@ export default class ProductCategoryService<
   async softDelete(
     ids: string[],
     @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
-    await (
+  ): Promise<Record<string, string[]> | void> {
+    return (await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).softDelete(ids, sharedContext)
+    ).softDelete(ids, sharedContext)) as any
   }
 
   async restore(
     ids: string[],
     @MedusaContext() sharedContext?: Context
-  ): Promise<void> {
-    await (
+  ): Promise<Record<string, string[]> | void> {
+    return (await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).restore(ids, sharedContext)
+    ).restore(ids, sharedContext)) as any
   }
 }
