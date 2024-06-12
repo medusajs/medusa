@@ -383,18 +383,57 @@
   },
   "categories": {
     "domain": "Categories",
-    "organization": {
-      "header": "Organization",
-      "pathLabel": "Path",
-      "pathExpandTooltip": "Show full path",
-      "childrenLabel": "Children"
+    "create": {
+      "header": "Create Category",
+      "hint": "Create a new category to organize your products.",
+      "tabs": {
+        "details": "Details",
+        "organize": "Organize"
+      },
+      "successToast": "Category {{name}} was successfully created."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the category {{name}}. This action cannot be undone.",
+      "successToast": "Category {{name}} was successfully deleted."
+    },
+    "products": {
+      "add": {
+        "disabledTooltip": "The product is already in this category.",
+        "successToast_one": "Added {{count}} product to the category.",
+        "successToast_other": "Added {{count}} products to the category."
+      },
+      "remove": {
+        "confirmation_one": "You are about to remove {{count}} product from the category. This action cannot be undone.",
+        "confirmation_other": "You are about to remove {{count}} products from the category. This action cannot be undone.",
+        "successToast_one": "Removed {{count}} product from the category.",
+        "successToast_other": "Removed {{count}} products from the category."
+      }
+    },
+    "organize": {
+      "header": "Organize",
+      "action": "Edit ranking"
     },
     "fields": {
-      "visibility": "Visibility",
-      "active": "Active",
-      "inactive": "Inactive",
-      "internal": "Internal",
-      "public": "Public"
+      "visibility": {
+        "label": "Visibility",
+        "internal": "Internal",
+        "public": "Public"
+      },
+      "status": {
+        "label": "Status",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "path": {
+        "label": "Path",
+        "tooltip": "Show the full path of the category."
+      },
+      "children": {
+        "label": "Children"
+      },
+      "new": {
+        "label": "New"
+      }
     }
   },
   "inventory": {

@@ -1,13 +1,15 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-import { Tooltip } from "./tooltip"
+import { Tooltip, TooltipProvider } from "./tooltip"
 
 test("Tooltip renders trigger element", () => {
   render(
-    <Tooltip content="Tooltip text">
-      <div>Hover me</div>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip content="Tooltip text">
+        <div>Hover me</div>
+      </Tooltip>
+    </TooltipProvider>
   )
 
   const triggerElement = screen.getByText("Hover me")
@@ -16,9 +18,11 @@ test("Tooltip renders trigger element", () => {
 
 test("Tooltip shows on hover", async () => {
   render(
-    <Tooltip content="Tooltip text" data-testid="tooltip">
-      <div>Hover me</div>
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip content="Tooltip text" data-testid="tooltip">
+        <div>Hover me</div>
+      </Tooltip>
+    </TooltipProvider>
   )
   const triggerElement = screen.getByText("Hover me")
 
