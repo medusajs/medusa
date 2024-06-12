@@ -1033,20 +1033,6 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "title": "Guides",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/customer/register-customer-email",
-                "title": "Register a Customer with Email",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
             "title": "References",
             "children": [
               {

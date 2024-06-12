@@ -311,15 +311,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
-            title: "Guides",
-            children: [
-              {
-                path: "/commerce-modules/customer/register-customer-email",
-                title: "Register a Customer with Email",
-              },
-            ],
-          },
-          {
             title: "References",
             children: [
               {

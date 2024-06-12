@@ -9,7 +9,7 @@ export const metadata = {
 To register a customer, you implement the following steps:
 
 1. Show the customer a form to enter their details.
-2. Send a request to the `/auth/customer/emailpass` API route to obtain a JWT token.
+2. Send a `POST` request to the `/auth/customer/emailpass` API route to obtain a JWT token.
 3. Send a request to the [Create Customer API route](!api!/store#customers_postcustomers) pass the JWT token in the header.
 
 For example:

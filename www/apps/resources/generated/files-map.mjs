@@ -324,10 +324,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/customer"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/register-customer-email/page.mdx",
-    "pathname": "/commerce-modules/customer/register-customer-email"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/customer/relations-to-other-modules"
   },
