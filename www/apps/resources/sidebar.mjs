@@ -1897,6 +1897,38 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      {
+        path: "/storefront-development/checkout",
+        title: "Checkout",
+        children: [
+          {
+            path: "/storefront-development/checkout/email",
+            title: "1. Enter Email",
+          },
+          {
+            path: "/storefront-development/checkout/address",
+            title: "2. Enter Address",
+          },
+          {
+            path: "/storefront-development/checkout/shipping",
+            title: "3. Choose Shipping Method",
+          },
+          {
+            path: "/storefront-development/checkout/payment",
+            title: "4. Choose Payment Provider",
+            children: [
+              {
+                path: "/storefront-development/checkout/payment/stripe",
+                title: "Example: Stripe",
+              },
+            ],
+          },
+          {
+            path: "/storefront-development/checkout/complete-cart",
+            title: "5. Complete Cart",
+          },
+        ],
+      },
     ],
   },
   {

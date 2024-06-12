@@ -1,0 +1,233 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Payment with Stripe in React Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to use Stripe for payment during checkout in a React-based storefront.
+
+<Note title="Tip">
+
+For other types of storefronts, the steps are similar. However, refer to [Stripe's documentation](https://docs.stripe.com/) for available tools for your tech stack.
+
+</Note>
+
+<Note type="check">
+
+- [Stripe Provider Module](../../../../commerce-modules/payment/payment-provider/stripe/page.mdx) installed and configured in your Medusa application.
+- [Stripe publishable API key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
+
+</Note>
+
+## 1. Install Stripe SDK
+
+In your storefront, use the following command to install Stripe's JS and React SDKs:
+
+```bash npm2yarn
+npm install @stripe/react-stripe-js @stripe/stripe-js
+```
+
+---
+
+## 2. Add Stripe Environment Variables
+
+Next, add an environment variable holding your Stripe publishable API key.
+
+For example:
+
+```bash
+NEXT_PUBLIC_STRIPE_PK=pk_test_51Kj...
+```
+
+<Note title="Tip">
+
+For Next.js storefronts, the environment variable's name must be prefixed with `NEXT_PUBLIC`. If your storefront's framework requires a different prefix, make sure to change it.
+
+</Note>
+
+---
+
+## 3. Create Stripe Component
+
+Then, create a file holding the following Stripe component:
+
+export const highlights = [
+  ["10", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["13", "stripePromise", "Initialize stripe using the environment variable added in the previous step."],
+  ["19", "clientSecret", "After initializing the payment session of Stripe in the Medusa application,\nthe client secret is available in the payment session's `data`."],
+  ["27", "StripeForm", "The actual form must be a different component nested inside `Elements`."],
+  ["44", "handlePayment", "This function is used to show Stripe's UI to accept payment,\nthen send the request to the Medusa application to complete the cart."],
+  ["61", "confirmCardPayment", "This function shows the UI to the customer to accept the card payment."],
+  ["78", "", "Once the customer enters their card details and submits the form,\nthe Promise resolves and executes this function."],
+  ["85", "fetch", "Send a request to the Medusa application\nto complete the cart and place the order."],
+  ["94", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
+  ["97", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
+  ["101", "refreshCart", "Unset and reset the cart."],
+  ["111", "button", "This button triggers the `handlePayment` function when clicked."]
+]
+
+```tsx highlights={highlights}
+"use client" // include with Next.js 13+
+
+import { 
+  CardElement, 
+  Elements, 
+  useElements, 
+  useStripe
+} from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+import { useCart } from "../../providers/cart"
+import { useState } from "react"
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PK || "temp"
+)
+
+export default function StripePayment() {
+  const { cart } = useCart()
+  const clientSecret = cart?.payment_collection?.
+    payment_sessions?.[0].data.client_secret as string
+
+  return (
+    <div>
+      <Elements stripe={stripePromise} options={{
+          clientSecret,
+        }}>
+        <StripeForm clientSecret={clientSecret} />
+      </Elements>
+    </div>
+  )
+}
+
+const StripeForm = ({ 
+  clientSecret
+}: {
+  clientSecret: string | undefined
+}) => {
+  const { cart, refreshCart } = useCart()
+  const [loading, setLoading] = useState(false)
+
+  const stripe = useStripe()
+  const elements = useElements()
+
+  async function handlePayment(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault()
+    const card = elements?.getElement(CardElement)
+
+    if (
+      !stripe || 
+      !elements ||
+      !card ||
+      !cart ||
+      !clientSecret
+    ) {
+      return
+    }
+
+    setLoading(true)
+    stripe?.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card,
+        billing_details: {
+          name: cart.billing_address?.first_name,
+          email: cart.email,
+          phone: cart.billing_address?.phone,
+          address: {
+            city: cart.billing_address?.city,
+            country: cart.billing_address?.country_code,
+            line1: cart.billing_address?.address_1,
+            line2: cart.billing_address?.address_2,
+            postal_code: cart.billing_address?.postal_code,
+          },
+        },
+      },
+    })
+    .then(({ error }) => {
+      if (error) {
+        // TODO handle errors
+        console.error(error)
+        return
+      }
+
+      fetch(
+        `http://localhost:9000/store/carts/${cart.id}/complete`,
+        {
+          credentials: "include",
+          method: "POST"
+        }
+      )
+      .then((res) => res.json())
+      .then(({ type, cart, order, error }) => {
+        if (type === "cart" && cart) {
+          // an error occured
+          console.error(error)
+        } else if (type === "order" && order) {
+          // TODO redirect to order success page
+          alert("Order placed.")
+          console.log(order)
+          refreshCart()
+        }
+      })
+    })
+    .finally(() => setLoading(false))
+  }
+
+  return (
+    <form>
+      <CardElement />
+      <button 
+        onClick={handlePayment}
+        disabled={loading}
+      >
+        Place Order
+      </button>
+    </form>
+  )
+}
+```
+
+In the code snippet above, you:
+
+1. Create a `StripePayment` component that wraps the actual form with Stripe's `Elements` component.
+    - In the `StripePayment` component, you obtain the client secret from the payment session's `data` field. This is set in the Medusa application.
+2. Create a `StripeForm` component that holds the actual form. In this component, you implement a `handlePayment` function that does the following:
+    - Use Stripe's `confirmCardPayment` method to accept the card details from the customer.
+    - Once the customer enters their card details and submit their order, the resolution function of the `confirmCardPayment` method is executed.
+    - In the resolution function, you send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete) to complete the cart and place the order.
+    - In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
+    - If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
+    - When the order is placed, you refresh the cart. You can redirect the customer to an order success page at this point.
+
+---
+
+## 4. Use the Stripe Component
+
+You can now use the Stripe component in the checkout flow. You should render it after the customer chooses Stripe as a payment provider.
+
+For example, you can use it in the `getPaymentUi` function defined in the [Payment Checkout Step guide](../page.mdx):
+
+```tsx highlights={[["10"]]}
+const getPaymentUi = useCallback(() => {
+  const activePaymentSession = cart?.payment_collection?.
+    payment_sessions?.[0]
+  if (!activePaymentSession) {
+    return
+  }
+
+  switch(true) {
+    case activePaymentSession.provider_id.startsWith("pp_stripe_"):
+      return <StripePayment />
+    // ...
+  }
+} , [cart])
+```
+
+---
+
+## More Resources
+
+Refer to [Stripe's documentation](https://docs.stripe.com/) for more details on integrating it in your storefront.

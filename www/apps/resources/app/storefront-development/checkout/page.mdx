@@ -1,0 +1,21 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout in Storefront`,
+}
+
+# {metadata.title}
+
+Once a customer finishes adding products to cart, they go through the checkout flow to place their order.
+
+The checkout flow is composed of five steps:
+
+1. **Email:** Enter customer email. For logged-in customer, you can pre-fill it.
+2. **Address:** Enter shipping/billing address details.
+3. **Shipping**: Choose a shipping method.
+4. **Payment:** Choose a payment provider.
+5. **Complete Cart:** Perform any payment action necessary (for example, enter card details), complete the cart, and place the order.
+
+You can combine steps based on your desired checkout flow.
+
+<ChildDocs type="item" onlyTopLevel={true} />
