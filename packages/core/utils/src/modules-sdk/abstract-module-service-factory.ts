@@ -12,11 +12,11 @@ import {
   SoftDeleteReturn,
 } from "@medusajs/types"
 import {
-  MapToConfig,
   isString,
   kebabCase,
   lowerCaseFirst,
   mapObjectTo,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -25,6 +25,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
+import { ModuleRegistrationName } from "./definition"
 
 type BaseMethods =
   | "retrieve"
@@ -51,35 +52,31 @@ type ModelDTOConfig = {
   dto: object
   create?: object
   update?: object
-}
-type ModelDTOConfigRecord = Record<any, ModelDTOConfig>
-type ModelNamingConfig = {
   singular?: string
   plural?: string
 }
 
-type ModelsConfigTemplate = {
-  [ModelName: string]: ModelDTOConfig & ModelNamingConfig
+type EntityConfigTemplate = Record<string, ModelDTOConfig>
+
+type ModelConfigurationToDto<T extends ModelConfiguration> =
+  T extends abstract new (...args: any) => infer R
+    ? R
+    : T extends { dto: infer DTO }
+    ? DTO
+    : any
+
+type ModelConfigurationsToConfigTemplate<
+  T extends Record<string, ModelConfiguration>
+> = {
+  [Key in keyof T as `${Capitalize<Key & string>}`]: {
+    dto: ModelConfigurationToDto<T[Key]>
+  }
 }
 
 type ExtractSingularName<
   T extends Record<any, any>,
   K = keyof T
-> = T[K] extends { singular?: string } ? T[K]["singular"] : K
-
-type CreateMethodName<
-  TModelDTOConfig extends ModelDTOConfigRecord,
-  TModelName = keyof TModelDTOConfig
-> = TModelDTOConfig[TModelName] extends { create?: object }
-  ? `create${ExtractPluralName<TModelDTOConfig, TModelName>}`
-  : never
-
-type UpdateMethodName<
-  TModelDTOConfig extends ModelDTOConfigRecord,
-  TModelName = keyof TModelDTOConfig
-> = TModelDTOConfig[TModelName] extends { update?: object }
-  ? `update${ExtractPluralName<TModelDTOConfig, TModelName>}`
-  : never
+> = T[K] extends { singular?: string } ? T[K]["singular"] : K & string
 
 type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   plural?: string
@@ -87,30 +84,30 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   ? T[K]["plural"]
   : Pluralize<K & string>
 
-type ModelConfiguration =
-  | Constructor<any>
-  | { singular?: string; plural?: string; model: Constructor<any> }
+type ModelConfiguration = Constructor<any> | (ModelDTOConfig & { name: string })
 
-export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
-  get __container__(): TContainer
+export interface AbstractModuleServiceBase<TEntryEntityDTO> {
+  new (container: Record<any, any>, ...args: any[]): this
+
+  get __container__(): Record<any, any>
 
   retrieve(
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TMainModelDTO>
+  ): Promise<TEntryEntityDTO>
 
   list(
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TMainModelDTO[]>
+  ): Promise<TEntryEntityDTO[]>
 
   listAndCount(
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<[TMainModelDTO[], number]>
+  ): Promise<[TEntryEntityDTO[], number]>
 
   delete(
     primaryKeyValues: string | object | string[] | object[],
@@ -131,56 +128,50 @@ export interface AbstractModuleServiceBase<TContainer, TMainModelDTO> {
 }
 
 export type AbstractModuleService<
-  TContainer,
-  TMainModelDTO,
-  TModelDTOConfig extends ModelsConfigTemplate
-> = AbstractModuleServiceBase<TContainer, TMainModelDTO> & {
-  [TModelName in keyof TModelDTOConfig as `retrieve${ExtractSingularName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: (
+  TEntryEntityDTO extends ModelConfiguration,
+  TEntitiesDtoConfig extends EntityConfigTemplate
+> = AbstractModuleServiceBase<TEntryEntityDTO> & {
+  [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: (
     id: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TModelDTOConfig[TModelName & string]["dto"]>
+  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
 } & {
-  [TModelName in keyof TModelDTOConfig as `list${ExtractPluralName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: (
+  [TEntityName in keyof TEntitiesDtoConfig as `list${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: (
     filters?: any,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ) => Promise<TModelDTOConfig[TModelName & string]["dto"][]>
+  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
 } & {
-  [TModelName in keyof TModelDTOConfig as `listAndCount${ExtractPluralName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `listAndCount${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TModelDTOConfig[TModelName & string]["dto"][], number]
+      [TEntitiesDtoConfig[TEntityName]["dto"][], number]
     >
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as `delete${ExtractPluralName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `delete${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (
       primaryKeyValues: string | object | string[] | object[],
       sharedContext?: Context
     ): Promise<void>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as `softDelete${ExtractPluralName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `softDelete${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
       config?: SoftDeleteReturn<TReturnableLinkableKeys>,
@@ -188,11 +179,10 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as `restore${ExtractPluralName<
-    TModelDTOConfig,
-    TModelName
-  > &
-    string}`]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `restore${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     <TReturnableLinkableKeys extends string>(
       primaryKeyValues: string | object | string[] | object[],
       config?: RestoreReturn<TReturnableLinkableKeys>,
@@ -200,45 +190,72 @@ export type AbstractModuleService<
     ): Promise<Record<string, string[]> | void>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as CreateMethodName<
-    TModelDTOConfig,
-    TModelName
-  >]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (
-      data: TModelDTOConfig[TModelName]["create"][],
+      data: TEntitiesDtoConfig[TEntityName]["create"][],
       sharedContext?: Context
-    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
+    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as CreateMethodName<
-    TModelDTOConfig,
-    TModelName
-  >]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (
-      data: TModelDTOConfig[TModelName]["create"],
+      data: TEntitiesDtoConfig[TEntityName]["create"],
       sharedContext?: Context
-    ): Promise<TModelDTOConfig[TModelName]["dto"]>
+    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
-    TModelDTOConfig,
-    TModelName
-  >]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (
-      data: TModelDTOConfig[TModelName]["update"][],
+      data: TEntitiesDtoConfig[TEntityName]["update"][],
       sharedContext?: Context
-    ): Promise<TModelDTOConfig[TModelName]["dto"][]>
+    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
   }
 } & {
-  [TModelName in keyof TModelDTOConfig as UpdateMethodName<
-    TModelDTOConfig,
-    TModelName
-  >]: {
+  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
+    TEntitiesDtoConfig,
+    TEntityName
+  >}`]: {
     (
-      data: TModelDTOConfig[TModelName]["update"],
+      data: TEntitiesDtoConfig[TEntityName]["update"],
       sharedContext?: Context
-    ): Promise<TModelDTOConfig[TModelName]["dto"]>
+    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
   }
+}
+
+function buildMethodNamesFromModel(
+  model: ModelConfiguration,
+  suffixed: boolean = true
+): Record<string, string> {
+  return methods.reduce((acc, method) => {
+    let modelName: string = ""
+
+    if (method === "retrieve") {
+      modelName =
+        "singular" in model && model.singular
+          ? model.singular
+          : (model as { name: string }).name
+    } else {
+      modelName =
+        "plural" in model && model.plural
+          ? model.plural
+          : pluralize((model as { name: string }).name)
+    }
+
+    const methodName = suffixed
+      ? `${method}${upperCaseFirst(modelName)}`
+      : method
+
+    return { ...acc, [method]: methodName }
+  }, {})
 }
 
 /**
@@ -246,7 +263,7 @@ export type AbstractModuleService<
  *
  * @example
  *
- * const otherModels = new Set([
+ * const entities = {
  *   Currency,
  *   Price,
  *   PriceList,
@@ -255,12 +272,10 @@ export type AbstractModuleService<
  *   PriceRule,
  *   PriceSetRuleType,
  *   RuleType,
- * ])
+ * }
  *
- * const AbstractModuleService = ModulesSdkUtils.abstractModuleServiceFactory<
- *   InjectedDependencies,
+ * class MyService extends ModulesSdkUtils.abstractModuleServiceFactory<
  *   PricingTypes.PriceSetDTO,
- *   // The configuration of each entity also accept singular/plural properties, if not provided then it is using english pluralization
  *   {
  *     Currency: { dto: PricingTypes.CurrencyDTO }
  *     Price: { dto: PricingTypes.PriceDTO }
@@ -269,59 +284,51 @@ export type AbstractModuleService<
  *     PriceList: { dto: PricingTypes.PriceListDTO }
  *     PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
  *   }
- * >(PriceSet, [...otherModels], entityNameToLinkableKeysMap)
+ * >(PriceSet, entities, entityNameToLinkableKeysMap) {}
  *
- * @param mainModel
- * @param otherModels
+ * @example
+ *
+ * // Here the DTO's and names will be inferred from the arguments
+ *
+ * const entities = {
+ *   Currency,
+ *   Price,
+ *   PriceList,
+ *   PriceListRule,
+ *   PriceListRuleValue,
+ *   PriceRule,
+ *   PriceSetRuleType,
+ *   RuleType,
+ * }
+ *
+ * class MyService extends ModulesSdkUtils.abstractModuleServiceFactory(PriceSet, entities, entityNameToLinkableKeysMap) {}
+ *
+ * @param entryEntity
+ * @param entities
  * @param entityNameToLinkableKeysMap
  */
 export function abstractModuleServiceFactory<
-  TContainer,
-  TMainModelDTO,
-  ModelsConfig extends ModelsConfigTemplate
->(
-  mainModel: Constructor<any>,
-  otherModels: ModelConfiguration[],
-  entityNameToLinkableKeysMap: MapToConfig = {}
-): {
-  new (container: TContainer): AbstractModuleService<
-    TContainer,
-    TMainModelDTO,
-    ModelsConfig
+  TEntryEntityDTO extends ModelConfiguration = ModelConfiguration,
+  EntityConfig extends EntityConfigTemplate = {},
+  TEntities extends Record<string, ModelConfiguration> = Record<
+    string,
+    ModelConfiguration
   >
-} {
-  const buildMethodNamesFromModel = (
-    model: ModelConfiguration,
-    suffixed: boolean = true
-  ): Record<string, string> => {
-    return methods.reduce((acc, method) => {
-      let modelName: string = ""
-
-      if (method === "retrieve") {
-        modelName =
-          "singular" in model && model.singular
-            ? model.singular
-            : (model as Constructor<any>).name
-      } else {
-        modelName =
-          "plural" in model && model.plural
-            ? model.plural
-            : pluralize((model as Constructor<any>).name)
-      }
-
-      const methodName = suffixed
-        ? `${method}${upperCaseFirst(modelName)}`
-        : method
-
-      return { ...acc, [method]: methodName }
-    }, {})
-  }
-
+>(
+  entryEntity: TEntryEntityDTO,
+  entities: TEntities,
+  entityNameToLinkableKeysMap: MapToConfig = {}
+): AbstractModuleService<
+  ModelConfigurationToDto<TEntryEntityDTO>,
+  EntityConfig extends {}
+    ? ModelConfigurationsToConfigTemplate<TEntities>
+    : EntityConfig
+> {
   const buildAndAssignMethodImpl = function (
     klassPrototype: any,
     method: string,
     methodName: string,
-    model: Constructor<any>
+    model: ModelConfiguration
   ): void {
     const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
 
@@ -558,19 +565,19 @@ export function abstractModuleServiceFactory<
   }
 
   class AbstractModuleService_ {
-    readonly __container__: Record<string, any>
+    readonly __container__: Record<any, any>
     readonly baseRepository_: RepositoryService
     readonly eventBusModuleService_: IEventBusModuleService;
 
     [key: string]: any
 
-    constructor(container: Record<string, any>) {
+    constructor(container: Record<any, any>) {
       this.__container__ = container
       this.baseRepository_ = container.baseRepository
 
       const hasEventBusModuleService = Object.keys(this.__container__).find(
         // TODO: Should use ModuleRegistrationName.EVENT_BUS but it would require to move it to the utils package to prevent circular dependencies
-        (key) => key === "eventBusModuleService"
+        (key) => key === ModuleRegistrationName.EVENT_BUS
       )
 
       this.eventBusModuleService_ = hasEventBusModuleService
@@ -592,18 +599,18 @@ export function abstractModuleServiceFactory<
     }
   }
 
-  const mainModelMethods = buildMethodNamesFromModel(mainModel, false)
+  const entryEntityMethods = buildMethodNamesFromModel(entryEntity, false)
 
   /**
    * Build the main retrieve/list/listAndCount/delete/softDelete/restore methods for the main model
    */
 
-  for (let [method, methodName] of Object.entries(mainModelMethods)) {
+  for (let [method, methodName] of Object.entries(entryEntityMethods)) {
     buildAndAssignMethodImpl(
       AbstractModuleService_.prototype,
       method,
       methodName,
-      mainModel
+      entryEntity
     )
   }
 
@@ -611,12 +618,14 @@ export function abstractModuleServiceFactory<
    * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
    */
 
-  const otherModelsMethods: [ModelConfiguration, Record<string, string>][] =
-    otherModels.map((model) => [model, buildMethodNamesFromModel(model)])
+  const entitiesMethods: [ModelConfiguration, Record<string, string>][] =
+    Object.values(entities).map((model) => [
+      model,
+      buildMethodNamesFromModel(model),
+    ])
 
-  for (let [model, modelsMethods] of otherModelsMethods) {
+  for (let [model, modelsMethods] of entitiesMethods) {
     Object.entries(modelsMethods).forEach(([method, methodName]) => {
-      model = "model" in model ? model.model : model
       buildAndAssignMethodImpl(
         AbstractModuleService_.prototype,
         method,
@@ -626,7 +635,30 @@ export function abstractModuleServiceFactory<
     })
   }
 
-  return AbstractModuleService_ as unknown as new (
-    container: TContainer
-  ) => AbstractModuleService<TContainer, TMainModelDTO, ModelsConfig>
+  return AbstractModuleService_ as any
+}
+
+type InjectedDependencies = {
+  baseRepository: RepositoryService
+  eventBusModuleService: IEventBusModuleService
+}
+
+export class TestModel {
+  id: string
+}
+
+export class OtherModel {
+  title: string
+  id: string
+}
+
+class Service extends abstractModuleServiceFactory(TestModel, { OtherModel }) {
+  constructor(container: InjectedDependencies) {
+    super(container)
+  }
+
+  async test() {
+    const entities = await super.listOtherModels()
+    const id = entities[0].title
+  }
 }
