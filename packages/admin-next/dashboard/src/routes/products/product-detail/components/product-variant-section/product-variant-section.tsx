@@ -2,6 +2,7 @@ import { PencilSquare, Plus } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { keepPreviousData } from "@tanstack/react-query"
+import { HttpTypes } from "@medusajs/types"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -10,7 +11,6 @@ import { useProductVariantTableColumns } from "./use-variant-table-columns"
 import { useProductVariantTableFilters } from "./use-variant-table-filters"
 import { useProductVariantTableQuery } from "./use-variant-table-query"
 import { useProductVariants } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
 
 type ProductVariantSectionProps = {
   product: HttpTypes.AdminProduct
@@ -30,6 +30,7 @@ export const ProductVariantSection = ({
     product.id,
     {
       ...searchParams,
+      fields: "*inventory,*inventory.location_levels",
     },
     {
       placeholderData: keepPreviousData,

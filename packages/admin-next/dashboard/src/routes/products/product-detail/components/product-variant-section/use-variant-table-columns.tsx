@@ -1,13 +1,13 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { Badge, usePrompt } from "@medusajs/ui"
+import { Component, PencilSquare, Trash } from "@medusajs/icons"
+import { Badge, usePrompt, clx } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { HttpTypes, InventoryItemDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
+import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
 
 const VariantActions = ({
   variant,
@@ -140,6 +140,50 @@ export const useProductVariantTableColumns = (
         },
       }),
       ...optionColumns,
+      columnHelper.accessor("inventory", {
+        header: () => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{t("fields.inventory")}</span>
+          </div>
+        ),
+        cell: ({ getValue }) => {
+          const inventory: InventoryItemDTO[] = getValue()
+
+          let availableCount = 0
+          const locations = {}
+
+          inventory.forEach((i) => {
+            i.location_levels.forEach((l) => {
+              availableCount += l.available_quantity
+              locations[l.id] = true
+            })
+          })
+
+          const locationCount = Object.keys(locations).length
+
+          const text = !availableCount
+            ? t("products.variant.tableItemNone")
+            : t("products.variant.tableItem", {
+                availableCount,
+                locationCount,
+                count: locationCount,
+              })
+
+          return (
+            <div className="flex h-full w-full items-center gap-2 overflow-hidden">
+              <Component style={{ marginTop: 1 }} />
+              <span
+                className={clx("truncate", {
+                  "text-ui-fg-error": !availableCount,
+                })}
+                title={text}
+              >
+                {text}
+              </span>
+            </div>
+          )
+        },
+      }),
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
