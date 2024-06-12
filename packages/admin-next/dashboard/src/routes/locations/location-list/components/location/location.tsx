@@ -1,27 +1,17 @@
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
-import {
-  FulfillmentSetDTO,
-  SalesChannelDTO,
-  StockLocationDTO,
-} from "@medusajs/types"
-import {
-  Button,
-  Container,
-  StatusBadge,
-  Text,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
+import { FulfillmentSetType } from "../../../common/constants"
 
 type SalesChannelsProps = {
-  salesChannels?: SalesChannelDTO[]
+  salesChannels?: HttpTypes.AdminSalesChannel[] | null
 }
 
 function SalesChannels(props: SalesChannelsProps) {
@@ -29,7 +19,7 @@ function SalesChannels(props: SalesChannelsProps) {
   const { salesChannels } = props
 
   return (
-    <div className="flex flex-col px-6 py-5">
+    <div className="flex flex-col px-6 py-4">
       <div className="flex items-center justify-between">
         <Text
           size="small"
@@ -42,6 +32,7 @@ function SalesChannels(props: SalesChannelsProps) {
         <div className="flex-1 text-left">
           {salesChannels?.length ? (
             <BadgeListSummary
+              rounded
               inline
               n={3}
               list={salesChannels.map((s) => s.name)}
@@ -55,13 +46,8 @@ function SalesChannels(props: SalesChannelsProps) {
   )
 }
 
-enum FulfillmentSetType {
-  Delivery = "delivery",
-  Pickup = "pickup",
-}
-
 type FulfillmentSetProps = {
-  fulfillmentSet?: FulfillmentSetDTO
+  fulfillmentSet?: HttpTypes.AdminFulfillmentSet
   type: FulfillmentSetType
 }
 
@@ -72,7 +58,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const fulfillmentSetExists = !!fulfillmentSet
 
   return (
-    <div className="flex flex-col px-6 py-5">
+    <div className="flex flex-col px-6 py-4">
       <div className="flex items-center justify-between">
         <Text
           size="small"
@@ -80,10 +66,10 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           className="text-ui-fg-subtle flex-1"
           as="div"
         >
-          {t(`location.fulfillmentSet.${type}.title`)}
+          {t(`location.fulfillmentSet.${type}.header`)}
         </Text>
         <div className="flex-1 text-left">
-          <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
+          <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
             {t(fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled")}
           </StatusBadge>
         </div>
@@ -93,13 +79,12 @@ function FulfillmentSet(props: FulfillmentSetProps) {
 }
 
 type LocationProps = {
-  location: StockLocationDTO
+  location: HttpTypes.AdminStockLocation
 }
 
 function Location(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const prompt = usePrompt()
 
   const { mutateAsync: deleteLocation } = useDeleteStockLocation(location.id)
@@ -107,7 +92,7 @@ function Location(props: LocationProps) {
   const handleDelete = async () => {
     const result = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.deleteLocation.confirm", {
+      description: t("location.delete.description", {
         name: location.name,
       }),
       confirmText: t("actions.remove"),
@@ -118,35 +103,34 @@ function Location(props: LocationProps) {
       return
     }
 
-    try {
-      await deleteLocation()
-
-      toast.success(t("general.success"), {
-        description: t("location.deleteLocation.success", {
-          name: location.name,
-        }),
-        dismissLabel: t("general.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await deleteLocation(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("location.delete.successToast", {
+            name: location.name,
+          }),
+          dismissLabel: t("general.close"),
+        })
+      },
+      onError: (e) => {
+        toast.error(t("general.error"), {
+          description: e.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
   }
 
   return (
     <Container className="flex flex-col divide-y p-0">
-      <div className="px-6 py-5">
+      <div className="px-6 py-4">
         <div className="flex flex-row items-center justify-between gap-x-4">
-          {/* ICON*/}
-          <div className="grow-0 rounded-lg border">
-            <div className="bg-ui-bg-field m-1 rounded-md p-2">
+          <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
+            <div className="bg-ui-bg-field flex size-6 items-center justify-center rounded-[4px]">
               <Buildings className="text-ui-fg-subtle" />
             </div>
           </div>
 
-          {/* LOCATION INFO*/}
           <div className="grow-1 flex flex-1 flex-col">
             <Text weight="plus">{location.name}</Text>
             <Text className="text-ui-fg-subtle txt-small">
@@ -154,8 +138,7 @@ function Location(props: LocationProps) {
             </Text>
           </div>
 
-          {/* ACTION*/}
-          <div className="flex grow-0 items-center gap-4 overflow-hidden">
+          <div className="flex grow-0 items-center gap-4">
             <ActionMenu
               groups={[
                 {
@@ -165,8 +148,12 @@ function Location(props: LocationProps) {
                       icon: <PencilSquare />,
                       to: `/settings/locations/${location.id}/edit`,
                     },
+                  ],
+                },
+                {
+                  actions: [
                     {
-                      label: t("location.deleteLocation.label"),
+                      label: t("actions.delete"),
                       icon: <Trash />,
                       onClick: handleDelete,
                     },
@@ -175,13 +162,9 @@ function Location(props: LocationProps) {
               ]}
             />
             <div className="bg-ui-border-strong h-[12px] w-[1px]" />
-            <Button
-              className="text-ui-fg-interactive -ml-1 rounded-none"
-              onClick={() => navigate(`/settings/locations/${location.id}`)}
-              variant="transparent"
-            >
+            <LinkButton to={`/settings/locations/${location.id}`}>
               {t("actions.viewDetails")}
-            </Button>
+            </LinkButton>
           </div>
         </div>
       </div>
@@ -190,13 +173,13 @@ function Location(props: LocationProps) {
 
       <FulfillmentSet
         type={FulfillmentSetType.Pickup}
-        fulfillmentSet={location.fulfillment_sets.find(
+        fulfillmentSet={location.fulfillment_sets?.find(
           (f) => f.type === FulfillmentSetType.Pickup
         )}
       />
       <FulfillmentSet
         type={FulfillmentSetType.Delivery}
-        fulfillmentSet={location.fulfillment_sets.find(
+        fulfillmentSet={location.fulfillment_sets?.find(
           (f) => f.type === FulfillmentSetType.Delivery
         )}
       />

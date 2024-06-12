@@ -6,25 +6,30 @@ import * as zod from "zod"
 import {
   CurrencyDTO,
   PriceDTO,
+  ProductVariantDTO,
   ShippingOptionDTO,
-  HttpTypes,
 } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
+import { HttpTypes } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
-import { DataGrid } from "../../../../../components/grid/data-grid/index"
-import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell/index"
-import { DataGridMeta } from "../../../../../components/grid/types"
+import { DataGrid } from "../../../../../components/grid/data-grid/index.ts"
+import { CurrencyCell } from "../../../../../components/grid/grid-cells/common/currency-cell/index.ts"
+import { DataGridMeta } from "../../../../../components/grid/types.ts"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal/index"
-import { useCurrencies } from "../../../../../hooks/api/currencies"
-import { useRegions } from "../../../../../hooks/api/regions"
-import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { useStore } from "../../../../../hooks/api/store"
-import { castNumber } from "../../../../../lib/cast-number.ts"
+} from "../../../../../components/route-modal/index.ts"
+import { useCurrencies } from "../../../../../hooks/api/currencies.tsx"
+import { useRegions } from "../../../../../hooks/api/regions.tsx"
+import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options.ts"
+import { useStore } from "../../../../../hooks/api/store.tsx"
+import {
+  getDbAmount,
+  getPresentationalAmount,
+} from "../../../../../lib/money-amount-helpers.ts"
+import { ExtendedProductDTO } from "../../../../../types/api-responses.ts"
 
 const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
   const ret: Record<string, number> = {}
@@ -33,7 +38,10 @@ const getInitialCurrencyPrices = (prices: PriceDTO[]) => {
       // this is a region price
       return
     }
-    ret[p.currency_code!] = castNumber(p.amount)
+    ret[p.currency_code!] = getPresentationalAmount(
+      p.amount as number,
+      p.currency_code!
+    )
   })
   return ret
 }
@@ -43,7 +51,10 @@ const getInitialRegionPrices = (prices: PriceDTO[]) => {
   prices.forEach((p) => {
     if (p.price_rules!.length) {
       const regionId = p.price_rules![0].value
-      ret[regionId] = castNumber(p.amount)
+      ret[regionId] = getPresentationalAmount(
+        p.amount as number,
+        p.currency_code!
+      )
     }
   })
 
@@ -134,7 +145,7 @@ export function EditShippingOptionsPricingForm({
           return undefined
         }
 
-        const amount = castNumber(value)
+        const amount = getDbAmount(Number(value), code)
 
         const priceRecord = {
           currency_code: code,
@@ -252,7 +263,7 @@ export function EditShippingOptionsPricingForm({
 }
 
 const columnHelper = createColumnHelper<
-  HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
+  ExtendedProductDTO | ProductVariantDTO
 >()
 
 const useColumns = ({
@@ -264,46 +275,45 @@ const useColumns = ({
 }) => {
   const { t } = useTranslation()
 
-  const colDefs: ColumnDef<
-    HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
-  >[] = useMemo(() => {
-    return [
-      ...currencies.map((currency) => {
-        return columnHelper.display({
-          header: t("fields.priceTemplate", {
-            regionOrCountry: currency.code.toUpperCase(),
-          }),
-          cell: ({ row, table }) => {
-            return (
-              <CurrencyCell
-                currency={currency}
-                meta={table.options.meta as DataGridMeta<any>}
-                field={`currency_prices.${currency.code}`}
-              />
-            )
-          },
-        })
-      }),
-      ...regions.map((region) => {
-        return columnHelper.display({
-          header: t("fields.priceTemplate", {
-            regionOrCountry: region.name,
-          }),
-          cell: ({ row, table }) => {
-            return (
-              <CurrencyCell
-                currency={currencies.find(
-                  (c) => c.code === region.currency_code
-                )}
-                meta={table.options.meta as DataGridMeta<any>}
-                field={`region_prices.${region.id}`}
-              />
-            )
-          },
-        })
-      }),
-    ]
-  }, [t, currencies, regions])
+  const colDefs: ColumnDef<ExtendedProductDTO | ProductVariantDTO>[] =
+    useMemo(() => {
+      return [
+        ...currencies.map((currency) => {
+          return columnHelper.display({
+            header: t("fields.priceTemplate", {
+              regionOrCountry: currency.code.toUpperCase(),
+            }),
+            cell: ({ row, table }) => {
+              return (
+                <CurrencyCell
+                  currency={currency}
+                  meta={table.options.meta as DataGridMeta<any>}
+                  field={`currency_prices.${currency.code}`}
+                />
+              )
+            },
+          })
+        }),
+        ...regions.map((region) => {
+          return columnHelper.display({
+            header: t("fields.priceTemplate", {
+              regionOrCountry: region.name,
+            }),
+            cell: ({ row, table }) => {
+              return (
+                <CurrencyCell
+                  currency={currencies.find(
+                    (c) => c.code === region.currency_code
+                  )}
+                  meta={table.options.meta as DataGridMeta<any>}
+                  field={`region_prices.${region.id}`}
+                />
+              )
+            },
+          })
+        }),
+      ]
+    }, [t, currencies, regions])
 
   return colDefs
 }

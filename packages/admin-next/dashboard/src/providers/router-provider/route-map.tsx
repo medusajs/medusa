@@ -705,7 +705,11 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: ":location_id",
-                lazy: () => import("../../routes/locations/location-details"),
+                lazy: () => import("../../routes/locations/location-detail"),
+                handle: {
+                  crumb: (data: HttpTypes.AdminStockLocationResponse) =>
+                    data.stock_location.name,
+                },
                 children: [
                   {
                     path: "edit",
@@ -724,7 +728,9 @@ export const RouteMap: RouteObject[] = [
                       {
                         path: "service-zones/create",
                         lazy: () =>
-                          import("../../routes/locations/service-zone-create"),
+                          import(
+                            "../../routes/locations/location-create-service-zone"
+                          ),
                       },
                       {
                         path: "service-zone/:zone_id",
@@ -733,14 +739,14 @@ export const RouteMap: RouteObject[] = [
                             path: "edit",
                             lazy: () =>
                               import(
-                                "../../routes/locations/service-zone-edit"
+                                "../../routes/locations/location-edit-service-zone"
                               ),
                           },
                           {
                             path: "edit-areas",
                             lazy: () =>
                               import(
-                                "../../routes/locations/service-zone-areas-edit"
+                                "../../routes/locations/location-service-zone-manage-areas"
                               ),
                           },
                           {
@@ -750,7 +756,7 @@ export const RouteMap: RouteObject[] = [
                                 path: "create",
                                 lazy: () =>
                                   import(
-                                    "../../routes/locations/shipping-options-create"
+                                    "../../routes/locations/location-service-zone-shipping-option-create"
                                   ),
                               },
                               {
@@ -760,7 +766,7 @@ export const RouteMap: RouteObject[] = [
                                     path: "edit",
                                     lazy: () =>
                                       import(
-                                        "../../routes/locations/shipping-option-edit"
+                                        "../../routes/locations/location-service-zone-shipping-option-edit"
                                       ),
                                   },
                                   {
@@ -782,6 +788,7 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
+
           {
             path: "workflows",
             element: <Outlet />,

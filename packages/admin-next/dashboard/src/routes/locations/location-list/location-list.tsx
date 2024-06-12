@@ -4,7 +4,7 @@ import { Link, Outlet, useLoaderData } from "react-router-dom"
 
 import { useStockLocations } from "../../../hooks/api/stock-locations"
 import Location from "./components/location/location"
-import { locationListFields } from "./const"
+import { LOCATION_LIST_FIELDS } from "./constants"
 import { shippingListLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/location/list/after"
@@ -17,12 +17,20 @@ export function LocationList() {
     ReturnType<typeof shippingListLoader>
   >
 
-  const { stock_locations: stockLocations = [], isPending } = useStockLocations(
+  const {
+    stock_locations: stockLocations = [],
+    isError,
+    error,
+  } = useStockLocations(
     {
-      fields: locationListFields,
+      fields: LOCATION_LIST_FIELDS,
     },
     { initialData }
   )
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -33,14 +41,14 @@ export function LocationList() {
           </div>
         )
       })}
-      <Container className="flex h-fit items-center justify-between p-8">
+      <Container className="flex h-fit items-center justify-between gap-x-4 px-6 py-4">
         <div>
-          <Heading className="mb-2">{t("location.title")}</Heading>
+          <Heading>{t("location.domain")}</Heading>
           <Text className="text-ui-fg-subtle txt-small">
             {t("location.description")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
+        <Button size="small" className="shrink-0" variant="secondary" asChild>
           <Link to="create">{t("location.createLocation")}</Link>
         </Button>
       </Container>

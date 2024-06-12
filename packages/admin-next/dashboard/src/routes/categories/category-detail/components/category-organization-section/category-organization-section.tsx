@@ -5,7 +5,7 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InlineLink } from "../../../../../components/common/inline-link"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useCategory } from "../../../../../hooks/api/categories"
 import { getCategoryChildren, getCategoryPath } from "../../../common/utils"
@@ -121,12 +121,12 @@ const PathDisplay = ({
                     {chip.name}
                   </Text>
                 ) : (
-                  <InlineLink
+                  <LinkButton
                     to={`/categories/${chip.id}`}
                     className="txt-compact-xsmall-plus text-ui-fg-subtle hover:text-ui-fg-base focus-visible:text-ui-fg-base"
                   >
                     {chip.name}
-                  </InlineLink>
+                  </LinkButton>
                 )}
                 {index < chips.length - 1 && <TriangleRightMini />}
               </div>

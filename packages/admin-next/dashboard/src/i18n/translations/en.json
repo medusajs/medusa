@@ -20,6 +20,7 @@
     "timeline": "Timeline",
     "success": "Success",
     "warning": "Warning",
+    "tip": "Tip",
     "error": "Error",
     "select": "Select",
     "selected": "Selected",
@@ -718,22 +719,19 @@
     }
   },
   "location": {
-    "title": "Locations & Shipping",
     "domain": "Location & Shipping",
     "description": "Choose where you ship and how much you charge for shipping at checkout. Define shipping options specific for your locations.",
     "createLocation": "Create location",
     "createLocationDetailsHint": "Specify the details of the location.",
-    "deleteLocation": "Delete location",
+    "connectedToSalesChannels": "Connected to {{to}} out of {{of}} sales channels",
+    "viewInventory": "View inventory",
     "from": "Shipping from",
     "add": "Add shipping",
     "connectProvider": "Connect provider",
-    "addZone": "Add shipping zone",
-    "enablePickup": "Enable pickup",
-    "enableDelivery": "Enable delivery",
-    "deleteLocation": {
+    "delete": {
       "label": "Delete Location",
-      "confirm": "Are you sure you want to delete {{name}} location",
-      "success": "{{name}} location successfully deleted"
+      "description": "Are you sure you want to delete the location \"{{name}}\"? This action cannot be undone.",
+      "successToast": "{{name}} location successfully deleted"
     },
     "noRecords": {
       "action": "Add Location",
@@ -750,38 +748,46 @@
       "placeholder": "Not covered by any shipping zones.",
       "salesChannels": "Connected Sales Channels",
       "delete": "Delete shipping",
-      "disableWarning": "Are you sure that you wnat to disable \"{{name}}\"? This will delete all assocciated service zones and shipping options.",
-      "create": {
-        "title": "Add service zone for {{fulfillmentSet}}"
-      },
-      "toast": {
-        "disable": "\"{{name}}\" disabled"
-      },
       "addZone": "Add service zone",
       "pickup": {
-        "title": "Pick up",
-        "enable": "Enable pickup",
-        "offers": "Offers pick up in"
+        "header": "Offers pick up in",
+        "disable": {
+          "warning": "Are you sure you want to disable pick up for \"{{name}}\"? This will also delete all assocciated service zones and shipping options.",
+          "successToast": "Pick up for \"{{name}}\" was successfully disabled."
+        },
+        "enable": {
+          "successToast": "Pick up for \"{{name}}\" was successfully enabled."
+        }
       },
       "delivery": {
-        "title": "Shipping",
-        "enable": "Enable delivery",
-        "offers": "Offers shippping to"
+        "header": "Offers shippping to",
+        "disable": {
+          "warning": "Are you sure you want to disable delivery for \"{{name}}\"? This will also delete all assocciated service zones and shipping options.",
+          "successToast": "Delivery for \"{{name}}\" was successfully disabled."
+        },
+        "enable": {
+          "successToast": "Delivery for \"{{name}}\" was successfully enabled."
+        }
       }
     },
     "serviceZone": {
       "create": {
-        "title": "Add service zone for {{fulfillmentSet}}",
-        "subtitle": "Service zone",
-        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone. ",
-        "zoneName": "Zone name"
+        "title": "Add Service Zone for {{fulfillmentSet}}",
+        "description": "A service zone is a geographical region that can be shipped to from a specific location. You can later on  add any number of shipping options to this zone.",
+        "successToast": "Service zone \"{{name}}\" was successfully created."
       },
       "edit": {
         "title": "Edit Service Zone"
       },
-      "deleteWarning": "Are you sure you want to delete \"{{name}}\". This will also delete all assocciated shipping options.",
-      "toast": {
-        "delete": "Zone \"{{name}}\" deleted successfully."
+      "delete": {
+        "warning": "Are you sure you want to delete the service zone \"{{name}}\"? This will also delete all assocciated shipping options.",
+        "successToast": "Service zone \"{{name}}\" was successfully deleted."
+      },
+      "manageAreas": {
+        "header": "Manage Areas for {{name}}",
+        "label": "Areas in this service zone",
+        "hint": "Select the geographical areas that should be covered by this service zone.",
+        "action": "Manage areas"
       },
       "editPrices": "Edit prices",
       "editOption": "Edit option",
@@ -789,22 +795,16 @@
       "optionsLength_other": "shipping options",
       "returnOptionsLength_one": "return option",
       "returnOptionsLength_other": "return options",
-      "shippingOptionsPlaceholder": "Not covered by any shipping options.",
       "addOption": "Add option",
       "shippingOptions": "Shipping options",
-      "returnOptions": "Return options",
-      "areas": {
-        "title": "Areas affected by this rule",
-        "description": "Select the geographical areas where this shipping zone should apply.",
-        "manage": "Manage areas",
-        "error": "Please select at least one country for this service zone."
-      }
+      "returnOptions": "Return options"
     },
     "shippingOptions": {
       "create": {
-        "title": "Create a shipping option for {{zone}}",
-        "subtitle": "General information",
-        "description": "To start selling, all you need is a name and a price",
+        "header": {
+          "outbound": "Create a shipping option for {{zone}}",
+          "return": "Create a return option for {{zone}}"
+        },
         "details": "Details",
         "pricing": "Pricing",
         "allocation": "Shipping amount",
@@ -814,17 +814,18 @@
         "enableDescription": "Enable or disable the shipping option visiblity in store",
         "calculated": "Calculated",
         "calculatedDescription": "Shipping option's price is calculated by the fulfillment provider.",
-        "profile": "Shipping profile"
+        "profile": "Shipping profile",
+        "successToast": "Shipping option \"{{name}}\" was successfully created."
       },
-      "deleteWarning": "Are you sure you want to delete \"{{name}}\"?",
-      "toast": {
-        "delete": "Shipping option \"{{name}}\" deleted successfully."
-      },
-      "inStore": "Store",
       "edit": {
-        "title": "Edit Shipping Option",
+        "header": "Edit Shipping Option",
         "provider": "Fulfillment provider"
-      }
+      },
+      "delete": {
+        "warning": "Are you sure you want to delete the shipping option \"{{name}}\"?",
+        "successToast": "Shipping option \"{{name}}\" was successfully deleted."
+      },
+      "inStore": "Store"
     },
     "returnOptions": {
       "create": {
