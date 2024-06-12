@@ -16,7 +16,6 @@ describe("HasOne relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
-      optional: false,
       entity: entityRef,
       options: {},
     })

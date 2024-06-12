@@ -1,5 +1,4 @@
 import { MaybeFieldMetadata } from "../types"
-import { OptionalModifier } from "./optional"
 
 /**
  * Nullable modifier marks a schema node as nullable
@@ -21,13 +20,6 @@ export class NullableModifier<T> {
 
   constructor(schema: { parse(fieldName: string): MaybeFieldMetadata }) {
     this.#schema = schema
-  }
-
-  /**
-   * Apply optional modifier on the schema
-   */
-  optional() {
-    return new OptionalModifier<T | null>(this)
   }
 
   /**

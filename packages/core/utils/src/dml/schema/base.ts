@@ -1,6 +1,5 @@
 import { SchemaMetadata, SchemaType } from "../types"
 import { NullableModifier } from "../modifiers/nullable"
-import { OptionalModifier } from "../modifiers/optional"
 
 /**
  * The base schema class offers shared affordances to define
@@ -31,13 +30,6 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
   }
 
   /**
-   * Apply optional modifier on the schema
-   */
-  optional() {
-    return new OptionalModifier<T>(this)
-  }
-
-  /**
    * Define default value for the property
    */
   defaultsTo(value: T) {
@@ -53,7 +45,6 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
       fieldName,
       dataType: this.dataType,
       nullable: false,
-      optional: false,
       defaultValue: this.#defaultValue,
       indexes: this.#indexes,
       relationships: this.#relationships,

@@ -20,7 +20,6 @@ export type KnownDataTypes =
  */
 export type MaybeFieldMetadata = {
   nullable: boolean
-  optional: boolean
 }
 
 /**

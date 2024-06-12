@@ -19,7 +19,6 @@ describe("Base schema", () => {
         name: "text",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
@@ -41,51 +40,6 @@ describe("Base schema", () => {
         name: "text",
       },
       nullable: true,
-      optional: false,
-      indexes: [],
-      relationships: [],
-    })
-  })
-
-  test("apply optional modifier", () => {
-    class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetadata["dataType"] = {
-        name: "text",
-      }
-    }
-
-    const schema = new StringSchema().optional()
-
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string | undefined>()
-    expect(schema.parse("username")).toEqual({
-      fieldName: "username",
-      dataType: {
-        name: "text",
-      },
-      nullable: false,
-      optional: true,
-      indexes: [],
-      relationships: [],
-    })
-  })
-
-  test("apply optional + nullable modifier", () => {
-    class StringSchema extends BaseSchema<string> {
-      protected dataType: SchemaMetadata["dataType"] = {
-        name: "text",
-      }
-    }
-
-    const schema = new StringSchema().optional().nullable()
-
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<string | undefined | null>()
-    expect(schema.parse("username")).toEqual({
-      fieldName: "username",
-      dataType: {
-        name: "text",
-      },
-      nullable: true,
-      optional: true,
       indexes: [],
       relationships: [],
     })
@@ -108,7 +62,6 @@ describe("Base schema", () => {
       },
       defaultValue: "foo",
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })

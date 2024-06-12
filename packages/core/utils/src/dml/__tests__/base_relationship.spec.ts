@@ -22,7 +22,6 @@ describe("Base relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
-      optional: false,
       entity: entityRef,
       options: {
         foreignKey: "user_id",
@@ -51,7 +50,6 @@ describe("Base relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: true,
-      optional: false,
       entity: entityRef,
       options: {
         foreignKey: "user_id",

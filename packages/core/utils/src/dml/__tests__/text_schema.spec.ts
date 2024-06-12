@@ -12,7 +12,6 @@ describe("String schema", () => {
         name: "text",
       },
       nullable: false,
-      optional: false,
       indexes: [],
       relationships: [],
     })
