@@ -1,4 +1,4 @@
-import { useQueryParams } from "../../../../hooks/use-query-params"
+import { useQueryParams } from "../../../../../hooks/use-query-params"
 
 export const useCategoryTableQuery = ({
   pageSize = 20,

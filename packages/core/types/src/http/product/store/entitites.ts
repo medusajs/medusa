@@ -1,6 +1,6 @@
+import { StoreProductCategory } from "../../product-category"
 import {
   BaseProduct,
-  BaseProductCategory,
   BaseProductImage,
   BaseProductOption,
   BaseProductOptionValue,
@@ -10,8 +10,9 @@ import {
   ProductStatus,
 } from "../common"
 
-export interface StoreProduct extends BaseProduct {}
-export interface StoreProductCategory extends BaseProductCategory {}
+export interface StoreProduct extends Omit<BaseProduct, "categories"> {
+  categories?: StoreProductCategory[] | null
+}
 export interface StoreProductVariant extends BaseProductVariant {}
 export interface StoreProductTag extends BaseProductTag {}
 export interface StoreProductType extends BaseProductType {}
