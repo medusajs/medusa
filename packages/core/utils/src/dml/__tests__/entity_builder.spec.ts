@@ -122,6 +122,56 @@ describe("Entity builder", () => {
     ])
   })
 
+  test("define an entity with default value", () => {
+    const model = new EntityBuilder()
+    const user = model.define("user", {
+      id: model.number(),
+      username: model.text().default("foo"),
+      email: model.text(),
+    })
+
+    const User = createMikrORMEntity(user)
+    expectTypeOf(new User()).toMatchTypeOf<{
+      id: number
+      username: string
+      email: string
+    }>()
+
+    const metaData = MetadataStorage.getMetadataFromDecorator(User)
+    expect(metaData.className).toEqual("User")
+    expect(metaData.path).toEqual("User")
+    expect(metaData.properties).toEqual({
+      id: {
+        reference: "scalar",
+        type: "number",
+        columnType: "integer",
+        name: "id",
+        nullable: false,
+        getter: false,
+        setter: false,
+      },
+      username: {
+        reference: "scalar",
+        type: "string",
+        default: "foo",
+        columnType: "text",
+        name: "username",
+        nullable: false,
+        getter: false,
+        setter: false,
+      },
+      email: {
+        reference: "scalar",
+        type: "string",
+        columnType: "text",
+        name: "email",
+        nullable: false,
+        getter: false,
+        setter: false,
+      },
+    })
+  })
+
   test("define hasMany relationship", () => {
     const model = new EntityBuilder()
     const email = model.define("email", {
