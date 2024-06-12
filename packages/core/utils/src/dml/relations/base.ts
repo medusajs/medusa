@@ -1,4 +1,3 @@
-import { NullableModifier } from "../modifiers/nullable"
 import { RelationshipMetadata, RelationshipType } from "../types"
 
 /**
@@ -7,7 +6,9 @@ import { RelationshipMetadata, RelationshipType } from "../types"
  */
 export abstract class BaseRelationship<T> implements RelationshipType<T> {
   #referencedEntity: T
-  #options: Record<string, any>
+  #mappedBy?: string
+
+  protected options: Record<string, any>
 
   /**
    * The relationship type.
@@ -22,14 +23,16 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
 
   constructor(referencedEntity: T, options: Record<string, any>) {
     this.#referencedEntity = referencedEntity
-    this.#options = options
+    this.options = options
   }
 
   /**
-   * Apply nullable modifier on the schema
+   * Define the property name on the related entity that
+   * defines the inverse of this relationship.
    */
-  nullable() {
-    return new NullableModifier<T>(this)
+  mappedBy(property: string): this {
+    this.#mappedBy = property
+    return this
   }
 
   /**
@@ -39,8 +42,9 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
     return {
       name: relationshipName,
       nullable: false,
+      mappedBy: this.#mappedBy,
       entity: this.#referencedEntity,
-      options: this.#options,
+      options: this.options,
       type: this.relationshipType,
     }
   }

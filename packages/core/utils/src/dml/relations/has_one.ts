@@ -1,5 +1,6 @@
 import { BaseRelationship } from "./base"
-import { RelationshipMetadata } from "../types"
+import { NullableModifier } from "../modifiers/nullable"
+import { OnDeleteActions, RelationshipMetadata } from "../types"
 
 /**
  * HasOne relationship defines a relationship between two entities
@@ -13,4 +14,11 @@ import { RelationshipMetadata } from "../types"
  */
 export class HasOne<T> extends BaseRelationship<T> {
   protected relationshipType: RelationshipMetadata["type"] = "hasOne"
+
+  /**
+   * Apply nullable modifier on the schema
+   */
+  nullable() {
+    return new NullableModifier<T, HasOne<T>>(this)
+  }
 }

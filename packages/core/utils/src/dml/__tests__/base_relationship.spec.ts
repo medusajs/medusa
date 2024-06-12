@@ -28,32 +28,4 @@ describe("Base relationship", () => {
       },
     })
   })
-
-  test("mark relationship as nullable", () => {
-    class HasOne<T> extends BaseRelationship<T> {
-      protected relationshipType: "hasOne" | "hasMany" | "manyToMany" = "hasOne"
-    }
-
-    const user = {
-      username: new TextSchema(),
-    }
-
-    const entityRef = () => user
-    const relationship = new HasOne(entityRef, {
-      foreignKey: "user_id",
-    }).nullable()
-
-    expectTypeOf(relationship["$dataType"]).toEqualTypeOf<
-      (() => typeof user) | null
-    >()
-    expect(relationship.parse("user")).toEqual({
-      name: "user",
-      type: "hasOne",
-      nullable: true,
-      entity: entityRef,
-      options: {
-        foreignKey: "user_id",
-      },
-    })
-  })
 })

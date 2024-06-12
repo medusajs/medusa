@@ -12,6 +12,16 @@ export type KnownDataTypes =
   | "json"
 
 /**
+ * The available on Delete actions
+ */
+export type OnDeleteActions =
+  | "cascade"
+  | "no action"
+  | "set null"
+  | "set default"
+  | (string & {})
+
+/**
  * Any field that contains "nullable" and "optional" properties
  * in their metadata are qualified as maybe fields.
  *
@@ -55,8 +65,9 @@ export type SchemaType<T> = {
  */
 export type RelationshipMetadata = MaybeFieldMetadata & {
   name: string
-  type: "hasOne" | "hasMany" | "hasOneThroughMany" | "manyToMany"
+  type: "hasOne" | "hasMany" | "belongsTo" | "manyToMany"
   entity: unknown
+  mappedBy?: string
   options: Record<string, any>
 }
 
@@ -86,6 +97,8 @@ export type Infer<T> = T extends DmlEntity<infer Schema>
   ? EntityConstructor<{
       [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
         ? Infer<R>
+        : Schema[K]["$dataType"] extends (() => infer R) | null
+        ? Infer<R> | null
         : Schema[K]["$dataType"]
     }>
   : never

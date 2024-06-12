@@ -6,10 +6,10 @@ import { HasOne } from "./relations/has_one"
 import { HasMany } from "./relations/has_many"
 import { NumberSchema } from "./schema/number"
 import { BooleanSchema } from "./schema/boolean"
+import { BelongsTo } from "./relations/belongs_to"
 import { DateTimeSchema } from "./schema/date_time"
 import { ManyToMany } from "./relations/many_to_many"
-import { RelationshipType, SchemaType } from "./types"
-import { HasOneThroughMany } from "./relations/has_one_through_many"
+import type { RelationshipType, SchemaType } from "./types"
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -80,8 +80,15 @@ export class EntityBuilder {
    * You may use the "belongsTo" relationship to define the inverse
    * of the "hasOne" relationship
    */
-  hasOne<T>(entityBuilder: T, options?: Record<string, any>) {
-    return new HasOne<T>(entityBuilder, options || {})
+  hasOne<T>(entityBuilder: T) {
+    return new HasOne<T>(entityBuilder, {})
+  }
+
+  /**
+   * Define inverse of "hasOne" and "hasMany" relationship.
+   */
+  belongsTo<T>(entityBuilder: T) {
+    return new BelongsTo<T>(entityBuilder, {})
   }
 
   /**
@@ -94,16 +101,8 @@ export class EntityBuilder {
    * - A user "hasMany" books
    * - A user "hasMany" addresses
    */
-  hasMany<T>(entityBuilder: T, options?: Record<string, any>) {
-    return new HasMany<T>(entityBuilder, options || {})
-  }
-
-  /**
-   * Define a hasOneThroughMany relationship between two entities.
-   * @todo Remove in favor of "belongTo"
-   */
-  hasOneThroughMany<T>(entityBuilder: T, options?: Record<string, any>) {
-    return new HasOneThroughMany<T>(entityBuilder, options || {})
+  hasMany<T>(entityBuilder: T) {
+    return new HasMany<T>(entityBuilder, {})
   }
 
   /**
@@ -117,7 +116,7 @@ export class EntityBuilder {
    *   relationship requires a pivot table to establish a many to many
    *   relationship between two entities
    */
-  manyToMany<T>(entityBuilder: T, options?: Record<string, any>) {
-    return new ManyToMany<T>(entityBuilder, options || {})
+  manyToMany<T>(entityBuilder: T) {
+    return new ManyToMany<T>(entityBuilder, {})
   }
 }
