@@ -1,8 +1,8 @@
-import { useLoaderData, useParams } from "react-router-dom"
+import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useCategory } from "../../../hooks/api/categories"
+import { useProductCategory } from "../../../hooks/api/categories"
 import { CategoryGeneralSection } from "./components/category-general-section"
-import { CategoryOrganizationSection } from "./components/category-organization-section"
+import { CategoryOrganizeSection } from "./components/category-organize-section"
 import { CategoryProductSection } from "./components/category-product-section"
 import { categoryLoader } from "./loader"
 
@@ -18,7 +18,7 @@ export const CategoryDetail = () => {
     ReturnType<typeof categoryLoader>
   >
 
-  const { product_category, isLoading, isError, error } = useCategory(
+  const { product_category, isLoading, isError, error } = useProductCategory(
     id!,
     undefined,
     {
@@ -35,7 +35,7 @@ export const CategoryDetail = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -43,7 +43,7 @@ export const CategoryDetail = () => {
           </div>
         )
       })}
-      <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
+      <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
         <div className="flex w-full flex-col gap-y-3">
           <CategoryGeneralSection category={product_category} />
           <CategoryProductSection category={product_category} />
@@ -58,7 +58,7 @@ export const CategoryDetail = () => {
             <JsonViewSection data={product_category} />
           </div>
         </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[400px]">
+        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:max-w-[400px]">
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>
@@ -66,7 +66,7 @@ export const CategoryDetail = () => {
               </div>
             )
           })}
-          <CategoryOrganizationSection category={product_category} />
+          <CategoryOrganizeSection category={product_category} />
           {sideAfter.widgets.map((w, i) => {
             return (
               <div key={i}>
@@ -79,6 +79,7 @@ export const CategoryDetail = () => {
           </div>
         </div>
       </div>
+      <Outlet />
     </div>
   )
 }

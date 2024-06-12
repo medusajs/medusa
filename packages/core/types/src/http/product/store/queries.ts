@@ -1,7 +1,6 @@
 import {
-  BaseProductCategoryParams,
-  BaseProductParams,
   BaseProductOptionParams,
+  BaseProductParams,
   BaseProductTagParams,
   BaseProductTypeParams,
   BaseProductVariantParams,
@@ -17,4 +16,3 @@ export interface StoreProductParams extends BaseProductParams {
   currency_code?: string
   variants?: StoreProductVariantParams
 }
-export interface StoreProductCategoryParams extends BaseProductCategoryParams {}

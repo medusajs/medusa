@@ -1,5 +1,9 @@
-import { FolderIllustration, TriangleRightMini } from "@medusajs/icons"
-import { AdminProductCategoryResponse } from "@medusajs/types"
+import {
+  FolderIllustration,
+  PencilSquare,
+  TriangleRightMini,
+} from "@medusajs/icons"
+import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -7,33 +11,45 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { InlineLink } from "../../../../../components/common/inline-link"
 import { Skeleton } from "../../../../../components/common/skeleton"
-import { useCategory } from "../../../../../hooks/api/categories"
+import { useProductCategory } from "../../../../../hooks/api/categories"
 import { getCategoryChildren, getCategoryPath } from "../../../common/utils"
 
-type CategoryOrganizationSectionProps = {
-  category: AdminProductCategoryResponse["product_category"]
+type CategoryOrganizeSectionProps = {
+  category: HttpTypes.AdminProductCategory
 }
 
-export const CategoryOrganizationSection = ({
+export const CategoryOrganizeSection = ({
   category,
-}: CategoryOrganizationSectionProps) => {
+}: CategoryOrganizeSectionProps) => {
   const { t } = useTranslation()
 
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("categories.organization.header")}</Heading>
-        <ActionMenu groups={[]} />
+        <Heading level="h2">{t("categories.organize.header")}</Heading>
+        <ActionMenu
+          groups={[
+            {
+              actions: [
+                {
+                  label: t("categories.organize.action"),
+                  icon: <PencilSquare />,
+                  to: `organize`,
+                },
+              ],
+            },
+          ]}
+        />
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start gap-3 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("categories.organization.pathLabel")}
+          {t("categories.fields.path.label")}
         </Text>
         <PathDisplay category={category} />
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start gap-3 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          {t("categories.organization.childrenLabel")}
+          {t("categories.fields.children.label")}
         </Text>
         <ChildrenDisplay category={category} />
       </div>
@@ -55,9 +71,9 @@ const PathDisplay = ({
     isLoading,
     isError,
     error,
-  } = useCategory(category.id, {
+  } = useProductCategory(category.id, {
     include_ancestors_tree: true,
-    fields: "id,name,parent_category",
+    fields: "id,name,*parent_category",
   })
 
   const chips = useMemo(() => getCategoryPath(withParents), [withParents])
@@ -83,7 +99,7 @@ const PathDisplay = ({
       <div className="grid grid-cols-[20px_1fr] items-start gap-x-2">
         <FolderIllustration />
         <div className="flex items-center gap-x-0.5">
-          <Tooltip content={t("categories.organization.pathExpandTooltip")}>
+          <Tooltip content={t("categories.fields.path.tooltip")}>
             <button
               className="outline-none"
               type="button"
@@ -161,7 +177,7 @@ const ChildrenDisplay = ({
     isLoading,
     isError,
     error,
-  } = useCategory(category.id, {
+  } = useProductCategory(category.id, {
     include_descendants_tree: true,
     fields: "id,name,category_children",
   })

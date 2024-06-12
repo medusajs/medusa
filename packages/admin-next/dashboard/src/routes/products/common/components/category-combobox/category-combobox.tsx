@@ -21,7 +21,7 @@ import {
 import { Trans, useTranslation } from "react-i18next"
 import { Divider } from "../../../../../components/common/divider"
 import { TextSkeleton } from "../../../../../components/common/skeleton"
-import { useCategories } from "../../../../../hooks/api/categories"
+import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDebouncedSearch } from "../../../../../hooks/use-debounced-search"
 
 interface CategoryComboboxProps
@@ -57,16 +57,17 @@ export const CategoryCombobox = forwardRef<
   const [level, setLevel] = useState<Level[]>([])
   const { searchValue, onSearchValueChange, query } = useDebouncedSearch()
 
-  const { product_categories, isPending, isError, error } = useCategories(
-    {
-      q: query,
-      parent_category_id: !searchValue ? getParentId(level) : undefined,
-      include_descendants_tree: !searchValue ? true : false,
-    },
-    {
-      enabled: open,
-    }
-  )
+  const { product_categories, isPending, isError, error } =
+    useProductCategories(
+      {
+        q: query,
+        parent_category_id: !searchValue ? getParentId(level) : undefined,
+        include_descendants_tree: !searchValue ? true : false,
+      },
+      {
+        enabled: open,
+      }
+    )
 
   const [showLoading, setShowLoading] = useState(false)
 

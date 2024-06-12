@@ -1,17 +1,18 @@
 import { PencilSquare } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
-import { Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
+import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
-import { useCategories } from "../../../../../hooks/api/categories"
-import { useCategoryTableColumns } from "../../../../../hooks/table/columns/use-category-table-columns"
+import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCategoryTableQuery } from "../../../common/hooks/use-category-table-query"
+import { useCategoryTableColumns } from "./use-category-table-columns"
+import { useCategoryTableQuery } from "./use-category-table-query"
 
 const PAGE_SIZE = 20
 
@@ -34,7 +35,7 @@ export const CategoryListTable = () => {
       }
 
   const { product_categories, count, isLoading, isError, error } =
-    useCategories(
+    useProductCategories(
       {
         ...query,
       },
@@ -63,6 +64,14 @@ export const CategoryListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("categories.domain")}</Heading>
+        <div className="flex items-center gap-x-2">
+          <Button size="small" variant="secondary" asChild>
+            <Link to="organize">{t("categories.organize.action")}</Link>
+          </Button>
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        </div>
       </div>
       <DataTable
         table={table}
