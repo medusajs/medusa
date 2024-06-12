@@ -101,7 +101,9 @@ export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                 render={({ field: { ref, onChange, ...field } }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.status")}</Form.Label>
+                      <Form.Label>
+                        {t("categories.fields.status.label")}
+                      </Form.Label>
                       <Form.Control>
                         <Select {...field} onValueChange={onChange}>
                           <Select.Trigger ref={ref}>
@@ -109,10 +111,10 @@ export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Item value="active">
-                              {t("categories.fields.active")}
+                              {t("categories.fields.status.active")}
                             </Select.Item>
                             <Select.Item value="inactive">
-                              {t("categories.fields.inactive")}
+                              {t("categories.fields.status.inactive")}
                             </Select.Item>
                           </Select.Content>
                         </Select>
@@ -129,7 +131,7 @@ export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                   return (
                     <Form.Item>
                       <Form.Label>
-                        {t("categories.fields.visibility")}
+                        {t("categories.fields.visibility.label")}
                       </Form.Label>
                       <Form.Control>
                         <Select {...field} onValueChange={onChange}>
@@ -138,10 +140,10 @@ export const EditCategoryForm = ({ category }: EditCategoryFormProps) => {
                           </Select.Trigger>
                           <Select.Content>
                             <Select.Item value="public">
-                              {t("categories.fields.public")}
+                              {t("categories.fields.visibility.public")}
                             </Select.Item>
                             <Select.Item value="internal">
-                              {t("categories.fields.internal")}
+                              {t("categories.fields.visibility.internal")}
                             </Select.Item>
                           </Select.Content>
                         </Select>
