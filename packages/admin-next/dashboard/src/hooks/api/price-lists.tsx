@@ -1,3 +1,5 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -5,7 +7,7 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { client, sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import {
@@ -19,6 +21,7 @@ import {
   PriceListListRes,
   PriceListRes,
 } from "../../types/api-responses"
+import { productsQueryKeys } from "./products"
 
 const PRICE_LISTS_QUERY_KEY = "price-lists" as const
 export const priceListsQueryKeys = queryKeysFactory(PRICE_LISTS_QUERY_KEY)
@@ -114,6 +117,7 @@ export const usePriceListAddPrices = (
         queryKey: priceListsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },
@@ -132,6 +136,29 @@ export const usePriceListRemovePrices = (
         queryKey: priceListsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const usePriceListLinkProducts = (
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminPriceListResponse,
+    FetchError,
+    HttpTypes.AdminLinkPriceListProducts
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.priceList.linkProducts(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: priceListsQueryKeys.detail(id),
+      })
+      queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
 
       options?.onSuccess?.(data, variables, context)
     },
