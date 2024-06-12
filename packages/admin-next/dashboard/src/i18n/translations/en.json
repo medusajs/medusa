@@ -324,6 +324,7 @@
       "create": {
         "header": "Create Variant"
       },
+      "tableItemAvailable": "{{availableCount}} available",
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
       "tableItemNone": "0 available",

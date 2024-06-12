@@ -149,6 +149,8 @@ export const useProductVariantTableColumns = (
         cell: ({ getValue }) => {
           const inventory: InventoryItemDTO[] = getValue()
 
+          const hasInventoryKit = inventory.length > 1
+
           let availableCount = 0
           const locations = {}
 
@@ -163,6 +165,10 @@ export const useProductVariantTableColumns = (
 
           const text = !availableCount
             ? t("products.variant.tableItemNone")
+            : hasInventoryKit
+            ? t("products.variant.tableItemAvailable", {
+                availableCount,
+              })
             : t("products.variant.tableItem", {
                 availableCount,
                 locationCount,
@@ -171,7 +177,7 @@ export const useProductVariantTableColumns = (
 
           return (
             <div className="flex h-full w-full items-center gap-2 overflow-hidden">
-              <Component style={{ marginTop: 1 }} />
+              {hasInventoryKit && <Component style={{ marginTop: 1 }} />}
               <span
                 className={clx("truncate", {
                   "text-ui-fg-error": !availableCount,
