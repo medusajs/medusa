@@ -1,0 +1,194 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve a Category in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, learn how to retrieve a product category and its details in the storefront.
+
+There are two ways to retrieve a product category:
+
+- Retrieve a category by its ID.
+- Retrieve a category by its `handle` field. This is useful if you're creating human-readable URLs in your storefront.
+
+## Retrieve a Product Category by ID
+
+To retrieve a product category by its ID, send a request to the [Get a Product Category API route](!api!/store#product-categories_getproductcategoriesid):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["1", "id", "The product category's ID."],
+]
+
+  ```ts highlights={fetchHighlights}
+  fetch(`http://localhost:9000/store/product-categories/${id}`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ product_category }) => {
+    // use the product...
+    console.log(product)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["23"], ["24"], ["25"], ["26"],
+  ["27"], ["28"], ["29"], ["30"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      id: string
+    }
+  }
+
+  export default function Category({ params: { id } }: Params) {
+    const [loading, setLoading] = useState(true)
+    const [category, setCategory] = useState<
+      HttpTypes.StoreProductCategory | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/product-categories/${id}`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ product_category }) => {
+        setCategory(product_category)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {category && (
+          <>
+            <h1>{category.name}</h1>
+            <p>{category.description}</p>
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The response has a `product_category` field, which is a [product category object](!api!/store/#product-categories_productcategory_schema).
+
+---
+
+## Retrieve a Product Category by Handle
+
+To retrieve a product by its handle, send a request to the [List Product Categories API route](!api!/store#product-categories_getproductcategories) passing it the `handle` query parameter:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const handleFetchHighlights = [
+  ["1", "handle", "The product category's handle."],
+]
+
+  ```ts highlights={handleFetchHighlights}
+  fetch(`http://localhost:9000/store/product-categories?handle=${
+    handle
+  }`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ product_categories }) => {
+    if (!product_categories.length) {
+      // product categories with the specified handle doesn't exist
+      return
+    }
+    // use the product category...
+    console.log(product_categories[0])
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const handleHighlights = [
+  ["12", "{ params: { handle } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["23"], ["24"], ["25"], ["26"],
+  ["27"], ["28"], ["29"], ["30"],
+  ["31"], ["32"], ["33"], ["34"]
+]
+
+  ```tsx highlights={handleHighlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      handle: string
+    }
+  }
+
+  export default function Category({ params: { handle } }: Params) {
+    const [loading, setLoading] = useState(true)
+    const [category, setCategory] = useState<
+      HttpTypes.StoreProductCategory | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/product-categories?handle=${
+        handle
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ product_categories }) => {
+        if (product_categories.length) {
+          setCategory(product_categories[0])
+        }
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && !category && (
+          <span>Product category not found</span>
+        )}
+        {category && (
+          <>
+            <h1>{category.name}</h1>
+            <p>{category.description}</p>
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>

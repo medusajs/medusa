@@ -1,6 +1,6 @@
 import { ProductCategoryWorkflow } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
-import { updateProductCategoryStep } from "../steps/update-product-category"
+import { updateProductCategoryStep } from "../steps"
 
 type WorkflowInputData =
   ProductCategoryWorkflow.UpdateProductCategoryWorkflowInput
