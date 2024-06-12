@@ -1928,7 +1928,9 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/customers/log-out",
             title: "Log-out Customer",
-      }
+          },
+        ],
+      },
     ],
   },
   {
