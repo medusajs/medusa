@@ -12,11 +12,11 @@ type CreateDbOptions = {
   db: string
 }
 
-export default async function createDb({ client, db }: CreateDbOptions) {
+export async function createDb({ client, db }: CreateDbOptions) {
   await client.query(`CREATE DATABASE "${db}"`)
 }
 
-export async function runCreateDb({
+export default async function runCreateDb({
   client,
   dbName,
   spinner,

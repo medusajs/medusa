@@ -45,7 +45,6 @@ const execute = async (
       childProcess.signal &&
       ["SIGINT", "SIGTERM"].includes(childProcess.signal)
     ) {
-      console.log("abortingggg")
       throw getAbortError()
     }
 

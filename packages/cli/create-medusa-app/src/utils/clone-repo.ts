@@ -15,7 +15,7 @@ type CloneRepoOptions = {
 const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
 const V2_BRANCH = "feat/v2"
 
-export default async function cloneRepo({
+export async function cloneRepo({
   directoryName = "",
   repoUrl,
   abortController,
@@ -32,7 +32,7 @@ export default async function cloneRepo({
   )
 }
 
-export async function runCloneRepo({
+export default async function runCloneRepo({
   projectName,
   repoUrl,
   abortController,
@@ -40,7 +40,7 @@ export async function runCloneRepo({
   verbose = false,
 }: {
   projectName: string
-  repoUrl: string
+  repoUrl?: string
   abortController: AbortController
   spinner: Ora
   verbose?: boolean
