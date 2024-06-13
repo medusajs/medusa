@@ -60,7 +60,9 @@ export const CreateProductVariantForm = ({
     resolver: zodResolver(CreateProductVariantSchema),
   })
 
-  const { mutateAsync, isLoading } = useCreateProductVariant(product.id)
+  const { mutateAsync, isPending: isLoading } = useCreateProductVariant(
+    product.id
+  )
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const parseNumber = (value?: string | number) => {

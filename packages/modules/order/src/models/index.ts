@@ -1,4 +1,8 @@
 export { default as Address } from "./address"
+export { default as Claim } from "./claim"
+export { default as ClaimItem } from "./claim-item"
+export { default as ClaimItemImage } from "./claim-item-image"
+export { default as Exchange } from "./exchange"
 export { default as LineItem } from "./line-item"
 export { default as LineItemAdjustment } from "./line-item-adjustment"
 export { default as LineItemTaxLine } from "./line-item-tax-line"

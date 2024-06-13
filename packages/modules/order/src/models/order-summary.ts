@@ -11,7 +11,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { Order } from "@models"
+import Order from "./order"
 
 type OrderSummaryTotals = {
   total: BigNumber

@@ -1,8 +1,8 @@
 import { AdminPrice } from "../../pricing"
+import { AdminProductCategory } from "../../product-category"
 import { AdminSalesChannel } from "../../sales-channel"
 import {
   BaseProduct,
-  BaseProductCategory,
   BaseProductImage,
   BaseProductOption,
   BaseProductOptionValue,
@@ -12,10 +12,6 @@ import {
   ProductStatus,
 } from "../common"
 
-export interface AdminProductCategory extends BaseProductCategory {
-  is_active?: boolean
-  is_internal?: boolean
-}
 export interface AdminProductVariant extends BaseProductVariant {
   prices: AdminPrice[] | null
 }

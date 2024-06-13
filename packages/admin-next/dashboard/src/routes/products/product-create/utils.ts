@@ -54,7 +54,20 @@ export const normalizeVariants = (
     sku: variant.sku || undefined,
     manage_inventory: variant.manage_inventory || undefined,
     allow_backorder: variant.allow_backorder || undefined,
-    // TODO: inventory - should be added to the workflow
+    inventory_items: variant
+      .inventory!.map((i) => {
+        const quantity = castNumber(i.required_quantity)
+
+        if (!i.inventory_item_id || !quantity) {
+          return false
+        }
+
+        return {
+          ...i,
+          required_quantity: quantity,
+        }
+      })
+      .filter(Boolean),
     prices: Object.entries(variant.prices || {})
       .map(([key, value]: any) => {
         if (key.startsWith("reg_")) {

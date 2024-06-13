@@ -6,7 +6,8 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "watch": "tsc --watch",
-    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "generate:oas": "yarn start run ../../../../packages/medusa/src/api --type oas && yarn start clean:oas"
   },
   "publishConfig": {
     "access": "public"
