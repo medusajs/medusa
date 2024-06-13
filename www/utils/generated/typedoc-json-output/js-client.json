@@ -796,7 +796,7 @@
 										"content": [
 											{
 												"kind": "code",
-												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.admin.AdminAuthResource.createSession({\n  email: \"user@example.com\",\n  password: \"supersecret\"\n})\n.then(({ user }) => {\n  console.log(user.id);\n})\n```"
+												"text": "```ts\nimport Medusa from \"@medusajs/medusa-js\"\nconst medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })\nmedusa.admin.auth.createSession({\n  email: \"user@example.com\",\n  password: \"supersecret\"\n})\n.then(({ user }) => {\n  console.log(user.id);\n})\n```"
 											}
 										]
 									}

@@ -321,7 +321,7 @@ For example:
       baseUrl: MEDUSA_BACKEND_URL,
       maxRetries: 3,
     })
-    await medusa.admin.AdminAuthResource.createSession({
+    await medusa.admin.auth.createSession({
       email: "user@example.com",
       password: "supersecret",
     })
