@@ -1,5 +1,6 @@
 import {
   ContainerRegistrationKeys,
+  LINKS,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest } from "../../../../types/routing"
@@ -13,7 +14,7 @@ export async function getVariantInventoryItems({
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const linkQuery = remoteQueryObjectFromString({
-    entryPoint: "product_variant_inventory_item",
+    entryPoint: LINKS.ProductVariantInventoryItem,
     variables: {
       filters: {
         variant_id: variantIds,
@@ -82,6 +83,7 @@ export const wrapVariantsWithInventoryQuantity = async (
     manage_inventory?: boolean
   }[]
 ) => {
+  variants ??= []
   const variantIds = variants.map((variant) => variant.id).flat(1)
 
   if (!variantIds.length) {
@@ -93,7 +95,7 @@ export const wrapVariantsWithInventoryQuantity = async (
     variantIds,
   })
 
-  for (const variant of variants || []) {
+  for (const variant of variants) {
     if (!variant.manage_inventory) {
       continue
     }
