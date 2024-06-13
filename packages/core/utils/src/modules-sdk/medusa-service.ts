@@ -259,30 +259,6 @@ function buildMethodNamesFromModel(
  *
  * @example
  *
- * const entities = {
- *   Currency,
- *   Price,
- *   PriceList,
- *   PriceListRule,
- *   PriceListRuleValue,
- *   PriceRule,
- *   PriceSetRuleType,
- *   RuleType,
- * }
- *
- * class MyService extends ModulesSdkUtils.MedusaService<
- *   {
- *     Currency: { dto: PricingTypes.CurrencyDTO }
- *     Price: { dto: PricingTypes.PriceDTO }
- *     PriceRule: { dto: PricingTypes.PriceRuleDTO }
- *     RuleType: { dto: PricingTypes.RuleTypeDTO }
- *     PriceList: { dto: PricingTypes.PriceListDTO }
- *     PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
- *   }
- * >(entities, entityNameToLinkableKeysMap) {}
- *
- * @example
- *
  * // Here the DTO's and names will be inferred from the arguments
  *
  * const entities = {
@@ -614,58 +590,4 @@ export function MedusaService<
   }
 
   return AbstractModuleService_ as any
-}
-
-interface DTO1 {
-  id: string
-  name: string
-}
-
-interface DTO2 {
-  id: string
-  title: string
-}
-
-class Test {
-  id: string
-  name: string
-}
-
-class Test2 {
-  id: string
-  title: string
-}
-
-class MyService extends MedusaService({
-  Test,
-  Test2,
-}) {
-  async test() {
-    const tests = await super.listTests()
-    const tests2 = await super.listTest2s()
-  }
-}
-
-class MyService2 extends MedusaService<{
-  Test: {
-    dto: DTO1
-  }
-  Test2: {
-    dto: DTO2
-  }
-}>({ Test, Test2 }) {
-  async test() {
-    const tests = await super.listTests()
-    const tests2 = await super.listTest2s()
-  }
-}
-
-class MyService3 extends MedusaService<{
-  Translation: {
-    dto: DTO1
-  }
-}>({ Translation: {} }) {
-  async test() {
-    const tests = await super.listTranslations()
-  }
 }
