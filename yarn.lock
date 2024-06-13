@@ -4404,7 +4404,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
