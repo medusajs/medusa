@@ -69,7 +69,7 @@ export default async function configurableNotifications({
 
       // We don't want to fail all handlers, so we catch and log errors only
       try {
-        await notificationService.create(notificationData)
+        await notificationService.createNotifications(notificationData)
       } catch (err) {
         logger.error(
           `Failed to send notification for ${eventName}`,
