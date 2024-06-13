@@ -1,5 +1,7 @@
-import { Container, Heading } from "@medusajs/ui"
+import { Container, Heading, IconButton } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { ArrowUpRightOnBox } from "@medusajs/icons"
+import { useNavigate } from "react-router-dom"
 
 import { ProductVariantDTO } from "@medusajs/types"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
@@ -12,6 +14,11 @@ export const InventoryItemVariantsSection = ({
   variants,
 }: InventoryItemVariantsSectionProps) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  if (!variants?.length) {
+    return null
+  }
 
   return (
     <Container className="p-0">
@@ -25,13 +32,24 @@ export const InventoryItemVariantsSection = ({
             key={variant.id}
             className="shadow-elevation-card-rest bg-ui-bg-component rounded-md px-4 py-2"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Thumbnail src={variant.product?.thumbnail} />
-                <div>
-                  <span>{variant.title}</span>
-                </div>
+            <div className="flex items-center gap-2">
+              <Thumbnail src={variant.product?.thumbnail} />
+              <div className="flex flex-1 flex-col">
+                <span className="text-ui-fg-base font-medium">
+                  {variant.title}
+                </span>
+                <span className="text-ui-fg-subtle">
+                  {variant.options.map((o) => o.value).join(" ⋅ ")}
+                </span>
               </div>
+              <IconButton
+                size="2xsmall"
+                variant="transparent"
+                type="button"
+                onClick={() => navigate(`/products/${variant.product.id}`)} // TODO: navigate to variant details when implemented
+              >
+                <ArrowUpRightOnBox className="text-ui-fg-muted" />
+              </IconButton>
             </div>
           </div>
         ))}

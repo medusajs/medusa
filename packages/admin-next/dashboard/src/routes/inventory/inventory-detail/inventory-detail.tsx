@@ -6,8 +6,8 @@ import { InventoryItemLocationLevelsSection } from "./components/inventory-item-
 import { InventoryItemReservationsSection } from "./components/inventory-item-reservations"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useInventoryItem } from "../../../hooks/api/inventory"
+import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section"
 import { inventoryItemLoader } from "./loader"
-import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section.tsx"
 
 export const InventoryDetail = () => {
   const { id } = useParams()
@@ -24,7 +24,7 @@ export const InventoryDetail = () => {
   } = useInventoryItem(
     id!,
     {
-      fields: "*variants",
+      fields: "*variants,*variants.product,*variants.options",
     },
     {
       initialData,
