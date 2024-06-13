@@ -1,4 +1,8 @@
-import { RelationshipMetadata, RelationshipType } from "../types"
+import {
+  RelationshipMetadata,
+  RelationshipOptions,
+  RelationshipType,
+} from "../types"
 
 /**
  * The BaseRelationship encapsulates the repetitive parts of defining
@@ -6,9 +10,8 @@ import { RelationshipMetadata, RelationshipType } from "../types"
  */
 export abstract class BaseRelationship<T> implements RelationshipType<T> {
   #referencedEntity: T
-  #mappedBy?: string
 
-  protected options: Record<string, any>
+  protected options: RelationshipOptions
 
   /**
    * The relationship type.
@@ -21,18 +24,9 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
    */
   declare $dataType: T
 
-  constructor(referencedEntity: T, options: Record<string, any>) {
+  constructor(referencedEntity: T, options: RelationshipOptions) {
     this.#referencedEntity = referencedEntity
     this.options = options
-  }
-
-  /**
-   * Define the property name on the related entity that
-   * defines the inverse of this relationship.
-   */
-  mappedBy(property: string): this {
-    this.#mappedBy = property
-    return this
   }
 
   /**
@@ -42,9 +36,8 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
     return {
       name: relationshipName,
       nullable: false,
-      mappedBy: this.#mappedBy,
+      mappedBy: this.options.mappedBy,
       entity: this.#referencedEntity,
-      options: this.options,
       type: this.relationshipType,
     }
   }

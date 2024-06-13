@@ -60,6 +60,13 @@ export type SchemaType<T> = {
 }
 
 /**
+ * Options accepted by all the relationships
+ */
+export type RelationshipOptions = {
+  mappedBy?: string
+}
+
+/**
  * The meta-data returned by the relationship parse
  * method
  */
@@ -68,7 +75,6 @@ export type RelationshipMetadata = MaybeFieldMetadata & {
   type: "hasOne" | "hasMany" | "belongsTo" | "manyToMany"
   entity: unknown
   mappedBy?: string
-  options: Record<string, any>
 }
 
 /**

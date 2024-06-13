@@ -14,7 +14,7 @@ describe("Base relationship", () => {
 
     const entityRef = () => user
     const relationship = new HasOne(entityRef, {
-      foreignKey: "user_id",
+      mappedBy: "user_id",
     })
 
     expectTypeOf(relationship["$dataType"]).toEqualTypeOf<() => typeof user>()
@@ -22,10 +22,8 @@ describe("Base relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
+      mappedBy: "user_id",
       entity: entityRef,
-      options: {
-        foreignKey: "user_id",
-      },
     })
   })
 })

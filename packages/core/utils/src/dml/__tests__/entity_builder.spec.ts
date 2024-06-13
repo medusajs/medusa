@@ -520,7 +520,9 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
-        emails: model.hasMany(() => email).mappedBy("the_user"),
+        emails: model.hasMany(() => email, {
+          mappedBy: "the_user",
+        }),
       })
 
       const User = createMikrORMEntity(user)
@@ -785,7 +787,7 @@ describe("Entity builder", () => {
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
-        user: model.belongsTo(() => user).mappedBy("emails"),
+        user: model.belongsTo(() => user, { mappedBy: "emails" }),
       })
 
       const user = model.define("user", {
@@ -900,10 +902,7 @@ describe("Entity builder", () => {
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
-        user: model
-          .belongsTo(() => user)
-          .mappedBy("emails")
-          .nullable(),
+        user: model.belongsTo(() => user, { mappedBy: "emails" }).nullable(),
       })
 
       const user = model.define("user", {

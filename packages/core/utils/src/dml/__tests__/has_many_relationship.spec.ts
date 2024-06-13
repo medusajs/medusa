@@ -17,7 +17,6 @@ describe("HasMany relationship", () => {
       type: "hasMany",
       nullable: false,
       entity: entityRef,
-      options: {},
     })
   })
 })
