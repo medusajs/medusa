@@ -4643,8 +4643,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-api-key-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4703,8 +4701,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-auth-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5544,8 +5540,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-region-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5810,8 +5804,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-user-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 

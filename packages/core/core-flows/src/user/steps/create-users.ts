@@ -9,7 +9,7 @@ export const createUsersStep = createStep(
     const service: IUserModuleService = container.resolve(
       ModuleRegistrationName.USER
     )
-    const users = await service.create(input)
+    const users = await service.createUsers(input)
     return new StepResponse(users)
   },
   async (createdUsers, { container }) => {
@@ -17,6 +17,6 @@ export const createUsersStep = createStep(
       return
     }
     const service = container.resolve(ModuleRegistrationName.USER)
-    await service.delete(createdUsers.map((user) => user.id))
+    await service.deleteUsers(createdUsers.map((user) => user.id))
   }
 )
