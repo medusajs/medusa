@@ -19,7 +19,7 @@ export const setAuthAppMetadataStep = createStep(
     )
 
     const key = `${data.actorType}_id`
-    const authIdentity = await service.retrieve(data.authIdentityId)
+    const authIdentity = await service.retrieveAuthIdentity(data.authIdentityId)
 
     const appMetadata = authIdentity.app_metadata || {}
     if (isDefined(appMetadata[key])) {
@@ -28,7 +28,7 @@ export const setAuthAppMetadataStep = createStep(
 
     appMetadata[key] = data.value
 
-    await service.update({
+    await service.updateAuthIdentites({
       id: authIdentity.id,
       app_metadata: appMetadata,
     })
@@ -49,14 +49,14 @@ export const setAuthAppMetadataStep = createStep(
       ModuleRegistrationName.AUTH
     )
 
-    const authIdentity = await service.retrieve(id)
+    const authIdentity = await service.retrieveAuthIdentity(id)
 
     const appMetadata = authIdentity.app_metadata || {}
     if (isDefined(appMetadata[key])) {
       delete appMetadata[key]
     }
 
-    await service.update({
+    await service.updateAuthIdentites({
       id: authIdentity.id,
       app_metadata: appMetadata,
     })

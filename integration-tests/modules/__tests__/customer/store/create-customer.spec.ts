@@ -35,9 +35,13 @@ medusaIntegrationTestRunner({
         const { http } = appContainer.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE
         ).projectConfig
-        const authIdentity = await authService.create({
-          entity_id: "store_user",
-          provider: "emailpass",
+        const authIdentity = await authService.createAuthIdentities({
+          provider_identities: [
+            {
+              entity_id: "store_user",
+              provider: "emailpass",
+            },
+          ],
         })
 
         const token = jwt.sign(authIdentity, http.jwtSecret)
