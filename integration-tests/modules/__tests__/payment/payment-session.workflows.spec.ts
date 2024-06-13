@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
 
       describe("createPaymentSessionWorkflow", () => {
         it("should create payment sessions", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             currency_code: "usd",
             name: "US",
           })
@@ -84,7 +84,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const region = await regionModule.create({
+            const region = await regionModule.createRegions({
               currency_code: "usd",
               name: "US",
             })

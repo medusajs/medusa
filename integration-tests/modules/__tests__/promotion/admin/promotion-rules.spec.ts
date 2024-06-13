@@ -731,7 +731,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should return all values based on rule types", async () => {
-          const [region1, region2] = await regionService.create([
+          const [region1, region2] = await regionService.createRegions([
             { name: "North America", currency_code: "usd" },
             { name: "Europe", currency_code: "eur" },
           ])
