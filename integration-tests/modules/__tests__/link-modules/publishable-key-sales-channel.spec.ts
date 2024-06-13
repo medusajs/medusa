@@ -35,7 +35,7 @@ medusaIntegrationTestRunner({
           name: "Webshop",
         })
 
-        const apiKeys = await apiKeyModule.create([
+        const apiKeys = await apiKeyModule.createApiKeys([
           {
             title: "Api key",
             type: "publishable",
