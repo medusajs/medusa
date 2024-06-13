@@ -2,6 +2,7 @@ import { json, useLoaderData, useParams } from "react-router-dom"
 
 import { RouteFocusModal } from "../../../components/route-modal"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
+import { FulfillmentSetType } from "../common/constants"
 import { CreateServiceZoneForm } from "./components/create-service-zone-form"
 import { stockLocationLoader } from "./loader"
 
@@ -21,13 +22,16 @@ export function LocationCreateServiceZone() {
     }
   )
 
-  console.log(isLoading, stock_location, fset_id)
-
   const fulfillmentSet = stock_location?.fulfillment_sets?.find(
     (f) => f.id === fset_id
   )
 
-  const ready = !isLoading && !!fulfillmentSet
+  const ready = !isLoading && !!stock_location && !!fulfillmentSet
+
+  const type: FulfillmentSetType =
+    fulfillmentSet?.type === FulfillmentSetType.Pickup
+      ? FulfillmentSetType.Pickup
+      : FulfillmentSetType.Shipping
 
   if (!isLoading && !fulfillmentSet) {
     throw json(
@@ -45,7 +49,8 @@ export function LocationCreateServiceZone() {
       {ready && (
         <CreateServiceZoneForm
           fulfillmentSet={fulfillmentSet}
-          locationId={location_id!}
+          type={type}
+          location={stock_location}
         />
       )}
     </RouteFocusModal>

@@ -6,7 +6,7 @@ import { RouteDrawer } from "../../../components/route-modal"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { EditServiceZoneForm } from "./components/edit-region-form"
 
-export const LocationEditServiceZone = () => {
+export const LocationServiceZoneEdit = () => {
   const { t } = useTranslation()
   const { location_id, fset_id, zone_id } = useParams()
 
@@ -35,7 +35,7 @@ export const LocationEditServiceZone = () => {
   return (
     <RouteDrawer prev={`/settings/locations/${location_id}`}>
       <RouteDrawer.Header>
-        <Heading>{t("location.serviceZone.edit.title")}</Heading>
+        <Heading>{t("stockLocations.serviceZones.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isPending && serviceZone && (
         <EditServiceZoneForm

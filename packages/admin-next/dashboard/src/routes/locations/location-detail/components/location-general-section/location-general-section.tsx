@@ -74,7 +74,7 @@ export const LocationGeneralSection = ({
         locationId={location.id}
         locationName={location.name}
         type={FulfillmentSetType.Pickup}
-        fulfillmentSet={location.fulfillment_sets.find(
+        fulfillmentSet={location.fulfillment_sets?.find(
           (f) => f.type === FulfillmentSetType.Pickup
         )}
       />
@@ -82,9 +82,9 @@ export const LocationGeneralSection = ({
       <FulfillmentSet
         locationId={location.id}
         locationName={location.name}
-        type={FulfillmentSetType.Delivery}
-        fulfillmentSet={location.fulfillment_sets.find(
-          (f) => f.type === FulfillmentSetType.Delivery
+        type={FulfillmentSetType.Shipping}
+        fulfillmentSet={location.fulfillment_sets?.find(
+          (f) => f.type === FulfillmentSetType.Shipping
         )}
       />
     </>
@@ -107,14 +107,16 @@ function ShippingOption({
 
   const isStoreOption = isOptionEnabledInStore(option)
 
-  const { mutateAsync: deleteOption } = useDeleteShippingOption(option.id)
+  const { mutateAsync } = useDeleteShippingOption(option.id)
 
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.shippingOptions.deleteWarning", {
+      description: t("stockLocations.shippingOptions.delete.confirmation", {
         name: option.name,
       }),
+      verificationInstruction: t("general.typeToConfirm"),
+      verificationText: option.name,
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
     })
@@ -123,18 +125,20 @@ function ShippingOption({
       return
     }
 
-    await deleteOption(undefined, {
+    await mutateAsync(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.shippingOptions.toast.delete", {
+          description: t("stockLocations.shippingOptions.delete.successToast", {
             name: option.name,
           }),
+          dismissable: true,
           dismissLabel: t("actions.close"),
         })
       },
       onError: (e) => {
         toast.error(t("general.error"), {
           description: e.message,
+          dismissable: true,
           dismissLabel: t("actions.close"),
         })
       },
@@ -163,13 +167,13 @@ function ShippingOption({
             actions: [
               {
                 icon: <PencilSquare />,
-                label: t("location.serviceZone.editOption"),
+                label: t("stockLocations.shippingOptions.edit.action"),
                 to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit`,
               },
               {
-                label: t("location.serviceZone.editPrices"),
+                label: t("stockLocations.shippingOptions.pricing.action"),
                 icon: <CurrencyDollar />,
-                to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/edit-pricing`,
+                to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${option.service_zone_id}/shipping-option/${option.id}/pricing`,
               },
             ],
           },
@@ -213,12 +217,12 @@ function ServiceZoneOptions({
       <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
-            {t("location.serviceZone.shippingOptions")}
+            {t("stockLocations.shippingOptions.create.shipping.label")}
           </span>
           <LinkButton
             to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create`}
           >
-            {t("location.serviceZone.addOption")}
+            {t("stockLocations.shippingOptions.create.action")}
           </LinkButton>
         </div>
 
@@ -241,12 +245,12 @@ function ServiceZoneOptions({
       <div className="flex flex-col gap-y-4 px-6 py-4">
         <div className="item-center flex justify-between">
           <span className="text-ui-fg-subtle txt-small self-center font-medium">
-            {t("location.serviceZone.returnOptions")}
+            {t("stockLocations.shippingOptions.create.returns.label")}
           </span>
           <LinkButton
             to={`/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/shipping-option/create?is_return`}
           >
-            {t("location.serviceZone.addOption")}
+            {t("stockLocations.shippingOptions.create.action")}
           </LinkButton>
         </div>
 
@@ -286,7 +290,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.serviceZone.delete.warning", {
+      description: t("stockLocations.serviceZones.delete.confirmation", {
         name: zone.name,
       }),
       confirmText: t("actions.delete"),
@@ -306,7 +310,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
       },
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.serviceZone.delete.successToast", {
+          description: t("stockLocations.serviceZones.delete.successToast", {
             name: zone.name,
           }),
           dismissLabel: t("actions.close"),
@@ -340,13 +344,11 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
   }, [zone.geo_zones])
 
   const [shippingOptionsCount, returnOptionsCount] = useMemo(() => {
-    const optionsCount = zone.shipping_options.filter(
-      (o) => !isReturnOption(o)
-    ).length
+    const options = zone.shipping_options
 
-    const returnOptionsCount = zone.shipping_options.filter((o) =>
-      isReturnOption(o)
-    ).length
+    const optionsCount = options.filter((o) => !isReturnOption(o)).length
+
+    const returnOptionsCount = options.filter(isReturnOption).length
 
     return [optionsCount, returnOptionsCount]
   }, [zone.shipping_options])
@@ -371,15 +373,13 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
             />
             <span>·</span>
             <Text className="text-ui-fg-subtle txt-small">
-              {shippingOptionsCount}{" "}
-              {t("location.serviceZone.optionsLength", {
+              {t("stockLocations.shippingOptions.fields.count.shipping", {
                 count: shippingOptionsCount,
               })}
             </Text>
             <span>·</span>
             <Text className="text-ui-fg-subtle txt-small">
-              {returnOptionsCount}{" "}
-              {t("location.serviceZone.returnOptionsLength", {
+              {t("stockLocations.shippingOptions.fields.count.returns", {
                 count: returnOptionsCount,
               })}
             </Text>
@@ -409,7 +409,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit`,
                   },
                   {
-                    label: t("location.serviceZone.manageAreas.action"),
+                    label: t("stockLocations.serviceZones.manageAreas.action"),
                     icon: <Map />,
                     to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
                   },
@@ -472,10 +472,18 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         type,
       },
       {
+        onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t(`stockLocations.fulfillmentSets.enable.${type}`),
+            dismissLabel: t("actions.close"),
+            dismissable: true,
+          })
+        },
         onError: (e) => {
           toast.error(t("general.error"), {
             description: e.message,
             dismissLabel: t("actions.close"),
+            dismissable: true,
           })
         },
       }
@@ -485,7 +493,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t(`location.fulfillmentSet.${type}.disable.warning`, {
+      description: t(`stockLocations.fulfillmentSets.disable.confirmation`, {
         name: fulfillmentSet?.name,
       }),
       confirmText: t("actions.disable"),
@@ -499,12 +507,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     await deleteFulfillmentSet(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t(
-            `location.fulfillmentSet.${type}.disable.successToast`,
-            {
-              name: fulfillmentSet?.name,
-            }
-          ),
+          description: t(`stockLocations.fulfillmentSets.disable.${type}`),
           dismissable: true,
           dismissLabel: t("actions.close"),
         })
@@ -525,7 +528,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           actions: [
             {
               icon: <Plus />,
-              label: t("location.fulfillmentSet.addZone"),
+              label: t("stockLocations.serviceZones.create.action"),
               to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
             },
           ],
@@ -556,9 +559,9 @@ function FulfillmentSet(props: FulfillmentSetProps) {
     <Container className="p-0">
       <div className="flex flex-col divide-y">
         <div className="flex items-center justify-between px-6 py-4">
-          <Text size="large" weight="plus" className="flex-1" as="div">
-            {t(`location.fulfillmentSet.${type}.header`)}
-          </Text>
+          <Heading level="h2">
+            {t(`stockLocations.fulfillmentSets.${type}.header`)}
+          </Heading>
           <div className="flex items-center gap-4">
             <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
               {t(
@@ -573,11 +576,11 @@ function FulfillmentSet(props: FulfillmentSetProps) {
         {fulfillmentSetExists && !hasServiceZones && (
           <div className="flex items-center justify-center py-8 pt-6">
             <NoRecords
-              message={t("location.fulfillmentSet.placeholder")}
+              message={t("stockLocations.serviceZones.fields.noRecords")}
               className="h-fit"
               action={{
                 to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSet.id}/service-zones/create`,
-                label: t("location.fulfillmentSet.addZone"),
+                label: t("stockLocations.serviceZones.create.action"),
               }}
             />
           </div>
@@ -609,7 +612,7 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
   const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.delete.description", {
+      description: t("stockLocations.delete.confirmation", {
         name: location.name,
       }),
       verificationText: location.name,
@@ -625,9 +628,10 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
     await mutateAsync(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.delete.successToast", {
+          description: t("stockLocations.create.successToast", {
             name: location.name,
           }),
+          dismissable: true,
           dismissLabel: t("actions.close"),
         })
         navigate("/settings/locations", { replace: true })
@@ -635,6 +639,7 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
       onError: (e) => {
         toast.error(t("general.error"), {
           description: e.message,
+          dismissable: true,
           dismissLabel: t("actions.close"),
         })
       },
@@ -653,7 +658,7 @@ const Actions = ({ location }: { location: HttpTypes.AdminStockLocation }) => {
             },
             {
               icon: <ArchiveBox />,
-              label: t("location.viewInventory"),
+              label: t("stockLocations.edit.viewInventory"),
               to: `/inventory?location_id=${location.id}`,
             },
           ],

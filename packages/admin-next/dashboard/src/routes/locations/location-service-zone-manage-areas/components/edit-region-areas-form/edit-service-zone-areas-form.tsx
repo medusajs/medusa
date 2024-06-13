@@ -63,18 +63,28 @@ export function EditServiceZoneAreasForm({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t(
+              "stockLocations.serviceZones.manageAreas.successToast",
+              {
+                name: zone.name,
+              }
+            ),
+            dismissable: true,
+            dismissLabel: t("general.close"),
+          })
+
           handleSuccess(`/settings/locations/${locationId}`)
         },
         onError: (e) => {
           toast.error(t("general.error"), {
             description: e.message,
+            dismissable: true,
             dismissLabel: t("general.close"),
           })
         },
       }
     )
-
-    handleSuccess()
   })
 
   return (
@@ -102,7 +112,7 @@ export function EditServiceZoneAreasForm({
               <div className="flex flex-col items-center p-16">
                 <div className="flex w-full max-w-[720px] flex-col gap-y-8">
                   <Heading>
-                    {t("location.serviceZone.manageAreas.header", {
+                    {t("stockLocations.serviceZones.manageAreas.header", {
                       name: zone.name,
                     })}
                   </Heading>

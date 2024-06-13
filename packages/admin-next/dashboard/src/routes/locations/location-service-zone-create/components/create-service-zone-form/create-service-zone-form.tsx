@@ -15,6 +15,7 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
+import { FulfillmentSetType } from "../../../common/constants"
 
 const CreateServiceZoneSchema = z.object({
   name: z.string().min(1),
@@ -25,12 +26,14 @@ const CreateServiceZoneSchema = z.object({
 
 type CreateServiceZoneFormProps = {
   fulfillmentSet: HttpTypes.AdminFulfillmentSet
-  locationId: string
+  type: FulfillmentSetType
+  location: HttpTypes.AdminStockLocation
 }
 
 export function CreateServiceZoneForm({
   fulfillmentSet,
-  locationId,
+  type,
+  location,
 }: CreateServiceZoneFormProps) {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -50,8 +53,6 @@ export function CreateServiceZoneForm({
   )
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log("submitting form with data", data)
-
     await mutateAsync(
       {
         name: data.name,
@@ -63,16 +64,14 @@ export function CreateServiceZoneForm({
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
-            description: t("location.serviceZone.create.successToast", {
+            description: t("stockLocations.serviceZones.create.successToast", {
               name: data.name,
             }),
             dismissable: true,
             dismissLabel: t("general.close"),
           })
 
-          console.log("redirecting to", `/settings/locations/${locationId}`)
-
-          handleSuccess(`/settings/locations/${locationId}`)
+          handleSuccess(`/settings/locations/${location.id}`)
         },
         onError: (e) => {
           console.error(e)
@@ -112,9 +111,13 @@ export function CreateServiceZoneForm({
               <div className="flex flex-1 flex-col items-center overflow-y-auto">
                 <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
                   <Heading>
-                    {t("location.serviceZone.create.title", {
-                      fulfillmentSet: fulfillmentSet.name,
-                    })}
+                    {type === FulfillmentSetType.Pickup
+                      ? t("stockLocations.serviceZones.create.headerPickup", {
+                          location: location.name,
+                        })
+                      : t("stockLocations.serviceZones.create.headerShipping", {
+                          location: location.name,
+                        })}
                   </Heading>
 
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -136,7 +139,7 @@ export function CreateServiceZoneForm({
                   </div>
 
                   <InlineTip>
-                    {t("location.serviceZone.create.description")}
+                    {t("stockLocations.serviceZones.fields.tip")}
                   </InlineTip>
 
                   <GeoZoneForm form={form} onOpenChange={setOpen} />

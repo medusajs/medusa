@@ -1,5 +1,5 @@
 export enum FulfillmentSetType {
-  Delivery = "delivery",
+  Shipping = "shipping",
   Pickup = "pickup",
 }
 

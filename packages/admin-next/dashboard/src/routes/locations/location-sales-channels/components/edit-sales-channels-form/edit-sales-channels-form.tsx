@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Checkbox } from "@medusajs/ui"
+import { Button, Checkbox, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useEffect, useMemo, useState } from "react"
@@ -107,7 +107,19 @@ export const LocationEditSalesChannelsForm = ({
       },
       {
         onSuccess: () => {
-          handleSuccess()
+          toast.success(t("general.success"), {
+            description: t("stockLocations.salesChannels.successToast"),
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
+          handleSuccess(`/settings/locations/${location.id}`)
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )

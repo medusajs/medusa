@@ -1,4 +1,3 @@
-import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox } from "@medusajs/ui"
 import {
   OnChangeFn,
@@ -15,7 +14,10 @@ import { Form } from "../../../../../components/common/form"
 import { SplitView } from "../../../../../components/layout/split-view"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { countries as staticCountries } from "../../../../../lib/countries"
+import {
+  StaticCountry,
+  countries as staticCountries,
+} from "../../../../../lib/countries"
 import { useCountries } from "../../../../regions/common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../../regions/common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../../regions/common/hooks/use-country-table-query"
@@ -63,10 +65,10 @@ const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
             <div className="flex items-center justify-between gap-x-4">
               <div>
                 <Form.Label>
-                  {t("location.serviceZone.manageAreas.label")}
+                  {t("stockLocations.serviceZones.manageAreas.label")}
                 </Form.Label>
                 <Form.Hint>
-                  {t("location.serviceZone.manageAreas.hint")}
+                  {t("stockLocations.serviceZones.manageAreas.hint")}
                 </Form.Hint>
               </div>
               <Button
@@ -75,7 +77,7 @@ const GeoZoneFormImpl = <TForm extends UseFormReturn<any>>({
                 type="button"
                 onClick={() => onOpenChange(true)}
               >
-                {t("location.serviceZone.manageAreas.action")}
+                {t("stockLocations.serviceZones.manageAreas.action")}
               </Button>
             </div>
             <Form.ErrorMessage />
@@ -253,8 +255,7 @@ const AreaDrawer = <TForm extends UseFormReturn<any>>({
   )
 }
 
-const columnHelper =
-  createColumnHelper<Omit<HttpTypes.AdminRegionCountry, "id">>()
+const columnHelper = createColumnHelper<StaticCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()

@@ -716,11 +716,9 @@ export const RouteMap: RouteObject[] = [
                     lazy: () => import("../../routes/locations/location-edit"),
                   },
                   {
-                    path: "sales-channels/edit",
+                    path: "sales-channels",
                     lazy: () =>
-                      import(
-                        "../../routes/locations/location-add-sales-channels"
-                      ),
+                      import("../../routes/locations/location-sales-channels"),
                   },
                   {
                     path: "fulfillment-set/:fset_id",
@@ -729,7 +727,7 @@ export const RouteMap: RouteObject[] = [
                         path: "service-zones/create",
                         lazy: () =>
                           import(
-                            "../../routes/locations/location-create-service-zone"
+                            "../../routes/locations/location-service-zone-create"
                           ),
                       },
                       {
@@ -739,11 +737,11 @@ export const RouteMap: RouteObject[] = [
                             path: "edit",
                             lazy: () =>
                               import(
-                                "../../routes/locations/location-edit-service-zone"
+                                "../../routes/locations/location-service-zone-edit"
                               ),
                           },
                           {
-                            path: "edit-areas",
+                            path: "areas",
                             lazy: () =>
                               import(
                                 "../../routes/locations/location-service-zone-manage-areas"
@@ -770,10 +768,10 @@ export const RouteMap: RouteObject[] = [
                                       ),
                                   },
                                   {
-                                    path: "edit-pricing",
+                                    path: "pricing",
                                     lazy: () =>
                                       import(
-                                        "../../routes/locations/shipping-options-edit-pricing"
+                                        "../../routes/locations/location-service-zone-shipping-option-pricing"
                                       ),
                                   },
                                 ],

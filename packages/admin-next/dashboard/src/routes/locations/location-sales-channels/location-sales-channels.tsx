@@ -4,7 +4,7 @@ import { RouteFocusModal } from "../../../components/route-modal"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { LocationEditSalesChannelsForm } from "./components/edit-sales-channels-form"
 
-export const LocationAddSalesChannels = () => {
+export const LocationSalesChannels = () => {
   const { location_id } = useParams()
   const { stock_location, isPending, isError, error } = useStockLocation(
     location_id!,

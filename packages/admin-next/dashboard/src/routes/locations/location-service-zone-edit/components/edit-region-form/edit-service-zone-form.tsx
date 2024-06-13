@@ -47,7 +47,9 @@ export const EditServiceZoneForm = ({
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
-            // description: t("regions.toast.edit"),
+            description: t("stockLocations.serviceZones.edit.successToast", {
+              name: values.name,
+            }),
             dismissLabel: t("actions.close"),
           })
           handleSuccess(`/settings/locations/${locationId}`)
@@ -84,9 +86,7 @@ export const EditServiceZoneForm = ({
                 }}
               />
             </div>
-            <InlineTip>
-              {t("location.serviceZone.create.description")}
-            </InlineTip>
+            <InlineTip>{t("stockLocations.serviceZones.fields.tip")}</InlineTip>
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>

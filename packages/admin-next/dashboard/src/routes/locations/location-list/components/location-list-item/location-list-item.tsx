@@ -27,7 +27,7 @@ function SalesChannels(props: SalesChannelsProps) {
           className="text-ui-fg-subtle flex-1"
           as="div"
         >
-          {t(`location.fulfillmentSet.salesChannels`)}
+          {t(`stockLocations.salesChannels.label`)}
         </Text>
         <div className="flex-1 text-left">
           {salesChannels?.length ? (
@@ -66,7 +66,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
           className="text-ui-fg-subtle flex-1"
           as="div"
         >
-          {t(`location.fulfillmentSet.${type}.header`)}
+          {t(`stockLocations.fulfillmentSets.${type}.header`)}
         </Text>
         <div className="flex-1 text-left">
           <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
@@ -82,7 +82,7 @@ type LocationProps = {
   location: HttpTypes.AdminStockLocation
 }
 
-function Location(props: LocationProps) {
+function LocationListItem(props: LocationProps) {
   const { location } = props
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -92,7 +92,7 @@ function Location(props: LocationProps) {
   const handleDelete = async () => {
     const result = await prompt({
       title: t("general.areYouSure"),
-      description: t("location.delete.description", {
+      description: t("stockLocations.delete.confirmation", {
         name: location.name,
       }),
       confirmText: t("actions.remove"),
@@ -106,7 +106,7 @@ function Location(props: LocationProps) {
     await deleteLocation(undefined, {
       onSuccess: () => {
         toast.success(t("general.success"), {
-          description: t("location.delete.successToast", {
+          description: t("shippingProfile.delete.successToast", {
             name: location.name,
           }),
           dismissLabel: t("general.close"),
@@ -178,13 +178,13 @@ function Location(props: LocationProps) {
         )}
       />
       <FulfillmentSet
-        type={FulfillmentSetType.Delivery}
+        type={FulfillmentSetType.Shipping}
         fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Delivery
+          (f) => f.type === FulfillmentSetType.Shipping
         )}
       />
     </Container>
   )
 }
 
-export default Location
+export default LocationListItem

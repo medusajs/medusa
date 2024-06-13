@@ -1,55 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import * as zod from "zod"
-
 import { HttpTypes } from "@medusajs/types"
-import {
-  Button,
-  Heading,
-  Input,
-  ProgressStatus,
-  ProgressTabs,
-  RadioGroup,
-  Select,
-  toast,
-} from "@medusajs/ui"
+import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { Divider } from "../../../../../components/common/divider"
-import { Form } from "../../../../../components/common/form"
-import { SwitchBox } from "../../../../../components/common/switch-box"
+import { useState } from "react"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
-import { useRegions } from "../../../../../hooks/api/regions"
 import { useCreateShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
-import { formatProvider } from "../../../../../lib/format-provider"
-import { getDbAmount } from "../../../../../lib/money-amount-helpers"
+import { castNumber } from "../../../../../lib/cast-number"
 import { ShippingOptionPriceType } from "../../../common/constants"
+import { CreateShippingOptionDetailsForm } from "./create-shipping-option-details-form"
 import { CreateShippingOptionsPricesForm } from "./create-shipping-options-prices-form"
+import {
+  CreateShippingOptionDetailsSchema,
+  CreateShippingOptionSchema,
+} from "./schema"
 
 enum Tab {
   DETAILS = "details",
   PRICING = "pricing",
 }
-
-type StepStatus = {
-  [key in Tab]: ProgressStatus
-}
-
-const CreateShippingOptionSchema = zod.object({
-  name: zod.string().min(1),
-  price_type: zod.nativeEnum(ShippingOptionPriceType),
-  enabled_in_store: zod.boolean(),
-  shipping_profile_id: zod.string(),
-  provider_id: zod.string().min(1),
-  region_prices: zod.record(zod.string(), zod.string().optional()),
-  currency_prices: zod.record(zod.string(), zod.string().optional()),
-})
 
 type CreateShippingOptionFormProps = {
   zone: HttpTypes.AdminServiceZone
@@ -62,20 +35,13 @@ export function CreateShippingOptionsForm({
   isReturn,
   locationId,
 }: CreateShippingOptionFormProps) {
+  const [activeTab, setActiveTab] = useState<Tab>(Tab.DETAILS)
+  const [validDetails, setValidDetails] = useState(false)
+
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
-  const [tab, setTab] = React.useState<Tab>(Tab.DETAILS)
 
-  const { fulfillment_providers = [] } = useFulfillmentProviders({
-    is_enabled: true,
-  })
-
-  const { regions = [] } = useRegions({
-    limit: 999,
-    fields: "id,currency_code",
-  })
-
-  const form = useForm<zod.infer<typeof CreateShippingOptionSchema>>({
+  const form = useForm<CreateShippingOptionSchema>({
     defaultValues: {
       name: "",
       price_type: ShippingOptionPriceType.FlatRate,
@@ -91,43 +57,32 @@ export function CreateShippingOptionsForm({
   const isCalculatedPriceType =
     form.watch("price_type") === ShippingOptionPriceType.Calculated
 
-  const { mutateAsync: createShippingOption, isPending: isLoading } =
-    useCreateShippingOptions()
-
-  const { shipping_profiles: shippingProfiles } = useShippingProfiles({
-    limit: 999,
-  })
+  const { mutateAsync, isPending: isLoading } = useCreateShippingOptions()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencyPrices = Object.entries(data.currency_prices)
       .map(([code, value]) => {
-        const amount =
-          value === "" ? undefined : getDbAmount(Number(value), code)
+        const amount = value ? castNumber(value) : undefined
 
         return {
           currency_code: code,
           amount: amount,
         }
       })
-      .filter((o) => !!o.amount)
-
-    const regionsMap = new Map(regions.map((r) => [r.id, r.currency_code]))
+      .filter((o) => !!o.amount) as { currency_code: string; amount: number }[]
 
     const regionPrices = Object.entries(data.region_prices)
       .map(([region_id, value]) => {
-        const code = regionsMap.get(region_id)
-
-        const amount =
-          value === "" ? undefined : getDbAmount(Number(value), code)
+        const amount = value ? castNumber(value) : undefined
 
         return {
           region_id,
           amount: amount,
         }
       })
-      .filter((o) => !!o.amount)
+      .filter((o) => !!o.amount) as { region_id: string; amount: number }[]
 
-    await createShippingOption(
+    await mutateAsync(
       {
         name: data.name,
         price_type: data.price_type,
@@ -137,11 +92,13 @@ export function CreateShippingOptionsForm({
         prices: [...currencyPrices, ...regionPrices],
         rules: [
           {
+            // eslint-disable-next-line
             value: isReturn ? '"true"' : '"false"', // we want JSONB saved as string
             attribute: "is_return",
             operator: "eq",
           },
           {
+            // eslint-disable-next-line
             value: data.enabled_in_store ? '"true"' : '"false"', // we want JSONB saved as string
             attribute: "enabled_in_store",
             operator: "eq",
@@ -157,9 +114,14 @@ export function CreateShippingOptionsForm({
       {
         onSuccess: ({ shipping_option }) => {
           toast.success(t("general.success"), {
-            description: t("location.shippingOptions.create.successToast", {
-              name: shipping_option.name,
-            }),
+            description: t(
+              `stockLocations.shippingOptions.create.${
+                isReturn ? "returns" : "shipping"
+              }.successToast`,
+              {
+                name: shipping_option.name,
+              }
+            ),
             dismissable: true,
             dismissLabel: t("general.close"),
           })
@@ -177,62 +139,63 @@ export function CreateShippingOptionsForm({
     )
   })
 
-  const [status, setStatus] = React.useState<StepStatus>({
-    [Tab.PRICING]: "not-started",
-    [Tab.DETAILS]: "not-started",
-  })
-
-  const onTabChange = React.useCallback(async (value: Tab) => {
-    setTab(value)
-  }, [])
-
-  const onNext = React.useCallback(async () => {
-    switch (tab) {
-      case Tab.DETAILS: {
-        setTab(Tab.PRICING)
-        break
-      }
-      case Tab.PRICING:
-        break
-    }
-  }, [tab])
-
-  const canMoveToPricing =
-    form.watch("name").length &&
-    form.watch("shipping_profile_id") &&
-    form.watch("provider_id")
-
-  useEffect(() => {
-    if (form.formState.isDirty) {
-      setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "in-progress" }))
-    } else {
-      setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "not-started" }))
-    }
-  }, [form.formState.isDirty])
-
-  useEffect(() => {
-    if (tab === Tab.DETAILS && form.formState.isDirty) {
-      setStatus((prev) => ({ ...prev, [Tab.DETAILS]: "in-progress" }))
-    }
-
+  const onTabChange = (tab: Tab) => {
     if (tab === Tab.PRICING) {
-      const hasPricingSet = form
-        .getValues(["region_prices", "currency_prices"])
-        .map(Object.keys)
-        .some((i) => i.length)
+      form.clearErrors()
 
-      setStatus((prev) => ({
-        ...prev,
-        [Tab.DETAILS]: "completed",
-        [Tab.PRICING]: hasPricingSet ? "in-progress" : "not-started",
-      }))
+      const result = CreateShippingOptionDetailsSchema.safeParse({
+        ...form.getValues(),
+      })
+
+      if (!result.success) {
+        const [firstError, ...rest] = result.error.errors
+
+        for (const error of rest) {
+          const _path = error.path.join(".") as keyof CreateShippingOptionSchema
+
+          form.setError(_path, {
+            message: error.message,
+            type: error.code,
+          })
+        }
+
+        // Focus the first error
+        form.setError(
+          firstError.path.join(".") as keyof CreateShippingOptionSchema,
+          {
+            message: firstError.message,
+            type: firstError.code,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
+
+        setValidDetails(false)
+        return
+      }
+
+      setValidDetails(true)
     }
-  }, [tab])
+
+    setActiveTab(tab)
+  }
+
+  const pricesStatus: ProgressStatus =
+    form.getFieldState("currency_prices")?.isDirty ||
+    form.getFieldState("region_prices")?.isDirty ||
+    activeTab === Tab.PRICING
+      ? "in-progress"
+      : "not-started"
+
+  const detailsStatus: ProgressStatus = validDetails
+    ? "completed"
+    : "in-progress"
 
   return (
     <RouteFocusModal.Form form={form}>
       <ProgressTabs
-        value={tab}
+        value={activeTab}
         className="flex h-full flex-col overflow-hidden"
         onValueChange={(tab) => onTabChange(tab as Tab)}
       >
@@ -241,22 +204,21 @@ export function CreateShippingOptionsForm({
             <ProgressTabs.List className="border-ui-border-base -my-2 ml-2 min-w-0 flex-1 border-l">
               <ProgressTabs.Trigger
                 value={Tab.DETAILS}
-                status={status[Tab.DETAILS]}
+                status={detailsStatus}
                 className="w-full max-w-[200px]"
               >
                 <span className="w-full cursor-auto overflow-hidden text-ellipsis whitespace-nowrap">
-                  {t("location.shippingOptions.create.details")}
+                  {t("stockLocations.shippingOptions.create.tabs.details")}
                 </span>
               </ProgressTabs.Trigger>
               {!isCalculatedPriceType && (
                 <ProgressTabs.Trigger
                   value={Tab.PRICING}
+                  status={pricesStatus}
                   className="w-full max-w-[200px]"
-                  status={status[Tab.PRICING]}
-                  disabled={!canMoveToPricing}
                 >
                   <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                    {t("location.shippingOptions.create.pricing")}
+                    {t("stockLocations.shippingOptions.create.tabs.prices")}
                   </span>
                 </ProgressTabs.Trigger>
               )}
@@ -267,27 +229,28 @@ export function CreateShippingOptionsForm({
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button
-                size="small"
-                className="whitespace-nowrap"
-                isLoading={isLoading}
-                onClick={onNext}
-                disabled={!canMoveToPricing}
-                key={
-                  tab === Tab.PRICING || isCalculatedPriceType
-                    ? "details"
-                    : "pricing"
-                }
-                type={
-                  tab === Tab.PRICING || isCalculatedPriceType
-                    ? "submit"
-                    : "button"
-                }
-              >
-                {tab === Tab.PRICING || isCalculatedPriceType
-                  ? t("actions.save")
-                  : t("general.next")}
-              </Button>
+              {activeTab === Tab.PRICING || isCalculatedPriceType ? (
+                <Button
+                  size="small"
+                  className="whitespace-nowrap"
+                  isLoading={isLoading}
+                  key="submit-btn"
+                  type="submit"
+                >
+                  {t("actions.save")}
+                </Button>
+              ) : (
+                <Button
+                  size="small"
+                  className="whitespace-nowrap"
+                  isLoading={isLoading}
+                  onClick={() => onTabChange(Tab.PRICING)}
+                  key="continue-btn"
+                  type="button"
+                >
+                  {t("actions.continue")}
+                </Button>
+              )}
             </div>
           </RouteFocusModal.Header>
 
@@ -296,163 +259,13 @@ export function CreateShippingOptionsForm({
               value={Tab.DETAILS}
               className="size-full overflow-y-auto"
             >
-              <div className="flex flex-1 flex-col items-center overflow-y-auto">
-                <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
-                  <Heading>
-                    {t(
-                      `location.shippingOptions.create.header.${
-                        isReturn ? "return" : "outbound"
-                      }`,
-                      {
-                        zone: zone.name,
-                      }
-                    )}
-                  </Heading>
-
-                  <Form.Field
-                    control={form.control}
-                    name="price_type"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("location.shippingOptions.create.allocation")}
-                          </Form.Label>
-                          <Form.Control>
-                            <RadioGroup
-                              className="grid grid-cols-1 gap-4 md:grid-cols-2"
-                              {...field}
-                              onValueChange={field.onChange}
-                            >
-                              <RadioGroup.ChoiceBox
-                                className="flex-1"
-                                value={ShippingOptionPriceType.FlatRate}
-                                label={t(
-                                  "location.shippingOptions.create.fixed"
-                                )}
-                                description={t(
-                                  "location.shippingOptions.create.fixedDescription"
-                                )}
-                              />
-                              <RadioGroup.ChoiceBox
-                                className="flex-1"
-                                value={ShippingOptionPriceType.Calculated}
-                                label={t(
-                                  "location.shippingOptions.create.calculated"
-                                )}
-                                description={t(
-                                  "location.shippingOptions.create.calculatedDescription"
-                                )}
-                              />
-                            </RadioGroup>
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.name")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="shipping_profile_id"
-                      render={({ field: { onChange, ...field } }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("location.shippingOptions.create.profile")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Select {...field} onValueChange={onChange}>
-                                <Select.Trigger ref={field.ref}>
-                                  <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
-                                  {(shippingProfiles ?? []).map((profile) => (
-                                    <Select.Item
-                                      key={profile.id}
-                                      value={profile.id}
-                                    >
-                                      {profile.name}
-                                    </Select.Item>
-                                  ))}
-                                </Select.Content>
-                              </Select>
-                            </Form.Control>
-                          </Form.Item>
-                        )
-                      }}
-                    />
-
-                    <Form.Field
-                      control={form.control}
-                      name="provider_id"
-                      render={({ field: { onChange, ...field } }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("location.shippingOptions.edit.provider")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Select {...field} onValueChange={onChange}>
-                                <Select.Trigger ref={field.ref}>
-                                  <Select.Value />
-                                </Select.Trigger>
-                                <Select.Content>
-                                  {fulfillment_providers.map((provider) => (
-                                    <Select.Item
-                                      key={provider.id}
-                                      value={provider.id}
-                                    >
-                                      {formatProvider(provider.id)}
-                                    </Select.Item>
-                                  ))}
-                                </Select.Content>
-                              </Select>
-                            </Form.Control>
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                  </div>
-
-                  <Divider />
-
-                  <SwitchBox
-                    control={form.control}
-                    name="enabled_in_store"
-                    label={t("location.shippingOptions.create.enable")}
-                    description={t(
-                      "location.shippingOptions.create.enableDescription"
-                    )}
-                  />
-                </div>
-              </div>
+              <CreateShippingOptionDetailsForm
+                form={form}
+                zone={zone}
+                isReturn={isReturn}
+              />
             </ProgressTabs.Content>
-
-            <ProgressTabs.Content
-              value={Tab.PRICING}
-              className="h-full w-full"
-              style={{ width: "100vw" }}
-            >
+            <ProgressTabs.Content value={Tab.PRICING} className="size-full">
               <CreateShippingOptionsPricesForm form={form} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>

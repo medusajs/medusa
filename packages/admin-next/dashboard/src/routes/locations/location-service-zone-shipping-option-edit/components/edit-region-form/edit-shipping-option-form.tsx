@@ -1,17 +1,20 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input, RadioGroup, Select, Switch, toast } from "@medusajs/ui"
+import { Button, Input, RadioGroup, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
+import { SwitchBox } from "../../../../../components/common/switch-box"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { useShippingProfiles } from "../../../../../hooks/api/shipping-profiles"
+import { useComboboxData } from "../../../../../hooks/use-combobox-data"
+import { sdk } from "../../../../../lib/client"
 import { pick } from "../../../../../lib/common"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { isOptionEnabledInStore } from "../../../../../lib/shipping-options"
@@ -37,12 +40,26 @@ export const EditShippingOptionForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
-  const { shipping_profiles: shippingProfiles } = useShippingProfiles({
-    limit: 999,
+  const shippingProfiles = useComboboxData({
+    queryFn: (params) => sdk.admin.shippingProfile.list(params),
+    queryKey: ["shipping_profiles"],
+    getOptions: (data) =>
+      data.shipping_profiles.map((profile) => ({
+        label: profile.name,
+        value: profile.id,
+      })),
+    defaultValue: shippingOption.shipping_profile_id,
   })
 
-  const { fulfillment_providers = [] } = useFulfillmentProviders({
-    is_enabled: true,
+  const fulfillmentProviders = useComboboxData({
+    queryFn: (params) => sdk.admin.fulfillmentProvider.list(params),
+    queryKey: ["fulfillment_providers"],
+    getOptions: (data) =>
+      data.fulfillment_providers.map((provider) => ({
+        label: formatProvider(provider.id),
+        value: provider.id,
+      })),
+    defaultValue: shippingOption.provider_id,
   })
 
   const form = useForm<zod.infer<typeof EditShippingOptionSchema>>({
@@ -144,115 +161,85 @@ export const EditShippingOptionForm = ({
                 }}
               />
 
-              <div className="grid gap-y-8 divide-y">
-                <div className="grid gap-y-4">
-                  <Form.Field
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>{t("fields.name")}</Form.Label>
-                          <Form.Control>
-                            <Input {...field} />
-                          </Form.Control>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-
-                  <Form.Field
-                    control={form.control}
-                    name="shipping_profile_id"
-                    render={({ field: { onChange, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("location.shippingOptions.create.profile")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Select {...field} onValueChange={onChange}>
-                              <Select.Trigger ref={field.ref}>
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {(shippingProfiles ?? []).map((profile) => (
-                                  <Select.Item
-                                    key={profile.id}
-                                    value={profile.id}
-                                  >
-                                    {profile.name}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select>
-                          </Form.Control>
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                  <Form.Field
-                    control={form.control}
-                    name="provider_id"
-                    render={({ field: { onChange, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <Form.Label>
-                            {t("location.shippingOptions.edit.provider")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Select {...field} onValueChange={onChange}>
-                              <Select.Trigger ref={field.ref}>
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {fulfillment_providers.map((provider) => (
-                                  <Select.Item
-                                    key={provider.id}
-                                    value={provider.id}
-                                  >
-                                    {formatProvider(provider.id)}
-                                  </Select.Item>
-                                ))}
-                              </Select.Content>
-                            </Select>
-                          </Form.Control>
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
-
-                <div className="pt-6">
-                  <Form.Field
-                    control={form.control}
-                    name="enabled_in_store"
-                    render={({ field: { value, onChange, ...field } }) => (
+              <div className="grid gap-y-4">
+                <Form.Field
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => {
+                    return (
                       <Form.Item>
-                        <div className="flex items-center justify-between">
-                          <Form.Label>
-                            {t("location.shippingOptions.create.enable")}
-                          </Form.Label>
-                          <Form.Control>
-                            <Switch
-                              {...field}
-                              checked={!!value}
-                              onCheckedChange={onChange}
-                            />
-                          </Form.Control>
-                        </div>
-                        <Form.Hint className="!mt-1">
-                          {t(
-                            "location.shippingOptions.create.enableDescription"
-                          )}
-                        </Form.Hint>
+                        <Form.Label>{t("fields.name")}</Form.Label>
+                        <Form.Control>
+                          <Input {...field} />
+                        </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
-                    )}
-                  />
-                </div>
+                    )
+                  }}
+                />
+
+                <Form.Field
+                  control={form.control}
+                  name="shipping_profile_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>
+                          {t("location.shippingOptions.create.profile")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Combobox
+                            {...field}
+                            options={shippingProfiles.options}
+                            searchValue={shippingProfiles.searchValue}
+                            onSearchValueChange={
+                              shippingProfiles.onSearchValueChange
+                            }
+                            disabled={shippingProfiles.disabled}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="provider_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>
+                          {t("location.shippingOptions.edit.provider")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Combobox
+                            {...field}
+                            options={fulfillmentProviders.options}
+                            searchValue={fulfillmentProviders.searchValue}
+                            onSearchValueChange={
+                              fulfillmentProviders.onSearchValueChange
+                            }
+                            disabled={fulfillmentProviders.disabled}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
               </div>
+
+              <Divider />
+
+              <SwitchBox
+                control={form.control}
+                name="enabled_in_store"
+                label={t("location.shippingOptions.create.enable")}
+                description={t(
+                  "location.shippingOptions.create.enableDescription"
+                )}
+              />
             </div>
           </div>
         </RouteDrawer.Body>

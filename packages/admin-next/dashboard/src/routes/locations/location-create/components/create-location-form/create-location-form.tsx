@@ -3,16 +3,13 @@ import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { Metadata } from "../../../../../components/forms/metadata"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
-import { metadataFormSchema } from "../../../../../lib/validation"
 
 const CreateLocationSchema = zod.object({
   name: zod.string().min(1),
@@ -26,7 +23,6 @@ const CreateLocationSchema = zod.object({
     company: zod.string().optional(),
     phone: zod.string().optional(),
   }),
-  metadata: metadataFormSchema,
 })
 
 export const CreateLocationForm = () => {
@@ -46,15 +42,6 @@ export const CreateLocationForm = () => {
         postal_code: "",
         province: "",
       },
-      metadata: [
-        {
-          key: "",
-          value: "",
-          isInitial: true,
-          isDeleted: false,
-          isIgnored: false,
-        },
-      ],
     },
     resolver: zodResolver(CreateLocationSchema),
   })
@@ -111,10 +98,10 @@ export const CreateLocationForm = () => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading className="capitalize">
-                  {t("location.createLocation")}
+                  {t("stockLocations.create.header")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("location.createLocationDetailsHint")}
+                  {t("stockLocations.create.hint")}
                 </Text>
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -258,8 +245,6 @@ export const CreateLocationForm = () => {
                   }}
                 />
               </div>
-              <Divider />
-              <Metadata form={form} />
             </div>
           </div>
         </RouteFocusModal.Body>

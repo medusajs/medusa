@@ -18,7 +18,7 @@ export const Divider = ({
       aria-orientation={orientation}
       role="separator"
       className={clx(
-        "border-ui-border-strong",
+        "border-ui-border-base",
         {
           "w-full border-t":
             orientation === "horizontal" && variant === "solid",
