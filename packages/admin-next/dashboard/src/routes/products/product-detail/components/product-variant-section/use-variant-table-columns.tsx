@@ -1,4 +1,4 @@
-import { Component, PencilSquare, Trash } from "@medusajs/icons"
+import { Buildings, Component, PencilSquare, Trash } from "@medusajs/icons"
 import { Badge, usePrompt, clx } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { HttpTypes, InventoryItemDTO } from "@medusajs/types"
@@ -8,17 +8,25 @@ import { useMemo } from "react"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
+import { useNavigate } from "react-router-dom"
 
 const VariantActions = ({
   variant,
   product,
 }: {
-  variant: HttpTypes.AdminProductVariant
+  variant: HttpTypes.AdminProductVariant & {
+    inventory_items: { inventory: InventoryItemDTO }[]
+  }
   product: HttpTypes.AdminProduct
 }) => {
   const { mutateAsync } = useDeleteVariant(product.id, variant.id)
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const prompt = usePrompt()
+
+  const inventoryItemsCount = variant.inventory_items?.length || 0
+  const hasInventoryItem = inventoryItemsCount === 1
+  const hasInventoryKit = inventoryItemsCount > 1
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -35,6 +43,19 @@ const VariantActions = ({
     }
 
     await mutateAsync()
+  }
+
+  const handleInventoryItemNavigation = () => {
+    const itemId = variant.inventory_items![0].inventory.id
+    navigate(`/inventory/${itemId}`)
+  }
+
+  const handleInventoryKitNavigation = () => {
+    const itemIds = variant.inventory_items!.map((i) => i.inventory.id)
+    const params = { id: itemIds }
+    let query = new URLSearchParams(params).toString()
+
+    navigate(`/inventory?${query}`)
   }
 
   return (
@@ -56,7 +77,21 @@ const VariantActions = ({
               onClick: handleDelete,
               icon: <Trash />,
             },
-          ],
+            hasInventoryItem
+              ? {
+                  label: t("products.variant.inventory.actions.inventoryItems"),
+                  onClick: handleInventoryItemNavigation,
+                  icon: <Buildings />,
+                }
+              : false,
+            hasInventoryKit
+              ? {
+                  label: t("products.variant.inventory.actions.inventoryKit"),
+                  onClick: handleInventoryKitNavigation,
+                  icon: <Component />,
+                }
+              : false,
+          ].filter(Boolean),
         },
       ]}
     />
