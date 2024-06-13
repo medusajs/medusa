@@ -324,10 +324,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/customer"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/customer/register-customer-email/page.mdx",
-    "pathname": "/commerce-modules/customer/register-customer-email"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/customer/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/customer/relations-to-other-modules"
   },
@@ -896,8 +892,124 @@ export const filesMap = [
     "pathname": "/storefront-development/cart/update"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/address/page.mdx",
+    "pathname": "/storefront-development/checkout/address"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/complete-cart/page.mdx",
+    "pathname": "/storefront-development/checkout/complete-cart"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/email/page.mdx",
+    "pathname": "/storefront-development/checkout/email"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/page.mdx",
+    "pathname": "/storefront-development/checkout"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/payment/page.mdx",
+    "pathname": "/storefront-development/checkout/payment"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/payment/stripe/page.mdx",
+    "pathname": "/storefront-development/checkout/payment/stripe"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/checkout/shipping/page.mdx",
+    "pathname": "/storefront-development/checkout/shipping"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/addresses/page.mdx",
+    "pathname": "/storefront-development/customers/addresses"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/context/page.mdx",
+    "pathname": "/storefront-development/customers/context"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/log-out/page.mdx",
+    "pathname": "/storefront-development/customers/log-out"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/login/page.mdx",
+    "pathname": "/storefront-development/customers/login"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/page.mdx",
+    "pathname": "/storefront-development/customers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/profile/page.mdx",
+    "pathname": "/storefront-development/customers/profile"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/register/page.mdx",
+    "pathname": "/storefront-development/customers/register"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/customers/retrieve/page.mdx",
+    "pathname": "/storefront-development/customers/retrieve"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/page.mdx",
     "pathname": "/storefront-development"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/list/page.mdx",
+    "pathname": "/storefront-development/products/categories/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/nested-categories/page.mdx",
+    "pathname": "/storefront-development/products/categories/nested-categories"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/page.mdx",
+    "pathname": "/storefront-development/products/categories"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/products/page.mdx",
+    "pathname": "/storefront-development/products/categories/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/categories/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/categories/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/list/page.mdx",
+    "pathname": "/storefront-development/products/collections/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/page.mdx",
+    "pathname": "/storefront-development/products/collections"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/products/page.mdx",
+    "pathname": "/storefront-development/products/collections/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/collections/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/collections/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/list/page.mdx",
+    "pathname": "/storefront-development/products/list"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/page.mdx",
+    "pathname": "/storefront-development/products"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/price/page.mdx",
+    "pathname": "/storefront-development/products/price"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/retrieve/page.mdx",
+    "pathname": "/storefront-development/products/retrieve"
+  },
+  {
+    "filePath": "/www/apps/resources/app/storefront-development/products/variants/page.mdx",
+    "pathname": "/storefront-development/products/variants"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/regions/context/page.mdx",

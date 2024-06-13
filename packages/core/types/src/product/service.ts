@@ -28,6 +28,7 @@ import {
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
   UpdateProductVariantDTO,
+  UpsertProductCategoryDTO,
   UpsertProductCollectionDTO,
   UpsertProductDTO,
   UpsertProductOptionDTO,
@@ -2202,6 +2203,30 @@ export interface IProductModuleService extends IModuleService {
   ): Promise<[ProductCategoryDTO[], number]>
 
   /**
+   * This method is used to create product categories.
+   *
+   * @param {CreateProductCategoryDTO[]} data - The product categories to be created.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO[]>} The list of created product categories.
+   *
+   * @example
+   * const categories =
+   *   await productModuleService.createCategories([
+   *     {
+   *       name: "Tools",
+   *     },
+   *     {
+   *       name: "Clothing",
+   *     },
+   *   ])
+   *
+   */
+  createCategories(
+    data: CreateProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
+
+  /**
    * This method is used to create a product category.
    *
    * @param {CreateProductCategoryDTO} data - The product category to be created.
@@ -2209,48 +2234,173 @@ export interface IProductModuleService extends IModuleService {
    * @returns {Promise<ProductCategoryDTO>} The created product category.
    *
    * @example
-   * const category = await productModuleService.createCategory({
-   *   name: "Shirts",
-   *   parent_category_id: null,
-   * })
+   * const category =
+   *   await productModuleService.createCategories({
+   *     name: "Tools",
+   *   })
    *
    */
-  createCategory(
+  createCategories(
     data: CreateProductCategoryDTO,
     sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
   /**
-   * This method is used to update a product category by its ID.
+   * This method updates existing categories, or creates new ones if they don't exist.
    *
-   * @param {string} categoryId - The ID of the product category to update.
-   * @param {UpdateProductCategoryDTO} data - The attributes to update in th product category.
+   * @param {UpsertProductCategoryDTO[]} data - The attributes to update or create for each category.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<ProductCategoryDTO>} The updated product category.
+   * @returns {Promise<ProductCategoryDTO[]>} The updated and created categories.
    *
    * @example
-   * const category = await productModuleService.updateCategory(
-   *   "pcat_123",
-   *   {
-   *     name: "Shirts",
-   *   }
-   * )
+   * const categories =
+   *   await productModuleService.upsertCategories([
+   *     {
+   *       id: "pcat_123",
+   *       name: "Clothing",
+   *     },
+   *     {
+   *       name: "Tools",
+   *     },
+   *   ])
    */
-  updateCategory(
-    categoryId: string,
+  upsertCategories(
+    data: UpsertProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
+
+  /**
+   * This method updates an existing category, or creates a new one if it doesn't exist.
+   *
+   * @param {UpsertProductCategoryDTO} data - The attributes to update or create for the category.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The updated or created category.
+   *
+   * @example
+   * const category =
+   *   await productModuleService.upsertCategories({
+   *     id: "pcat_123",
+   *     name: "Clothing",
+   *   })
+   */
+  upsertCategories(
+    data: UpsertProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO>
+
+  /**
+   * This method is used to update a category.
+   *
+   * @param {string} id - The ID of the category to be updated.
+   * @param {UpdateProductCategoryDTO} data - The attributes of the category to be updated
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<ProductCategoryDTO>} The updated category.
+   *
+   * @example
+   * const category =
+   *   await productModuleService.updateCategories("pcat_123", {
+   *     title: "Tools",
+   *   })
+   */
+  updateCategories(
+    id: string,
     data: UpdateProductCategoryDTO,
     sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
   /**
-   * This method is used to delete a product category by its ID.
+   * This method is used to update a list of categories matching the specified filters.
    *
-   * @param {string} categoryId - The ID of the product category to delete.
+   * @param {FilterableProductCategoryProps} selector - The filters specifying which categories to update.
+   * @param {UpdateProductCategoryDTO} data - The attributes to be updated on the selected categories
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the product category is successfully deleted.
+   * @returns {Promise<ProductCategoryDTO[]>} The updated categories.
    *
    * @example
-   * await productModuleService.deleteCategory("pcat_123")
+   * const categories =
+   *   await productModuleService.updateCategories(
+   *     {
+   *       id: ["pcat_123", "pcat_321"],
+   *     },
+   *     {
+   *       title: "Tools",
+   *     }
+   *   )
    */
-  deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
+  updateCategories(
+    selector: FilterableProductCategoryProps,
+    data: UpdateProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
+
+  /**
+   * This method is used to delete categories by their ID.
+   *
+   * @param {string[]} productCategoryIds - The IDs of the product categories to be updated.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the product options are successfully deleted.
+   *
+   * @example
+   * await productModuleService.deleteCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   *
+   */
+  deleteCategories(
+    productCategoryIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  /**
+   * This method is used to delete product categories. Unlike the {@link deleteCategories} method, this method won't completely remove the category. It can still be accessed or retrieved using methods like {@link retrieveCategories} if you pass the `withDeleted` property to the `config` object parameter.
+   *
+   * The soft-deleted categories can be restored using the {@link restoreCategories} method.
+   *
+   * @param {string[]} categoryIds - The IDs of the categories to soft-delete.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to soft delete along with the each of the categories. You can pass to its `returnLinkableKeys`
+   * property any of the category's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were also soft deleted. The object's keys are the ID attribute names of the category entity's relations.
+   *
+   * If there are no related records, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.softDeleteCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   */
+  softDeleteCategories<TReturnableLinkableKeys extends string = string>(
+    categoryIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method is used to restore categories which were deleted using the {@link softDelete} method.
+   *
+   * @param {string[]} categoryIds - The IDs of the categories to restore.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config -
+   * Configurations determining which relations to restore along with each of the categories. You can pass to its `returnLinkableKeys`
+   * property any of the category's relation attribute names.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<Record<string, string[]> | void>}
+   * An object that includes the IDs of related records that were restored. The object's keys are the ID attribute names of the product entity's relations.
+   *
+   * If there are no related records that were restored, the promise resolved to `void`.
+   *
+   * @example
+   * await productModuleService.restoreCategories([
+   *   "pcat_123",
+   *   "pcat_321",
+   * ])
+   */
+  restoreCategories<TReturnableLinkableKeys extends string = string>(
+    categoryIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

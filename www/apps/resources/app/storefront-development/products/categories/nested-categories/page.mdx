@@ -1,0 +1,120 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Nested Categories in Storefront`,
+}
+
+# {metadata.title}
+
+A product category has parent and child categories.
+
+To retrieve the child or nested categories of a category in your storefront, pass `*category_children` to the `fields` query parameter of the [Get a Category API Route](!api!/store#product-categories_getproductcategoriesid).
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["2", `"*category_children"`, "Select the `category_children` relation."],
+]
+
+  ```ts highlights={fetchHighlights}
+  const searchParams = new URLSearchParams({
+    fields: "*category_children",
+  })
+
+  fetch(`http://localhost:9000/store/product-categories/${id}?${
+    searchParams.toString()
+  }`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ product_category }) => {
+    // use the product category's children...
+    console.log(product_category.category_children)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["24", `"*category_children"`, "Select the `category_children` relation."],
+  ["27"], ["28"], ["29"], 
+  ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"],
+  ["50", "", "Show the nested categories."],
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      id: string
+    }
+  }
+
+  export default function Category({ params: { id } }: Params) {
+    const [loading, setLoading] = useState(true)
+    const [category, setCategory] = useState<
+      HttpTypes.StoreProductCategory | undefined
+    >()
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      const searchParams = new URLSearchParams({
+        fields: "*category_children",
+      })
+
+      fetch(`http://localhost:9000/store/product-categories/${id}?${
+        searchParams.toString()
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ product_category }) => {
+        setCategory(product_category)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {category && (
+          <>
+            <h1>{category.name}</h1>
+            <p>{category.description}</p>
+            {(category.category_children?.length || 0) > 0 && (
+              <>
+                <span>Child Categories</span>
+                <ul>
+                  {category.category_children!.map(
+                    (childCategory) => (
+                      <li key={childCategory.id}>
+                        {childCategory.name}
+                      </li>
+                    )
+                  )}
+                </ul>
+              </>
+            )}
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The `product_category` field in the response has a `category_children` field. It's an array of [product category objects](!api!/store/#product-categories_productcategory_schema).

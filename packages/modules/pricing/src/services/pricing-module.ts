@@ -48,7 +48,7 @@ import {
 } from "@models"
 
 import { PriceListService, RuleTypeService } from "@services"
-import { validatePriceListDates, eventBuilders } from "@utils"
+import { eventBuilders, validatePriceListDates } from "@utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { PriceListIdPrefix } from "../models/price-list"
 import { PriceSetIdPrefix } from "../models/price-set"
@@ -57,17 +57,17 @@ import { ServiceTypes } from "@types"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
-  priceSetService: ModulesSdkTypes.InternalModuleService<any>
+  priceSetService: ModulesSdkTypes.IMedusaInternalService<any>
   ruleTypeService: RuleTypeService<any>
-  priceRuleService: ModulesSdkTypes.InternalModuleService<any>
-  priceSetRuleTypeService: ModulesSdkTypes.InternalModuleService<any>
-  priceService: ModulesSdkTypes.InternalModuleService<any>
+  priceRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  priceSetRuleTypeService: ModulesSdkTypes.IMedusaInternalService<any>
+  priceService: ModulesSdkTypes.IMedusaInternalService<any>
   priceListService: PriceListService<any>
-  priceListRuleService: ModulesSdkTypes.InternalModuleService<any>
-  priceListRuleValueService: ModulesSdkTypes.InternalModuleService<any>
+  priceListRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  priceListRuleValueService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   PriceList,
   PriceListRule,
   PriceListRuleValue,
@@ -75,7 +75,7 @@ const generateMethodForModels = [
   Price,
   PriceSetRuleType,
   RuleType,
-]
+}
 
 export default class PricingModuleService<
     TPriceSet extends PriceSet = PriceSet,
@@ -87,8 +87,7 @@ export default class PricingModuleService<
     TPriceListRule extends PriceListRule = PriceListRule,
     TPriceListRuleValue extends PriceListRuleValue = PriceListRuleValue
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     PricingTypes.PriceSetDTO,
     {
       Price: { dto: PricingTypes.PriceDTO }
@@ -111,13 +110,13 @@ export default class PricingModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService
   protected readonly ruleTypeService_: RuleTypeService<TRuleType>
-  protected readonly priceSetService_: ModulesSdkTypes.InternalModuleService<TPriceSet>
-  protected readonly priceRuleService_: ModulesSdkTypes.InternalModuleService<TPriceRule>
-  protected readonly priceSetRuleTypeService_: ModulesSdkTypes.InternalModuleService<TPriceSetRuleType>
-  protected readonly priceService_: ModulesSdkTypes.InternalModuleService<TPrice>
+  protected readonly priceSetService_: ModulesSdkTypes.IMedusaInternalService<TPriceSet>
+  protected readonly priceRuleService_: ModulesSdkTypes.IMedusaInternalService<TPriceRule>
+  protected readonly priceSetRuleTypeService_: ModulesSdkTypes.IMedusaInternalService<TPriceSetRuleType>
+  protected readonly priceService_: ModulesSdkTypes.IMedusaInternalService<TPrice>
   protected readonly priceListService_: PriceListService<TPriceList>
-  protected readonly priceListRuleService_: ModulesSdkTypes.InternalModuleService<TPriceListRule>
-  protected readonly priceListRuleValueService_: ModulesSdkTypes.InternalModuleService<TPriceListRuleValue>
+  protected readonly priceListRuleService_: ModulesSdkTypes.IMedusaInternalService<TPriceListRule>
+  protected readonly priceListRuleValueService_: ModulesSdkTypes.IMedusaInternalService<TPriceListRuleValue>
 
   constructor(
     {
@@ -641,6 +640,7 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   @EmitEvents()
+  // @ts-ignore
   async createPriceLists(
     data: PricingTypes.CreatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -653,6 +653,7 @@ export default class PricingModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
+  // @ts-ignore
   async updatePriceLists(
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -1334,7 +1335,7 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          ruleTypeMap.set(ruleAttribute, ruleType)
+          ruleTypeMap.set(ruleAttribute, ruleType!)
         }
 
         const [priceListRule] = await this.priceListRuleService_.create(

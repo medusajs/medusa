@@ -15,12 +15,16 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
+  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { OrderItem, OrderShippingMethod } from "@models"
+import Claim from "./claim"
+import Exchange from "./exchange"
 import Order from "./order"
+import OrderItem from "./order-item"
+import OrderShippingMethod from "./order-shipping-method"
 
 type OptionalReturnProps = DAL.EntityDateColumns
 
@@ -42,16 +46,16 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const ExchangeIdIndex = createPsqlIndexStatementHelper({
+  tableName: "return",
+  columns: ["exchange_id"],
+  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
 const ClaimIdIndex = createPsqlIndexStatementHelper({
   tableName: "return",
   columns: ["claim_id"],
   where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
-})
-
-const ExchageIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
-  columns: ["exchange_id"],
-  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "return" })
@@ -75,37 +79,29 @@ export default class Return {
   })
   order: Order
 
-  /*
-  @ManyToOne({
-    entity: () => Claim,
-    mapToPk: true,
-    fieldName: "claim_id",
-    columnType: "text",
-    nullable: true,
-  })
-  @ClaimIdIndex.MikroORMIndex()
-  claim_id: string | null
-
-  @ManyToOne(() => Claim, {
-    persist: false,
-  })
-  claim: Claim | null
-
-  @ManyToOne({
+  @OneToOne({
     entity: () => Exchange,
-    mapToPk: true,
+    cascade: ["soft-remove"] as any,
     fieldName: "exchange_id",
-    columnType: "text",
     nullable: true,
   })
-  @ExchangeIdIndex.MikroORMIndex()
-  exchange_id: string | null
+  exchange: Exchange
 
-  @ManyToOne(() => Exchange, {
-    persist: false,
+  @Property({ columnType: "text", nullable: true })
+  @ExchangeIdIndex.MikroORMIndex()
+  exchange_id: string | null = null
+
+  @OneToOne({
+    entity: () => Claim,
+    cascade: ["soft-remove"] as any,
+    fieldName: "claim_id",
+    nullable: true,
   })
-  exchange: Exchange | null
-  */
+  claim: Claim
+
+  @Property({ columnType: "text", nullable: true })
+  @ClaimIdIndex.MikroORMIndex()
+  claim_id: string | null = null
 
   @Property({
     columnType: "integer",

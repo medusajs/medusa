@@ -6,7 +6,9 @@ import { FulfillmentSet } from "./fulfillment-set"
 import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
 import { Order } from "./order"
+import { PriceList } from "./price-list"
 import { Product } from "./product"
+import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
@@ -21,6 +23,8 @@ export class Admin {
   public invite: Invite
   public customer: Customer
   public productCollection: ProductCollection
+  public productCategory: ProductCategory
+  public priceList: PriceList
   public product: Product
   public upload: Upload
   public region: Region
@@ -40,6 +44,8 @@ export class Admin {
     this.invite = new Invite(client)
     this.customer = new Customer(client)
     this.productCollection = new ProductCollection(client)
+    this.productCategory = new ProductCategory(client)
+    this.priceList = new PriceList(client)
     this.product = new Product(client)
     this.upload = new Upload(client)
     this.region = new Region(client)

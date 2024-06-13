@@ -67,12 +67,12 @@ export const serviceHighlights = [
       this.client_ = axios.create({
         baseURL: `https://api.erp-example.com`,
         headers: {
-          Authorization: `Bearer ${apiKey}`
-        }
+          Authorization: `Bearer ${apiKey}`,
+        },
       })
     }
 
-    async getProductData (id: string) {
+    async getProductData(id: string) {
       const { data: erpProduct } = await this.client_.get(`/product/${id}`)
       
       return erpProduct
@@ -109,10 +109,10 @@ export const serviceHighlights = [
   Then, create the module's definition file at `src/modules/erp/index.ts` with the following content:
 
   ```ts title="src/modules/erp/index.ts"
-  import ErpModuleService from "./service";
-
+  import ErpModuleService from "./service"
+  
   export default {
-    service: ErpModuleService
+    service: ErpModuleService,
   }
   ```
 
@@ -125,10 +125,10 @@ export const serviceHighlights = [
       erpModuleService: {
         resolve: "./modules/erp",
         options: {
-          apiKey: process.env.ERP_API_KEY
-        }
+          apiKey: process.env.ERP_API_KEY,
+        },
       },
-    }
+    },
   })
   ```
 

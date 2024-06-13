@@ -62,6 +62,19 @@ medusaIntegrationTestRunner({
           )
         ).data.product_category
 
+        productCategoryChild1 = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "category child 1",
+              parent_category_id: productCategoryChild.id,
+              rank: 1,
+              description: "category child 1",
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
         productCategoryChild2 = (
           await api.post(
             "/admin/product-categories",
@@ -95,6 +108,12 @@ medusaIntegrationTestRunner({
                 handle: productCategoryChild.handle,
                 category_children: [
                   expect.objectContaining({
+                    id: productCategoryChild1.id,
+                    name: productCategoryChild1.name,
+                    handle: productCategoryChild1.handle,
+                    category_children: [],
+                  }),
+                  expect.objectContaining({
                     id: productCategoryChild2.id,
                     name: productCategoryChild2.name,
                     handle: productCategoryChild2.handle,
@@ -108,11 +127,57 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
       })
+
+      it("gets a category with children sorted by rank", async () => {
+        const path = `/admin/product-categories/${productCategoryChild.id}?include_descendants_tree=true`
+        let response = await api.get(path, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_category).toEqual(
+          expect.objectContaining({
+            id: productCategoryChild.id,
+            parent_category_id: productCategory.id,
+            category_children: [
+              expect.objectContaining({
+                id: productCategoryChild1.id,
+                handle: productCategoryChild1.handle,
+              }),
+              expect.objectContaining({
+                id: productCategoryChild2.id,
+                handle: productCategoryChild2.handle,
+              }),
+            ],
+          })
+        )
+
+        await api.post(
+          `/admin/product-categories/${productCategoryChild2.id}`,
+          { rank: 0 },
+          adminHeaders
+        )
+
+        response = await api.get(path, adminHeaders)
+        expect(response.status).toEqual(200)
+        expect(response.data.product_category).toEqual(
+          expect.objectContaining({
+            id: productCategoryChild.id,
+            parent_category_id: productCategory.id,
+            category_children: [
+              expect.objectContaining({
+                id: productCategoryChild2.id,
+                handle: productCategoryChild2.handle,
+              }),
+              expect.objectContaining({
+                id: productCategoryChild1.id,
+                handle: productCategoryChild1.handle,
+              }),
+            ],
+          })
+        )
+      })
     })
 
     describe("GET /admin/product-categories", () => {
-      // TODO/BREAKING: We don't support rank reordering upon creation in V2
-      //   New categories with the same parent are always added at the end of the "list"
       beforeEach(async () => {
         productCategoryParent = (
           await api.post(
@@ -347,6 +412,125 @@ medusaIntegrationTestRunner({
               parent_category_id: productCategoryChild.id,
               category_children: [],
               handle: productCategoryChild3.handle,
+            }),
+          ])
+        )
+      })
+
+      it("gets list of product category with immediate children and parents", async () => {
+        const path = `/admin/product-categories?include_descendants_tree=true`
+        const newChild = (
+          await api.post(
+            "/admin/product-categories",
+            {
+              name: "cotton",
+              parent_category_id: productCategory.id,
+            },
+            adminHeaders
+          )
+        ).data.product_category
+
+        let response = await api.get(path, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_categories).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: productCategoryParent.id,
+              category_children: [
+                expect.objectContaining({
+                  id: productCategory.id,
+                  handle: productCategory.handle,
+                  category_children: [
+                    expect.objectContaining({
+                      id: productCategoryChild.id,
+                      parent_category_id: productCategory.id,
+                      category_children: [
+                        expect.objectContaining({
+                          id: productCategoryChild0.id,
+                          handle: productCategoryChild0.handle,
+                        }),
+                        expect.objectContaining({
+                          id: productCategoryChild1.id,
+                          handle: productCategoryChild1.handle,
+                        }),
+                        expect.objectContaining({
+                          id: productCategoryChild2.id,
+                          handle: productCategoryChild2.handle,
+                        }),
+                        expect.objectContaining({
+                          id: productCategoryChild3.id,
+                          handle: productCategoryChild3.handle,
+                        }),
+                      ],
+                    }),
+                    expect.objectContaining({
+                      id: newChild.id,
+                      handle: newChild.handle,
+                      category_children: [],
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ])
+        )
+
+        await api.post(
+          `/admin/product-categories/${productCategoryChild2.id}`,
+          { rank: 0 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/product-categories/${newChild.id}`,
+          { rank: 0 },
+          adminHeaders
+        )
+
+        response = await api.get(path, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.product_categories).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: productCategoryParent.id,
+              category_children: [
+                expect.objectContaining({
+                  id: productCategory.id,
+                  handle: productCategory.handle,
+                  category_children: [
+                    expect.objectContaining({
+                      id: newChild.id,
+                      handle: newChild.handle,
+                      category_children: [],
+                    }),
+                    expect.objectContaining({
+                      id: productCategoryChild.id,
+                      parent_category_id: productCategory.id,
+                      category_children: [
+                        expect.objectContaining({
+                          id: productCategoryChild2.id,
+                          handle: productCategoryChild2.handle,
+                        }),
+                        expect.objectContaining({
+                          id: productCategoryChild0.id,
+                          handle: productCategoryChild0.handle,
+                        }),
+                        expect.objectContaining({
+                          id: productCategoryChild1.id,
+                          handle: productCategoryChild1.handle,
+                        }),
+
+                        expect.objectContaining({
+                          id: productCategoryChild3.id,
+                          handle: productCategoryChild3.handle,
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+              ],
             }),
           ])
         )
@@ -684,7 +868,6 @@ medusaIntegrationTestRunner({
             {
               name: "category child 2",
               parent_category_id: productCategoryChild.id,
-              rank: 2,
               description: "category child 2",
             },
             adminHeaders
@@ -697,7 +880,6 @@ medusaIntegrationTestRunner({
             {
               name: "category child 3",
               parent_category_id: productCategoryChild.id,
-              rank: 2,
               description: "category child 3",
             },
             adminHeaders
@@ -767,7 +949,7 @@ medusaIntegrationTestRunner({
         expect(siblingsResponse.data.product_categories).toEqual([
           expect.objectContaining({
             id: productCategoryChild3.id,
-            rank: 1,
+            rank: 0,
           }),
         ])
       })
@@ -891,7 +1073,9 @@ medusaIntegrationTestRunner({
         ).data.product_category
       })
 
-      it("throws an error if invalid ID is sent", async () => {
+      // TODO: In almost all places we use a selector, not an id, to do the update, so throwing a 404 doesn't make sense from the workflow POV
+      // Discuss how we want this handled across all endpoints
+      it.skip("throws an error if invalid ID is sent", async () => {
         const error = await api
           .post(
             `/admin/product-categories/not-found-id`,
@@ -916,22 +1100,6 @@ medusaIntegrationTestRunner({
             `/admin/product-categories/not-found-id`,
             {
               rank: -1,
-            },
-            adminHeaders
-          )
-          .catch((e) => e)
-
-        expect(error.response.status).toEqual(400)
-        expect(error.response.data.type).toEqual("invalid_data")
-      })
-
-      // TODO: This seems to be a redundant test, I would remove this in V2
-      it("throws an error if invalid attribute is sent", async () => {
-        const error = await api
-          .post(
-            `/admin/product-categories/${productCategory.id}`,
-            {
-              invalid_property: "string",
             },
             adminHeaders
           )

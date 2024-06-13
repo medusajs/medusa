@@ -1,15 +1,14 @@
-import { composeMessage, ModuleRegistrationName } from "@medusajs/utils"
-import { createStep, StepExecutionContext } from "@medusajs/workflows-sdk"
+import { EventBusTypes, IEventBusModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepExecutionContext, createStep } from "@medusajs/workflows-sdk"
 
 type Input = {
   eventName: string
-  source: string
-  object: string
-  action?: string
   options?: Record<string, any>
-  data: (
-    context: StepExecutionContext
-  ) => Promise<Record<any, any>> | Record<any, any>
+  metadata?: Record<string, any>
+  data:
+    | ((context: StepExecutionContext) => Promise<Record<any, any>>)
+    | Record<any, any>
 }
 
 export const emitEventStepId = "emit-event-step"
@@ -22,18 +21,27 @@ export const emitEventStep = createStep(
 
     const { container } = context
 
-    const eventBus = container.resolve(ModuleRegistrationName.EVENT_BUS)
+    const eventBus: IEventBusModuleService = container.resolve(
+      ModuleRegistrationName.EVENT_BUS
+    )
 
     const data_ =
       typeof input.data === "function" ? await input.data(context) : input.data
-    const message = composeMessage(input.eventName, {
+
+    const metadata: EventBusTypes.MessageBody["metadata"] = {
+      ...input.metadata,
+    }
+
+    if (context.eventGroupId) {
+      metadata.eventGroupId = context.eventGroupId
+    }
+
+    const message = {
+      eventName: input.eventName,
       data: data_,
-      action: input.action ?? "",
-      object: input.object,
-      source: input.source,
       options: input.options,
-      context,
-    })
+      metadata,
+    }
 
     await eventBus.emit(message)
   },

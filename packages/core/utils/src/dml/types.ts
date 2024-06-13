@@ -4,32 +4,40 @@ import { DmlEntity } from "./entity"
  * The supported data types
  */
 export type KnownDataTypes =
-  | "string"
+  | "text"
   | "boolean"
   | "enum"
   | "number"
   | "dateTime"
   | "json"
-  | "any"
 
 /**
- * The meta-data returned by the relationship parse
- * method
+ * The available on Delete actions
  */
-export type RelationshipMetadata = {
-  name: string
-  type: "hasOne" | "hasMany" | "manyToMany"
-  entity: unknown
-  options: Record<string, any>
+export type OnDeleteActions =
+  | "cascade"
+  | "no action"
+  | "set null"
+  | "set default"
+  | (string & {})
+
+/**
+ * Any field that contains "nullable" and "optional" properties
+ * in their metadata are qualified as maybe fields.
+ *
+ * This allows us to wrap them inside "NullableModifier" and
+ * "OptionalModifier" classes.
+ */
+export type MaybeFieldMetadata = {
+  nullable: boolean
 }
 
 /**
  * The meta-data returned by the schema parse method
  */
-export type SchemaMetadata = {
-  nullable: boolean
-  optional: boolean
+export type SchemaMetadata = MaybeFieldMetadata & {
   fieldName: string
+  defaultValue?: any
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>
@@ -52,6 +60,24 @@ export type SchemaType<T> = {
 }
 
 /**
+ * Options accepted by all the relationships
+ */
+export type RelationshipOptions = {
+  mappedBy?: string
+}
+
+/**
+ * The meta-data returned by the relationship parse
+ * method
+ */
+export type RelationshipMetadata = MaybeFieldMetadata & {
+  name: string
+  type: "hasOne" | "hasMany" | "belongsTo" | "manyToMany"
+  entity: unknown
+  mappedBy?: string
+}
+
+/**
  * Definition of a relationship type. It should have a parse
  * method to get the metadata and a type-only property
  * to get its static type
@@ -66,7 +92,7 @@ export type RelationshipType<T> = {
  * entities on the fly, we need a way to represent a type-safe
  * constructor and its instance properties.
  */
-export interface MikroORMEntity<Props> extends Function {
+export interface EntityConstructor<Props> extends Function {
   new (): Props
 }
 
@@ -74,9 +100,11 @@ export interface MikroORMEntity<Props> extends Function {
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends DmlEntity<infer Schema>
-  ? MikroORMEntity<{
+  ? EntityConstructor<{
       [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
         ? Infer<R>
+        : Schema[K]["$dataType"] extends (() => infer R) | null
+        ? Infer<R> | null
         : Schema[K]["$dataType"]
     }>
   : never

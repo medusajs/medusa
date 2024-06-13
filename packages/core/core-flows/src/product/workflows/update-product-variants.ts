@@ -78,7 +78,7 @@ export const updateProductVariantsWorkflow = createWorkflow(
         }
 
         if ("product_variants" in data.input) {
-          return data.variantPriceSetLinks
+          const priceSets = data.variantPriceSetLinks
             .map((link) => {
               if (!("product_variants" in data.input)) {
                 return
@@ -94,6 +94,8 @@ export const updateProductVariantsWorkflow = createWorkflow(
               } as PricingTypes.UpsertPriceSetDTO
             })
             .filter(Boolean)
+
+          return { price_sets: priceSets }
         }
 
         return {

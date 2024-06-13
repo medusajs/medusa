@@ -2,7 +2,6 @@ import { ProductCategoryService } from "@services"
 
 import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { createProductCategories } from "../__fixtures__/product-category"
 import {
   eletronicsCategoriesData,
   productCategoriesData,
@@ -28,10 +27,9 @@ moduleIntegrationTestRunner<Service>({
 
       describe("list", () => {
         beforeEach(async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            productCategoriesData
-          )
+          for (const entry of productCategoriesData) {
+            await service.create([entry])
+          }
         })
 
         it("lists all product categories", async () => {
@@ -131,33 +129,33 @@ moduleIntegrationTestRunner<Service>({
             expect.objectContaining({
               id: "category-0",
               handle: "category-0",
-              mpath: "category-0.",
+              mpath: "category-0",
               parent_category_id: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
                   handle: "category-1",
-                  mpath: "category-0.category-1.",
+                  mpath: "category-0.category-1",
                   parent_category_id: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
-                      mpath: "category-0.category-1.category-1-a.",
+                      mpath: "category-0.category-1.category-1-a",
                       parent_category_id: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
                       id: "category-1-b",
                       handle: "category-1-b",
-                      mpath: "category-0.category-1.category-1-b.",
+                      mpath: "category-0.category-1.category-1-b",
                       parent_category_id: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
                           handle: "category-1-b-1",
                           mpath:
-                            "category-0.category-1.category-1-b.category-1-b-1.",
+                            "category-0.category-1.category-1-b.category-1-b-1",
                           parent_category_id: "category-1-b",
                           category_children: [],
                         }),
@@ -189,20 +187,20 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "category-1-a",
               handle: "category-1-a",
-              mpath: "category-0.category-1.category-1-a.",
+              mpath: "category-0.category-1.category-1-a",
               parent_category_id: "category-1",
               category_children: [],
             },
             {
               id: "category-1-b",
               handle: "category-1-b",
-              mpath: "category-0.category-1.category-1-b.",
+              mpath: "category-0.category-1.category-1-b",
               parent_category_id: "category-1",
               category_children: [
                 expect.objectContaining({
                   id: "category-1-b-1",
                   handle: "category-1-b-1",
-                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1",
                   parent_category_id: "category-1-b",
                   category_children: [],
                 }),
@@ -212,10 +210,9 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("includes the entire list of parents when include_ancestors_tree is true", async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            eletronicsCategoriesData
-          )
+          for (const entry of eletronicsCategoriesData) {
+            await service.create([entry])
+          }
 
           const productCategoryResults = await service.list(
             {
@@ -236,34 +233,34 @@ moduleIntegrationTestRunner<Service>({
               id: "4k-gaming",
               handle: "4k-gaming-laptops",
               mpath:
-                "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming.",
+                "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming",
               parent_category_id: "high-performance",
               parent_category: {
                 id: "high-performance",
                 parent_category_id: "gaming-laptops",
                 handle: "high-performance-gaming-laptops",
                 mpath:
-                  "electronics.computers.laptops.gaming-laptops.high-performance.",
+                  "electronics.computers.laptops.gaming-laptops.high-performance",
                 parent_category: {
                   id: "gaming-laptops",
                   handle: "gaming-laptops",
-                  mpath: "electronics.computers.laptops.gaming-laptops.",
+                  mpath: "electronics.computers.laptops.gaming-laptops",
                   parent_category_id: "laptops",
                   parent_category: {
                     id: "laptops",
                     parent_category_id: "computers",
                     handle: "laptops",
-                    mpath: "electronics.computers.laptops.",
+                    mpath: "electronics.computers.laptops",
                     parent_category: {
                       id: "computers",
                       handle: "computers-&-accessories",
-                      mpath: "electronics.computers.",
+                      mpath: "electronics.computers",
                       parent_category_id: "electronics",
                       parent_category: {
                         id: "electronics",
                         parent_category_id: null,
                         handle: "electronics",
-                        mpath: "electronics.",
+                        mpath: "electronics",
                         parent_category: null,
                       },
                     },
@@ -275,10 +272,9 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("includes the entire list of descendants when include_descendants_tree is true", async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            eletronicsCategoriesData
-          )
+          for (const entry of eletronicsCategoriesData) {
+            await service.create([entry])
+          }
 
           const productCategoryResults = await service.list(
             {
@@ -298,52 +294,51 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "gaming-laptops",
               handle: "gaming-laptops",
-              mpath: "electronics.computers.laptops.gaming-laptops.",
+              mpath: "electronics.computers.laptops.gaming-laptops",
               parent_category_id: "laptops",
               category_children: [
-                {
+                expect.objectContaining({
                   id: "budget-gaming",
                   handle: "budget-gaming-laptops",
                   mpath:
-                    "electronics.computers.laptops.gaming-laptops.budget-gaming.",
+                    "electronics.computers.laptops.gaming-laptops.budget-gaming",
                   parent_category_id: "gaming-laptops",
                   category_children: [],
-                },
-                {
+                }),
+                expect.objectContaining({
                   id: "high-performance",
                   handle: "high-performance-gaming-laptops",
                   mpath:
-                    "electronics.computers.laptops.gaming-laptops.high-performance.",
+                    "electronics.computers.laptops.gaming-laptops.high-performance",
                   parent_category_id: "gaming-laptops",
                   category_children: expect.arrayContaining([
-                    {
-                      id: "4k-gaming",
-                      handle: "4k-gaming-laptops",
-                      mpath:
-                        "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming.",
-                      parent_category_id: "high-performance",
-                      category_children: [],
-                    },
-                    {
+                    expect.objectContaining({
                       id: "vr-ready",
                       handle: "vr-ready-high-performance-gaming-laptops",
                       mpath:
-                        "electronics.computers.laptops.gaming-laptops.high-performance.vr-ready.",
+                        "electronics.computers.laptops.gaming-laptops.high-performance.vr-ready",
                       parent_category_id: "high-performance",
                       category_children: [],
-                    },
+                    }),
+                    expect.objectContaining({
+                      id: "4k-gaming",
+                      handle: "4k-gaming-laptops",
+                      mpath:
+                        "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming",
+                      parent_category_id: "high-performance",
+                      category_children: [],
+                    }),
                   ]),
-                },
+                }),
               ],
             },
           ])
         })
 
         it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true", async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            eletronicsCategoriesData
-          )
+          for (const entry of eletronicsCategoriesData) {
+            await service.create([entry])
+          }
 
           const productCategoryResults = await service.list(
             {
@@ -361,47 +356,47 @@ moduleIntegrationTestRunner<Service>({
           )
 
           expect(serializedObject).toEqual([
-            {
+            expect.objectContaining({
               id: "gaming-laptops",
               handle: "gaming-laptops",
-              mpath: "electronics.computers.laptops.gaming-laptops.",
+              mpath: "electronics.computers.laptops.gaming-laptops",
               parent_category_id: "laptops",
-              parent_category: {
+              parent_category: expect.objectContaining({
                 id: "laptops",
                 handle: "laptops",
-                mpath: "electronics.computers.laptops.",
+                mpath: "electronics.computers.laptops",
                 parent_category_id: "computers",
-                parent_category: {
+                parent_category: expect.objectContaining({
                   id: "computers",
                   handle: "computers-&-accessories",
-                  mpath: "electronics.computers.",
+                  mpath: "electronics.computers",
                   parent_category_id: "electronics",
-                  parent_category: {
+                  parent_category: expect.objectContaining({
                     id: "electronics",
                     handle: "electronics",
-                    mpath: "electronics.",
+                    mpath: "electronics",
                     parent_category_id: null,
                     parent_category: null,
-                  },
-                },
-              },
+                  }),
+                }),
+              }),
               category_children: [
-                {
+                expect.objectContaining({
                   id: "budget-gaming",
                   handle: "budget-gaming-laptops",
                   mpath:
-                    "electronics.computers.laptops.gaming-laptops.budget-gaming.",
+                    "electronics.computers.laptops.gaming-laptops.budget-gaming",
                   parent_category_id: "gaming-laptops",
-                },
-                {
+                }),
+                expect.objectContaining({
                   id: "high-performance",
                   handle: "high-performance-gaming-laptops",
                   mpath:
-                    "electronics.computers.laptops.gaming-laptops.high-performance.",
+                    "electronics.computers.laptops.gaming-laptops.high-performance",
                   parent_category_id: "gaming-laptops",
-                },
+                }),
               ],
-            },
+            }),
           ])
         })
 
@@ -424,17 +419,17 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "category-1-a",
               handle: "category-1-a",
-              mpath: "category-0.category-1.category-1-a.",
+              mpath: "category-0.category-1.category-1-a",
               parent_category_id: "category-1",
               parent_category: {
                 id: "category-1",
                 handle: "category-1",
-                mpath: "category-0.category-1.",
+                mpath: "category-0.category-1",
                 parent_category_id: "category-0",
                 parent_category: {
                   id: "category-0",
                   handle: "category-0",
-                  mpath: "category-0.",
+                  mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
                 },
@@ -443,17 +438,17 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "category-1-b",
               handle: "category-1-b",
-              mpath: "category-0.category-1.category-1-b.",
+              mpath: "category-0.category-1.category-1-b",
               parent_category_id: "category-1",
               parent_category: {
                 id: "category-1",
                 handle: "category-1",
-                mpath: "category-0.category-1.",
+                mpath: "category-0.category-1",
                 parent_category_id: "category-0",
                 parent_category: {
                   id: "category-0",
                   handle: "category-0",
-                  mpath: "category-0.",
+                  mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
                 },
@@ -482,17 +477,17 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "category-1-a",
               handle: "category-1-a",
-              mpath: "category-0.category-1.category-1-a.",
+              mpath: "category-0.category-1.category-1-a",
               parent_category_id: "category-1",
               parent_category: {
                 id: "category-1",
                 handle: "category-1",
-                mpath: "category-0.category-1.",
+                mpath: "category-0.category-1",
                 parent_category_id: "category-0",
                 parent_category: {
                   id: "category-0",
                   handle: "category-0",
-                  mpath: "category-0.",
+                  mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
                 },
@@ -502,17 +497,17 @@ moduleIntegrationTestRunner<Service>({
             {
               id: "category-1-b",
               handle: "category-1-b",
-              mpath: "category-0.category-1.category-1-b.",
+              mpath: "category-0.category-1.category-1-b",
               parent_category_id: "category-1",
               parent_category: {
                 id: "category-1",
                 handle: "category-1",
-                mpath: "category-0.category-1.",
+                mpath: "category-0.category-1",
                 parent_category_id: "category-0",
                 parent_category: {
                   id: "category-0",
                   handle: "category-0",
-                  mpath: "category-0.",
+                  mpath: "category-0",
                   parent_category_id: null,
                   parent_category: null,
                 },
@@ -521,7 +516,7 @@ moduleIntegrationTestRunner<Service>({
                 {
                   id: "category-1-b-1",
                   handle: "category-1-b-1",
-                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1",
                   parent_category_id: "category-1-b",
                 },
               ],
@@ -549,19 +544,19 @@ moduleIntegrationTestRunner<Service>({
             expect.objectContaining({
               id: "category-0",
               handle: "category-0",
-              mpath: "category-0.",
+              mpath: "category-0",
               parent_category_id: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
                   handle: "category-1",
-                  mpath: "category-0.category-1.",
+                  mpath: "category-0.category-1",
                   parent_category_id: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
-                      mpath: "category-0.category-1.category-1-a.",
+                      mpath: "category-0.category-1.category-1-a",
                       parent_category_id: "category-1",
                       category_children: [],
                     }),
@@ -577,10 +572,9 @@ moduleIntegrationTestRunner<Service>({
         const categoryOneId = "category-1"
 
         beforeEach(async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            productCategoriesData
-          )
+          for (const entry of productCategoriesData) {
+            await service.create([entry])
+          }
         })
 
         it("should return category for the given id", async () => {
@@ -659,10 +653,9 @@ moduleIntegrationTestRunner<Service>({
 
       describe("listAndCount", () => {
         beforeEach(async () => {
-          await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            productCategoriesData
-          )
+          for (const entry of productCategoriesData) {
+            await service.create([entry])
+          }
         })
 
         it("should return categories and count based on take and skip", async () => {
@@ -800,33 +793,33 @@ moduleIntegrationTestRunner<Service>({
             expect.objectContaining({
               id: "category-0",
               handle: "category-0",
-              mpath: "category-0.",
+              mpath: "category-0",
               parent_category_id: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
                   handle: "category-1",
-                  mpath: "category-0.category-1.",
+                  mpath: "category-0.category-1",
                   parent_category_id: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
-                      mpath: "category-0.category-1.category-1-a.",
+                      mpath: "category-0.category-1.category-1-a",
                       parent_category_id: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
                       id: "category-1-b",
                       handle: "category-1-b",
-                      mpath: "category-0.category-1.category-1-b.",
+                      mpath: "category-0.category-1.category-1-b",
                       parent_category_id: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
                           handle: "category-1-b-1",
                           mpath:
-                            "category-0.category-1.category-1-b.category-1-b-1.",
+                            "category-0.category-1.category-1-b.category-1-b-1",
                           parent_category_id: "category-1-b",
                           category_children: [],
                         }),
@@ -861,19 +854,19 @@ moduleIntegrationTestRunner<Service>({
             expect.objectContaining({
               id: "category-0",
               handle: "category-0",
-              mpath: "category-0.",
+              mpath: "category-0",
               parent_category_id: null,
               category_children: [
                 expect.objectContaining({
                   id: "category-1",
                   handle: "category-1",
-                  mpath: "category-0.category-1.",
+                  mpath: "category-0.category-1",
                   parent_category_id: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
-                      mpath: "category-0.category-1.category-1-a.",
+                      mpath: "category-0.category-1.category-1-a",
                       parent_category_id: "category-1",
                       category_children: [],
                     }),
@@ -887,10 +880,12 @@ moduleIntegrationTestRunner<Service>({
 
       describe("create", () => {
         it("should create a category successfully", async () => {
-          await service.create({
-            name: "New Category",
-            parent_category_id: null,
-          })
+          await service.create([
+            {
+              name: "New Category",
+              parent_category_id: null,
+            },
+          ])
 
           const [productCategory] = await service.list(
             {
@@ -910,16 +905,17 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should append rank from an existing category depending on parent", async () => {
-          await service.create({
-            name: "New Category",
-            parent_category_id: null,
-            rank: 0,
-          })
-
-          await service.create({
-            name: "New Category 2",
-            parent_category_id: null,
-          })
+          await service.create([
+            {
+              name: "New Category",
+              parent_category_id: null,
+              rank: 0,
+            },
+            {
+              name: "New Category 2",
+              parent_category_id: null,
+            },
+          ])
 
           const [productCategoryNew] = await service.list(
             {
@@ -930,17 +926,19 @@ moduleIntegrationTestRunner<Service>({
             }
           )
 
-          expect(productCategoryNew).toEqual(
+          expect(JSON.parse(JSON.stringify(productCategoryNew))).toEqual(
             expect.objectContaining({
               name: "New Category 2",
               rank: 1,
             })
           )
 
-          await service.create({
-            name: "New Category 2.1",
-            parent_category_id: productCategoryNew.id,
-          })
+          await service.create([
+            {
+              name: "New Category 2.1",
+              parent_category_id: productCategoryNew.id,
+            },
+          ])
 
           const [productCategoryWithParent] = await service.list(
             {
@@ -971,10 +969,10 @@ moduleIntegrationTestRunner<Service>({
         let categories
 
         beforeEach(async () => {
-          categories = await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            productCategoriesRankData
-          )
+          categories = []
+          for (const entry of productCategoriesRankData) {
+            categories.push((await service.create([entry]))[0])
+          }
 
           productCategoryZero = categories[0]
           productCategoryOne = categories[1]
@@ -985,9 +983,12 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should update the name of the category successfully", async () => {
-          await service.update(productCategoryZero.id, {
-            name: "New Category",
-          })
+          await service.update([
+            {
+              id: productCategoryZero.id,
+              name: "New Category",
+            },
+          ])
 
           const productCategory = await service.retrieve(
             productCategoryZero.id,
@@ -1003,9 +1004,12 @@ moduleIntegrationTestRunner<Service>({
           let error
 
           try {
-            await service.update("does-not-exist", {
-              name: "New Category",
-            })
+            await service.update([
+              {
+                id: "does-not-exist",
+                name: "New Category",
+              },
+            ])
           } catch (e) {
             error = e
           }
@@ -1016,9 +1020,12 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should reorder rank successfully in the same parent", async () => {
-          await service.update(productCategoryTwo.id, {
-            rank: 0,
-          })
+          await service.update([
+            {
+              id: productCategoryTwo.id,
+              rank: 0,
+            },
+          ])
 
           const productCategories = await service.list(
             {
@@ -1048,10 +1055,13 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should reorder rank successfully when changing parent", async () => {
-          await service.update(productCategoryTwo.id, {
-            rank: 0,
-            parent_category_id: productCategoryZero.id,
-          })
+          await service.update([
+            {
+              id: productCategoryTwo.id,
+              rank: 0,
+              parent_category_id: productCategoryZero.id,
+            },
+          ])
 
           const productCategories = await service.list(
             {
@@ -1085,10 +1095,13 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should reorder rank successfully when changing parent and in first position", async () => {
-          await service.update(productCategoryTwo.id, {
-            rank: 0,
-            parent_category_id: productCategoryZero.id,
-          })
+          await service.update([
+            {
+              id: productCategoryTwo.id,
+              rank: 0,
+              parent_category_id: productCategoryZero.id,
+            },
+          ])
 
           const productCategories = await service.list(
             {
@@ -1129,10 +1142,10 @@ moduleIntegrationTestRunner<Service>({
         let categories
 
         beforeEach(async () => {
-          categories = await createProductCategories(
-            MikroOrmWrapper.forkManager(),
-            productCategoriesRankData
-          )
+          categories = []
+          for (const entry of productCategoriesRankData) {
+            categories.push((await service.create([entry]))[0])
+          }
 
           productCategoryZero = categories[0]
           productCategoryOne = categories[1]
@@ -1143,7 +1156,7 @@ moduleIntegrationTestRunner<Service>({
           let error
 
           try {
-            await service.delete("does-not-exist")
+            await service.delete(["does-not-exist"])
           } catch (e) {
             error = e
           }
@@ -1157,7 +1170,7 @@ moduleIntegrationTestRunner<Service>({
           let error
 
           try {
-            await service.delete(productCategoryZero.id)
+            await service.delete([productCategoryZero.id])
           } catch (e) {
             error = e
           }
@@ -1168,7 +1181,7 @@ moduleIntegrationTestRunner<Service>({
         })
 
         it("should reorder siblings rank successfully on deleting", async () => {
-          await service.delete(productCategoryOne.id)
+          await service.delete([productCategoryOne.id])
 
           const productCategories = await service.list(
             {

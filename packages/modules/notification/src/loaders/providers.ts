@@ -62,7 +62,7 @@ async function syncDatabaseProviders({
   const providerServiceRegistrationKey = lowerCaseFirst(
     NotificationProviderService.name
   )
-  const providerService: ModulesSdkTypes.InternalModuleService<NotificationProvider> =
+  const providerService: ModulesSdkTypes.IMedusaInternalService<NotificationProvider> =
     container.resolve(providerServiceRegistrationKey)
 
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console

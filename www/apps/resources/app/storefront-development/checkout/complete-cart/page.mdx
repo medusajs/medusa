@@ -1,0 +1,131 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout Step 5: Complete Cart`,
+}
+
+# {metadata.title}
+
+Once you finish any required actions with the third-party payment provider, you can complete the cart and place the order.
+
+To complete the cart, send a request to the [Complete Cart API route](!api!/store#carts_postcartsidcomplete).
+
+For example:
+
+```ts
+fetch(
+  `http://localhost:9000/store/carts/${cartId}/complete`,
+  {
+    credentials: "include",
+    method: "POST",
+  }
+)
+.then((res) => res.json())
+.then(({ type, cart, order, error }) => {
+  if (type === "cart" && cart) {
+    // an error occured
+    console.error(error)
+  } else if (type === "order" && order) {
+    // TODO redirect to order success page
+    alert("Order placed.")
+    console.log(order)
+    // unset cart ID from local storage
+    localStorage.removeItem("cart_id")
+  }
+})
+```
+
+In the response of the request, the `type` field determines whether the cart completion was successful:
+
+- If the `type` is `cart`, it means the cart completion failed. The `error` response field holds the error details.
+- If the `type` is `order`, it means the cart was completed and the order was placed successfully.
+
+When the cart completion is successful, it's important to unset the cart ID from the `localStorage`, as the cart is no longer usable.
+
+---
+
+## React Example with Default System Payment Provider
+
+For example, to complete the cart when the default system payment provider is used:
+
+export const highlights = [
+  ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["10", "handlePayment", "This function sends the request\nto the Medusa application to complete the cart."],
+  ["21", "TODO", "If you're integrating a third-party payment provider,\nyou perform the custom logic before completing the cart."],
+  ["24", "fetch", "Send a request to the Medusa application\nto complete the cart and place the order."],
+  ["33", `type === "cart"`, "If the `type` returned is `cart`,\nit means an error occurred and the cart wasn't completed."],
+  ["36", `type === "order"`, "If the `type` returned is `order`,\nit means the cart was completed and the order was placed successfully."],
+  ["40", "refreshCart", "Unset and reset the cart."],
+  ["47", "button", "This button triggers the `handlePayment` function when clicked."]
+]
+
+```tsx highlights={highlights}
+"use client" // include with Next.js 13+
+
+import { useState } from "react"
+import { useCart } from "../../providers/cart"
+
+export default function SystemDefaultPayment() {
+  const { cart, refreshCart } = useCart()
+  const [loading, setLoading] = useState(false)
+
+  const handlePayment = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault()
+
+    if (!cart) {
+      return
+    }
+
+    setLoading(true)
+    
+    // TODO perform any custom payment handling logic
+    
+    // complete the cart
+    fetch(
+      `http://localhost:9000/store/carts/${cart.id}/complete`,
+      {
+        credentials: "include",
+        method: "POST",
+      }
+    )
+    .then((res) => res.json())
+    .then(({ type, cart, order, error }) => {
+      if (type === "cart" && cart) {
+        // an error occured
+        console.error(error)
+      } else if (type === "order" && order) {
+        // TODO redirect to order success page
+        alert("Order placed.")
+        console.log(order)
+        refreshCart()
+      }
+    })
+    .finally(() => setLoading(false))
+  }
+
+  return (
+    <button 
+      onClick={handlePayment}
+      disabled={loading}
+    >
+      Place Order
+    </button>
+  )
+}
+```
+
+In the example above, you create a `handlePayment` function in the payment component. In this function, you:
+
+- Optionally perform any required actions with the third-party payment provider. For example, authorize the payment. For the default system payment provider, no actions are required.
+- Send a request to the Complete Cart API route once all actions with the third-party payment provider are performed.
+- In the received response of the request, if the `type` is `cart`, it means that the cart completion failed. The error is set in the `error` response field.
+- If the `type` is `order`, it means the card was completed and the order was placed successfully. You can access the order in the `order` response field.
+- When the order is placed, you must unset the `cart_id` from the `localStorage`. You can redirect the customer to an order success page at this point.
+
+---
+
+## React Example with Third-Party Provider
+
+Refer to the [Stripe guide](../payment/stripe/page.mdx) for an example on integrating a third-party provider and implementing card completion.

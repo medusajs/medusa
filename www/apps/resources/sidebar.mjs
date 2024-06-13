@@ -311,15 +311,6 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             ],
           },
           {
-            title: "Guides",
-            children: [
-              {
-                path: "/commerce-modules/customer/register-customer-email",
-                title: "Register a Customer with Email",
-              },
-            ],
-          },
-          {
             title: "References",
             children: [
               {
@@ -1810,6 +1801,68 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         ],
       },
       {
+        path: "/storefront-development/products",
+        title: "Products",
+        children: [
+          {
+            path: "/storefront-development/products/list",
+            title: "List Products",
+          },
+          {
+            path: "/storefront-development/products/retrieve",
+            title: "Retrieve a Product",
+          },
+          {
+            path: "/storefront-development/products/variants",
+            title: "Select a Variant",
+          },
+          {
+            path: "/storefront-development/products/price",
+            title: "Retrieve Variant Prices",
+          },
+          {
+            path: "/storefront-development/products/categories",
+            title: "Categories",
+            children: [
+              {
+                path: "/storefront-development/products/categories/list",
+                title: "List Categories",
+              },
+              {
+                path: "/storefront-development/products/categories/retrieve",
+                title: "Retrieve a Category",
+              },
+              {
+                path: "/storefront-development/products/categories/products",
+                title: "Retrieve a Category's Products",
+              },
+              {
+                path: "/storefront-development/products/categories/nested-categories",
+                title: "Retrieve Nested Categories",
+              },
+            ],
+          },
+          {
+            path: "/storefront-development/products/collections",
+            title: "Collections",
+            children: [
+              {
+                path: "/storefront-development/products/collections/list",
+                title: "List Collections",
+              },
+              {
+                path: "/storefront-development/products/collections/retrieve",
+                title: "Retrieve a Collection",
+              },
+              {
+                path: "/storefront-development/products/collections/products",
+                title: "Retrieve a Collection's Products",
+              },
+            ],
+          },
+        ],
+      },
+      {
         path: "/storefront-development/cart",
         title: "Carts",
         children: [
@@ -1832,6 +1885,72 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             path: "/storefront-development/cart/manage-items",
             title: "Manage Line Items",
+          },
+        ],
+      },
+      {
+        path: "/storefront-development/checkout",
+        title: "Checkout",
+        children: [
+          {
+            path: "/storefront-development/checkout/email",
+            title: "1. Enter Email",
+          },
+          {
+            path: "/storefront-development/checkout/address",
+            title: "2. Enter Address",
+          },
+          {
+            path: "/storefront-development/checkout/shipping",
+            title: "3. Choose Shipping Method",
+          },
+          {
+            path: "/storefront-development/checkout/payment",
+            title: "4. Choose Payment Provider",
+            children: [
+              {
+                path: "/storefront-development/checkout/payment/stripe",
+                title: "Example: Stripe",
+              },
+            ],
+          },
+          {
+            path: "/storefront-development/checkout/complete-cart",
+            title: "5. Complete Cart",
+          },
+        ],
+      },
+      {
+        path: "/storefront-development/customers",
+        title: "Customers",
+        children: [
+          {
+            path: "/storefront-development/customers/register",
+            title: "Register Customer",
+          },
+          {
+            path: "/storefront-development/customers/login",
+            title: "Login Customer",
+          },
+          {
+            path: "/storefront-development/customers/retrieve",
+            title: "Retrieve Customer",
+          },
+          {
+            path: "/storefront-development/customers/context",
+            title: "Customer React Context",
+          },
+          {
+            path: "/storefront-development/customers/profile",
+            title: "Edit Customer Profile",
+          },
+          {
+            path: "/storefront-development/customers/addresses",
+            title: "Manage Customer Addresses",
+          },
+          {
+            path: "/storefront-development/customers/log-out",
+            title: "Log-out Customer",
           },
         ],
       },

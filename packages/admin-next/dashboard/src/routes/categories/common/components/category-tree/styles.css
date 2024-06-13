@@ -1,0 +1,39 @@
+.nestable-item {
+  margin: 0 !important;
+}
+
+.nestable-item.is-dragging:before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+
+  transition: 0.3s all !important;
+  border: 1px dashed var(--border-interactive) !important;
+}
+
+.nestable-item.is-dragging * {
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  border-radius: 6 !important;
+  overflow: hidden !important;
+  background: var(--bg-base) !important;
+  box-shadow: var(--elevation-card-hover) !important;
+  z-index: 1000 !important;
+}
+
+.nestable-drag-layer > .nestable-list > .nestable-item-copy-new-item {
+  box-shadow: var(--elevation-card-hover) !important;
+  border-radius: 6 !important;
+  overflow: hidden !important;
+}
+
+.nestable-list {
+  padding: 0 !important;
+  margin: 0 !important;
+}

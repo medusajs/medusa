@@ -13,7 +13,7 @@ To list regions in your storefront, send a request to the [List Regions API rout
 
   ```ts
   fetch(`http://localhost:9000/store/regions`, {
-    credentials: "include"
+    credentials: "include",
   })
   .then((res) => res.json())
   .then(({ regions }) => {
@@ -32,7 +32,7 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
 
   export default function Regions() {
@@ -47,7 +47,7 @@ export const highlights = [
       }
 
       fetch(`http://localhost:9000/store/regions`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
       .then(({ regions: dataRegions }) => {
@@ -68,7 +68,7 @@ export const highlights = [
           </ul>
         )}
       </div>
-    );
+    )
   }
   ```
 

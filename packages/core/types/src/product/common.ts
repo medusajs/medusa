@@ -371,6 +371,13 @@ export interface CreateProductCategoryDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpsertProductCategoryDTO extends UpdateProductCategoryDTO {
+  /**
+   * The ID of the product category to update. If not provided, the product category is created. In this case, the `name` property is required.
+   */
+  id?: string
+}
+
 /**
  * @interface
  *
