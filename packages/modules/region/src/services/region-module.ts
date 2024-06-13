@@ -20,7 +20,7 @@ import {
   isString,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
@@ -36,25 +36,20 @@ type InjectedDependencies = {
   countryService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = { Country }
-
-export default class RegionModuleService<
-    TRegion extends Region = Region,
-    TCountry extends Country = Country
-  >
-  extends ModulesSdkUtils.MedusaService<
-    RegionDTO,
-    {
-      Country: {
-        dto: RegionCountryDTO
-      }
+export default class RegionModuleService
+  extends MedusaService<{
+    Region: {
+      dto: RegionDTO
     }
-  >(Region, generateMethodForModels, entityNameToLinkableKeysMap)
+    Country: {
+      dto: RegionCountryDTO
+    }
+  }>({ Region, Country }, entityNameToLinkableKeysMap)
   implements IRegionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<TRegion>
-  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<TCountry>
+  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<Region>
+  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<Country>
 
   constructor(
     { baseRepository, regionService, countryService }: InjectedDependencies,
@@ -71,22 +66,24 @@ export default class RegionModuleService<
     return joinerConfig
   }
 
-  async create(
+  //@ts-expect-error
+  async createRegions(
     data: CreateRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async create(
+  async createRegions(
     data: CreateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
+
   @InjectManager("baseRepository_")
-  async create(
+  async createRegions(
     data: CreateRegionDTO | CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
 
-    const result = await this.create_(input, sharedContext)
+    const result = await this.createRegions_(input, sharedContext)
 
     return await this.baseRepository_.serialize<RegionDTO[]>(
       Array.isArray(data) ? result : result[0]
@@ -94,7 +91,7 @@ export default class RegionModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async create_(
+  async createRegions_(
     data: CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Region[]> {
@@ -132,16 +129,17 @@ export default class RegionModuleService<
     return result
   }
 
-  async upsert(
+  async upsertRegions(
     data: UpsertRegionDTO[],
     sharedContext?: Context
   ): Promise<RegionDTO[]>
-  async upsert(
+  async upsertRegions(
     data: UpsertRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
+
   @InjectTransactionManager("baseRepository_")
-  async upsert(
+  async upsertRegions(
     data: UpsertRegionDTO | UpsertRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<RegionDTO | RegionDTO[]> {
@@ -156,10 +154,10 @@ export default class RegionModuleService<
     const operations: Promise<Region[]>[] = []
 
     if (forCreate.length) {
-      operations.push(this.create_(forCreate, sharedContext))
+      operations.push(this.createRegions_(forCreate, sharedContext))
     }
     if (forUpdate.length) {
-      operations.push(this.update_(forUpdate, sharedContext))
+      operations.push(this.updateRegions_(forUpdate, sharedContext))
     }
 
     const result = (await promiseAll(operations)).flat()
@@ -168,18 +166,20 @@ export default class RegionModuleService<
     )
   }
 
-  async update(
+  //@ts-expect-error
+  async updateRegions(
     id: string,
     data: UpdateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO>
-  async update(
+  async updateRegions(
     selector: FilterableRegionProps,
     data: UpdateRegionDTO,
     sharedContext?: Context
   ): Promise<RegionDTO[]>
+
   @InjectManager("baseRepository_")
-  async update(
+  async updateRegions(
     idOrSelector: string | FilterableRegionProps,
     data: UpdateRegionDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -200,7 +200,10 @@ export default class RegionModuleService<
       }))
     }
 
-    const updateResult = await this.update_(normalizedInput, sharedContext)
+    const updateResult = await this.updateRegions_(
+      normalizedInput,
+      sharedContext
+    )
 
     const regions = await this.baseRepository_.serialize<
       RegionDTO[] | RegionDTO
@@ -210,7 +213,7 @@ export default class RegionModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async update_(
+  protected async updateRegions_(
     data: UpdateRegionInput[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Region[]> {
@@ -282,7 +285,7 @@ export default class RegionModuleService<
   private async validateCountries(
     countries: string[] | undefined,
     sharedContext: Context
-  ): Promise<TCountry[]> {
+  ): Promise<Country[]> {
     if (!countries?.length) {
       return []
     }

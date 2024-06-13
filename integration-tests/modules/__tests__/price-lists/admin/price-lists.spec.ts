@@ -46,7 +46,10 @@ medusaIntegrationTestRunner({
         customerGroup = await customerModule.createCustomerGroup({
           name: "VIP",
         })
-        region = await regionModule.create({ name: "US", currency_code: "USD" })
+        region = await regionModule.createRegions({
+          name: "US",
+          currency_code: "USD",
+        })
         ;[product] = await productModule.create([
           {
             title: "test product",

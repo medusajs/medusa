@@ -98,7 +98,7 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts", () => {
         it("should create a cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -281,7 +281,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with any region", async () => {
-          await regionModule.create({
+          await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -330,7 +330,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with region currency code", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -545,7 +545,7 @@ medusaIntegrationTestRunner({
         it("should update a cart with promo codes with a replace action", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -686,7 +686,7 @@ medusaIntegrationTestRunner({
         it("should not generate tax lines if region is not present or automatic taxes is false", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
@@ -758,7 +758,7 @@ medusaIntegrationTestRunner({
         it("should update a cart's region, sales channel, customer data and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "us",
             currency_code: "usd",
           })
@@ -967,7 +967,7 @@ medusaIntegrationTestRunner({
         it("should remove invalid shipping methods", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1101,7 +1101,7 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts/:id", () => {
         it("should create and update a cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1151,7 +1151,7 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/carts", () => {
         it("should get cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1250,7 +1250,7 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          region = await regionModule.create({
+          region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1520,7 +1520,7 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/payment-collections", () => {
         it("should create a payment collection for the cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1547,7 +1547,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should return an existing payment collection for the cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1580,7 +1580,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a new payment collection for a new cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1622,7 +1622,7 @@ medusaIntegrationTestRunner({
         it("should update a carts tax lines when region.automatic_taxes is false", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
@@ -1679,7 +1679,7 @@ medusaIntegrationTestRunner({
         it("should throw error when shipping is not present", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
@@ -1809,7 +1809,7 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          region = await regionService.create({
+          region = await regionService.createRegions({
             name: "Test region",
             countries: ["US"],
             currency_code: "usd",

@@ -74,7 +74,7 @@ medusaIntegrationTestRunner({
 
     describe("Draft Orders - Admin", () => {
       it("should create a draft order", async () => {
-        const region = await regionModuleService.create({
+        const region = await regionModuleService.createRegions({
           name: "US",
           currency_code: "usd",
         })
