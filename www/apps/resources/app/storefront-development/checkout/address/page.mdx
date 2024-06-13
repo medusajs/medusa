@@ -29,19 +29,19 @@ For example:
     city,
     country_code,
     province,
-    phone
+    phone,
   }
 
   fetch(`http://localhost:9000/store/carts/${cartId}`, {
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       shipping_address: address,
-      billing_address: address
-    })
+      billing_address: address,
+    }),
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -64,10 +64,10 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useState } from "react";
-  import { useCart } from "../../../providers/cart";
-
-  export default function CheckoutAddressStep () {
+  import { useState } from "react"
+  import { useCart } from "../../../providers/cart"
+  
+  export default function CheckoutAddressStep() {
     const { cart, setCart } = useCart()
     const [loading, setLoading] = useState(false)
     const [firstName, setFirstName] = useState("")
@@ -99,19 +99,19 @@ export const highlights = [
         city,
         country_code: countryCode,
         province,
-        phone: phoneNumber
+        phone: phoneNumber,
       }
 
       fetch(`http://localhost:9000/store/carts/${cart.id}`, {
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           shipping_address: address,
-          billing_address: address
-        })
+          billing_address: address,
+        }),
       })
       .then((res) => res.json())
       .then(({ cart: updatedCart }) => {

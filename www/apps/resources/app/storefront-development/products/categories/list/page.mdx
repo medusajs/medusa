@@ -37,7 +37,7 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
 
   export default function Categories() {
@@ -75,7 +75,7 @@ export const highlights = [
           </ul>
         )}
       </div>
-    );
+    )
   }
   ```
 
@@ -108,7 +108,7 @@ export const paginateHighlights = [
 ```tsx highlights={paginateHighlights}
 "use client" // include with Next.js 13+
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 
 export default function Categories() {
@@ -147,7 +147,7 @@ export default function Categories() {
         }
         return [
           ...prev,
-          ...product_categories
+          ...product_categories,
         ]
       })
       setHasMorePages(count > limit * currentPage)
@@ -180,7 +180,7 @@ export default function Categories() {
         </button>
       )}
     </div>
-  );
+  )
 }
 ```
 
@@ -196,7 +196,7 @@ For example, to run a query on the product categories:
 
 ```ts
 const searchParams = new URLSearchParams({
-  q: "Shirt"
+  q: "Shirt",
 })
 
 fetch(`http://localhost:9000/store/product-categories?${

@@ -21,7 +21,7 @@ export const fetchHighlights = [
 
   ```ts highlights={fetchHighlights}
   const searchParams = new URLSearchParams({
-    fields: "*category_children"
+    fields: "*category_children",
   })
 
   fetch(`http://localhost:9000/store/product-categories/${id}?${
@@ -71,7 +71,7 @@ export const highlights = [
       }
 
       const searchParams = new URLSearchParams({
-        fields: "*category_children"
+        fields: "*category_children",
       })
 
       fetch(`http://localhost:9000/store/product-categories/${id}?${
