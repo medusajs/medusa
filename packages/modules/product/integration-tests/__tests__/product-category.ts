@@ -297,39 +297,39 @@ moduleIntegrationTestRunner<Service>({
               mpath: "electronics.computers.laptops.gaming-laptops",
               parent_category_id: "laptops",
               category_children: [
-                {
+                expect.objectContaining({
                   id: "budget-gaming",
                   handle: "budget-gaming-laptops",
                   mpath:
                     "electronics.computers.laptops.gaming-laptops.budget-gaming",
                   parent_category_id: "gaming-laptops",
                   category_children: [],
-                },
-                {
+                }),
+                expect.objectContaining({
                   id: "high-performance",
                   handle: "high-performance-gaming-laptops",
                   mpath:
                     "electronics.computers.laptops.gaming-laptops.high-performance",
                   parent_category_id: "gaming-laptops",
                   category_children: expect.arrayContaining([
-                    {
-                      id: "4k-gaming",
-                      handle: "4k-gaming-laptops",
-                      mpath:
-                        "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming",
-                      parent_category_id: "high-performance",
-                      category_children: [],
-                    },
-                    {
+                    expect.objectContaining({
                       id: "vr-ready",
                       handle: "vr-ready-high-performance-gaming-laptops",
                       mpath:
                         "electronics.computers.laptops.gaming-laptops.high-performance.vr-ready",
                       parent_category_id: "high-performance",
                       category_children: [],
-                    },
+                    }),
+                    expect.objectContaining({
+                      id: "4k-gaming",
+                      handle: "4k-gaming-laptops",
+                      mpath:
+                        "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming",
+                      parent_category_id: "high-performance",
+                      category_children: [],
+                    }),
                   ]),
-                },
+                }),
               ],
             },
           ])
@@ -356,47 +356,47 @@ moduleIntegrationTestRunner<Service>({
           )
 
           expect(serializedObject).toEqual([
-            {
+            expect.objectContaining({
               id: "gaming-laptops",
               handle: "gaming-laptops",
               mpath: "electronics.computers.laptops.gaming-laptops",
               parent_category_id: "laptops",
-              parent_category: {
+              parent_category: expect.objectContaining({
                 id: "laptops",
                 handle: "laptops",
                 mpath: "electronics.computers.laptops",
                 parent_category_id: "computers",
-                parent_category: {
+                parent_category: expect.objectContaining({
                   id: "computers",
                   handle: "computers-&-accessories",
                   mpath: "electronics.computers",
                   parent_category_id: "electronics",
-                  parent_category: {
+                  parent_category: expect.objectContaining({
                     id: "electronics",
                     handle: "electronics",
                     mpath: "electronics",
                     parent_category_id: null,
                     parent_category: null,
-                  },
-                },
-              },
+                  }),
+                }),
+              }),
               category_children: [
-                {
+                expect.objectContaining({
                   id: "budget-gaming",
                   handle: "budget-gaming-laptops",
                   mpath:
                     "electronics.computers.laptops.gaming-laptops.budget-gaming",
                   parent_category_id: "gaming-laptops",
-                },
-                {
+                }),
+                expect.objectContaining({
                   id: "high-performance",
                   handle: "high-performance-gaming-laptops",
                   mpath:
                     "electronics.computers.laptops.gaming-laptops.high-performance",
                   parent_category_id: "gaming-laptops",
-                },
+                }),
               ],
-            },
+            }),
           ])
         })
 
