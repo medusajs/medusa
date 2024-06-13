@@ -14,7 +14,7 @@ export async function getVariantInventoryItems({
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const linkQuery = remoteQueryObjectFromString({
-    entryPoint: LINKS.ProductVariantInventoryItem,
+    service: LINKS.ProductVariantInventoryItem,
     variables: {
       filters: {
         variant_id: variantIds,
