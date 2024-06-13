@@ -26,7 +26,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: 
           POSTGRES_USER: postgres
           POSTGRES_DB: cli-test
         options: >-
