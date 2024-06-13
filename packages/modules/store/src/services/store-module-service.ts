@@ -13,7 +13,7 @@ import {
   isString,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
@@ -27,14 +27,14 @@ type InjectedDependencies = {
   storeService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-export default class StoreModuleService<TEntity extends Store = Store>
-  extends ModulesSdkUtils.MedusaService<{
+export default class StoreModuleService
+  extends MedusaService<{
     Store: { dto: StoreTypes.StoreDTO }
   }>({ Store }, entityNameToLinkableKeysMap)
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<Store>
 
   constructor(
     { baseRepository, storeService }: InjectedDependencies,
