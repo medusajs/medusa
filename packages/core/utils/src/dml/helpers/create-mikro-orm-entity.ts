@@ -18,6 +18,7 @@ import type {
   RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
+  EntityHooks,
 } from "../types"
 import { HasOne } from "../relations/has-one"
 import { HasMany } from "../relations/has-many"
@@ -97,13 +98,20 @@ function defineHasOneRelationship(
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
-  >
+  >,
+  hooks: EntityHooks
 ) {
   const relatedModelName = upperCaseFirst(relatedEntity.name)
+  const shouldRemoveRelated = !!hooks.deleted?.remove.includes(
+    relationship.name
+  )
+
   OneToOne({
     entity: relatedModelName,
     nullable: relationship.nullable,
     mappedBy: relationship.mappedBy as any,
+    onDelete: shouldRemoveRelated ? "cascade" : undefined,
+    cascade: shouldRemoveRelated ? (["soft-remove"] as any) : undefined,
   })(MikroORMEntity.prototype, relationship.name)
 }
 
@@ -218,7 +226,8 @@ function defineManyToManyRelationship(
  */
 function defineRelationship(
   MikroORMEntity: EntityConstructor<any>,
-  relationship: RelationshipMetadata
+  relationship: RelationshipMetadata,
+  hooks: EntityHooks
 ) {
   /**
    * We expect the relationship.entity to be a function that
@@ -259,7 +268,12 @@ function defineRelationship(
    */
   switch (relationship.type) {
     case "hasOne":
-      defineHasOneRelationship(MikroORMEntity, relationship, relatedEntity)
+      defineHasOneRelationship(
+        MikroORMEntity,
+        relationship,
+        relatedEntity,
+        hooks
+      )
       break
     case "hasMany":
       defineHasManyRelationship(MikroORMEntity, relationship, relatedEntity)
@@ -279,12 +293,13 @@ function defineRelationship(
  * @todo: Handle soft deleted indexes and filters
  * @todo: Finalize if custom pivot entities are needed
  */
-export function createMikrORMEntity<
-  T extends DmlEntity<Record<string, SchemaType<any> | RelationshipType<any>>>
->(entity: T): Infer<T> {
+export function createMikrORMEntity<T extends DmlEntity<any>>(
+  entity: T
+): Infer<T> {
   class MikroORMEntity {}
+  const { name, schema, hooks } = entity.parse()
 
-  const className = upperCaseFirst(entity.name)
+  const className = upperCaseFirst(name)
   const tableName = pluralize(camelToSnakeCase(className))
 
   /**
@@ -300,12 +315,12 @@ export function createMikrORMEntity<
   /**
    * Processing schema fields
    */
-  Object.keys(entity.schema).forEach((property) => {
-    const field = entity.schema[property].parse(property)
+  Object.keys(schema).forEach((property) => {
+    const field = schema[property].parse(property)
     if ("fieldName" in field) {
       defineProperty(MikroORMEntity, field)
     } else {
-      defineRelationship(MikroORMEntity, field)
+      defineRelationship(MikroORMEntity, field, hooks)
     }
   })
 

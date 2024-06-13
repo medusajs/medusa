@@ -12,16 +12,6 @@ export type KnownDataTypes =
   | "json"
 
 /**
- * The available on Delete actions
- */
-export type OnDeleteActions =
-  | "cascade"
-  | "no action"
-  | "set null"
-  | "set default"
-  | (string & {})
-
-/**
  * Any field that contains "nullable" and "optional" properties
  * in their metadata are qualified as maybe fields.
  *
@@ -108,3 +98,21 @@ export type Infer<T> = T extends DmlEntity<infer Schema>
         : Schema[K]["$dataType"]
     }>
   : never
+
+/**
+ * Extracts names of relationships from a schema
+ */
+export type ExtractEntityRelations<Schema extends Record<string, any>> = {
+  [K in keyof Schema & string]: Schema[K] extends RelationshipType<any>
+    ? K
+    : never
+}[keyof Schema & string][]
+
+/**
+ * Entity hooks and the options accepted by them
+ */
+export type EntityHooks = {
+  deleted?: {
+    remove: string[]
+  }
+}

@@ -455,6 +455,63 @@ describe("Entity builder", () => {
         },
       })
     })
+
+    test("define delete trigger using the onDelete hook", () => {
+      const model = new EntityBuilder()
+      const email = model.define("email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+      })
+
+      const user = model
+        .define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.hasOne(() => email),
+        })
+        .onDelete({
+          remove: ["email"],
+        })
+
+      const User = createMikrORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: EntityConstructor<{ email: string; isVerified: boolean }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "1:1",
+          name: "email",
+          entity: "Email",
+          nullable: false,
+          cascade: ["soft-remove"],
+          onDelete: "cascade",
+        },
+      })
+    })
   })
 
   describe("Entity builder | hasMany", () => {
