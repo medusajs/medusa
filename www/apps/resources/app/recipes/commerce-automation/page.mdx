@@ -96,9 +96,9 @@ export const restockModelHighlights = [
   import { 
     Entity, 
     PrimaryKey, 
-    Property
-  } from "@mikro-orm/core";
-
+    Property,
+  } from "@mikro-orm/core"
+  
   @Entity()
   export class RestockNotification extends BaseEntity {
     @PrimaryKey({ columnType: "text" })
@@ -126,16 +126,16 @@ export const restockModelHighlights = [
   Next, create the file `src/modules/restock-notification/migrations/Migration20240516140616.ts` with the following content:
 
   ```ts title="src/modules/restock-notification/migrations/Migration20240516140616.ts"
-  import { Migration } from '@mikro-orm/migrations';
-
+  import { Migration } from "@mikro-orm/migrations"
+  
   export class Migration20240516140616 extends Migration {
 
     async up(): Promise<void> {
-      this.addSql('create table if not exists "restock_notification" ("id" text not null, "email" text not null, "variant_id" text not null, "sales_channel_id" text not null, constraint "restock_notification_pkey" primary key ("id"));');
+      this.addSql("create table if not exists \"restock_notification\" (\"id\" text not null, \"email\" text not null, \"variant_id\" text not null, \"sales_channel_id\" text not null, constraint \"restock_notification_pkey\" primary key (\"id\"));")
     }
 
     async down(): Promise<void> {
-      this.addSql('drop table if exists "restock_notification" cascade;');
+      this.addSql("drop table if exists \"restock_notification\" cascade;")
     }
 
   }
@@ -211,9 +211,9 @@ export const restockModuleService = [
             {
               name: "restock_notification",
               args: {
-                entity: RestockNotification.name
-              }
-            }
+                entity: RestockNotification.name,
+              },
+            },
           ],
           relationships: [
             {
@@ -222,20 +222,20 @@ export const restockModuleService = [
               primaryKey: "id",
               foreignKey: "variant_id",
               args: {
-                methodSuffix: "Variants"
-              }
+                methodSuffix: "Variants",
+              },
             },
             {
               serviceName: Modules.SALES_CHANNEL,
               alias: "sales_channel",
               primaryKey: "id",
               foreignKey: "sales_channel_id",
-            }
-          ]
+            },
+          ],
         }
       }
 
-      async create (data: CreateRestockNotificationDTO): Promise<RestockNotificationDTO> {
+      async create(data: CreateRestockNotificationDTO): Promise<RestockNotificationDTO> {
         const restockNotification = await this.restockNotificationService_.create(
           data
         )
@@ -257,10 +257,10 @@ export const restockModuleService = [
   Next, create the module's definition file `src/modules/restock-notification/index.ts` with the following content:
 
   ```ts title="src/modules/restock-notification/index.ts"
-  import RestockNotificationModuleService from "./service";
-
+  import RestockNotificationModuleService from "./service"
+  
   export default {
-    service: RestockNotificationModuleService
+    service: RestockNotificationModuleService,
   }
   ```
 
@@ -273,10 +273,10 @@ export const restockModuleService = [
       "restockNotificationModuleService": {
         resolve: "./modules/restock-notification",
         definition: {
-          isQueryable: true
-        }
+          isQueryable: true,
+        },
       },
-    }
+    },
   })
   ```
 
@@ -293,14 +293,14 @@ export const restockModuleService = [
   ```ts title="src/api/store/restock-notification/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
   import type { 
     MedusaRequest, 
-    MedusaResponse
-  } from "@medusajs/medusa";
+    MedusaResponse,
+  } from "@medusajs/medusa"
   import RestockNotificationModuleService 
-    from "../../../modules/restock-notification/service";
+    from "../../../modules/restock-notification/service"
   import { 
-    CreateRestockNotificationDTO
-  } from "../../../types/restock-notification";
-
+    CreateRestockNotificationDTO,
+  } from "../../../types/restock-notification"
+  
   type RestockNotificationReq = CreateRestockNotificationDTO
 
   export async function POST(
@@ -317,7 +317,7 @@ export const restockModuleService = [
     )
 
     res.json({
-      success: true
+      success: true,
     })
   }
   ```
@@ -357,18 +357,18 @@ export const subscriberHighlights = [
   import { 
     IInventoryServiceNext, 
     INotificationModuleService, 
-    RemoteQueryFunction
+    RemoteQueryFunction,
   } from "@medusajs/types"
   import { 
     ContainerRegistrationKeys, 
     Modules, 
-    remoteQueryObjectFromString
+    remoteQueryObjectFromString,
   } from "@medusajs/utils"
   import { 
-    RestockNotificationDTO
+    RestockNotificationDTO,
   } from "../types/restock-notification"
   import { 
-    RemoteLink
+    RemoteLink,
   } from "@medusajs/modules-sdk"
   import RestockNotificationModuleService 
     from "../modules/restock-notification/service"
@@ -376,7 +376,7 @@ export const subscriberHighlights = [
   // subscriber function
   export default async function inventoryItemUpdateHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const remoteQuery: RemoteQueryFunction = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
@@ -406,7 +406,7 @@ export const subscriberHighlights = [
 
     const inventoryVariantItems = 
       await inventoryVariantLinkService.list({
-        inventory_item_id: [inventoryItemId]
+        inventory_item_id: [inventoryItemId],
       }) as {
         variant_id: string,
         inventory_item_id: string
@@ -421,13 +421,13 @@ export const subscriberHighlights = [
       entryPoint: "restock_notification",
       fields: [
         "email",
-        "variant.name"
+        "variant.name",
       ],
       variables: {
         filters: {
-          variant_id: inventoryVariantItems[0].variant_id
-        }
-      }
+          variant_id: inventoryVariantItems[0].variant_id,
+        },
+      },
     })
 
     const restockNotifications: RestockNotificationDTO[] = 
@@ -444,8 +444,8 @@ export const subscriberHighlights = [
       const salesChannelLocations = 
         await salesChannelLocationService.list({
           sales_channel_id: [
-            restockNotification.sales_channel_id
-          ]
+            restockNotification.sales_channel_id,
+          ],
         }) as {
           stock_location_id: string
           sales_channel_id: string
@@ -474,9 +474,9 @@ export const subscriberHighlights = [
         template: "test_template",
         data: {
           variant_id: restockNotification.variant_id,
-          variant_name: restockNotification.variant.title
+          variant_name: restockNotification.variant.title,
           // other data...
-        }
+        },
       })
 
       // delete the restock notification
@@ -582,17 +582,17 @@ export const syncProductsWorkflowHighlight = [
 ]
 
   ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight}
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk";
-  import { IProductModuleService, IStoreModuleService, ProductDTO, StoreDTO } from "@medusajs/types";
-  import { StepResponse, createStep, createWorkflow } from "@medusajs/workflows-sdk";
-
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { IProductModuleService, IStoreModuleService, ProductDTO, StoreDTO } from "@medusajs/types"
+  import { StepResponse, createStep, createWorkflow } from "@medusajs/workflows-sdk"
+  
   type RetrieveStoreStepInput = {
     id: string
   }
 
   const retrieveStoreStep = createStep(
     "retrieve-store-step",
-    async ({ id }: RetrieveStoreStepInput, {container}) => {
+    async ({ id }: RetrieveStoreStepInput, { container }) => {
       const storeModuleService: IStoreModuleService = 
         container.resolve(ModuleRegistrationName.STORE)
 
@@ -614,8 +614,8 @@ export const syncProductsWorkflowHighlight = [
 
       const products = await productModuleService.list({
         updated_at: {
-          $gt: last_sync_date
-        }
+          $gt: last_sync_date,
+        },
       })
 
       return new StepResponse({ products })
@@ -634,7 +634,7 @@ export const syncProductsWorkflowHighlight = [
       )
 
       const productsBeforeSync = await productSyncModuleService.list({
-        id: products.map((product) => product.id)
+        id: products.map((product) => product.id),
       })
 
       for (const product of products) {
@@ -642,7 +642,7 @@ export const syncProductsWorkflowHighlight = [
       }
 
       return new StepResponse({}, {
-        products: productsBeforeSync
+        products: productsBeforeSync,
       })
     }, 
     async ({ products }, { container }) => {
@@ -670,13 +670,13 @@ export const syncProductsWorkflowHighlight = [
 
       await storeModuleService.update(store.id, {
         metadata: {
-          last_sync_date: (new Date()).toString()
-        }
+          last_sync_date: (new Date()).toString(),
+        },
       })
 
       return new StepResponse({}, {
         id: store.id,
-        last_sync_date: prevLastSyncDate
+        last_sync_date: prevLastSyncDate,
       })
     },
     async ({ id, last_sync_date }, { container }) => {
@@ -685,8 +685,8 @@ export const syncProductsWorkflowHighlight = [
 
       await storeModuleService.update(id, {
         metadata: {
-          last_sync_date
-        }
+          last_sync_date,
+        },
       })
     }
   )
@@ -701,19 +701,19 @@ export const syncProductsWorkflowHighlight = [
       "sync-products-workflow",
       function ({ store_id }: SyncProductsWorkflowInput) {
         const { store } = retrieveStoreStep({
-          id: store_id
+          id: store_id,
         })
 
         const { products } = retrieveProductsToUpdateStep({
-          last_sync_date: store.metadata.last_sync_date
+          last_sync_date: store.metadata.last_sync_date,
         })
 
         syncProductsStep({
-          products
+          products,
         })
 
         updateStoreLastSyncStep({
-          store
+          store,
         })
       }
     )
@@ -857,16 +857,16 @@ The `order.placed` event is currently not emitted.
     SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
   import { 
     ICustomerModuleService, 
-    IOrderModuleService
+    IOrderModuleService,
   } from "@medusajs/types"
 
   export default async function orderCreatedHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const orderId = "data" in data ? data.data.id : data.id
 
@@ -881,9 +881,9 @@ The `order.placed` event is currently not emitted.
     // check if VIP group exists
     const vipGroup = await customerModuleService
       .listCustomerGroups({
-        name: "VIP"
+        name: "VIP",
       }, {
-        relations: ["customers"]
+        relations: ["customers"],
       })
 
     if (!vipGroup.length) {
@@ -902,7 +902,7 @@ The `order.placed` event is currently not emitted.
     }
 
     const [, count] = await orderModuleService.listAndCount({
-      customer_id: order.customer_id
+      customer_id: order.customer_id,
     })
 
     if (count < 20) {
@@ -912,7 +912,7 @@ The `order.placed` event is currently not emitted.
     // add customer to VIP group
     await customerModuleService.addCustomerToGroup({
       customer_group_id: vipGroup[0].id,
-      customer_id: order.customer_id
+      customer_id: order.customer_id,
     })
   }
 
@@ -986,20 +986,20 @@ export const newsletterHighlights = [
     SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
   import { 
-    NotificationModuleService
+    NotificationModuleService,
   } from "@medusajs/notification"
   import { 
     ICustomerModuleService, 
     IProductModuleService, 
-    IStoreModuleService
+    IStoreModuleService,
   } from "@medusajs/types"
 
   export default async function productCreateHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const productModuleService: IProductModuleService = 
       container.resolve(ModuleRegistrationName.PRODUCT)
@@ -1019,8 +1019,8 @@ export const newsletterHighlights = [
 
     const products = await productModuleService.list({
       created_at: {
-        $gt: store.metadata.last_newsletter_send_date
-      }
+        $gt: store.metadata.last_newsletter_send_date,
+      },
     })
 
     if (products.length < 10) {
@@ -1035,15 +1035,15 @@ export const newsletterHighlights = [
         channel: "email",
         template: "newsletter_template",
         data: {
-          products
-        }
+          products,
+        },
       }))
     )
 
     await storeModuleService.update(store.id, {
       metadata: {
-        last_newsletter_send_date: (new Date()).toString()
-      }
+        last_newsletter_send_date: (new Date()).toString(),
+      },
     })
   }
 

@@ -31,11 +31,11 @@ export const fetchHighlights = [
     credentials: "include",
     headers: {
       "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       region_id: region.id,
-    })
+    }),
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -58,9 +58,9 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react"
   // other imports...
-
+  
   export default function Home() {
     // TODO assuming you have the region retrieved
     const region = {
@@ -82,11 +82,11 @@ export const highlights = [
         credentials: "include",
         headers: {
           "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           region_id: region.id,
-        })
+        }),
       })
       .then((res) => res.json())
       .then(({ cart }) => {
@@ -130,8 +130,8 @@ fetch(`http://localhost:9000/store/carts`, {
   // ...
   body: JSON.stringify({
     // ...
-    customer_id: customer.id
-  })
+    customer_id: customer.id,
+  }),
 })
 .then((res) => res.json())
 .then(({ cart }) => {

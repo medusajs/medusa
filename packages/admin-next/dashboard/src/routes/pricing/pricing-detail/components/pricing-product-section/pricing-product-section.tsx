@@ -1,5 +1,5 @@
 import { PencilSquare, Plus, Trash } from "@medusajs/icons"
-import { PriceListDTO, HttpTypes } from "@medusajs/types"
+import { HttpTypes, PriceListDTO } from "@medusajs/types"
 import { Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import { usePriceListLinkProducts } from "../../../../../hooks/api/price-lists"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
@@ -45,7 +46,8 @@ export const PricingProductSection = ({
   )
 
   const filters = useProductTableFilters()
-  const columns = useColumns()
+  const columns = useColumns(priceList)
+  const { mutateAsync } = usePriceListLinkProducts(priceList.id)
 
   const { table } = useDataTable({
     data: products || [],
@@ -76,9 +78,9 @@ export const PricingProductSection = ({
       return
     }
 
-    // The endpoint to batch remove prices by product ids is not implemented in
-    // v2. We either need to implement it or remove the feature.
-    console.log("Not implemented yet.")
+    mutateAsync({
+      remove: Object.keys(rowSelection),
+    })
   }
 
   const handleEdit = async () => {
@@ -144,10 +146,36 @@ export const PricingProductSection = ({
   )
 }
 
-const ProductRowAction = ({ product }: { product: HttpTypes.AdminProduct }) => {
+const ProductRowAction = ({
+  product,
+  priceList,
+}: {
+  product: HttpTypes.AdminProduct
+  priceList: HttpTypes.AdminPriceList
+}) => {
   const { t } = useTranslation()
+  const { mutateAsync } = usePriceListLinkProducts(priceList.id)
 
-  // TODO: The endpoint to remove prices by product id is not implemented in v2.
+  const handleDelete = async () => {
+    const prompt = usePrompt()
+
+    const res = await prompt({
+      title: t("general.areYouSure"),
+      description: t("pricing.products.deleteProductsPricesWarning", {
+        count: 1,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    mutateAsync({
+      remove: [product.id],
+    })
+  }
 
   return (
     <ActionMenu
@@ -157,11 +185,7 @@ const ProductRowAction = ({ product }: { product: HttpTypes.AdminProduct }) => {
             {
               icon: <Trash />,
               label: t("actions.remove"),
-              onClick: () => {
-                console.log(
-                  `Removing prices for ${product.id}. Not implemented yet.`
-                )
-              },
+              onClick: handleDelete,
             },
           ],
         },
@@ -172,7 +196,7 @@ const ProductRowAction = ({ product }: { product: HttpTypes.AdminProduct }) => {
 
 const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
 
-const useColumns = () => {
+const useColumns = (priceList: HttpTypes.AdminPriceList) => {
   const base = useProductTableColumns()
 
   return useMemo(
@@ -208,7 +232,9 @@ const useColumns = () => {
       ...base,
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <ProductRowAction product={row.original} />,
+        cell: ({ row }) => (
+          <ProductRowAction product={row.original} priceList={priceList} />
+        ),
       }),
     ],
     [base]

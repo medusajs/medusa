@@ -60,7 +60,7 @@ Create a Marketplace Module that holds and manages these relationships.
   Then, create the file `src/modules/marketplace/models/store-user.ts` with the following content:
   
   ```ts title="src/modules/marketplace/models/store-user.ts"
-  import { BaseEntity } from "@medusajs/utils";
+  import { BaseEntity } from "@medusajs/utils"
   import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
   
   @Entity()
@@ -83,7 +83,7 @@ Create a Marketplace Module that holds and manages these relationships.
   Next, create the file `src/modules/marketplace/models/store-product.ts` with the following content:
   
   ```ts title="src/modules/marketplace/models/store-product.ts"
-  import { BaseEntity } from "@medusajs/utils";
+  import { BaseEntity } from "@medusajs/utils"
   import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
   
   @Entity()
@@ -106,7 +106,7 @@ Create a Marketplace Module that holds and manages these relationships.
   Finally, create the file `src/modules/marketplace/models/store-order.ts` with the following content:
   
   ```ts title="src/modules/marketplace/models/store-order.ts"
-  import { BaseEntity } from "@medusajs/utils";
+  import { BaseEntity } from "@medusajs/utils"
   import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
   
   @Entity()
@@ -138,24 +138,24 @@ Create a Marketplace Module that holds and manages these relationships.
   To reflect these changes on the database, create the migration `src/modules/marketplace/migrations/Migration20240514143248.ts` with the following content:
   
   ```ts title="src/modules/marketplace/migrations/Migration20240514143248.ts"
-  import { Migration } from '@mikro-orm/migrations';
+  import { Migration } from "@mikro-orm/migrations"
   
   export class Migration20240514143248 extends Migration {
   
     async up(): Promise<void> {
-      this.addSql('create table if not exists "store_order" ("id" varchar(255) not null, "store_id" text not null, "order_id" text not null, "parent_order_id" text not null, constraint "store_order_pkey" primary key ("id"));');
+      this.addSql("create table if not exists \"store_order\" (\"id\" varchar(255) not null, \"store_id\" text not null, \"order_id\" text not null, \"parent_order_id\" text not null, constraint \"store_order_pkey\" primary key (\"id\"));")
   
-      this.addSql('create table if not exists "store_product" ("id" varchar(255) not null, "store_id" text not null, "product_id" text not null, constraint "store_product_pkey" primary key ("id"));');
+      this.addSql("create table if not exists \"store_product\" (\"id\" varchar(255) not null, \"store_id\" text not null, \"product_id\" text not null, constraint \"store_product_pkey\" primary key (\"id\"));")
   
-      this.addSql('create table if not exists "store_user" ("id" varchar(255) not null, "store_id" text not null, "user_id" text not null, constraint "store_user_pkey" primary key ("id"));');
+      this.addSql("create table if not exists \"store_user\" (\"id\" varchar(255) not null, \"store_id\" text not null, \"user_id\" text not null, constraint \"store_user_pkey\" primary key (\"id\"));")
     }
   
     async down(): Promise<void> {
-      this.addSql('drop table if exists "store_order" cascade;');
+      this.addSql("drop table if exists \"store_order\" cascade;")
   
-      this.addSql('drop table if exists "store_product" cascade;');
+      this.addSql("drop table if exists \"store_product\" cascade;")
   
-      this.addSql('drop table if exists "store_user" cascade;');
+      this.addSql("drop table if exists \"store_user\" cascade;")
     }
   
   }
@@ -173,7 +173,7 @@ Create a Marketplace Module that holds and manages these relationships.
     StoreDTO, 
     UserDTO,
     ProductDTO,
-    OrderDTO
+    OrderDTO,
   } from "@medusajs/types"
   
   export type StoreUserDTO = {
@@ -231,21 +231,21 @@ export const mainServiceHighlights = [
   
   ```ts title="src/modules/marketplace/service.ts" highlights={mainServiceHighlights} collapsibleLines="1-17" expandButtonLabel="Show Imports"
   import { ModulesSdkUtils, Modules } from "@medusajs/utils"
-  import StoreUser from "./models/store-user";
-  import StoreProduct from "./models/store-product";
-  import StoreOrder from "./models/store-order";
+  import StoreUser from "./models/store-user"
+  import StoreProduct from "./models/store-product"
+  import StoreOrder from "./models/store-order"
   import { 
     CreateStoreOrderDTO, 
     CreateStoreProductDTO, 
     CreateStoreUserDTO, 
     StoreOrderDTO, 
     StoreProductDTO, 
-    StoreUserDTO
-  } from "../../types/marketplace";
+    StoreUserDTO,
+  } from "../../types/marketplace"
   import { 
     ModuleJoinerConfig, 
-    ModulesSdkTypes
-  } from "@medusajs/types";
+    ModulesSdkTypes,
+  } from "@medusajs/types"
   
   type InjectedDependencies = {
     storeUserService: ModulesSdkTypes.InternalModuleService<
@@ -273,7 +273,7 @@ export const mainServiceHighlights = [
   
   const generateMethodsFor = [
     StoreProduct,
-    StoreOrder
+    StoreOrder,
   ]
   
   class MarketplaceModuleService extends ModulesSdkUtils
@@ -297,7 +297,7 @@ export const mainServiceHighlights = [
       constructor({ 
         storeUserService, 
         storeProductService, 
-        storeOrderService
+        storeOrderService,
       }: InjectedDependencies) {
         // @ts-ignore
         super(...arguments)
@@ -313,50 +313,50 @@ export const mainServiceHighlights = [
             {
               name: ["store_user"],
               args: {
-                entity: StoreUser.name
-              }
+                entity: StoreUser.name,
+              },
             },
             {
               name: ["store_product"],
               args: {
                 entity: StoreProduct.name,
-                methodSuffix: "StoreProducts"
-              }
+                methodSuffix: "StoreProducts",
+              },
             },
             {
               name: ["store_order"],
               args: {
                 entity: StoreOrder.name,
-                methodSuffix: "StoreOrders"
-              }
-            }
+                methodSuffix: "StoreOrders",
+              },
+            },
           ],
           relationships: [
             {
               serviceName: Modules.STORE,
               alias: "store",
               primaryKey: "id",
-              foreignKey: "store_id"
+              foreignKey: "store_id",
             },
             {
               serviceName: Modules.USER,
               alias: "user",
               primaryKey: "id",
-              foreignKey: "user_id"
+              foreignKey: "user_id",
             },
             {
               serviceName: Modules.PRODUCT,
               alias: "product",
               primaryKey: "id",
-              foreignKey: "product_id"
+              foreignKey: "product_id",
             },
             {
               serviceName: Modules.ORDER,
               alias: "order",
               primaryKey: "id",
-              foreignKey: "order_id"
-            }
-          ]
+              foreignKey: "order_id",
+            },
+          ],
         }
       }
   
@@ -401,7 +401,7 @@ export const mainServiceHighlights = [
   Finally, create the module definition at `src/modules/marketplace/index.ts` with the following content:
   
   ```ts title="src/modules/marketplace/index.ts"
-  import MarketplaceModuleService from "./service";
+  import MarketplaceModuleService from "./service"
   
   export default {
     service: MarketplaceModuleService,
@@ -417,10 +417,10 @@ export const mainServiceHighlights = [
       marketplaceModuleService: {
         resolve: "./modules/marketplace",
         definition: {
-          isQueryable: true
-        }
+          isQueryable: true,
+        },
       },
-    }
+    },
   })
   ```
   
@@ -463,13 +463,13 @@ export const userSubscriberHighlights = [
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 
     IUserModuleService,
-    IStoreModuleService
+    IStoreModuleService,
   } from "@medusajs/types"
   import MarketplaceModuleService from "../modules/marketplace/service"
   
   export default async function userCreatedHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const { id } = data.data || { data }
     const userModuleService: IUserModuleService = container.resolve(
@@ -485,12 +485,12 @@ export const userSubscriberHighlights = [
     const user = await userModuleService.retrieve(id)
   
     const store = await storeModuleService.create({
-      name: `${user.first_name}'s Store`
+      name: `${user.first_name}'s Store`,
     })
     
     const storeUser = await marketplaceModuleService.create({
       store_id: store.id,
-      user_id: user.id
+      user_id: user.id,
     })
   
     console.log(`Created StoreUser ${storeUser.id}`)
@@ -551,7 +551,7 @@ export const productSubscriberHighlights = [
   
   export default async function productCreateHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const { id } = data.data || data
     const productModuleService: IProductModuleService = container.resolve(
@@ -570,7 +570,7 @@ export const productSubscriberHighlights = [
   
     await marketplaceModuleService.createStoreProduct({
       store_id: product.metadata.store_id as string,
-      product_id: id
+      product_id: id,
     })
   }
   
@@ -646,13 +646,13 @@ export const productRoutesHighlights = [
   ```ts title="src/api/admin/marketplace/products/route.ts" highlights={productRoutesHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import { 
     remoteQueryObjectFromString,
     ContainerRegistrationKeys,
-    MedusaError
+    MedusaError,
   } from "@medusajs/utils"
   import MarketplaceModuleService 
     from "../../../../modules/marketplace/service"
@@ -670,7 +670,7 @@ export const productRoutesHighlights = [
     )
   
     const storeUsers = await marketplaceModuleService.list({
-      user_id: req.auth.actor_id
+      user_id: req.auth.actor_id,
     })
   
     if (!storeUsers.length) {
@@ -683,20 +683,20 @@ export const productRoutesHighlights = [
     const query = remoteQueryObjectFromString({
       entryPoint: "store_product",
       fields: [
-        "product.*"
+        "product.*",
       ],
       variables: {
         filters: {
-          store_id: storeUsers[0].store_id
-        }
-      }
+          store_id: storeUsers[0].store_id,
+        },
+      },
     })
   
     const result = await remoteQuery(query)
   
     res.json({
       store_id: storeUsers[0].store_id,
-      products: result.map((data) => data.product)
+      products: result.map((data) => data.product),
     })
   }
   ```
@@ -712,7 +712,7 @@ export const productRoutesHighlights = [
   ```ts title="src/api/middlewares.ts"
   import { 
     MiddlewaresConfig, 
-    authenticate
+    authenticate,
   } from "@medusajs/medusa"
   
   export const config: MiddlewaresConfig = {
@@ -779,12 +779,12 @@ export const orderSubscriberHighlights = [
   ```ts title="src/subscribers/order-created.ts" highlights={orderSubscriberHighlights} collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import type { 
     SubscriberArgs, 
-    SubscriberConfig
+    SubscriberConfig,
   } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 
     IOrderModuleService,
-    CreateOrderDTO
+    CreateOrderDTO,
   } from "@medusajs/types"
   import MarketplaceModuleService 
     from "../modules/marketplace/service"
@@ -792,7 +792,7 @@ export const orderSubscriberHighlights = [
   
   export default async function orderCreatedHandler({
     data,
-    container
+    container,
   }: SubscriberArgs<{ id: string }>) {
     const { id } = data.data || data
     const orderModuleService: IOrderModuleService = 
@@ -808,13 +808,13 @@ export const orderSubscriberHighlights = [
     const storeToOrders: Record<string, CreateOrderDTO> = {}
   
     const order = await orderModuleService.retrieve(id, {
-      relations: ["items"]
+      relations: ["items"],
     })
   
     await Promise.all(order.items?.map(async (item) => {
       const storeProduct = await marketplaceModuleService
         .listStoreProducts({
-          product_id: item.product_id
+          product_id: item.product_id,
         })
   
       if (!storeProduct.length) {
@@ -827,7 +827,7 @@ export const orderSubscriberHighlights = [
         const { id, ...orderDetails } = order
         storeToOrders[storeId] = {
           ...orderDetails,
-          items: []
+          items: [],
         }
       }
   
@@ -850,7 +850,7 @@ export const orderSubscriberHighlights = [
       // associate the order as-is with the store.
       await marketplaceModuleService.createStoreOrder({
         store_id: storeToOrdersKeys[0],
-        order_id: order.id
+        order_id: order.id,
       })
   
       return
@@ -861,13 +861,13 @@ export const orderSubscriberHighlights = [
       storeToOrdersKeys.map(async (storeId) => {
         const { result } = await createOrdersWorkflow(container)
           .run({
-            input: storeToOrders[storeId]
+            input: storeToOrders[storeId],
           })
   
         await marketplaceModuleService.createStoreOrder({
           store_id: storeId,
           order_id: result.id,
-          parent_order_id: order.id
+          parent_order_id: order.id,
         })
       })
     )
@@ -928,7 +928,7 @@ export const orderRoutesHighlights = [
   ```ts title="src/api/admin/marketplace/orders/route.ts" highlights={orderRoutesHighlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import { 
@@ -951,25 +951,25 @@ export const orderRoutesHighlights = [
     )
   
     const storeUsers = await marketplaceModuleService.list({
-      user_id: req.auth.actor_id
+      user_id: req.auth.actor_id,
     })
   
     const query = remoteQueryObjectFromString({
       entryPoint: "store_order",
       fields: [
-        "order.*"
+        "order.*",
       ],
       variables: {
         filters: {
-          store_id: storeUsers[0].store_id
-        }
-      }
+          store_id: storeUsers[0].store_id,
+        },
+      },
     })
   
     const result = await remoteQuery(query)
   
     res.json({
-      orders: result.map((data) => data.order)
+      orders: result.map((data) => data.order),
     })
   }
   

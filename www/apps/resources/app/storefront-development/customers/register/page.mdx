@@ -1,0 +1,190 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Register Customer in Storefront`,
+}
+
+# {metadata.title}
+
+To register a customer, you implement the following steps:
+
+1. Show the customer a form to enter their details.
+2. Send a `POST` request to the `/auth/customer/emailpass` API route to obtain a JWT token.
+3. Send a request to the [Create Customer API route](!api!/store#customers_postcustomers) pass the JWT token in the header.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["3", "fetch", "Send a request to obtain a JWT token."],
+  ["20", "fetch", "Send a request to create the customer."],
+  ["27", "token", "Pass as a Bearer token in the authorization header."],
+  ["39", "TODO", "Redirect the customer to the log in page."]
+]
+
+  ```ts highlights={fetchHighlights}
+  const handleRegistration = async () => {
+    // obtain JWT token
+    const { token } = await fetch(
+      `http://localhost:9000/auth/customer/emailpass`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    )
+    .then((res) => res.json())
+
+    // create customer
+    const { customer } = await fetch(
+      `http://localhost:9000/store/customers`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+        }),
+      }
+    )
+    .then((res) => res.json())
+
+    console.log(customer)
+    // TODO redirect to login page
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["22", "fetch", "Send a request to obtain a JWT token."],
+  ["39", "fetch", "Send a request to create the customer."],
+  ["46", "token", "Pass as a Bearer token in the authorization header."],
+  ["59", "TODO", "Redirect the customer to the log in page."]
+]
+
+  ```tsx highlights={highlights} collapsibleLines="61-100" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react"
+
+  export default function Register() {
+    const [loading, setLoading] = useState(false)
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const handleRegistration = async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      if (!firstName || !lastName || !email || !password) {
+        return
+      }
+      setLoading(true)
+
+      // obtain JWT token
+      const { token } = await fetch(
+        `http://localhost:9000/auth/customer/emailpass`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      )
+      .then((res) => res.json())
+
+      // create customer
+      const { customer } = await fetch(
+        `http://localhost:9000/store/customers`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            email,
+          }),
+        }
+      )
+      .then((res) => res.json())
+
+      console.log(customer)
+      setLoading(false)
+      // TODO redirect to login page
+    }
+
+    return (
+      <form>
+        <input 
+          type="text" 
+          name="first_name"
+          value={firstName}
+          placeholder="First Name"
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          name="last_name"
+          value={lastName}
+          placeholder="Last Name"
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input 
+          type="email" 
+          name="email"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input 
+          type="password" 
+          name="password"
+          value={password}
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleRegistration}
+        >
+          Register
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the above example, you create a `handleRegistration` function that:
+
+- Obtains a JWT token from the `/auth/customer/emailpass` API route.
+- Send a request to the Create Customer API route, and pass the JWT token as a Bearer token in the authorization header.
+- Once the customer is registered successfully, you can either redirect the customer to the login page or log them in automatically as explained in this guide.

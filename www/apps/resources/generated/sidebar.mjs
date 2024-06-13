@@ -1033,20 +1033,6 @@ export const generatedSidebar = [
           {
             "loaded": true,
             "isPathHref": true,
-            "title": "Guides",
-            "children": [
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/customer/register-customer-email",
-                "title": "Register a Customer with Email",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
             "title": "References",
             "children": [
               {
@@ -7143,49 +7129,6 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
-        "path": "/storefront-development/cart",
-        "title": "Carts",
-        "children": [
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/storefront-development/cart/create",
-            "title": "Create Cart",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/storefront-development/cart/retrieve",
-            "title": "Retrieve Cart",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/storefront-development/cart/context",
-            "title": "Cart React Context",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/storefront-development/cart/update",
-            "title": "Update Cart",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "isPathHref": true,
-            "path": "/storefront-development/cart/manage-items",
-            "title": "Manage Line Items",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
         "path": "/storefront-development/products",
         "title": "Products",
         "children": [
@@ -7287,6 +7230,49 @@ export const generatedSidebar = [
       {
         "loaded": true,
         "isPathHref": true,
+        "path": "/storefront-development/cart",
+        "title": "Carts",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/create",
+            "title": "Create Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/retrieve",
+            "title": "Retrieve Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/context",
+            "title": "Cart React Context",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/update",
+            "title": "Update Cart",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/cart/manage-items",
+            "title": "Manage Line Items",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
         "path": "/storefront-development/checkout",
         "title": "Checkout",
         "children": [
@@ -7331,6 +7317,63 @@ export const generatedSidebar = [
             "isPathHref": true,
             "path": "/storefront-development/checkout/complete-cart",
             "title": "5. Complete Cart",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/customers",
+        "title": "Customers",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/register",
+            "title": "Register Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/login",
+            "title": "Login Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/retrieve",
+            "title": "Retrieve Customer",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/context",
+            "title": "Customer React Context",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/profile",
+            "title": "Edit Customer Profile",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/addresses",
+            "title": "Manage Customer Addresses",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/customers/log-out",
+            "title": "Log-out Customer",
             "children": []
           }
         ]

@@ -23,8 +23,8 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/products`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-    }
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+    },
   })
   .then((res) => res.json())
   .then((data) => {
@@ -45,7 +45,7 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
 
   export default function Products() {
@@ -62,8 +62,8 @@ export const highlights = [
       fetch(`http://localhost:9000/store/products`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-        }
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        },
       })
       .then((res) => res.json())
       .then((data) => {
@@ -84,7 +84,7 @@ export const highlights = [
           </ul>
         )}
       </div>
-    );
+    )
   }
   ```
 
@@ -119,7 +119,7 @@ export const paginateHighlights = [
 ```tsx highlights={paginateHighlights}
 "use client" // include with Next.js 13+
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 
 export default function Products() {
@@ -146,8 +146,8 @@ export default function Products() {
     fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-      }
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
     })
     .then((res) => res.json())
     .then(({ products: dataProducts, count }) => {
@@ -158,7 +158,7 @@ export default function Products() {
         }
         return [
           ...prev,
-          ...dataProducts
+          ...dataProducts,
         ]
       })
       setHasMorePages(count > limit * currentPage)
@@ -189,7 +189,7 @@ export default function Products() {
         </button>
       )}
     </div>
-  );
+  )
 }
 ```
 
@@ -206,14 +206,14 @@ For example, to run a query on the products:
 ```ts
 const searchParams = new URLSearchParams({
   // other params...
-  q: "Shirt"
+  q: "Shirt",
 })
 
 fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
   credentials: "include",
   headers: {
-    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-  }
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+  },
 })
 .then((res) => res.json())
 .then(({ products: dataProducts, count }) => {

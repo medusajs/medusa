@@ -122,11 +122,11 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   ```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
 
   export async function POST(
@@ -139,7 +139,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const revokedKey = await apiKeyModuleService.revoke(
       request.params.id,
       {
-        revoked_by: request.auth_context.actor_id
+        revoked_by: request.auth_context.actor_id,
       }
     )
 
@@ -175,7 +175,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const revokedKey = await apiKeyModuleService.revoke(
       params.id,
       {
-        revoked_by: params.user_id
+        revoked_by: params.user_id,
       }
     )
 
@@ -260,7 +260,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import { 
     AuthenticatedMedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -275,7 +275,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const revokedKey = await apiKeyModuleService.revoke(
       request.params.id,
       {
-        revoked_by: request.auth_context.actor_id
+        revoked_by: request.auth_context.actor_id,
       }
     )
 
@@ -315,7 +315,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService = await initializeApiKeyModule()
 
     const revokedKey = await apiKeyModuleService.revoke(params.id, {
-      revoked_by: params.user_id
+      revoked_by: params.user_id,
     })
 
     const newKey = await apiKeyModuleService.create({

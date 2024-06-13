@@ -19,14 +19,14 @@ export const fetchHighlights = [
   ```ts highlights={fetchHighlights}
   const searchParams = new URLSearchParams({
     // other query params...
-    "category_id[]": categoryId
+    "category_id[]": categoryId,
   })
 
   fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
     credentials: "include",
     headers: {
-      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-    }
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+    },
   })
   .then((res) => res.json())
   .then(({ products, count }) => {
@@ -60,7 +60,7 @@ export const highlights = [
   }
 
   export default function CategoryProducts({
-    params: { categoryId }
+    params: { categoryId },
   }: Params) {
     const [loading, setLoading] = useState(true)
     const [products, setProducts] = useState<
@@ -80,14 +80,14 @@ export const highlights = [
       const searchParams = new URLSearchParams({
         limit: `${limit}`,
         offset: `${offset}`,
-        "category_id[]": categoryId
+        "category_id[]": categoryId,
       })
 
       fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
         credentials: "include",
         headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-        }
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        },
       })
       .then((res) => res.json())
       .then(({ products: dataProducts, count }) => {
@@ -98,7 +98,7 @@ export const highlights = [
           }
           return [
             ...prev,
-            ...dataProducts
+            ...dataProducts,
           ]
         })
         setHasMorePages(count > limit * currentPage)
@@ -131,7 +131,7 @@ export const highlights = [
           </button>
         )}
       </div>
-    );
+    )
   }
   ```
 
