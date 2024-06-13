@@ -41,7 +41,7 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
       serviceName: Modules.INVENTORY,
       primaryKey: "id",
       foreignKey: "inventory_item_id",
-      alias: "inventory_item",
+      alias: "inventory",
       deleteCascade: true,
     },
   ],
@@ -49,13 +49,13 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
     {
       serviceName: Modules.PRODUCT,
       fieldAlias: {
-        inventory_items: "inventory_link.inventory_item",
+        inventory: "inventory_items.inventory",
       },
       relationship: {
         serviceName: LINKS.ProductVariantInventoryItem,
         primaryKey: "variant_id",
         foreignKey: "id",
-        alias: "inventory_link",
+        alias: "inventory_items",
         isList: true,
       },
     },

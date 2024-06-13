@@ -140,7 +140,7 @@ export const useProductVariantTableColumns = (
         },
       }),
       ...optionColumns,
-      columnHelper.accessor("inventory", {
+      columnHelper.accessor("inventory_items", {
         header: () => (
           <div className="flex h-full w-full items-center">
             <span className="truncate">{t("fields.inventory")}</span>
@@ -148,7 +148,10 @@ export const useProductVariantTableColumns = (
         ),
         cell: ({ getValue, row }) => {
           const variant = row.original
-          const inventory: InventoryItemDTO[] = getValue()
+
+          const inventory: InventoryItemDTO[] = getValue().map(
+            (i) => i.inventory
+          )
 
           const hasInventoryKit = inventory.length > 1
 
