@@ -25,9 +25,9 @@ export const seedStorefrontDefaults = async (
     currency_code: defaultCurrency,
   })
 
-  let [store] = await storeModule.list({})
+  let [store] = await storeModule.listStores({})
 
-  store = await storeModule.update(store.id, {
+  store = await storeModule.updateStores(store.id, {
     default_region_id: region.id,
     supported_currency_codes: [region.currency_code],
     default_currency_code: region.currency_code,
