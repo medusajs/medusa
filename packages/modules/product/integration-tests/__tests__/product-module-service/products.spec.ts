@@ -1,5 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService, ProductCategoryDTO } from "@medusajs/types"
 import { kebabCase, ProductStatus } from "@medusajs/utils"
 import {
   Product,
@@ -18,7 +18,6 @@ import {
   createCollections,
   createTypes,
 } from "../../__fixtures__/product"
-import { createProductCategories } from "../../__fixtures__/product-category"
 
 jest.setTimeout(300000)
 
@@ -101,10 +100,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productTypeOne = types[0]
           productTypeTwo = types[1]
 
-          const categories = await createProductCategories(
-            testManager,
-            productCategoriesData
-          )
+          const categories: ProductCategoryDTO[] = []
+          for (const entry of productCategoriesData) {
+            categories.push(await service.createCategories(entry))
+          }
 
           productCategoryOne = categories[0]
           productCategoryTwo = categories[1]

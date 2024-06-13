@@ -12,9 +12,8 @@ import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductDTO } from "@medusajs/types"
 import { kebabCase, ProductStatus } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductService } from "@services"
+import { ProductService, ProductCategoryService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { createProductCategories } from "../__fixtures__/product-category"
 import {
   categoriesData,
   productsData,
@@ -25,15 +24,18 @@ jest.setTimeout(30000)
 
 type Service = IProductModuleService & {
   productService_: ProductService
+  productCategoryService_: ProductCategoryService
 }
 
 moduleIntegrationTestRunner<Service>({
   moduleName: Modules.PRODUCT,
   testSuite: ({ MikroOrmWrapper, service: moduleService }) => {
     let service: ProductService
+    let categoryService: ProductCategoryService
 
     beforeEach(() => {
       service = moduleService.productService_
+      categoryService = moduleService.productCategoryService_
     })
 
     describe("Product Service", () => {
@@ -351,10 +353,11 @@ moduleIntegrationTestRunner<Service>({
 
             products = await createProductAndTags(testManager, productsData)
             workingProduct = products.find((p) => p.id === "test-1") as Product
-            categories = await createProductCategories(
-              testManager,
-              categoriesData
-            )
+            categories = []
+            for (const entry of categoriesData) {
+              categories.push((await categoryService.create([entry]))[0])
+            }
+
             workingCategory = (await testManager.findOne(
               ProductCategory,
               "category-1"
@@ -400,21 +403,21 @@ moduleIntegrationTestRunner<Service>({
                 id: "category-0",
                 name: "category 0",
                 handle: "category-0",
-                mpath: "category-0.",
+                mpath: "category-0",
                 parent_category_id: null,
               },
               {
                 id: "category-1",
                 name: "category 1",
                 handle: "category-1",
-                mpath: "category-0.category-1.",
+                mpath: "category-0.category-1",
                 parent_category_id: null,
               },
               {
                 id: "category-1-a",
                 name: "category 1 a",
                 handle: "category-1-a",
-                mpath: "category-0.category-1.category-1-a.",
+                mpath: "category-0.category-1.category-1-a",
                 parent_category_id: null,
               },
             ])

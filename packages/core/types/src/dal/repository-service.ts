@@ -104,9 +104,9 @@ export interface TreeRepositoryService<T = any>
     context?: Context
   ): Promise<[T[], number]>
 
-  create(data: unknown, context?: Context): Promise<T>
+  create(data: unknown[], context?: Context): Promise<T[]>
 
-  delete(id: string, context?: Context): Promise<void>
+  delete(ids: string[], context?: Context): Promise<void>
 }
 
 /**

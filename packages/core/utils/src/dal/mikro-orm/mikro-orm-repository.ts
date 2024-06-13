@@ -241,11 +241,15 @@ export class MikroOrmBaseTreeRepository<
     throw new Error("Method not implemented.")
   }
 
-  create(data: unknown, context?: Context): Promise<T> {
+  create(data: unknown[], context?: Context): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
-  delete(id: string, context?: Context): Promise<void> {
+  update(data: unknown[], context?: Context): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  delete(ids: string[], context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
 }
