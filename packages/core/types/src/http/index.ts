@@ -26,4 +26,3 @@ export * from "./stock-locations"
 export * from "./tax-rate"
 export * from "./tax-region"
 export * from "./user"
-

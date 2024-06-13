@@ -8,7 +8,7 @@ import {
   UpsertWithReplaceConfig,
 } from "../dal"
 
-export interface InternalModuleService<
+export interface IMedusaInternalService<
   TEntity extends {},
   TContainer extends object = object
 > {

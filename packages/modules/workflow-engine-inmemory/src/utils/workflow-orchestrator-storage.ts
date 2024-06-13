@@ -16,7 +16,7 @@ import { CronExpression, parseExpression } from "cron-parser"
 export class InMemoryDistributedTransactionStorage
   implements IDistributedTransactionStorage, IDistributedSchedulerStorage
 {
-  private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
+  private workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private storage: Map<string, TransactionCheckpoint> = new Map()
@@ -35,7 +35,7 @@ export class InMemoryDistributedTransactionStorage
   constructor({
     workflowExecutionService,
   }: {
-    workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
+    workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
   }) {
     this.workflowExecutionService_ = workflowExecutionService
   }

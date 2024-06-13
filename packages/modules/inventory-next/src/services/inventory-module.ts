@@ -30,20 +30,23 @@ import InventoryLevelService from "./inventory-level"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  inventoryItemService: ModulesSdkTypes.InternalModuleService<any>
+  inventoryItemService: ModulesSdkTypes.IMedusaInternalService<any>
   inventoryLevelService: InventoryLevelService<any>
-  reservationItemService: ModulesSdkTypes.InternalModuleService<any>
+  reservationItemService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [InventoryItem, InventoryLevel, ReservationItem]
+const generateMethodForModels = {
+  InventoryItem,
+  InventoryLevel,
+  ReservationItem,
+}
 
 export default class InventoryModuleService<
     TInventoryItem extends InventoryItem = InventoryItem,
     TInventoryLevel extends InventoryLevel = InventoryLevel,
     TReservationItem extends ReservationItem = ReservationItem
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     InventoryNext.InventoryItemDTO,
     {
       InventoryItem: {
@@ -61,8 +64,8 @@ export default class InventoryModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected readonly inventoryItemService_: ModulesSdkTypes.InternalModuleService<TInventoryItem>
-  protected readonly reservationItemService_: ModulesSdkTypes.InternalModuleService<TReservationItem>
+  protected readonly inventoryItemService_: ModulesSdkTypes.IMedusaInternalService<TInventoryItem>
+  protected readonly reservationItemService_: ModulesSdkTypes.IMedusaInternalService<TReservationItem>
   protected readonly inventoryLevelService_: InventoryLevelService<TInventoryLevel>
 
   constructor(
@@ -209,6 +212,7 @@ export default class InventoryModuleService<
     await promiseAll(checkLevels)
   }
 
+  // @ts-ignore
   async createReservationItems(
     input: InventoryNext.CreateReservationItemInput[],
     context?: Context
@@ -365,6 +369,7 @@ export default class InventoryModuleService<
     return await this.inventoryItemService_.create(input)
   }
 
+  // @ts-ignore
   createInventoryLevels(
     input: InventoryNext.CreateInventoryLevelInput,
     context?: Context
@@ -537,6 +542,7 @@ export default class InventoryModuleService<
     return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
   }
 
+  // @ts-ignore
   async updateInventoryLevels(
     updates: InventoryTypes.BulkUpdateInventoryLevelInput[],
     context?: Context
@@ -623,6 +629,7 @@ export default class InventoryModuleService<
    * @param context
    * @return The updated inventory level
    */
+  // @ts-ignore
   async updateReservationItems(
     input: InventoryNext.UpdateReservationItemInput[],
     context?: Context

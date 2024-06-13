@@ -2,10 +2,10 @@ import * as crypto from "crypto"
 
 import { Context, DAL } from "@medusajs/types"
 import {
+  arrayDifference,
   InjectTransactionManager,
   MedusaError,
   ModulesSdkUtils,
-  arrayDifference,
 } from "@medusajs/utils"
 import jwt, { JwtPayload } from "jsonwebtoken"
 
@@ -21,7 +21,7 @@ const DEFAULT_VALID_INVITE_DURATION = 60 * 60 * 24 * 1000
 
 export default class InviteService<
   TEntity extends Invite = Invite
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   Invite
 )<TEntity> {
   // eslint-disable-next-line max-len

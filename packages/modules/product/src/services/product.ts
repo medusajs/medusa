@@ -1,10 +1,9 @@
 import {
   Context,
   DAL,
+  FilterableProductProps,
   FindConfig,
   ProductTypes,
-  BaseFilterable,
-  FilterableProductProps,
 } from "@medusajs/types"
 import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { Product } from "@models"
@@ -21,7 +20,7 @@ type NormalizedFilterableProductProps = ProductTypes.FilterableProductProps & {
 
 export default class ProductService<
   TEntity extends Product = Product
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   Product
 )<TEntity> {
   protected readonly productRepository_: DAL.RepositoryService<TEntity>

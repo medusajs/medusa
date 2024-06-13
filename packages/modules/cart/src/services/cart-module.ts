@@ -10,16 +10,16 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   createRawPropertiesFromBigNumber,
   decorateCartTotals,
   deduplicate,
+  InjectManager,
+  InjectTransactionManager,
   isObject,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import {
   Address,
@@ -43,17 +43,17 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  cartService: ModulesSdkTypes.InternalModuleService<any>
-  addressService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
+  cartService: ModulesSdkTypes.IMedusaInternalService<any>
+  addressService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodAdjustmentService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemAdjustmentService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   Address,
   LineItem,
   LineItemAdjustment,
@@ -61,7 +61,7 @@ const generateMethodForModels = [
   ShippingMethod,
   ShippingMethodAdjustment,
   ShippingMethodTaxLine,
-]
+}
 
 export default class CartModuleService<
     TCart extends Cart = Cart,
@@ -73,8 +73,7 @@ export default class CartModuleService<
     TShippingMethodTaxLine extends ShippingMethodTaxLine = ShippingMethodTaxLine,
     TShippingMethod extends ShippingMethod = ShippingMethod
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     CartTypes.CartDTO,
     {
       Address: { dto: CartTypes.CartAddressDTO }
@@ -89,14 +88,14 @@ export default class CartModuleService<
   implements ICartModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected cartService_: ModulesSdkTypes.InternalModuleService<TCart>
-  protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
-  protected lineItemService_: ModulesSdkTypes.InternalModuleService<TLineItem>
-  protected shippingMethodAdjustmentService_: ModulesSdkTypes.InternalModuleService<TShippingMethodAdjustment>
-  protected shippingMethodService_: ModulesSdkTypes.InternalModuleService<TShippingMethod>
-  protected lineItemAdjustmentService_: ModulesSdkTypes.InternalModuleService<TLineItemAdjustment>
-  protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
-  protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
+  protected cartService_: ModulesSdkTypes.IMedusaInternalService<TCart>
+  protected addressService_: ModulesSdkTypes.IMedusaInternalService<TAddress>
+  protected lineItemService_: ModulesSdkTypes.IMedusaInternalService<TLineItem>
+  protected shippingMethodAdjustmentService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodAdjustment>
+  protected shippingMethodService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethod>
+  protected lineItemAdjustmentService_: ModulesSdkTypes.IMedusaInternalService<TLineItemAdjustment>
+  protected lineItemTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TLineItemTaxLine>
+  protected shippingMethodTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodTaxLine>
 
   constructor(
     {
@@ -449,6 +448,7 @@ export default class CartModuleService<
     return await this.lineItemService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   updateLineItems(
     data: CartTypes.UpdateLineItemWithSelectorDTO[]
   ): Promise<CartTypes.CartLineItemDTO[]>
@@ -541,6 +541,7 @@ export default class CartModuleService<
     return await this.lineItemService_.update(toUpdate, sharedContext)
   }
 
+  // @ts-ignore
   async createAddresses(
     data: CartTypes.CreateAddressDTO,
     sharedContext?: Context
@@ -577,6 +578,7 @@ export default class CartModuleService<
     return await this.addressService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   async updateAddresses(
     data: CartTypes.UpdateAddressDTO,
     sharedContext?: Context
