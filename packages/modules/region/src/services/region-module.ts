@@ -25,18 +25,18 @@ import {
   removeUndefined,
 } from "@medusajs/utils"
 
-import {Country, Region} from "@models"
+import { Country, Region } from "@models"
 
-import {UpdateRegionInput} from "@types"
-import {entityNameToLinkableKeysMap, joinerConfig} from "../joiner-config"
+import { UpdateRegionInput } from "@types"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  regionService: ModulesSdkTypes.InternalModuleService<any>
-  countryService: ModulesSdkTypes.InternalModuleService<any>
+  regionService: ModulesSdkTypes.IMedusaInternalService<any>
+  countryService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels =  { Country }
+const generateMethodForModels = { Country }
 
 export default class RegionModuleService<
     TRegion extends Region = Region,
@@ -53,8 +53,8 @@ export default class RegionModuleService<
   implements IRegionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly regionService_: ModulesSdkTypes.InternalModuleService<TRegion>
-  protected readonly countryService_: ModulesSdkTypes.InternalModuleService<TCountry>
+  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<TRegion>
+  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<TCountry>
 
   constructor(
     { baseRepository, regionService, countryService }: InjectedDependencies,

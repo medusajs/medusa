@@ -27,10 +27,10 @@ import { EntityManager } from "@mikro-orm/core"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  customerService: ModulesSdkTypes.InternalModuleService<any>
-  addressService: ModulesSdkTypes.InternalModuleService<any>
-  customerGroupService: ModulesSdkTypes.InternalModuleService<any>
-  customerGroupCustomerService: ModulesSdkTypes.InternalModuleService<any>
+  customerService: ModulesSdkTypes.IMedusaInternalService<any>
+  addressService: ModulesSdkTypes.IMedusaInternalService<any>
+  customerGroupService: ModulesSdkTypes.IMedusaInternalService<any>
+  customerGroupCustomerService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = [
@@ -56,10 +56,10 @@ export default class CustomerModuleService<
   implements ICustomerModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected customerService_: ModulesSdkTypes.InternalModuleService<TCustomer>
-  protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
-  protected customerGroupService_: ModulesSdkTypes.InternalModuleService<TCustomerGroup>
-  protected customerGroupCustomerService_: ModulesSdkTypes.InternalModuleService<TCustomerGroupCustomer>
+  protected customerService_: ModulesSdkTypes.IMedusaInternalService<TCustomer>
+  protected addressService_: ModulesSdkTypes.IMedusaInternalService<TAddress>
+  protected customerGroupService_: ModulesSdkTypes.IMedusaInternalService<TCustomerGroup>
+  protected customerGroupCustomerService_: ModulesSdkTypes.IMedusaInternalService<TCustomerGroupCustomer>
 
   constructor(
     {

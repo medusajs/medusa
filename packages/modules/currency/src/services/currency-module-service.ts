@@ -19,7 +19,7 @@ const generateMethodForModels = {}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  currencyService: ModulesSdkTypes.InternalModuleService<any>
+  currencyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class CurrencyModuleService<TEntity extends Currency = Currency>
@@ -32,7 +32,7 @@ export default class CurrencyModuleService<TEntity extends Currency = Currency>
   implements ICurrencyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly currencyService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly currencyService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
 
   constructor(
     { baseRepository, currencyService }: InjectedDependencies,

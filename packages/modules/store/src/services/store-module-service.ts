@@ -26,7 +26,7 @@ const generateMethodForModels = {}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  storeService: ModulesSdkTypes.InternalModuleService<any>
+  storeService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class StoreModuleService<TEntity extends Store = Store>
@@ -39,7 +39,7 @@ export default class StoreModuleService<TEntity extends Store = Store>
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly storeService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
 
   constructor(
     { baseRepository, storeService }: InjectedDependencies,

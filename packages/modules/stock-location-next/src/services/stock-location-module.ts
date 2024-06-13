@@ -27,8 +27,8 @@ import { StockLocation, StockLocationAddress } from "../models"
 type InjectedDependencies = {
   eventBusModuleService: IEventBusService
   baseRepository: DAL.RepositoryService
-  stockLocationService: ModulesSdkTypes.InternalModuleService<any>
-  stockLocationAddressService: ModulesSdkTypes.InternalModuleService<any>
+  stockLocationService: ModulesSdkTypes.IMedusaInternalService<any>
+  stockLocationAddressService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = { StockLocationAddress }
@@ -51,8 +51,8 @@ export default class StockLocationModuleService<
 {
   protected readonly eventBusModuleService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
-  protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
-  protected readonly stockLocationAddressService_: ModulesSdkTypes.InternalModuleService<TStockLocationAddress>
+  protected readonly stockLocationService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly stockLocationAddressService_: ModulesSdkTypes.IMedusaInternalService<TStockLocationAddress>
 
   constructor(
     {

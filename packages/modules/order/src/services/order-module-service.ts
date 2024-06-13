@@ -76,21 +76,21 @@ import OrderService from "./order-service"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   orderService: OrderService<any>
-  addressService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemAdjustmentService: ModulesSdkTypes.InternalModuleService<any>
-  lineItemTaxLineService: ModulesSdkTypes.InternalModuleService<any>
-  shippingMethodTaxLineService: ModulesSdkTypes.InternalModuleService<any>
-  transactionService: ModulesSdkTypes.InternalModuleService<any>
+  addressService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodAdjustmentService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemAdjustmentService: ModulesSdkTypes.IMedusaInternalService<any>
+  lineItemTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingMethodTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
+  transactionService: ModulesSdkTypes.IMedusaInternalService<any>
   orderChangeService: OrderChangeService<any>
-  orderChangeActionService: ModulesSdkTypes.InternalModuleService<any>
-  orderItemService: ModulesSdkTypes.InternalModuleService<any>
-  orderSummaryService: ModulesSdkTypes.InternalModuleService<any>
-  orderShippingMethodService: ModulesSdkTypes.InternalModuleService<any>
-  returnReasonService: ModulesSdkTypes.InternalModuleService<any>
-  returnService: ModulesSdkTypes.InternalModuleService<any>
+  orderChangeActionService: ModulesSdkTypes.IMedusaInternalService<any>
+  orderItemService: ModulesSdkTypes.IMedusaInternalService<any>
+  orderSummaryService: ModulesSdkTypes.IMedusaInternalService<any>
+  orderShippingMethodService: ModulesSdkTypes.IMedusaInternalService<any>
+  returnReasonService: ModulesSdkTypes.IMedusaInternalService<any>
+  returnService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = [
@@ -155,21 +155,21 @@ export default class OrderModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
   protected orderService_: OrderService<TOrder>
-  protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
-  protected lineItemService_: ModulesSdkTypes.InternalModuleService<TLineItem>
-  protected shippingMethodAdjustmentService_: ModulesSdkTypes.InternalModuleService<TShippingMethodAdjustment>
-  protected shippingMethodService_: ModulesSdkTypes.InternalModuleService<TShippingMethod>
-  protected lineItemAdjustmentService_: ModulesSdkTypes.InternalModuleService<TLineItemAdjustment>
-  protected lineItemTaxLineService_: ModulesSdkTypes.InternalModuleService<TLineItemTaxLine>
-  protected shippingMethodTaxLineService_: ModulesSdkTypes.InternalModuleService<TShippingMethodTaxLine>
-  protected transactionService_: ModulesSdkTypes.InternalModuleService<TTransaction>
+  protected addressService_: ModulesSdkTypes.IMedusaInternalService<TAddress>
+  protected lineItemService_: ModulesSdkTypes.IMedusaInternalService<TLineItem>
+  protected shippingMethodAdjustmentService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodAdjustment>
+  protected shippingMethodService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethod>
+  protected lineItemAdjustmentService_: ModulesSdkTypes.IMedusaInternalService<TLineItemAdjustment>
+  protected lineItemTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TLineItemTaxLine>
+  protected shippingMethodTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodTaxLine>
+  protected transactionService_: ModulesSdkTypes.IMedusaInternalService<TTransaction>
   protected orderChangeService_: OrderChangeService<TOrderChange>
-  protected orderChangeActionService_: ModulesSdkTypes.InternalModuleService<TOrderChangeAction>
-  protected orderItemService_: ModulesSdkTypes.InternalModuleService<TOrderItem>
-  protected orderSummaryService_: ModulesSdkTypes.InternalModuleService<TOrderSummary>
-  protected orderShippingMethodService_: ModulesSdkTypes.InternalModuleService<TOrderShippingMethod>
-  protected returnReasonService_: ModulesSdkTypes.InternalModuleService<TReturnReason>
-  protected returnService_: ModulesSdkTypes.InternalModuleService<TReturn>
+  protected orderChangeActionService_: ModulesSdkTypes.IMedusaInternalService<TOrderChangeAction>
+  protected orderItemService_: ModulesSdkTypes.IMedusaInternalService<TOrderItem>
+  protected orderSummaryService_: ModulesSdkTypes.IMedusaInternalService<TOrderSummary>
+  protected orderShippingMethodService_: ModulesSdkTypes.IMedusaInternalService<TOrderShippingMethod>
+  protected returnReasonService_: ModulesSdkTypes.IMedusaInternalService<TReturnReason>
+  protected returnService_: ModulesSdkTypes.IMedusaInternalService<TReturn>
 
   constructor(
     {

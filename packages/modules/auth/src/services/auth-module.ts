@@ -24,8 +24,8 @@ import AuthProviderService from "./auth-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authIdentityService: ModulesSdkTypes.InternalModuleService<any>
-  providerIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
+  providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
   authProviderService: AuthProviderService
 }
 
@@ -45,8 +45,8 @@ export default class AuthModuleService<
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
-  protected providerIdentityService_: ModulesSdkTypes.InternalModuleService<TProviderIdentity>
+  protected authIdentityService_: ModulesSdkTypes.IMedusaInternalService<TAuthIdentity>
+  protected providerIdentityService_: ModulesSdkTypes.IMedusaInternalService<TProviderIdentity>
   protected readonly authProviderService_: AuthProviderService
 
   constructor(

@@ -30,9 +30,9 @@ import InventoryLevelService from "./inventory-level"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  inventoryItemService: ModulesSdkTypes.InternalModuleService<any>
+  inventoryItemService: ModulesSdkTypes.IMedusaInternalService<any>
   inventoryLevelService: InventoryLevelService<any>
-  reservationItemService: ModulesSdkTypes.InternalModuleService<any>
+  reservationItemService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = {
@@ -64,8 +64,8 @@ export default class InventoryModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected readonly inventoryItemService_: ModulesSdkTypes.InternalModuleService<TInventoryItem>
-  protected readonly reservationItemService_: ModulesSdkTypes.InternalModuleService<TReservationItem>
+  protected readonly inventoryItemService_: ModulesSdkTypes.IMedusaInternalService<TInventoryItem>
+  protected readonly reservationItemService_: ModulesSdkTypes.IMedusaInternalService<TReservationItem>
   protected readonly inventoryLevelService_: InventoryLevelService<TInventoryLevel>
 
   constructor(

@@ -23,7 +23,7 @@ import InviteService from "./invite"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  userService: ModulesSdkTypes.InternalModuleService<any>
+  userService: ModulesSdkTypes.IMedusaInternalService<any>
   inviteService: InviteService<any>
   eventBusModuleService: IEventBusModuleService
 }
@@ -50,7 +50,7 @@ export default class UserModuleService<
 
   protected baseRepository_: DAL.RepositoryService
 
-  protected readonly userService_: ModulesSdkTypes.InternalModuleService<TUser>
+  protected readonly userService_: ModulesSdkTypes.IMedusaInternalService<TUser>
   protected readonly inviteService_: InviteService<TInvite>
 
   constructor(

@@ -58,12 +58,12 @@ import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  promotionService: ModulesSdkTypes.InternalModuleService<any>
-  applicationMethodService: ModulesSdkTypes.InternalModuleService<any>
-  promotionRuleService: ModulesSdkTypes.InternalModuleService<any>
-  promotionRuleValueService: ModulesSdkTypes.InternalModuleService<any>
-  campaignService: ModulesSdkTypes.InternalModuleService<any>
-  campaignBudgetService: ModulesSdkTypes.InternalModuleService<any>
+  promotionService: ModulesSdkTypes.IMedusaInternalService<any>
+  applicationMethodService: ModulesSdkTypes.IMedusaInternalService<any>
+  promotionRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  promotionRuleValueService: ModulesSdkTypes.IMedusaInternalService<any>
+  campaignService: ModulesSdkTypes.IMedusaInternalService<any>
+  campaignBudgetService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 const generateMethodForModels = {
@@ -95,12 +95,12 @@ export default class PromotionModuleService<
   implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected promotionService_: ModulesSdkTypes.InternalModuleService<TPromotion>
-  protected applicationMethodService_: ModulesSdkTypes.InternalModuleService<TApplicationMethod>
-  protected promotionRuleService_: ModulesSdkTypes.InternalModuleService<TPromotionRule>
-  protected promotionRuleValueService_: ModulesSdkTypes.InternalModuleService<TPromotionRuleValue>
-  protected campaignService_: ModulesSdkTypes.InternalModuleService<TCampaign>
-  protected campaignBudgetService_: ModulesSdkTypes.InternalModuleService<TCampaignBudget>
+  protected promotionService_: ModulesSdkTypes.IMedusaInternalService<TPromotion>
+  protected applicationMethodService_: ModulesSdkTypes.IMedusaInternalService<TApplicationMethod>
+  protected promotionRuleService_: ModulesSdkTypes.IMedusaInternalService<TPromotionRule>
+  protected promotionRuleValueService_: ModulesSdkTypes.IMedusaInternalService<TPromotionRuleValue>
+  protected campaignService_: ModulesSdkTypes.IMedusaInternalService<TCampaign>
+  protected campaignBudgetService_: ModulesSdkTypes.IMedusaInternalService<TCampaignBudget>
 
   constructor(
     {

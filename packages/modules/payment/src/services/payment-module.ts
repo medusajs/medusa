@@ -52,11 +52,11 @@ import PaymentProviderService from "./payment-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentService: ModulesSdkTypes.InternalModuleService<any>
-  captureService: ModulesSdkTypes.InternalModuleService<any>
-  refundService: ModulesSdkTypes.InternalModuleService<any>
-  paymentSessionService: ModulesSdkTypes.InternalModuleService<any>
-  paymentCollectionService: ModulesSdkTypes.InternalModuleService<any>
+  paymentService: ModulesSdkTypes.IMedusaInternalService<any>
+  captureService: ModulesSdkTypes.IMedusaInternalService<any>
+  refundService: ModulesSdkTypes.IMedusaInternalService<any>
+  paymentSessionService: ModulesSdkTypes.IMedusaInternalService<any>
+  paymentCollectionService: ModulesSdkTypes.IMedusaInternalService<any>
   paymentProviderService: PaymentProviderService
 }
 
@@ -89,11 +89,11 @@ export default class PaymentModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected paymentService_: ModulesSdkTypes.InternalModuleService<TPayment>
-  protected captureService_: ModulesSdkTypes.InternalModuleService<TCapture>
-  protected refundService_: ModulesSdkTypes.InternalModuleService<TRefund>
-  protected paymentSessionService_: ModulesSdkTypes.InternalModuleService<TPaymentSession>
-  protected paymentCollectionService_: ModulesSdkTypes.InternalModuleService<TPaymentCollection>
+  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<TPayment>
+  protected captureService_: ModulesSdkTypes.IMedusaInternalService<TCapture>
+  protected refundService_: ModulesSdkTypes.IMedusaInternalService<TRefund>
+  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentSession>
+  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentCollection>
   protected paymentProviderService_: PaymentProviderService
 
   constructor(

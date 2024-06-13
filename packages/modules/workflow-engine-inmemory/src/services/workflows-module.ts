@@ -24,13 +24,13 @@ import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
+  workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
 }
 
 export class WorkflowsModuleService implements IWorkflowEngineService {
   protected baseRepository_: DAL.RepositoryService
-  protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
+  protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
 
   constructor(

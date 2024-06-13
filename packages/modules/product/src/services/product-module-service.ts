@@ -58,14 +58,14 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   productService: ProductService<any>
-  productVariantService: ModulesSdkTypes.InternalModuleService<any, any>
-  productTagService: ModulesSdkTypes.InternalModuleService<any>
+  productVariantService: ModulesSdkTypes.IMedusaInternalService<any, any>
+  productTagService: ModulesSdkTypes.IMedusaInternalService<any>
   productCategoryService: ProductCategoryService<any>
-  productCollectionService: ModulesSdkTypes.InternalModuleService<any>
-  productImageService: ModulesSdkTypes.InternalModuleService<any>
-  productTypeService: ModulesSdkTypes.InternalModuleService<any>
-  productOptionService: ModulesSdkTypes.InternalModuleService<any>
-  productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
+  productCollectionService: ModulesSdkTypes.IMedusaInternalService<any>
+  productImageService: ModulesSdkTypes.IMedusaInternalService<any>
+  productTypeService: ModulesSdkTypes.IMedusaInternalService<any>
+  productOptionService: ModulesSdkTypes.IMedusaInternalService<any>
+  productOptionValueService: ModulesSdkTypes.IMedusaInternalService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
@@ -129,21 +129,21 @@ export default class ProductModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
   // eslint-disable-next-line max-len
-  protected readonly productVariantService_: ModulesSdkTypes.InternalModuleService<TProductVariant>
+  protected readonly productVariantService_: ModulesSdkTypes.IMedusaInternalService<TProductVariant>
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   // eslint-disable-next-line max-len
-  protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
+  protected readonly productTagService_: ModulesSdkTypes.IMedusaInternalService<TProductTag>
   // eslint-disable-next-line max-len
-  protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
+  protected readonly productCollectionService_: ModulesSdkTypes.IMedusaInternalService<TProductCollection>
   // eslint-disable-next-line max-len
-  protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
+  protected readonly productImageService_: ModulesSdkTypes.IMedusaInternalService<TProductImage>
   // eslint-disable-next-line max-len
-  protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  protected readonly productTypeService_: ModulesSdkTypes.IMedusaInternalService<TProductType>
   // eslint-disable-next-line max-len
-  protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
+  protected readonly productOptionService_: ModulesSdkTypes.IMedusaInternalService<TProductOption>
   // eslint-disable-next-line max-len
-  protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
+  protected readonly productOptionValueService_: ModulesSdkTypes.IMedusaInternalService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
@@ -1124,6 +1124,7 @@ export default class ProductModuleService<
     return collections
   }
 
+  // @ts-ignore
   createCategories(
     data: ProductTypes.CreateProductCategoryDTO[],
     sharedContext?: Context
@@ -1227,6 +1228,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? result : result[0]
   }
 
+  // @ts-ignore
   updateCategories(
     id: string,
     data: ProductTypes.UpdateProductCategoryDTO,

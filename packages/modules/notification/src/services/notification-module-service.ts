@@ -23,7 +23,7 @@ const generateMethodForModels = { NotificationProvider }
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  notificationModelService: ModulesSdkTypes.InternalModuleService<any>
+  notificationModelService: ModulesSdkTypes.IMedusaInternalService<any>
   notificationProviderService: NotificationProviderService
 }
 
@@ -39,7 +39,7 @@ export default class NotificationModuleService<
   implements INotificationModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly notificationService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
   protected readonly notificationProviderService_: NotificationProviderService
 
   constructor(

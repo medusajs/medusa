@@ -35,7 +35,7 @@ const scrypt = util.promisify(crypto.scrypt)
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  apiKeyService: ModulesSdkTypes.InternalModuleService<any>
+  apiKeyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
@@ -48,7 +48,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   implements IApiKeyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly apiKeyService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly apiKeyService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
 
   constructor(
     { baseRepository, apiKeyService }: InjectedDependencies,

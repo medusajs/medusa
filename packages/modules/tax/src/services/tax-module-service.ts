@@ -24,10 +24,10 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  taxRateService: ModulesSdkTypes.InternalModuleService<any>
-  taxRegionService: ModulesSdkTypes.InternalModuleService<any>
-  taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
-  taxProviderService: ModulesSdkTypes.InternalModuleService<any>
+  taxRateService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxRegionService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxRateRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxProviderService: ModulesSdkTypes.IMedusaInternalService<any>
   [key: `tp_${string}`]: ITaxProvider
 }
 
@@ -56,10 +56,10 @@ export default class TaxModuleService<
 {
   protected readonly container_: InjectedDependencies
   protected baseRepository_: DAL.RepositoryService
-  protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
-  protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
-  protected taxRateRuleService_: ModulesSdkTypes.InternalModuleService<TTaxRateRule>
-  protected taxProviderService_: ModulesSdkTypes.InternalModuleService<TTaxProvider>
+  protected taxRateService_: ModulesSdkTypes.IMedusaInternalService<TTaxRate>
+  protected taxRegionService_: ModulesSdkTypes.IMedusaInternalService<TTaxRegion>
+  protected taxRateRuleService_: ModulesSdkTypes.IMedusaInternalService<TTaxRateRule>
+  protected taxProviderService_: ModulesSdkTypes.IMedusaInternalService<TTaxProvider>
 
   constructor(
     {

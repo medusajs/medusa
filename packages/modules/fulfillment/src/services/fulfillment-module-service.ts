@@ -65,15 +65,15 @@ const generateMethodForModels = {
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  fulfillmentSetService: ModulesSdkTypes.InternalModuleService<any>
-  serviceZoneService: ModulesSdkTypes.InternalModuleService<any>
-  geoZoneService: ModulesSdkTypes.InternalModuleService<any>
-  shippingProfileService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentSetService: ModulesSdkTypes.IMedusaInternalService<any>
+  serviceZoneService: ModulesSdkTypes.IMedusaInternalService<any>
+  geoZoneService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingProfileService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionTypeService: ModulesSdkTypes.IMedusaInternalService<any>
   fulfillmentProviderService: FulfillmentProviderService
-  fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class FulfillmentModuleService<
@@ -102,15 +102,15 @@ export default class FulfillmentModuleService<
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly fulfillmentSetService_: ModulesSdkTypes.InternalModuleService<TEntity>
-  protected readonly serviceZoneService_: ModulesSdkTypes.InternalModuleService<TServiceZoneEntity>
-  protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
-  protected readonly shippingProfileService_: ModulesSdkTypes.InternalModuleService<TShippingProfileEntity>
-  protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
-  protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
-  protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
+  protected readonly fulfillmentSetService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly serviceZoneService_: ModulesSdkTypes.IMedusaInternalService<TServiceZoneEntity>
+  protected readonly geoZoneService_: ModulesSdkTypes.IMedusaInternalService<TGeoZoneEntity>
+  protected readonly shippingProfileService_: ModulesSdkTypes.IMedusaInternalService<TShippingProfileEntity>
+  protected readonly shippingOptionService_: ModulesSdkTypes.IMedusaInternalService<TShippingOptionEntity>
+  protected readonly shippingOptionRuleService_: ModulesSdkTypes.IMedusaInternalService<TShippingOptionRuleEntity>
+  protected readonly shippingOptionTypeService_: ModulesSdkTypes.IMedusaInternalService<TSippingOptionTypeEntity>
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
-  protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
+  protected readonly fulfillmentService_: ModulesSdkTypes.IMedusaInternalService<TFulfillmentEntity>
 
   constructor(
     {
