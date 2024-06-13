@@ -81,7 +81,7 @@ describe("feature flags", () => {
   })
 
   it("should load the flag from env", async () => {
-    process.env.MEDUSA_FF_FLAG_1 = "true"
+    process.env.MEDUSA_FF_FLAG_1 = "false"
 
     await filesystem.create(
       "flags/flag-1.js",
@@ -93,7 +93,7 @@ describe("feature flags", () => {
       join(filesystem.basePath, "flags")
     )
 
-    expect(flags.isFeatureEnabled("flag_1")).toEqual(true)
+    expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load mix of flags", async () => {
