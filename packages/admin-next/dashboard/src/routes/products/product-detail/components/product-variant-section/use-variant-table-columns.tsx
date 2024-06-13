@@ -146,31 +146,28 @@ export const useProductVariantTableColumns = (
             <span className="truncate">{t("fields.inventory")}</span>
           </div>
         ),
-        cell: ({ getValue }) => {
+        cell: ({ getValue, row }) => {
+          const variant = row.original
           const inventory: InventoryItemDTO[] = getValue()
 
           const hasInventoryKit = inventory.length > 1
 
-          let availableCount = 0
           const locations = {}
 
           inventory.forEach((i) => {
             i.location_levels.forEach((l) => {
-              availableCount += l.available_quantity
               locations[l.id] = true
             })
           })
 
           const locationCount = Object.keys(locations).length
 
-          const text = !availableCount
-            ? t("products.variant.tableItemNone")
-            : hasInventoryKit
+          const text = hasInventoryKit
             ? t("products.variant.tableItemAvailable", {
-                availableCount,
+                availableCount: variant.inventory_quantity,
               })
             : t("products.variant.tableItem", {
-                availableCount,
+                availableCount: variant.inventory_quantity,
                 locationCount,
                 count: locationCount,
               })
@@ -180,7 +177,7 @@ export const useProductVariantTableColumns = (
               {hasInventoryKit && <Component style={{ marginTop: 1 }} />}
               <span
                 className={clx("truncate", {
-                  "text-ui-fg-error": !availableCount,
+                  "text-ui-fg-error": !variant.inventory_quantity,
                 })}
                 title={text}
               >

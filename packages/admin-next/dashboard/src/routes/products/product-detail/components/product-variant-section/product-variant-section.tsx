@@ -30,7 +30,7 @@ export const ProductVariantSection = ({
     product.id,
     {
       ...searchParams,
-      fields: "*inventory,*inventory.location_levels,+inventory_quantity",
+      fields: "*inventory_items.location_levels,+inventory_quantity",
     },
     {
       placeholderData: keepPreviousData,
