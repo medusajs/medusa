@@ -1,5 +1,8 @@
-import { NullableModifier } from "../modifiers/nullable"
-import { RelationshipMetadata, RelationshipType } from "../types"
+import {
+  RelationshipMetadata,
+  RelationshipOptions,
+  RelationshipType,
+} from "../types"
 
 /**
  * The BaseRelationship encapsulates the repetitive parts of defining
@@ -7,7 +10,8 @@ import { RelationshipMetadata, RelationshipType } from "../types"
  */
 export abstract class BaseRelationship<T> implements RelationshipType<T> {
   #referencedEntity: T
-  #options: Record<string, any>
+
+  protected options: RelationshipOptions
 
   /**
    * The relationship type.
@@ -20,16 +24,9 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
    */
   declare $dataType: T
 
-  constructor(referencedEntity: T, options: Record<string, any>) {
+  constructor(referencedEntity: T, options: RelationshipOptions) {
     this.#referencedEntity = referencedEntity
-    this.#options = options
-  }
-
-  /**
-   * Apply nullable modifier on the schema
-   */
-  nullable() {
-    return new NullableModifier<T>(this)
+    this.options = options
   }
 
   /**
@@ -39,8 +36,8 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
     return {
       name: relationshipName,
       nullable: false,
+      mappedBy: this.options.mappedBy,
       entity: this.#referencedEntity,
-      options: this.#options,
       type: this.relationshipType,
     }
   }
