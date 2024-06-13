@@ -7,6 +7,7 @@ import { InventoryItemReservationsSection } from "./components/inventory-item-re
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useInventoryItem } from "../../../hooks/api/inventory"
 import { inventoryItemLoader } from "./loader"
+import { InventoryItemVariantsSection } from "./components/inventory-item-variants/variants-section.tsx"
 
 export const InventoryDetail = () => {
   const { id } = useParams()
@@ -54,6 +55,7 @@ export const InventoryDetail = () => {
           <Outlet />
         </div>
         <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 lg:mt-0 lg:max-w-[400px]">
+          <InventoryItemVariantsSection variants={inventory_item.variants} />
           <InventoryItemAttributeSection inventoryItem={inventory_item} />
           <div className="lg:hidden">
             <JsonViewSection data={inventory_item} />

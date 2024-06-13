@@ -62,13 +62,14 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
     {
       serviceName: Modules.INVENTORY,
       fieldAlias: {
-        variant: "variant_link.variant",
+        variants: "variant_link.variant",
       },
       relationship: {
         serviceName: LINKS.ProductVariantInventoryItem,
         primaryKey: "inventory_item_id",
         foreignKey: "id",
         alias: "variant_link",
+        isList: true,
       },
     },
   ],
