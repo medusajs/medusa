@@ -9,7 +9,10 @@ const spinner: Ora = ora()
 
 describe("create-db", () => {
   afterEach(async () => {
-    const client = new pg.Client()
+    const client = new pg.Client({
+      user: process.env.POSTGRES_USER || "postgres",
+      password: process.env.POSTGRES_PASSWORD || ""
+    })
 
     await client.connect()
 
@@ -20,7 +23,10 @@ describe("create-db", () => {
 
   it("should create local db", async () => {
     expect.assertions(1)
-    const client = new pg.Client()
+    const client = new pg.Client({
+      user: process.env.POSTGRES_USER || "postgres",
+      password: process.env.POSTGRES_PASSWORD || ""
+    })
     await client.connect()
 
     let newClient = await runCreateDb({

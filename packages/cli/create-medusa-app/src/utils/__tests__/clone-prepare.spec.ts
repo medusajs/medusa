@@ -69,7 +69,10 @@ describe("clone-prepare-start", () => {
 
   describe("prepare-project", () => {
     beforeEach(async () => {
-      const oldClient = new pg.Client()
+      const oldClient = new pg.Client({
+        user: process.env.POSTGRES_USER || "postgres",
+        password: process.env.POSTGRES_PASSWORD || ""
+      })
       await oldClient.connect()
   
       client = await runCreateDb({
@@ -95,7 +98,10 @@ describe("clone-prepare-start", () => {
     afterEach(async () => {
       await client.end()
 
-      client = new pg.Client()
+      client = new pg.Client({
+        user: process.env.POSTGRES_USER || "postgres",
+        password: process.env.POSTGRES_PASSWORD || ""
+      })
 
       await client.connect()
   
