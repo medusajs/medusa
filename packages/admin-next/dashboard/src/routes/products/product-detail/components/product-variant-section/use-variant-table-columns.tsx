@@ -53,7 +53,7 @@ const VariantActions = ({
   const handleInventoryKitNavigation = () => {
     const itemIds = variant.inventory_items!.map((i) => i.inventory.id)
     const params = { id: itemIds }
-    let query = new URLSearchParams(params).toString()
+    const query = new URLSearchParams(params).toString()
 
     navigate(`/inventory?${query}`)
   }
@@ -68,10 +68,6 @@ const VariantActions = ({
               to: `variants/${variant.id}/edit`,
               icon: <PencilSquare />,
             },
-          ],
-        },
-        {
-          actions: [
             {
               label: t("actions.delete"),
               onClick: handleDelete,
