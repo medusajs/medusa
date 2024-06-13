@@ -87,7 +87,9 @@ export function medusaIntegrationTestRunner({
   testSuite: <TService = unknown>(options: MedusaSuiteOptions<TService>) => void
 }) {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
+  console.log("tempName -- ", tempName)
   moduleName = moduleName ?? Math.random().toString(36).substring(7)
+  console.log("moduleName -- ", moduleName)
   dbName ??= `medusa-${moduleName.toLowerCase()}-integration-${tempName}`
 
   let dbConfig = {
@@ -96,7 +98,7 @@ export function medusaIntegrationTestRunner({
     schema,
     debug,
   }
-
+  console.log("dbConfig -- ", dbConfig)
   const originalConfigLoader =
     require("@medusajs/medusa/dist/loaders/config").default
   require("@medusajs/medusa/dist/loaders/config").default = (
@@ -155,6 +157,7 @@ export function medusaIntegrationTestRunner({
   const beforeAll_ = async () => {
     console.log(`Creating database ${dbName}`)
     await dbUtils.create(dbName)
+    console.log("created database")
 
     try {
       dbUtils.pgConnection_ = await initDb({

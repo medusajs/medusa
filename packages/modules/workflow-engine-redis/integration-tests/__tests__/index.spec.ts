@@ -4,14 +4,13 @@ import {
   TransactionTimeoutError,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { RemoteQueryFunction } from "@medusajs/types"
+import { IWorkflowEngineService, RemoteQueryFunction } from "@medusajs/types"
 import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
-import { DB_URL, TestDatabase } from "../utils"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
+import { DB_URL, TestDatabase } from "../utils"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
