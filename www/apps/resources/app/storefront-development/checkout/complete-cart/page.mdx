@@ -17,7 +17,7 @@ fetch(
   `http://localhost:9000/store/carts/${cartId}/complete`,
   {
     credentials: "include",
-    method: "POST"
+    method: "POST",
   }
 )
 .then((res) => res.json())
@@ -65,7 +65,7 @@ export const highlights = [
 import { useState } from "react"
 import { useCart } from "../../providers/cart"
 
-export default function SystemDefaultPayment () {
+export default function SystemDefaultPayment() {
   const { cart, refreshCart } = useCart()
   const [loading, setLoading] = useState(false)
 
@@ -87,7 +87,7 @@ export default function SystemDefaultPayment () {
       `http://localhost:9000/store/carts/${cart.id}/complete`,
       {
         credentials: "include",
-        method: "POST"
+        method: "POST",
       }
     )
     .then((res) => res.json())

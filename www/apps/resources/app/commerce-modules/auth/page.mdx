@@ -84,11 +84,11 @@ For example:
   ```ts title="src/api/store/custom/route.ts"
   import { 
     MedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
 
   export async function GET(
@@ -111,7 +111,7 @@ For example:
   import { SubscriberArgs } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
 
   export default async function subscriberHandler({
@@ -131,7 +131,7 @@ For example:
   import { createStep } from "@medusajs/workflows-sdk"
   import { IAuthModuleService } from "@medusajs/types"
   import { 
-    ModuleRegistrationName
+    ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
 
   const step1 = createStep(
