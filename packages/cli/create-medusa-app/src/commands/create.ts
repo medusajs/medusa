@@ -1,7 +1,7 @@
 import inquirer from "inquirer"
 import slugifyType from "slugify"
 import chalk from "chalk"
-import { getDbClientAndCredentials, runCreateDb } from "../utils/create-db.js"
+import runCreateDb, { getDbClientAndCredentials } from "../utils/create-db.js"
 import prepareProject from "../utils/prepare-project.js"
 import startMedusa from "../utils/start-medusa.js"
 import open from "open"
@@ -9,7 +9,6 @@ import waitOn from "wait-on"
 import ora, { Ora } from "ora"
 import fs from "fs"
 import path from "path"
-import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
 import createAbortController, {
   isAbortError,
@@ -21,7 +20,7 @@ import ProcessManager from "../utils/process-manager.js"
 import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
-import { runCloneRepo } from "../utils/clone-repo.js"
+import runCloneRepo from "../utils/clone-repo.js"
 import {
   askForNextjsStarter,
   installNextjsStarter,
