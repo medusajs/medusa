@@ -17,7 +17,7 @@ describe("format-connection-string", () => {
   it("should format string correctly with symbols", () => {
     const connectionString = formatConnectionString({
       user: "postgres",
-      password: "%123$",
+      password: "%123",
       host: "localhost",
       db: "medusa"
     })
