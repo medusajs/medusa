@@ -1,11 +1,10 @@
 import {
+  Enum,
   Entity,
   OneToMany,
   Property,
   OneToOne,
   ManyToMany,
-  Enum,
-  Cascade,
   ManyToOne,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
@@ -15,11 +14,13 @@ import type {
   Infer,
   SchemaType,
   KnownDataTypes,
-  RelationshipType,
   SchemaMetadata,
+  RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
 } from "../types"
+import { HasOne } from "../relations/has-one"
+import { HasMany } from "../relations/has-many"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -89,6 +90,130 @@ function defineProperty(
 }
 
 /**
+ * Defines has one relationship on the Mikro ORM entity.
+ */
+function defineHasOneRelationship(
+  MikroORMEntity: EntityConstructor<any>,
+  relationship: RelationshipMetadata,
+  relatedEntity: DmlEntity<
+    Record<string, SchemaType<any> | RelationshipType<any>>
+  >
+) {
+  const relatedModelName = upperCaseFirst(relatedEntity.name)
+  OneToOne({
+    entity: relatedModelName,
+    nullable: relationship.nullable,
+    mappedBy: relationship.mappedBy as any,
+  })(MikroORMEntity.prototype, relationship.name)
+}
+
+/**
+ * Defines has many relationship on the Mikro ORM entity
+ */
+function defineHasManyRelationship(
+  MikroORMEntity: EntityConstructor<any>,
+  relationship: RelationshipMetadata,
+  relatedEntity: DmlEntity<
+    Record<string, SchemaType<any> | RelationshipType<any>>
+  >
+) {
+  const relatedModelName = upperCaseFirst(relatedEntity.name)
+  OneToMany({
+    entity: relatedModelName,
+    orphanRemoval: true,
+    mappedBy: relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name),
+  })(MikroORMEntity.prototype, relationship.name)
+}
+
+/**
+ * Defines belongs to relationship on the Mikro ORM entity. The belongsTo
+ * relationship inspects the related entity for the other side of
+ * the relationship and then uses one of the following Mikro ORM
+ * relationship.
+ *
+ * - OneToOne: When the other side uses "hasOne" with "owner: true"
+ * - ManyToOne: When the other side uses "hasMany"
+ */
+function defineBelongsToRelationship(
+  MikroORMEntity: EntityConstructor<any>,
+  relationship: RelationshipMetadata,
+  relatedEntity: DmlEntity<
+    Record<string, SchemaType<any> | RelationshipType<any>>
+  >
+) {
+  const mappedBy =
+    relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
+  const otherSideRelation = relatedEntity.schema[mappedBy]
+  const relatedModelName = upperCaseFirst(relatedEntity.name)
+
+  /**
+   * Ensure the mapped by is defined as relationship on the other side
+   */
+  if (!otherSideRelation) {
+    throw new Error(
+      `Missing property "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define it as a relationship`
+    )
+  }
+
+  /**
+   * Otherside is a has many. Hence we should defined a ManyToOne
+   */
+  if (otherSideRelation instanceof HasMany) {
+    ManyToOne({
+      entity: relatedModelName,
+      columnType: "text",
+      mapToPk: true,
+      fieldName: camelToSnakeCase(`${relationship.name}Id`),
+      nullable: relationship.nullable,
+    })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
+
+    ManyToOne({
+      entity: relatedModelName,
+      persist: false,
+    })(MikroORMEntity.prototype, relationship.name)
+    return
+  }
+
+  /**
+   * Otherside is a has one. Hence we should defined a OneToOne
+   */
+  if (otherSideRelation instanceof HasOne) {
+    const relatedModelName = upperCaseFirst(relatedEntity.name)
+    OneToOne({
+      entity: relatedModelName,
+      nullable: relationship.nullable,
+      mappedBy: mappedBy,
+      owner: true,
+    })(MikroORMEntity.prototype, relationship.name)
+    return
+  }
+
+  /**
+   * Other side is some unsupported data-type
+   */
+  throw new Error(
+    `Invalid relationship reference for "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define a hasOne or hasMany relationship`
+  )
+}
+
+/**
+ * Defines a many to many relationship on the Mikro ORM entity
+ */
+function defineManyToManyRelationship(
+  MikroORMEntity: EntityConstructor<any>,
+  relationship: RelationshipMetadata,
+  relatedEntity: DmlEntity<
+    Record<string, SchemaType<any> | RelationshipType<any>>
+  >
+) {
+  const relatedModelName = upperCaseFirst(relatedEntity.name)
+  ManyToMany({
+    entity: relatedModelName,
+    mappedBy: relationship.mappedBy as any,
+  })(MikroORMEntity.prototype, relationship.name)
+}
+
+/**
  * Defines a DML entity schema field as a Mikro ORM relationship
  */
 function defineRelationship(
@@ -134,44 +259,16 @@ function defineRelationship(
    */
   switch (relationship.type) {
     case "hasOne":
-      OneToOne({
-        entity: relatedModelName,
-        cascade: [Cascade.PERSIST], // accept via options
-        owner: true, // accept via options
-        onDelete: "cascade", // accept via options
-        nullable: false, // accept via options
-      })(MikroORMEntity.prototype, relationship.name)
+      defineHasOneRelationship(MikroORMEntity, relationship, relatedEntity)
       break
     case "hasMany":
-      OneToMany({
-        entity: relatedModelName,
-        cascade: [Cascade.PERSIST], // accept via options
-        orphanRemoval: true,
-        mappedBy: (related: any) =>
-          related[camelToSnakeCase(MikroORMEntity.name)], // optionally via options,
-      })(MikroORMEntity.prototype, relationship.name)
+      defineHasManyRelationship(MikroORMEntity, relationship, relatedEntity)
       break
-    case "hasOneThroughMany":
-      ManyToOne({
-        entity: relatedModelName,
-        columnType: "text", // infer from primary key data-type
-        mapToPk: true,
-        nullable: false, // accept via options
-        fieldName: camelToSnakeCase(`${relationship.name}Id`),
-        onDelete: "cascade", // accept via options
-      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
-
-      ManyToOne({
-        entity: relatedModelName,
-        persist: false,
-      })(MikroORMEntity.prototype, relationship.name)
+    case "belongsTo":
+      defineBelongsToRelationship(MikroORMEntity, relationship, relatedEntity)
       break
     case "manyToMany":
-      ManyToMany({
-        entity: relatedModelName,
-        mappedBy: (related: any) =>
-          related[camelToSnakeCase(MikroORMEntity.name)], // optionally via options,
-      })(MikroORMEntity.prototype, relationship.name)
+      defineManyToManyRelationship(MikroORMEntity, relationship, relatedEntity)
       break
   }
 }

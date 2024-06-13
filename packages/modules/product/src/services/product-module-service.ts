@@ -44,6 +44,7 @@ import {
   ProductCollectionEvents,
   ProductEventData,
   ProductEvents,
+  UpdateCategoryInput,
   UpdateCollectionInput,
   UpdateProductInput,
   UpdateProductOptionInput,
@@ -1114,67 +1115,166 @@ export default class ProductModuleService<
     return collections
   }
 
+  createCategories(
+    data: ProductTypes.CreateProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO[]>
+  createCategories(
+    data: ProductTypes.CreateProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO>
+
   @InjectManager("baseRepository_")
-  async createCategory(
-    data: ProductTypes.CreateProductCategoryDTO,
+  @EmitEvents()
+  async createCategories(
+    data:
+      | ProductTypes.CreateProductCategoryDTO[]
+      | ProductTypes.CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductCategoryDTO> {
-    const result = await this.createCategory_(data, sharedContext)
+  ): Promise<
+    ProductTypes.ProductCategoryDTO[] | ProductTypes.ProductCategoryDTO
+  > {
+    const input = Array.isArray(data) ? data : [data]
 
-    return await this.baseRepository_.serialize(result)
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async createCategory_(
-    data: ProductTypes.CreateProductCategoryDTO,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductCategory> {
-    const productCategory = await this.productCategoryService_.create(
-      data,
+    const categories = await this.productCategoryService_.create(
+      input,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
-      eventName: ProductCategoryEvents.CATEGORY_CREATED,
-      data: { id: productCategory.id },
+    const createdCategories = await this.baseRepository_.serialize<
+      ProductTypes.ProductCategoryDTO[]
+    >(categories)
+
+    eventBuilders.createdProductCategory({
+      data: createdCategories,
+      sharedContext,
     })
 
-    return productCategory
+    return Array.isArray(data) ? createdCategories : createdCategories[0]
   }
 
+  async upsertCategories(
+    data: ProductTypes.UpsertProductCategoryDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO[]>
+  async upsertCategories(
+    data: ProductTypes.UpsertProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO>
+
   @InjectTransactionManager("baseRepository_")
-  async updateCategory(
-    categoryId: string,
+  @EmitEvents()
+  async upsertCategories(
+    data:
+      | ProductTypes.UpsertProductCategoryDTO[]
+      | ProductTypes.UpsertProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<
+    ProductTypes.ProductCategoryDTO[] | ProductTypes.ProductCategoryDTO
+  > {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (category): category is UpdateCategoryInput => !!category.id
+    )
+    const forCreate = input.filter(
+      (category): category is ProductTypes.CreateProductCategoryDTO =>
+        !category.id
+    )
+
+    let created: ProductCategory[] = []
+    let updated: ProductCategory[] = []
+
+    if (forCreate.length) {
+      created = await this.productCategoryService_.create(
+        forCreate,
+        sharedContext
+      )
+    }
+    if (forUpdate.length) {
+      updated = await this.productCategoryService_.update(
+        forUpdate,
+        sharedContext
+      )
+    }
+
+    const createdCategories = await this.baseRepository_.serialize<
+      ProductTypes.ProductCategoryDTO[]
+    >(created)
+    const updatedCategories = await this.baseRepository_.serialize<
+      ProductTypes.ProductCategoryDTO[]
+    >(updated)
+
+    eventBuilders.createdProductCategory({
+      data: createdCategories,
+      sharedContext,
+    })
+
+    eventBuilders.updatedProductCategory({
+      data: updatedCategories,
+      sharedContext,
+    })
+
+    const result = [...createdCategories, ...updatedCategories]
+    return Array.isArray(data) ? result : result[0]
+  }
+
+  updateCategories(
+    id: string,
+    data: ProductTypes.UpdateProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO>
+  updateCategories(
+    selector: ProductTypes.FilterableProductTypeProps,
+    data: ProductTypes.UpdateProductCategoryDTO,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO[]>
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async updateCategories(
+    idOrSelector: string | ProductTypes.FilterableProductTypeProps,
     data: ProductTypes.UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductCategoryDTO> {
-    const productCategory = await this.productCategoryService_.update(
-      categoryId,
-      data,
+  ): Promise<
+    ProductTypes.ProductCategoryDTO[] | ProductTypes.ProductCategoryDTO
+  > {
+    let normalizedInput: UpdateCategoryInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the type exists in the first place
+      await this.productCategoryService_.retrieve(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const categories = await this.productCategoryService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = categories.map((type) => ({
+        id: type.id,
+        ...data,
+      }))
+    }
+
+    const categories = await this.productCategoryService_.update(
+      normalizedInput,
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
-      eventName: ProductCategoryEvents.CATEGORY_UPDATED,
-      data: { id: productCategory.id },
+    const updatedCategories = await this.baseRepository_.serialize<
+      ProductTypes.ProductCategoryDTO[]
+    >(categories)
+
+    eventBuilders.updatedProductCategory({
+      data: updatedCategories,
+      sharedContext,
     })
 
-    return await this.baseRepository_.serialize(productCategory, {
-      populate: true,
-    })
-  }
-
-  @InjectTransactionManager("baseRepository_")
-  async deleteCategory(
-    categoryId: string,
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.productCategoryService_.delete(categoryId, sharedContext)
-
-    await this.eventBusModuleService_?.emit<ProductCategoryEventData>({
-      eventName: ProductCategoryEvents.CATEGORY_DELETED,
-      data: { id: categoryId },
-    })
+    return isString(idOrSelector) ? updatedCategories[0] : updatedCategories
   }
 
   create(

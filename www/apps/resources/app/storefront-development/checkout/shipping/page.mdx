@@ -1,0 +1,189 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout Step 3: Choose Shipping Method`,
+}
+
+# {metadata.title}
+
+In the third step of the checkout flow, the customer chooses the shipping method to receive their order's items.
+
+To do that, you:
+
+1. Retrieve the available shipping options for the cart using the [List Shipping Options API route](!api!/store#shipping-options_getshippingoptions) and show them to the customer.
+2. When the customer chooses a shipping option, you use the [Add Shipping Method to Cart API route](!api!/store#carts_postcartsidshippingmethods) to set the cart's shipping method.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["3", "retrieveShippingOptions", "This function retrieves the shipping options of the customer's cart."],
+  ["16", "setShippingMethod", "This function sets the shipping method of the cart using the selected shipping option."],
+  ["29", "data", "Pass in this property any data relevant to the fulfillment provider."],
+]
+
+  ```ts highlights={fetchHighlights}
+  const cartId = localStorage.getItem("cart_id")
+
+  const retrieveShippingOptions = () => {
+    const { shipping_options } = await fetch(
+      `http://localhost:9000/store/shipping-options?cart_id=${
+        cart.id
+      }`, {
+        credentials: "include"
+      }
+    )
+    .then((res) => res.json())
+
+    return shipping_options
+  }
+
+  const setShippingMethod = (
+    selectedShippingOptionId: string
+  ) => {
+    fetch(`http://localhost:9000/store/carts/${
+      cart.id
+    }/shipping-methods`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        option_id: selectedShippingOptionId,
+        data: {
+          // TODO add any data necessary for
+          // fulfillment provider
+        }
+      })
+    })
+    .then((res) => res.json())
+    .then(({ cart }) => {
+      // use cart...
+      console.log(cart)
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["22", "fetch", "Retrieve available shipping method of the customer's cart."],
+  ["43", "fetch", "Set the cart's shipping method using the selected shipping option."],
+  ["53", "data", "Pass in this property any data relevant to the fulfillment provider."]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { useCart } from "../../../providers/cart"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function CheckoutShippingStep () {
+    const { cart, setCart } = useCart()
+    const [loading, setLoading] = useState(false)
+    const [shippingOptions, setShippingOptions] = useState<
+      HttpTypes.StoreCartShippingOption[]
+    >([])
+    const [
+      selectedShippingOption, 
+      setSelectedShippingOption
+    ] = useState<string | undefined>()
+
+    useEffect(() => {
+      if (!cart) {
+        return
+      }
+      fetch(`http://localhost:9000/store/shipping-options?cart_id=${
+        cart.id
+      }`, {
+        credentials: "include"
+      })
+      .then((res) => res.json())
+      .then(({ shipping_options }) => {
+        setShippingOptions(shipping_options)
+      })
+    }, [cart])
+
+    const setShipping = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      if (!cart || !selectedShippingOption) {
+        return
+      }
+
+      e.preventDefault()
+      setLoading(true)
+
+      fetch(`http://localhost:9000/store/carts/${
+        cart.id
+      }/shipping-methods`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          option_id: selectedShippingOption,
+          data: {
+            // TODO add any data necessary for
+            // fulfillment provider
+          }
+        })
+      })
+      .then((res) => res.json())
+      .then(({ cart: updatedCart }) => {
+        setCart(updatedCart)
+      })
+      .finally(() => setLoading(false))
+    }
+
+    return (
+      <div>
+        {loading || !cart && <span>Loading...</span>}
+        <form>
+          <select 
+            value={selectedShippingOption}
+            onChange={(e) => setSelectedShippingOption(
+              e.target.value
+            )}
+          >
+            {shippingOptions.map((shippingOption) => (
+              <option
+                key={shippingOption.id}
+                value={shippingOption.id}
+              >
+                {shippingOption.name}
+              </option>
+            ))}
+          </select>
+          <button
+            disabled={loading || !cart}
+            onClick={setShipping}
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you:
+
+- Retrieve the available shipping options of the cart to allow the customer to select from them.
+- Once the customer selects a shipping option, you send a request to the Add Shipping Method to Cart API route to update the cart's shipping method using the selected shipping option.
+
+## data Request Body Parameter
+
+When setting the shipping method using the Add Shipping Method to Cart API route, you can pass a `data` request body parameter that holds data relevant for the fulfillment provider.
+
+This isn't implemented here as it's different for each provider. Refer to the provider's documentation on details of expected data, if any.

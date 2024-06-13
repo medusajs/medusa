@@ -16,10 +16,10 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { Return } from "@models"
 import { OrderChangeStatus, OrderChangeType } from "@types"
 import Order from "./order"
 import OrderChangeAction from "./order-change-action"
+import Return from "./return"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 

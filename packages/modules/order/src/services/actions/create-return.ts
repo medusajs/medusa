@@ -30,6 +30,7 @@ export async function createReturn(
         order_id: data.order_id,
         order_version: order.version,
         status: ReturnStatus.REQUESTED,
+        // TODO: add refund amount / calculate?
         // refund_amount: data.refund_amount ?? null,
       },
     ],

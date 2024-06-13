@@ -59,6 +59,10 @@ export type UpdateTypeInput = ProductTypes.UpdateProductTypeDTO & {
   id: string
 }
 
+export type UpdateCategoryInput = ProductTypes.UpdateProductCategoryDTO & {
+  id: string
+}
+
 export type UpdateTagInput = ProductTypes.UpdateProductTagDTO & {
   id: string
 }

@@ -1,19 +1,16 @@
 import { LinkWorkflowInput } from "../../common"
 import {
   CreateProductCategoryDTO,
+  FilterableProductCategoryProps,
   UpdateProductCategoryDTO,
 } from "../../product"
 
-export interface CreateProductCategoryWorkflowInput {
-  product_category: CreateProductCategoryDTO
+export interface CreateProductCategoriesWorkflowInput {
+  product_categories: CreateProductCategoryDTO[]
 }
-
-// TODO: Should we converted to bulk update
-export interface UpdateProductCategoryWorkflowInput {
-  // selector: FilterableProductCategoryProps
-  // data: UpdateProductCategoryDTO
-  id: string
-  data: UpdateProductCategoryDTO
+export interface UpdateProductCategoriesWorkflowInput {
+  selector: FilterableProductCategoryProps
+  update: UpdateProductCategoryDTO
 }
 
 export interface BatchUpdateProductsOnCategoryWorkflowInput

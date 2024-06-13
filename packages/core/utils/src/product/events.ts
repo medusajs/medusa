@@ -6,8 +6,16 @@ const eventBaseNames: [
   "productVariant",
   "productOption",
   "productType",
-  "productTag"
-] = ["product", "productVariant", "productOption", "productType", "productTag"]
+  "productTag",
+  "productCategory"
+] = [
+  "product",
+  "productVariant",
+  "productOption",
+  "productType",
+  "productTag",
+  "productCategory",
+]
 
 export const ProductEvents = buildEventNamesFromEntityName(
   eventBaseNames,

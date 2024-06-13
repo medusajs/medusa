@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
 import { TextSchema } from "../schema/text"
-import { ManyToMany } from "../relations/many_to_many"
+import { ManyToMany } from "../relations/many-to-many"
 
 describe("ManyToMany relationship", () => {
   test("define manyToMany relationship", () => {
@@ -17,7 +17,6 @@ describe("ManyToMany relationship", () => {
       type: "manyToMany",
       nullable: false,
       entity: entityRef,
-      options: {},
     })
   })
 })

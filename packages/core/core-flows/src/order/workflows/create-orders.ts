@@ -1,5 +1,5 @@
 import { CreateOrderDTO, OrderDTO } from "@medusajs/types"
-import { MathBN, MedusaError } from "@medusajs/utils"
+import { MathBN, MedusaError, isPresent } from "@medusajs/utils"
 import {
   WorkflowData,
   createWorkflow,
@@ -50,8 +50,16 @@ function prepareLineItems(data) {
 }
 
 function getOrderInput(data) {
+  const shippingAddress = data.input.shipping_address ?? { id: undefined }
+  delete shippingAddress.id
+
+  const billingAddress = data.input.billing_address ?? { id: undefined }
+  delete billingAddress.id
+
   const data_ = {
     ...data.input,
+    shipping_address: isPresent(shippingAddress) ? shippingAddress : undefined,
+    billing_address: isPresent(billingAddress) ? billingAddress : undefined,
     currency_code: data.input.currency_code ?? data.region.currency_code,
     region_id: data.region.id,
   }

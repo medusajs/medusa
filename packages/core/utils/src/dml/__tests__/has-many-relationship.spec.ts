@@ -1,23 +1,22 @@
 import { expectTypeOf } from "expect-type"
-import { HasOne } from "../relations/has_one"
 import { TextSchema } from "../schema/text"
+import { HasMany } from "../relations/has-many"
 
-describe("HasOne relationship", () => {
-  test("define hasOne relationship", () => {
+describe("HasMany relationship", () => {
+  test("define hasMany relationship", () => {
     const user = {
       username: new TextSchema(),
     }
 
     const entityRef = () => user
-    const relationship = new HasOne(entityRef, {})
+    const relationship = new HasMany(entityRef, {})
 
     expectTypeOf(relationship["$dataType"]).toEqualTypeOf<() => typeof user>()
     expect(relationship.parse("user")).toEqual({
       name: "user",
-      type: "hasOne",
+      type: "hasMany",
       nullable: false,
       entity: entityRef,
-      options: {},
     })
   })
 })

@@ -26,7 +26,7 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
    * Apply nullable modifier on the schema
    */
   nullable() {
-    return new NullableModifier<T>(this)
+    return new NullableModifier<T, this>(this)
   }
 
   /**

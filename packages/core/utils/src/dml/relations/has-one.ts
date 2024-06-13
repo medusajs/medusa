@@ -1,4 +1,5 @@
 import { BaseRelationship } from "./base"
+import { NullableModifier } from "../modifiers/nullable"
 import { RelationshipMetadata } from "../types"
 
 /**
@@ -13,4 +14,11 @@ import { RelationshipMetadata } from "../types"
  */
 export class HasOne<T> extends BaseRelationship<T> {
   protected relationshipType: RelationshipMetadata["type"] = "hasOne"
+
+  /**
+   * Apply nullable modifier on the schema
+   */
+  nullable() {
+    return new NullableModifier<T, HasOne<T>>(this)
+  }
 }

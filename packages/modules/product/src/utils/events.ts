@@ -99,4 +99,22 @@ export const eventBuilders = {
     object: "product_tag",
     eventsEnum: ProductEvents,
   }),
+  createdProductCategory: eventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.CREATED,
+    object: "product_category",
+    eventsEnum: ProductEvents,
+  }),
+  updatedProductCategory: eventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.UPDATED,
+    object: "product_category",
+    eventsEnum: ProductEvents,
+  }),
+  deletedProductCategory: eventBuilderFactory({
+    source: Modules.PRODUCT,
+    action: CommonEvents.DELETED,
+    object: "product_category",
+    eventsEnum: ProductEvents,
+  }),
 }
