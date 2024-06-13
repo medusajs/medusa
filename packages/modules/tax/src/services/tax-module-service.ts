@@ -1,9 +1,9 @@
 import {
   Context,
   DAL,
+  InternalModuleDeclaration,
   ITaxModuleService,
   ITaxProvider,
-  InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   TaxRegionDTO,
@@ -12,11 +12,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { TaxProvider, TaxRate, TaxRateRule, TaxRegion } from "@models"
@@ -31,7 +31,7 @@ type InjectedDependencies = {
   [key: `tp_${string}`]: ITaxProvider
 }
 
-const generateForModels = [TaxRegion, TaxRateRule, TaxProvider]
+const generateForModels = { TaxRegion, TaxRateRule, TaxProvider }
 
 type ItemWithRates = {
   rates: TaxRate[]
@@ -45,7 +45,6 @@ export default class TaxModuleService<
     TTaxProvider extends TaxProvider = TaxProvider
   >
   extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
     TaxTypes.TaxRateDTO,
     {
       TaxRegion: { dto: TaxTypes.TaxRegionDTO }
@@ -293,6 +292,7 @@ export default class TaxModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
+  // @ts-ignore
   createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO,
     sharedContext?: Context
@@ -349,6 +349,7 @@ export default class TaxModuleService<
     )
   }
 
+  // @ts-ignore
   createTaxRateRules(
     data: TaxTypes.CreateTaxRateRuleDTO,
     sharedContext?: Context

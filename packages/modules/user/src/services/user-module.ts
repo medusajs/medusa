@@ -28,14 +28,13 @@ type InjectedDependencies = {
   eventBusModuleService: IEventBusModuleService
 }
 
-const generateMethodForModels = [Invite]
+const generateMethodForModels = { Invite }
 
 export default class UserModuleService<
     TUser extends User = User,
     TInvite extends Invite = Invite
   >
   extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
     UserTypes.UserDTO,
     {
       Invite: {
@@ -199,6 +198,7 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  // @ts-ignore
   createInvites(
     data: UserTypes.CreateInviteDTO[],
     sharedContext?: Context
@@ -265,6 +265,7 @@ export default class UserModuleService<
     return await this.inviteService_.create(toCreate, sharedContext)
   }
 
+  // @ts-ignore
   updateInvites(
     data: UserTypes.UpdateInviteDTO[],
     sharedContext?: Context
