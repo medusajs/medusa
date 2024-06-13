@@ -57,7 +57,7 @@ export default async function ({
       }
 
       // We know the authIdentity is not undefined
-      await authService.update({
+      await authService.updateAuthIdentites({
         id: authIdentity!.id,
         app_metadata: {
           user_id: user.id,

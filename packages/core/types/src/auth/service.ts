@@ -93,9 +93,9 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO>} The retrieved auth identity.
    *
    * @example
-   * const authIdentity = await authModuleService.retrieve("authusr_1")
+   * const authIdentity = await authModuleService.retrieveAuthIdentity("authusr_1")
    */
-  retrieve(
+  retrieveAuthIdentity(
     id: string,
     config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
@@ -114,7 +114,7 @@ export interface IAuthModuleService extends IModuleService {
    * To retrieve a list of auth identities using their IDs:
    *
    * ```ts
-   * const authIdentities = await authModuleService.list({
+   * const authIdentities = await authModuleService.listAuthIdentities({
    *   id: ["authusr_123", "authusr_321"],
    * })
    * ```
@@ -122,7 +122,7 @@ export interface IAuthModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const authIdentities = await authModuleService.list(
+   * const authIdentities = await authModuleService.listAuthIdentities(
    *   {
    *     id: ["authusr_123", "authusr_321"],
    *   },
@@ -133,7 +133,7 @@ export interface IAuthModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listAuthIdentities(
     filters?: FilterableAuthIdentityProps,
     config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
@@ -153,7 +153,7 @@ export interface IAuthModuleService extends IModuleService {
    *
    * ```ts
    * const [authIdentities, count] =
-   *   await authModuleService.listAndCount({
+   *   await authModuleService.listAndCountAuthIdentities({
    *     id: ["authusr_123", "authusr_321"],
    *   })
    * ```
@@ -162,7 +162,7 @@ export interface IAuthModuleService extends IModuleService {
    *
    * ```ts
    * const [authIdentities, count] =
-   *   await authModuleService.listAndCount(
+   *   await authModuleService.listAndCountAuthIdentities(
    *     {
    *       id: ["authusr_123", "authusr_321"],
    *     },
@@ -173,7 +173,7 @@ export interface IAuthModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountAuthIdentities(
     filters?: FilterableAuthIdentityProps,
     config?: FindConfig<AuthIdentityDTO>,
     sharedContext?: Context
@@ -187,7 +187,7 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO[]>} The created auth identities.
    *
    * @example
-   * const authIdentities = await authModuleService.create([
+   * const authIdentities = await authModuleService.createAuthIdentities([
    *   {
    *     provider_identities: [{
    *      provider: "emailpass",
@@ -202,7 +202,7 @@ export interface IAuthModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createAuthIdentities(
     data: CreateAuthIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthIdentityDTO[]>
@@ -215,14 +215,14 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO>} The created auth identity.
    *
    * @example
-   * const authIdentity = await authModuleService.create({
+   * const authIdentity = await authModuleService.createAuthIdentities({
    *     provider_identities: [{
    *      provider: "emailpass",
    *      entity_id: "user@example.com",
    *     }]
    * })
    */
-  create(
+  createAuthIdentities(
     data: CreateAuthIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthIdentityDTO>
@@ -235,13 +235,13 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO[]>} The updated auths.
    *
    * @example
-   * const authIdentities = await authModuleService.update([
+   * const authIdentities = await authModuleService.updateAuthIdentites([
    *   {
    *     id: "authusr_123",
    *   },
    * ])
    */
-  update(
+  updateAuthIdentites(
     data: UpdateAuthIdentityDTO[],
     sharedContext?: Context
   ): Promise<AuthIdentityDTO[]>
@@ -254,11 +254,11 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<AuthIdentityDTO>} The updated auth.
    *
    * @example
-   * const authIdentity = await authModuleService.update({
+   * const authIdentity = await authModuleService.updateAuthIdentites({
    *   id: "authusr_123",
    * })
    */
-  update(
+  updateAuthIdentites(
     data: UpdateAuthIdentityDTO,
     sharedContext?: Context
   ): Promise<AuthIdentityDTO>
@@ -271,7 +271,7 @@ export interface IAuthModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when {summary}
    *
    * @example
-   * await authModuleService.delete(["authusr_123", "authusr_321"])
+   * await authModuleService.deleteAuthIdentities(["authusr_123", "authusr_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteAuthIdentities(ids: string[], sharedContext?: Context): Promise<void>
 }
