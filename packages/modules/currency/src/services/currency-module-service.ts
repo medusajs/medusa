@@ -15,20 +15,15 @@ import { ModulesSdkUtils } from "@medusajs/utils"
 import { Currency } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
-const generateMethodForModels = {}
-
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   currencyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class CurrencyModuleService<TEntity extends Currency = Currency>
-  extends ModulesSdkUtils.MedusaService<
-    CurrencyTypes.CurrencyDTO,
-    {
-      Currency: { dto: CurrencyTypes.CurrencyDTO }
-    }
-  >(Currency, generateMethodForModels, entityNameToLinkableKeysMap)
+  extends ModulesSdkUtils.MedusaService<{
+    Currency: { dto: CurrencyTypes.CurrencyDTO }
+  }>({ Currency }, entityNameToLinkableKeysMap)
   implements ICurrencyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -48,36 +43,39 @@ export default class CurrencyModuleService<TEntity extends Currency = Currency>
     return joinerConfig
   }
 
-  retrieve(
+  // @ts-expect-error
+  async retrieveCurrency(
     code: string,
     config?: FindConfig<CurrencyTypes.CurrencyDTO>,
     sharedContext?: Context
   ): Promise<CurrencyTypes.CurrencyDTO> {
-    return this.currencyService_.retrieve(
-      code?.toLowerCase(),
+    return await super.retrieveCurrency(
+      code.toLowerCase(),
       config,
       sharedContext
     )
   }
 
-  list(
+  // @ts-expect-error
+  async listCurrencies(
     filters?: FilterableCurrencyProps,
     config?: FindConfig<CurrencyTypes.CurrencyDTO>,
     sharedContext?: Context
   ): Promise<CurrencyTypes.CurrencyDTO[]> {
-    return this.currencyService_.list(
+    return await super.listCurrencies(
       CurrencyModuleService.normalizeFilters(filters),
       config,
       sharedContext
     )
   }
 
-  listAndCount(
+  // @ts-expect-error
+  async listAndCountCurrencies(
     filters?: FilterableCurrencyProps,
     config?: FindConfig<CurrencyTypes.CurrencyDTO>,
     sharedContext?: Context
   ): Promise<[CurrencyTypes.CurrencyDTO[], number]> {
-    return this.currencyService_.listAndCount(
+    return await super.listAndCountCurrencies(
       CurrencyModuleService.normalizeFilters(filters),
       config,
       sharedContext
