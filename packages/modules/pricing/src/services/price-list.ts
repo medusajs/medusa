@@ -9,7 +9,7 @@ type InjectedDependencies = {
 
 export default class PriceListService<
   TEntity extends PriceList = PriceList
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   PriceList
 )<TEntity> {
   constructor(container: InjectedDependencies) {

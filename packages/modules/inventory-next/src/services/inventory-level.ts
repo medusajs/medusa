@@ -10,7 +10,7 @@ type InjectedDependencies = {
 
 export default class InventoryLevelService<
   TEntity extends InventoryLevel = InventoryLevel
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   InventoryLevel
 )<TEntity> {
   protected readonly inventoryLevelRepository: InventoryLevelRepository

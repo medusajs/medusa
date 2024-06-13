@@ -2,47 +2,45 @@ import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
   CreateStockLocationInput,
+  DAL,
+  FilterableStockLocationProps,
   IEventBusService,
+  IStockLocationServiceNext,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   StockLocationAddressInput,
   StockLocationTypes,
-  ModulesSdkTypes,
-  DAL,
-  IStockLocationServiceNext,
-  FilterableStockLocationProps,
+  UpdateStockLocationNextInput,
+  UpsertStockLocationInput,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   ModulesSdkUtils,
-  isString,
+  promiseAll,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
-import { UpdateStockLocationNextInput } from "@medusajs/types"
-import { UpsertStockLocationInput } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusModuleService: IEventBusService
   baseRepository: DAL.RepositoryService
-  stockLocationService: ModulesSdkTypes.InternalModuleService<any>
-  stockLocationAddressService: ModulesSdkTypes.InternalModuleService<any>
+  stockLocationService: ModulesSdkTypes.IMedusaInternalService<any>
+  stockLocationAddressService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [StockLocationAddress]
+const generateMethodForModels = { StockLocationAddress }
 
 /**
  * Service for managing stock locations.
  */
-
 export default class StockLocationModuleService<
     TEntity extends StockLocation = StockLocation,
     TStockLocationAddress extends StockLocationAddress = StockLocationAddress
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     StockLocationTypes.StockLocationDTO,
     {
       StockLocation: { dto: StockLocationTypes.StockLocationDTO }
@@ -53,8 +51,8 @@ export default class StockLocationModuleService<
 {
   protected readonly eventBusModuleService_: IEventBusService
   protected baseRepository_: DAL.RepositoryService
-  protected readonly stockLocationService_: ModulesSdkTypes.InternalModuleService<TEntity>
-  protected readonly stockLocationAddressService_: ModulesSdkTypes.InternalModuleService<TStockLocationAddress>
+  protected readonly stockLocationService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly stockLocationAddressService_: ModulesSdkTypes.IMedusaInternalService<TStockLocationAddress>
 
   constructor(
     {

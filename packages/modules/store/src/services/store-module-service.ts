@@ -1,19 +1,19 @@
 import {
+  Context,
   DAL,
   InternalModuleDeclaration,
+  IStoreModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  IStoreModuleService,
   StoreTypes,
-  Context,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isString,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
@@ -22,16 +22,15 @@ import { Store } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
-const generateMethodForModels = []
+const generateMethodForModels = {}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  storeService: ModulesSdkTypes.InternalModuleService<any>
+  storeService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class StoreModuleService<TEntity extends Store = Store>
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     StoreTypes.StoreDTO,
     {
       Store: { dto: StoreTypes.StoreDTO }
@@ -40,7 +39,7 @@ export default class StoreModuleService<TEntity extends Store = Store>
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly storeService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
 
   constructor(
     { baseRepository, storeService }: InjectedDependencies,

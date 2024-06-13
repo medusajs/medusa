@@ -19,7 +19,7 @@ type InjectedDependencies = {
 
 export default class OrderService<
   TEntity extends Order = Order
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   Order
 )<TEntity> {
   protected readonly orderRepository_: RepositoryService<TEntity>

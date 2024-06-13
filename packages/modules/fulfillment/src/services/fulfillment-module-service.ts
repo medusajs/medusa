@@ -14,18 +14,18 @@ import {
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
 import {
-  EmitEvents,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  ModulesSdkUtils,
   arrayDifference,
   deepEqualObj,
+  EmitEvents,
   getSetDifference,
+  InjectManager,
+  InjectTransactionManager,
   isDefined,
   isPresent,
   isString,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import {
@@ -52,7 +52,7 @@ import { UpdateShippingOptionsInput } from "../types/service"
 import { buildCreatedShippingOptionEvents } from "../utils/events"
 import FulfillmentProviderService from "./fulfillment-provider"
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   ServiceZone,
   ShippingOption,
   GeoZone,
@@ -61,19 +61,19 @@ const generateMethodForModels = [
   ShippingOptionType,
   FulfillmentProvider,
   // Not adding Fulfillment to not auto generate the methods under the hood and only provide the methods we want to expose8
-]
+}
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  fulfillmentSetService: ModulesSdkTypes.InternalModuleService<any>
-  serviceZoneService: ModulesSdkTypes.InternalModuleService<any>
-  geoZoneService: ModulesSdkTypes.InternalModuleService<any>
-  shippingProfileService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionRuleService: ModulesSdkTypes.InternalModuleService<any>
-  shippingOptionTypeService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentSetService: ModulesSdkTypes.IMedusaInternalService<any>
+  serviceZoneService: ModulesSdkTypes.IMedusaInternalService<any>
+  geoZoneService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingProfileService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  shippingOptionTypeService: ModulesSdkTypes.IMedusaInternalService<any>
   fulfillmentProviderService: FulfillmentProviderService
-  fulfillmentService: ModulesSdkTypes.InternalModuleService<any>
+  fulfillmentService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class FulfillmentModuleService<
@@ -86,8 +86,7 @@ export default class FulfillmentModuleService<
     TSippingOptionTypeEntity extends ShippingOptionType = ShippingOptionType,
     TFulfillmentEntity extends Fulfillment = Fulfillment
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     FulfillmentTypes.FulfillmentSetDTO,
     {
       FulfillmentSet: { dto: FulfillmentTypes.FulfillmentSetDTO }
@@ -103,15 +102,15 @@ export default class FulfillmentModuleService<
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly fulfillmentSetService_: ModulesSdkTypes.InternalModuleService<TEntity>
-  protected readonly serviceZoneService_: ModulesSdkTypes.InternalModuleService<TServiceZoneEntity>
-  protected readonly geoZoneService_: ModulesSdkTypes.InternalModuleService<TGeoZoneEntity>
-  protected readonly shippingProfileService_: ModulesSdkTypes.InternalModuleService<TShippingProfileEntity>
-  protected readonly shippingOptionService_: ModulesSdkTypes.InternalModuleService<TShippingOptionEntity>
-  protected readonly shippingOptionRuleService_: ModulesSdkTypes.InternalModuleService<TShippingOptionRuleEntity>
-  protected readonly shippingOptionTypeService_: ModulesSdkTypes.InternalModuleService<TSippingOptionTypeEntity>
+  protected readonly fulfillmentSetService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly serviceZoneService_: ModulesSdkTypes.IMedusaInternalService<TServiceZoneEntity>
+  protected readonly geoZoneService_: ModulesSdkTypes.IMedusaInternalService<TGeoZoneEntity>
+  protected readonly shippingProfileService_: ModulesSdkTypes.IMedusaInternalService<TShippingProfileEntity>
+  protected readonly shippingOptionService_: ModulesSdkTypes.IMedusaInternalService<TShippingOptionEntity>
+  protected readonly shippingOptionRuleService_: ModulesSdkTypes.IMedusaInternalService<TShippingOptionRuleEntity>
+  protected readonly shippingOptionTypeService_: ModulesSdkTypes.IMedusaInternalService<TSippingOptionTypeEntity>
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
-  protected readonly fulfillmentService_: ModulesSdkTypes.InternalModuleService<TFulfillmentEntity>
+  protected readonly fulfillmentService_: ModulesSdkTypes.IMedusaInternalService<TFulfillmentEntity>
 
   constructor(
     {
@@ -325,6 +324,7 @@ export default class FulfillmentModuleService<
     return createdFulfillmentSets
   }
 
+  // @ts-ignore
   createServiceZones(
     data: FulfillmentTypes.CreateServiceZoneDTO[],
     sharedContext?: Context
@@ -388,6 +388,7 @@ export default class FulfillmentModuleService<
     return createdServiceZones
   }
 
+  // @ts-ignore
   createShippingOptions(
     data: FulfillmentTypes.CreateShippingOptionDTO[],
     sharedContext?: Context
@@ -448,6 +449,7 @@ export default class FulfillmentModuleService<
     return createdSO
   }
 
+  // @ts-ignore
   createShippingProfiles(
     data: FulfillmentTypes.CreateShippingProfileDTO[],
     sharedContext?: Context
@@ -501,6 +503,7 @@ export default class FulfillmentModuleService<
     return await this.shippingProfileService_.create(data_, sharedContext)
   }
 
+  // @ts-ignore
   createGeoZones(
     data: FulfillmentTypes.CreateGeoZoneDTO[],
     sharedContext?: Context
@@ -537,6 +540,7 @@ export default class FulfillmentModuleService<
     )
   }
 
+  // @ts-ignore
   async createShippingOptionRules(
     data: FulfillmentTypes.CreateShippingOptionRuleDTO[],
     sharedContext?: Context
@@ -924,6 +928,7 @@ export default class FulfillmentModuleService<
       : updatedFulfillmentSets[0]
   }
 
+  // @ts-ignore
   updateServiceZones(
     id: string,
     data: FulfillmentTypes.UpdateServiceZoneDTO,
@@ -1223,6 +1228,7 @@ export default class FulfillmentModuleService<
     return [...created, ...updated]
   }
 
+  // @ts-ignore
   updateShippingOptions(
     id: string,
     data: FulfillmentTypes.UpdateShippingOptionDTO,
@@ -1540,6 +1546,7 @@ export default class FulfillmentModuleService<
     return [...created, ...updated]
   }
 
+  // @ts-ignore
   updateShippingProfiles(
     selector: FulfillmentTypes.FilterableShippingProfileProps,
     data: FulfillmentTypes.UpdateShippingProfileDTO,
@@ -1643,6 +1650,7 @@ export default class FulfillmentModuleService<
     return Array.isArray(data) ? allProfiles : allProfiles[0]
   }
 
+  // @ts-ignore
   updateGeoZones(
     data: FulfillmentTypes.UpdateGeoZoneDTO[],
     sharedContext?: Context
@@ -1685,6 +1693,7 @@ export default class FulfillmentModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
+  // @ts-ignore
   updateShippingOptionRules(
     data: FulfillmentTypes.UpdateShippingOptionRuleDTO[],
     sharedContext?: Context

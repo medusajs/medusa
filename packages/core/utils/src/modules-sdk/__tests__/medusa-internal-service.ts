@@ -1,4 +1,4 @@
-import { internalModuleServiceFactory } from "../internal-module-service-factory"
+import { MedusaInternalService } from "../medusa-internal-service"
 import { lowerCaseFirst } from "../../common"
 
 const defaultContext = { __type: "MedusaContext" }
@@ -39,14 +39,14 @@ describe("Internal Module Service Factory", () => {
     },
   }
 
-  const internalModuleService = internalModuleServiceFactory<any>(Model)
+  const IMedusaInternalService = MedusaInternalService<any>(Model)
 
   describe("Internal Module Service Methods", () => {
     let instance
 
     beforeEach(() => {
       jest.clearAllMocks()
-      instance = new internalModuleService(containerMock)
+      instance = new IMedusaInternalService(containerMock)
     })
 
     it("should throw model id undefined error on retrieve if id is not defined", async () => {
@@ -62,10 +62,10 @@ describe("Internal Module Service Factory", () => {
         static meta = { primaryKeys: ["id", "name"] }
       }
 
-      const compositeInternalModuleService =
-        internalModuleServiceFactory<any>(CompositeModel)
+      const compositeIMedusaInternalService =
+        MedusaInternalService<any>(CompositeModel)
 
-      const instance = new compositeInternalModuleService(containerMock)
+      const instance = new compositeIMedusaInternalService(containerMock)
 
       const err = await instance.retrieve().catch((e) => e)
       expect(err.message).toBe("compositeModel - id, name must be defined")
@@ -94,10 +94,10 @@ describe("Internal Module Service Factory", () => {
         static meta = { primaryKeys: ["id", "name"] }
       }
 
-      const compositeInternalModuleService =
-        internalModuleServiceFactory<any>(CompositeModel)
+      const compositeIMedusaInternalService =
+        MedusaInternalService<any>(CompositeModel)
 
-      const instance = new compositeInternalModuleService(containerMock)
+      const instance = new compositeIMedusaInternalService(containerMock)
 
       const entity = { id: "1", name: "Item" }
       containerMock[

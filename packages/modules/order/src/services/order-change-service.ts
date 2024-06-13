@@ -6,12 +6,12 @@ import {
   RepositoryService,
 } from "@medusajs/types"
 import {
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  deduplicate,
 } from "@medusajs/utils"
 import { OrderChange } from "@models"
 import { OrderChangeStatus } from "@types"
@@ -22,7 +22,7 @@ type InjectedDependencies = {
 
 export default class OrderChangeService<
   TEntity extends OrderChange = OrderChange
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   OrderChange
 )<TEntity> {
   protected readonly orderChangeRepository_: RepositoryService<TEntity>
