@@ -26,11 +26,11 @@ For example:
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email
-    })
+      email,
+    }),
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -55,7 +55,7 @@ export const highlights = [
   import { useState } from "react"
   import { useCart } from "../../../providers/cart"
 
-  export default function CheckoutEmailStep () {
+  export default function CheckoutEmailStep() {
     const { cart, setCart } = useCart()
     const [email, setEmail] = useState("")
     const [loading, setLoading] = useState(false)
@@ -80,11 +80,11 @@ export const highlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email
-        })
+          email,
+        }),
       })
       .then((res) => res.json())
       .then(({ cart: updatedCart }) => {

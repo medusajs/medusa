@@ -75,7 +75,7 @@ import {
   CardElement, 
   Elements, 
   useElements, 
-  useStripe
+  useStripe,
 } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { useCart } from "../../providers/cart"
@@ -102,7 +102,7 @@ export default function StripePayment() {
 }
 
 const StripeForm = ({ 
-  clientSecret
+  clientSecret,
 }: {
   clientSecret: string | undefined
 }) => {
@@ -157,7 +157,7 @@ const StripeForm = ({
         `http://localhost:9000/store/carts/${cart.id}/complete`,
         {
           credentials: "include",
-          method: "POST"
+          method: "POST",
         }
       )
       .then((res) => res.json())

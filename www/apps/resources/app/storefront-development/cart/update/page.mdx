@@ -29,11 +29,11 @@ fetch(`http://localhost:9000/store/carts/${cartId}`, {
   credentials: "include",
   method: "POST",
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    region_id: "new_id"
-  })
+    region_id: "new_id",
+  }),
 })
 .then((res) => res.json())
 .then(({ cart }) => {
@@ -61,11 +61,11 @@ fetch(`http://localhost:9000/store/carts/${cartId}`, {
   credentials: "include",
   method: "POST",
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    customer_id: "logged_in_id"
-  })
+    customer_id: "logged_in_id",
+  }),
 })
 .then((res) => res.json())
 .then(({ cart }) => {

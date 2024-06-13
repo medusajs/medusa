@@ -21,7 +21,7 @@ export const fetchHighlights = [
 
   ```ts highlights={fetchHighlights}
   fetch(`http://localhost:9000/store/carts/${cartId}`, {
-    credentials: "include"
+    credentials: "include",
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -47,7 +47,7 @@ export const highlights = [
   import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
 
-  export default function Cart () {
+  export default function Cart() {
     const [cart, setCart] = useState<
       HttpTypes.StoreCart
     >()
@@ -64,7 +64,7 @@ export const highlights = [
       }
 
       fetch(`http://localhost:9000/store/carts/${cartId}`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
       .then(({ cart: dataCart }) => {

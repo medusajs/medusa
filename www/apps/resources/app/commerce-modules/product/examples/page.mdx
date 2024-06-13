@@ -213,7 +213,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
     const data = await productModuleService.list({
-      handle: "shirt"
+      handle: "shirt",
     })
 
     res.json({ product: data[0] })
@@ -234,7 +234,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService = await initializeProductModule()
 
     const data = await productModuleService.list({
-      handle: "shirt"
+      handle: "shirt",
     })
 
     return NextResponse.json({ product: data[0] })

@@ -1,0 +1,570 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Manage Customer Addresses in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to manage a customer's addresses in a storefront.
+
+## List Customer Addresses
+
+To retrieve the list of customer addresses, send a request to the [List Customer Addresses API route](!api!/store#customers_getcustomersmeaddressesaddress_id):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["2", "limit", "The number of addresses to retrieve"],
+  ["3", "offset", "The number of addresses to skip before those retrieved."],
+]
+
+  ```ts highlights={fetchHighlights}
+  const searchParams = new URLSearchParams({
+    limit: `${limit}`,
+    offset: `${offset}`,
+  })
+
+  fetch(`http://localhost:9000/store/customers/me/addresses?${
+    searchParams.toString()
+  }`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ addresses, count }) => {
+    // use addresses...
+    console.log(addresses, count)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["20", "offset", "Calculate the number of addresses to skip based on the current page and limit."],
+  ["27", "fetch", "Send a request to retrieve the addresses."],
+  ["28", "searchParams.toString()", "Pass the pagination parameters in the query."], 
+  ["33", "count", "The total number of addresses in the Medusa application."],
+  ["45", "setHasMorePages", "Set whether there are more pages based on the total count."],
+  ["59", "", "Using only two address fields for simplicity."],
+  ["65", "button", "Show a button to load more addresses if there are more pages."]
+]
+
+  ```tsx highlights={highlights} collapsibleLines="50-77" expandButtonLabel="Show render"
+  "use client" // include with Next.js 13+
+
+  import { HttpTypes } from "@medusajs/types"
+  import { useEffect, useState } from "react"
+
+  export default function Addresses() {
+    const [addresses, setAddresses] = useState<
+      HttpTypes.StoreCustomerAddress[]
+    >([])
+    const [loading, setLoading] = useState(true)
+    const limit = 20
+    const [currentPage, setCurrentPage] = useState(1)
+    const [hasMorePages, setHasMorePages] = useState(false)
+
+    useEffect(() => {
+      if (!loading) {
+        return
+      }
+
+      const offset = (currentPage - 1) * limit
+
+      const searchParams = new URLSearchParams({
+        limit: `${limit}`,
+        offset: `${offset}`,
+      })
+
+      fetch(`http://localhost:9000/store/customers/me/addresses?${
+        searchParams.toString()
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ addresses: addressesData, count }) => {
+        setAddresses((prev) => {
+          if (prev.length > offset) {
+            // addresses already added because 
+            // the same request has already been sent
+            return prev
+          }
+          return [
+            ...prev,
+            ...addressesData,
+          ]
+        })
+        setHasMorePages(count > limit * currentPage)
+      })
+      .finally(() => setLoading(false))
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && !addresses.length && (
+          <span>You have no addresses</span>
+        )}
+        <ul>
+          {addresses.map((address) => (
+            <li key={address.id}>
+              City: {address.city} - 
+              Country: {address.country_code}
+            </li>
+          ))}
+        </ul>
+        {!loading && hasMorePages && (
+          <button 
+            onClick={() => {
+              setCurrentPage((prev) => prev + 1)
+              setLoading(true)
+            }}
+            disabled={loading}
+          >
+            Load More
+          </button>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The List Customer Addresses API route accepts pagination parameters to paginate the address.
+
+{/* TODO add a link to the address object */}
+
+It returns in the response the `addresses` field, which is an array of addresses.
+
+---
+
+## Add Customer Address
+
+To add a new address for the customer, send a request to the [Add Customer Address API route](!api!/store#customers_postcustomersmeaddresses):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(`http://localhost:9000/store/customers/me/addresses`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      address_1: address1,
+      company,
+      postal_code: postalCode,
+      city,
+      country_code: countryCode,
+      province,
+      phone: phoneNumber,
+    }),
+  })
+  .then((res) => res.json())
+  .then(({ customer }) => {
+    // use customer
+    console.log(customer)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const addHighlights = [
+  ["4", "useRegion", "Use the hook defined in the Region Context guide."],
+  ["5", "useCustomer", "Use the hook defined in the Customer Context guide."],
+  ["28"], ["29"], ["30"], ["31"], ["32"], ["33"], ["34"], ["35"], ["36"], ["37"],
+  ["38"], ["39"], ["40"], ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"],
+  ["48"], ["49"]
+]
+
+  ```tsx highlights={addHighlights} collapsibleLines="53-124" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react"
+  import { useRegion } from "../../../../providers/region"
+  import { useCustomer } from "../../../../providers/customer"
+
+  export default function AddAddress() {
+    const { region } = useRegion()
+    const { setCustomer } = useCustomer()
+
+    const [loading, setLoading] = useState(false)
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [address1, setAddress1] = useState("")
+    const [company, setCompany] = useState("")
+    const [postalCode, setPostalCode] = useState("")
+    const [city, setCity] = useState("")
+    const [countryCode, setCountryCode] = useState("")
+    const [province, setProvince] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+
+    const handleAdd = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      setLoading(false)
+
+      fetch(`http://localhost:9000/store/customers/me/addresses`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          address_1: address1,
+          company,
+          postal_code: postalCode,
+          city,
+          country_code: countryCode,
+          province,
+          phone: phoneNumber,
+        }),
+      })
+      .then((res) => res.json())
+      .then(({ customer }) => {
+        setCustomer(customer)
+      })
+      .finally(() => setLoading(false))
+    }
+
+    return (
+      <form>
+        <input 
+          type="text" 
+          placeholder="First Name" 
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Last Name" 
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Address Line" 
+          value={address1}
+          onChange={(e) => setAddress1(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Company" 
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Postal Code" 
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="City" 
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <select
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+        >
+          {region?.countries?.map((country) => (
+            <option 
+              key={country.iso_2}
+              value={country.iso_2}
+            >
+              {country.display_name}
+            </option>
+          ))}
+        </select>
+        <input 
+          type="text" 
+          placeholder="Province" 
+          value={province}
+          onChange={(e) => setProvince(e.target.value)}
+        />
+        <input 
+          type="tel" 
+          placeholder="Phone Number" 
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleAdd}
+        >
+          Add
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The Add Address API route returns in the response a `customer` field, which is a [customer object](!api!/store#customers_customer_schema).
+
+---
+
+## Edit an Address
+
+To edit an address, send a request to the [Update Customer Address API route](!api!/store#customers_postcustomersmeaddressesaddress_id):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(
+    `http://localhost:9000/store/customers/me/addresses/${
+      address.id
+    }`,
+    {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        address_1: address1,
+        company,
+        postal_code: postalCode,
+        city,
+        country_code: countryCode,
+        province,
+        phone: phoneNumber,
+      }),
+    }
+  )
+  .then((res) => res.json())
+  .then(({ customer }) => {
+    // use customer...
+    console.log(customer)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const editHighlights = [
+  ["4", "useRegion", "Use the hook defined in the Region Context guide."],
+  ["5", "useCustomer", "Use the hook defined in the Customer Context guide."],
+  ["14", "{ params: { id }}", "This is based on Next.js which passes the path parameters as a prop."],
+  ["19", "address", "Retrieve the address from the customer's `addresses` property."],
+  ["60"], ["61"], ["62"], ["63"], ["64"], ["65"], ["66"], ["67"], ["68"], ["69"],
+  ["70"], ["71"], ["72"], ["73"], ["74"], ["75"], ["76"], ["77"], ["78"], ["79"],
+  ["80"], ["81"]
+]
+
+  ```tsx highlights={editHighlights} collapsibleLines="90-161" expandButtonLabel="Show form"
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react"
+  import { useRegion } from "../../../../../providers/region"
+  import { useCustomer } from "../../../../../providers/customer"
+
+  type Params = {
+    params: {
+      id: string
+    }
+  }
+
+  export default function EditAddress(
+    { params: { id } }: Params
+  ) {
+    const { customer, setCustomer } = useCustomer()
+    const { region } = useRegion()
+
+    const address = customer?.addresses.find(
+      (address) => address.id === id
+    )
+    const [loading, setLoading] = useState(false)
+    const [firstName, setFirstName] = useState(
+      address?.first_name || ""
+    )
+    const [lastName, setLastName] = useState(
+      address?.last_name || ""
+    )
+    const [address1, setAddress1] = useState(
+      address?.address_1 || ""
+    )
+    const [company, setCompany] = useState(
+      address?.company || ""
+    )
+    const [postalCode, setPostalCode] = useState(
+      address?.postal_code || ""
+    )
+    const [city, setCity] = useState(
+      address?.city || ""
+    )
+    const [countryCode, setCountryCode] = useState(
+      address?.country_code || ""
+    )
+    const [province, setProvince] = useState(
+      address?.province || ""
+    )
+    const [phoneNumber, setPhoneNumber] = useState(
+      address?.phone || ""
+    )
+
+    const handleEdit = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      if (!customer || !address) {
+        return
+      }
+      setLoading(true)
+
+      fetch(
+        `http://localhost:9000/store/customers/me/addresses/${
+          address.id
+        }`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            address_1: address1,
+            company,
+            postal_code: postalCode,
+            city,
+            country_code: countryCode,
+            province,
+            phone: phoneNumber,
+          }),
+        }
+      )
+      .then((res) => res.json())
+      .then(({ customer }) => {
+        setCustomer(customer)
+      })
+      .finally(() => setLoading(false))
+    }
+
+    return (
+      <form>
+        <input 
+          type="text" 
+          placeholder="First Name" 
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Last Name" 
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Address Line" 
+          value={address1}
+          onChange={(e) => setAddress1(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Company" 
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Postal Code" 
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="City" 
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <select
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+        >
+          {region?.countries?.map((country) => (
+            <option 
+              key={country.iso_2}
+              value={country.iso_2}
+            >
+              {country.display_name}
+            </option>
+          ))}
+        </select>
+        <input 
+          type="text" 
+          placeholder="Province" 
+          value={province}
+          onChange={(e) => setProvince(e.target.value)}
+        />
+        <input 
+          type="tel" 
+          placeholder="Phone Number" 
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <button
+          disabled={loading}
+          onClick={handleEdit}
+        >
+          Add
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+The Update Address API route returns in the response a `customer` field, which is a [customer object](!api!/store#customers_customer_schema).
+
+---
+
+## Delete Customer Address
+
+To delete a customer's address, send a request to the [Delete Customer Address API route](!api!/store#customers_deletecustomersmeaddressesaddress_id):
+
+export const deleteHighlights = [
+  ["3", "addrId", "The ID of the address to delete."]
+]
+
+```ts highlights={deleteHighlights}
+fetch(
+  `http://localhost:9000/store/customers/me/addresses/${
+    addrId
+  }`,
+  {
+    credentials: "include",
+    method: "DELETE",
+  }
+)
+.then((res) => res.json())
+.then(({ parent: customer }) => {
+  // use customer...
+  console.log(customer)
+})
+```
+
+The Delete Customer Address API route returns a `parent` field in the response, which is a [customer object](!api!/store#customers_customer_schema).

@@ -53,7 +53,7 @@ Revoke keys to disable their use permenantly.
 
 ```ts
 const revokedKey = await apiKeyModuleService.revoke("apk_1", {
-  revoked_by: "user_123"
+  revoked_by: "user_123",
 })
 ```
 
@@ -63,7 +63,7 @@ Roll API keys by revoking a key then re-creating it.
 
 ```ts
 const revokedKey = await apiKeyModuleService.revoke("apk_1", {
-  revoked_by: "user_123"
+  revoked_by: "user_123",
 })
 
 const newKey = await apiKeyModuleService.create({
