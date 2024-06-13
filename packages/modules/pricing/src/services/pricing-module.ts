@@ -1335,7 +1335,7 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          ruleTypeMap.set(ruleAttribute, ruleType)
+          ruleTypeMap.set(ruleAttribute, ruleType!)
         }
 
         const [priceListRule] = await this.priceListRuleService_.create(

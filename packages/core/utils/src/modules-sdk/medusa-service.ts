@@ -91,7 +91,10 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   ? T[K]["plural"] & string
   : Pluralize<K & string>
 
+// TODO: this will be removed in the follow up pr once the main entity concept will be removed
 type ModelConfiguration = Constructor<any> | ModelDTOConfig | any
+
+type ExtractMutationDtoOrAny<T> = T extends unknown ? any : T
 
 export interface AbstractModuleServiceBase<TEntryEntityConfig> {
   new (container: Record<any, any>, ...args: any[]): this
@@ -212,8 +215,7 @@ export type AbstractModuleService<
   }
 }
 
-// TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface
-/*type ExtractMutationDtoOrAny<T> = T extends never ? any : T*/
+// TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface are not consistent with the expectations
 
 // are not consistent accross modules
 /* & {
@@ -369,8 +371,7 @@ export function MedusaService<
     klassPrototype: any,
     method: string,
     methodName: string,
-    modelName: string,
-    model: ModelConfiguration
+    modelName: string
   ): void {
     const serviceRegistrationName = `${lowerCaseFirst(modelName)}Service`
 
@@ -514,7 +515,7 @@ export function MedusaService<
 
           await this.eventBusModuleService_?.emit(
             primaryKeyValues_.map((primaryKeyValue) => ({
-              eventName: `${kebabCase(model.name)}.deleted`,
+              eventName: `${kebabCase(modelName)}.deleted`,
               data: isString(primaryKeyValue)
                 ? { id: primaryKeyValue }
                 : primaryKeyValue,
@@ -549,7 +550,7 @@ export function MedusaService<
 
           await this.eventBusModuleService_?.emit(
             softDeletedEntities.map(({ id }) => ({
-              eventName: `${kebabCase(model.name)}.deleted`,
+              eventName: `${kebabCase(modelName)}.deleted`,
               metadata: { source: "", action: "", object: "" },
               data: { id },
             }))
@@ -652,8 +653,7 @@ export function MedusaService<
       AbstractModuleService_.prototype,
       method,
       methodName,
-      entryEntity.name,
-      entryEntity
+      entryEntity.name
     )
   }
 
@@ -677,8 +677,7 @@ export function MedusaService<
         AbstractModuleService_.prototype,
         method,
         methodName,
-        modelName,
-        model
+        modelName
       )
     })
   }
