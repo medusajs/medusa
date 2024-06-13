@@ -33,11 +33,11 @@ type InjectedDependencies = {
   customerGroupCustomerService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
-  { model: Address, singular: "Address", plural: "Addresses" },
+const generateMethodForModels = {
+  Address: { singular: "Address", plural: "Addresses" },
   CustomerGroup,
   CustomerGroupCustomer,
-]
+}
 
 export default class CustomerModuleService<
     TAddress extends Address = Address,
