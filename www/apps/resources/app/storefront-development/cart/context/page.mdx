@@ -17,13 +17,15 @@ For example, create the following file that exports a `CartProvider` component a
 export const highlights = [
   ["13", "cart", "Expose cart to children of the context provider."],
   ["14", "setCart", "Allow the context provider's children to update the cart."],
-  ["25", "CartProvider", "The provider component to use in your component tree."],
-  ["31", "useRegion", "Use the `useRegion` hook defined in the Region Context guide."],
-  ["36", "setItem", "Set the cart's ID in `localStorage` in case it changed."],
-  ["44", "fetch", "If the customer doesn't have a cart, create a new one."],
-  ["48", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
-  ["62", "fetch", "Retrieve the customer's cart."],
-  ["82", "useCart", "The hook that child components of the provider use to access the cart."]
+  ["17", "refreshCart", "Allow the context provider's children to unset and reset the cart."],
+  ["26", "CartProvider", "The provider component to use in your component tree."],
+  ["32", "useRegion", "Use the `useRegion` hook defined in the Region Context guide."],
+  ["37", "setItem", "Set the cart's ID in `localStorage` in case it changed."],
+  ["45", "fetch", "If the customer doesn't have a cart, create a new one."],
+  ["49", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to associate the correct sales channel(s)."],
+  ["63", "fetch", "Retrieve the customer's cart."],
+  ["73", "refreshCart", "This function unsets the cart, which triggers the `useEffect` callback to create a cart."],
+  ["89", "useCart", "The hook that child components of the provider use to access the cart."]
 ]
 
 ```tsx highlights={highlights}
@@ -43,6 +45,7 @@ type CartContextType = {
   setCart: React.Dispatch<
     React.SetStateAction<HttpTypes.StoreCart | undefined>
   >
+  refreshCart: () => void
 }
 
 const CartContext = createContext<CartContextType | null>(null)
@@ -93,10 +96,16 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     }
   }, [cart, region])
 
+  const refreshCart = () => {
+    localStorage.removeItem("cart_id")
+    setCart(undefined)
+  }
+
   return (
     <CartContext.Provider value={{
       cart,
-      setCart
+      setCart,
+      refreshCart
     }}>
       {children}
     </CartContext.Provider>
@@ -116,7 +125,7 @@ export const useCart = () => {
 
 The `CartProvider` handles retrieving or creating the customer's cart. It uses the `useRegion` hook defined in the [Region Context guide](../../regions/context/page.mdx).
 
-The `useCart` hook returns the value of the `CartContext`. Child components of `CartProvider` use this hook to access `cart` or `setCart`.
+The `useCart` hook returns the value of the `CartContext`. Child components of `CartProvider` use this hook to access `cart`, `setCart`, or `refreshCart`.
 
 ---
 

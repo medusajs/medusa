@@ -73,7 +73,7 @@ class ProductCategory {
     nullable: false,
     default: 0,
   })
-  rank?: number
+  rank: number
 
   @ManyToOne(() => ProductCategory, {
     columnType: "text",
@@ -130,22 +130,7 @@ class ProductCategory {
       this.handle = kebabCase(this.name)
     }
 
-    const { em } = args
-
-    let parentCategory: ProductCategory | null = null
-
-    if (this.parent_category_id) {
-      parentCategory = await em.findOne(
-        ProductCategory,
-        this.parent_category_id
-      )
-    }
-
-    if (parentCategory) {
-      this.mpath = `${parentCategory?.mpath}${this.id}.`
-    } else {
-      this.mpath = `${this.id}.`
-    }
+    this.mpath = `${this.mpath ? this.mpath + "." : ""}${this.id}`
   }
 }
 

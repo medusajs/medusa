@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
 import { BaseCollection } from "../collection/common"
 import { FindParams } from "../common"
+import { BaseProductCategory } from "../product-category/common"
 
 export type ProductStatus = "draft" | "proposed" | "published" | "rejected"
 export interface BaseProduct {
@@ -61,21 +62,6 @@ export interface BaseProductVariant {
   created_at: string
   updated_at: string
   deleted_at: string | null
-  metadata?: Record<string, unknown> | null
-}
-
-export interface BaseProductCategory {
-  id: string
-  name: string
-  description: string | null
-  handle: string
-  rank?: number
-  parent_category?: BaseProductCategory | null
-  parent_category_id?: string | null
-  category_children?: BaseProductCategory[]
-  products?: BaseProduct[]
-  created_at?: string
-  updated_at?: string
   metadata?: Record<string, unknown> | null
 }
 
@@ -182,18 +168,4 @@ export interface BaseProductVariantParams
   sku?: string | string[]
   product_id?: string | string[]
   options?: Record<string, string>
-}
-
-export interface BaseProductCategoryParams
-  extends FindParams,
-    BaseFilterable<BaseProductCategoryParams> {
-  q?: string
-  id?: string | string[]
-  name?: string | string[]
-  parent_category_id?: string | string[] | null
-  handle?: string | string[]
-  is_active?: boolean
-  is_internal?: boolean
-  include_descendants_tree?: boolean
-  include_ancestors_tree?: boolean
 }

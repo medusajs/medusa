@@ -1,4 +1,4 @@
-import { Toaster } from "@medusajs/ui"
+import { Toaster, TooltipProvider } from "@medusajs/ui"
 import { QueryClientProvider } from "@tanstack/react-query"
 
 import { I18n } from "./components/utilities/i18n"
@@ -13,7 +13,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <I18n />
-        <RouterProvider />
+        <TooltipProvider>
+          <RouterProvider />
+        </TooltipProvider>
         <Toaster />
       </ThemeProvider>
     </QueryClientProvider>

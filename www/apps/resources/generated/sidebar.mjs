@@ -7182,6 +7182,158 @@ export const generatedSidebar = [
             "children": []
           }
         ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/products",
+        "title": "Products",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/list",
+            "title": "List Products",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/retrieve",
+            "title": "Retrieve a Product",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/variants",
+            "title": "Select a Variant",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/price",
+            "title": "Retrieve Variant Prices",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/categories",
+            "title": "Categories",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/list",
+                "title": "List Categories",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/retrieve",
+                "title": "Retrieve a Category",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/products",
+                "title": "Retrieve a Category's Products",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/categories/nested-categories",
+                "title": "Retrieve Nested Categories",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/products/collections",
+            "title": "Collections",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/list",
+                "title": "List Collections",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/retrieve",
+                "title": "Retrieve a Collection",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/products/collections/products",
+                "title": "Retrieve a Collection's Products",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/storefront-development/checkout",
+        "title": "Checkout",
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/email",
+            "title": "1. Enter Email",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/address",
+            "title": "2. Enter Address",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/shipping",
+            "title": "3. Choose Shipping Method",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/payment",
+            "title": "4. Choose Payment Provider",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/storefront-development/checkout/payment/stripe",
+                "title": "Example: Stripe",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/storefront-development/checkout/complete-cart",
+            "title": "5. Complete Cart",
+            "children": []
+          }
+        ]
       }
     ]
   },

@@ -1,4 +1,4 @@
-import { createProductCategoryWorkflow } from "@medusajs/core-flows"
+import { createProductCategoriesWorkflow } from "@medusajs/core-flows"
 import {
   AdminProductCategoryListResponse,
   AdminProductCategoryResponse,
@@ -37,13 +37,13 @@ export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateProductCategoryType>,
   res: MedusaResponse<AdminProductCategoryResponse>
 ) => {
-  const { result } = await createProductCategoryWorkflow(req.scope).run({
-    input: { product_category: req.validatedBody },
+  const { result } = await createProductCategoriesWorkflow(req.scope).run({
+    input: { product_categories: [req.validatedBody] },
   })
 
   const [category] = await refetchEntities(
     "product_category",
-    { id: result.id, ...req.filterableFields },
+    { id: result[0].id, ...req.filterableFields },
     req.scope,
     req.remoteQueryConfig.fields
   )

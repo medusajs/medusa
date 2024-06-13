@@ -1,5 +1,4 @@
 import {
-  BaseProductCategoryParams,
   BaseProductOptionParams,
   BaseProductParams,
   BaseProductTagParams,
@@ -15,4 +14,3 @@ export interface AdminProductParams extends BaseProductParams {
   price_list_id?: string | string[]
   variants?: AdminProductVariantParams
 }
-export interface AdminProductCategoryParams extends BaseProductCategoryParams {}

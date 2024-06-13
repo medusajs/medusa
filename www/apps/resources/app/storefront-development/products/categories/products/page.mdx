@@ -1,0 +1,143 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve a Category's Products in Storefront`,
+}
+
+# {metadata.title}
+
+To retrieve a category's products in the storefront, send a request to the [List Products API route](!api!/store#products_getproducts) passing it the `category_id` query parameter:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["3", "", "Pass the category ID as a query parameter."],
+  ["9", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+]
+
+  ```ts highlights={fetchHighlights}
+  const searchParams = new URLSearchParams({
+    // other query params...
+    "category_id[]": categoryId
+  })
+
+  fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
+    credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
+    }
+  })
+  .then((res) => res.json())
+  .then(({ products, count }) => {
+    // use products...
+    console.log(products)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["13", "params: { categoryId }", "This is based on Next.js which passes the path parameters as a prop."],
+  ["33", "", "Pass the category ID as a query parameter."],
+  ["36"], ["37"], ["38"], 
+  ["39", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+  ["40"], ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"], ["48"], ["49"], ["50"], ["51"], ["52"], ["53"], ["54"],
+  ["55"], ["56"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  type Params = {
+    params: {
+      categoryId: string
+    }
+  }
+
+  export default function CategoryProducts({
+    params: { categoryId }
+  }: Params) {
+    const [loading, setLoading] = useState(true)
+    const [products, setProducts] = useState<
+      HttpTypes.StoreProduct[]
+    >([])
+    const limit = 20
+    const [currentPage, setCurrentPage] = useState(1)
+    const [hasMorePages, setHasMorePages] = useState(false)
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      const offset = (currentPage - 1) * limit
+
+      const searchParams = new URLSearchParams({
+        limit: `${limit}`,
+        offset: `${offset}`,
+        "category_id[]": categoryId
+      })
+
+      fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
+        credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
+        }
+      })
+      .then((res) => res.json())
+      .then(({ products: dataProducts, count }) => {
+        setProducts((prev) => {
+          if (prev.length > offset) {
+            // products already added because the same request has already been sent
+            return prev
+          }
+          return [
+            ...prev,
+            ...dataProducts
+          ]
+        })
+        setHasMorePages(count > limit * currentPage)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && products.length === 0 && (
+          <span>No products found for category.</span>
+        )}
+        {!loading && products.length > 0 && (
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>{product.title}</li>
+            ))}
+          </ul>
+        )}
+        {!loading && hasMorePages && (
+          <button 
+            onClick={() => {
+              setCurrentPage((prev) => prev + 1)
+              setLoading(true)
+            }}
+            disabled={loading}
+          >
+            Load More
+          </button>
+        )}
+      </div>
+    );
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add a link to product object in API reference (once available). */}
+
+The response has a `products` field, which is an array of products.

@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
   useMutation,
@@ -8,7 +9,6 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { HttpTypes } from "@medusajs/types"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -166,7 +166,10 @@ export const useUpdateProductVariantsBatch = (
   return useMutation({
     mutationFn: (
       payload: HttpTypes.AdminBatchProductVariantRequest["update"]
-    ) => sdk.admin.product.batchVariants(productId, { update: payload }),
+    ) =>
+      sdk.admin.product.batchVariants(productId, {
+        update: payload,
+      }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
       queryClient.invalidateQueries({
