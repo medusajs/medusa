@@ -1,5 +1,5 @@
 import ora, { Ora } from "ora"
-import runCreateDb, { getDbClientAndCredentials } from "../create-db.js"
+import runCreateDb from "../create-db.js"
 import pg from "pg"
 import { nanoid } from "nanoid"
 import formatConnectionString from "../format-connection-string.js"
@@ -19,6 +19,7 @@ describe("create-db", () => {
   })
 
   it("should create local db", async () => {
+    expect.assertions(1)
     const client = new pg.Client()
     await client.connect()
 
@@ -41,11 +42,11 @@ describe("create-db", () => {
       connectionString
     })
 
-    expect(async () => {
+    return expect((async () => {
       await newClient.connect()
 
       await newClient.end()
-    }).not.toThrow()
+    })()).resolves.toBeUndefined()
   })
   
 })

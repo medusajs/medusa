@@ -10,10 +10,10 @@ import type { Client } from "pg"
 
 const ADMIN_EMAIL = "admin@medusa-test.com"
 // TODO remove preview links once we move to main docs
-const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
-const ADMIN_CORS = "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
-const AUTH_CORS = ADMIN_CORS
-const DEFAULT_REDIS_URL = "redis://localhost:6379"
+export const STORE_CORS = "http://localhost:8000,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+export const ADMIN_CORS = "http://localhost:7000,http://localhost:7001,https://docs.medusajs.com,https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app,https://medusa-resources-git-docs-v2-medusajs.vercel.app"
+export const AUTH_CORS = ADMIN_CORS
+export const DEFAULT_REDIS_URL = "redis://localhost:6379"
 
 type PrepareOptions = {
   directory: string

@@ -39,20 +39,18 @@ describe("nextjs-utils", () => {
   })
 
   it("should install next.js storefront", async () => {
+    expect.assertions(2)
     const nextjsDirectory = await installNextjsStarter(
       defaultOptions
     )
 
     expect(nextjsDirectory).toEqual(projectName)
 
-    expect(async () => {
+    return expect((async () => {
       await stat(projectPath)
-    }).not.toThrow()
-    
-    expect(async () => {
       await stat(
         path.join(projectPath, "node_modules")
       )
-    }).not.toThrow()
+    })()).resolves.toBeUndefined()
   })
 })
