@@ -32,8 +32,10 @@ export const InventoryItemVariantsSection = ({
             key={variant.id}
             className="shadow-elevation-card-rest bg-ui-bg-component rounded-md px-4 py-2"
           >
-            <div className="flex items-center gap-2">
-              <Thumbnail src={variant.product?.thumbnail} />
+            <div className="flex items-center gap-3">
+              <div className="shadow-elevation-card-rest rounded-md">
+                <Thumbnail src={variant.product?.thumbnail} />
+              </div>
               <div className="flex flex-1 flex-col">
                 <span className="text-ui-fg-base font-medium">
                   {variant.title}
