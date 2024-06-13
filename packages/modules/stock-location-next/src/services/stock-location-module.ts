@@ -2,27 +2,27 @@ import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   Context,
   CreateStockLocationInput,
+  DAL,
+  FilterableStockLocationProps,
   IEventBusService,
+  IStockLocationServiceNext,
   ModuleJoinerConfig,
+  ModulesSdkTypes,
   StockLocationAddressInput,
   StockLocationTypes,
-  ModulesSdkTypes,
-  DAL,
-  IStockLocationServiceNext,
-  FilterableStockLocationProps,
+  UpdateStockLocationNextInput,
+  UpsertStockLocationInput,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   ModulesSdkUtils,
-  isString,
+  promiseAll,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
-import { UpdateStockLocationNextInput } from "@medusajs/types"
-import { UpsertStockLocationInput } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusModuleService: IEventBusService
@@ -31,18 +31,16 @@ type InjectedDependencies = {
   stockLocationAddressService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [StockLocationAddress]
+const generateMethodForModels = { StockLocationAddress }
 
 /**
  * Service for managing stock locations.
  */
-
 export default class StockLocationModuleService<
     TEntity extends StockLocation = StockLocation,
     TStockLocationAddress extends StockLocationAddress = StockLocationAddress
   >
   extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
     StockLocationTypes.StockLocationDTO,
     {
       StockLocation: { dto: StockLocationTypes.StockLocationDTO }

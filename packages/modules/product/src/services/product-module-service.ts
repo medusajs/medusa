@@ -68,14 +68,14 @@ type InjectedDependencies = {
   eventBusModuleService?: IEventBusModuleService
 }
 
-const generateMethodForModels = [
-  { model: ProductCategory, singular: "Category", plural: "Categories" },
-  { model: ProductCollection, singular: "Collection", plural: "Collections" },
-  { model: ProductOption, singular: "Option", plural: "Options" },
-  { model: ProductTag, singular: "Tag", plural: "Tags" },
-  { model: ProductType, singular: "Type", plural: "Types" },
-  { model: ProductVariant, singular: "Variant", plural: "Variants" },
-]
+const generateMethodForModels = {
+  ProductCategory: { singular: "Category", plural: "Categories" },
+  ProductCollection: { singular: "Collection", plural: "Collections" },
+  ProductOption: { singular: "Option", plural: "Options" },
+  ProductTag: { singular: "Tag", plural: "Tags" },
+  ProductType: { singular: "Type", plural: "Types" },
+  ProductVariant: { singular: "Variant", plural: "Variants" },
+}
 
 export default class ProductModuleService<
     TProduct extends Product = Product,
@@ -89,7 +89,6 @@ export default class ProductModuleService<
     TProductOptionValue extends ProductOptionValue = ProductOptionValue
   >
   extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
     ProductTypes.ProductDTO,
     {
       ProductCategory: {
@@ -184,6 +183,7 @@ export default class ProductModuleService<
   }
 
   // TODO: Add options validation, among other things
+  // @ts-ignore
   createVariants(
     data: ProductTypes.CreateProductVariantDTO[],
     sharedContext?: Context
@@ -298,6 +298,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allVariants : allVariants[0]
   }
 
+  // @ts-ignore
   updateVariants(
     id: string,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -412,6 +413,7 @@ export default class ProductModuleService<
     return productVariants
   }
 
+  // @ts-ignore
   createTags(
     data: ProductTypes.CreateProductTagDTO[],
     sharedContext?: Context
@@ -490,6 +492,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allTags : allTags[0]
   }
 
+  // @ts-ignore
   updateTags(
     id: string,
     data: ProductTypes.UpdateProductTagDTO,
@@ -543,6 +546,7 @@ export default class ProductModuleService<
     return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
 
+  // @ts-ignore
   createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     sharedContext?: Context
@@ -610,6 +614,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allTypes : allTypes[0]
   }
 
+  // @ts-ignore
   updateTypes(
     id: string,
     data: ProductTypes.UpdateProductTypeDTO,
@@ -657,6 +662,7 @@ export default class ProductModuleService<
     return isString(idOrSelector) ? updatedTypes[0] : updatedTypes
   }
 
+  // @ts-ignore
   createOptions(
     data: ProductTypes.CreateProductOptionDTO[],
     sharedContext?: Context
@@ -753,6 +759,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allOptions : allOptions[0]
   }
 
+  // @ts-ignore
   updateOptions(
     id: string,
     data: ProductTypes.UpdateProductOptionDTO,
@@ -869,6 +876,7 @@ export default class ProductModuleService<
     return productOptions
   }
 
+  // @ts-ignore
   createCollections(
     data: ProductTypes.CreateProductCollectionDTO[],
     sharedContext?: Context
@@ -988,6 +996,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allCollections : allCollections[0]
   }
 
+  // @ts-ignore
   updateCollections(
     id: string,
     data: ProductTypes.UpdateProductCollectionDTO,

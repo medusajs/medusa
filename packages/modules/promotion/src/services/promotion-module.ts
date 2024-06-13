@@ -10,20 +10,20 @@ import {
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  arrayDifference,
   CampaignBudgetType,
   ComputedActions,
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isPresent,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   PromotionType,
-  arrayDifference,
-  deduplicate,
-  isDefined,
-  isPresent,
-  isString,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
 import {
@@ -47,9 +47,9 @@ import {
   UpdatePromotionDTO,
 } from "@types"
 import {
-  ComputeActionUtils,
   allowedAllocationForQuantity,
   areRulesValidForContext,
+  ComputeActionUtils,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
@@ -66,13 +66,13 @@ type InjectedDependencies = {
   campaignBudgetService: ModulesSdkTypes.InternalModuleService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   ApplicationMethod,
   Campaign,
   CampaignBudget,
   PromotionRule,
   PromotionRuleValue,
-]
+}
 
 export default class PromotionModuleService<
     TApplicationMethod extends ApplicationMethod = ApplicationMethod,
@@ -83,7 +83,6 @@ export default class PromotionModuleService<
     TCampaignBudget extends CampaignBudget = CampaignBudget
   >
   extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
     PromotionTypes.PromotionDTO,
     {
       ApplicationMethod: { dto: PromotionTypes.ApplicationMethodDTO }
@@ -839,6 +838,7 @@ export default class PromotionModuleService<
   }
 
   @InjectManager("baseRepository_")
+  // @ts-ignore
   async updatePromotionRules(
     data: PromotionTypes.UpdatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -848,7 +848,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.listPromotionRules(
+    return await this.listPromotionRules(
       { id: updatedPromotionRules.map((r) => r.id) },
       { relations: ["values"] },
       sharedContext
@@ -1153,6 +1153,7 @@ export default class PromotionModuleService<
     )
   }
 
+  // @ts-ignore
   async createCampaigns(
     data: PromotionTypes.CreateCampaignDTO,
     sharedContext?: Context
@@ -1262,6 +1263,7 @@ export default class PromotionModuleService<
     }
   }
 
+  // @ts-ignore
   async updateCampaigns(
     data: PromotionTypes.UpdateCampaignDTO,
     sharedContext?: Context

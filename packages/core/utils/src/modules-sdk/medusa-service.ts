@@ -52,7 +52,13 @@ type ModelDTOConfig = {
   dto: object
   create?: any
   update?: any
+  /**
+   * @internal
+   */
   singular?: string
+  /**
+   * @internal
+   */
   plural?: string
 }
 
@@ -75,18 +81,6 @@ type ModelConfigurationsToConfigTemplate<
   }
 }
 
-type EntitiesConfigTemplateToFullEntitiesConfigTemplate<
-  T extends EntitiesConfigTemplate
-> = {
-  [Key in keyof T]: {
-    dto: T[Key]["dto"]
-    create: T[Key]["create"] extends unknown ? any : T[Key]["create"]
-    update: T[Key]["update"] extends unknown ? any : T[Key]["update"]
-    singular: T[Key]["singular"] extends string ? T[Key]["singular"] : never
-    plural: T[Key]["plural"] extends string ? T[Key]["plural"] : never
-  }
-}
-
 type ExtractSingularName<T extends Record<any, any>, K = keyof T> = Capitalize<
   T[K] extends { singular?: string } ? T[K]["singular"] & string : K & string
 >
@@ -97,12 +91,7 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   ? T[K]["plural"] & string
   : Pluralize<K & string>
 
-type ModelConfiguration =
-  | Constructor<any>
-  | (ModelDTOConfig & { name: string })
-  | any
-
-type ExtractMutationDtoOrAny<T> = T extends never ? any : T
+type ModelConfiguration = Constructor<any> | ModelDTOConfig | any
 
 export interface AbstractModuleServiceBase<TEntryEntityConfig> {
   new (container: Record<any, any>, ...args: any[]): this
@@ -212,22 +201,20 @@ export type AbstractModuleService<
     TEntitiesDtoConfig,
     TEntityName
   >}`]: {
-    (...args: any[]): Promise<
-      any
-    >
+    (...args: any[]): Promise<any>
   }
 } & {
   [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
     TEntitiesDtoConfig,
     TEntityName
   >}`]: {
-    (...args: any[]): Promise<
-      any
-    >
+    (...args: any[]): Promise<any>
   }
 }
 
 // TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface
+/*type ExtractMutationDtoOrAny<T> = T extends never ? any : T*/
+
 // are not consistent accross modules
 /* & {
   [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
@@ -280,6 +267,9 @@ export type AbstractModuleService<
   }
 }*/
 
+/**
+ * @internal
+ */
 function buildMethodNamesFromModel(
   model: ModelConfiguration,
   suffixed: boolean = true
@@ -364,7 +354,7 @@ export function MedusaService<
     ModelConfiguration
   >
 >(
-  entryEntity: TEntryEntityConfig | Constructor<any>,
+  entryEntity: (TEntryEntityConfig & { name: string }) | Constructor<any>,
   entities: TEntities,
   entityNameToLinkableKeysMap: MapToConfig = {}
 ): {
@@ -379,9 +369,10 @@ export function MedusaService<
     klassPrototype: any,
     method: string,
     methodName: string,
+    modelName: string,
     model: ModelConfiguration
   ): void {
-    const serviceRegistrationName = `${lowerCaseFirst(model.name)}Service`
+    const serviceRegistrationName = `${lowerCaseFirst(modelName)}Service`
 
     const applyMethod = function (impl: Function, contextIndex) {
       klassPrototype[methodName] = impl
@@ -661,6 +652,7 @@ export function MedusaService<
       AbstractModuleService_.prototype,
       method,
       methodName,
+      entryEntity.name,
       entryEntity
     )
   }
@@ -669,18 +661,23 @@ export function MedusaService<
    * Build the retrieve/list/listAndCount/delete/softDelete/restore methods for all the other models
    */
 
-  const entitiesMethods: [ModelConfiguration, Record<string, string>][] =
-    Object.values(entities).map((model) => [
-      model,
-      buildMethodNamesFromModel(model),
-    ])
+  const entitiesMethods: [
+    string,
+    ModelConfiguration,
+    Record<string, string>
+  ][] = Object.entries(entities).map(([name, config]) => [
+    name,
+    config,
+    buildMethodNamesFromModel(config),
+  ])
 
-  for (let [model, modelsMethods] of entitiesMethods) {
+  for (let [modelName, model, modelsMethods] of entitiesMethods) {
     Object.entries(modelsMethods).forEach(([method, methodName]) => {
       buildAndAssignMethodImpl(
         AbstractModuleService_.prototype,
         method,
         methodName,
+        modelName,
         model
       )
     })
@@ -688,7 +685,6 @@ export function MedusaService<
 
   return AbstractModuleService_ as any
 }
-/*
 type InjectedDependencies = {
   baseRepository: RepositoryService
   eventBusModuleService: IEventBusModuleService
@@ -731,4 +727,4 @@ class Service2 extends MedusaService<
     const entities = await super.listOtherModels()
     const id = entities[0].title
   }
-}*/
+}

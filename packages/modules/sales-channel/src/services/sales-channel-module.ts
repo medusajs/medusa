@@ -33,11 +33,11 @@ type InjectedDependencies = {
 export default class SalesChannelModuleService<
     TEntity extends SalesChannel = SalesChannel
   >
-  extends ModulesSdkUtils.MedusaService<
-    InjectedDependencies,
-    SalesChannelDTO,
-    {}
-  >(SalesChannel, [], entityNameToLinkableKeysMap)
+  extends ModulesSdkUtils.MedusaService<SalesChannelDTO>(
+    SalesChannel,
+    {},
+    entityNameToLinkableKeysMap
+  )
   implements ISalesChannelModuleService
 {
   protected baseRepository_: DAL.RepositoryService
