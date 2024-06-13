@@ -45,35 +45,22 @@ describe("Abstract Module Service Factory", () => {
   class OtherModelMock1 {}
   class OtherModelMock2 {}
 
-  const abstractModuleService = MedusaService<
+  const medusaService = MedusaService({
     MainModelMock,
-    {
-      OtherModelMock1: {
-        dto: any
-        singular: "OtherModelMock1"
-        plural: "OtherModelMock1s"
-      }
-      OtherModelMock2: {
-        dto: any
-        singular: "OtherModelMock2"
-        plural: "OtherModelMock2s"
-      }
-    }
-  >(MainModelMock, {
     OtherModelMock1,
     OtherModelMock2,
   })
 
   describe("Main Model Methods", () => {
-    let instance
+    let instance: medusaService
 
     beforeEach(() => {
       jest.clearAllMocks()
-      instance = new abstractModuleService(containerMock)
+      instance = new medusaService(containerMock)
     })
 
     it("should have retrieve method", async () => {
-      const result = await instance.retrieve("1")
+      const result = await instance.retrieveMainModelMock("1")
       expect(result).toEqual({ id: "1", name: "Item" })
       expect(containerMock.mainModelMockService.retrieve).toHaveBeenCalledWith(
         "1",
@@ -83,7 +70,7 @@ describe("Abstract Module Service Factory", () => {
     })
 
     it("should have list method", async () => {
-      const result = await instance.list()
+      const result = await instance.listMainModelMocks()
       expect(result).toEqual([{ id: "1", name: "Item" }])
       expect(containerMock.mainModelMockService.list).toHaveBeenCalledWith(
         {},
@@ -93,7 +80,7 @@ describe("Abstract Module Service Factory", () => {
     })
 
     it("should have delete method", async () => {
-      await instance.delete("1")
+      await instance.deleteMainModelMocks("1")
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         ["1"],
         defaultTransactionContext
@@ -101,7 +88,7 @@ describe("Abstract Module Service Factory", () => {
     })
 
     it("should have softDelete method", async () => {
-      const result = await instance.softDelete("1")
+      const result = await instance.softDeleteMainModelMocks("1")
       expect(result).toEqual({})
       expect(
         containerMock.mainModelMockService.softDelete
@@ -109,7 +96,7 @@ describe("Abstract Module Service Factory", () => {
     })
 
     it("should have restore method", async () => {
-      const result = await instance.restore("1")
+      const result = await instance.restoreMainModelMocks("1")
       expect(result).toEqual({})
       expect(containerMock.mainModelMockService.restore).toHaveBeenCalledWith(
         ["1"],
@@ -118,7 +105,7 @@ describe("Abstract Module Service Factory", () => {
     })
 
     it("should have delete method with selector", async () => {
-      await instance.delete({ selector: { id: "1" } })
+      await instance.deleteMainModelMocks({ selector: { id: "1" } })
       expect(containerMock.mainModelMockService.delete).toHaveBeenCalledWith(
         [{ selector: { id: "1" } }],
         defaultTransactionContext
@@ -131,7 +118,7 @@ describe("Abstract Module Service Factory", () => {
 
     beforeEach(() => {
       jest.clearAllMocks()
-      instance = new abstractModuleService(containerMock)
+      instance = new medusaService(containerMock)
     })
 
     it("should have retrieve method for other models", async () => {
