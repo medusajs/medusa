@@ -1,3 +1,5 @@
+import { MedusaService } from "../medusa-service"
+
 const baseRepoMock = {
   serialize: jest.fn().mockImplementation((item) => item),
   transaction: (task) => task("transactionManager"),
@@ -43,7 +45,7 @@ describe("Abstract Module Service Factory", () => {
   class OtherModelMock1 {}
   class OtherModelMock2 {}
 
-  const abstractModuleService = abstractModuleServiceFactory<
+  const abstractModuleService = MedusaService<
     MainModelMock,
     {
       OtherModelMock1: {

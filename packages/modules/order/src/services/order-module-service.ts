@@ -93,7 +93,7 @@ type InjectedDependencies = {
   returnService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   Address,
   LineItem,
   LineItemAdjustment,
@@ -109,7 +109,7 @@ const generateMethodForModels = [
   OrderShippingMethod,
   ReturnReason,
   Return,
-]
+}
 
 export default class OrderModuleService<
     TOrder extends Order = Order,
