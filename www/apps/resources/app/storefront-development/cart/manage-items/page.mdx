@@ -34,12 +34,12 @@ const addToCart = (variant_id: string) => {
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       variant_id,
       quantity: 1,
-    })
+    }),
   })
   .then((res) => res.json())
   .then(({ cart }) => {
@@ -89,11 +89,11 @@ const updateQuantity = (
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      quantity
-    })
+      quantity,
+    }),
   })
   .then((res) => res.json())
   .then(({ cart }) => {

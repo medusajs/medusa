@@ -33,20 +33,18 @@ type SelectorAndData = {
   data: any
 }
 
-export function internalModuleServiceFactory<
-  TContainer extends object = object
->(
+export function MedusaInternalService<TContainer extends object = object>(
   model: any
 ): {
   new <TEntity extends object = any>(
     container: TContainer
-  ): ModulesSdkTypes.InternalModuleService<TEntity, TContainer>
+  ): ModulesSdkTypes.IMedusaInternalService<TEntity, TContainer>
 } {
   const injectedRepositoryName = `${lowerCaseFirst(model.name)}Repository`
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
   class AbstractService_<TEntity extends object>
-    implements ModulesSdkTypes.InternalModuleService<TEntity, TContainer>
+    implements ModulesSdkTypes.IMedusaInternalService<TEntity, TContainer>
   {
     readonly __container__: TContainer;
     [key: string]: any
@@ -525,5 +523,5 @@ export function internalModuleServiceFactory<
 
   return AbstractService_ as unknown as new <TEntity extends {}>(
     container: TContainer
-  ) => ModulesSdkTypes.InternalModuleService<TEntity, TContainer>
+  ) => ModulesSdkTypes.IMedusaInternalService<TEntity, TContainer>
 }

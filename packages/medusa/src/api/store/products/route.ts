@@ -4,7 +4,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { wrapVariantsWithInventoryQuantity } from "./helpers"
+import { wrapVariantsWithInventoryQuantity } from "../../utils/middlewares"
 import { StoreGetProductsParamsType } from "./validators"
 
 export const GET = async (

@@ -27,17 +27,17 @@ import { EntityManager } from "@mikro-orm/core"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  customerService: ModulesSdkTypes.InternalModuleService<any>
-  addressService: ModulesSdkTypes.InternalModuleService<any>
-  customerGroupService: ModulesSdkTypes.InternalModuleService<any>
-  customerGroupCustomerService: ModulesSdkTypes.InternalModuleService<any>
+  customerService: ModulesSdkTypes.IMedusaInternalService<any>
+  addressService: ModulesSdkTypes.IMedusaInternalService<any>
+  customerGroupService: ModulesSdkTypes.IMedusaInternalService<any>
+  customerGroupCustomerService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
-  { model: Address, singular: "Address", plural: "Addresses" },
+const generateMethodForModels = {
+  Address: { singular: "Address", plural: "Addresses" },
   CustomerGroup,
   CustomerGroupCustomer,
-]
+}
 
 export default class CustomerModuleService<
     TAddress extends Address = Address,
@@ -45,8 +45,7 @@ export default class CustomerModuleService<
     TCustomerGroup extends CustomerGroup = CustomerGroup,
     TCustomerGroupCustomer extends CustomerGroupCustomer = CustomerGroupCustomer
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     CustomerDTO,
     {
       Address: { dto: any }
@@ -57,10 +56,10 @@ export default class CustomerModuleService<
   implements ICustomerModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected customerService_: ModulesSdkTypes.InternalModuleService<TCustomer>
-  protected addressService_: ModulesSdkTypes.InternalModuleService<TAddress>
-  protected customerGroupService_: ModulesSdkTypes.InternalModuleService<TCustomerGroup>
-  protected customerGroupCustomerService_: ModulesSdkTypes.InternalModuleService<TCustomerGroupCustomer>
+  protected customerService_: ModulesSdkTypes.IMedusaInternalService<TCustomer>
+  protected addressService_: ModulesSdkTypes.IMedusaInternalService<TAddress>
+  protected customerGroupService_: ModulesSdkTypes.IMedusaInternalService<TCustomerGroup>
+  protected customerGroupCustomerService_: ModulesSdkTypes.IMedusaInternalService<TCustomerGroupCustomer>
 
   constructor(
     {
@@ -233,6 +232,7 @@ export default class CustomerModuleService<
     })
   }
 
+  // @ts-ignore
   async updateCustomerGroups(
     groupId: string,
     data: CustomerTypes.CustomerGroupUpdatableFields,
@@ -372,6 +372,7 @@ export default class CustomerModuleService<
     )
   }
 
+  // @ts-ignore
   async updateAddresses(
     addressId: string,
     data: CustomerTypes.UpdateCustomerAddressDTO,

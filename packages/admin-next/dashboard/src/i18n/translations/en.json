@@ -1251,8 +1251,7 @@
       "override": "Override"
     },
     "products": {
-      "deleteProductsPricesWarning_one": "You are about to delete {{count}} product price. This action cannot be undone.",
-      "deleteProductsPricesWarning_other": "You are about to delete {{count}} product prices. This action cannot be undone."
+      "deleteProductsPricesWarning": "You are about to delete all prices of {{count}} product(s). This action cannot be undone."
     },
     "prices": {
       "addPrices": "Add prices",

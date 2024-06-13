@@ -32,7 +32,7 @@ export const fetchHighlights = [
       `http://localhost:9000/store/shipping-options?cart_id=${
         cart.id
       }`, {
-        credentials: "include"
+        credentials: "include",
       }
     )
     .then((res) => res.json())
@@ -49,15 +49,15 @@ export const fetchHighlights = [
       credentials: "include",
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         option_id: selectedShippingOptionId,
         data: {
           // TODO add any data necessary for
           // fulfillment provider
-        }
-      })
+        },
+      }),
     })
     .then((res) => res.json())
     .then(({ cart }) => {
@@ -84,7 +84,7 @@ export const highlights = [
   import { useCart } from "../../../providers/cart"
   import { HttpTypes } from "@medusajs/types"
 
-  export default function CheckoutShippingStep () {
+  export default function CheckoutShippingStep() {
     const { cart, setCart } = useCart()
     const [loading, setLoading] = useState(false)
     const [shippingOptions, setShippingOptions] = useState<
@@ -92,7 +92,7 @@ export const highlights = [
     >([])
     const [
       selectedShippingOption, 
-      setSelectedShippingOption
+      setSelectedShippingOption,
     ] = useState<string | undefined>()
 
     useEffect(() => {
@@ -102,7 +102,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/shipping-options?cart_id=${
         cart.id
       }`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
       .then(({ shipping_options }) => {
@@ -126,15 +126,15 @@ export const highlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           option_id: selectedShippingOption,
           data: {
             // TODO add any data necessary for
             // fulfillment provider
-          }
-        })
+          },
+        }),
       })
       .then((res) => res.json())
       .then(({ cart: updatedCart }) => {

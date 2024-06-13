@@ -57,8 +57,8 @@ export default function Product({ params: { id } }: Params) {
     fetch(`http://localhost:9000/store/products/${id}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-      }
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
     })
     .then((res) => res.json())
     .then(({ product: dataProduct }) => {
@@ -99,7 +99,7 @@ export default function Product({ params: { id } }: Params) {
                         setSelectedOptions((prev) => {
                           return {
                             ...prev,
-                            [option.id!]: optionValue.value!
+                            [option.id!]: optionValue.value!,
                           }
                         })
                       }}

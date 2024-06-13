@@ -10,20 +10,20 @@ import {
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
+  arrayDifference,
   CampaignBudgetType,
   ComputedActions,
+  deduplicate,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isPresent,
+  isString,
   MathBN,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   PromotionType,
-  arrayDifference,
-  deduplicate,
-  isDefined,
-  isPresent,
-  isString,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
 import {
@@ -47,9 +47,9 @@ import {
   UpdatePromotionDTO,
 } from "@types"
 import {
-  ComputeActionUtils,
   allowedAllocationForQuantity,
   areRulesValidForContext,
+  ComputeActionUtils,
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
@@ -58,21 +58,21 @@ import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  promotionService: ModulesSdkTypes.InternalModuleService<any>
-  applicationMethodService: ModulesSdkTypes.InternalModuleService<any>
-  promotionRuleService: ModulesSdkTypes.InternalModuleService<any>
-  promotionRuleValueService: ModulesSdkTypes.InternalModuleService<any>
-  campaignService: ModulesSdkTypes.InternalModuleService<any>
-  campaignBudgetService: ModulesSdkTypes.InternalModuleService<any>
+  promotionService: ModulesSdkTypes.IMedusaInternalService<any>
+  applicationMethodService: ModulesSdkTypes.IMedusaInternalService<any>
+  promotionRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  promotionRuleValueService: ModulesSdkTypes.IMedusaInternalService<any>
+  campaignService: ModulesSdkTypes.IMedusaInternalService<any>
+  campaignBudgetService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   ApplicationMethod,
   Campaign,
   CampaignBudget,
   PromotionRule,
   PromotionRuleValue,
-]
+}
 
 export default class PromotionModuleService<
     TApplicationMethod extends ApplicationMethod = ApplicationMethod,
@@ -82,8 +82,7 @@ export default class PromotionModuleService<
     TCampaign extends Campaign = Campaign,
     TCampaignBudget extends CampaignBudget = CampaignBudget
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     PromotionTypes.PromotionDTO,
     {
       ApplicationMethod: { dto: PromotionTypes.ApplicationMethodDTO }
@@ -96,12 +95,12 @@ export default class PromotionModuleService<
   implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected promotionService_: ModulesSdkTypes.InternalModuleService<TPromotion>
-  protected applicationMethodService_: ModulesSdkTypes.InternalModuleService<TApplicationMethod>
-  protected promotionRuleService_: ModulesSdkTypes.InternalModuleService<TPromotionRule>
-  protected promotionRuleValueService_: ModulesSdkTypes.InternalModuleService<TPromotionRuleValue>
-  protected campaignService_: ModulesSdkTypes.InternalModuleService<TCampaign>
-  protected campaignBudgetService_: ModulesSdkTypes.InternalModuleService<TCampaignBudget>
+  protected promotionService_: ModulesSdkTypes.IMedusaInternalService<TPromotion>
+  protected applicationMethodService_: ModulesSdkTypes.IMedusaInternalService<TApplicationMethod>
+  protected promotionRuleService_: ModulesSdkTypes.IMedusaInternalService<TPromotionRule>
+  protected promotionRuleValueService_: ModulesSdkTypes.IMedusaInternalService<TPromotionRuleValue>
+  protected campaignService_: ModulesSdkTypes.IMedusaInternalService<TCampaign>
+  protected campaignBudgetService_: ModulesSdkTypes.IMedusaInternalService<TCampaignBudget>
 
   constructor(
     {
@@ -839,6 +838,7 @@ export default class PromotionModuleService<
   }
 
   @InjectManager("baseRepository_")
+  // @ts-ignore
   async updatePromotionRules(
     data: PromotionTypes.UpdatePromotionRuleDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -848,7 +848,7 @@ export default class PromotionModuleService<
       sharedContext
     )
 
-    return this.listPromotionRules(
+    return await this.listPromotionRules(
       { id: updatedPromotionRules.map((r) => r.id) },
       { relations: ["values"] },
       sharedContext
@@ -1153,6 +1153,7 @@ export default class PromotionModuleService<
     )
   }
 
+  // @ts-ignore
   async createCampaigns(
     data: PromotionTypes.CreateCampaignDTO,
     sharedContext?: Context
@@ -1262,6 +1263,7 @@ export default class PromotionModuleService<
     }
   }
 
+  // @ts-ignore
   async updateCampaigns(
     data: PromotionTypes.UpdateCampaignDTO,
     sharedContext?: Context

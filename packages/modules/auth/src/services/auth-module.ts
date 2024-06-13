@@ -21,23 +21,21 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import AuthProviderService from "./auth-provider"
-import { populate } from "dotenv"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  authIdentityService: ModulesSdkTypes.InternalModuleService<any>
-  providerIdentityService: ModulesSdkTypes.InternalModuleService<any>
+  authIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
+  providerIdentityService: ModulesSdkTypes.IMedusaInternalService<any>
   authProviderService: AuthProviderService
 }
 
-const generateMethodForModels = [AuthIdentity, ProviderIdentity]
+const generateMethodForModels = { AuthIdentity, ProviderIdentity }
 
 export default class AuthModuleService<
     TAuthIdentity extends AuthIdentity = AuthIdentity,
     TProviderIdentity extends ProviderIdentity = ProviderIdentity
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     AuthTypes.AuthIdentityDTO,
     {
       AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
@@ -47,8 +45,8 @@ export default class AuthModuleService<
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected authIdentityService_: ModulesSdkTypes.InternalModuleService<TAuthIdentity>
-  protected providerIdentityService_: ModulesSdkTypes.InternalModuleService<TProviderIdentity>
+  protected authIdentityService_: ModulesSdkTypes.IMedusaInternalService<TAuthIdentity>
+  protected providerIdentityService_: ModulesSdkTypes.IMedusaInternalService<TProviderIdentity>
   protected readonly authProviderService_: AuthProviderService
 
   constructor(
