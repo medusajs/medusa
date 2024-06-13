@@ -18,6 +18,7 @@ import { PriceListRes } from "../../types/api-responses"
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
 
+// TODO: Add translations for all breadcrumbs
 export const RouteMap: RouteObject[] = [
   {
     path: "/login",

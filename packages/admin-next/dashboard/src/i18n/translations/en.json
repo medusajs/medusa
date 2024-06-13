@@ -760,7 +760,7 @@
     }
   },
   "stockLocations": {
-    "domain": "Location & Shipping",
+    "domain": "Locations & Shipping",
     "list": {
       "description": "Manage your store's stock locations and shipping options."
     },
