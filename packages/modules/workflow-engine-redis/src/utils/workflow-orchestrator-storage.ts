@@ -24,7 +24,7 @@ export class RedisDistributedTransactionStorage
   implements IDistributedTransactionStorage, IDistributedSchedulerStorage
 {
   private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
-  private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
+  private workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private redisClient: Redis
@@ -37,7 +37,7 @@ export class RedisDistributedTransactionStorage
     redisWorkerConnection,
     redisQueueName,
   }: {
-    workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
+    workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
     redisConnection: Redis
     redisWorkerConnection: Redis
     redisQueueName: string

@@ -1,8 +1,8 @@
-import { isPresent } from "@medusajs/utils"
+import { MedusaError, isPresent } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
-import { refetchProduct, wrapVariantsWithInventoryQuantity } from "../helpers"
+import { wrapVariantsWithInventoryQuantity } from "../../../utils/middlewares"
+import { refetchProduct } from "../helpers"
 import { StoreGetProductsParamsType } from "../validators"
-import { MedusaError } from "@medusajs/utils"
 
 export const GET = async (
   req: MedusaRequest<StoreGetProductsParamsType>,

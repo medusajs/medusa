@@ -9,9 +9,10 @@ import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
 import { Logger } from "../logger"
 
-export type Constructor<T> = new (...args: any[]) => T
+export type Constructor<T> = new (...args: any[]) => T | (new () => T)
+
 export * from "../common/medusa-container"
-export * from "./internal-module-service"
+export * from "./medusa-internal-service"
 export * from "./module-provider"
 
 export type LogLevel =

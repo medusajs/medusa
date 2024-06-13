@@ -21,12 +21,12 @@ For example, create the file `src/scripts/my-script.ts` with the following conte
 ```ts title="src/scripts/my-script.ts"
 import { 
   ExecArgs,
-  IProductModuleService
+  IProductModuleService,
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-export default async function myScript ({
-  container
+export default async function myScript({
+  container,
 }: ExecArgs) {
   const productModuleService: IProductModuleService = 
     container.resolve(ModuleRegistrationName.PRODUCT)
@@ -60,8 +60,8 @@ For example:
 ```ts
 import { ExecArgs } from "@medusajs/types"
 
-export default async function myScript ({
-  args
+export default async function myScript({
+  args,
 }: ExecArgs) {
   console.log(`The arguments you passed: ${args}`)
 }

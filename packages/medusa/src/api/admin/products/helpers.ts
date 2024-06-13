@@ -1,10 +1,10 @@
 import { LinkDefinition } from "@medusajs/modules-sdk"
 import {
   BatchMethodResponse,
+  HttpTypes,
   MedusaContainer,
   ProductDTO,
   ProductVariantDTO,
-  HttpTypes,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,

@@ -27,21 +27,21 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  salesChannelService: ModulesSdkTypes.InternalModuleService<any>
+  salesChannelService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class SalesChannelModuleService<
     TEntity extends SalesChannel = SalesChannel
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
-    SalesChannelDTO,
-    {}
-  >(SalesChannel, [], entityNameToLinkableKeysMap)
+  extends ModulesSdkUtils.MedusaService<SalesChannelDTO>(
+    SalesChannel,
+    {},
+    entityNameToLinkableKeysMap
+  )
   implements ISalesChannelModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly salesChannelService_: ModulesSdkTypes.InternalModuleService<TEntity>
+  protected readonly salesChannelService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
 
   constructor(
     { baseRepository, salesChannelService }: InjectedDependencies,

@@ -1,9 +1,9 @@
 import {
   Context,
   DAL,
+  InternalModuleDeclaration,
   ITaxModuleService,
   ITaxProvider,
-  InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   TaxRegionDTO,
@@ -12,11 +12,11 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
-  isString,
   promiseAll,
 } from "@medusajs/utils"
 import { TaxProvider, TaxRate, TaxRateRule, TaxRegion } from "@models"
@@ -24,14 +24,14 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  taxRateService: ModulesSdkTypes.InternalModuleService<any>
-  taxRegionService: ModulesSdkTypes.InternalModuleService<any>
-  taxRateRuleService: ModulesSdkTypes.InternalModuleService<any>
-  taxProviderService: ModulesSdkTypes.InternalModuleService<any>
+  taxRateService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxRegionService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxRateRuleService: ModulesSdkTypes.IMedusaInternalService<any>
+  taxProviderService: ModulesSdkTypes.IMedusaInternalService<any>
   [key: `tp_${string}`]: ITaxProvider
 }
 
-const generateForModels = [TaxRegion, TaxRateRule, TaxProvider]
+const generateForModels = { TaxRegion, TaxRateRule, TaxProvider }
 
 type ItemWithRates = {
   rates: TaxRate[]
@@ -44,8 +44,7 @@ export default class TaxModuleService<
     TTaxRateRule extends TaxRateRule = TaxRateRule,
     TTaxProvider extends TaxProvider = TaxProvider
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     TaxTypes.TaxRateDTO,
     {
       TaxRegion: { dto: TaxTypes.TaxRegionDTO }
@@ -57,10 +56,10 @@ export default class TaxModuleService<
 {
   protected readonly container_: InjectedDependencies
   protected baseRepository_: DAL.RepositoryService
-  protected taxRateService_: ModulesSdkTypes.InternalModuleService<TTaxRate>
-  protected taxRegionService_: ModulesSdkTypes.InternalModuleService<TTaxRegion>
-  protected taxRateRuleService_: ModulesSdkTypes.InternalModuleService<TTaxRateRule>
-  protected taxProviderService_: ModulesSdkTypes.InternalModuleService<TTaxProvider>
+  protected taxRateService_: ModulesSdkTypes.IMedusaInternalService<TTaxRate>
+  protected taxRegionService_: ModulesSdkTypes.IMedusaInternalService<TTaxRegion>
+  protected taxRateRuleService_: ModulesSdkTypes.IMedusaInternalService<TTaxRateRule>
+  protected taxProviderService_: ModulesSdkTypes.IMedusaInternalService<TTaxProvider>
 
   constructor(
     {
@@ -293,6 +292,7 @@ export default class TaxModuleService<
     return Array.isArray(data) ? serialized : serialized[0]
   }
 
+  // @ts-ignore
   createTaxRegions(
     data: TaxTypes.CreateTaxRegionDTO,
     sharedContext?: Context
@@ -349,6 +349,7 @@ export default class TaxModuleService<
     )
   }
 
+  // @ts-ignore
   createTaxRateRules(
     data: TaxTypes.CreateTaxRateRuleDTO,
     sharedContext?: Context

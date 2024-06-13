@@ -60,10 +60,10 @@ export const workflowHighlights = [
 import { 
   createWorkflow, 
   createStep,
-  StepResponse
+  StepResponse,
 } from "@medusajs/workflows-sdk"
 import { 
-  setAuthAppMetadataStep
+  setAuthAppMetadataStep,
 } from "@medusajs/core-flows"
 import ManagerModuleService from "../modules/manager/service"
 
@@ -86,7 +86,7 @@ type CreateManagerWorkflowOutput = {
 const createManagerStep = createStep(
   "create-manager-step",
   async ({ 
-    manager: managerData
+    manager: managerData,
   }: Pick<CreateManagerWorkflowInput, "manager">, 
   { container }) => {
     const managerModuleService: ManagerModuleService = 
@@ -106,13 +106,13 @@ const createManagerWorkflow = createWorkflow<
   "create-manager",
   function (input) {
     const manager = createManagerStep({
-      manager: input.manager
+      manager: input.manager,
     })
 
     setAuthAppMetadataStep({
       authIdentityId: input.authIdentityId,
       actorType: "manager",
-      value: manager.id
+      value: manager.id,
     })
 
     return manager
@@ -146,7 +146,7 @@ export const createRouteHighlights = [
 ```ts title="src/api/manager/route.ts" highlights={createRouteHighlights}
 import type { 
   AuthenticatedMedusaRequest,
-  MedusaResponse
+  MedusaResponse,
 } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
 import createManagerWorkflow from "../../workflows/create-manager"
@@ -174,8 +174,8 @@ export async function POST(
     .run({
       input: {
         manager: req.body,
-        authIdentityId: req.auth_context.auth_identity_id
-      }
+        authIdentityId: req.auth_context.auth_identity_id,
+      },
     })
   
     res.status(200).json({ manager: result })
@@ -213,7 +213,7 @@ export const config: MiddlewaresConfig = {
       method: "POST",
       middlewares: [
         authenticate("manager", ["session", "bearer"], {
-          allowUnregistered: true
+          allowUnregistered: true,
         }),
       ],
     },
@@ -239,9 +239,9 @@ For example, create the file `src/api/manager/me/route.ts` with the following co
 ```ts title="src/api/manager/me/route.ts"
 import { 
   AuthenticatedMedusaRequest,
-  MedusaResponse
-} from "@medusajs/medusa";
-import ManagerModuleService from "../../../modules/manager/service";
+  MedusaResponse,
+} from "@medusajs/medusa"
+import ManagerModuleService from "../../../modules/manager/service"
 
 export async function GET(
   req: AuthenticatedMedusaRequest,
