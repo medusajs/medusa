@@ -21,7 +21,9 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     familyOptions: ProductCategoryTransformOptions = {}
   ) {
     const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
+    findOptions_.options ??= {
+      orderBy: { rank: "ASC" },
+    }
 
     const fields = (findOptions_.options.fields ??= [])
     const populate = (findOptions_.options.populate ??= [])
@@ -76,7 +78,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const productCategories = await manager.find(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
-      { ...findOptions_.options } as MikroOptions<ProductCategory>
+      findOptions_.options as MikroOptions<ProductCategory>
     )
 
     if (
@@ -86,7 +88,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return productCategories
     }
 
-    return await this.buildProductCategoriesWithTree(
+    const categoriesTree = await this.buildProductCategoriesWithTree(
       {
         descendants: transformOptions.includeDescendantsTree,
         ancestors: transformOptions.includeAncestorsTree,
@@ -94,6 +96,23 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       productCategories,
       findOptions_
     )
+
+    return this.sortCategoriesByRank(categoriesTree)
+  }
+
+  sortCategoriesByRank(categories: ProductCategory[]): ProductCategory[] {
+    const sortedCategories = categories.sort((a, b) => a.rank - b.rank)
+
+    for (const category of sortedCategories) {
+      if (category.category_children) {
+        // All data up to this point is manipulated as an array, but it is a Collection<ProductCategory> type under the hood, so we are casting to any here.
+        category.category_children = this.sortCategoriesByRank(
+          category.category_children as any
+        ) as any
+      }
+    }
+
+    return sortedCategories
   }
 
   async buildProductCategoriesWithTree(
@@ -228,17 +247,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return [productCategories, count]
     }
 
-    return [
-      await this.buildProductCategoriesWithTree(
-        {
-          descendants: transformOptions.includeDescendantsTree,
-          ancestors: transformOptions.includeAncestorsTree,
-        },
-        productCategories,
-        findOptions_
-      ),
-      count,
-    ]
+    const categoriesTree = await this.buildProductCategoriesWithTree(
+      {
+        descendants: transformOptions.includeDescendantsTree,
+        ancestors: transformOptions.includeAncestorsTree,
+      },
+      productCategories,
+      findOptions_
+    )
+
+    return [this.sortCategoriesByRank(categoriesTree), count]
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
