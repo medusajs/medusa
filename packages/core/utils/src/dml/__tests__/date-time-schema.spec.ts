@@ -1,5 +1,5 @@
 import { expectTypeOf } from "expect-type"
-import { DateTimeSchema } from "../schema/date_time"
+import { DateTimeSchema } from "../schema/date-time"
 
 describe("DateTime schema", () => {
   test("create datetime schema type", () => {

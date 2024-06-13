@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
-import { HasOne } from "../relations/has_one"
 import { TextSchema } from "../schema/text"
+import { HasOne } from "../relations/has-one"
 
 describe("HasOne relationship", () => {
   test("define hasOne relationship", () => {

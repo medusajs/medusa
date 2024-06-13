@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
-import { HasMany } from "../relations/has_many"
 import { TextSchema } from "../schema/text"
+import { HasMany } from "../relations/has-many"
 
 describe("HasMany relationship", () => {
   test("define hasMany relationship", () => {

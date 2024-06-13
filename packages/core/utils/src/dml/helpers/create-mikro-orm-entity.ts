@@ -19,8 +19,8 @@ import type {
   EntityConstructor,
   RelationshipMetadata,
 } from "../types"
-import { HasOne } from "../relations/has_one"
-import { HasMany } from "../relations/has_many"
+import { HasOne } from "../relations/has-one"
+import { HasMany } from "../relations/has-many"
 
 /**
  * DML entity data types to PostgreSQL data types via

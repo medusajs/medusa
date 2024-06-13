@@ -1,6 +1,6 @@
 import { BaseRelationship } from "./base"
 import { NullableModifier } from "../modifiers/nullable"
-import { OnDeleteActions, RelationshipMetadata } from "../types"
+import { RelationshipMetadata } from "../types"
 
 /**
  * HasOne relationship defines a relationship between two entities

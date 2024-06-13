@@ -1,4 +1,4 @@
-import { MaybeFieldMetadata, RelationshipType, SchemaType } from "../types"
+import { RelationshipType, SchemaType } from "../types"
 
 /**
  * Nullable modifier marks a schema node as nullable

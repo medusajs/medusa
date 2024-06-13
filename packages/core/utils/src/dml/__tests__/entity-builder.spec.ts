@@ -1,8 +1,8 @@
 import { expectTypeOf } from "expect-type"
 import { MetadataStorage } from "@mikro-orm/core"
-import { EntityBuilder } from "../entity_builder"
 import { EntityConstructor } from "../types"
-import { createMikrORMEntity } from "../helpers/create_mikro_orm_entity"
+import { EntityBuilder } from "../entity-builder"
+import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
 
 describe("Entity builder", () => {
   beforeEach(() => {
