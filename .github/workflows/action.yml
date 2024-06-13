@@ -15,10 +15,6 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
     outputs:
       module-matrix: ${{ steps.set-module-matrix.outputs.matrix }}
       module-chunks: ${{ steps.set-module-chunks.outputs.chunks }}
@@ -26,19 +22,6 @@ jobs:
       http-chunks: ${{ steps.set-http-chunks.outputs.chunks }}
       unit-tests-matrix: ${{ steps.set-unit-tests-matrix.outputs.matrix }}
       unit-tests-chunks: ${{ steps.set-unit-tests-chunks.outputs.chunks }}
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -107,6 +90,23 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@v3
