@@ -389,7 +389,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -434,7 +434,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -473,7 +473,7 @@ medusaIntegrationTestRunner({
             name: "Retail Store",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -502,7 +502,7 @@ medusaIntegrationTestRunner({
             name: "Retail Store",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
