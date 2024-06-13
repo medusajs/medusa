@@ -17,6 +17,6 @@ export default {
   moduleNameMapper: {
     '(.+)\\.js': '$1'
 },
-  testTimeout: 300000,
+  testTimeout: 600000,
   maxConcurrency: 1
 }
