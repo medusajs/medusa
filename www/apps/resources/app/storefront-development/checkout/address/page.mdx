@@ -1,0 +1,206 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout Step 2: Enter Address`,
+}
+
+# {metadata.title}
+
+The second step of the checkout flow is to ask the customer for their address.
+
+{/* TODO add how to list addresses of logged in customer. */}
+
+A cart has shipping and billing addesses. Use the [Update Cart API route]() to update the cart's addresses.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  const cartId = localStorage.getItem("cart_id")
+
+  const address = {
+    first_name,
+    last_name,
+    address_1,
+    company,
+    postal_code,
+    city,
+    country_code,
+    province,
+    phone
+  }
+
+  fetch(`http://localhost:9000/store/carts/${cartId}`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      shipping_address: address,
+      billing_address: address
+    })
+  })
+  .then((res) => res.json())
+  .then(({ cart }) => {
+    // use cart...
+    console.log(cart)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["29", "address", "Assemble the address object to be used for both shipping and billing addresses."],
+  ["41"], ["42"], ["43"], ["44"], ["45"], ["46"], ["47"], ["48"],
+  ["49"], ["50"], ["51"], ["52"], ["53"], ["54"], ["55"],
+  ["102", "", "The address's country can only be within the cart's region."]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useState } from "react";
+  import { useCart } from "../../../providers/cart";
+
+  export default function CheckoutAddressStep () {
+    const { cart, setCart } = useCart()
+    const [loading, setLoading] = useState(false)
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [address1, setAddress1] = useState("")
+    const [company, setCompany] = useState("")
+    const [postalCode, setPostalCode] = useState("")
+    const [city, setCity] = useState("")
+    const [countryCode, setCountryCode] = useState("")
+    const [province, setProvince] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+
+    const updateAddress = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      if (!cart) {
+        return
+      }
+
+      e.preventDefault()
+      setLoading(true)
+
+      const address = {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: address1,
+        company,
+        postal_code: postalCode,
+        city,
+        country_code: countryCode,
+        province,
+        phone: phoneNumber
+      }
+
+      fetch(`http://localhost:9000/store/carts/${cart.id}`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          shipping_address: address,
+          billing_address: address
+        })
+      })
+      .then((res) => res.json())
+      .then(({ cart: updatedCart }) => {
+        setCart(updatedCart)
+      })
+      .finally(() => setLoading(false))
+    }
+    
+    return (
+      <form>
+        {!cart && <span>Loading...</span>}
+        <input 
+          type="text" 
+          placeholder="First Name" 
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Last Name" 
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Address Line" 
+          value={address1}
+          onChange={(e) => setAddress1(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Company" 
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="Postal Code" 
+          value={postalCode}
+          onChange={(e) => setPostalCode(e.target.value)}
+        />
+        <input 
+          type="text" 
+          placeholder="City" 
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <select
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+        >
+          {cart?.region?.countries?.map((country) => (
+            <option 
+              key={country.iso_2}
+              value={country.iso_2}
+            >
+              {country.display_name}
+            </option>
+          ))}
+        </select>
+        <input 
+          type="text" 
+          placeholder="Province" 
+          value={province}
+          onChange={(e) => setProvince(e.target.value)}
+        />
+        <input 
+          type="tel" 
+          placeholder="Phone Number" 
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <button
+          disabled={!cart || loading}
+          onClick={updateAddress}
+        >
+          Save
+        </button>
+      </form>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above:
+
+- The same address is used for shipping and billing for simplicity. You can provide the option to enter both addresses instead.
+- You send the address to the Update Cart API route under the `shipping_address` and `billing_address` request body parameters.
+- The updated cart object is retuned in the response.
+- **React example:** in the address, the chosen country must be in the cart's region. So, only the countries part of the cart's region are shown.

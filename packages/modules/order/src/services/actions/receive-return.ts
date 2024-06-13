@@ -1,5 +1,6 @@
 import { Context, OrderTypes } from "@medusajs/types"
 import { MathBN, ReturnStatus } from "@medusajs/utils"
+import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
 export async function receiveReturn(
@@ -35,6 +36,7 @@ export async function receiveReturn(
       order_id: returnEntry.order_id,
       reference: "return",
       reference_id: returnEntry.id,
+      change_type: OrderChangeType.RETURN,
       description: data.description,
       internal_note: data.internal_note,
       created_by: data.created_by,

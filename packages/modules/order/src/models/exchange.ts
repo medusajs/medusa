@@ -2,7 +2,6 @@ import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   BigNumber,
   MikroOrmBigNumberProperty,
-  ReturnStatus,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -11,7 +10,6 @@ import {
   Cascade,
   Collection,
   Entity,
-  Enum,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -20,47 +18,40 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import Claim from "./claim"
-import Exchange from "./exchange"
 import Order from "./order"
 import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
+import Return from "./return"
 
-type OptionalReturnProps = DAL.EntityDateColumns
+type OptionalOrderExchangeProps = DAL.EntityDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
+  tableName: "order_exchange",
   columns: "display_id",
   where: "deleted_at IS NOT NULL",
 })
 
-const ReturnDeletedAtIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
+const OrderExchangeDeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_exchange",
   columns: "deleted_at",
   where: "deleted_at IS NOT NULL",
 })
 
 const OrderIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
+  tableName: "order_exchange",
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
 })
 
-const ExchangeIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
-  columns: ["exchange_id"],
-  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_exchange",
+  columns: "return_id",
+  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
-const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "return",
-  columns: ["claim_id"],
-  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
-})
-
-@Entity({ tableName: "return" })
-export default class Return {
-  [OptionalProps]?: OptionalReturnProps
+@Entity({ tableName: "order_exchange" })
+export default class OrderExchange {
+  [OptionalProps]?: OptionalOrderExchangeProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
@@ -80,28 +71,18 @@ export default class Return {
   order: Order
 
   @OneToOne({
-    entity: () => Exchange,
+    entity: () => Return,
+    mappedBy: (ret) => ret.exchange,
     cascade: ["soft-remove"] as any,
-    fieldName: "exchange_id",
+    fieldName: "return_id",
     nullable: true,
+    owner: true,
   })
-  exchange: Exchange
+  return: Return
 
   @Property({ columnType: "text", nullable: true })
-  @ExchangeIdIndex.MikroORMIndex()
-  exchange_id: string | null = null
-
-  @OneToOne({
-    entity: () => Claim,
-    cascade: ["soft-remove"] as any,
-    fieldName: "claim_id",
-    nullable: true,
-  })
-  claim: Claim
-
-  @Property({ columnType: "text", nullable: true })
-  @ClaimIdIndex.MikroORMIndex()
-  claim_id: string | null = null
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string | null = null
 
   @Property({
     columnType: "integer",
@@ -111,9 +92,6 @@ export default class Return {
   @Property({ autoincrement: true, primary: false })
   @DisplayIdIndex.MikroORMIndex()
   display_id: number
-
-  @Enum({ items: () => ReturnStatus, default: ReturnStatus.REQUESTED })
-  status: ReturnStatus = ReturnStatus.REQUESTED
 
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
@@ -126,14 +104,25 @@ export default class Return {
   @Property({ columnType: "jsonb", nullable: true })
   raw_refund_amount: BigNumberRawValue
 
-  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.return, {
+  @MikroOrmBigNumberProperty({
+    nullable: true,
+  })
+  difference_due: BigNumber | number
+
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_difference_due: BigNumberRawValue
+
+  @Property({ columnType: "boolean", default: false })
+  allow_backorder: boolean = false
+
+  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.exchange, {
     cascade: [Cascade.PERSIST],
   })
   items = new Collection<OrderItem>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
-    (shippingMethod) => shippingMethod.return,
+    (shippingMethod) => shippingMethod.exchange,
     {
       cascade: [Cascade.PERSIST],
     }
@@ -159,22 +148,19 @@ export default class Return {
   updated_at: Date
 
   @Property({ columnType: "timestamptz", nullable: true })
-  @ReturnDeletedAtIndex.MikroORMIndex()
+  @OrderExchangeDeletedAtIndex.MikroORMIndex()
   deleted_at: Date | null = null
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  received_at: Date | null = null
 
   @Property({ columnType: "timestamptz", nullable: true })
   canceled_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "return")
+    this.id = generateEntityId(this.id, "ordexchange")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "return")
+    this.id = generateEntityId(this.id, "ordexchange")
   }
 }

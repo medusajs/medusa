@@ -19,6 +19,13 @@ decorators:
         - ProductCategoryResponse
       AdminShippingOption:
         - AdminShippingOption
+      AdminProductCategory:
+        - AdminProductCategory
+        - AdminProduct
+      BaseProduct:
+        - BaseProduct
+      StoreProduct:
+        - StoreProductCategory
 
 # Similar config to /www/docs/docusaurus.config.js > redocusaurus
 # Allows to emulate rendering of API public documentation when using `yarn redocly preview-docs openapi.yaml`
