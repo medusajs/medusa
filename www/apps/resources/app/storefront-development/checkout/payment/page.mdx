@@ -57,7 +57,7 @@ export const fetchHighlights = [
       `http://localhost:9000/store/payment-providers?region_id=${
         cart.region_id
       }`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
 
@@ -77,14 +77,14 @@ export const fetchHighlights = [
           credentials: "include",
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             cart_id: cart.id,
             region_id: cart.region_id,
             currency_code: cart.currency_code,
-            amount: cart.total
-          })
+            amount: cart.total,
+          }),
         }
       )
       .then((res) => res.json())
@@ -100,21 +100,21 @@ export const fetchHighlights = [
       credentials: "include",
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        provider_id: selectedPaymentProviderId
-      })
+        provider_id: selectedPaymentProviderId,
+      }),
     })
     .then((res) => res.json())
 
     // re-fetch cart
     const { 
-      cart: updatedCart
+      cart: updatedCart,
     } = await fetch(
       `http://localhost:9000/store/carts/${cart.id}`, 
       {
-        credentials: "include"
+        credentials: "include",
       }
     )
     .then((res) => res.json())
@@ -171,14 +171,14 @@ export const highlights = [
   import { useCart } from "../../../providers/cart"
   import { HttpTypes } from "@medusajs/types"
 
-  export default function CheckoutPaymentStep () {
+  export default function CheckoutPaymentStep() {
     const { cart, setCart } = useCart()
     const [paymentProviders, setPaymentProviders] = useState<
       HttpTypes.StorePaymentProvider[]
     >([])
     const [
       selectedPaymentProvider, 
-      setSelectedPaymentProvider
+      setSelectedPaymentProvider,
     ] = useState<string | undefined>()
     const [loading, setLoading] = useState(false)
 
@@ -190,7 +190,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/payment-providers?region_id=${
         cart.region_id
       }`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
       .then(({ payment_providers }) => {
@@ -221,14 +221,14 @@ export const highlights = [
             credentials: "include",
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               cart_id: cart.id,
               region_id: cart.region_id,
               currency_code: cart.currency_code,
-              amount: cart.total
-            })
+              amount: cart.total,
+            }),
           }
         )
         .then((res) => res.json())
@@ -244,21 +244,21 @@ export const highlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          provider_id: selectedPaymentProvider
-        })
+          provider_id: selectedPaymentProvider,
+        }),
       })
       .then((res) => res.json())
 
       // re-fetch cart
       const { 
-        cart: updatedCart
+        cart: updatedCart,
       } = await fetch(
         `http://localhost:9000/store/carts/${cart.id}`, 
         {
-          credentials: "include"
+          credentials: "include",
         }
       )
       .then((res) => res.json())

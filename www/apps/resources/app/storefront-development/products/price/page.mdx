@@ -74,14 +74,14 @@ export default function Product({ params: { id } }: Params) {
 
     const queryParams = new URLSearchParams({
       fields: `*variants.calculated_price`,
-      region_id: region.id
+      region_id: region.id,
     })
 
     fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-      }
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
     })
     .then((res) => res.json())
     .then(({ product: dataProduct }) => {
@@ -152,7 +152,7 @@ export default function Product({ params: { id } }: Params) {
                         setSelectedOptions((prev) => {
                           return {
                             ...prev,
-                            [option.id!]: optionValue.value!
+                            [option.id!]: optionValue.value!,
                           }
                         })
                       }}
@@ -254,14 +254,14 @@ export default function Product({ params: { id } }: Params) {
 
     const queryParams = new URLSearchParams({
       fields: `*variants.calculated_price`,
-      region_id: region.id
+      region_id: region.id,
     })
 
     fetch(`http://localhost:9000/store/products/${id}?${queryParams.toString()}`, {
       credentials: "include",
       headers: {
-        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp"
-      }
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
     })
     .then((res) => res.json())
     .then(({ product: dataProduct }) => {
@@ -350,7 +350,7 @@ export default function Product({ params: { id } }: Params) {
                         setSelectedOptions((prev) => {
                           return {
                             ...prev,
-                            [option.id!]: optionValue.value!
+                            [option.id!]: optionValue.value!,
                           }
                         })
                       }}

@@ -54,7 +54,7 @@ module.exports = defineConfig({
                 sendgrid: {
                   channels: ["email"],
                   api_key: process.env.SENDGRID_API_KEY,
-                  from: process.env.SENDGRID_FROM
+                  from: process.env.SENDGRID_FROM,
                 },
               },
             },
@@ -62,7 +62,7 @@ module.exports = defineConfig({
         ],
       },
     },
-  }
+  },
 })
 ```
 
@@ -156,7 +156,7 @@ import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
   data,
-  container
+  container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
     container.resolve(
@@ -167,7 +167,7 @@ export default async function productCreateHandler({
     to: "test@gmail.com",
     channel: "email",
     template: "product-created",
-    data: "data" in data ? data.data : data
+    data: "data" in data ? data.data : data,
   })
 }
 

@@ -32,12 +32,12 @@ export const fetchHighlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          password
-        })
+          password,
+        }),
       }
     )
     .then((res) => res.json())
@@ -50,7 +50,7 @@ export const fetchHighlights = [
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
       }
     )
@@ -74,7 +74,7 @@ export const highlights = [
 
   import { useState } from "react"
 
-  export default function Login () {
+  export default function Login() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -96,12 +96,12 @@ export const highlights = [
           credentials: "include",
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email,
-            password
-          })
+            password,
+          }),
         }
       )
       .then((res) => res.json())
@@ -114,7 +114,7 @@ export const highlights = [
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
           },
         }
       )
@@ -189,12 +189,12 @@ export const fetchSessionHighlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          password
-        })
+          password,
+        }),
       }
     )
     .then((res) => res.json())
@@ -207,7 +207,7 @@ export const fetchSessionHighlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
       }
     )
@@ -246,7 +246,7 @@ export const sessionHighlights = [
   
   import { useState } from "react"
 
-  export default function Login () {
+  export default function Login() {
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -268,12 +268,12 @@ export const sessionHighlights = [
           credentials: "include",
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email,
-            password
-          })
+            password,
+          }),
         }
       )
       .then((res) => res.json())
@@ -286,7 +286,7 @@ export const sessionHighlights = [
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
           },
         }
       )

@@ -130,9 +130,9 @@ The module will hold your custom data models and the service implementing digita
     // ...
     modules: {
       digitalProductModuleService: {
-        resolve: "./modules/digital-product"
-      }
-    }
+        resolve: "./modules/digital-product",
+      },
+    },
   })
   ```
 
@@ -216,17 +216,17 @@ To represent a digital product, it's recommended to create a data model that has
   Create the file `src/modules/digital-product/migrations/Migration20240509093233.ts` with the following content:
   
   ```ts title="src/modules/digital-product/migrations/Migration20240509093233.ts"
-  import { Migration } from '@mikro-orm/migrations';
+  import { Migration } from "@mikro-orm/migrations"
   
   export class Migration20240509093233 extends Migration {
   
     async up(): Promise<void> {
-      this.addSql('create table if not exists "product_media" ("id" text not null, "name" text not null, "type" text check ("type" in (\'main\', \'preview\')) not null, "file_key" text not null, "mime_type" text not null, "variant_id" text not null, constraint "product_media_pkey" primary key ("id"));');
-      this.addSql('CREATE INDEX IF NOT EXISTS "IDX_product_media_variant_id" ON "product_media" (variant_id);');
+      this.addSql("create table if not exists \"product_media\" (\"id\" text not null, \"name\" text not null, \"type\" text check (\"type\" in ('main', 'preview')) not null, \"file_key\" text not null, \"mime_type\" text not null, \"variant_id\" text not null, constraint \"product_media_pkey\" primary key (\"id\"));")
+      this.addSql("CREATE INDEX IF NOT EXISTS \"IDX_product_media_variant_id\" ON \"product_media\" (variant_id);")
     }
   
     async down(): Promise<void> {
-      this.addSql('drop table if exists "product_media" cascade;');
+      this.addSql("drop table if exists \"product_media\" cascade;")
     }
   
   }
@@ -316,7 +316,7 @@ Medusa facilitates implementing data-management features by providing a service 
   import { 
     CreateProductMediaDTO, 
     ProductMediaDTO,
-    UpdateProductMediaDTO
+    UpdateProductMediaDTO,
   } from "../../types/digital-product/product-media"
   
   type InjectedDependencies = {
@@ -340,8 +340,8 @@ Medusa facilitates implementing data-management features by providing a service 
   
       constructor(
         {
-          productMediaService
-        }: InjectedDependencies,
+          productMediaService,
+        }: InjectedDependencies
       ) {
         // @ts-ignore
         super(...arguments)
@@ -350,11 +350,11 @@ Medusa facilitates implementing data-management features by providing a service 
       }
   
       async create(
-        data: CreateProductMediaDTO,
+        data: CreateProductMediaDTO
       ): Promise<ProductMediaDTO> {
         const productMedia = await this.productMediaService_
           .create(
-            data, 
+            data 
           )
   
         return productMedia
@@ -362,12 +362,12 @@ Medusa facilitates implementing data-management features by providing a service 
   
       async update(
         id: string,
-        data: UpdateProductMediaDTO,
+        data: UpdateProductMediaDTO
       ): Promise<ProductMediaDTO> {
         const productMedia = await this.productMediaService_
           .update({
             ...data,
-            id
+            id,
           })
   
         return productMedia
@@ -430,9 +430,9 @@ The Medusa application resolves module relationships without creating an actual 
             {
               name: "product_media",
               args: {
-                entity: ProductMedia.name
-              }
-            }
+                entity: ProductMedia.name,
+              },
+            },
           ],
           relationships: [
             {
@@ -441,10 +441,10 @@ The Medusa application resolves module relationships without creating an actual 
               primaryKey: "id",
               foreignKey: "variant_id",
               args: {
-                methodSuffix: "Variants"
-              }
-            }
-          ]
+                methodSuffix: "Variants",
+              },
+            },
+          ],
         }
       }
     }
@@ -467,10 +467,10 @@ The Medusa application resolves module relationships without creating an actual 
       digitalProductModuleService: {
         resolve: "./modules/digital-product",
         definition: {
-          isQueryable: true
-        }
-      }
-    }
+          isQueryable: true,
+        },
+      },
+    },
   })
   ```
 
@@ -518,7 +518,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
   ```ts title="src/types/digital-product/product-media.ts"
   import { 
     ProductVariantDTO,
-    CreateProductWorkflowInputDTO
+    CreateProductWorkflowInputDTO,
   } from "@medusajs/types"
   
   export enum MediaType {
@@ -574,20 +574,20 @@ To utilize the relationship to the Product Module, you use the remote query to f
     createWorkflow,
     WorkflowData,
     createStep,
-    StepResponse
+    StepResponse,
   } from "@medusajs/workflows-sdk"
   import { createProductsWorkflow } from "@medusajs/core-flows"
   import { 
     CreateProductMediaDTO, 
     CreateProductMediaWorkflowInput,
-    ProductMediaDTO
+    ProductMediaDTO,
   } from "../../types/digital-product/product-media"
   import DigitalProductModuleService from 
     "../../modules/digital-product/service"
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import { 
     ContainerRegistrationKeys,
-    remoteQueryObjectFromString
+    remoteQueryObjectFromString,
   } from "@medusajs/utils"
   
   const tryToCreateProductVariantStep = createStep(
@@ -597,9 +597,9 @@ To utilize the relationship to the Product Module, you use the remote query to f
         const { result, errors } = await createProductsWorkflow(container)
           .run({
             input: {
-              products: [input.product]
+              products: [input.product],
             },
-            throwOnError: false
+            throwOnError: false,
           })
   
         if (errors.length) {
@@ -646,13 +646,13 @@ To utilize the relationship to the Product Module, you use the remote query to f
           "type",
           "file_key",
           "mime_type",
-          "variant.*"
+          "variant.*",
         ],
         variables: {
           filters: {
-            id: input.id
-          }
-        }
+            id: input.id,
+          },
+        },
       })
   
       const result = await remoteQuery(query)
@@ -690,14 +690,14 @@ To utilize the relationship to the Product Module, you use the remote query to f
   ```ts title="src/api/admin/digital-products/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
   import {
     MedusaRequest,
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { MedusaError } from "@medusajs/utils"
   import { 
-    CreateProductMediaWorkflowInput
+    CreateProductMediaWorkflowInput,
   } from "../../../types/digital-product/product-media"
   import { 
-    createProductMediaWorkflow
+    createProductMediaWorkflow,
   } from "../../../workflows/digital-product/create"
   
   type CreateProductMediaReq = CreateProductMediaWorkflowInput
@@ -709,15 +709,15 @@ To utilize the relationship to the Product Module, you use the remote query to f
     // validation omitted for simplicity
     const { 
       result, 
-      errors
+      errors,
     } = await createProductMediaWorkflow(req.scope)
       .run({
         input: {
           data: {
-            ...req.body
-          }
+            ...req.body,
+          },
         },
-        throwOnError: false
+        throwOnError: false,
       })
   
     if (errors.length) {
@@ -728,7 +728,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
     }
   
     res.json({
-      product_media: result
+      product_media: result,
     })
   }
   ```
@@ -808,7 +808,7 @@ To utilize the relationship to the Product Module, you use the remote query to f
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import { 
     ContainerRegistrationKeys,
-    remoteQueryObjectFromString
+    remoteQueryObjectFromString,
   } from "@medusajs/utils"
   
   // ...
@@ -830,14 +830,14 @@ To utilize the relationship to the Product Module, you use the remote query to f
         "file_key",
         "mime_type",
         "variant.*",
-        "variant.product.*"
+        "variant.product.*",
       ],
     })
   
     const result = await remoteQuery(query)
   
     res.json({
-      product_medias: result
+      product_medias: result,
     })
   }
   ```
@@ -888,8 +888,8 @@ In your customizations, you send requests to the API routes you created to creat
   To create the UI route, create the file `src/admin/routes/product-media/page.tsx` with the following content:
 
   ```tsx title="src/admin/routes/product-media/page.tsx" badgeLabel="Medusa Application" collapsibleLines="1-13" expandButtonLabel="Show Imports"
-  import { defineRouteConfig } from "@medusajs/admin-shared";
-  import { useEffect, useState } from "react";
+  import { defineRouteConfig } from "@medusajs/admin-shared"
+  import { useEffect, useState } from "react"
   import { 
     Container, 
     Heading, 
@@ -993,7 +993,7 @@ In your customizations, you send requests to the API routes you created to creat
     Input, 
     Label, 
     Select,
-    Drawer
+    Drawer,
   } from "@medusajs/ui"
 
   type Props = {
@@ -1017,13 +1017,13 @@ In your customizations, you send requests to the API routes you created to creat
       setLoading(true)
 
       const formData = new FormData()
-      formData.append("files", file);
-
+      formData.append("files", file)
+  
       // upload file
       fetch(`/admin/uploads`, {
         method: "POST",
         credentials: "include",
-        body: formData
+        body: formData,
       })
       .then((res) => res.json())
       .then(({ files }) => {
@@ -1032,7 +1032,7 @@ In your customizations, you send requests to the API routes you created to creat
           method: "POST",
           credentials: "include",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name,
@@ -1043,11 +1043,11 @@ In your customizations, you send requests to the API routes you created to creat
               title: productName,
               variants: [
                 {
-                  title: name
-                }
-              ]
-            }
-          })
+                  title: name,
+                },
+              ],
+            },
+          }),
         })
         .then((res) => res.json())
         .then(() => {
@@ -1216,7 +1216,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
   import { 
     IOrderModuleService,
     IFileModuleService,
-    INotificationModuleService
+    INotificationModuleService,
   } from "@medusajs/types"
   import { 
     ModuleRegistrationName,
@@ -1245,7 +1245,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
     const orderId = "data" in data ? data.data.id : data.id
 
     const order = await orderModuleService.retrieve(orderId, {
-      relations: ["items"]
+      relations: ["items"],
     })
 
     // find product medias in the order
@@ -1253,7 +1253,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
     for (const item of order.items) {
       const productMedias = await digitalProductModuleService
         .list({
-          variant_id: [item.variant_id]
+          variant_id: [item.variant_id],
         })
         
       const downloadUrls = await Promise.all(
@@ -1325,12 +1325,12 @@ To implement this, create a storefront API Route that allows you to fetch the di
     MedusaResponse,
   } from "@medusajs/medusa"
   import { 
-    MediaType
+    MediaType,
   } from "../../../types/digital-product/product-media"
   import { RemoteQueryFunction } from "@medusajs/modules-sdk"
   import {
     ContainerRegistrationKeys,
-    remoteQueryObjectFromString
+    remoteQueryObjectFromString,
   } from "@medusajs/utils"
   
   export const GET = async (
@@ -1347,20 +1347,20 @@ To implement this, create a storefront API Route that allows you to fetch the di
         "name",
         "file_key",
         "mime_type",
-        "variant.*"
+        "variant.*",
       ],
       variables: {
         filters: {
-          type: MediaType.PREVIEW
+          type: MediaType.PREVIEW,
         },
         // omitting pagination for simplicity
-        skip: 0
-      }
+        skip: 0,
+      },
     })
   
     const { 
       rows, 
-      metadata: { count }
+      metadata: { count },
     } = await remoteQuery(query)
   
     res.json({
@@ -2383,11 +2383,11 @@ After the customer purchases the digital product you can show a download button 
     createWorkflow,
     transform,
     createStep,
-    StepResponse
+    StepResponse,
   } from "@medusajs/workflows-sdk"
   import { 
     IOrderModuleService,
-    IFileModuleService
+    IFileModuleService,
   } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import DigitalProductModuleService from "../../modules/digital-product/service"
@@ -2405,9 +2405,9 @@ After the customer purchases the digital product you can show a download button 
     "check-variant-purchased-step",
     async ({ 
       variant_id,
-      customer_id
+      customer_id,
     }: CheckVariantStepInput, { 
-      container
+      container,
     }) => {
       const orderModuleService: IOrderModuleService = 
         container.resolve(ModuleRegistrationName.ORDER)
@@ -2489,22 +2489,22 @@ After the customer purchases the digital product you can show a download button 
         checkVariantPurchasedStep(input)
   
         const { product_media } = getProductMediaStep({
-          variant_id: input.variant_id
+          variant_id: input.variant_id,
         })
   
         const url = getFileUrlStep({
-          id: product_media.file_key
+          id: product_media.file_key,
         })
   
         const result = transform(
           {
             url,
-            product_media
+            product_media,
           },
           (transformInput) => ({
             url: transformInput.url,
             name: transformInput.product_media.name,
-            mime_type: transformInput.product_media.mime_type
+            mime_type: transformInput.product_media.mime_type,
           })
         )
   
@@ -2528,7 +2528,7 @@ After the customer purchases the digital product you can show a download button 
     MedusaResponse, 
   } from "@medusajs/medusa"
   import { 
-    getPurchasedProductMediaUrlWorkflow
+    getPurchasedProductMediaUrlWorkflow,
   } from "../../../../../workflows/digital-product/get-url"
   
   export const GET = async (
@@ -2540,8 +2540,8 @@ After the customer purchases the digital product you can show a download button 
     ).run({
       input: {
         variant_id: req.params.variant_id,
-        customer_id: req.user.customer_id
-      }
+        customer_id: req.user.customer_id,
+      },
     })
   
     res.json(result)
@@ -2553,7 +2553,7 @@ After the customer purchases the digital product you can show a download button 
   ```ts title="src/api/middlewares.ts"
   import {
     type MiddlewaresConfig, 
-    authenticate
+    authenticate,
   } from "@medusajs/medusa"
   
   export const config: MiddlewaresConfig = {
@@ -2561,7 +2561,7 @@ After the customer purchases the digital product you can show a download button 
       {
         matcher: "/store/product-media/download/*",
         middlewares: [
-          authenticate("store", ["session", "bearer"])
+          authenticate("store", ["session", "bearer"]),
         ],
       },
     ],

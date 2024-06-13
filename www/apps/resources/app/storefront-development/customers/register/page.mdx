@@ -33,12 +33,12 @@ export const fetchHighlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
-          password
-        })
+          password,
+        }),
       }
     )
     .then((res) => res.json())
@@ -51,13 +51,13 @@ export const fetchHighlights = [
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
-          email
-        })
+          email,
+        }),
       }
     )
     .then((res) => res.json())
@@ -105,12 +105,12 @@ export const highlights = [
           credentials: "include",
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             email,
-            password
-          })
+            password,
+          }),
         }
       )
       .then((res) => res.json())
@@ -123,13 +123,13 @@ export const highlights = [
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
           },
           body: JSON.stringify({
             first_name: firstName,
             last_name: lastName,
-            email
-          })
+            email,
+          }),
         }
       )
       .then((res) => res.json())

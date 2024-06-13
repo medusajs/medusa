@@ -32,7 +32,7 @@ To retrieve the selected region, use the [Retrieve Region API route](!api!/store
 const regionId = localStorage.getItem("region_id")
 
 fetch(`http://localhost:9000/store/regions/${regionId}`, {
-  credentials: "include"
+  credentials: "include",
 })
 .then((res) => res.json())
 .then(({ region }) => {

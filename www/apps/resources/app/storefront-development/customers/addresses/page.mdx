@@ -29,7 +29,7 @@ export const fetchHighlights = [
   fetch(`http://localhost:9000/store/customers/me/addresses?${
     searchParams.toString()
   }`, {
-    credentials: "include"
+    credentials: "include",
   })
   .then((res) => res.json())
   .then(({ addresses, count }) => {
@@ -57,7 +57,7 @@ export const highlights = [
   import { HttpTypes } from "@medusajs/types"
   import { useEffect, useState } from "react"
 
-  export default function Addresses () {
+  export default function Addresses() {
     const [addresses, setAddresses] = useState<
       HttpTypes.StoreCustomerAddress[]
     >([])
@@ -81,7 +81,7 @@ export const highlights = [
       fetch(`http://localhost:9000/store/customers/me/addresses?${
         searchParams.toString()
       }`, {
-        credentials: "include"
+        credentials: "include",
       })
       .then((res) => res.json())
       .then(({ addresses: addressesData, count }) => {
@@ -93,7 +93,7 @@ export const highlights = [
           }
           return [
             ...prev,
-            ...addressesData
+            ...addressesData,
           ]
         })
         setHasMorePages(count > limit * currentPage)
@@ -154,7 +154,7 @@ To add a new address for the customer, send a request to the [Add Customer Addre
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       first_name: firstName,
@@ -165,8 +165,8 @@ To add a new address for the customer, send a request to the [Add Customer Addre
       city,
       country_code: countryCode,
       province,
-      phone: phoneNumber
-    })
+      phone: phoneNumber,
+    }),
   })
   .then((res) => res.json())
   .then(({ customer }) => {
@@ -218,7 +218,7 @@ export const addHighlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           first_name: firstName,
@@ -229,8 +229,8 @@ export const addHighlights = [
           city,
           country_code: countryCode,
           province,
-          phone: phoneNumber
-        })
+          phone: phoneNumber,
+        }),
       })
       .then((res) => res.json())
       .then(({ customer }) => {
@@ -336,7 +336,7 @@ To edit an address, send a request to the [Update Customer Address API route](!a
       credentials: "include",
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         first_name: firstName,
@@ -347,8 +347,8 @@ To edit an address, send a request to the [Update Customer Address API route](!a
         city,
         country_code: countryCode,
         province,
-        phone: phoneNumber
-      })
+        phone: phoneNumber,
+      }),
     }
   )
   .then((res) => res.json())
@@ -385,7 +385,7 @@ export const editHighlights = [
   }
 
   export default function EditAddress(
-    { params: { id }}: Params
+    { params: { id } }: Params
   ) {
     const { customer, setCustomer } = useCustomer()
     const { region } = useRegion()
@@ -439,7 +439,7 @@ export const editHighlights = [
           credentials: "include",
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             first_name: firstName,
@@ -450,8 +450,8 @@ export const editHighlights = [
             city,
             country_code: countryCode,
             province,
-            phone: phoneNumber
-          })
+            phone: phoneNumber,
+          }),
         }
       )
       .then((res) => res.json())

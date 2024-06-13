@@ -18,14 +18,14 @@ For example:
     credentials: "include",
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       first_name,
       last_name,
       company_name,
-      phone
-    })
+      phone,
+    }),
   })
   .then((res) => res.json())
   .then(({ customer }) => {
@@ -49,7 +49,7 @@ export const highlights = [
   import { useState } from "react"
   import { useCustomer } from "../../../providers/customer"
 
-  export default function EditProfile () {
+  export default function EditProfile() {
     const { customer, setCustomer } = useCustomer()
     const [firstName, setFirstName] = useState(
       customer?.first_name || ""
@@ -80,14 +80,14 @@ export const highlights = [
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
           company_name: company,
-          phone
-        })
+          phone,
+        }),
       })
       .then((res) => res.json())
       .then(({ customer: updatedCustomer }) => {

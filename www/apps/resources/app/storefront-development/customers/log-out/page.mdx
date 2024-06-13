@@ -32,7 +32,7 @@ For example:
   ```ts
   fetch(`http://localhost:9000/auth/session`, {
     credentials: "include",
-    method: "DELETE"
+    method: "DELETE",
   })
   .then((res) => res.json())
   .then(() => {
@@ -54,13 +54,13 @@ export const highlights = [
 
   import { useCustomer } from "../../../providers/customer"
 
-  export default function Profile () {
+  export default function Profile() {
     const { setCustomer } = useCustomer()
 
     const handleLogOut = () => {
       fetch(`http://localhost:9000/auth/session`, {
         credentials: "include",
-        method: "DELETE"
+        method: "DELETE",
       })
       .then((res) => res.json())
       .then(() => {

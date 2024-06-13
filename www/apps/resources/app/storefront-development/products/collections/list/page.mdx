@@ -37,7 +37,7 @@ export const highlights = [
   ```tsx highlights={highlights}
   "use client" // include with Next.js 13+
 
-  import { useEffect, useState } from "react";
+  import { useEffect, useState } from "react"
   import { HttpTypes } from "@medusajs/types"
 
   export default function Collections() {
@@ -75,7 +75,7 @@ export const highlights = [
           </ul>
         )}
       </div>
-    );
+    )
   }
   ```
 
@@ -110,7 +110,7 @@ export const paginateHighlights = [
 ```tsx highlights={paginateHighlights}
 "use client" // include with Next.js 13+
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
 
 export default function Collections() {
@@ -149,7 +149,7 @@ export default function Collections() {
         }
         return [
           ...prev,
-          ...dataCollections
+          ...dataCollections,
         ]
       })
       setHasMorePages(count > limit * currentPage)
@@ -182,7 +182,7 @@ export default function Collections() {
         </button>
       )}
     </div>
-  );
+  )
 }
 ```
 
@@ -198,7 +198,7 @@ For example:
 
 ```ts
 const searchParams = new URLSearchParams({
-  title: "test"
+  title: "test",
 })
 
 fetch(`http://localhost:9000/store/collections?${
