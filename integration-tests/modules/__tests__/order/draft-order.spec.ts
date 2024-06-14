@@ -1,7 +1,6 @@
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
-  ICustomerModuleService,
   IFulfillmentModuleService,
   IInventoryServiceNext,
   IPaymentModuleService,
@@ -31,7 +30,6 @@ medusaIntegrationTestRunner({
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
     let scModuleService: ISalesChannelModuleService
-    let customerModule: ICustomerModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
@@ -49,7 +47,6 @@ medusaIntegrationTestRunner({
       scModuleService = appContainer.resolve(
         ModuleRegistrationName.SALES_CHANNEL
       )
-      customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
       paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)

@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all customer groups and its count", async () => {
-        await customerModuleService.createCustomerGroup({
+        await customerModuleService.createCustomerGroups({
           name: "Test",
         })
 
@@ -46,7 +46,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching of customer groups", async () => {
-        await customerModuleService.createCustomerGroup([
+        await customerModuleService.createCustomerGroups([
           {
             name: "First group",
           },

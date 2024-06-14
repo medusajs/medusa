@@ -29,12 +29,12 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a customer address", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.addAddresses({
+        const address = await customerModuleService.createAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -48,7 +48,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const updatedCustomer = await customerModuleService.retrieve(
+        const updatedCustomer = await customerModuleService.retrieveCustomer(
           customer.id,
           {
             relations: ["addresses"],

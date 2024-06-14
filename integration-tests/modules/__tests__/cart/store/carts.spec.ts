@@ -1257,7 +1257,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should add item to cart", async () => {
-          const customer = await customerModule.create({
+          const customer = await customerModule.createCustomers({
             email: "tony@stark-industries.com",
           })
 

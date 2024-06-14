@@ -40,13 +40,13 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * ```ts
    * const customer =
-   *   await customerModuleService.retrieve("cus_123")
+   *   await customerModuleService.retrieveCustomer("cus_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const customer = await customerModuleService.retrieve(
+   * const customer = await customerModuleService.retrieveCustomer(
    *   "cus_123",
    *   {
    *     relations: ["groups"],
@@ -54,7 +54,7 @@ export interface ICustomerModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrieveCustomer(
     customerId: string,
     config?: FindConfig<CustomerDTO>,
     sharedContext?: Context
@@ -68,7 +68,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO[]>} The created customers.
    *
    * @example
-   * const customers = await customerModuleService.create([
+   * const customers = await customerModuleService.create([Customers
    *   {
    *     email: "john@smith.com",
    *     first_name: "John",
@@ -76,7 +76,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createCustomers(
     data: CreateCustomerDTO[],
     sharedContext?: Context
   ): Promise<CustomerDTO[]>
@@ -89,13 +89,16 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO>} The created customer.
    *
    * @example
-   * const customer = await customerModuleService.create({
+   * const customer = await customerModuleService.create({Customers
    *   email: "john@smith.com",
    *   first_name: "John",
    *   last_name: "Smith",
    * })
    */
-  create(data: CreateCustomerDTO, sharedContext?: Context): Promise<CustomerDTO>
+  createCustomers(
+    data: CreateCustomerDTO,
+    sharedContext?: Context
+  ): Promise<CustomerDTO>
 
   /**
    * This method updates an existing customer.
@@ -106,14 +109,14 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO>} The updated customer.
    *
    * @example
-   * const customer = await customerModuleService.update(
+   * const customer = await customerModuleService.updateCustomers(
    *   "cus_123",
    *   {
    *     first_name: "Matt",
    *   }
    * )
    */
-  update(
+  updateCustomers(
     customerId: string,
     data: CustomerUpdatableFields,
     sharedContext?: Context
@@ -128,14 +131,14 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO[]>} The updated customers.
    *
    * @example
-   * const customers = await customerModuleService.update(
+   * const customers = await customerModuleService.updateCustomers(
    *   ["cus_123", "cus_321"],
    *   {
    *     company_name: "Acme",
    *   }
    * )
    */
-  update(
+  updateCustomers(
     customerIds: string[],
     data: CustomerUpdatableFields,
     sharedContext?: Context
@@ -150,14 +153,14 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO[]>} The updated customers.
    *
    * @example
-   * const customers = await customerModuleService.update(
+   * const customers = await customerModuleService.updateCustomers(
    *   { company_name: "Acme" },
    *   {
    *     company_name: "Acme Inc.",
    *   }
    * )
    */
-  update(
+  updateCustomers(
     selector: FilterableCustomerProps,
     data: CustomerUpdatableFields,
     sharedContext?: Context
@@ -171,9 +174,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the customer is deleted successfully.
    *
    * @example
-   * await customerModuleService.delete("cus_123")
+   * await customerModuleService.deleteCustomers("cus_123")
    */
-  delete(customerId: string, sharedContext?: Context): Promise<void>
+  deleteCustomers(customerId: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes customers by their IDs.
@@ -183,9 +186,9 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the customers are deleted successfully.
    *
    * @example
-   * await customerModuleService.delete(["cus_123", "cus_321"])
+   * await customerModuleService.deleteCustomers(["cus_123", "cus_321"])
    */
-  delete(customerIds: string[], sharedContext?: Context): Promise<void>
+  deleteCustomers(customerIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a customer matching the specified filters.
@@ -195,11 +198,11 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the customers are deleted successfully.
    *
    * @example
-   * await customerModuleService.delete({
+   * await customerModuleService.deleteCustomers({
    *   id: ["cus_123"],
    * })
    */
-  delete(
+  deleteCustomers(
     selector: FilterableCustomerProps,
     sharedContext?: Context
   ): Promise<void>
@@ -211,18 +214,15 @@ export interface ICustomerModuleService extends IModuleService {
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CustomerGroupDTO[]>} The created customer groups.
    *
-   * @privateRemarks
-   * TODO should be pluralized
-   *
    * @example
    * const customerGroup =
-   *   await customerModuleService.createCustomerGroup([
+   *   await customerModuleService.createCustomerGroups([
    *     {
    *       name: "VIP",
    *     },
    *   ])
    */
-  createCustomerGroup(
+  createCustomerGroups(
     data: CreateCustomerGroupDTO[],
     sharedContext?: Context
   ): Promise<CustomerGroupDTO[]>
@@ -239,11 +239,11 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * @example
    * const customerGroup =
-   *   await customerModuleService.createCustomerGroup({
+   *   await customerModuleService.createCustomerGroups({
    *     name: "VIP",
    *   })
    */
-  createCustomerGroup(
+  createCustomerGroups(
     data: CreateCustomerGroupDTO,
     sharedContext?: Context
   ): Promise<CustomerGroupDTO>
@@ -259,7 +259,7 @@ export interface ICustomerModuleService extends IModuleService {
    *
    * @example
    * const customerGroup =
-   *   await customerModuleService.retrieve("cusgroup_123")
+   *   await customerModuleService.retrieveCustomerGroup("cusgroup_123")
    */
   retrieveCustomerGroup(
     groupId: string,
@@ -491,7 +491,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO[]>} The list of created addresses.
    *
    * @example
-   * const addresses = await customerModuleService.addAddresses([
+   * const addresses = await customerModuleService.createAddresses([
    *   {
    *     customer_id: "cus_123",
    *     address_name: "Home",
@@ -501,7 +501,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   },
    * ])
    */
-  addAddresses(
+  createAddresses(
     addresses: CreateCustomerAddressDTO[],
     sharedContext?: Context
   ): Promise<CustomerAddressDTO[]>
@@ -514,7 +514,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerAddressDTO>} The created address.
    *
    * @example
-   * const address = await customerModuleService.addAddresses({
+   * const address = await customerModuleService.createAddresses({
    *   customer_id: "cus_123",
    *   address_name: "Home",
    *   address_1: "432 Stierlin Rd",
@@ -522,7 +522,7 @@ export interface ICustomerModuleService extends IModuleService {
    *   country_code: "us",
    * })
    */
-  addAddresses(
+  createAddresses(
     address: CreateCustomerAddressDTO,
     sharedContext?: Context
   ): Promise<CustomerAddressDTO>
@@ -815,7 +815,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To retrieve a list of customers using their IDs:
    *
    * ```ts
-   * const customers = await customerModuleService.list({
+   * const customers = await customerModuleService.listCustomers({
    *   id: ["cus_123", "cus_321"],
    * })
    * ```
@@ -823,7 +823,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To specify relations that should be retrieved within the customers:
    *
    * ```ts
-   * const customers = await customerModuleService.list(
+   * const customers = await customerModuleService.listCustomers(
    *   {
    *     id: ["cus_123", "cus_321"],
    *   },
@@ -836,7 +836,7 @@ export interface ICustomerModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const customers = await customerModuleService.list(
+   * const customers = await customerModuleService.listCustomers(
    *   {
    *     id: ["cus_123", "cus_321"],
    *   },
@@ -848,7 +848,7 @@ export interface ICustomerModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listCustomers(
     filters?: FilterableCustomerProps,
     config?: FindConfig<CustomerDTO>,
     sharedContext?: Context
@@ -867,7 +867,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To retrieve a list of customers using their IDs:
    *
    * ```ts
-   * const [customers, count] = await customerModuleService.list({
+   * const [customers, count] = await customerModuleService.listAndCountCustomers({
    *   id: ["cus_123", "cus_321"],
    * })
    * ```
@@ -875,7 +875,7 @@ export interface ICustomerModuleService extends IModuleService {
    * To specify relations that should be retrieved within the customers:
    *
    * ```ts
-   * const [customers, count] = await customerModuleService.list(
+   * const [customers, count] = await customerModuleService.listAndCountCustomers(
    *   {
    *     id: ["cus_123", "cus_321"],
    *   },
@@ -888,7 +888,7 @@ export interface ICustomerModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [customers, count] = await customerModuleService.list(
+   * const [customers, count] = await customerModuleService.listAndCountCustomers(
    *   {
    *     id: ["cus_123", "cus_321"],
    *   },
@@ -900,7 +900,7 @@ export interface ICustomerModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountCustomers(
     filters?: FilterableCustomerProps,
     config?: FindConfig<CustomerDTO>,
     sharedContext?: Context
@@ -1029,9 +1029,9 @@ export interface ICustomerModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await customerModuleService.softDelete(["cus_123"])
+   * await customerModuleService.softDeleteCustomers(["cus_123"])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteCustomers<TReturnableLinkableKeys extends string = string>(
     customerIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -1048,9 +1048,9 @@ export interface ICustomerModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await customerModuleService.restore(["cus_123"])
+   * await customerModuleService.restoreCustomers(["cus_123"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreCustomers<TReturnableLinkableKeys extends string = string>(
     customerIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

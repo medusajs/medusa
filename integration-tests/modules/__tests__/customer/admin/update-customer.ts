@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a customer", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
