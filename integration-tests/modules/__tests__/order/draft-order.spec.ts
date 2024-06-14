@@ -3,7 +3,6 @@ import {
   ICartModuleService,
   IFulfillmentModuleService,
   IInventoryServiceNext,
-  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
@@ -32,7 +31,6 @@ medusaIntegrationTestRunner({
     let scModuleService: ISalesChannelModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
-    let paymentModule: IPaymentModuleService
     let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
@@ -49,7 +47,6 @@ medusaIntegrationTestRunner({
       )
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       stockLocationModule = appContainer.resolve(
         ModuleRegistrationName.STOCK_LOCATION
