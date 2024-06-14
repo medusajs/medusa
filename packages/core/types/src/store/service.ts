@@ -59,7 +59,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The created or updated stores.
    *
    * @example
-   * const stores = await storeModuleService.Stores([
+   * const stores = await storeModuleService.upsertStores([
    *   {
    *     id: "store_123",
    *     name: "Acme",
