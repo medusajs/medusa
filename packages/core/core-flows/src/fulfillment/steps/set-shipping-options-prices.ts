@@ -108,7 +108,7 @@ export const setShippingOptionsPricesStep = createStep(
       const regionService = container.resolve<IRegionModuleService>(
         ModuleRegistrationName.REGION
       )
-      const regions = await regionService.list(
+      const regions = await regionService.listRegions(
         {
           id: [...new Set(regionIds)],
         },

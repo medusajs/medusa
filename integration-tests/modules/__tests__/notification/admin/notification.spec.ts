@@ -40,8 +40,8 @@ medusaIntegrationTestRunner({
             resource_type: "order",
           } as CreateNotificationDTO
 
-          const result = await service.create(notification)
-          const fromDB = await service.retrieve(result.id)
+          const result = await service.createNotifications(notification)
+          const fromDB = await service.retrieveNotification(result.id)
 
           expect(result).toEqual(
             expect.objectContaining({
@@ -94,7 +94,9 @@ medusaIntegrationTestRunner({
             channel: "sms",
           } as CreateNotificationDTO
 
-          const error = await service.create(notification).catch((e) => e)
+          const error = await service
+            .createNotifications(notification)
+            .catch((e) => e)
           expect(error.message).toEqual(
             "Could not find a notification provider for channel: sms"
           )
@@ -113,9 +115,11 @@ medusaIntegrationTestRunner({
             template: "product-created",
           } as CreateNotificationDTO
 
-          await service.create([notification1, notification2])
+          await service.createNotifications([notification1, notification2])
 
-          const notifications = await service.list({ channel: "log" })
+          const notifications = await service.listNotifications({
+            channel: "log",
+          })
           expect(notifications).toHaveLength(1)
           expect(notifications[0]).toEqual(
             expect.objectContaining({
@@ -139,9 +143,12 @@ medusaIntegrationTestRunner({
             template: "product-created",
           } as CreateNotificationDTO
 
-          const [first] = await service.create([notification1, notification2])
+          const [first] = await service.createNotifications([
+            notification1,
+            notification2,
+          ])
 
-          const notification = await service.retrieve(first.id)
+          const notification = await service.retrieveNotification(first.id)
           expect(notification).toEqual(
             expect.objectContaining({
               to: "test@medusajs.com",
@@ -176,7 +183,7 @@ medusaIntegrationTestRunner({
           })
           await subscriberExecution
 
-          const notifications = await service.list()
+          const notifications = await service.listNotifications()
 
           expect(logSpy).toHaveBeenLastCalledWith(
             `Attempting to send a notification to: 'test@medusajs.com' on the channel: 'email' with template: 'order-created-template' and data: '{\"order_id\":\"1234\"}'`

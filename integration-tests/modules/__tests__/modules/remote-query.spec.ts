@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to retrieve a single non-existing id", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
@@ -75,19 +75,19 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if a expected relation is not found", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
         })
 
-        const regionWithPayment = await regionModule.create({
+        const regionWithPayment = await regionModule.createRegions({
           name: "Test W/ Payment",
           currency_code: "brl",
           countries: ["br"],
         })
 
-        const regionNoLink = await regionModule.create({
+        const regionNoLink = await regionModule.createRegions({
           name: "No link",
           currency_code: "eur",
           countries: ["dk"],
