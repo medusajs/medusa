@@ -24,12 +24,12 @@ export const updateStoresStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listStores(data.selector, {
       select: selects,
       relations,
     })
 
-    const stores = await service.update(data.selector, data.update)
+    const stores = await service.updateStores(data.selector, data.update)
     return new StepResponse(stores, prevData)
   },
   async (prevData, { container }) => {
@@ -41,7 +41,7 @@ export const updateStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    await service.upsert(
+    await service.upsertStores(
       prevData.map((r) => ({
         ...r,
         metadata: r.metadata || undefined,

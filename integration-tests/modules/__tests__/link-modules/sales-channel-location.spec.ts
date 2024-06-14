@@ -42,11 +42,11 @@ medusaIntegrationTestRunner({
           name: "NYC store",
         })
 
-        const euWarehouse = await locationService.create({
+        const euWarehouse = await locationService.createStockLocations({
           name: "EU Warehouse",
         })
 
-        const usWarehouse = await locationService.create({
+        const usWarehouse = await locationService.createStockLocations({
           name: "US Warehouse",
         })
 

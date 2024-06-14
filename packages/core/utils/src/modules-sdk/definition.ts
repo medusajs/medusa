@@ -17,7 +17,7 @@ import type {
   IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
   IStoreModuleService,
   ITaxModuleService,
   IUserModuleService,
@@ -92,7 +92,7 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.SALES_CHANNEL]: ISalesChannelModuleService
     [ModuleRegistrationName.TAX]: ITaxModuleService
     [ModuleRegistrationName.FULFILLMENT]: IFulfillmentModuleService
-    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationServiceNext
+    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationService
     [ModuleRegistrationName.USER]: IUserModuleService
     [ModuleRegistrationName.WORKFLOW_ENGINE]: IWorkflowEngineService
     [ModuleRegistrationName.REGION]: IRegionModuleService
