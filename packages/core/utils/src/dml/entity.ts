@@ -1,3 +1,4 @@
+import { BelongsTo } from "./relations/belongs-to"
 import {
   SchemaType,
   EntityCascades,
@@ -12,7 +13,7 @@ import {
 export class DmlEntity<
   Schema extends Record<string, SchemaType<any> | RelationshipType<any>>
 > {
-  #cascades: EntityCascades<ExtractEntityRelations<Schema>> = {}
+  #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}
 
   /**
@@ -26,7 +27,7 @@ export class DmlEntity<
     return {
       name: this.name,
       schema: this.schema as unknown as SchemaType<any> | RelationshipType<any>,
-      cascades: this.#cascades as unknown as EntityCascades<string[]>,
+      cascades: this.#cascades,
     }
   }
 
@@ -36,7 +37,19 @@ export class DmlEntity<
    * You can configure relationship data to be deleted when the current
    * entity is deleted.
    */
-  cascades(options: EntityCascades<ExtractEntityRelations<Schema>>) {
+  cascades(
+    options: EntityCascades<
+      ExtractEntityRelations<Schema, "hasOne" | "hasMany">
+    >
+  ) {
+    options.delete?.forEach((relationship) => {
+      if (this.schema[relationship] instanceof BelongsTo) {
+        throw new Error(
+          `Cannot cascade delete "${relationship}" relationship from "${this.name}" entity. Child to parent cascades are not allowed`
+        )
+      }
+    })
+
     this.#cascades = options
     return this
   }

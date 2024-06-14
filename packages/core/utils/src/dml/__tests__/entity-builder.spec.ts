@@ -1286,6 +1286,31 @@ describe("Entity builder", () => {
         'Invalid relationship reference for "email" on "user" entity. Make sure to define a hasOne or hasMany relationship'
       )
     })
+
+    test("throw error when cascading a parent from a child", () => {
+      const model = new EntityBuilder()
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+      })
+
+      const defineEmail = () =>
+        model
+          .define("email", {
+            email: model.text(),
+            isVerified: model.boolean(),
+            user: model.belongsTo(() => user),
+          })
+          .cascades({
+            // @ts-expect-error "User cannot be mentioned in cascades"
+            delete: ["user"],
+          })
+
+      expect(defineEmail).toThrow(
+        'Cannot cascade delete "user" relationship from "email" entity. Child to parent cascades are not allowed'
+      )
+    })
   })
 
   describe("Entity builder | manyToMany", () => {
