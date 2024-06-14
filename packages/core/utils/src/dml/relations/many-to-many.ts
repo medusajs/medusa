@@ -1,5 +1,5 @@
 import { BaseRelationship } from "./base"
-import { RelationshipMetadata } from "../types"
+import { RelationshipTypes } from "../types"
 
 /**
  * ManyToMany relationship defines a relationship between two entities
@@ -13,5 +13,5 @@ import { RelationshipMetadata } from "../types"
  *   relationship between two entities
  */
 export class ManyToMany<T> extends BaseRelationship<T> {
-  protected relationshipType: RelationshipMetadata["type"] = "manyToMany"
+  type = "manyToMany" as const
 }

@@ -2,6 +2,7 @@ import {
   RelationshipMetadata,
   RelationshipOptions,
   RelationshipType,
+  RelationshipTypes,
 } from "../types"
 
 /**
@@ -11,12 +12,15 @@ import {
 export abstract class BaseRelationship<T> implements RelationshipType<T> {
   #referencedEntity: T
 
+  /**
+   * Configuration options for the relationship
+   */
   protected options: RelationshipOptions
 
   /**
-   * The relationship type.
+   * Relationship type
    */
-  protected abstract relationshipType: RelationshipMetadata["type"]
+  abstract type: RelationshipTypes
 
   /**
    * A type-only property to infer the JavScript data-type
@@ -38,7 +42,7 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
       nullable: false,
       mappedBy: this.options.mappedBy,
       entity: this.#referencedEntity,
-      type: this.relationshipType,
+      type: this.type,
     }
   }
 }

@@ -16,7 +16,7 @@ export const validateSalesChannelsExistStep = createStep(
         ModuleRegistrationName.SALES_CHANNEL
       )
 
-    const salesChannels = await salesChannelModuleService.list(
+    const salesChannels = await salesChannelModuleService.listSalesChannels(
       { id: data.sales_channel_ids },
       { select: ["id"] }
     )

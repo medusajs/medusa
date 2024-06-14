@@ -21,7 +21,9 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     familyOptions: ProductCategoryTransformOptions = {}
   ) {
     const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
+    findOptions_.options ??= {
+      orderBy: { rank: "ASC" },
+    }
 
     const fields = (findOptions_.options.fields ??= [])
     const populate = (findOptions_.options.populate ??= [])
@@ -86,7 +88,7 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return productCategories
     }
 
-    return await this.buildProductCategoriesWithTree(
+    const categoriesTree = await this.buildProductCategoriesWithTree(
       {
         descendants: transformOptions.includeDescendantsTree,
         ancestors: transformOptions.includeAncestorsTree,
@@ -94,6 +96,23 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       productCategories,
       findOptions_
     )
+
+    return this.sortCategoriesByRank(categoriesTree)
+  }
+
+  sortCategoriesByRank(categories: ProductCategory[]): ProductCategory[] {
+    const sortedCategories = categories.sort((a, b) => a.rank - b.rank)
+
+    for (const category of sortedCategories) {
+      if (category.category_children) {
+        // All data up to this point is manipulated as an array, but it is a Collection<ProductCategory> type under the hood, so we are casting to any here.
+        category.category_children = this.sortCategoriesByRank(
+          category.category_children as any
+        ) as any
+      }
+    }
+
+    return sortedCategories
   }
 
   async buildProductCategoriesWithTree(
@@ -228,17 +247,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
       return [productCategories, count]
     }
 
-    return [
-      await this.buildProductCategoriesWithTree(
-        {
-          descendants: transformOptions.includeDescendantsTree,
-          ancestors: transformOptions.includeAncestorsTree,
-        },
-        productCategories,
-        findOptions_
-      ),
-      count,
-    ]
+    const categoriesTree = await this.buildProductCategoriesWithTree(
+      {
+        descendants: transformOptions.includeDescendantsTree,
+        ancestors: transformOptions.includeAncestorsTree,
+      },
+      productCategories,
+      findOptions_
+    )
+
+    return [this.sortCategoriesByRank(categoriesTree), count]
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {
@@ -325,13 +343,13 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           parent_category_id: categoryData?.parent_category_id || null,
         })
 
-        if (!isDefined(categoryData.rank)) {
+        categoryData.rank ??= siblingsCount + i
+        if (categoryData.rank > siblingsCount + i) {
           categoryData.rank = siblingsCount + i
-        } else {
-          if (categoryData.rank > siblingsCount + i) {
-            categoryData.rank = siblingsCount + i
-          }
+        }
 
+        // There is no need to rerank if it is the last item in the list
+        if (categoryData.rank < siblingsCount + i) {
           await this.rerankSiblingsAfterCreation(manager, categoryData)
         }
 
@@ -375,45 +393,76 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
           id: categoryData.id,
         })
 
+        // If the parent or rank are not changed, no need to reorder anything.
         if (
-          categoryData.parent_category_id &&
-          categoryData.parent_category_id !== productCategory.parent_category_id
+          !isDefined(categoryData.parent_category_id) &&
+          !isDefined(categoryData.rank)
         ) {
-          const newParentCategory = await manager.findOne(
-            ProductCategory,
-            categoryData.parent_category_id
-          )
-          if (!newParentCategory) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_ARGUMENT,
-              `Parent category with id: '${categoryData.parent_category_id}' does not exist`
-            )
+          for (const key in categoryData) {
+            if (isDefined(categoryData[key])) {
+              productCategory[key] = categoryData[key]
+            }
           }
 
-          categoryData.mpath = `${newParentCategory.mpath}.${productCategory.id}`
+          manager.assign(productCategory, categoryData)
+          return productCategory
+        }
 
+        // If the parent is changed, we need to rerank the siblings of the old parent and the new parent.
+        if (
+          isDefined(categoryData.parent_category_id) &&
+          categoryData.parent_category_id !== productCategory.parent_category_id
+        ) {
+          // Calculate the new mpath
+          if (categoryData.parent_category_id === null) {
+            categoryData.mpath = ""
+          } else {
+            const newParentCategory = await manager.findOne(
+              ProductCategory,
+              categoryData.parent_category_id
+            )
+            if (!newParentCategory) {
+              throw new MedusaError(
+                MedusaError.Types.INVALID_ARGUMENT,
+                `Parent category with id: '${categoryData.parent_category_id}' does not exist`
+              )
+            }
+            categoryData.mpath = `${newParentCategory.mpath}.${productCategory.id}`
+          }
+
+          // Rerank the siblings in the new parent
           const siblingsCount = await manager.count(ProductCategory, {
             parent_category_id: categoryData.parent_category_id,
           })
-          if (!isDefined(categoryData.rank)) {
-            categoryData.rank = siblingsCount + i
-          } else {
-            if (categoryData.rank > siblingsCount + i) {
-              categoryData.rank = siblingsCount + i
-            }
 
+          categoryData.rank ??= siblingsCount + i
+          if (categoryData.rank > siblingsCount + i) {
+            categoryData.rank = siblingsCount + i
+          }
+
+          // There is no need to rerank if it is the last item in the list
+          if (categoryData.rank < siblingsCount + i) {
             await this.rerankSiblingsAfterCreation(manager, categoryData)
           }
 
+          // Rerank the old parent's siblings
           await this.rerankSiblingsAfterDeletion(manager, productCategory)
-        }
-        // In the case of the parent being updated, we do a delete/create reranking. If only the rank was updated, we need to shift all siblings
-        else if (isDefined(categoryData.rank)) {
+
+          for (const key in categoryData) {
+            if (isDefined(categoryData[key])) {
+              productCategory[key] = categoryData[key]
+            }
+          }
+
+          manager.assign(productCategory, categoryData)
+          return productCategory
+          // If only the rank changed, we need to rerank all siblings.
+        } else if (isDefined(categoryData.rank)) {
           const siblingsCount = await manager.count(ProductCategory, {
             parent_category_id: productCategory.parent_category_id,
           })
 
-          // We don't cout the updated category itself.
+          // Subtracting 1 since we don't count the modified category itself
           if (categoryData.rank > siblingsCount - 1 + i) {
             categoryData.rank = siblingsCount - 1 + i
           }

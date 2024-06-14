@@ -24,12 +24,15 @@ export const updateSalesChannelsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listSalesChannels(data.selector, {
       select: selects,
       relations,
     })
 
-    const channels = await service.update(data.selector, data.update)
+    const channels = await service.updateSalesChannels(
+      data.selector,
+      data.update
+    )
 
     return new StepResponse(channels, prevData)
   },
@@ -42,7 +45,7 @@ export const updateSalesChannelsStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    await service.upsert(
+    await service.upsertSalesChannels(
       prevData.map((r) => ({
         id: r.id,
         name: r.name,

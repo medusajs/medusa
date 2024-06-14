@@ -30,7 +30,6 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
-    let scModuleService: ISalesChannelModuleService
     let customerModule: ICustomerModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
@@ -47,9 +46,6 @@ medusaIntegrationTestRunner({
       appContainer = getContainer()
       cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      scModuleService = appContainer.resolve(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
       customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)

@@ -21,7 +21,6 @@ medusaIntegrationTestRunner({
       let appContainer
       let fulfillmentModule: IFulfillmentModuleService
       let locationModule: IStockLocationServiceNext
-      let scService: ISalesChannelModuleService
       let remoteQuery
       let remoteLink
 
@@ -33,7 +32,6 @@ medusaIntegrationTestRunner({
         locationModule = appContainer.resolve(
           ModuleRegistrationName.STOCK_LOCATION
         )
-        scService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
