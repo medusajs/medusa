@@ -5,7 +5,7 @@ import { BaseRelationship } from "../relations/base"
 describe("Base relationship", () => {
   test("define a custom relationship", () => {
     class HasOne<T> extends BaseRelationship<T> {
-      protected relationshipType: "hasOne" | "hasMany" | "manyToMany" = "hasOne"
+      type: "hasOne" = "hasOne"
     }
 
     const user = {

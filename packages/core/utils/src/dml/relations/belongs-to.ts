@@ -1,9 +1,9 @@
 import { BaseRelationship } from "./base"
-import { RelationshipMetadata } from "../types"
-import { NullableModifier } from "../modifiers/nullable"
+import { RelationshipTypes } from "../types"
+import { NullableModifier } from "./nullable"
 
 export class BelongsTo<T> extends BaseRelationship<T> {
-  protected relationshipType: RelationshipMetadata["type"] = "belongsTo"
+  type = "belongsTo" as const
 
   /**
    * Apply nullable modifier on the schema
