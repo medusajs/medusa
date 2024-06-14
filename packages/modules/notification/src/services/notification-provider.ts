@@ -1,5 +1,5 @@
-import { Constructor, DAL, NotificationTypes } from "@medusajs/types"
-import { ModulesSdkUtils, MedusaError } from "@medusajs/utils"
+import { DAL, NotificationTypes } from "@medusajs/types"
+import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderRegistrationPrefix } from "@types"
 
@@ -10,7 +10,7 @@ type InjectedDependencies = {
   ]: NotificationTypes.INotificationProvider
 }
 
-export default class NotificationProviderService extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+export default class NotificationProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   NotificationProvider
 ) {
   protected readonly notificationProviderRepository_: DAL.RepositoryService<NotificationProvider>

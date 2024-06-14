@@ -13,7 +13,7 @@ type InjectedDependencies = {
 
 export default class RuleTypeService<
   TEntity extends RuleType = RuleType
-> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   RuleType
 )<TEntity> {
   protected readonly ruleTypeRepository_: DAL.RepositoryService<TEntity>

@@ -52,21 +52,21 @@ import PaymentProviderService from "./payment-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  paymentService: ModulesSdkTypes.InternalModuleService<any>
-  captureService: ModulesSdkTypes.InternalModuleService<any>
-  refundService: ModulesSdkTypes.InternalModuleService<any>
-  paymentSessionService: ModulesSdkTypes.InternalModuleService<any>
-  paymentCollectionService: ModulesSdkTypes.InternalModuleService<any>
+  paymentService: ModulesSdkTypes.IMedusaInternalService<any>
+  captureService: ModulesSdkTypes.IMedusaInternalService<any>
+  refundService: ModulesSdkTypes.IMedusaInternalService<any>
+  paymentSessionService: ModulesSdkTypes.IMedusaInternalService<any>
+  paymentCollectionService: ModulesSdkTypes.IMedusaInternalService<any>
   paymentProviderService: PaymentProviderService
 }
 
-const generateMethodForModels = [
+const generateMethodForModels = {
   PaymentCollection,
   Payment,
   PaymentSession,
   Capture,
   Refund,
-]
+}
 
 export default class PaymentModuleService<
     TPaymentCollection extends PaymentCollection = PaymentCollection,
@@ -75,8 +75,7 @@ export default class PaymentModuleService<
     TRefund extends Refund = Refund,
     TPaymentSession extends PaymentSession = PaymentSession
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     PaymentCollectionDTO,
     {
       PaymentCollection: { dto: PaymentCollectionDTO }
@@ -90,11 +89,11 @@ export default class PaymentModuleService<
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected paymentService_: ModulesSdkTypes.InternalModuleService<TPayment>
-  protected captureService_: ModulesSdkTypes.InternalModuleService<TCapture>
-  protected refundService_: ModulesSdkTypes.InternalModuleService<TRefund>
-  protected paymentSessionService_: ModulesSdkTypes.InternalModuleService<TPaymentSession>
-  protected paymentCollectionService_: ModulesSdkTypes.InternalModuleService<TPaymentCollection>
+  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<TPayment>
+  protected captureService_: ModulesSdkTypes.IMedusaInternalService<TCapture>
+  protected refundService_: ModulesSdkTypes.IMedusaInternalService<TRefund>
+  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentSession>
+  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentCollection>
   protected paymentProviderService_: PaymentProviderService
 
   constructor(
@@ -126,6 +125,7 @@ export default class PaymentModuleService<
     return joinerConfig
   }
 
+  // @ts-ignore
   createPaymentCollections(
     data: CreatePaymentCollectionDTO,
     sharedContext?: Context
@@ -160,9 +160,10 @@ export default class PaymentModuleService<
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollection[]> {
-    return this.paymentCollectionService_.create(data, sharedContext)
+    return await this.paymentCollectionService_.create(data, sharedContext)
   }
 
+  // @ts-ignore
   updatePaymentCollections(
     paymentCollectionId: string,
     data: PaymentCollectionUpdatableFields,

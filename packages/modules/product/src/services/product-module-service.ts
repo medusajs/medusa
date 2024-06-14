@@ -58,25 +58,25 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   productService: ProductService<any>
-  productVariantService: ModulesSdkTypes.InternalModuleService<any, any>
-  productTagService: ModulesSdkTypes.InternalModuleService<any>
+  productVariantService: ModulesSdkTypes.IMedusaInternalService<any, any>
+  productTagService: ModulesSdkTypes.IMedusaInternalService<any>
   productCategoryService: ProductCategoryService<any>
-  productCollectionService: ModulesSdkTypes.InternalModuleService<any>
-  productImageService: ModulesSdkTypes.InternalModuleService<any>
-  productTypeService: ModulesSdkTypes.InternalModuleService<any>
-  productOptionService: ModulesSdkTypes.InternalModuleService<any>
-  productOptionValueService: ModulesSdkTypes.InternalModuleService<any>
+  productCollectionService: ModulesSdkTypes.IMedusaInternalService<any>
+  productImageService: ModulesSdkTypes.IMedusaInternalService<any>
+  productTypeService: ModulesSdkTypes.IMedusaInternalService<any>
+  productOptionService: ModulesSdkTypes.IMedusaInternalService<any>
+  productOptionValueService: ModulesSdkTypes.IMedusaInternalService<any>
   eventBusModuleService?: IEventBusModuleService
 }
 
-const generateMethodForModels = [
-  { model: ProductCategory, singular: "Category", plural: "Categories" },
-  { model: ProductCollection, singular: "Collection", plural: "Collections" },
-  { model: ProductOption, singular: "Option", plural: "Options" },
-  { model: ProductTag, singular: "Tag", plural: "Tags" },
-  { model: ProductType, singular: "Type", plural: "Types" },
-  { model: ProductVariant, singular: "Variant", plural: "Variants" },
-]
+const generateMethodForModels = {
+  ProductCategory: { singular: "Category", plural: "Categories" },
+  ProductCollection: { singular: "Collection", plural: "Collections" },
+  ProductOption: { singular: "Option", plural: "Options" },
+  ProductTag: { singular: "Tag", plural: "Tags" },
+  ProductType: { singular: "Type", plural: "Types" },
+  ProductVariant: { singular: "Variant", plural: "Variants" },
+}
 
 export default class ProductModuleService<
     TProduct extends Product = Product,
@@ -89,8 +89,7 @@ export default class ProductModuleService<
     TProductOption extends ProductOption = ProductOption,
     TProductOptionValue extends ProductOptionValue = ProductOptionValue
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     ProductTypes.ProductDTO,
     {
       ProductCategory: {
@@ -130,21 +129,21 @@ export default class ProductModuleService<
   protected baseRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
   // eslint-disable-next-line max-len
-  protected readonly productVariantService_: ModulesSdkTypes.InternalModuleService<TProductVariant>
+  protected readonly productVariantService_: ModulesSdkTypes.IMedusaInternalService<TProductVariant>
   // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   // eslint-disable-next-line max-len
-  protected readonly productTagService_: ModulesSdkTypes.InternalModuleService<TProductTag>
+  protected readonly productTagService_: ModulesSdkTypes.IMedusaInternalService<TProductTag>
   // eslint-disable-next-line max-len
-  protected readonly productCollectionService_: ModulesSdkTypes.InternalModuleService<TProductCollection>
+  protected readonly productCollectionService_: ModulesSdkTypes.IMedusaInternalService<TProductCollection>
   // eslint-disable-next-line max-len
-  protected readonly productImageService_: ModulesSdkTypes.InternalModuleService<TProductImage>
+  protected readonly productImageService_: ModulesSdkTypes.IMedusaInternalService<TProductImage>
   // eslint-disable-next-line max-len
-  protected readonly productTypeService_: ModulesSdkTypes.InternalModuleService<TProductType>
+  protected readonly productTypeService_: ModulesSdkTypes.IMedusaInternalService<TProductType>
   // eslint-disable-next-line max-len
-  protected readonly productOptionService_: ModulesSdkTypes.InternalModuleService<TProductOption>
+  protected readonly productOptionService_: ModulesSdkTypes.IMedusaInternalService<TProductOption>
   // eslint-disable-next-line max-len
-  protected readonly productOptionValueService_: ModulesSdkTypes.InternalModuleService<TProductOptionValue>
+  protected readonly productOptionValueService_: ModulesSdkTypes.IMedusaInternalService<TProductOptionValue>
   protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
@@ -185,6 +184,7 @@ export default class ProductModuleService<
   }
 
   // TODO: Add options validation, among other things
+  // @ts-ignore
   createVariants(
     data: ProductTypes.CreateProductVariantDTO[],
     sharedContext?: Context
@@ -299,6 +299,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allVariants : allVariants[0]
   }
 
+  // @ts-ignore
   updateVariants(
     id: string,
     data: ProductTypes.UpdateProductVariantDTO,
@@ -413,6 +414,7 @@ export default class ProductModuleService<
     return productVariants
   }
 
+  // @ts-ignore
   createTags(
     data: ProductTypes.CreateProductTagDTO[],
     sharedContext?: Context
@@ -491,6 +493,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allTags : allTags[0]
   }
 
+  // @ts-ignore
   updateTags(
     id: string,
     data: ProductTypes.UpdateProductTagDTO,
@@ -544,6 +547,7 @@ export default class ProductModuleService<
     return isString(idOrSelector) ? updatedTags[0] : updatedTags
   }
 
+  // @ts-ignore
   createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     sharedContext?: Context
@@ -611,6 +615,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allTypes : allTypes[0]
   }
 
+  // @ts-ignore
   updateTypes(
     id: string,
     data: ProductTypes.UpdateProductTypeDTO,
@@ -658,6 +663,7 @@ export default class ProductModuleService<
     return isString(idOrSelector) ? updatedTypes[0] : updatedTypes
   }
 
+  // @ts-ignore
   createOptions(
     data: ProductTypes.CreateProductOptionDTO[],
     sharedContext?: Context
@@ -754,6 +760,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allOptions : allOptions[0]
   }
 
+  // @ts-ignore
   updateOptions(
     id: string,
     data: ProductTypes.UpdateProductOptionDTO,
@@ -870,6 +877,7 @@ export default class ProductModuleService<
     return productOptions
   }
 
+  // @ts-ignore
   createCollections(
     data: ProductTypes.CreateProductCollectionDTO[],
     sharedContext?: Context
@@ -989,6 +997,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? allCollections : allCollections[0]
   }
 
+  // @ts-ignore
   updateCollections(
     id: string,
     data: ProductTypes.UpdateProductCollectionDTO,
@@ -1115,6 +1124,7 @@ export default class ProductModuleService<
     return collections
   }
 
+  // @ts-ignore
   createCategories(
     data: ProductTypes.CreateProductCategoryDTO[],
     sharedContext?: Context
@@ -1218,6 +1228,7 @@ export default class ProductModuleService<
     return Array.isArray(data) ? result : result[0]
   }
 
+  // @ts-ignore
   updateCategories(
     id: string,
     data: ProductTypes.UpdateProductCategoryDTO,

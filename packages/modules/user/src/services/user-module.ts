@@ -23,19 +23,18 @@ import InviteService from "./invite"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  userService: ModulesSdkTypes.InternalModuleService<any>
+  userService: ModulesSdkTypes.IMedusaInternalService<any>
   inviteService: InviteService<any>
   eventBusModuleService: IEventBusModuleService
 }
 
-const generateMethodForModels = [Invite]
+const generateMethodForModels = { Invite }
 
 export default class UserModuleService<
     TUser extends User = User,
     TInvite extends Invite = Invite
   >
-  extends ModulesSdkUtils.abstractModuleServiceFactory<
-    InjectedDependencies,
+  extends ModulesSdkUtils.MedusaService<
     UserTypes.UserDTO,
     {
       Invite: {
@@ -51,7 +50,7 @@ export default class UserModuleService<
 
   protected baseRepository_: DAL.RepositoryService
 
-  protected readonly userService_: ModulesSdkTypes.InternalModuleService<TUser>
+  protected readonly userService_: ModulesSdkTypes.IMedusaInternalService<TUser>
   protected readonly inviteService_: InviteService<TInvite>
 
   constructor(
@@ -199,6 +198,7 @@ export default class UserModuleService<
     return Array.isArray(data) ? serializedUsers : serializedUsers[0]
   }
 
+  // @ts-ignore
   createInvites(
     data: UserTypes.CreateInviteDTO[],
     sharedContext?: Context
@@ -265,6 +265,7 @@ export default class UserModuleService<
     return await this.inviteService_.create(toCreate, sharedContext)
   }
 
+  // @ts-ignore
   updateInvites(
     data: UserTypes.UpdateInviteDTO[],
     sharedContext?: Context

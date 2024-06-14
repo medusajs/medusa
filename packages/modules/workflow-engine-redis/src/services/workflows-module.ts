@@ -24,14 +24,14 @@ import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
+  workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
   workflowOrchestratorService: WorkflowOrchestratorService
   redisDisconnectHandler: () => Promise<void>
 }
 
 export class WorkflowsModuleService implements IWorkflowEngineService {
   protected baseRepository_: DAL.RepositoryService
-  protected workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
+  protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
   protected workflowOrchestratorService_: WorkflowOrchestratorService
   protected redisDisconnectHandler_: () => Promise<void>
 
