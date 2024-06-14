@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -226,7 +227,7 @@ export const useProducts = (
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminProductListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminProductListResponse,
       QueryKey
     >,
