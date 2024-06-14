@@ -1,7 +1,8 @@
 import { resolve } from "path"
 import { Modules } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Entity, PrimaryKey } from "@mikro-orm/core"
+import { IFileModuleService } from "@medusajs/types"
 
 jest.setTimeout(100000)
 
@@ -28,15 +29,14 @@ const moduleOptions = {
   ],
 }
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IFileModuleService>({
   moduleName: Modules.FILE,
   moduleOptions: moduleOptions,
   moduleModels: [DummyEntity],
-  // TODO: Fix the type of service, it complains for some reason if we pass IFileModuleService
-  testSuite: ({ service }: SuiteOptions<any>) => {
+  testSuite: ({ service }) => {
     describe("File Module Service", () => {
       it("creates and gets a file", async () => {
-        const res = await service.create({
+        const res = await service.createFiles({
           filename: "test.jpg",
           mimeType: "image/jpeg",
           content: Buffer.from("test"),
@@ -48,7 +48,7 @@ moduleIntegrationTestRunner({
         })
 
         // The fake provider returns the file content as the url
-        const downloadUrl = await service.retrieve("test.jpg")
+        const downloadUrl = await service.retrieveFile("test.jpg")
         expect(await new Response(downloadUrl.url).text()).toEqual("test")
       })
     })
