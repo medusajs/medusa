@@ -1,4 +1,3 @@
-export * as InventoryNext from "./bundle"
 export * from "./common"
+export * from "./mutations"
 export * from "./service"
-export * from "./service-next"

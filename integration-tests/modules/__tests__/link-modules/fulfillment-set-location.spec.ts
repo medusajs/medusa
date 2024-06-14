@@ -2,7 +2,7 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -20,7 +20,7 @@ medusaIntegrationTestRunner({
     describe("FulfillmentSet and Location", () => {
       let appContainer
       let fulfillmentModule: IFulfillmentModuleService
-      let locationModule: IStockLocationServiceNext
+      let locationModule: IStockLocationService
       let remoteQuery
       let remoteLink
 
@@ -44,7 +44,7 @@ medusaIntegrationTestRunner({
           type: "delivery",
         })
 
-        const euWarehouse = await locationModule.create({
+        const euWarehouse = await locationModule.createStockLocations({
           name: "EU Warehouse",
         })
 

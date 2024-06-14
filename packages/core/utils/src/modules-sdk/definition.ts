@@ -8,7 +8,7 @@ import type {
   IEventBusModuleService,
   IFileModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   INotificationModuleService,
   IOrderModuleService,
   IPaymentModuleService,
@@ -17,7 +17,7 @@ import type {
   IPromotionModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
   IStoreModuleService,
   ITaxModuleService,
   IUserModuleService,
@@ -84,7 +84,7 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.CART]: ICartModuleService
     [ModuleRegistrationName.CUSTOMER]: ICustomerModuleService
     [ModuleRegistrationName.EVENT_BUS]: IEventBusModuleService
-    [ModuleRegistrationName.INVENTORY]: IInventoryServiceNext
+    [ModuleRegistrationName.INVENTORY]: IInventoryService
     [ModuleRegistrationName.PAYMENT]: IPaymentModuleService
     [ModuleRegistrationName.PRICING]: IPricingModuleService
     [ModuleRegistrationName.PRODUCT]: IProductModuleService
@@ -92,7 +92,7 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.SALES_CHANNEL]: ISalesChannelModuleService
     [ModuleRegistrationName.TAX]: ITaxModuleService
     [ModuleRegistrationName.FULFILLMENT]: IFulfillmentModuleService
-    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationServiceNext
+    [ModuleRegistrationName.STOCK_LOCATION]: IStockLocationService
     [ModuleRegistrationName.USER]: IUserModuleService
     [ModuleRegistrationName.WORKFLOW_ENGINE]: IWorkflowEngineService
     [ModuleRegistrationName.REGION]: IRegionModuleService

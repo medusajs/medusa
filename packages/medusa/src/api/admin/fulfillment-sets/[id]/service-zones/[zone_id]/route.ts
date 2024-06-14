@@ -102,9 +102,12 @@ export const DELETE = async (
   )
 
   // ensure fulfillment set exists and that the service zone is part of it
-  const fulfillmentSet = await fulfillmentModuleService.retrieve(id, {
-    relations: ["service_zones"],
-  })
+  const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
+    id,
+    {
+      relations: ["service_zones"],
+    }
+  )
 
   if (!fulfillmentSet.service_zones.find((s) => s.id === zone_id)) {
     throw new MedusaError(

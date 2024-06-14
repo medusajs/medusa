@@ -3,7 +3,7 @@ import {
   CreateFulfillmentSetDTO,
   IFulfillmentModuleService,
 } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createFulfillmentSetsId = "create-fulfillment-sets"
 export const createFulfillmentSets = createStep(
@@ -13,7 +13,7 @@ export const createFulfillmentSets = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    const createSets = await service.create(data)
+    const createSets = await service.createFulfillmentSets(data)
 
     return new StepResponse(
       createSets,
@@ -29,6 +29,6 @@ export const createFulfillmentSets = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.delete(createSetIds)
+    await service.deleteFulfillmentSets(createSetIds)
   }
 )

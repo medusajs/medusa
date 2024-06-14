@@ -25,9 +25,11 @@ export const findSalesChannelStep = createStep(
     let salesChannel: SalesChannelDTO | undefined
 
     if (data.salesChannelId) {
-      salesChannel = await salesChannelService.retrieveSalesChannel(data.salesChannelId)
+      salesChannel = await salesChannelService.retrieveSalesChannel(
+        data.salesChannelId
+      )
     } else if (!isDefined(data.salesChannelId)) {
-      const [store] = await storeModule.list(
+      const [store] = await storeModule.listStores(
         {},
         { select: ["default_sales_channel_id"] }
       )

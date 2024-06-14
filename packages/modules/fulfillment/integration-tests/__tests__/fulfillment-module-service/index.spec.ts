@@ -30,7 +30,7 @@ let providerId = "fixtures-fulfillment-provider_test-provider"
 
 async function list(
   service: IFulfillmentModuleService,
-  ...args: Parameters<IFulfillmentModuleService["list"]>
+  ...args: Parameters<IFulfillmentModuleService["listFulfillmentSets"]>
 ) {
   const [filters = {}, config = {}] = args
 
@@ -48,7 +48,7 @@ async function list(
     ...config,
   }
 
-  return await service.list(filters, finalConfig)
+  return await service.listFulfillmentSets(filters, finalConfig)
 }
 
 function expectSoftDeleted(
@@ -109,7 +109,7 @@ moduleIntegrationTestRunner({
       it("should load and save all the providers on bootstrap with the correct is_enabled value", async () => {
         const databaseConfig = {
           schema: "public",
-          clientUrl: MikroOrmWrapper.clientUrl,
+          clientUrl: MikroOrmWrapper.clientUrl!,
         }
 
         const providersConfig = {}
@@ -159,7 +159,7 @@ moduleIntegrationTestRunner({
                 name
               )
             )
-          })
+          })!
           expect(provider).toBeDefined()
           expect(provider.is_enabled).toBeTruthy()
         }
@@ -222,7 +222,7 @@ moduleIntegrationTestRunner({
                 name
               )
             )
-          })
+          })!
           expect(provider).toBeDefined()
 
           const isEnabled = !!providersConfig2[name]
@@ -242,7 +242,7 @@ moduleIntegrationTestRunner({
          * Soft delete the fulfillment set
          */
 
-        await service.softDelete(fulfillmentSets[0].id)
+        await service.softDeleteFulfillmentSets([fulfillmentSets[0].id])
         const deletedFulfillmentSets = await list(
           service,
           {},
@@ -256,7 +256,7 @@ moduleIntegrationTestRunner({
          * Restore the fulfillment set
          */
 
-        await service.restore(fulfillmentSets[0].id)
+        await service.restoreFulfillmentSets([fulfillmentSets[0].id])
         const restoredFulfillmentSets = await list(service)
         expectSoftDeleted(restoredFulfillmentSets)
       })

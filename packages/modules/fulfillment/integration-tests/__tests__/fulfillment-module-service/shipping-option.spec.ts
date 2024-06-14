@@ -57,7 +57,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list shipping options with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
@@ -113,7 +113,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
         })
 
         it("should list shipping options with a context", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
@@ -224,7 +224,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
         })
 
         it(`should list the shipping options for a context with a specific address`, async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
             service_zones: [
@@ -341,7 +341,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
       })
 
       it("should validate if a shipping option is applicable to a context", async function () {
-        const fulfillmentSet = await service.create({
+        const fulfillmentSet = await service.createFulfillmentSets({
           name: "test",
           type: "test-type",
           service_zones: [
@@ -432,7 +432,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -509,7 +509,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -601,7 +601,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -637,7 +637,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on update", () => {
           it("should update a shipping option", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -789,7 +789,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should update a shipping option without updating the rules or the type", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -880,7 +880,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should update a collection of shipping options", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1027,7 +1027,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail to update a non-existent shipping option", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1075,7 +1075,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail to update a shipping option when adding non existing rules", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1120,7 +1120,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail to update a shipping option when adding invalid rules", async () => {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1173,7 +1173,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -1250,7 +1250,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
