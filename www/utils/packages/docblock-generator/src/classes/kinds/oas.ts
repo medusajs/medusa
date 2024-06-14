@@ -1369,6 +1369,10 @@ class OasKindGenerator extends FunctionKindGenerator {
         const properties: Record<string, OpenApiSchema> = {}
         const requiredProperties: string[] = []
 
+        const baseType = itemType.getBaseTypes()?.[0]
+        const isDeleteResponse =
+          baseType?.aliasSymbol?.getEscapedName() === "DeleteResponse"
+
         if (level + 1 <= this.MAX_LEVEL) {
           itemType.getProperties().forEach((property) => {
             if (
@@ -1390,6 +1394,15 @@ class OasKindGenerator extends FunctionKindGenerator {
                 parentName: title || descriptionOptions?.parentName,
               },
             })
+
+            if (isDeleteResponse && property.name === "object") {
+              // try to retrieve default from `DeleteResponse`'s type argument
+              const deleteTypeArg = baseType.aliasTypeArguments?.[0]
+              properties[property.name].default =
+                deleteTypeArg && "value" in deleteTypeArg
+                  ? (deleteTypeArg.value as string)
+                  : properties[property.name].default
+            }
           })
         }
 
