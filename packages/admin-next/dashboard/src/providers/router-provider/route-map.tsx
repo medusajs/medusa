@@ -843,6 +843,43 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           {
+            path: "product-types",
+            element: <Outlet />,
+            handle: {
+              crumb: () => "Product Types",
+            },
+            children: [
+              {
+                path: "",
+                lazy: () =>
+                  import("../../routes/product-types/product-type-list"),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import("../../routes/product-types/product-type-create"),
+                  },
+                ],
+              },
+              {
+                path: ":id",
+                lazy: () =>
+                  import("../../routes/product-types/product-type-detail"),
+                handle: {
+                  crumb: (data: HttpTypes.AdminProductTypeResponse) =>
+                    data.product_type.value,
+                },
+                children: [
+                  {
+                    path: "edit",
+                    lazy: () =>
+                      import("../../routes/product-types/product-type-edit"),
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "shipping-profiles",
             element: <Outlet />,
             handle: {

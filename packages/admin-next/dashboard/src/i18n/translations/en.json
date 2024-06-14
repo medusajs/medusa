@@ -1623,6 +1623,25 @@
       }
     }
   },
+  "productTypes": {
+    "domain": "Product Types",
+    "create": {
+      "header": "Create Product Type",
+      "hint": "Create a new product type to categorize your products.",
+      "successToast": "Product type {{value}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Product Type",
+      "successToast": "Product type {{value}} was successfully updated."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the product type {{value}}. This action cannot be undone.",
+      "successToast": "Product type {{value}} was successfully deleted."
+    },
+    "fields": {
+      "value": "Value"
+    }
+  },
   "errors": {
     "serverError": "Server error - Try again later.",
     "invalidCredentials": "Wrong email or password"
@@ -1734,8 +1753,8 @@
     "sent": "Sent",
     "salesChannels": "Sales Channels",
     "product": "Product",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
     "revokedAt": "Revoked at",
     "true": "True",
     "false": "False",
