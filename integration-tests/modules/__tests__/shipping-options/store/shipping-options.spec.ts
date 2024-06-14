@@ -43,7 +43,7 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_LINK
         )
 
-        region = await regionService.create({
+        region = await regionService.createRegions({
           name: "Test region",
           countries: ["US"],
           currency_code: "usd",
@@ -184,7 +184,9 @@ medusaIntegrationTestRunner({
 
       describe("GET /admin/shipping-options?cart_id=", () => {
         it("should get all shipping options for a cart successfully", async () => {
-          const resp = await api.get(`/store/shipping-options?cart_id=${cart.id}`)
+          const resp = await api.get(
+            `/store/shipping-options?cart_id=${cart.id}`
+          )
 
           const shippingOptions = resp.data.shipping_options
           expect(shippingOptions).toHaveLength(1)

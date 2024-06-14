@@ -67,7 +67,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",
@@ -150,7 +150,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",

@@ -12,14 +12,12 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
 } from "@medusajs/utils"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import NotificationProviderService from "./notification-provider"
 import { NotificationModel, NotificationProvider } from "@models"
-
-const generateMethodForModels = { NotificationProvider }
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -27,19 +25,14 @@ type InjectedDependencies = {
   notificationProviderService: NotificationProviderService
 }
 
-export default class NotificationModuleService<
-    TEntity extends NotificationModel = NotificationModel
-  >
-  extends ModulesSdkUtils.MedusaService<
-    NotificationTypes.NotificationDTO,
-    {
-      NotificationProvider: { dto: NotificationTypes.NotificationProviderDTO }
-    }
-  >(NotificationModel, generateMethodForModels, entityNameToLinkableKeysMap)
+export default class NotificationModuleService
+  extends MedusaService<{
+    Notification: { dto: NotificationTypes.NotificationDTO }
+  }>({ Notification: NotificationModel }, entityNameToLinkableKeysMap)
   implements INotificationModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<NotificationModel>
   protected readonly notificationProviderService_: NotificationProviderService
 
   constructor(
@@ -60,17 +53,19 @@ export default class NotificationModuleService<
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
-  create(
+
+  // @ts-expect-error
+  createNotifications(
     data: NotificationTypes.CreateNotificationDTO[],
     sharedContext?: Context
   ): Promise<NotificationTypes.NotificationDTO[]>
-  create(
+  createNotifications(
     data: NotificationTypes.CreateNotificationDTO,
     sharedContext?: Context
   ): Promise<NotificationTypes.NotificationDTO>
 
   @InjectManager("baseRepository_")
-  async create(
+  async createNotifications(
     data:
       | NotificationTypes.CreateNotificationDTO
       | NotificationTypes.CreateNotificationDTO[],
@@ -80,7 +75,10 @@ export default class NotificationModuleService<
   > {
     const normalized = Array.isArray(data) ? data : [data]
 
-    const createdNotifications = await this.create_(normalized, sharedContext)
+    const createdNotifications = await this.createNotifications_(
+      normalized,
+      sharedContext
+    )
 
     const serialized = await this.baseRepository_.serialize<
       NotificationTypes.NotificationDTO[]
@@ -90,10 +88,10 @@ export default class NotificationModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async create_(
+  protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<NotificationModel[]> {
     if (!data.length) {
       return []
     }

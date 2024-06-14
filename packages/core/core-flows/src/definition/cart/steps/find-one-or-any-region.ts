@@ -17,7 +17,7 @@ export const findOneOrAnyRegionStep = createStep(
 
     if (data.regionId) {
       try {
-        const region = await service.retrieve(data.regionId)
+        const region = await service.retrieveRegion(data.regionId)
         return new StepResponse(region)
       } catch (error) {
         return new StepResponse(null)
@@ -30,7 +30,7 @@ export const findOneOrAnyRegionStep = createStep(
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store not found")
     }
 
-    const [region] = await service.list({
+    const [region] = await service.listRegions({
       id: store.default_region_id,
     })
 

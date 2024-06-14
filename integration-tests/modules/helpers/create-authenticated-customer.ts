@@ -20,9 +20,13 @@ export const createAuthenticatedCustomer = async (
     ...customerData,
   })
 
-  const authIdentity = await authService.create({
-    entity_id: "store_user",
-    provider: "emailpass",
+  const authIdentity = await authService.createAuthIdentities({
+    provider_identities: [
+      {
+        entity_id: "store_user",
+        provider: "emailpass",
+      },
+    ],
     app_metadata: {
       customer_id: customer.id,
     },

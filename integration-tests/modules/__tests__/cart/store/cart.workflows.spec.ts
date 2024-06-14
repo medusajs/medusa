@@ -97,7 +97,7 @@ medusaIntegrationTestRunner({
 
       describe("CreateCartWorkflow", () => {
         it("should create a cart", async () => {
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -207,7 +207,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should revert if the cart creation fails", async () => {
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -379,7 +379,7 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -1181,7 +1181,7 @@ medusaIntegrationTestRunner({
               }
             )
 
-            const region = await regionModuleService.create({
+            const region = await regionModuleService.createRegions({
               name: "US",
               currency_code: "usd",
             })
@@ -1320,7 +1320,7 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should revert payment collection amount and create a new payment session", async () => {
-            const region = await regionModuleService.create({
+            const region = await regionModuleService.createRegions({
               name: "US",
               currency_code: "usd",
             })

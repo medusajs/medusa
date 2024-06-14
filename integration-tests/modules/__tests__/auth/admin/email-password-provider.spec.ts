@@ -40,7 +40,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.AUTH
         )
 
-        await authService.create({
+        await authService.createAuthIdentities({
           provider_identities: [
             {
               provider: "emailpass",
@@ -75,7 +75,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.AUTH
         )
 
-        await authService.create({
+        await authService.createAuthIdentities({
           provider_identities: [
             {
               provider: "emailpass",

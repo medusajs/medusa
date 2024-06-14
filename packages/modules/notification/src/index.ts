@@ -1,7 +1,8 @@
-import { moduleDefinition } from "./module-definition"
+import { ModuleExports } from "@medusajs/types"
+import { NotificationModuleService } from "@services"
+import loadProviders from "./loaders/providers"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
-
-export default moduleDefinition
+export const moduleDefinition: ModuleExports = {
+  service: NotificationModuleService,
+  loaders: [loadProviders],
+}

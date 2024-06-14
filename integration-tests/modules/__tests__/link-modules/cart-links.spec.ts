@@ -41,7 +41,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query carts, sales channels, customers, regions with remote query", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Region",
           currency_code: "usd",
         })
