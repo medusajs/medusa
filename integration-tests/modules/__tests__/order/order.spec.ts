@@ -2,13 +2,12 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   IOrderModuleService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
-  IStockLocationService,
   ITaxModuleService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
@@ -31,7 +30,7 @@ medusaIntegrationTestRunner({
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
-    let inventoryModule: IInventoryServiceNext
+    let inventoryModule: IInventoryService
     let fulfillmentModule: IFulfillmentModuleService
     let taxModule: ITaxModuleService
     let orderModule: IOrderModuleService

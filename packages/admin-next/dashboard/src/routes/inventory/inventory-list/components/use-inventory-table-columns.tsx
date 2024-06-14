@@ -1,4 +1,4 @@
-import { InventoryNext, ProductVariantDTO } from "@medusajs/types"
+import { InventoryTypes, ProductVariantDTO } from "@medusajs/types"
 
 import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedInventoryItem extends InventoryNext.InventoryItemDTO {
+interface ExtendedInventoryItem extends InventoryTypes.InventoryItemDTO {
   variants?: ProductVariantDTO[] | null
   stocked_quantity?: number
   reserved_quantity?: number

@@ -105,7 +105,7 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  const inventoryItem = await inventoryModule.create({
+  const inventoryItem = await inventoryModule.createInventoryItems({
     sku: "inv-1234",
   })
 

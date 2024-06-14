@@ -1,18 +1,18 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
+import { IInventoryService, InventoryTypes } from "@medusajs/types"
 
 export const createInventoryItemsStepId = "create-inventory-items"
 export const createInventoryItemsStep = createStep(
   createInventoryItemsStepId,
-  async (data: InventoryNext.CreateInventoryItemInput[], { container }) => {
-    const inventoryService: IInventoryServiceNext = container.resolve(
+  async (data: InventoryTypes.CreateInventoryItemInput[], { container }) => {
+    const inventoryService: IInventoryService = container.resolve(
       ModuleRegistrationName.INVENTORY
     )
 
-    const createdItems: InventoryNext.InventoryItemDTO[] =
-      await inventoryService.create(data)
+    const createdItems: InventoryTypes.InventoryItemDTO[] =
+      await inventoryService.createInventoryItems(data)
 
     return new StepResponse(
       createdItems,
@@ -26,6 +26,6 @@ export const createInventoryItemsStep = createStep(
 
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
-    await inventoryService!.delete(data)
+    await inventoryService.deleteInventoryItems(data)
   }
 )

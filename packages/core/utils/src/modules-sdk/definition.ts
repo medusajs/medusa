@@ -8,7 +8,7 @@ import type {
   IEventBusModuleService,
   IFileModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   INotificationModuleService,
   IOrderModuleService,
   IPaymentModuleService,
@@ -84,7 +84,7 @@ declare module "@medusajs/types" {
     [ModuleRegistrationName.CART]: ICartModuleService
     [ModuleRegistrationName.CUSTOMER]: ICustomerModuleService
     [ModuleRegistrationName.EVENT_BUS]: IEventBusModuleService
-    [ModuleRegistrationName.INVENTORY]: IInventoryServiceNext
+    [ModuleRegistrationName.INVENTORY]: IInventoryService
     [ModuleRegistrationName.PAYMENT]: IPaymentModuleService
     [ModuleRegistrationName.PRICING]: IPricingModuleService
     [ModuleRegistrationName.PRODUCT]: IProductModuleService

@@ -106,7 +106,7 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  inventoryItem = await inventoryModule.create({
+  inventoryItem = await inventoryModule.createInventoryItems({
     sku: "inv-1234",
   })
 

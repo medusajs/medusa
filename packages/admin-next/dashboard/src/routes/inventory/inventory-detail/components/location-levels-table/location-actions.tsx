@@ -1,7 +1,7 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { useDeleteInventoryItemLevel } from "../../../../../hooks/api/inventory"
 import { usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 export const LocationActions = ({
   level,
 }: {
-  level: InventoryNext.InventoryLevelDTO
+  level: InventoryTypes.InventoryLevelDTO
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()

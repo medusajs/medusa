@@ -5,22 +5,22 @@ import {
 } from "@medusajs/workflows-sdk"
 import { createInventoryItemsStep } from "../steps"
 
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { createInventoryLevelsWorkflow } from "./create-inventory-levels"
 
 type LocationLevelWithoutInventory = Omit<
-  InventoryNext.CreateInventoryLevelInput,
+  InventoryTypes.CreateInventoryLevelInput,
   "inventory_item_id"
 >
 interface WorkflowInput {
-  items: (InventoryNext.CreateInventoryItemInput & {
+  items: (InventoryTypes.CreateInventoryItemInput & {
     location_levels?: LocationLevelWithoutInventory[]
   })[]
 }
 
 const buildLocationLevelMapAndItemData = (data: WorkflowInput) => {
   data.items = data.items ?? []
-  const inventoryItems: InventoryNext.CreateInventoryItemInput[] = []
+  const inventoryItems: InventoryTypes.CreateInventoryItemInput[] = []
   // Keep an index to location levels mapping to inject the created inventory item
   // id into the location levels workflow input
   const locationLevelMap: Record<number, LocationLevelWithoutInventory[]> = {}
@@ -39,9 +39,9 @@ const buildLocationLevelMapAndItemData = (data: WorkflowInput) => {
 
 const buildInventoryLevelsInput = (data: {
   locationLevelMap: Record<number, LocationLevelWithoutInventory[]>
-  items: InventoryNext.InventoryItemDTO[]
+  items: InventoryTypes.InventoryItemDTO[]
 }) => {
-  const inventoryLevels: InventoryNext.CreateInventoryLevelInput[] = []
+  const inventoryLevels: InventoryTypes.CreateInventoryLevelInput[] = []
   let index = 0
 
   // The order of the input is critical to accurately create location levels for

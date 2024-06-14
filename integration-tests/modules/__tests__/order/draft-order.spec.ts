@@ -2,7 +2,7 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
@@ -33,8 +33,8 @@ medusaIntegrationTestRunner({
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
-    let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationService
+    let inventoryModule: IInventoryService
     let fulfillmentModule: IFulfillmentModuleService
     let taxModule: ITaxModuleService
     let remoteLink, remoteQuery
@@ -100,7 +100,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const inventoryItem = await inventoryModule.create({
+        const inventoryItem = await inventoryModule.createInventoryItems({
           sku: "inv-1234",
         })
 
