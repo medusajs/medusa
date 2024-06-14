@@ -2,7 +2,6 @@ import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
 import { StockLocation } from "./models"
-import moduleSchema from "./schema"
 
 export const LinkableKeys = {
   stock_location_id: StockLocation.name,
@@ -23,7 +22,6 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.STOCK_LOCATION,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
-  schema: moduleSchema,
   alias: [
     {
       name: ["stock_location", "stock_locations"],

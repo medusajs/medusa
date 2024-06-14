@@ -1,8 +1,7 @@
-import { InventoryNext } from "../../inventory"
+import { CreateReservationItemInput, ReservationItemDTO } from "../../inventory"
 
 export interface CreateReservationsWorkflowInput {
-  reservations: InventoryNext.CreateReservationItemInput[]
+  reservations: CreateReservationItemInput[]
 }
 
-export type CreateReservationsWorkflowOutput =
-  InventoryNext.ReservationItemDTO[]
+export type CreateReservationsWorkflowOutput = ReservationItemDTO[]

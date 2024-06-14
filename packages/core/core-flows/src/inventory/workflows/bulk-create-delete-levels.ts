@@ -1,4 +1,4 @@
-import { InventoryLevelDTO, InventoryNext } from "@medusajs/types"
+import { InventoryLevelDTO, InventoryTypes } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import {
   createInventoryLevelsStep,
@@ -6,7 +6,7 @@ import {
 } from "../steps"
 
 interface WorkflowInput {
-  creates: InventoryNext.CreateInventoryLevelInput[]
+  creates: InventoryTypes.CreateInventoryLevelInput[]
   deletes: { inventory_item_id: string; location_id: string }[]
 }
 

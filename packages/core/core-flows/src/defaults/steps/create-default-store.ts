@@ -55,6 +55,6 @@ export const createDefaultStoreStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    await service.delete(data.storeId)
+    await service.deleteStores(data.storeId)
   }
 )

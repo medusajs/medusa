@@ -18,13 +18,13 @@ import {
   ICartModuleService,
   ICustomerModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -50,10 +50,9 @@ medusaIntegrationTestRunner({
       let productModule: IProductModuleService
       let pricingModule: IPricingModuleService
       let paymentModule: IPaymentModuleService
-      let inventoryModule: IInventoryServiceNext
-      let stockLocationModule: IStockLocationServiceNext
+      let stockLocationModule: IStockLocationService
+      let inventoryModule: IInventoryService
       let fulfillmentModule: IFulfillmentModuleService
-      let locationModule: IStockLocationServiceNext
       let remoteLink, remoteQuery
 
       let defaultRegion
@@ -77,9 +76,6 @@ medusaIntegrationTestRunner({
         )
         fulfillmentModule = appContainer.resolve(
           ModuleRegistrationName.FULFILLMENT
-        )
-        locationModule = appContainer.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
         )
         remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
         remoteQuery = appContainer.resolve(
@@ -106,7 +102,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -121,7 +117,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -216,7 +212,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -231,7 +227,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -336,7 +332,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -554,7 +550,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -574,7 +570,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -663,7 +659,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -683,7 +679,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -778,7 +774,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
@@ -793,7 +789,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -905,7 +901,7 @@ medusaIntegrationTestRunner({
               name: "Webshop",
             })
 
-            const location = await stockLocationModule.create({
+            const location = await stockLocationModule.createStockLocations({
               name: "Warehouse",
             })
 
@@ -920,7 +916,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const inventoryItem = await inventoryModule.create({
+            const inventoryItem = await inventoryModule.createInventoryItems({
               sku: "inv-1234",
             })
 
@@ -1596,7 +1592,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 
@@ -1715,7 +1711,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 
@@ -1820,7 +1816,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 

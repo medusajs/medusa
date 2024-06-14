@@ -12,7 +12,7 @@ import {
   FulfillmentWorkflow,
   IOrderModuleService,
   IRegionModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
   OrderWorkflow,
   ProductDTO,
   RegionDTO,
@@ -38,7 +38,7 @@ async function prepareDataFixtures({ container }) {
   const salesChannelService = container.resolve(
     ModuleRegistrationName.SALES_CHANNEL
   )
-  const stockLocationModule: IStockLocationServiceNext = container.resolve(
+  const stockLocationModule: IStockLocationService = container.resolve(
     ModuleRegistrationName.STOCK_LOCATION
   )
   const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
@@ -81,16 +81,17 @@ async function prepareDataFixtures({ container }) {
     name: "Webshop",
   })
 
-  const location: StockLocationDTO = await stockLocationModule.create({
-    name: "Warehouse",
-    address: {
-      address_1: "Test",
-      city: "Test",
-      country_code: "US",
-      postal_code: "12345",
-      phone: "12345",
-    },
-  })
+  const location: StockLocationDTO =
+    await stockLocationModule.createStockLocations({
+      name: "Warehouse",
+      address: {
+        address_1: "Test",
+        city: "Test",
+        country_code: "US",
+        postal_code: "12345",
+        phone: "12345",
+      },
+    })
 
   const [product] = await productModule.create([
     {
@@ -104,7 +105,7 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  const inventoryItem = await inventoryModule.create({
+  const inventoryItem = await inventoryModule.createInventoryItems({
     sku: "inv-1234",
   })
 

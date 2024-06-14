@@ -1,22 +1,18 @@
-import { IInventoryServiceNext, InventoryItemDTO } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
-import { Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IInventoryService>({
   moduleName: Modules.INVENTORY,
-  resolve: "@medusajs/inventory-next",
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IInventoryServiceNext>) => {
+  testSuite: ({ service }) => {
     describe("Inventory Module Service", () => {
       describe("create", () => {
         it("should create an inventory item", async () => {
           const data = { sku: "test-sku", origin_country: "test-country" }
-          const inventoryItem = await service.create(data)
+          const inventoryItem = await service.createInventoryItems(data)
 
           expect(inventoryItem).toEqual(
             expect.objectContaining({ id: expect.any(String), ...data })
@@ -28,7 +24,7 @@ moduleIntegrationTestRunner({
             { sku: "test-sku", origin_country: "test-country" },
             { sku: "test-sku-1", origin_country: "test-country-1" },
           ]
-          const inventoryItems = await service.create(data)
+          const inventoryItems = await service.createInventoryItems(data)
 
           expect(inventoryItems).toEqual([
             expect.objectContaining({ id: expect.any(String), ...data[0] }),
@@ -40,7 +36,7 @@ moduleIntegrationTestRunner({
       describe("createReservationItem", () => {
         let inventoryItem: InventoryItemDTO
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -169,7 +165,7 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -234,7 +230,7 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -245,13 +241,13 @@ moduleIntegrationTestRunner({
             id: inventoryItem.id,
             sku: "updated-sku",
           }
-          const updated = await service.update(update)
+          const updated = await service.updateInventoryItems(update)
 
           expect(updated).toEqual(expect.objectContaining(update))
         })
 
         it("should update multiple inventory items", async () => {
-          const item2 = await service.create({
+          const item2 = await service.createInventoryItems({
             sku: "test-sku-1",
           })
 
@@ -265,7 +261,7 @@ moduleIntegrationTestRunner({
               sku: "updated-sku-2",
             },
           ]
-          const updated = await service.update(updates)
+          const updated = await service.updateInventoryItems(updates)
 
           expect(updated).toEqual([
             expect.objectContaining(updates[0]),
@@ -279,7 +275,7 @@ moduleIntegrationTestRunner({
         let inventoryItem
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -323,7 +319,7 @@ moduleIntegrationTestRunner({
         let inventoryItem
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -413,7 +409,7 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -526,7 +522,7 @@ moduleIntegrationTestRunner({
       describe("deleteReservationItemByLocationId", () => {
         let inventoryItem: InventoryItemDTO
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -619,7 +615,7 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -681,7 +677,7 @@ moduleIntegrationTestRunner({
       describe("deleteInventoryLevel", () => {
         let inventoryItem: InventoryItemDTO
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -720,7 +716,7 @@ moduleIntegrationTestRunner({
       describe("adjustInventory", () => {
         let inventoryItem: InventoryItemDTO
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
@@ -756,11 +752,11 @@ moduleIntegrationTestRunner({
       describe("retrieveInventoryLevelByItemAndLocation", () => {
         let inventoryItem: InventoryItemDTO
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
-          const inventoryItem1 = await service.create({
+          const inventoryItem1 = await service.createInventoryItems({
             sku: "test-sku-1",
             origin_country: "test-country",
           })
@@ -797,11 +793,11 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
-          const inventoryItem1 = await service.create({
+          const inventoryItem1 = await service.createInventoryItems({
             sku: "test-sku-1",
             origin_country: "test-country",
           })
@@ -851,12 +847,12 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
 
-          const inventoryItem1 = await service.create({
+          const inventoryItem1 = await service.createInventoryItems({
             sku: "test-sku-1",
             origin_country: "test-country",
           })
@@ -899,12 +895,12 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })
 
-          const inventoryItem1 = await service.create({
+          const inventoryItem1 = await service.createInventoryItems({
             sku: "test-sku-1",
             origin_country: "test-country",
           })
@@ -965,7 +961,7 @@ moduleIntegrationTestRunner({
         let inventoryItem: InventoryItemDTO
 
         beforeEach(async () => {
-          inventoryItem = await service.create({
+          inventoryItem = await service.createInventoryItems({
             sku: "test-sku",
             origin_country: "test-country",
           })

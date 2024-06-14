@@ -1,4 +1,4 @@
-import { IInventoryServiceNext, InventoryNext } from "@medusajs/types"
+import { IInventoryService, InventoryTypes } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 import {
   convertItemResponseToUpdateRequest,
@@ -10,18 +10,20 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 export const updateInventoryItemsStepId = "update-inventory-items-step"
 export const updateInventoryItemsStep = createStep(
   updateInventoryItemsStepId,
-  async (input: InventoryNext.UpdateInventoryItemInput[], { container }) => {
-    const inventoryService = container.resolve<IInventoryServiceNext>(
+  async (input: InventoryTypes.UpdateInventoryItemInput[], { container }) => {
+    const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(input)
 
-    const dataBeforeUpdate = await inventoryService.list(
+    const dataBeforeUpdate = await inventoryService.listInventoryItems(
       { id: input.map(({ id }) => id) },
       {}
     )
 
-    const updatedInventoryItems = await inventoryService.update(input)
+    const updatedInventoryItems = await inventoryService.updateInventoryItems(
+      input
+    )
 
     return new StepResponse(updatedInventoryItems, {
       dataBeforeUpdate,
@@ -36,11 +38,11 @@ export const updateInventoryItemsStep = createStep(
 
     const { dataBeforeUpdate, selects, relations } = revertInput
 
-    const inventoryService = container.resolve<IInventoryServiceNext>(
+    const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 
-    await inventoryService.update(
+    await inventoryService.updateInventoryItems(
       dataBeforeUpdate.map((data) =>
         convertItemResponseToUpdateRequest(data, selects, relations)
       )
