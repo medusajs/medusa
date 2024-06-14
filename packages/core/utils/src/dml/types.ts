@@ -109,10 +109,9 @@ export type ExtractEntityRelations<Schema extends Record<string, any>> = {
 }[keyof Schema & string][]
 
 /**
- * Entity hooks and the options accepted by them
+ * The actions to cascade from a given entity to its
+ * relationship.
  */
-export type EntityHooks = {
-  deleted?: {
-    remove: string[]
-  }
+export type EntityCascades<Relationships> = {
+  delete?: Relationships
 }

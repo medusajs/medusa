@@ -13,12 +13,12 @@ import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
   Infer,
   SchemaType,
+  EntityCascades,
   KnownDataTypes,
   SchemaMetadata,
   RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
-  EntityHooks,
 } from "../types"
 import { HasOne } from "../relations/has-one"
 import { HasMany } from "../relations/has-many"
@@ -99,19 +99,20 @@ function defineHasOneRelationship(
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
   >,
-  hooks: EntityHooks
+  cascades: EntityCascades<string[]>
 ) {
+  const mappedBy =
+    relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
   const relatedModelName = upperCaseFirst(relatedEntity.name)
-  const shouldRemoveRelated = !!hooks.deleted?.remove.includes(
-    relationship.name
-  )
+  const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
   OneToOne({
     entity: relatedModelName,
     nullable: relationship.nullable,
-    mappedBy: relationship.mappedBy as any,
-    onDelete: shouldRemoveRelated ? "cascade" : undefined,
-    cascade: shouldRemoveRelated ? (["soft-remove"] as any) : undefined,
+    mappedBy: mappedBy,
+    cascade: shouldRemoveRelated
+      ? (["perist", "soft-remove"] as any)
+      : undefined,
   })(MikroORMEntity.prototype, relationship.name)
 }
 
@@ -123,7 +124,8 @@ function defineHasManyRelationship(
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
-  >
+  >,
+  cascades: EntityCascades<string[]>
 ) {
   const relatedModelName = upperCaseFirst(relatedEntity.name)
   OneToMany({
@@ -147,12 +149,24 @@ function defineBelongsToRelationship(
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
-  >
+  >,
+  cascades: EntityCascades<string[]>
 ) {
   const mappedBy =
     relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
-  const otherSideRelation = relatedEntity.schema[mappedBy]
+  const { schema: relationSchema, cascades: relationCascades } =
+    relatedEntity.parse()
+
+  const otherSideRelation = relationSchema[mappedBy]
   const relatedModelName = upperCaseFirst(relatedEntity.name)
+
+  /**
+   * In DML the relationships are cascaded from parent to child. A belongsTo
+   * relationship is always a child, therefore we look at the parent and
+   * define a onDelete: cascade when we are included in the delete
+   * list of parent cascade.
+   */
+  const shouldCascade = relationCascades.delete?.includes(mappedBy)
 
   /**
    * Ensure the mapped by is defined as relationship on the other side
@@ -186,12 +200,12 @@ function defineBelongsToRelationship(
    * Otherside is a has one. Hence we should defined a OneToOne
    */
   if (otherSideRelation instanceof HasOne) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     OneToOne({
       entity: relatedModelName,
       nullable: relationship.nullable,
       mappedBy: mappedBy,
       owner: true,
+      onDelete: shouldCascade ? "cascade" : undefined,
     })(MikroORMEntity.prototype, relationship.name)
     return
   }
@@ -212,7 +226,8 @@ function defineManyToManyRelationship(
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
-  >
+  >,
+  cascades: EntityCascades<string[]>
 ) {
   const relatedModelName = upperCaseFirst(relatedEntity.name)
   ManyToMany({
@@ -227,7 +242,7 @@ function defineManyToManyRelationship(
 function defineRelationship(
   MikroORMEntity: EntityConstructor<any>,
   relationship: RelationshipMetadata,
-  hooks: EntityHooks
+  cascades: EntityCascades<string[]>
 ) {
   /**
    * We expect the relationship.entity to be a function that
@@ -258,12 +273,6 @@ function defineRelationship(
   }
 
   /**
-   * Converting the related entity name (which should be in camelCase)
-   * to "PascalCase"
-   */
-  const relatedModelName = upperCaseFirst(relatedEntity.name)
-
-  /**
    * Defining relationships
    */
   switch (relationship.type) {
@@ -272,17 +281,32 @@ function defineRelationship(
         MikroORMEntity,
         relationship,
         relatedEntity,
-        hooks
+        cascades
       )
       break
     case "hasMany":
-      defineHasManyRelationship(MikroORMEntity, relationship, relatedEntity)
+      defineHasManyRelationship(
+        MikroORMEntity,
+        relationship,
+        relatedEntity,
+        cascades
+      )
       break
     case "belongsTo":
-      defineBelongsToRelationship(MikroORMEntity, relationship, relatedEntity)
+      defineBelongsToRelationship(
+        MikroORMEntity,
+        relationship,
+        relatedEntity,
+        cascades
+      )
       break
     case "manyToMany":
-      defineManyToManyRelationship(MikroORMEntity, relationship, relatedEntity)
+      defineManyToManyRelationship(
+        MikroORMEntity,
+        relationship,
+        relatedEntity,
+        cascades
+      )
       break
   }
 }
@@ -297,7 +321,7 @@ export function createMikrORMEntity<T extends DmlEntity<any>>(
   entity: T
 ): Infer<T> {
   class MikroORMEntity {}
-  const { name, schema, hooks } = entity.parse()
+  const { name, schema, cascades } = entity.parse()
 
   const className = upperCaseFirst(name)
   const tableName = pluralize(camelToSnakeCase(className))
@@ -320,7 +344,7 @@ export function createMikrORMEntity<T extends DmlEntity<any>>(
     if ("fieldName" in field) {
       defineProperty(MikroORMEntity, field)
     } else {
-      defineRelationship(MikroORMEntity, field, hooks)
+      defineRelationship(MikroORMEntity, field, cascades)
     }
   })
 

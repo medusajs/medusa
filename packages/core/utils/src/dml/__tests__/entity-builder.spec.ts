@@ -400,6 +400,7 @@ describe("Entity builder", () => {
           name: "email",
           entity: "Email",
           nullable: false,
+          mappedBy: "user",
         },
       })
     })
@@ -452,11 +453,64 @@ describe("Entity builder", () => {
           name: "emails",
           entity: "Email",
           nullable: true,
+          mappedBy: "user",
         },
       })
     })
 
-    test("define delete trigger using the onDelete hook", () => {
+    test("define custom mappedBy key for relationship", () => {
+      const model = new EntityBuilder()
+      const email = model.define("email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.hasOne(() => email, { mappedBy: "owner" }),
+      })
+
+      const User = createMikrORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: EntityConstructor<{ email: string; isVerified: boolean }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "1:1",
+          name: "email",
+          entity: "Email",
+          nullable: false,
+          mappedBy: "owner",
+        },
+      })
+    })
+
+    test("define delete cascades for the entity", () => {
       const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
@@ -469,8 +523,8 @@ describe("Entity builder", () => {
           username: model.text(),
           email: model.hasOne(() => email),
         })
-        .onDelete({
-          remove: ["email"],
+        .cascades({
+          delete: ["email"],
         })
 
       const User = createMikrORMEntity(user)
@@ -507,8 +561,132 @@ describe("Entity builder", () => {
           name: "email",
           entity: "Email",
           nullable: false,
-          cascade: ["soft-remove"],
+          mappedBy: "user",
+          cascade: ["perist", "soft-remove"],
+        },
+      })
+
+      const Email = createMikrORMEntity(email)
+      const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
+      expect(emailMetaData.className).toEqual("Email")
+      expect(emailMetaData.path).toEqual("Email")
+      expect(emailMetaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        isVerified: {
+          reference: "scalar",
+          type: "boolean",
+          columnType: "boolean",
+          name: "isVerified",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define delete cascades with belongsTo on the other end", () => {
+      const model = new EntityBuilder()
+      const email = model.define("email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+        user: model.belongsTo(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.hasOne(() => email),
+        })
+        .cascades({
+          delete: ["email"],
+        })
+
+      const User = createMikrORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          user: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "1:1",
+          name: "email",
+          entity: "Email",
+          nullable: false,
+          mappedBy: "user",
+          cascade: ["perist", "soft-remove"],
+        },
+      })
+
+      const Email = createMikrORMEntity(email)
+      const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
+      expect(emailMetaData.className).toEqual("Email")
+      expect(emailMetaData.path).toEqual("Email")
+      expect(emailMetaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        isVerified: {
+          reference: "scalar",
+          type: "boolean",
+          columnType: "boolean",
+          name: "isVerified",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        user: {
+          entity: "User",
+          mappedBy: "email",
+          name: "user",
+          nullable: false,
           onDelete: "cascade",
+          owner: true,
+          reference: "1:1",
         },
       })
     })
@@ -695,6 +873,7 @@ describe("Entity builder", () => {
           name: "email",
           entity: "Email",
           nullable: false,
+          mappedBy: "user",
         },
       })
 
@@ -802,6 +981,7 @@ describe("Entity builder", () => {
           name: "email",
           entity: "Email",
           nullable: false,
+          mappedBy: "user",
         },
       })
 

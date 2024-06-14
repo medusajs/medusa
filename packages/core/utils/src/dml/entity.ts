@@ -1,8 +1,8 @@
 import {
   SchemaType,
-  EntityHooks,
-  ExtractEntityRelations,
+  EntityCascades,
   RelationshipType,
+  ExtractEntityRelations,
 } from "./types"
 
 /**
@@ -12,7 +12,7 @@ import {
 export class DmlEntity<
   Schema extends Record<string, SchemaType<any> | RelationshipType<any>>
 > {
-  #hooks: EntityHooks = {}
+  #cascades: EntityCascades<ExtractEntityRelations<Schema>> = {}
   constructor(public name: string, public schema: Schema) {}
 
   /**
@@ -21,12 +21,12 @@ export class DmlEntity<
   parse(): {
     name: string
     schema: SchemaType<any> | RelationshipType<any>
-    hooks: EntityHooks
+    cascades: EntityCascades<string[]>
   } {
     return {
       name: this.name,
       schema: this.schema as unknown as SchemaType<any> | RelationshipType<any>,
-      hooks: this.#hooks,
+      cascades: this.#cascades as unknown as EntityCascades<string[]>,
     }
   }
 
@@ -36,15 +36,8 @@ export class DmlEntity<
    * You can configure relationship data to be deleted when the current
    * entity is deleted.
    */
-  onDelete(options: { remove: ExtractEntityRelations<Schema> }) {
-    if (!this.#hooks.deleted) {
-      this.#hooks.deleted = {
-        remove: options.remove,
-      }
-    } else {
-      this.#hooks.deleted.remove.push(...options.remove)
-    }
-
+  cascades(options: EntityCascades<ExtractEntityRelations<Schema>>) {
+    this.#cascades = options
     return this
   }
 }
