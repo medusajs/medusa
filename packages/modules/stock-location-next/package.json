@@ -9,7 +9,7 @@
     "directory": "packages/stock-location"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"

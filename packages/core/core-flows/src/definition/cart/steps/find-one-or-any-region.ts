@@ -24,7 +24,7 @@ export const findOneOrAnyRegionStep = createStep(
       }
     }
 
-    const [store] = await storeModule.list()
+    const [store] = await storeModule.listStores()
 
     if (!store) {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store not found")

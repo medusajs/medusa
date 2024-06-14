@@ -1,22 +1,18 @@
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 import { IStockLocationService } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IStockLocationService>({
   moduleName: Modules.STOCK_LOCATION,
-  resolve: "@medusajs/stock-location-next",
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IStockLocationService>) => {
+  testSuite: ({ service }) => {
     describe("Stock Location Module Service", () => {
       describe("create", () => {
         it("should create a stock location", async () => {
           const data = { name: "location" }
-          const location = await service.create(data)
+          const location = await service.createStockLocations(data)
 
           expect(location).toEqual(
             expect.objectContaining({ id: expect.any(String), ...data })
@@ -25,7 +21,7 @@ moduleIntegrationTestRunner({
 
         it("should create stock locations for arrray", async () => {
           const data = [{ name: "location" }, { name: "location-1" }]
-          const locations = await service.create(data)
+          const locations = await service.createStockLocations(data)
 
           expect(locations).toEqual([
             expect.objectContaining({ id: expect.any(String), ...data[0] }),
@@ -38,7 +34,7 @@ moduleIntegrationTestRunner({
             name: "location",
             address: { city: "city", address_1: "street", country_code: "US" },
           }
-          const location = await service.create(data)
+          const location = await service.createStockLocations(data)
 
           expect(location).toEqual(
             expect.objectContaining({
@@ -71,7 +67,7 @@ moduleIntegrationTestRunner({
               },
             },
           ]
-          const location = await service.create(data)
+          const location = await service.createStockLocations(data)
 
           expect(location).toEqual(
             expect.arrayContaining([
@@ -99,7 +95,9 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         let stockLocation
         beforeEach(async () => {
-          stockLocation = await service.create({ name: "location" })
+          stockLocation = await service.createStockLocations({
+            name: "location",
+          })
         })
 
         it("should update a stock location", async () => {
@@ -107,7 +105,7 @@ moduleIntegrationTestRunner({
             id: stockLocation.id,
             name: "updated location",
           }
-          const location = await service.upsert(data)
+          const location = await service.upsertStockLocations(data)
 
           expect(location).toEqual(expect.objectContaining(data))
         })
@@ -122,7 +120,7 @@ moduleIntegrationTestRunner({
             },
           }
 
-          const location = await service.upsert(data)
+          const location = await service.upsertStockLocations(data)
 
           expect(location).toEqual(
             expect.objectContaining({
@@ -135,7 +133,7 @@ moduleIntegrationTestRunner({
       describe("updateStockLocationAddress", () => {
         let stockLocation
         beforeEach(async () => {
-          stockLocation = await service.create({
+          stockLocation = await service.createStockLocations({
             name: "location",
             address: { city: "city", address_1: "street", country_code: "US" },
           })
@@ -148,7 +146,9 @@ moduleIntegrationTestRunner({
             address_1: "updated address_1",
             country_code: "updated country_code",
           }
-          const location = await service.updateStockLocationAddress(data)
+          const location = await (service as any).updateStockLocationAddresses(
+            data
+          )
 
           expect(location).toEqual(expect.objectContaining(data))
         })
