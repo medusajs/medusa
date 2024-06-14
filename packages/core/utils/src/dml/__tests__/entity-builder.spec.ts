@@ -1464,7 +1464,7 @@ describe("Entity builder", () => {
           })
 
       expect(defineEmail).toThrow(
-        'Cannot cascade delete "user" relationship from "email" entity. Child to parent cascades are not allowed'
+        'Cannot cascade delete "user" relationship(s) from "email" entity. Child to parent cascades are not allowed'
       )
     })
   })

@@ -42,13 +42,19 @@ export class DmlEntity<
       ExtractEntityRelations<Schema, "hasOne" | "hasMany">
     >
   ) {
-    options.delete?.forEach((relationship) => {
-      if (this.schema[relationship] instanceof BelongsTo) {
-        throw new Error(
-          `Cannot cascade delete "${relationship}" relationship from "${this.name}" entity. Child to parent cascades are not allowed`
-        )
-      }
+    const childToParentCascades = options.delete?.filter((relationship) => {
+      return this.schema[relationship] instanceof BelongsTo
     })
+
+    if (childToParentCascades?.length) {
+      throw new Error(
+        `Cannot cascade delete "${childToParentCascades.join(
+          ", "
+        )}" relationship(s) from "${
+          this.name
+        }" entity. Child to parent cascades are not allowed`
+      )
+    }
 
     this.#cascades = options
     return this

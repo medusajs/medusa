@@ -337,8 +337,8 @@ export function createMikrORMEntity<T extends DmlEntity<any>>(
   /**
    * Processing schema fields
    */
-  Object.keys(schema).forEach((property) => {
-    const field = schema[property].parse(property)
+  Object.entries(schema).forEach(([name, property]) => {
+    const field = property.parse(name)
     if ("fieldName" in field) {
       defineProperty(MikroORMEntity, field)
     } else {
