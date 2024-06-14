@@ -6,7 +6,6 @@ import {
   IOrderModuleService,
   IPaymentModuleService,
   IPricingModuleService,
-  IProductModuleService,
   IRegionModuleService,
   ITaxModuleService,
 } from "@medusajs/types"
@@ -27,7 +26,6 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
-    let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
     let inventoryModule: IInventoryService
@@ -40,7 +38,6 @@ medusaIntegrationTestRunner({
       appContainer = getContainer()
       cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
       paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)

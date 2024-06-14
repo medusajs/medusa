@@ -89,7 +89,7 @@ async function prepareDataFixtures({ container }) {
       },
     })
 
-  const [product] = await productModule.create([
+  const [product] = await productModule.createProducts([
     {
       title: "Test product",
       variants: [

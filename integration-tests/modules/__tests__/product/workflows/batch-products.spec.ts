@@ -35,8 +35,8 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const product1 = await service.create({ title: "test1" })
-            const product2 = await service.create({ title: "test2" })
+            const product1 = await service.createProducts({ title: "test1" })
+            const product2 = await service.createProducts({ title: "test2" })
 
             const { errors } = await workflow.run({
               input: {
