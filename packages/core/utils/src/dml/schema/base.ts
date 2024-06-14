@@ -1,5 +1,5 @@
 import { SchemaMetadata, SchemaType } from "../types"
-import { NullableModifier } from "../modifiers/nullable"
+import { NullableModifier } from "./nullable"
 
 /**
  * The base schema class offers shared affordances to define

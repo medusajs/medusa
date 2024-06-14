@@ -5,12 +5,7 @@ module.exports = {
       isolatedModules: false,
     },
   },
-  transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
-  },
+  transform: { "^.+\\.[jt]s$": ["@swc/jest"] },
   testEnvironment: `node`,
-  moduleNameMapper: {
-    "^axios$": "axios/dist/node/axios.cjs",
-  },
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
 }

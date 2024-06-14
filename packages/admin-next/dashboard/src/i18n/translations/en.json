@@ -1267,7 +1267,11 @@
       "pricesHeader": "Prices"
     },
     "fields": {
+      "statusTooltip": "Status can also be expired or scheduled depending on the start and end date.",
       "typeHint": "Choose the type of price you want to create.",
+      "statusHint": "Choose if price should be published to users",
+      "draftTypeHint": "Prices will not be visible to users in a draft state",
+      "activeTypeHint": "Prices are visibile to users in an active state",
       "saleTypeHint": "Sale prices are temporary price changes for products.",
       "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
       "startDateLabel": "Price list has a start date?",

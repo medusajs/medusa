@@ -1,4 +1,4 @@
-import logger, { Reporter } from "../"
+import { Reporter } from "../"
 
 describe(`Reporter`, () => {
   const winstonMock = {
@@ -10,10 +10,10 @@ describe(`Reporter`, () => {
     activityLogger: {},
   })
 
-  const getErrorMessages = fn =>
+  const getErrorMessages = (fn) =>
     fn.mock.calls
       .map(([firstArg]) => firstArg)
-      .filter(structuredMessage => structuredMessage.level === `error`)
+      .filter((structuredMessage) => structuredMessage.level === `error`)
 
   beforeEach(() => {
     winstonMock.log.mockClear()
