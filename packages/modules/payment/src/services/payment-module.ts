@@ -8,7 +8,9 @@ import {
   CreateRefundDTO,
   DAL,
   FilterablePaymentCollectionProps,
+  FilterablePaymentProps,
   FilterablePaymentProviderProps,
+  FilterablePaymentSessionProps,
   FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
@@ -24,7 +26,7 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
-  UpserPaymentCollectionDTO,
+  UpsertPaymentCollectionDTO,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -62,8 +64,6 @@ type InjectedDependencies = {
 
 const generateMethodForModels = {
   PaymentCollection,
-  Payment,
-  PaymentSession,
   Capture,
   Refund,
 }
@@ -71,8 +71,6 @@ const generateMethodForModels = {
 export default class PaymentModuleService
   extends ModulesSdkUtils.MedusaService<{
     PaymentCollection: { dto: PaymentCollectionDTO }
-    Payment: { dto: PaymentDTO }
-    PaymentSession: { dto: PaymentSessionDTO }
     Capture: { dto: CaptureDTO }
     Refund: { dto: RefundDTO }
   }>(generateMethodForModels, entityNameToLinkableKeysMap)
@@ -146,7 +144,7 @@ export default class PaymentModuleService
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createPaymentCollections_(
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -215,18 +213,18 @@ export default class PaymentModuleService
     return await this.paymentCollectionService_.update(data, sharedContext)
   }
 
-  upserPaymentCollections(
-    data: UpserPaymentCollectionDTO[],
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  upserPaymentCollections(
-    data: UpserPaymentCollectionDTO,
+  upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
   @InjectManager("baseRepository_")
-  async upserPaymentCollections(
-    data: UpserPaymentCollectionDTO | UpserPaymentCollectionDTO[],
+  async upsertPaymentCollections(
+    data: UpsertPaymentCollectionDTO | UpsertPaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
@@ -516,6 +514,66 @@ export default class PaymentModuleService
     }
 
     return payment
+  }
+
+  @InjectManager("baseRepository_")
+  async retrievePaymentSession(
+    id: string,
+    config: FindConfig<PaymentSessionDTO> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSessionDTO> {
+    const session = await this.paymentSessionService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(session)
+  }
+
+  @InjectManager("baseRepository_")
+  async listPaymentSessions(
+    filters?: FilterablePaymentSessionProps,
+    config?: FindConfig<PaymentSessionDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO[]> {
+    const sessions = await this.paymentSessionService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentSessionDTO[]>(sessions)
+  }
+
+  @InjectManager("baseRepository_")
+  async retrievePayment(
+    id: string,
+    config?: FindConfig<PaymentDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO> {
+    const payment = await this.paymentService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentDTO>(payment)
+  }
+
+  @InjectManager("baseRepository_")
+  async listPayments(
+    filters?: FilterablePaymentProps,
+    config?: FindConfig<PaymentDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentDTO[]> {
+    const payments = await this.paymentService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentDTO[]>(payments)
   }
 
   @InjectManager("baseRepository_")
@@ -811,9 +869,9 @@ export default class PaymentModuleService
 
     switch (event.action) {
       case PaymentActions.SUCCESSFUL: {
-        const [payment] = await this.lisPayments(
+        const [payment] = await this.listPayments(
           {
-            session_id: event.data.resource_id,
+            id: event.data.resource_id,
           },
           {},
           sharedContext
@@ -835,7 +893,7 @@ export default class PaymentModuleService
   }
 
   @InjectManager("baseRepository_")
-  async lisPaymentProviders(
+  async listPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
     @MedusaContext() sharedContext?: Context
@@ -855,7 +913,7 @@ export default class PaymentModuleService
   }
 
   @InjectManager("baseRepository_")
-  async listAndCounPaymentProviders(
+  async listAndCountPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
     @MedusaContext() sharedContext?: Context
