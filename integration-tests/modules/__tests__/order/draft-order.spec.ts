@@ -79,7 +79,7 @@ medusaIntegrationTestRunner({
           currency_code: "usd",
         })
 
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 
