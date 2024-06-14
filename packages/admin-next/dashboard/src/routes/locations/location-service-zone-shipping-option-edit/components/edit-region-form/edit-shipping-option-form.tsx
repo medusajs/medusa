@@ -79,9 +79,10 @@ export const EditShippingOptionForm = ({
   const handleSubmit = form.handleSubmit(async (values) => {
     const rules = shippingOption.rules.map((r) => ({
       ...pick(r, ["id", "attribute", "operator", "value"]),
-    }))
+    })) as HttpTypes.AdminUpdateShippingOptionRule[]
 
     const storeRule = rules.find((r) => r.attribute === "enabled_in_store")
+
     if (!storeRule) {
       // NOTE: should always exist since we always create this rule when we create a shipping option
       rules.push({
@@ -102,9 +103,11 @@ export const EditShippingOptionForm = ({
         rules,
       },
       {
-        onSuccess: () => {
+        onSuccess: ({ shipping_option }) => {
           toast.success(t("general.success"), {
-            description: t("stockLocations.shippingOptions.edit.successToast"),
+            description: t("stockLocations.shippingOptions.edit.successToast", {
+              name: shipping_option.name,
+            }),
             dismissable: true,
             dismissLabel: t("actions.close"),
           })
