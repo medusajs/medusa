@@ -50,7 +50,7 @@ medusaIntegrationTestRunner({
           email: "tony@stark.com",
         })
 
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 

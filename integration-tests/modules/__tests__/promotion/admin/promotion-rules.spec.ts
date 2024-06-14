@@ -787,7 +787,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const salesChannel = await salesChannelService.create({
+          const salesChannel = await salesChannelService.createSalesChannels({
             name: "Instagram",
           })
 
