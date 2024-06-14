@@ -222,7 +222,7 @@ export const useProduct = (
 }
 
 export const useProducts = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminProductListParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminProductListResponse,
