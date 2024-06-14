@@ -309,7 +309,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          await storeService.update(store.id, {
+          await storeService.updateStores(store.id, {
             default_sales_channel_id: sc.id,
           })
 

@@ -23,7 +23,7 @@ export const joinerConfig: ModuleJoinerConfig = {
   alias: [
     {
       name: ["store", "stores"],
-      args: { entity: Store.name },
+      args: { entity: Store.name, methodSuffix: "Stores" },
     },
   ],
 } as ModuleJoinerConfig

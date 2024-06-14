@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateStoreDTO, IStoreModuleService, StoreDTO } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import { createStoresWorkflow } from "../../store"
 
 type CreateDefaultStoreStepInput = {
@@ -14,7 +14,7 @@ export const createDefaultStoreStep = createStep(
     const storeService = container.resolve(ModuleRegistrationName.STORE)
 
     let shouldDelete = false
-    let [store] = await storeService.list({}, { take: 1 })
+    let [store] = await storeService.listStores({}, { take: 1 })
 
     /**
      * @todo
