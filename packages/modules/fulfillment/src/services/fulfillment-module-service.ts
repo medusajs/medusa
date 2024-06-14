@@ -247,18 +247,19 @@ export default class FulfillmentModuleService
     ]
   }
 
-  createFulfillmentSet(
+  // @ts-expect-error
+  createFulfillmentSets(
     data: FulfillmentTypes.CreateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO[]>
-  createFulfillmentSet(
+  createFulfillmentSets(
     data: FulfillmentTypes.CreateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
   @EmitEvents()
-  async createFulfillmentSet(
+  async createFulfillmentSets(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
       | FulfillmentTypes.CreateFulfillmentSetDTO[],
@@ -266,7 +267,7 @@ export default class FulfillmentModuleService
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO | FulfillmentTypes.FulfillmentSetDTO[]
   > {
-    const createdFulfillmentSets = await this.createFulfillmentSet_(
+    const createdFulfillmentSets = await this.createFulfillmentSets_(
       data,
       sharedContext
     )
@@ -281,7 +282,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async createFulfillmentSet_(
+  protected async createFulfillmentSets_(
     data:
       | FulfillmentTypes.CreateFulfillmentSetDTO
       | FulfillmentTypes.CreateFulfillmentSetDTO[],
@@ -690,24 +691,25 @@ export default class FulfillmentModuleService
     )
   }
 
-  updateFulfillmentSet(
+  // @ts-expect-error
+  updateFulfillmentSets(
     data: FulfillmentTypes.UpdateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO[]>
-  updateFulfillmentSet(
+  updateFulfillmentSets(
     data: FulfillmentTypes.UpdateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentTypes.FulfillmentSetDTO>
 
   @InjectManager("baseRepository_")
   @EmitEvents()
-  async updateFulfillmentSet(
+  async updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<
     FulfillmentTypes.FulfillmentSetDTO[] | FulfillmentTypes.FulfillmentSetDTO
   > {
-    const updatedFulfillmentSets = await this.updateFulfillmentSet_(
+    const updatedFulfillmentSets = await this.updateFulfillmentSets_(
       data,
       sharedContext
     )
@@ -718,7 +720,7 @@ export default class FulfillmentModuleService
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async updateFulfillmentSet_(
+  protected async updateFulfillmentSets_(
     data: UpdateFulfillmentSetDTO[] | UpdateFulfillmentSetDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<FulfillmentSet[] | FulfillmentSet> {

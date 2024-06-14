@@ -9,6 +9,7 @@ export const moduleDefinition: ModuleExports = {
   service,
   loaders,
 }
+export default moduleDefinition
 
 // Module options types
 export { FulfillmentModuleOptions } from "./types"
