@@ -771,7 +771,8 @@
     },
     "edit": {
       "header": "Edit Stock Location",
-      "viewInventory": "View inventory"
+      "viewInventory": "View inventory",
+      "successToast": "Location {{name}} was successfully updated."
     },
     "delete": {
       "confirmation": "You are about to delete the stock location {{name}}. This action cannot be undone."
@@ -827,7 +828,8 @@
       },
       "edit": {
         "header": "Edit Shipping Option",
-        "action": "Edit option"
+        "action": "Edit option",
+        "successToast": "Shipping option {{name}} was successfully updated."
       },
       "pricing": {
         "action": "Edit prices"

@@ -104,6 +104,8 @@ export const EditShippingOptionForm = ({
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
+            description: t("stockLocations.shippingOptions.edit.successToast"),
+            dismissable: true,
             dismissLabel: t("actions.close"),
           })
           handleSuccess(`/settings/locations/${locationId}`)
@@ -111,6 +113,7 @@ export const EditShippingOptionForm = ({
         onError: (e) => {
           toast.error(t("general.error"), {
             description: e.message,
+            dismissable: true,
             dismissLabel: t("actions.close"),
           })
         },
@@ -131,26 +134,30 @@ export const EditShippingOptionForm = ({
                   return (
                     <Form.Item>
                       <Form.Label>
-                        {t("location.shippingOptions.create.allocation")}
+                        {t(
+                          "stockLocations.shippingOptions.fields.priceType.label"
+                        )}
                       </Form.Label>
                       <Form.Control>
                         <RadioGroup {...field} onValueChange={field.onChange}>
                           <RadioGroup.ChoiceBox
                             className="flex-1"
                             value={ShippingOptionPriceType.FlatRate}
-                            label={t("location.shippingOptions.create.fixed")}
+                            label={t(
+                              "stockLocations.shippingOptions.fields.priceType.options.fixed.label"
+                            )}
                             description={t(
-                              "location.shippingOptions.create.fixedDescription"
+                              "stockLocations.shippingOptions.fields.priceType.options.fixed.hint"
                             )}
                           />
                           <RadioGroup.ChoiceBox
                             className="flex-1"
                             value={ShippingOptionPriceType.Calculated}
                             label={t(
-                              "location.shippingOptions.create.calculated"
+                              "stockLocations.shippingOptions.fields.priceType.options.calculated.label"
                             )}
                             description={t(
-                              "location.shippingOptions.create.calculatedDescription"
+                              "stockLocations.shippingOptions.fields.priceType.options.calculated.hint"
                             )}
                           />
                         </RadioGroup>
@@ -185,7 +192,7 @@ export const EditShippingOptionForm = ({
                     return (
                       <Form.Item>
                         <Form.Label>
-                          {t("location.shippingOptions.create.profile")}
+                          {t("stockLocations.shippingOptions.fields.profile")}
                         </Form.Label>
                         <Form.Control>
                           <Combobox
@@ -210,7 +217,7 @@ export const EditShippingOptionForm = ({
                     return (
                       <Form.Item>
                         <Form.Label>
-                          {t("location.shippingOptions.edit.provider")}
+                          {t("stockLocations.shippingOptions.fields.provider")}
                         </Form.Label>
                         <Form.Control>
                           <Combobox
@@ -235,9 +242,11 @@ export const EditShippingOptionForm = ({
               <SwitchBox
                 control={form.control}
                 name="enabled_in_store"
-                label={t("location.shippingOptions.create.enable")}
+                label={t(
+                  "stockLocations.shippingOptions.fields.enableInStore.label"
+                )}
                 description={t(
-                  "location.shippingOptions.create.enableDescription"
+                  "stockLocations.shippingOptions.fields.enableInStore.hint"
                 )}
               />
             </div>

@@ -563,7 +563,7 @@ function FulfillmentSet(props: FulfillmentSetProps) {
             {t(`stockLocations.fulfillmentSets.${type}.header`)}
           </Heading>
           <div className="flex items-center gap-4">
-            <StatusBadge color={fulfillmentSetExists ? "green" : "red"}>
+            <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
               {t(
                 fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled"
               )}

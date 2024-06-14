@@ -33,6 +33,9 @@ export const useDeleteFulfillmentSet = (
     mutationFn: () => sdk.admin.fulfillmentSet.delete(id),
     onSuccess: async (data, variables, context) => {
       await queryClient.invalidateQueries({
+        queryKey: fulfillmentSetsQueryKeys.detail(id),
+      })
+      await queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),
       })
 

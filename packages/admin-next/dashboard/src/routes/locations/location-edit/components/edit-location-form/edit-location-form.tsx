@@ -65,7 +65,8 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
       {
         onSuccess: () => {
           toast.success(t("general.success"), {
-            description: t("locations.toast.update"),
+            description: t("stockLocations.edit.successToast"),
+            dismissable: true,
             dismissLabel: t("actions.close"),
           })
           handleSuccess()
