@@ -12,14 +12,13 @@ export type KnownDataTypes =
   | "json"
 
 /**
- * The available on Delete actions
+ * List of available relationships at DML level
  */
-export type OnDeleteActions =
-  | "cascade"
-  | "no action"
-  | "set null"
-  | "set default"
-  | (string & {})
+export type RelationshipTypes =
+  | "hasOne"
+  | "hasMany"
+  | "belongsTo"
+  | "manyToMany"
 
 /**
  * Any field that contains "nullable" and "optional" properties
@@ -72,7 +71,7 @@ export type RelationshipOptions = {
  */
 export type RelationshipMetadata = MaybeFieldMetadata & {
   name: string
-  type: "hasOne" | "hasMany" | "belongsTo" | "manyToMany"
+  type: RelationshipTypes
   entity: unknown
   mappedBy?: string
 }
@@ -84,6 +83,7 @@ export type RelationshipMetadata = MaybeFieldMetadata & {
  */
 export type RelationshipType<T> = {
   $dataType: T
+  type: RelationshipTypes
   parse(relationshipName: string): RelationshipMetadata
 }
 
@@ -108,3 +108,25 @@ export type Infer<T> = T extends DmlEntity<infer Schema>
         : Schema[K]["$dataType"]
     }>
   : never
+
+/**
+ * Extracts names of relationships from a schema
+ */
+export type ExtractEntityRelations<
+  Schema extends Record<string, any>,
+  OfType extends RelationshipTypes
+> = {
+  [K in keyof Schema & string]: Schema[K] extends RelationshipType<any>
+    ? Schema[K] extends { type: OfType }
+      ? K
+      : never
+    : never
+}[keyof Schema & string][]
+
+/**
+ * The actions to cascade from a given entity to its
+ * relationship.
+ */
+export type EntityCascades<Relationships> = {
+  delete?: Relationships
+}

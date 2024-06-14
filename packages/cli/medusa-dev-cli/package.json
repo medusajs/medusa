@@ -25,9 +25,10 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
+    "@swc/core": "^1.5.29",
+    "@swc/jest": "^0.2.36",
     "cross-env": "^7.0.3",
-    "jest": "^25.5.4",
-    "ts-jest": "^25.5.1",
+    "jest": "^29.7.0",
     "typescript": "^4.4.4"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",

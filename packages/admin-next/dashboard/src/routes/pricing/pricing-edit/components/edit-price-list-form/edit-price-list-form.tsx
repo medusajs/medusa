@@ -10,13 +10,14 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdatePriceList } from "../../../../../hooks/api/price-lists"
-import { PriceListType } from "../../../common/constants"
+import { PriceListStatus, PriceListType } from "../../../common/constants"
 
 type EditPriceListFormProps = {
   priceList: PriceListDTO
 }
 
 const EditPriceListFormSchema = z.object({
+  status: z.nativeEnum(PriceListStatus),
   type: z.nativeEnum(PriceListType),
   title: z.string().min(1),
   description: z.string().min(1),
@@ -28,9 +29,10 @@ export const EditPriceListForm = ({ priceList }: EditPriceListFormProps) => {
 
   const form = useForm<z.infer<typeof EditPriceListFormSchema>>({
     defaultValues: {
-      type: priceList.type,
+      type: priceList.type as PriceListType,
       title: priceList.title,
       description: priceList.description,
+      status: priceList.status as PriceListStatus,
     },
     resolver: zodResolver(EditPriceListFormSchema),
   })
@@ -52,6 +54,39 @@ export const EditPriceListForm = ({ priceList }: EditPriceListFormProps) => {
         onSubmit={handleSubmit}
       >
         <RouteDrawer.Body className="flex flex-1 flex-col gap-y-8 overflow-auto">
+          <Form.Field
+            control={form.control}
+            name="status"
+            render={({ field: { onChange, ...field } }) => {
+              return (
+                <Form.Item>
+                  <div>
+                    <Form.Label tooltip={t("pricing.fields.statusTooltip")}>
+                      {t("fields.status")}
+                    </Form.Label>
+                    <Form.Hint>{t("pricing.fields.statusHint")}</Form.Hint>
+                  </div>
+
+                  <Form.Control>
+                    <RadioGroup {...field} onValueChange={onChange}>
+                      <RadioGroup.ChoiceBox
+                        value={PriceListStatus.DRAFT}
+                        label={t("pricing.status.draft")}
+                        description={t("pricing.fields.draftTypeHint")}
+                      />
+
+                      <RadioGroup.ChoiceBox
+                        value={PriceListStatus.ACTIVE}
+                        label={t("pricing.status.active")}
+                        description={t("pricing.fields.activeTypeHint")}
+                      />
+                    </RadioGroup>
+                  </Form.Control>
+                </Form.Item>
+              )
+            }}
+          />
+
           <Form.Field
             control={form.control}
             name="type"

@@ -39,6 +39,10 @@ export interface PriceListDTO {
    */
   title?: string
   /**
+   * The price list's description.
+   */
+  description?: string
+  /**
    * The price list is enabled starting from this date.
    */
   starts_at?: string | null
@@ -46,6 +50,10 @@ export interface PriceListDTO {
    * The price list's status.
    */
   status?: PriceListStatus
+  /**
+   * The price list's type.
+   */
+  type?: PriceListType
   /**
    * The price list expires after this date.
    */

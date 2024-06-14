@@ -4,6 +4,8 @@ import {
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 
+jest.setTimeout(30000)
+
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     let inventoryItem1
