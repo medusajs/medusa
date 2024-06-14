@@ -1,9 +1,8 @@
 import { readFileSync, writeFileSync } from "fs"
 import { OpenAPIV3 } from "openapi-types"
 import { basename, join } from "path"
-import pluralize from "pluralize"
 import ts, { SyntaxKind } from "typescript"
-import { capitalize, kebabToTitle, wordsToKebab } from "utils"
+import { capitalize, kebabToTitle } from "utils"
 import { parse, stringify } from "yaml"
 import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
 import {
@@ -228,11 +227,12 @@ class OasKindGenerator extends FunctionKindGenerator {
     const { isAdminAuthenticated, isStoreAuthenticated, isAuthenticated } =
       this.getAuthenticationDetails(node, oasPath)
     const tagName = this.getTagName(splitOasPath)
-    const { summary, description } = this.getSummaryAndDescription({
-      oasPath,
-      httpMethod: methodName,
-      tag: tagName || "",
-    })
+    const { summary, description } =
+      this.knowledgeBaseFactory.tryToGetOasMethodSummaryAndDescription({
+        oasPath,
+        httpMethod: methodName,
+        tag: tagName || "",
+      })
 
     // construct oas
     const oas: OpenApiOperation = {
@@ -409,11 +409,12 @@ class OasKindGenerator extends FunctionKindGenerator {
     const shouldUpdateDescription =
       !oas.description || oas.description === this.defaultSummary
     if (shouldUpdateSummary || shouldUpdateDescription) {
-      const { summary, description } = this.getSummaryAndDescription({
-        oasPath,
-        httpMethod: methodName,
-        tag: tagName || "",
-      })
+      const { summary, description } =
+        this.knowledgeBaseFactory.tryToGetOasMethodSummaryAndDescription({
+          oasPath,
+          httpMethod: methodName,
+          tag: tagName || "",
+        })
 
       if (shouldUpdateSummary) {
         oas.summary = summary
@@ -773,126 +774,6 @@ class OasKindGenerator extends FunctionKindGenerator {
     })
 
     return str
-  }
-
-  /**
-   * Retrieve the summary and description of the OAS.
-   *
-   * @param param0 - The OAS operation's details.
-   * @returns The summary and description.
-   */
-  getSummaryAndDescription({
-    oasPath,
-    httpMethod,
-    tag,
-  }: {
-    /**
-     * The OAS path.
-     */
-    oasPath: string
-    /**
-     * The HTTP method name.
-     */
-    httpMethod: string
-    /**
-     * The OAS tag name.
-     */
-    tag: string
-  }): {
-    /**
-     * The OAS's summary
-     */
-    summary: string
-    /**
-     * The OAS's description.
-     */
-    description: string
-  } {
-    // reset regex manually
-    API_ROUTE_PARAM_REGEX.lastIndex = 0
-    const result = {
-      summary: this.defaultSummary,
-      description: this.defaultSummary,
-    }
-    // retrieve different variations of the tag to include in the summary/description
-    const lowerTag = tag.toLowerCase()
-    const singularLowerTag = pluralize.singular(lowerTag)
-    const singularTag = pluralize.singular(tag)
-
-    // check if the OAS operation is performed on a single entity or
-    // general entities. If the operation has a path parameter, then it's
-    // considered for a single entity.
-    const isForSingleEntity = API_ROUTE_PARAM_REGEX.test(oasPath)
-
-    if (isForSingleEntity) {
-      // Check whether the OAS operation is applied on a different entity.
-      // If the OAS path ends with /batch or a different entity
-      // name than the tag name, then it's performed on an entity other than the
-      // main entity (the one indicated by the tag), so the summary/description vary
-      // slightly.
-      const splitOasPath = oasPath
-        .replaceAll(API_ROUTE_PARAM_REGEX, "")
-        .replace(/\/(batch)*$/, "")
-        .split("/")
-      const isBulk = oasPath.endsWith("/batch")
-      const isOperationOnDifferentEntity =
-        wordsToKebab(tag) !== splitOasPath[splitOasPath.length - 1]
-
-      if (isBulk || isOperationOnDifferentEntity) {
-        // if the operation is a bulk operation and it ends with a path parameter (after removing the `/batch` part)
-        // then the tag name is the targeted entity. Else, it's the last part of the OAS path (after removing the `/batch` part).
-        const endingEntityName =
-          isBulk &&
-          API_ROUTE_PARAM_REGEX.test(splitOasPath[splitOasPath.length - 1])
-            ? tag
-            : kebabToTitle(splitOasPath[splitOasPath.length - 1])
-        // retrieve different formatted versions of the entity name for the summary/description
-        const pluralEndingEntityName = pluralize.plural(endingEntityName)
-        const lowerEndingEntityName = pluralEndingEntityName.toLowerCase()
-        const singularLowerEndingEntityName =
-          pluralize.singular(endingEntityName)
-
-        // set the summary/description based on the HTTP method
-        if (httpMethod === "get") {
-          result.summary = `List ${pluralEndingEntityName}`
-          result.description = `Retrieve a list of ${lowerEndingEntityName} in a ${singularLowerTag}. The ${lowerEndingEntityName} can be filtered by fields like FILTER FIELDS. The ${lowerEndingEntityName} can also be paginated.`
-        } else if (httpMethod === "post") {
-          result.summary = `Add ${pluralEndingEntityName} to ${singularTag}`
-          result.description = `Add a list of ${lowerEndingEntityName} to a ${singularLowerTag}.`
-        } else {
-          result.summary = `Remove ${pluralEndingEntityName} from ${singularTag}`
-          result.description = `Remove a list of ${lowerEndingEntityName} from a ${singularLowerTag}. This doesn't delete the ${singularLowerEndingEntityName}, only the association between the ${singularLowerEndingEntityName} and the ${singularLowerTag}.`
-        }
-      } else {
-        // the OAS operation is applied on a single entity that is the main entity (denoted by the tag).
-        // retrieve the summary/description based on the HTTP method.
-        if (httpMethod === "get") {
-          result.summary = `Get a ${singularTag}`
-          result.description = `Retrieve a ${singularLowerTag} by its ID. You can expand the ${singularLowerTag}'s relations or select the fields that should be returned.`
-        } else if (httpMethod === "post") {
-          result.summary = `Update a ${singularTag}`
-          result.description = `Update a ${singularLowerTag}'s details.`
-        } else {
-          result.summary = `Delete a ${singularTag}`
-          result.description = `Delete a ${singularLowerTag}.`
-        }
-      }
-    } else {
-      // the OAS operation is applied on all entities of the tag in general.
-      // retrieve the summary/description based on the HTTP method.
-      if (httpMethod === "get") {
-        result.summary = `List ${tag}`
-        result.description = `Retrieve a list of ${lowerTag}. The ${lowerTag} can be filtered by fields such as \`id\`. The ${lowerTag} can also be sorted or paginated.`
-      } else if (httpMethod === "post") {
-        result.summary = `Create ${singularTag}`
-        result.description = `Create a ${singularLowerTag}.`
-      } else {
-        result.summary = `Delete ${tag}`
-        result.description = `Delete ${tag}`
-      }
-    }
-
-    return result
   }
 
   /**
@@ -1565,7 +1446,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       // either retrieve the description from the knowledge base or use
       // the default summary
       return (
-        this.knowledgeBaseFactory.tryToGetOasDescription({
+        this.knowledgeBaseFactory.tryToGetOasSchemaDescription({
           str: typeStr,
           templateOptions: {
             parentName,
