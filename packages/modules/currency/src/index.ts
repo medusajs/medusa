@@ -1,7 +1,11 @@
-import { moduleDefinition } from "./module-definition"
+import { CurrencyModuleService } from "@services"
+import initialDataLoader from "./loaders/initial-data"
+import { ModuleExports } from "@medusajs/types"
 
-export * from "./types"
-export * from "./models"
-export * from "./services"
+const service = CurrencyModuleService
+const loaders = [initialDataLoader]
 
-export default moduleDefinition
+export const moduleDefinition: ModuleExports = {
+  service,
+  loaders,
+}
