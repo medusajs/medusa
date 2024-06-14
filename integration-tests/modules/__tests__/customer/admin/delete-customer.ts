@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete a customer", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
@@ -41,7 +41,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const deletedCustomer = await customerModuleService.retrieve(
+        const deletedCustomer = await customerModuleService.retrieveCustomer(
           customer.id,
           {
             withDeleted: true,

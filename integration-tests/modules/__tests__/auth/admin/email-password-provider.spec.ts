@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@medusajs/types"
 import Scrypt from "scrypt-kdf"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -16,13 +16,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /auth/emailpass", () => {
       let appContainer
-      let customerModuleService: ICustomerModuleService
-
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
       })
 
       beforeEach(async () => {

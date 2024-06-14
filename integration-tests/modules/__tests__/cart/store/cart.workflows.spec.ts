@@ -500,7 +500,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const customers = await customerModule.list({
+            const customers = await customerModule.listCustomers({
               email: "tony@stark-industries.com",
             })
 
@@ -517,7 +517,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const customer = await customerModule.create({
+            const customer = await customerModule.createCustomers({
               email: "tony@stark-industries.com",
             })
 
@@ -539,7 +539,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const customers = await customerModule.list({
+            const customers = await customerModule.listCustomers({
               email: "tony@stark-industries.com",
             })
 

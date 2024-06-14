@@ -43,7 +43,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        customerGroup = await customerModule.createCustomerGroup({
+        customerGroup = await customerModule.createCustomerGroups({
           name: "VIP",
         })
         region = await regionModule.createRegions({

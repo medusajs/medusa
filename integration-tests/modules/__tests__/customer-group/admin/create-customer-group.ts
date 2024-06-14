@@ -1,5 +1,3 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
@@ -15,13 +13,9 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /admin/customer-groups", () => {
       let appContainer
-      let customerModuleService: ICustomerModuleService
 
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
       })
 
       beforeEach(async () => {

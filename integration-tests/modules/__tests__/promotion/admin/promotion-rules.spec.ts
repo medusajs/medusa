@@ -770,7 +770,7 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          const group = await customerService.createCustomerGroup({
+          const group = await customerService.createCustomerGroups({
             name: "VIP",
           })
 
