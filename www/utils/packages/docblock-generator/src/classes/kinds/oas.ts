@@ -18,7 +18,7 @@ import isZodObject from "../../utils/is-zod-object.js"
 import parseOas, { ExistingOas } from "../../utils/parse-oas.js"
 import OasExamplesGenerator from "../examples/oas.js"
 import { GeneratorEvent } from "../helpers/generator-event-manager.js"
-import OasSchemaHelper, { ParsedSchema } from "../helpers/oas-schema.js"
+import OasSchemaHelper from "../helpers/oas-schema.js"
 import SchemaFactory from "../helpers/schema-factory.js"
 import { GeneratorOptions, GetDocBlockOptions } from "./default.js"
 import FunctionKindGenerator, {
@@ -1971,15 +1971,8 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     this.tags.get(area)?.forEach((tag) => {
       const existingTag = areaYaml.tags!.find((baseTag) => baseTag.name === tag)
-      // try to retrieve associated schema
-      let schema: ParsedSchema | undefined
-      this.oasSchemaHelper.tagNameToSchemaName(tag, area).some((schemaName) => {
-        schema = this.oasSchemaHelper.getSchemaByName(schemaName)
-
-        if (schema) {
-          return true
-        }
-      })
+      const schemaName = this.oasSchemaHelper.tagNameToSchemaName(tag, area)
+      const schema = this.oasSchemaHelper.getSchemaByName(schemaName, false)
       const associatedSchema = schema?.schema?.["x-schemaName"]
         ? {
             $ref: this.oasSchemaHelper.constructSchemaReference(
