@@ -1,5 +1,10 @@
 import ts from "typescript"
-import { DOCBLOCK_DOUBLE_LINES, DOCBLOCK_NEW_LINE } from "../../constants.js"
+import {
+  API_ROUTE_PARAM_REGEX,
+  DOCBLOCK_DOUBLE_LINES,
+  DOCBLOCK_NEW_LINE,
+  SUMMARY_PLACEHOLDER,
+} from "../../constants.js"
 import pluralize from "pluralize"
 import {
   camelToTitle,
@@ -9,7 +14,6 @@ import {
   wordsToKebab,
 } from "utils"
 import { normalizeName } from "../../utils/str-formatting.js"
-import { API_ROUTE_PARAM_REGEX } from "../kinds/oas.js"
 
 type TemplateOptions = {
   pluralIndicatorStr?: string
@@ -56,11 +60,6 @@ type RetrieveSymbolOptions = Omit<RetrieveOptions, "str"> & {
  * A class that holds common Medusa patterns and acts as a knowledge base for possible summaries/examples/general templates.
  */
 class KnowledgeBaseFactory {
-  // we can't use `{summary}` because it causes an MDX error
-  // when we finally render the summary. We can alternatively
-  // use `\{summary\}` but it wouldn't look pretty in the OAS,
-  // so doing this for now.
-  protected SUMMARY_PLACEHOLDER = "SUMMARY"
   private TYPE_PLACEHOLDER = `{type name}`
   private summaryKnowledgeBase: KnowledgeBase[] = [
     {
@@ -596,8 +595,8 @@ class KnowledgeBaseFactory {
     // reset regex manually
     API_ROUTE_PARAM_REGEX.lastIndex = 0
     const result = {
-      summary: this.SUMMARY_PLACEHOLDER,
-      description: this.SUMMARY_PLACEHOLDER,
+      summary: SUMMARY_PLACEHOLDER,
+      description: SUMMARY_PLACEHOLDER,
     }
     // retrieve different variations of the tag to include in the summary/description
     const lowerTag = tag.toLowerCase()

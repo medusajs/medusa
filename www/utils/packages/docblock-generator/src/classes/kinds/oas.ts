@@ -4,7 +4,7 @@ import { basename, join } from "path"
 import ts, { SyntaxKind } from "typescript"
 import { capitalize, kebabToTitle } from "utils"
 import { parse, stringify } from "yaml"
-import { DEFAULT_OAS_RESPONSES } from "../../constants.js"
+import { DEFAULT_OAS_RESPONSES, SUMMARY_PLACEHOLDER } from "../../constants.js"
 import {
   OpenApiDocument,
   OpenApiOperation,
@@ -25,8 +25,8 @@ import FunctionKindGenerator, {
   FunctionOrVariableNode,
   VariableNode,
 } from "./function.js"
+import { API_ROUTE_PARAM_REGEX } from "../helpers/../../constants.js"
 
-export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
 const RES_STATUS_REGEX = /^res[\s\S]*\.status\((\d+)\)/
 
 type SchemaDescriptionOptions = {
@@ -49,11 +49,6 @@ class OasKindGenerator extends FunctionKindGenerator {
   public name = "oas"
   protected allowedKinds: SyntaxKind[] = [ts.SyntaxKind.FunctionDeclaration]
   private MAX_LEVEL = 4
-  // we can't use `{summary}` because it causes an MDX error
-  // when we finally render the summary. We can alternatively
-  // use `\{summary\}` but it wouldn't look pretty in the OAS,
-  // so doing this for now.
-  protected defaultSummary = "SUMMARY"
 
   /**
    * This map collects tags of all the generated OAS, then, once the generation process finishes,
@@ -405,9 +400,9 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     // update summary and description either if they're empty or default summary
     const shouldUpdateSummary =
-      !oas.summary || oas.summary === this.defaultSummary
+      !oas.summary || oas.summary === SUMMARY_PLACEHOLDER
     const shouldUpdateDescription =
-      !oas.description || oas.description === this.defaultSummary
+      !oas.description || oas.description === SUMMARY_PLACEHOLDER
     if (shouldUpdateSummary || shouldUpdateDescription) {
       const { summary, description } =
         this.knowledgeBaseFactory.tryToGetOasMethodSummaryAndDescription({
@@ -1165,7 +1160,7 @@ class OasKindGenerator extends FunctionKindGenerator {
         )
       : title
         ? this.getSchemaDescription({ typeStr: title, nodeType: itemType })
-        : this.defaultSummary
+        : SUMMARY_PLACEHOLDER
     const typeAsString =
       zodObjectTypeName || this.checker.typeToString(itemType)
 
@@ -1451,7 +1446,7 @@ class OasKindGenerator extends FunctionKindGenerator {
           templateOptions: {
             parentName,
           },
-        }) || this.defaultSummary
+        }) || SUMMARY_PLACEHOLDER
       )
     }
 
@@ -1473,7 +1468,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       description = this.getSymbolDocBlock(symbol)
     }
 
-    return description.length ? description : this.defaultSummary
+    return description.length ? description : SUMMARY_PLACEHOLDER
   }
 
   /**
@@ -1626,7 +1621,7 @@ class OasKindGenerator extends FunctionKindGenerator {
 
       if (
         updatedParameter.description !== parameter.description &&
-        parameter.description === this.defaultSummary
+        parameter.description === SUMMARY_PLACEHOLDER
       ) {
         parameter.description = updatedParameter.description
       }
@@ -1656,7 +1651,7 @@ class OasKindGenerator extends FunctionKindGenerator {
       if (
         (updatedParameter.schema as OpenApiSchema).description !==
           (parameter.schema as OpenApiSchema).description &&
-        (parameter.schema as OpenApiSchema).description === this.defaultSummary
+        (parameter.schema as OpenApiSchema).description === SUMMARY_PLACEHOLDER
       ) {
         ;(parameter.schema as OpenApiSchema).description = (
           updatedParameter.schema as OpenApiSchema
@@ -1737,10 +1732,10 @@ class OasKindGenerator extends FunctionKindGenerator {
 
     if (
       oldSchemaObj!.description !== newSchemaObj?.description &&
-      oldSchemaObj!.description === this.defaultSummary
+      oldSchemaObj!.description === SUMMARY_PLACEHOLDER
     ) {
       oldSchemaObj!.description =
-        newSchemaObj?.description || this.defaultSummary
+        newSchemaObj?.description || SUMMARY_PLACEHOLDER
     }
 
     oldSchemaObj!.required = newSchemaObj?.required
