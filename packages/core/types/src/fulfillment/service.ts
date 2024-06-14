@@ -63,13 +63,13 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const fulfillmentSet =
-   *   await fulfillmentModuleService.retrieveFufillmentSet("fuset_123")
+   *   await fulfillmentModuleService.retrieveFulfillmentSet("fuset_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const fulfillmentSet = await fulfillmentModuleService.retrieveFufillmentSet(
+   * const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
    *   "fuset_123",
    *   {
    *     relations: ["service_zones"],
@@ -77,7 +77,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieveFufillmentSet(
+  retrieveFulfillmentSet(
     id: string,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -117,7 +117,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.listFufillmentSets(
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets(
    *   {
    *     id: ["fuset_123", "fuset_321"],
    *   },
@@ -129,7 +129,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * )
    * ```
    */
-  listFufillmentSets(
+  listFulfillmentSets(
     filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -158,7 +158,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCountFufillmentSets(
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets(
    *     {
    *       id: ["fuset_123", "fuset_321"],
    *     },
@@ -172,7 +172,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCountFufillmentSets(
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets(
    *     {
    *       id: ["fuset_123", "fuset_321"],
    *     },
@@ -184,7 +184,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCountFufillmentSets(
+  listAndCountFulfillmentSets(
     filters?: FilterableFulfillmentSetProps,
     config?: FindConfig<FulfillmentSetDTO>,
     sharedContext?: Context
@@ -198,7 +198,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO[]>} The created fulfillment sets.
    *
    * @example
-   * const fulfillmentSets = await fulfillmentModuleService.createFufillmentSets(
+   * const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets(
    *   [
    *     {
    *       name: "Shipping",
@@ -211,7 +211,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ]
    * )
    */
-  createFufillmentSets(
+  createFulfillmentSets(
     data: CreateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO[]>
@@ -224,12 +224,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO>} The created fulfillment set.
    *
    * @example
-   * const fulfillmentSet = await fulfillmentModuleService.createFufillmentSets({
+   * const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
    *   name: "Shipping",
    *   type: "default",
    * })
    */
-  createFufillmentSets(
+  createFulfillmentSets(
     data: CreateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO>
@@ -242,7 +242,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO[]>} The updated fulfillment sets.
    *
    * @example
-   * const fulfillmentSets = await fulfillmentModuleService.updateFufillmentSets(
+   * const fulfillmentSets = await fulfillmentModuleService.updateFulfillmentSets(
    *   [
    *     {
    *       id: "fuset_123",
@@ -255,7 +255,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *   ]
    * )
    */
-  updateFufillmentSets(
+  updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO[],
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO[]>
@@ -268,12 +268,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<FulfillmentSetDTO>} The updated fulfillment set.
    *
    * @example
-   * const fulfillmentSet = await fulfillmentModuleService.updateFufillmentSets({
+   * const fulfillmentSet = await fulfillmentModuleService.updateFulfillmentSets({
    *   id: "fuset_123",
    *   name: "Shipping",
    * })
    */
-  updateFufillmentSets(
+  updateFulfillmentSets(
     data: UpdateFulfillmentSetDTO,
     sharedContext?: Context
   ): Promise<FulfillmentSetDTO>
@@ -286,12 +286,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the fulfillment sets are deleted successfully.
    *
    * @example
-   * await fulfillmentModuleService.deleteFufillmentSets([
+   * await fulfillmentModuleService.deleteFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  deleteFufillmentSets(ids: string[], sharedContext?: Context): Promise<void>
+  deleteFulfillmentSets(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a fulfillment set by its ID.
@@ -301,9 +301,9 @@ export interface IFulfillmentModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the fulfillment set is deleted successfully.
    *
    * @example
-   * await fulfillmentModuleService.deleteFufillmentSets("fuset_123")
+   * await fulfillmentModuleService.deleteFulfillmentSets("fuset_123")
    */
-  deleteFufillmentSets(id: string, sharedContext?: Context): Promise<void>
+  deleteFulfillmentSets(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method soft deletes fulfillment sets by their IDs.
@@ -315,12 +315,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await fulfillmentModuleService.softDeleteFufillmentSets([
+   * await fulfillmentModuleService.softDeleteFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  softDeleteFufillmentSets<TReturnableLinkableKeys extends string = string>(
+  softDeleteFulfillmentSets<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -337,12 +337,12 @@ export interface IFulfillmentModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await fulfillmentModuleService.restoreFufillmentSets([
+   * await fulfillmentModuleService.restoreFulfillmentSets([
    *   "fuset_123",
    *   "fuset_321",
    * ])
    */
-  restoreFufillmentSets<TReturnableLinkableKeys extends string = string>(
+  restoreFulfillmentSets<TReturnableLinkableKeys extends string = string>(
     fulfillmentIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
