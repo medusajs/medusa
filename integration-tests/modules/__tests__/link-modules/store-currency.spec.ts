@@ -25,7 +25,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query store and default currency with remote query", async () => {
-        const store = await storeModuleService.create({
+        const store = await storeModuleService.createStores({
           name: "Store",
           default_currency_code: "usd",
           supported_currency_codes: ["usd"],
