@@ -38,7 +38,7 @@ export const updateCartPromotionsStep = createStep(
       existingCartPromotionLinks.map((link) => [link.promotion_id, link])
     )
 
-    const promotions = await promotionService.list(
+    const promotions = await promotionService.listPromotions(
       { code: promo_codes },
       { select: ["id"] }
     )
