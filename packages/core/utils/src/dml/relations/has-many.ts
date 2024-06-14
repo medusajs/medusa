@@ -1,5 +1,5 @@
 import { BaseRelationship } from "./base"
-import { RelationshipMetadata } from "../types"
+import { RelationshipTypes } from "../types"
 
 /**
  * HasMany relationship defines a relationship between two entities
@@ -12,5 +12,5 @@ import { RelationshipMetadata } from "../types"
  * - A user HasMany addresses
  */
 export class HasMany<T> extends BaseRelationship<T> {
-  protected relationshipType: RelationshipMetadata["type"] = "hasMany"
+  type = "hasMany" as const
 }
