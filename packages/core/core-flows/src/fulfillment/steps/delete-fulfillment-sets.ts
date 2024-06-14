@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteFulfillmentSetsStepId = "delete-fulfillment-sets"
 export const deleteFulfillmentSetsStep = createStep(
@@ -10,7 +10,7 @@ export const deleteFulfillmentSetsStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.softDelete(ids)
+    await service.softDeleteFulfillmentSets(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -23,6 +23,6 @@ export const deleteFulfillmentSetsStep = createStep(
       ModuleRegistrationName.FULFILLMENT
     )
 
-    await service.restore(prevIds)
+    await service.restoreFulfillmentSets(prevIds)
   }
 )
