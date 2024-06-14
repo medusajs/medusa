@@ -89,7 +89,7 @@ export type CreateShippingProfileReq = CreateShippingProfileDTO
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO
-export type UpdatePriceListReq = UpdatePriceListDTO
+export type UpdatePriceListReq = Omit<UpdatePriceListDTO, "id">
 export type AddPriceListPricesReq = {
   prices: {
     currency_code: string
