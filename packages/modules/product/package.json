@@ -41,7 +41,7 @@
     "@mikro-orm/cli": "5.9.7",
     "cross-env": "^5.2.1",
     "faker": "^5.5.3",
-    "jest": "^29.6.3",
+    "jest": "^29.7.0",
     "medusa-test-utils": "^1.1.44",
     "pg-god": "^1.0.12",
     "rimraf": "^3.0.2",
