@@ -27,6 +27,6 @@ export const deleteCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.addAddresses(prevAddresses)
+    await service.createAddresses(prevAddresses)
   }
 )

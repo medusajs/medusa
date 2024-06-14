@@ -26,7 +26,7 @@ medusaIntegrationTestRunner({
           appContainer
         )
 
-        await customerModuleService.addAddresses([
+        await customerModuleService.createAddresses([
           {
             first_name: "Test",
             last_name: "Test",
@@ -47,7 +47,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        await customerModuleService.create({
+        await customerModuleService.createCustomers({
           first_name: "Test Test",
           last_name: "Test Test",
           addresses: [

@@ -46,7 +46,7 @@ medusaIntegrationTestRunner({
           currency_code: "usd",
         })
 
-        const customer = await customerModule.create({
+        const customer = await customerModule.createCustomers({
           email: "tony@stark.com",
         })
 

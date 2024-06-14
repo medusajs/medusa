@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all customer addresses and its count", async () => {
-        const [customer] = await customerModuleService.create([
+        const [customer] = await customerModuleService.createCustomers([
           {
             first_name: "Test",
             last_name: "Test",
@@ -94,7 +94,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching through the addresses", async () => {
-        const [customer] = await customerModuleService.create([
+        const [customer] = await customerModuleService.createCustomers([
           {
             first_name: "Test",
             last_name: "Test",

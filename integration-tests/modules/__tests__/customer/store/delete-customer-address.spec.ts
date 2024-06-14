@@ -26,7 +26,7 @@ medusaIntegrationTestRunner({
           appContainer
         )
 
-        const address = await customerModuleService.addAddresses({
+        const address = await customerModuleService.createAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -40,7 +40,7 @@ medusaIntegrationTestRunner({
 
         expect(response.status).toEqual(200)
 
-        const updatedCustomer = await customerModuleService.retrieve(
+        const updatedCustomer = await customerModuleService.retrieveCustomer(
           customer.id,
           {
             relations: ["addresses"],
@@ -53,11 +53,11 @@ medusaIntegrationTestRunner({
       it("should fail to delete another customer's address", async () => {
         const { jwt } = await createAuthenticatedCustomer(appContainer)
 
-        const otherCustomer = await customerModuleService.create({
+        const otherCustomer = await customerModuleService.createCustomers({
           first_name: "Jane",
           last_name: "Doe",
         })
-        const address = await customerModuleService.addAddresses({
+        const address = await customerModuleService.createAddresses({
           customer_id: otherCustomer.id,
           first_name: "John",
           last_name: "Doe",

@@ -10,7 +10,7 @@ export const createCustomerGroupsStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const createdCustomerGroups = await service.createCustomerGroup(data)
+    const createdCustomerGroups = await service.createCustomerGroups(data)
 
     return new StepResponse(
       createdCustomerGroups,
@@ -28,6 +28,6 @@ export const createCustomerGroupsStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.delete(createdCustomerGroupIds)
+    await service.deleteCustomers(createdCustomerGroupIds)
   }
 )

@@ -13,7 +13,7 @@ export const createAuthenticatedCustomer = async (
     ModuleRegistrationName.CUSTOMER
   )
 
-  const customer = await customerModuleService.create({
+  const customer = await customerModuleService.createCustomers({
     first_name: "John",
     last_name: "Doe",
     email: "john@me.com",
