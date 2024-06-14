@@ -101,15 +101,13 @@ function defineHasOneRelationship(
   >,
   cascades: EntityCascades<string[]>
 ) {
-  const mappedBy =
-    relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
   const relatedModelName = upperCaseFirst(relatedEntity.name)
   const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
   OneToOne({
     entity: relatedModelName,
     nullable: relationship.nullable,
-    mappedBy: mappedBy,
+    mappedBy: relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name),
     cascade: shouldRemoveRelated
       ? (["perist", "soft-remove"] as any)
       : undefined,
@@ -128,10 +126,15 @@ function defineHasManyRelationship(
   cascades: EntityCascades<string[]>
 ) {
   const relatedModelName = upperCaseFirst(relatedEntity.name)
+  const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
+
   OneToMany({
     entity: relatedModelName,
     orphanRemoval: true,
     mappedBy: relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name),
+    cascade: shouldRemoveRelated
+      ? (["perist", "soft-remove"] as any)
+      : undefined,
   })(MikroORMEntity.prototype, relationship.name)
 }
 
@@ -149,8 +152,7 @@ function defineBelongsToRelationship(
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
     Record<string, SchemaType<any> | RelationshipType<any>>
-  >,
-  cascades: EntityCascades<string[]>
+  >
 ) {
   const mappedBy =
     relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
@@ -187,6 +189,7 @@ function defineBelongsToRelationship(
       mapToPk: true,
       fieldName: camelToSnakeCase(`${relationship.name}Id`),
       nullable: relationship.nullable,
+      onDelete: shouldCascade ? "cascade" : undefined,
     })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
     ManyToOne({
@@ -293,12 +296,7 @@ function defineRelationship(
       )
       break
     case "belongsTo":
-      defineBelongsToRelationship(
-        MikroORMEntity,
-        relationship,
-        relatedEntity,
-        cascades
-      )
+      defineBelongsToRelationship(MikroORMEntity, relationship, relatedEntity)
       break
     case "manyToMany":
       defineManyToManyRelationship(

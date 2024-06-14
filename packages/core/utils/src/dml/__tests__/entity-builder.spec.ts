@@ -799,6 +799,162 @@ describe("Entity builder", () => {
         },
       })
     })
+
+    test("define delete cascades for the entity", () => {
+      const model = new EntityBuilder()
+      const email = model.define("email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+      })
+
+      const user = model
+        .define("user", {
+          id: model.number(),
+          username: model.text(),
+          emails: model.hasMany(() => email),
+        })
+        .cascades({
+          delete: ["emails"],
+        })
+
+      const User = createMikrORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        emails: EntityConstructor<{ email: string; isVerified: boolean }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        emails: {
+          reference: "1:m",
+          name: "emails",
+          entity: "Email",
+          orphanRemoval: true,
+          mappedBy: "user",
+          cascade: ["perist", "soft-remove"],
+        },
+      })
+    })
+
+    test("define delete cascades with belongsTo on the other end", () => {
+      const model = new EntityBuilder()
+      const email = model.define("email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+        user: model.belongsTo(() => user, { mappedBy: "emails" }),
+      })
+
+      const user = model
+        .define("user", {
+          id: model.number(),
+          username: model.text(),
+          emails: model.hasMany(() => email),
+        })
+        .cascades({
+          delete: ["emails"],
+        })
+
+      const User = createMikrORMEntity(user)
+      const Email = createMikrORMEntity(email)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        emails: EntityConstructor<{ email: string; isVerified: boolean }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        emails: {
+          reference: "1:m",
+          name: "emails",
+          entity: "Email",
+          orphanRemoval: true,
+          mappedBy: "user",
+          cascade: ["perist", "soft-remove"],
+        },
+      })
+
+      const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
+      expect(emailMetaData.className).toEqual("Email")
+      expect(emailMetaData.path).toEqual("Email")
+      expect(emailMetaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        isVerified: {
+          reference: "scalar",
+          type: "boolean",
+          columnType: "boolean",
+          name: "isVerified",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        user: {
+          reference: "m:1",
+          name: "user",
+          entity: "User",
+          persist: false,
+        },
+        user_id: {
+          columnType: "text",
+          entity: "User",
+          fieldName: "user_id",
+          mapToPk: true,
+          name: "user_id",
+          nullable: false,
+          reference: "m:1",
+          onDelete: "cascade",
+        },
+      })
+    })
   })
 
   describe("Entity builder | belongsTo", () => {
