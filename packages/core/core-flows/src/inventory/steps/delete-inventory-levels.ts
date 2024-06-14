@@ -1,4 +1,4 @@
-import { ICustomerModuleService, IInventoryServiceNext } from "@medusajs/types"
+import { ICustomerModuleService, IInventoryService } from "@medusajs/types"
 import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
@@ -7,7 +7,7 @@ export const deleteInventoryLevelsStepId = "delete-inventory-levels-step"
 export const deleteInventoryLevelsStep = createStep(
   deleteInventoryLevelsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 
@@ -20,7 +20,7 @@ export const deleteInventoryLevelsStep = createStep(
       return
     }
 
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 

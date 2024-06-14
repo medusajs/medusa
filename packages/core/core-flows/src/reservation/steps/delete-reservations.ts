@@ -1,13 +1,13 @@
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryServiceNext } from "@medusajs/types"
+import { IInventoryService } from "@medusajs/types"
 
 export const deleteReservationsStepId = "delete-reservations"
 export const deleteReservationsStep = createStep(
   deleteReservationsStepId,
   async (ids: string[], { container }) => {
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 
@@ -20,7 +20,7 @@ export const deleteReservationsStep = createStep(
       return
     }
 
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 

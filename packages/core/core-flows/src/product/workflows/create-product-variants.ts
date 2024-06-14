@@ -1,5 +1,5 @@
 import { LinkDefinition, Modules } from "@medusajs/modules-sdk"
-import { InventoryNext, PricingTypes, ProductTypes } from "@medusajs/types"
+import { InventoryTypes, PricingTypes, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,
@@ -40,7 +40,7 @@ const buildLink = (
 
 const buildLinksToCreate = (data: {
   createdVariants: ProductTypes.ProductVariantDTO[]
-  inventoryIndexMap: Record<number, InventoryNext.InventoryItemDTO>
+  inventoryIndexMap: Record<number, InventoryTypes.InventoryItemDTO>
   input: WorkflowInput
 }) => {
   let index = 0
@@ -83,7 +83,7 @@ const buildVariantItemCreateMap = (data: {
   input: WorkflowInput
 }) => {
   let index = 0
-  const map: Record<number, InventoryNext.CreateInventoryItemInput> = {}
+  const map: Record<number, InventoryTypes.CreateInventoryItemInput> = {}
 
   for (const variant of data.createdVariants || []) {
     const variantInput = data.input.product_variants[index]
@@ -156,7 +156,7 @@ export const createProductVariantsWorkflow = createWorkflow(
     const inventoryIndexMap = transform(
       { createdInventoryItems, variantItemCreateMap },
       (data) => {
-        const map: Record<number, InventoryNext.InventoryItemDTO> = {}
+        const map: Record<number, InventoryTypes.InventoryItemDTO> = {}
         let inventoryIndex = 0
 
         for (const variantIndex of Object.keys(data.variantItemCreateMap)) {

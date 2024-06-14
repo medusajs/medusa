@@ -2,7 +2,7 @@ import { AdminReservationResponse, StockLocationDTO } from "@medusajs/types"
 import { Container, Heading } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../../components/common/section"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
@@ -34,7 +34,7 @@ export const ReservationGeneralSection = ({
   }
 
   const locationLevel = inventoryItem.location_levels!.find(
-    (l: InventoryNext.InventoryLevelDTO) =>
+    (l: InventoryTypes.InventoryLevelDTO) =>
       l.location_id === reservation.location_id
   )
 

@@ -1,14 +1,14 @@
 import { Container, Heading } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../../components/common/section"
 import { getFormattedCountry } from "../../../../../lib/addresses"
 import { useTranslation } from "react-i18next"
 
 type InventoryItemAttributeSectionProps = {
-  inventoryItem: InventoryNext.InventoryItemDTO
+  inventoryItem: InventoryTypes.InventoryItemDTO
 }
 
 export const InventoryItemAttributeSection = ({
