@@ -13,7 +13,7 @@ A fulfillment set is a general form or way of fulfillment. For example, shipping
 A fulfillment set is represented by the [FulfillmentSet data model](/references/fulfillment/models/FulfillmentSet). All other configurations, options, and management features are related to a fulfillment set, in one way or another.
 
 ```ts
-const fulfillmentSets = await fulfillmentModuleService.create(
+const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets(
   [
     {
       name: "Shipping",

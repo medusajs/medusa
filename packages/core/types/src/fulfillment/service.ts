@@ -96,7 +96,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * To retrieve a list of fulfillment sets using their IDs:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.list({
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets({
    *   id: ["fuset_123", "fuset_321"],
    * })
    * ```
@@ -104,7 +104,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    * To specify relations that should be retrieved within the fulfillment set:
    *
    * ```ts
-   * const fulfillmentSets = await fulfillmentModuleService.list(
+   * const fulfillmentSets = await fulfillmentModuleService.listFulfillmentSets(
    *   {
    *     id: ["fuset_123", "fuset_321"],
    *   },
@@ -149,7 +149,7 @@ export interface IFulfillmentModuleService extends IModuleService {
    *
    * ```ts
    * const [fulfillmentSets, count] =
-   *   await fulfillmentModuleService.listAndCount({
+   *   await fulfillmentModuleService.listAndCountFulfillmentSets({
    *     id: ["fuset_123", "fuset_321"],
    *   })
    * ```

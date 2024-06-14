@@ -45,7 +45,7 @@ async function prepareDataFixtures({ container }) {
     type: "default",
   })
 
-  const fulfillmentSet = await fulfillmentService.create({
+  const fulfillmentSet = await fulfillmentService.createFulfillmentSets({
     name: "Test fulfillment set",
     type: "manual_test",
   })

@@ -17,8 +17,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  RuleOperator,
   remoteQueryObjectFromString,
+  RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
 
@@ -46,7 +46,7 @@ async function prepareDataFixtures({ container }) {
     type: "default",
   })
 
-  const fulfillmentSet = await fulfillmentService.create({
+  const fulfillmentSet = await fulfillmentService.createFulfillmentSets({
     name: "Test fulfillment set",
     type: "manual_test",
   })
