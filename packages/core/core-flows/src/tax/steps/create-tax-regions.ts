@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateTaxRegionDTO, ITaxModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createTaxRegionsStepId = "create-tax-regions"
 export const createTaxRegionsStep = createStep(
@@ -26,6 +26,6 @@ export const createTaxRegionsStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.delete(createdIds)
+    await service.deleteTaxRegions(createdIds)
   }
 )
