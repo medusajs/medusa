@@ -102,7 +102,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -212,7 +212,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -332,7 +332,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if variants are out of stock", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -448,7 +448,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if sales channel is disabled", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
             is_disabled: true,
           })
@@ -550,7 +550,7 @@ medusaIntegrationTestRunner({
 
       describe("AddToCartWorkflow", () => {
         it("should add item to cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -659,7 +659,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if no price sets for variant exist", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -774,7 +774,7 @@ medusaIntegrationTestRunner({
 
       describe("updateLineItemInCartWorkflow", () => {
         it("should update item in cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -901,7 +901,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const salesChannel = await scModuleService.create({
+            const salesChannel = await scModuleService.createSalesChannels({
               name: "Webshop",
             })
 
@@ -1592,7 +1592,7 @@ medusaIntegrationTestRunner({
 
       describe("listShippingOptionsForCartWorkflow", () => {
         it("should list shipping options for cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1711,7 +1711,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should list no shipping options for cart, if sales channel is not associated with location", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1816,7 +1816,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw when shipping options are missing prices", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 

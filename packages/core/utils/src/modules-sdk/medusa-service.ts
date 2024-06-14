@@ -94,10 +94,16 @@ type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
   : Pluralize<K & string>
 
 // TODO: The future expected entry will be a DML object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
-type TEntityEntries = Record<
-  string,
+type TEntityEntries<Keys = string> = Record<
+  Keys & string,
   Constructor<any> | { name?: string; singular?: string; plural?: string }
 >
+
+type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
+  __empty: any
+}
+  ? string
+  : keyof EntitiesConfig
 
 export type AbstractModuleService<
   TEntitiesDtoConfig extends EntitiesConfigTemplate
@@ -279,7 +285,9 @@ function buildMethodNamesFromModel(
  */
 export function MedusaService<
   EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
-  TEntities extends TEntityEntries = TEntityEntries
+  TEntities extends TEntityEntries<
+    ExtractKeysFromConfig<EntitiesConfig>
+  > = TEntityEntries<ExtractKeysFromConfig<EntitiesConfig>>
 >(
   entities: TEntities,
   entityNameToLinkableKeysMap: MapToConfig = {}
@@ -570,12 +578,12 @@ export function MedusaService<
 
   const entitiesMethods: [
     string,
-    TEntityEntries[keyof TEntityEntries],
+    TEntities[keyof TEntities],
     Record<string, string>
   ][] = Object.entries(entities).map(([name, config]) => [
     name,
-    config,
-    buildMethodNamesFromModel(name, config),
+    config as TEntities[keyof TEntities],
+    buildMethodNamesFromModel(name, config as TEntities[keyof TEntities]),
   ])
 
   for (let [modelName, model, modelsMethods] of entitiesMethods) {

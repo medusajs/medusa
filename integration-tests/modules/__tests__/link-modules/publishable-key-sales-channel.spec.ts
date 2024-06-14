@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query api key and sales channels link with remote query", async () => {
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 

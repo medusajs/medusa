@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a single user", async () => {
-        const user = await userModuleService.create({
+        const user = await userModuleService.createUsers({
           email: "member@test.com",
         })
 

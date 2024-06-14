@@ -34,6 +34,7 @@ export const useOrderTableQuery = ({
     payment_status,
     region_id,
     q,
+    order,
   } = queryObject
 
   const searchParams: AdminGetOrdersParams = {
@@ -45,6 +46,7 @@ export const useOrderTableQuery = ({
     created_at: created_at ? JSON.parse(created_at) : undefined,
     updated_at: updated_at ? JSON.parse(updated_at) : undefined,
     region_id: region_id?.split(","),
+    order: order ? order : "-display_id",
     q,
   }
 

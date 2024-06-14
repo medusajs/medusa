@@ -4,9 +4,7 @@ import { UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
-import { createUsers } from "../../../__fixtures__/user"
 
 jest.setTimeout(30000)
 
@@ -21,7 +19,7 @@ const defaultUserData = [
   },
 ]
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IUserModuleService>({
   moduleName: Modules.USER,
   moduleOptions: {
     jwt_secret: "test",
@@ -29,11 +27,7 @@ moduleIntegrationTestRunner({
   injectedDependencies: {
     eventBusModuleService: new MockEventBusService(),
   },
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-    medusaApp,
-  }: SuiteOptions<IUserModuleService>) => {
+  testSuite: ({ service }) => {
     describe("UserModuleService - User", () => {
       afterEach(async () => {
         jest.clearAllMocks()
@@ -41,9 +35,8 @@ moduleIntegrationTestRunner({
 
       describe("list", () => {
         it("should list users", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
-
-          const users = await service.list()
+          await service.createUsers(defaultUserData)
+          const users = await service.listUsers()
 
           expect(users).toEqual([
             expect.objectContaining({
@@ -56,8 +49,8 @@ moduleIntegrationTestRunner({
         })
 
         it("should list users by id", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
-          const users = await service.list({
+          await service.createUsers(defaultUserData)
+          const users = await service.listUsers({
             id: ["1"],
           })
 
@@ -71,8 +64,8 @@ moduleIntegrationTestRunner({
 
       describe("listAndCount", () => {
         it("should list and count users", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
-          const [users, count] = await service.listAndCount()
+          await service.createUsers(defaultUserData)
+          const [users, count] = await service.listAndCountUsers()
 
           expect(count).toEqual(2)
           expect(users).toEqual([
@@ -86,8 +79,8 @@ moduleIntegrationTestRunner({
         })
 
         it("should list and count users by id", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
-          const [Users, count] = await service.listAndCount({
+          await service.createUsers(defaultUserData)
+          const [Users, count] = await service.listAndCountUsers({
             id: "1",
           })
 
@@ -104,9 +97,9 @@ moduleIntegrationTestRunner({
         const id = "1"
 
         it("should return an user for the given id", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
+          await service.createUsers(defaultUserData)
 
-          const user = await service.retrieve(id)
+          const user = await service.retrieveUser(id)
 
           expect(user).toEqual(
             expect.objectContaining({
@@ -116,7 +109,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when an user with the given id does not exist", async () => {
-          const error = await service.retrieve("does-not-exist").catch((e) => e)
+          const error = await service
+            .retrieveUser("does-not-exist")
+            .catch((e) => e)
 
           expect(error.message).toEqual(
             "User with id: does-not-exist was not found"
@@ -125,16 +120,16 @@ moduleIntegrationTestRunner({
 
         it("should throw an error when a userId is not provided", async () => {
           const error = await service
-            .retrieve(undefined as unknown as string)
+            .retrieveUser(undefined as unknown as string)
             .catch((e) => e)
 
           expect(error.message).toEqual("user - id must be defined")
         })
 
         it("should return user based on config select param", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
+          await service.createUsers(defaultUserData)
 
-          const User = await service.retrieve(id, {
+          const User = await service.retrieveUser(id, {
             select: ["id"],
           })
 
@@ -150,11 +145,11 @@ moduleIntegrationTestRunner({
         const id = "1"
 
         it("should delete the users given an id successfully", async () => {
-          await createUsers(MikroOrmWrapper.forkManager(), defaultUserData)
+          await service.createUsers(defaultUserData)
 
-          await service.delete([id])
+          await service.deleteUsers([id])
 
-          const users = await service.list({
+          const users = await service.listUsers({
             id: [id],
           })
 
@@ -165,7 +160,7 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         it("should throw an error when a id does not exist", async () => {
           const error = await service
-            .update([
+            .updateUsers([
               {
                 id: "does-not-exist",
               },
@@ -179,11 +174,11 @@ moduleIntegrationTestRunner({
 
         it("should emit user created events", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-          await service.create(defaultUserData)
+          await service.createUsers(defaultUserData)
 
           jest.clearAllMocks()
 
-          await service.update([
+          await service.updateUsers([
             {
               id: "1",
               first_name: "John",
@@ -202,9 +197,9 @@ moduleIntegrationTestRunner({
 
       describe("create", () => {
         it("should create a user successfully", async () => {
-          await service.create(defaultUserData)
+          await service.createUsers(defaultUserData)
 
-          const [User, count] = await service.listAndCount({
+          const [User, count] = await service.listAndCountUsers({
             id: ["1"],
           })
 
@@ -218,7 +213,7 @@ moduleIntegrationTestRunner({
 
         it("should emit user created events", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-          await service.create(defaultUserData)
+          await service.createUsers(defaultUserData)
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([

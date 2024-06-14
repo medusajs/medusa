@@ -4,9 +4,7 @@ import { UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
-import { createInvites } from "../../../__fixtures__/invite"
 
 jest.setTimeout(30000)
 
@@ -28,7 +26,7 @@ const defaultInviteData = [
   },
 ]
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IUserModuleService>({
   moduleName: Modules.USER,
   moduleOptions: {
     jwt_secret: "test",
@@ -36,10 +34,7 @@ moduleIntegrationTestRunner({
   injectedDependencies: {
     eventBusModuleService: new MockEventBusService(),
   },
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IUserModuleService>) => {
+  testSuite: ({ service }) => {
     describe("UserModuleService - Invite", () => {
       beforeEach(async () => {
         jest.clearAllMocks()
@@ -47,8 +42,7 @@ moduleIntegrationTestRunner({
 
       describe("listInvites", () => {
         it("should list invites", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
-
+          await service.createInvites(defaultInviteData)
           const invites = await service.listInvites()
 
           expect(invites).toEqual([
@@ -62,7 +56,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list invites by id", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const invites = await service.listInvites({
             id: ["1"],
           })
@@ -77,7 +71,7 @@ moduleIntegrationTestRunner({
 
       describe("listAndCountInvites", () => {
         it("should list and count invites", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const [invites, count] = await service.listAndCountInvites()
 
           expect(count).toEqual(2)
@@ -92,7 +86,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should listAndCount invites by id", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const [invites, count] = await service.listAndCountInvites({
             id: "1",
           })
@@ -110,7 +104,7 @@ moduleIntegrationTestRunner({
         const id = "1"
 
         it("should return an invite for the given id", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const invite = await service.retrieveInvite(id)
 
           expect(invite).toEqual(
@@ -139,7 +133,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return invite based on config select param", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const invite = await service.retrieveInvite(id, {
             select: ["id"],
           })
@@ -166,7 +160,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should emit invite updated events", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
 
           jest.clearAllMocks()
 
@@ -190,12 +184,12 @@ moduleIntegrationTestRunner({
 
       describe("resendInvite", () => {
         it("should emit token generated event for invites", async () => {
-          await createInvites(MikroOrmWrapper.forkManager(), defaultInviteData)
+          await service.createInvites(defaultInviteData)
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
           await service.refreshInviteTokens(["1"])
 
-          expect(eventBusSpy).toHaveBeenCalledTimes(1)
+          expect(eventBusSpy).toHaveBeenCalledTimes(2)
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
