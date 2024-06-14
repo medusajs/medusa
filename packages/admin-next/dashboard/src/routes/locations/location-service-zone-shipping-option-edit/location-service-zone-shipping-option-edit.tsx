@@ -32,7 +32,7 @@ export const LocationServiceZoneShippingOptionEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("location.shippingOptions.edit.header")}</Heading>
+        <Heading>{t("stockLocations.shippingOptions.edit.header")}</Heading>
       </RouteDrawer.Header>
       {!isPending && shippingOption && (
         <EditShippingOptionForm
