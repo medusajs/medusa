@@ -24,7 +24,7 @@ import {
   UpdatePaymentCollectionDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
-  UpsertPaymentCollectionDTO,
+  UpserPaymentCollectionDTO,
 } from "@medusajs/types"
 import {
   BigNumber,
@@ -68,32 +68,23 @@ const generateMethodForModels = {
   Refund,
 }
 
-export default class PaymentModuleService<
-    TPaymentCollection extends PaymentCollection = PaymentCollection,
-    TPayment extends Payment = Payment,
-    TCapture extends Capture = Capture,
-    TRefund extends Refund = Refund,
-    TPaymentSession extends PaymentSession = PaymentSession
-  >
-  extends ModulesSdkUtils.MedusaService<
-    PaymentCollectionDTO,
-    {
-      PaymentCollection: { dto: PaymentCollectionDTO }
-      PaymentSession: { dto: PaymentSessionDTO }
-      Payment: { dto: PaymentDTO }
-      Capture: { dto: CaptureDTO }
-      Refund: { dto: RefundDTO }
-    }
-  >(PaymentCollection, generateMethodForModels, entityNameToLinkableKeysMap)
+export default class PaymentModuleService
+  extends ModulesSdkUtils.MedusaService<{
+    PaymentCollection: { dto: PaymentCollectionDTO }
+    Payment: { dto: PaymentDTO }
+    PaymentSession: { dto: PaymentSessionDTO }
+    Capture: { dto: CaptureDTO }
+    Refund: { dto: RefundDTO }
+  }>(generateMethodForModels, entityNameToLinkableKeysMap)
   implements IPaymentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<TPayment>
-  protected captureService_: ModulesSdkTypes.IMedusaInternalService<TCapture>
-  protected refundService_: ModulesSdkTypes.IMedusaInternalService<TRefund>
-  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentSession>
-  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentCollection>
+  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<Payment>
+  protected captureService_: ModulesSdkTypes.IMedusaInternalService<Capture>
+  protected refundService_: ModulesSdkTypes.IMedusaInternalService<Refund>
+  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<PaymentSession>
+  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<PaymentCollection>
   protected paymentProviderService_: PaymentProviderService
 
   constructor(
@@ -224,18 +215,18 @@ export default class PaymentModuleService<
     return await this.paymentCollectionService_.update(data, sharedContext)
   }
 
-  upsertPaymentCollections(
-    data: UpsertPaymentCollectionDTO[],
+  upserPaymentCollections(
+    data: UpserPaymentCollectionDTO[],
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO[]>
-  upsertPaymentCollections(
-    data: UpsertPaymentCollectionDTO,
+  upserPaymentCollections(
+    data: UpserPaymentCollectionDTO,
     sharedContext?: Context
   ): Promise<PaymentCollectionDTO>
 
   @InjectManager("baseRepository_")
-  async upsertPaymentCollections(
-    data: UpsertPaymentCollectionDTO | UpsertPaymentCollectionDTO[],
+  async upserPaymentCollections(
+    data: UpserPaymentCollectionDTO | UpserPaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
   ): Promise<PaymentCollectionDTO | PaymentCollectionDTO[]> {
     const input = Array.isArray(data) ? data : [data]
@@ -820,7 +811,7 @@ export default class PaymentModuleService<
 
     switch (event.action) {
       case PaymentActions.SUCCESSFUL: {
-        const [payment] = await this.listPayments(
+        const [payment] = await this.lisPayments(
           {
             session_id: event.data.resource_id,
           },
@@ -844,7 +835,7 @@ export default class PaymentModuleService<
   }
 
   @InjectManager("baseRepository_")
-  async listPaymentProviders(
+  async lisPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
     @MedusaContext() sharedContext?: Context
@@ -864,7 +855,7 @@ export default class PaymentModuleService<
   }
 
   @InjectManager("baseRepository_")
-  async listAndCountPaymentProviders(
+  async listAndCounPaymentProviders(
     filters: FilterablePaymentProviderProps = {},
     config: FindConfig<PaymentProviderDTO> = {},
     @MedusaContext() sharedContext?: Context
