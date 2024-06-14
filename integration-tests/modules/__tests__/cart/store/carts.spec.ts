@@ -103,7 +103,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -218,7 +218,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -305,7 +305,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with default store sales channel", async () => {
-          const sc = await scModule.create({
+          const sc = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -381,11 +381,11 @@ medusaIntegrationTestRunner({
         })
 
         it("throws if publishable key is not associated with sales channel", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const salesChannel2 = await scModule.create({
+          const salesChannel2 = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -426,11 +426,11 @@ medusaIntegrationTestRunner({
         })
 
         it("throws if publishable key has multiple associated sales channels", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const salesChannel2 = await scModule.create({
+          const salesChannel2 = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -469,7 +469,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with sales channel if pub key does not have any scopes defined", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
@@ -498,7 +498,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with sales channel associated with pub key", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
@@ -763,7 +763,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1106,7 +1106,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1156,7 +1156,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1261,7 +1261,7 @@ medusaIntegrationTestRunner({
             email: "tony@stark-industries.com",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
