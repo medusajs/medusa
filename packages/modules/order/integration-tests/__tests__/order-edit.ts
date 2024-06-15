@@ -353,6 +353,7 @@ moduleIntegrationTestRunner({
                 createdOrder.items![0].unit_price *
                 createdOrder.items![0].quantity,
               details: {
+                reference_id: createdOrder.items![0].id,
                 quantity: 1,
               },
             },
@@ -415,9 +416,7 @@ moduleIntegrationTestRunner({
 
         await expect(
           service.confirmOrderChange(orderChange.id)
-        ).rejects.toThrowError(
-          `Order Change cannot be modified: ${orderChange.id}`
-        )
+        ).rejects.toThrow(`Order Change cannot be modified: ${orderChange.id}`)
 
         const modified = await service.retrieve(createdOrder.id, {
           select: [
@@ -585,9 +584,9 @@ moduleIntegrationTestRunner({
           canceled_by: "cx_agent_123",
         })
 
-        await expect(
-          service.cancelOrderChange(orderChange.id)
-        ).rejects.toThrowError("Order Change cannot be modified")
+        await expect(service.cancelOrderChange(orderChange.id)).rejects.toThrow(
+          "Order Change cannot be modified"
+        )
 
         await service.declineOrderChange({
           id: orderChange2.id,
@@ -597,7 +596,7 @@ moduleIntegrationTestRunner({
 
         await expect(
           service.declineOrderChange(orderChange2.id)
-        ).rejects.toThrowError("Order Change cannot be modified")
+        ).rejects.toThrow("Order Change cannot be modified")
 
         const [change1, change2] = await service.listOrderChanges(
           {

@@ -313,7 +313,10 @@ export default class OrderModuleService<
 
     const order = await super.retrieve(id, config, sharedContext)
 
-    return formatOrder(order, { includeTotals }) as OrderTypes.OrderDTO
+    return formatOrder(order, {
+      entity: Order,
+      includeTotals,
+    }) as OrderTypes.OrderDTO
   }
 
   async list(
@@ -327,6 +330,7 @@ export default class OrderModuleService<
     const orders = await super.list(filters, config, sharedContext)
 
     return formatOrder(orders, {
+      entity: Order,
       includeTotals,
     }) as OrderTypes.OrderDTO[]
   }
@@ -346,7 +350,10 @@ export default class OrderModuleService<
     )
 
     return [
-      formatOrder(orders, { includeTotals }) as OrderTypes.OrderDTO[],
+      formatOrder(orders, {
+        entity: Order,
+        includeTotals,
+      }) as OrderTypes.OrderDTO[],
       count,
     ]
   }
@@ -2242,14 +2249,22 @@ export default class OrderModuleService<
           "version",
           "items.detail",
           "transactions",
+          "shipping_methods",
           "summary",
           "total",
         ],
-        relations: ["transactions", "items", "items.detail"],
+        relations: [
+          "transactions",
+          "items",
+          "items.detail",
+          "shipping_methods",
+        ],
       },
       sharedContext
     )
-    orders = formatOrder(orders) as OrderDTO[]
+    orders = formatOrder(orders, {
+      entity: Order,
+    }) as OrderDTO[]
 
     const {
       itemsToUpsert,

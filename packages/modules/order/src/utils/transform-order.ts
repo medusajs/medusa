@@ -9,9 +9,9 @@ import { Order, OrderClaim, OrderExchange, Return } from "@models"
 
 export function formatOrder(
   order,
-  options?: {
+  options: {
+    entity: any
     includeTotals?: boolean
-    entity?: any
   }
 ): Partial<OrderTypes.OrderDTO> | Partial<OrderTypes.OrderDTO>[] {
   const isArray = Array.isArray(order)
@@ -20,7 +20,8 @@ export function formatOrder(
   orders.map((order) => {
     let mainOrder = order
 
-    const isRelatedEntity = options?.entity && options?.entity !== Order
+    const isRelatedEntity = options?.entity !== Order
+
     if (isRelatedEntity) {
       if (!order.order) {
         return order
