@@ -29,13 +29,16 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       }
     }
 
-    const config = mapRepositoryToOrderModel(findOptions_)
+    const isRelatedEntity = entity !== Order
+    const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
 
     let orderAlias = "o0"
-    if (entity !== Order) {
-      // first relation is always order if entity is not Order
+    if (isRelatedEntity) {
+      // first relation is always order if the entity is not Order
       config.options.populate.unshift("order")
       orderAlias = "o1"
+
+      config.options.populate.unshift("order.items")
     }
 
     let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
@@ -44,7 +47,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       const sql = manager
         .qb(Order, "_sub0")
         .select("version")
-        .where({ id: knex.raw(`"o0"."order_id"`) })
+        .where({ id: knex.raw(`"${orderAlias}"."order_id"`) })
         .getKnexQuery()
         .toString()
 
@@ -55,23 +58,22 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     delete config.where?.version
 
     config.options.populateWhere ??= {}
+    const popWhere = config.options.populateWhere
 
-    if (entity !== Order) {
-      config.options.populateWhere.order ??= {}
-      config.options.populateWhere.order.version = version
-
-      config.options.populateWhere.order.summary ??= {}
-      config.options.populateWhere.order.summary.version = version
-    } else {
-      config.options.populateWhere.summary ??= {}
-      config.options.populateWhere.summary.version = version
+    if (isRelatedEntity) {
+      popWhere.order ??= {}
     }
 
-    config.options.populateWhere.items ??= {}
-    config.options.populateWhere.items.version = version
+    const orderWhere = isRelatedEntity ? popWhere.order : popWhere
 
-    config.options.populateWhere.shipping_methods ??= {}
-    config.options.populateWhere.shipping_methods.version = version
+    orderWhere.summary ??= {}
+    orderWhere.summary.version = version
+
+    orderWhere.items ??= {}
+    orderWhere.items.version = version
+
+    popWhere.shipping_methods ??= {}
+    popWhere.shipping_methods.version = version
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
@@ -98,10 +100,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       })
     }
 
-    const config = mapRepositoryToOrderModel(findOptions_)
+    const isRelatedEntity = entity !== Order
+    const config = mapRepositoryToOrderModel(findOptions_, isRelatedEntity)
 
     let orderAlias = "o0"
-    if (entity !== Order) {
+    if (isRelatedEntity) {
       // first relation is always order if entity is not Order
       config.options.populate.unshift("order")
       orderAlias = "o1"
@@ -113,7 +116,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
       const sql = manager
         .qb(Order, "_sub0")
         .select("version")
-        .where({ id: knex.raw(`"o0"."order_id"`) })
+        .where({ id: knex.raw(`"${orderAlias}"."order_id"`) })
         .getKnexQuery()
         .toString()
 
@@ -124,23 +127,22 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     delete config.where.version
 
     config.options.populateWhere ??= {}
+    const popWhere = config.options.populateWhere
 
-    if (entity !== Order) {
-      config.options.populateWhere.order ??= {}
-      config.options.populateWhere.order.version = version
-
-      config.options.populateWhere.order.summary ??= {}
-      config.options.populateWhere.order.summary.version = version
-    } else {
-      config.options.populateWhere.summary ??= {}
-      config.options.populateWhere.summary.version = version
+    if (isRelatedEntity) {
+      popWhere.order ??= {}
     }
 
-    config.options.populateWhere.items ??= {}
-    config.options.populateWhere.items.version = version
+    const orderWhere = isRelatedEntity ? popWhere.order : popWhere
 
-    config.options.populateWhere.shipping_methods ??= {}
-    config.options.populateWhere.shipping_methods.version = version
+    orderWhere.summary ??= {}
+    orderWhere.summary.version = version
+
+    orderWhere.items ??= {}
+    orderWhere.items.version = version
+
+    popWhere.shipping_methods ??= {}
+    popWhere.shipping_methods.version = version
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }

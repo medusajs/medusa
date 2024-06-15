@@ -7,7 +7,9 @@ import {
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
+  promiseAll,
 } from "@medusajs/utils"
+import { Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
@@ -24,18 +26,41 @@ export async function createReturn(
     sharedContext
   )
 
-  const [returnRef] = await this.createReturns(
-    [
-      {
-        order_id: data.order_id,
-        order_version: order.version,
-        status: ReturnStatus.REQUESTED,
-        // TODO: add refund amount / calculate?
-        // refund_amount: data.refund_amount ?? null,
+  const em = sharedContext!.transactionManager as any
+
+  const returnRef = em.create(Return, {
+    order_id: data.order_id,
+    order_version: order.version,
+    status: ReturnStatus.REQUESTED,
+    refund_amount: (data.refund_amount as unknown) ?? null,
+  })
+
+  const actions: CreateOrderChangeActionDTO[] = []
+
+  returnRef.items = data.items.map((item) => {
+    actions.push({
+      action: ChangeActionType.RETURN_ITEM,
+      return_id: returnRef.id,
+      internal_note: item.internal_note,
+      reference: "return",
+      reference_id: returnRef.id,
+      details: {
+        reference_id: item.id,
+        return_id: returnRef.id,
+        quantity: item.quantity,
+        metadata: item.metadata,
       },
-    ],
-    sharedContext
-  )
+    })
+
+    return em.create(ReturnItem, {
+      reason_id: item.reason_id,
+      return_id: returnRef.id,
+      item_id: item.id,
+      quantity: item.quantity,
+      note: item.note,
+      metadata: item.metadata,
+    })
+  })
 
   let shippingMethodId
 
@@ -44,6 +69,7 @@ export async function createReturn(
       [
         {
           order_id: data.order_id,
+          return_id: returnRef.id,
           ...data.shipping_method,
         },
       ],
@@ -65,22 +91,6 @@ export async function createReturn(
   const calculatedAmount = getShippingMethodsTotals([method as any], {})[
     method.id
   ]
-
-  const actions: CreateOrderChangeActionDTO[] = data.items.map((item) => {
-    return {
-      action: ChangeActionType.RETURN_ITEM,
-      return_id: returnRef.id,
-      internal_note: item.internal_note,
-      reference: "return",
-      reference_id: returnRef.id,
-      details: {
-        reference_id: item.id,
-        return_id: returnRef.id,
-        quantity: item.quantity,
-        metadata: item.metadata,
-      },
-    }
-  })
 
   if (shippingMethodId) {
     actions.push({
@@ -108,7 +118,10 @@ export async function createReturn(
     sharedContext
   )
 
-  await this.confirmOrderChange(change[0].id, sharedContext)
+  await promiseAll([
+    this.createReturns([returnRef], sharedContext),
+    this.confirmOrderChange(change[0].id, sharedContext),
+  ])
 
   return returnRef
 }

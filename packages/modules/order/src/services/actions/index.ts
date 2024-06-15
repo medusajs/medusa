@@ -1,4 +1,5 @@
 export * from "./cancel-fulfillment"
+export * from "./create-claim"
 export * from "./create-return"
 export * from "./receive-return"
 export * from "./register-fulfillment"

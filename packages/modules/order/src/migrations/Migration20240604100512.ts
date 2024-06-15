@@ -19,31 +19,6 @@ export class Migration20240604100512 extends Migration {
 
 
 
-    ALTER TABLE "order_item"
-    ADD COLUMN if NOT exists "return_id" TEXT NULL;
-
-    ALTER TABLE "order_item"
-    ADD COLUMN if NOT exists "claim_id" TEXT NULL;
-
-    ALTER TABLE "order_item"
-    ADD COLUMN if NOT exists "exchange_id" TEXT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_item_return_id" ON "order_item" (
-        return_id
-    )
-    WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_item_claim_id" ON "order_item" (
-        claim_id
-    )
-    WHERE claim_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-    CREATE INDEX IF NOT EXISTS "IDX_order_item_exchange_id" ON "order_item" (
-        exchange_id
-    )
-    WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
-
-
 
     ALTER TABLE "order_transaction"
     ADD COLUMN if NOT exists "return_id" TEXT NULL;
@@ -205,6 +180,36 @@ export class Migration20240604100512 extends Migration {
     WHERE deleted_at IS NOT NULL;
 
 
+    CREATE TABLE IF NOT EXISTS "return_item" (
+        "id" TEXT NOT NULL,
+        "return_id" TEXT NOT NULL,
+        "reason_id" TEXT NOT NULL,
+        "item_id" TEXT NOT NULL,
+        "quantity" NUMERIC NOT NULL,
+        "raw_quantity" JSONB NOT NULL,
+        "received_quantity" NUMERIC NOT NULL DEFAULT 0,
+        "raw_received_quantity" JSONB NOT NULL,
+        "note" TEXT NULL,
+        "metadata" JSONB NULL,
+        "created_at" timestamptz NOT NULL DEFAULT now(),
+        "updated_at" timestamptz NOT NULL DEFAULT now(),
+        "deleted_at" timestamptz NULL,
+        CONSTRAINT "return_item_pkey" PRIMARY KEY ("id")
+    );
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_item_deleted_at" ON "return_item" ("deleted_at")
+    WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_item_return_id" ON "return_item" ("return_id")
+    WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_item_item_id" ON "return_item" ("item_id")
+    WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_return_item_reason_id" ON "return_item" ("reason_id")
+    WHERE deleted_at IS NOT NULL;
+
+
 
     CREATE TABLE IF NOT EXISTS "order_exchange" (
         "id" TEXT NOT NULL,
@@ -237,6 +242,30 @@ export class Migration20240604100512 extends Migration {
 
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_return_id" ON "order_exchange" ("return_id")
     WHERE return_id IS NOT NULL AND deleted_at IS NOT NULL;
+
+
+    CREATE TABLE IF NOT EXISTS "order_exchange_item" (
+        "id" TEXT NOT NULL,
+        "exchange_id" TEXT NOT NULL,
+        "item_id" TEXT NOT NULL,
+        "quantity" NUMERIC NOT NULL,
+        "raw_quantity" JSONB NOT NULL,
+        "note" TEXT NULL,
+        "metadata" JSONB NULL,
+        "created_at" timestamptz NOT NULL DEFAULT now(),
+        "updated_at" timestamptz NOT NULL DEFAULT now(),
+        "deleted_at" timestamptz NULL,
+        CONSTRAINT "order_exchange_item_pkey" PRIMARY KEY ("id")
+    );
+
+    CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_deleted_at" ON "order_exchange_item" ("deleted_at")
+    WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_exchange_id" ON "order_exchange_item" ("exchange_id")
+    WHERE deleted_at IS NOT NULL;
+
+    CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_item_id" ON "order_exchange_item" ("item_id")
+    WHERE deleted_at IS NOT NULL;
 
 
 
@@ -288,7 +317,10 @@ export class Migration20240604100512 extends Migration {
         "id" TEXT NOT NULL,
         "claim_id" TEXT NOT NULL,
         "item_id" TEXT NOT NULL,
-        "reason" claim_reason_enum NOT NULL,
+        "is_additional_item" BOOLEAN NOT NULL DEFAULT FALSE,
+        "reason" claim_reason_enum NULL,
+        "quantity" NUMERIC NOT NULL,
+        "raw_quantity" JSONB NOT NULL,
         "note" TEXT NULL,
         "metadata" JSONB NULL,
         "created_at" timestamptz NOT NULL DEFAULT now(),

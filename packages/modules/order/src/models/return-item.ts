@@ -1,37 +1,38 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
-  ClaimReason,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
-  Collection,
   Entity,
-  Enum,
   ManyToOne,
   OnInit,
-  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import Claim from "./claim"
-import ClaimItemImage from "./claim-item-image"
 import LineItem from "./line-item"
+import Return from "./return"
+import ReturnReason from "./return-reason"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 
-const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
-  columns: "claim_id",
+const ReturnIdIndex = createPsqlIndexStatementHelper({
+  tableName: "return_item",
+  columns: "return_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const ReturnReasonIdIndex = createPsqlIndexStatementHelper({
+  tableName: "return_item",
+  columns: "reason_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
+  tableName: "return_item",
   columns: "item_id",
   where: "deleted_at IS NOT NULL",
 })
@@ -42,20 +43,25 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_claim_item" })
-export default class OrderClaimItem {
+@Entity({ tableName: "return_item" })
+export default class ReturnItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @OneToMany(() => ClaimItemImage, (ci) => ci.item, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE],
+  @ManyToOne(() => ReturnReason, {
+    columnType: "text",
+    fieldName: "reason_id",
+    mapToPk: true,
   })
-  images = new Collection<ClaimItemImage>(this)
+  @ReturnReasonIdIndex.MikroORMIndex()
+  reason_id: string
 
-  @Enum({ items: () => ClaimReason, nullable: true })
-  reason: ClaimReason | null = null
+  @ManyToOne(() => ReturnReason, {
+    persist: false,
+  })
+  reason: ReturnReason
 
   @MikroOrmBigNumberProperty()
   quantity: Number | number
@@ -63,19 +69,25 @@ export default class OrderClaimItem {
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue
 
-  @ManyToOne(() => Claim, {
+  @MikroOrmBigNumberProperty()
+  received_quantity: Number | number = 0
+
+  @Property({ columnType: "jsonb" })
+  raw_received_quantity: BigNumberRawValue
+
+  @ManyToOne(() => Return, {
     columnType: "text",
-    fieldName: "claim_id",
+    fieldName: "return_id",
     mapToPk: true,
     onDelete: "cascade",
   })
-  @ClaimIdIndex.MikroORMIndex()
-  claim_id: string
+  @ReturnIdIndex.MikroORMIndex()
+  return_id: string
 
-  @ManyToOne(() => Claim, {
+  @ManyToOne(() => Return, {
     persist: false,
   })
-  claim: Claim
+  return: Return
 
   @ManyToOne({
     entity: () => LineItem,
@@ -90,9 +102,6 @@ export default class OrderClaimItem {
     persist: false,
   })
   item: LineItem
-
-  @Property({ columnType: "boolean", default: false })
-  is_additional_item: boolean = false
 
   @Property({ columnType: "text", nullable: true })
   note: string
@@ -121,13 +130,13 @@ export default class OrderClaimItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
-    this.claim_id = this.claim?.id
+    this.id = generateEntityId(this.id, "ordreturnitem")
+    this.return_id = this.return?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
-    this.claim_id = this.claim?.id
+    this.id = generateEntityId(this.id, "ordreturnitem")
+    this.return_id = this.return?.id
   }
 }

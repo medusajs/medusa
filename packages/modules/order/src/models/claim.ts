@@ -22,7 +22,6 @@ import {
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 import Order from "./order"
-import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
 
@@ -110,12 +109,12 @@ export default class OrderClaim {
   @Property({ columnType: "jsonb", nullable: true })
   raw_refund_amount: BigNumberRawValue
 
-  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.claim, {
+  @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  additional_items = new Collection<ClaimItem>(this)
 
-  @OneToMany(() => ClaimItem, (itemDetail) => itemDetail.claim, {
+  @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
   claim_items = new Collection<ClaimItem>(this)

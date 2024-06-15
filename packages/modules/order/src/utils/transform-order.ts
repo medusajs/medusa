@@ -5,18 +5,31 @@ import {
   deduplicate,
   isDefined,
 } from "@medusajs/utils"
+import { Order, OrderClaim, OrderExchange } from "@models"
 
 export function formatOrder(
   order,
-  options: {
+  options?: {
     includeTotals?: boolean
+    entity?: any
   }
-): OrderTypes.OrderDTO | OrderTypes.OrderDTO[] {
+): Partial<OrderTypes.OrderDTO> | Partial<OrderTypes.OrderDTO>[] {
   const isArray = Array.isArray(order)
   const orders = [...(isArray ? order : [order])]
 
   orders.map((order) => {
-    order.items = order.items?.map((orderItem) => {
+    let mainOrder = order
+
+    const isRelatedEntity = options?.entity && options?.entity !== Order
+    if (isRelatedEntity) {
+      if (!order.order) {
+        return order
+      }
+
+      mainOrder = order.order
+    }
+
+    mainOrder.items = mainOrder.items?.map((orderItem) => {
       const detail = { ...orderItem }
       delete detail.order
       delete detail.item
@@ -29,30 +42,87 @@ export function formatOrder(
       }
     })
 
-    order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
-      const sm = { ...shippingMethod.shipping_method }
-
-      delete shippingMethod.shipping_method
-      return {
-        ...sm,
-        order_id: shippingMethod.order_id,
-        detail: {
-          ...shippingMethod,
-        },
+    if (isRelatedEntity) {
+      if (options.entity === OrderClaim) {
+        formatClaim(order)
+      } else if (options.entity === OrderExchange) {
+        formatExchange(order)
       }
-    })
+    }
 
-    order.summary = order.summary?.[0]?.totals
+    if (order.shipping_methods) {
+      order.shipping_methods = order.shipping_methods?.map((shippingMethod) => {
+        const sm = { ...shippingMethod.shipping_method }
 
-    return options?.includeTotals
-      ? createRawPropertiesFromBigNumber(decorateCartTotals(order))
-      : order
+        delete shippingMethod.shipping_method
+        return {
+          ...sm,
+          order_id: shippingMethod.order_id,
+          detail: {
+            ...shippingMethod,
+          },
+        }
+      })
+    }
+
+    if (mainOrder.summary) {
+      mainOrder.summary = mainOrder.summary?.[0]?.totals
+    }
+
+    return createRawPropertiesFromBigNumber(
+      options?.includeTotals ? decorateCartTotals(order) : order
+    )
   })
 
   return isArray ? orders : orders[0]
 }
 
-export function mapRepositoryToOrderModel(config) {
+function formatClaim(claim) {
+  if (claim.additional_items) {
+    claim.additional_items = claim.additional_items.filter(
+      (item) => item.is_additional_item
+    )
+
+    claim.additional_items.forEach((orderItem) => {
+      const item = claim.order.items?.find(
+        (item) => item.id === orderItem.item_id
+      )
+
+      orderItem.detail = item?.detail
+    })
+  }
+
+  if (!claim.claim_items) {
+    return
+  }
+
+  claim.claim_items = claim.claim_items.filter(
+    (item) => !item.is_additional_item
+  )
+  claim.claim_items.forEach((orderItem) => {
+    const item = claim.order.items?.find(
+      (item) => item.id === orderItem.item_id
+    )
+
+    orderItem.detail = item?.detail
+  })
+}
+
+function formatExchange(exchange) {
+  if (!exchange.additional_items) {
+    return
+  }
+
+  exchange.additional_items.forEach((orderItem) => {
+    const item = exchange.order.items?.find(
+      (item) => item.id === orderItem.item_id
+    )
+
+    orderItem.detail = item?.detail
+  })
+}
+
+export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
   const conf = { ...config }
 
   function replace(obj, type): string[] | undefined {

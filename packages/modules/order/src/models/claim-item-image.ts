@@ -77,10 +77,12 @@ export default class ClaimItemImage {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ordclaimimg")
+    this.claim_item_id = this.item?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordclaimimg")
+    this.claim_item_id = this.item?.id
   }
 }

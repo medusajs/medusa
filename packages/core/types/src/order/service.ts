@@ -16,7 +16,10 @@ import {
   OrderAddressDTO,
   OrderChangeActionDTO,
   OrderChangeDTO,
+  OrderChangeReturn,
+  OrderClaimDTO,
   OrderDTO,
+  OrderExchangeDTO,
   OrderItemDTO,
   OrderLineItemAdjustmentDTO,
   OrderLineItemDTO,
@@ -36,6 +39,7 @@ import {
   CreateOrderAdjustmentDTO,
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
+  CreateOrderClaimDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
@@ -148,6 +152,42 @@ export interface IOrderModuleService extends IModuleService {
     config?: FindConfig<ReturnDTO>,
     sharedContext?: Context
   ): Promise<[ReturnDTO[], number]>
+
+  retrieveOrderClaim(
+    claimnId: string,
+    config?: FindConfig<OrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
+  listOrderClaims(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<OrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO[]>
+
+  listAndCountOrderClaims(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<OrderClaimDTO>,
+    sharedContext?: Context
+  ): Promise<[OrderClaimDTO[], number]>
+
+  retrieveOrderExchange(
+    claimnId: string,
+    config?: FindConfig<OrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  listOrderExchanges(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<OrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO[]>
+
+  listAndCountOrderExchanges(
+    filters?: FilterableOrderProps,
+    config?: FindConfig<OrderExchangeDTO>,
+    sharedContext?: Context
+  ): Promise<[OrderExchangeDTO[], number]>
 
   /**
    * This method creates {return type}(s)
@@ -1154,7 +1194,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @param {string} orderId - The order's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
+   * @returns {Promise<OrderChangeReturn>} Resolves when {summary}
    *
    * @example
    * ```typescript
@@ -1165,7 +1205,7 @@ export interface IOrderModuleService extends IModuleService {
   confirmOrderChange(
     orderChangeId: string,
     sharedContext?: Context
-  ): Promise<void>
+  ): Promise<OrderChangeReturn>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1310,7 +1350,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @param {string | string[]} orderId - The order's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {(orderId: string | string[], sharedContext?: Context) => any} {summary}
+   * @returns {(orderId: string | string[], sharedContext?: Context) => Promise<OrderChangeReturn>} {summary}
    *
    * @example
    * ```typescript
@@ -1318,7 +1358,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
+  applyPendingOrderActions(
+    orderId: string | string[],
+    sharedContext?: Context
+  ): Promise<OrderChangeReturn>
 
   addOrderAction(
     data: CreateOrderChangeActionDTO,
@@ -1545,4 +1588,9 @@ export interface IOrderModuleService extends IModuleService {
     returnData: ReceiveOrderReturnDTO,
     sharedContext?: Context
   ): Promise<any> // TODO: ReturnDTO
+
+  createClaim(
+    claimData: CreateOrderClaimDTO,
+    sharedContext?: Context
+  ): Promise<any> // TODO: ClaimDTO
 }

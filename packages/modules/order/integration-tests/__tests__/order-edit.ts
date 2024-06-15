@@ -142,6 +142,7 @@ moduleIntegrationTestRunner({
               createdOrder.items![0].unit_price *
               createdOrder.items![0].quantity,
             details: {
+              reference_id: createdOrder.items![0].id,
               quantity: 1,
             },
           },
@@ -155,6 +156,7 @@ moduleIntegrationTestRunner({
               createdOrder.items![1].unit_price *
               createdOrder.items![1].quantity,
             details: {
+              reference_id: createdOrder.items![1].id,
               quantity: 3,
             },
           },
@@ -362,6 +364,7 @@ moduleIntegrationTestRunner({
                 createdOrder.items![1].unit_price *
                 createdOrder.items![1].quantity,
               details: {
+                reference_id: createdOrder.items![1].id,
                 quantity: 3,
               },
             },
@@ -570,6 +573,7 @@ moduleIntegrationTestRunner({
                 createdOrder.items![0].unit_price *
                 createdOrder.items![0].quantity,
               details: {
+                reference_id: createdOrder.items![0].id,
                 quantity: 1,
               },
             },

@@ -71,8 +71,8 @@ describe("Order Exchange - Actions", function () {
       },
       {
         action: ChangeActionType.ITEM_ADD,
-        reference_id: "item_555",
         details: {
+          reference_id: "item_555",
           unit_price: 50,
           quantity: 1,
         },
