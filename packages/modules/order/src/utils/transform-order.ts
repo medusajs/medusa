@@ -5,7 +5,7 @@ import {
   deduplicate,
   isDefined,
 } from "@medusajs/utils"
-import { Order, OrderClaim, OrderExchange } from "@models"
+import { Order, OrderClaim, OrderExchange, Return } from "@models"
 
 export function formatOrder(
   order,
@@ -47,6 +47,8 @@ export function formatOrder(
         formatClaim(order)
       } else if (options.entity === OrderExchange) {
         formatExchange(order)
+      } else if (options.entity === Return) {
+        formatReturn(order)
       }
     }
 
@@ -115,6 +117,20 @@ function formatExchange(exchange) {
 
   exchange.additional_items.forEach((orderItem) => {
     const item = exchange.order.items?.find(
+      (item) => item.id === orderItem.item_id
+    )
+
+    orderItem.detail = item?.detail
+  })
+}
+
+function formatReturn(returnOrder) {
+  if (!returnOrder.items) {
+    return
+  }
+
+  returnOrder.items.forEach((orderItem) => {
+    const item = returnOrder.order.items?.find(
       (item) => item.id === orderItem.item_id
     )
 
