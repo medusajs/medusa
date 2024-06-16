@@ -4,101 +4,67 @@ import {
   OrderTypes,
 } from "@medusajs/types"
 import {
-  ClaimType,
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
   promiseAll,
 } from "@medusajs/utils"
-import { ClaimItem, OrderClaim, Return, ReturnItem } from "@models"
+import { ExchangeItem, OrderExchange, Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
-function createClaimAndReturnEntities(em, data, order) {
-  const claimReference = em.create(OrderClaim, {
+function createExchangeAndReturnEntities(em, data, order) {
+  const exchangeReference = em.create(OrderExchange, {
     order_id: data.order_id,
     order_version: order.version,
-    type: data.type as ClaimType,
     no_notification: data.no_notification,
+    allow_backorder: data.allow_backorder,
+    difference_due: data.difference_due,
+  })
+
+  const returnReference = em.create(Return, {
+    order_id: data.order_id,
+    order_version: order.version,
+    status: ReturnStatus.REQUESTED,
+    exchange_id: exchangeReference.id,
     refund_amount: (data.refund_amount as unknown) ?? null,
   })
 
-  const returnReference =
-    data.type === ClaimType.REPLACE
-      ? em.create(Return, {
-          order_id: data.order_id,
-          order_version: order.version,
-          status: ReturnStatus.REQUESTED,
-          claim_id: claimReference.id,
-          refund_amount: (data.refund_amount as unknown) ?? null,
-        })
-      : undefined
+  exchangeReference.return_id = returnReference.id
 
-  claimReference.return_id = returnReference?.id
-
-  return { claimReference, returnReference }
+  return { exchangeReference, returnReference }
 }
 
-function createReturnItem(em, item, claimReference, returnReference, actions) {
-  actions.push({
-    action: ChangeActionType.RETURN_ITEM,
-    reference: "return",
-    reference_id: returnReference.id,
-    details: {
-      reference_id: item.id,
-      return_id: returnReference.id,
-      claim_id: claimReference.id,
-      quantity: item.quantity,
-      metadata: item.metadata,
-    },
-  })
-
-  return em.create(ReturnItem, {
-    item_id: item.id,
-    return_id: returnReference.id,
-    quantity: item.quantity,
-    note: item.note,
-    metadata: item.metadata,
-  })
-}
-
-function createClaimAndReturnItems(
+function createReturnItems(
   em,
   data,
-  claimReference,
+  exchangeReference,
   returnReference,
   actions
 ) {
-  const returnItems: ReturnItem[] = []
-  const claimItems = data.claim_items?.map((item) => {
+  return data.return_items?.map((item) => {
     actions.push({
-      action: ChangeActionType.WRITE_OFF_ITEM,
-      reference: "claim",
-      reference_id: claimReference.id,
+      action: ChangeActionType.RETURN_ITEM,
+      reference: "return",
+      reference_id: returnReference.id,
       details: {
         reference_id: item.id,
-        claim_id: claimReference.id,
+        return_id: returnReference.id,
+        exchange_id: exchangeReference.id,
         quantity: item.quantity,
         metadata: item.metadata,
       },
     })
 
-    returnItems.push(
-      returnReference
-        ? createReturnItem(em, item, claimReference, returnReference, actions)
-        : undefined
-    )
-
-    return em.create(ClaimItem, {
+    return em.create(ReturnItem, {
       item_id: item.id,
+      return_id: returnReference.id,
       reason: item.reason,
       quantity: item.quantity,
       note: item.note,
       metadata: item.metadata,
     })
   })
-
-  return [claimItems, returnItems]
 }
 
 async function processAdditionalItems(
@@ -106,13 +72,13 @@ async function processAdditionalItems(
   service,
   data,
   order,
-  claimReference,
+  exchangeReference,
   actions,
   sharedContext
 ) {
   const itemsToAdd: any[] = []
-  const additionalNewItems: ClaimItem[] = []
-  const additionalItems: ClaimItem[] = []
+  const additionalNewItems: ExchangeItem[] = []
+  const additionalItems: ExchangeItem[] = []
   data.additional_items?.forEach((item) => {
     const hasItem = item.id
       ? order.items.find((o) => o.item.id === item.id)
@@ -121,20 +87,20 @@ async function processAdditionalItems(
     if (hasItem) {
       actions.push({
         action: ChangeActionType.ITEM_ADD,
-        claim_id: claimReference.id,
+        exchange_id: exchangeReference.id,
         internal_note: item.internal_note,
-        reference: "claim",
-        reference_id: claimReference.id,
+        reference: "exchange",
+        reference_id: exchangeReference.id,
         details: {
           reference_id: item.id,
-          claim_id: claimReference.id,
+          exchange_id: exchangeReference.id,
           quantity: item.quantity,
           metadata: item.metadata,
         },
       })
 
       additionalItems.push(
-        em.create(ClaimItem, {
+        em.create(ExchangeItem, {
           item_id: item.id,
           quantity: item.quantity,
           note: item.note,
@@ -146,7 +112,7 @@ async function processAdditionalItems(
       itemsToAdd.push(item)
 
       additionalNewItems.push(
-        em.create(ClaimItem, {
+        em.create(ExchangeItem, {
           quantity: item.quantity,
           note: item.note,
           metadata: item.metadata,
@@ -166,13 +132,13 @@ async function processAdditionalItems(
     additionalNewItems[index].item_id = item.id
     actions.push({
       action: ChangeActionType.ITEM_ADD,
-      claim_id: claimReference.id,
+      exchange_id: exchangeReference.id,
       internal_note: addedItem.internal_note,
-      reference: "claim",
-      reference_id: claimReference.id,
+      reference: "exchange",
+      reference_id: exchangeReference.id,
       details: {
         reference_id: item.id,
-        claim_id: claimReference.id,
+        exchange_id: exchangeReference.id,
         quantity: addedItem.quantity,
         metadata: addedItem.metadata,
       },
@@ -185,7 +151,7 @@ async function processAdditionalItems(
 async function processShippingMethods(
   service,
   data,
-  claimReference,
+  exchangeReference,
   actions,
   sharedContext
 ) {
@@ -197,7 +163,7 @@ async function processShippingMethods(
         [
           {
             order_id: data.order_id,
-            claim_id: claimReference.id,
+            exchange_id: exchangeReference.id,
             ...shippingMethod,
           },
         ],
@@ -222,7 +188,7 @@ async function processShippingMethods(
       action: ChangeActionType.SHIPPING_ADD,
       reference: "order_shipping_method",
       reference_id: shippingMethodId,
-      claim_id: claimReference.id,
+      exchange_id: exchangeReference.id,
       amount: calculatedAmount.total,
     })
   }
@@ -231,59 +197,53 @@ async function processShippingMethods(
 async function processReturnShipping(
   service,
   data,
-  claimReference,
+  exchangeReference,
   returnReference,
   actions,
   sharedContext
 ) {
-  if (!returnReference) {
-    return
-  }
+  let returnShippingMethodId
 
-  if (data.return_shipping) {
-    let returnShippingMethodId
-
-    if (!isString(data.return_shipping)) {
-      const methods = await service.createShippingMethods(
-        [
-          {
-            order_id: data.order_id,
-            claim_id: claimReference.id,
-            return_id: returnReference.id,
-            ...data.return_shipping,
-          },
-        ],
-        sharedContext
-      )
-      returnShippingMethodId = methods[0].id
-    } else {
-      returnShippingMethodId = data.return_shipping
-    }
-
-    const method = await service.retrieveShippingMethod(
-      returnShippingMethodId,
-      { relations: ["tax_lines", "adjustments"] },
+  if (!isString(data.return_shipping)) {
+    const methods = await service.createShippingMethods(
+      [
+        {
+          order_id: data.order_id,
+          exchange_id: exchangeReference.id,
+          return_id: returnReference.id,
+          ...data.return_shipping,
+        },
+      ],
       sharedContext
     )
-
-    const calculatedAmount = getShippingMethodsTotals([method as any], {})[
-      method.id
-    ]
-
-    actions.push({
-      action: ChangeActionType.SHIPPING_ADD,
-      reference: "order_shipping_method",
-      reference_id: returnShippingMethodId,
-      return_id: returnReference.id,
-      claim_id: claimReference.id,
-      amount: calculatedAmount.total,
-    })
+    returnShippingMethodId = methods[0].id
+  } else {
+    returnShippingMethodId = data.return_shipping
   }
+
+  const method = await service.retrieveShippingMethod(
+    returnShippingMethodId,
+    { relations: ["tax_lines", "adjustments"] },
+    sharedContext
+  )
+
+  const calculatedAmount = getShippingMethodsTotals([method as any], {})[
+    method.id
+  ]
+
+  actions.push({
+    action: ChangeActionType.SHIPPING_ADD,
+    reference: "order_shipping_method",
+    reference_id: returnShippingMethodId,
+    return_id: returnReference.id,
+    exchange_id: exchangeReference.id,
+    amount: calculatedAmount.total,
+  })
 }
 
-export async function createClaim(
+export async function createExchange(
   this: any,
-  data: OrderTypes.CreateOrderClaimDTO,
+  data: OrderTypes.CreateOrderExchangeDTO,
   sharedContext?: Context
 ) {
   const order = await this.orderService_.retrieve(
@@ -293,46 +253,37 @@ export async function createClaim(
   )
   const actions: CreateOrderChangeActionDTO[] = []
   const em = sharedContext!.transactionManager as any
-  const { claimReference, returnReference } = createClaimAndReturnEntities(
-    em,
-    data,
-    order
-  )
+  const { exchangeReference, returnReference } =
+    createExchangeAndReturnEntities(em, data, order)
 
-  const [claimItems, returnItems] = createClaimAndReturnItems(
+  returnReference.items = createReturnItems(
     em,
     data,
-    claimReference,
+    exchangeReference,
     returnReference,
     actions
   )
 
-  claimReference.claim_items = claimItems
-
-  if (returnReference) {
-    returnReference.items = returnItems
-  }
-
-  claimReference.additional_items = await processAdditionalItems(
+  exchangeReference.additional_items = await processAdditionalItems(
     em,
     this,
     data,
     order,
-    claimReference,
+    exchangeReference,
     actions,
     sharedContext
   )
   await processShippingMethods(
     this,
     data,
-    claimReference,
+    exchangeReference,
     actions,
     sharedContext
   )
   await processReturnShipping(
     this,
     data,
-    claimReference,
+    exchangeReference,
     returnReference,
     actions,
     sharedContext
@@ -341,11 +292,11 @@ export async function createClaim(
   const change = await this.createOrderChange_(
     {
       order_id: data.order_id,
-      claim_id: claimReference.id,
+      exchange_id: exchangeReference.id,
       return_id: returnReference.id,
       change_type: OrderChangeType.CLAIM,
-      reference: "claim",
-      reference_id: claimReference.id,
+      reference: "exchange",
+      reference_id: exchangeReference.id,
       description: data.description,
       internal_note: data.internal_note,
       created_by: data.created_by,
@@ -357,9 +308,9 @@ export async function createClaim(
 
   await promiseAll([
     this.createReturns([returnReference], sharedContext),
-    this.createOrderClaims([claimReference], sharedContext),
+    this.createOrderExchanges([exchangeReference], sharedContext),
     this.confirmOrderChange(change[0].id, sharedContext),
   ])
 
-  return claimReference
+  return exchangeReference
 }

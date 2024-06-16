@@ -121,13 +121,13 @@ export default class OrderClaimItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
+    this.id = generateEntityId(this.id, "claitem")
     this.claim_id = this.claim?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
+    this.id = generateEntityId(this.id, "claitem")
     this.claim_id = this.claim?.id
   }
 }

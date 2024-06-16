@@ -1113,19 +1113,25 @@ type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
 
 export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
   status: ReturnStatus
+  refund_amount?: BigNumberValue
 }
 
 export interface OrderClaimDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
   claim_items: any[]
   additional_items: any[]
-  retun?: ReturnDTO
+  return?: ReturnDTO
+  no_notification?: boolean
+  refund_amount?: BigNumberValue
 }
 
 export interface OrderExchangeDTO
   extends Omit<OrderDTO, "status" | "version" | "items"> {
+  return_items: any[]
   additional_items: any[]
-  retun?: ReturnDTO
+  no_notification?: boolean
+  difference_due?: BigNumberValue
+  return?: ReturnDTO
 }
 
 export type PaymentStatus =

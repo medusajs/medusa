@@ -1,6 +1,5 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { ClaimType } from "@medusajs/utils"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
@@ -8,7 +7,7 @@ jest.setTimeout(100000)
 moduleIntegrationTestRunner({
   moduleName: Modules.ORDER,
   testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
-    describe("Order Module Service - Claim flows", () => {
+    describe("Order Module Service - Exchange flows", () => {
       const input = {
         email: "foo@bar.com",
         items: [
@@ -103,7 +102,7 @@ moduleIntegrationTestRunner({
         customer_id: "joe",
       } as CreateOrderDTO
 
-      it("should claim an item and add two new items to the order", async function () {
+      it("should exchange an item and add two new items to the order", async function () {
         const createdOrder = await service.create(input)
 
         // Fullfilment
@@ -129,24 +128,30 @@ moduleIntegrationTestRunner({
           }),
         })
 
-        // Claim
-        const orderClaim = await service.createClaim({
+        // Exchange
+        const reason = await service.createReturnReasons({
+          value: "wrong-size",
+          label: "Wrong Size",
+        })
+
+        const orderExchange = await service.createExchange({
           order_id: createdOrder.id,
-          type: ClaimType.REPLACE,
-          description: "Claim all the items",
+          description: "Exchange all the items",
           internal_note: "user wants to return all items",
+          difference_due: 14,
           shipping_methods: [
             {
-              name: "Claim method",
+              name: "Exchange method",
               amount: 35,
               provider_id: "dhl",
             },
           ],
-          claim_items: [
+          return_items: [
             {
-              id: createdOrder.items![1].id,
+              id: createdOrder.items![0].id,
+              reason_id: reason.id,
               quantity: 1,
-              reason: "production_failure",
+              note: "I don't need this",
             },
           ],
           additional_items: [
@@ -168,26 +173,24 @@ moduleIntegrationTestRunner({
           },
         })
 
-        expect(orderClaim).toEqual(
+        expect(orderExchange).toEqual(
           expect.objectContaining({
-            id: orderClaim.id,
+            id: orderExchange.id,
             order_id: createdOrder.id,
             return: expect.objectContaining({
               order_id: createdOrder.id,
-              claim_id: orderClaim.id,
+              exchange_id: orderExchange.id,
               status: "requested",
               items: expect.arrayContaining([
                 expect.objectContaining({
-                  item_id: createdOrder.items![1].id,
+                  item_id: createdOrder.items![0].id,
                   quantity: 1,
                 }),
               ]),
             }),
-            type: "replace",
             additional_items: expect.arrayContaining([
               expect.objectContaining({
-                claim_id: orderClaim.id,
-                is_additional_item: true,
+                exchange_id: orderExchange.id,
                 quantity: 1,
                 item: expect.objectContaining({
                   title: "New item",
@@ -197,9 +200,8 @@ moduleIntegrationTestRunner({
                 }),
               }),
               expect.objectContaining({
-                claim_id: orderClaim.id,
+                exchange_id: orderExchange.id,
                 item_id: createdOrder.items![2].id,
-                is_additional_item: true,
                 quantity: 1,
                 item: expect.objectContaining({
                   title: "Item 3",
@@ -209,31 +211,17 @@ moduleIntegrationTestRunner({
                 }),
               }),
             ]),
-            claim_items: [
-              expect.objectContaining({
-                reason: "production_failure",
-                claim_id: orderClaim.id,
-                is_additional_item: false,
-                quantity: 1,
-                item: expect.objectContaining({
-                  title: "Item 2",
-                }),
-                detail: expect.objectContaining({
-                  quantity: 2,
-                }),
-              }),
-            ],
             shipping_methods: [
               expect.objectContaining({
                 name: "return shipping method",
                 amount: 10,
               }),
               expect.objectContaining({
-                name: "Claim method",
+                name: "Exchange method",
                 amount: 35,
               }),
             ],
-            refund_amount: null,
+            difference_due: 14,
           })
         )
       })

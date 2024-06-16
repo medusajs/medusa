@@ -19,13 +19,13 @@ import LineItem from "./line-item"
 type OptionalLineItemProps = DAL.EntityDateColumns
 
 const ExchangeIdIndex = createPsqlIndexStatementHelper({
-  tableName: "exchange_item",
+  tableName: "order_exchange_item",
   columns: "exchange_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "exchange_item",
+  tableName: "order_exchange_item",
   columns: "item_id",
   where: "deleted_at IS NOT NULL",
 })
@@ -36,7 +36,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "exchange_item" })
+@Entity({ tableName: "order_exchange_item" })
 export default class OrderExchangeItem {
   [OptionalProps]?: OptionalLineItemProps
 
@@ -104,13 +104,13 @@ export default class OrderExchangeItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordexchangeitem")
+    this.id = generateEntityId(this.id, "oexcitem")
     this.exchange_id = this.exchange?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordexchangeitem")
+    this.id = generateEntityId(this.id, "oexcitem")
     this.exchange_id = this.exchange?.id
   }
 }

@@ -54,9 +54,10 @@ export default class ReturnItem {
     columnType: "text",
     fieldName: "reason_id",
     mapToPk: true,
+    nullable: true,
   })
   @ReturnReasonIdIndex.MikroORMIndex()
-  reason_id: string
+  reason_id: string | null = null
 
   @ManyToOne(() => ReturnReason, {
     persist: false,
@@ -130,13 +131,13 @@ export default class ReturnItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordreturnitem")
+    this.id = generateEntityId(this.id, "retitem")
     this.return_id = this.return?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordreturnitem")
+    this.id = generateEntityId(this.id, "retitem")
     this.return_id = this.return?.id
   }
 }

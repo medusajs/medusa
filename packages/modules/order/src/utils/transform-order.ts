@@ -44,6 +44,10 @@ export function formatOrder(
     })
 
     if (isRelatedEntity) {
+      if (order.return) {
+        formatOrderReturn(order.return, mainOrder)
+      }
+
       if (options.entity === OrderClaim) {
         formatClaim(order)
       } else if (options.entity === OrderExchange) {
@@ -78,6 +82,17 @@ export function formatOrder(
   })
 
   return isArray ? orders : orders[0]
+}
+
+function formatOrderReturn(orderReturn, mainOrder) {
+  orderReturn.items = orderReturn.items.filter(
+    (item) => !item.is_additional_item
+  )
+  orderReturn.items.forEach((orderItem) => {
+    const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
+
+    orderItem.detail = item?.detail
+  })
 }
 
 function formatClaim(claim) {

@@ -24,6 +24,7 @@ import ClaimItem from "./claim-item"
 import Order from "./order"
 import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
+import Transaction from "./transaction"
 
 type OptionalOrderClaimProps = DAL.EntityDateColumns
 
@@ -128,6 +129,11 @@ export default class OrderClaim {
   )
   shipping_methods = new Collection<OrderShippingMethod>(this)
 
+  @OneToMany(() => Transaction, (transaction) => transaction.claim, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Transaction>(this)
+
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
 
@@ -155,11 +161,11 @@ export default class OrderClaim {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordclaim")
+    this.id = generateEntityId(this.id, "claim")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordclaim")
+    this.id = generateEntityId(this.id, "claim")
   }
 }

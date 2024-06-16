@@ -2842,17 +2842,61 @@ export default class OrderModuleService<
       {
         relations: [
           "additional_items",
+          "additional_items.item",
           "claim_items",
           "claim_items.item",
           "return",
           "return.items",
           "shipping_methods",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+          "transactions",
         ],
       },
       sharedContext
     )
 
     return await this.baseRepository_.serialize<OrderTypes.OrderClaimDTO[]>(
+      claim,
+      {
+        populate: true,
+      }
+    )
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  async createExchange_(
+    data: OrderTypes.CreateOrderExchangeDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<any> {
+    return await BundledActions.createExchange.bind(this)(data, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async createExchange(
+    data: OrderTypes.CreateOrderExchangeDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<any> {
+    const ret = await this.createExchange_(data, sharedContext)
+
+    const claim = await this.retrieveOrderExchange(
+      ret.id,
+      {
+        relations: [
+          "additional_items",
+          "additional_items.item",
+          "return",
+          "return.items",
+          "shipping_methods",
+          "shipping_methods.tax_lines",
+          "shipping_methods.adjustments",
+          "transactions",
+        ],
+      },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<OrderTypes.OrderExchangeDTO[]>(
       claim,
       {
         populate: true,

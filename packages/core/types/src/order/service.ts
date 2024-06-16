@@ -41,6 +41,7 @@ import {
   CreateOrderChangeDTO,
   CreateOrderClaimDTO,
   CreateOrderDTO,
+  CreateOrderExchangeDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
@@ -1575,7 +1576,7 @@ export interface IOrderModuleService extends IModuleService {
   createReturn(
     returnData: CreateOrderReturnDTO,
     sharedContext?: Context
-  ): Promise<any> // TODO: ReturnDTO
+  ): Promise<ReturnDTO>
 
   /*
   cancelReturn(
@@ -1587,10 +1588,15 @@ export interface IOrderModuleService extends IModuleService {
   receiveReturn(
     returnData: ReceiveOrderReturnDTO,
     sharedContext?: Context
-  ): Promise<any> // TODO: ReturnDTO
+  ): Promise<ReturnDTO>
 
   createClaim(
     claimData: CreateOrderClaimDTO,
     sharedContext?: Context
-  ): Promise<any> // TODO: ClaimDTO
+  ): Promise<OrderClaimDTO>
+
+  createExchange(
+    exchangeData: CreateOrderExchangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
 }

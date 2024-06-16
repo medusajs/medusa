@@ -407,6 +407,7 @@ export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
 
 export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
   items: BaseOrderBundledItemActionsDTO[]
+  no_notification?: boolean
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
@@ -420,6 +421,7 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   }[]
   shipping_method?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   refund_amount?: BigNumberInput
+  no_notification?: boolean
 }
 
 export type OrderClaimType = "refund" | "replace"
@@ -441,6 +443,16 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
   return_shipping?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   refund_amount?: BigNumberInput
+  no_notification?: boolean
+}
+
+export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
+  additional_items?: BaseOrderBundledItemActionsDTO[]
+  shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
+  return_shipping: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  difference_due?: BigNumberInput
+  allow_backorder?: boolean
+  no_notification?: boolean
 }
 
 export interface CancelOrderReturnDTO {

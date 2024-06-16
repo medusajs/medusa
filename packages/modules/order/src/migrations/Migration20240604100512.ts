@@ -183,7 +183,7 @@ export class Migration20240604100512 extends Migration {
     CREATE TABLE IF NOT EXISTS "return_item" (
         "id" TEXT NOT NULL,
         "return_id" TEXT NOT NULL,
-        "reason_id" TEXT NOT NULL,
+        "reason_id" TEXT NULL,
         "item_id" TEXT NOT NULL,
         "quantity" NUMERIC NOT NULL,
         "raw_quantity" JSONB NOT NULL,
@@ -218,8 +218,6 @@ export class Migration20240604100512 extends Migration {
         "order_version" INTEGER NOT NULL,
         "display_id" SERIAL,
         "no_notification" BOOLEAN NULL,
-        "refund_amount" NUMERIC NULL,
-        "raw_refund_amount" JSONB NULL,
         "allow_backorder" BOOLEAN NOT NULL DEFAULT FALSE,
         "difference_due" NUMERIC NULL,
         "raw_difference_due" JSONB NULL,
