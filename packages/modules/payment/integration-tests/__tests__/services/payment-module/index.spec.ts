@@ -173,7 +173,7 @@ moduleIntegrationTestRunner({
         })
 
         describe("delete", () => {
-          it.skip("should delete a Payment Collection", async () => {
+          it("should delete a Payment Collection", async () => {
             let collection = await service.listPaymentCollections({
               id: ["pay-col-id-1"],
             })
