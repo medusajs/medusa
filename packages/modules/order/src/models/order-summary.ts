@@ -10,6 +10,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Order from "./order"
 
@@ -71,7 +72,7 @@ export default class OrderSummary {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @Property({
     columnType: "integer",

@@ -6,6 +6,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 
 import {
@@ -98,7 +99,7 @@ export class ReservationItem {
   @ManyToOne(() => InventoryItem, {
     persist: false,
   })
-  inventory_item: InventoryItem
+  inventory_item: Rel<InventoryItem>
 
   @BeforeCreate()
   private beforeCreate(): void {

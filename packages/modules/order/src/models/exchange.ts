@@ -17,6 +17,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Order from "./order"
 import OrderItem from "./order-item"
@@ -68,7 +69,7 @@ export default class OrderExchange {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @OneToOne({
     entity: () => Return,
@@ -78,7 +79,7 @@ export default class OrderExchange {
     nullable: true,
     owner: true,
   })
-  return: Return
+  return: Rel<Return>
 
   @Property({ columnType: "text", nullable: true })
   @ReturnIdIndex.MikroORMIndex()
@@ -118,7 +119,7 @@ export default class OrderExchange {
   @OneToMany(() => OrderItem, (itemDetail) => itemDetail.exchange, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  items = new Collection<Rel<OrderItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
@@ -127,7 +128,7 @@ export default class OrderExchange {
       cascade: [Cascade.PERSIST],
     }
   )
-  shipping_methods = new Collection<OrderShippingMethod>(this)
+  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

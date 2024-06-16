@@ -14,6 +14,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Price from "./price"
 import PriceRule from "./price-rule"
@@ -38,19 +39,19 @@ export default class PriceSet {
   @OneToMany(() => Price, (price) => price.price_set, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  prices = new Collection<Price>(this)
+  prices = new Collection<Rel<Price>>(this)
 
   @OneToMany(() => PriceRule, (pr) => pr.price_set, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  price_rules = new Collection<PriceRule>(this)
+  price_rules = new Collection<Rel<PriceRule>>(this)
 
   @ManyToMany({
     entity: () => RuleType,
     pivotEntity: () => PriceSetRuleType,
     cascade: ["soft-remove" as Cascade],
   })
-  rule_types = new Collection<RuleType>(this)
+  rule_types = new Collection<Rel<RuleType>>(this)
 
   @Property({
     onCreate: () => new Date(),

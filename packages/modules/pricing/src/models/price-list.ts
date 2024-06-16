@@ -20,6 +20,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Price from "./price"
 import PriceListRule from "./price-list-rule"
@@ -76,18 +77,18 @@ export default class PriceList {
   @OneToMany(() => Price, (price) => price.price_list, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  prices = new Collection<Price>(this)
+  prices = new Collection<Rel<Price>>(this)
 
   @OneToMany(() => PriceListRule, (pr) => pr.price_list, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  price_list_rules = new Collection<PriceListRule>(this)
+  price_list_rules = new Collection<Rel<PriceListRule>>(this)
 
   @ManyToMany({
     entity: () => RuleType,
     pivotEntity: () => PriceListRule,
   })
-  rule_types = new Collection<RuleType>(this)
+  rule_types = new Collection<Rel<RuleType>>(this)
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0

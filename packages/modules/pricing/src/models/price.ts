@@ -18,6 +18,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import PriceList from "./price-list"
 import PriceRule from "./price-rule"
@@ -87,7 +88,7 @@ export default class Price {
   price_set_id: string
 
   @ManyToOne(() => PriceSet, { persist: false })
-  price_set?: PriceSet
+  price_set?: Rel<PriceSet>
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0
@@ -97,7 +98,7 @@ export default class Price {
     mappedBy: (pr) => pr.price,
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  price_rules = new Collection<PriceRule>(this)
+  price_rules = new Collection<Rel<PriceRule>>(this)
 
   @PricePriceListIdIndex.MikroORMIndex()
   @ManyToOne(() => PriceList, {
@@ -110,7 +111,7 @@ export default class Price {
   price_list_id: string | null = null
 
   @ManyToOne(() => PriceList, { persist: false, nullable: true })
-  price_list: PriceList | null = null
+  price_list: Rel<PriceList> | null = null
 
   @Property({
     onCreate: () => new Date(),

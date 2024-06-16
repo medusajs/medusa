@@ -21,6 +21,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Campaign from "./campaign"
 
@@ -45,7 +46,7 @@ export default class CampaignBudget {
   @OneToOne({
     entity: () => Campaign,
   })
-  campaign: Campaign | null = null
+  campaign: Rel<Campaign> | null = null
 
   @Property({ columnType: "text", nullable: true })
   currency_code: string | null = null

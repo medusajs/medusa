@@ -80,7 +80,7 @@ export type LinkModuleBootstrapOptions = {
   injectedDependencies?: Record<string, any>
 }
 
-export class MedusaModule {
+class MedusaModule {
   private static instances_: Map<string, { [key: string]: IModuleService }> =
     new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
@@ -576,4 +576,6 @@ export class MedusaModule {
 }
 
 global.MedusaModule ??= MedusaModule
-exports.MedusaModule = global.MedusaModule
+const GlobalMedusaModule = global.MedusaModule as typeof MedusaModule
+
+export { GlobalMedusaModule as MedusaModule }

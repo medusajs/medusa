@@ -79,7 +79,7 @@ export class LocalWorkflow {
     } else if (Array.isArray(modulesLoaded) && modulesLoaded.length) {
       container = createMedusaContainer()
 
-      for (const mod of modulesLoaded) {
+      for (const mod of modulesLoaded || []) {
         const registrationName = mod.__definition.registrationName
         container.register(registrationName, asValue(mod))
       }

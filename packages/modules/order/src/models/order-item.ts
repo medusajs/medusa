@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Claim from "./claim"
 import Exchange from "./exchange"
@@ -83,7 +84,7 @@ export default class OrderItem {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @ManyToOne({
     entity: () => Return,
@@ -98,7 +99,7 @@ export default class OrderItem {
   @ManyToOne(() => Return, {
     persist: false,
   })
-  return: Return
+  return: Rel<Return>
 
   @ManyToOne({
     entity: () => Exchange,
@@ -113,7 +114,7 @@ export default class OrderItem {
   @ManyToOne(() => Exchange, {
     persist: false,
   })
-  exchange: Exchange
+  exchange: Rel<Exchange>
 
   @ManyToOne({
     entity: () => Claim,
@@ -128,7 +129,7 @@ export default class OrderItem {
   @ManyToOne(() => Claim, {
     persist: false,
   })
-  claim: Claim
+  claim: Rel<Claim>
 
   @Property({ columnType: "integer" })
   @OrderVersionIndex.MikroORMIndex()
@@ -146,7 +147,7 @@ export default class OrderItem {
   @ManyToOne(() => LineItem, {
     persist: false,
   })
-  item: LineItem
+  item: Rel<LineItem>
 
   @MikroOrmBigNumberProperty()
   quantity: BigNumber | number

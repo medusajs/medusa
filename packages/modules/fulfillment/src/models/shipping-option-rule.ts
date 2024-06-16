@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
@@ -64,7 +65,7 @@ export default class ShippingOptionRule {
   @ManyToOne(() => ShippingOption, {
     persist: false,
   })
-  shipping_option: ShippingOption
+  shipping_option: Rel<ShippingOption>
 
   @Property({
     onCreate: () => new Date(),
