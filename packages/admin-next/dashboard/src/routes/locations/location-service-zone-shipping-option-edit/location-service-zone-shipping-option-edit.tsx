@@ -9,11 +9,10 @@ import { EditShippingOptionForm } from "./components/edit-region-form"
 export const LocationServiceZoneShippingOptionEdit = () => {
   const { t } = useTranslation()
 
-  const { location_id, fset_id, zone_id, so_id } = useParams()
+  const { location_id, so_id } = useParams()
 
   const { shipping_options, isPending, isError, error } = useShippingOptions({
-    id: fset_id,
-    service_zone_id: zone_id!,
+    id: so_id,
   })
 
   const shippingOption = shipping_options?.find((so) => so.id === so_id)

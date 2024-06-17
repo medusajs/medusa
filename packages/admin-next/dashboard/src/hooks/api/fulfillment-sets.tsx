@@ -39,6 +39,14 @@ export const useDeleteFulfillmentSet = (
         queryKey: fulfillmentSetsQueryKeys.lists(),
       })
 
+      // We need to invalidate all related entities. We invalidate using `all` keys to ensure that all relevant entities are invalidated.
+      await queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.all,
+      })
+      await queryClient.invalidateQueries({
+        queryKey: shippingOptionsQueryKeys.all,
+      })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
