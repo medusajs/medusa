@@ -10,7 +10,7 @@ export const createCollectionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    const created = await service.createCollections(data)
+    const created = await service.createProductCollections(data)
     return new StepResponse(
       created,
       created.map((collection) => collection.id)
@@ -25,6 +25,6 @@ export const createCollectionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.deleteCollections(createdIds)
+    await service.deleteProductCollections(createdIds)
   }
 )

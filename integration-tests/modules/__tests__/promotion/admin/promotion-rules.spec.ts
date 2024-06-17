@@ -829,7 +829,7 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          const [product1, product2] = await productService.create([
+          const [product1, product2] = await productService.createProducts([
             { title: "test product 1" },
             { title: "test product 2" },
           ])
@@ -848,7 +848,7 @@ medusaIntegrationTestRunner({
             ])
           )
 
-          const category = await productService.createCategory({
+          const category = await productService.createProductCategories({
             name: "test category 1",
             parent_category_id: null,
           })
@@ -863,7 +863,7 @@ medusaIntegrationTestRunner({
             { label: "test category 1", value: category.id },
           ])
 
-          const collection = await productService.createCollections({
+          const collection = await productService.createProductCollections({
             title: "test collection 1",
           })
 
@@ -877,7 +877,7 @@ medusaIntegrationTestRunner({
             { label: "test collection 1", value: collection.id },
           ])
 
-          const type = await productService.createTypes({
+          const type = await productService.createProductTypes({
             value: "test type",
           })
 
@@ -891,7 +891,7 @@ medusaIntegrationTestRunner({
             { label: "test type", value: type.id },
           ])
 
-          const [tag1, tag2] = await productService.createTags([
+          const [tag1, tag2] = await productService.createProductTags([
             { value: "test tag 1" },
             { value: "test tag 2" },
           ])

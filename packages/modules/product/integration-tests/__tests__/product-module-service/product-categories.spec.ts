@@ -53,7 +53,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
         productCategories = []
         for (const entry of productCategoriesData) {
-          productCategories.push(await service.createCategories(entry))
+          productCategories.push(await service.createProductCategories(entry))
         }
         productCategoryOne = productCategories[0]
         productCategoryTwo = productCategories[1]
@@ -65,7 +65,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listCategories", () => {
         it("should return categories queried by ID", async () => {
-          const results = await service.listCategories({
+          const results = await service.listProductCategories({
             id: productCategoryOne.id,
           })
 
@@ -77,7 +77,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return categories based on the options and filter parameter", async () => {
-          let results = await service.listCategories(
+          let results = await service.listProductCategories(
             {
               id: productCategoryOne.id,
             },
@@ -92,7 +92,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          results = await service.listCategories({}, { take: 1, skip: 1 })
+          results = await service.listProductCategories(
+            {},
+            { take: 1, skip: 1 }
+          )
 
           expect(results).toEqual([
             expect.objectContaining({
@@ -102,7 +105,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for categories", async () => {
-          const results = await service.listCategories(
+          const results = await service.listProductCategories(
             {
               id: productCategoryOne.id,
             },
@@ -129,7 +132,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountCategories", () => {
         it("should return categories and count queried by ID", async () => {
-          const results = await service.listAndCountCategories({
+          const results = await service.listAndCountProductCategories({
             id: productCategoryOne.id,
           })
 
@@ -142,7 +145,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return categories and count based on the options and filter parameter", async () => {
-          let results = await service.listAndCountCategories(
+          let results = await service.listAndCountProductCategories(
             {
               id: productCategoryOne.id,
             },
@@ -158,11 +161,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          results = await service.listAndCountCategories({}, { take: 1 })
+          results = await service.listAndCountProductCategories({}, { take: 1 })
 
           expect(results[1]).toEqual(2)
 
-          results = await service.listAndCountCategories(
+          results = await service.listAndCountProductCategories(
             {},
             { take: 1, skip: 1 }
           )
@@ -176,7 +179,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for categories", async () => {
-          const results = await service.listAndCountCategories(
+          const results = await service.listAndCountProductCategories(
             {
               id: productCategoryOne.id,
             },
@@ -204,9 +207,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveCategory", () => {
         it("should return the requested category", async () => {
-          const result = await service.retrieveCategory(productCategoryOne.id, {
-            select: ["id", "name"],
-          })
+          const result = await service.retrieveProductCategory(
+            productCategoryOne.id,
+            {
+              select: ["id", "name"],
+            }
+          )
 
           expect(result).toEqual(
             expect.objectContaining({
@@ -217,10 +223,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const result = await service.retrieveCategory(productCategoryOne.id, {
-            select: ["id", "name", "products.title"],
-            relations: ["products"],
-          })
+          const result = await service.retrieveProductCategory(
+            productCategoryOne.id,
+            {
+              select: ["id", "name", "products.title"],
+              relations: ["products"],
+            }
+          )
 
           expect(result).toEqual(
             expect.objectContaining({
@@ -240,7 +249,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveCategory("does-not-exist")
+            await service.retrieveProductCategory("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -253,12 +262,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createCategory", () => {
         it("should create a category successfully", async () => {
-          await service.createCategories({
+          await service.createProductCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
           })
 
-          const [productCategory] = await service.listCategories(
+          const [productCategory] = await service.listProductCategories(
             {
               name: "New Category",
             },
@@ -278,7 +287,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
-          const category = await service.createCategories({
+          const category = await service.createProductCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
           })
@@ -293,18 +302,18 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should append rank from an existing category depending on parent", async () => {
-          await service.createCategories({
+          await service.createProductCategories({
             name: "New Category",
             parent_category_id: productCategoryOne.id,
             rank: 0,
           })
 
-          await service.createCategories({
+          await service.createProductCategories({
             name: "New Category 2",
             parent_category_id: productCategoryOne.id,
           })
 
-          const [productCategoryNew] = await service.listCategories(
+          const [productCategoryNew] = await service.listProductCategories(
             {
               name: "New Category 2",
             },
@@ -320,19 +329,20 @@ moduleIntegrationTestRunner<IProductModuleService>({
             })
           )
 
-          await service.createCategories({
+          await service.createProductCategories({
             name: "New Category 2.1",
             parent_category_id: productCategoryNew.id,
           })
 
-          const [productCategoryWithParent] = await service.listCategories(
-            {
-              name: "New Category 2.1",
-            },
-            {
-              select: ["name", "rank", "parent_category_id"],
-            }
-          )
+          const [productCategoryWithParent] =
+            await service.listProductCategories(
+              {
+                name: "New Category 2.1",
+              },
+              {
+                select: ["name", "rank", "parent_category_id"],
+              }
+            )
 
           expect(productCategoryWithParent).toEqual(
             expect.objectContaining({
@@ -356,7 +366,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         beforeEach(async () => {
           categories = []
           for (const entry of productCategoriesRankData) {
-            categories.push(await service.createCategories(entry))
+            categories.push(await service.createProductCategories(entry))
           }
 
           productCategoryZero = categories[0]
@@ -371,7 +381,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           eventBusSpy.mockClear()
 
-          await service.updateCategories(productCategoryZero.id, {
+          await service.updateProductCategories(productCategoryZero.id, {
             name: "New Category",
           })
 
@@ -385,11 +395,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should update the name of the category successfully", async () => {
-          await service.updateCategories(productCategoryZero.id, {
+          await service.updateProductCategories(productCategoryZero.id, {
             name: "New Category",
           })
 
-          const productCategory = await service.retrieveCategory(
+          const productCategory = await service.retrieveProductCategory(
             productCategoryZero.id,
             {
               select: ["name"],
@@ -403,7 +413,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateCategories("does-not-exist", {
+            await service.updateProductCategories("does-not-exist", {
               name: "New Category",
             })
           } catch (e) {
@@ -416,11 +426,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder rank successfully in the same parent", async () => {
-          await service.updateCategories(productCategoryTwo.id, {
+          await service.updateProductCategories(productCategoryTwo.id, {
             rank: 0,
           })
 
-          const productCategories = await service.listCategories(
+          const productCategories = await service.listProductCategories(
             {
               parent_category_id: null,
             },
@@ -448,12 +458,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder rank successfully when changing parent", async () => {
-          await service.updateCategories(productCategoryTwo.id, {
+          await service.updateProductCategories(productCategoryTwo.id, {
             rank: 0,
             parent_category_id: productCategoryZero.id,
           })
 
-          const productCategories = await service.listCategories(
+          const productCategories = await service.listProductCategories(
             {
               parent_category_id: productCategoryZero.id,
             },
@@ -485,12 +495,12 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder rank successfully when changing parent and in first position", async () => {
-          await service.updateCategories(productCategoryTwo.id, {
+          await service.updateProductCategories(productCategoryTwo.id, {
             rank: 0,
             parent_category_id: productCategoryZero.id,
           })
 
-          const productCategories = await service.listCategories(
+          const productCategories = await service.listProductCategories(
             {
               parent_category_id: productCategoryZero.id,
             },
@@ -531,7 +541,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         beforeEach(async () => {
           categories = []
           for (const entry of productCategoriesRankData) {
-            categories.push(await service.createCategories(entry))
+            categories.push(await service.createProductCategories(entry))
           }
 
           productCategoryZero = categories[0]
@@ -544,7 +554,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
           eventBusSpy.mockClear()
 
-          await service.deleteCategories([productCategoryOne.id])
+          await service.deleteProductCategories([productCategoryOne.id])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
@@ -559,7 +569,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.deleteCategories(["does-not-exist"])
+            await service.deleteProductCategories(["does-not-exist"])
           } catch (e) {
             error = e
           }
@@ -573,7 +583,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.deleteCategories([productCategoryZero.id])
+            await service.deleteProductCategories([productCategoryZero.id])
           } catch (e) {
             error = e
           }
@@ -584,9 +594,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should reorder siblings rank successfully on deleting", async () => {
-          await service.deleteCategories([productCategoryOne.id])
+          await service.deleteProductCategories([productCategoryOne.id])
 
-          const productCategories = await service.listCategories(
+          const productCategories = await service.listProductCategories(
             {
               parent_category_id: null,
             },

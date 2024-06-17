@@ -107,7 +107,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -123,7 +123,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetTwo] = await pricingModule.create([
+          const [priceSet, priceSetTwo] = await pricingModule.createPriceSets([
             {
               prices: [
                 {
@@ -209,7 +209,7 @@ medusaIntegrationTestRunner({
         it("should create cart with customer from email and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [
@@ -222,7 +222,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [priceSet] = await pricingModule.create([
+          const [priceSet] = await pricingModule.createPriceSets([
             { prices: [{ amount: 3000, currency_code: "usd" }] },
           ])
 
@@ -1265,7 +1265,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [productWithSpecialTax] = await productModule.create([
+          const [productWithSpecialTax] = await productModule.createProducts([
             {
               // This product ID is setup in the tax structure fixture (setupTaxStructure)
               id: "product_id_1",
@@ -1274,7 +1274,7 @@ medusaIntegrationTestRunner({
             } as any,
           ])
 
-          const [productWithDefaultTax] = await productModule.create([
+          const [productWithDefaultTax] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [
@@ -1337,14 +1337,15 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetDefaultTax] = await pricingModule.create([
-            {
-              prices: [{ amount: 3000, currency_code: "usd" }],
-            },
-            {
-              prices: [{ amount: 2000, currency_code: "usd" }],
-            },
-          ])
+          const [priceSet, priceSetDefaultTax] =
+            await pricingModule.createPriceSets([
+              {
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+              {
+                prices: [{ amount: 2000, currency_code: "usd" }],
+              },
+            ])
 
           await remoteLink.create([
             {
@@ -1736,7 +1737,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
 

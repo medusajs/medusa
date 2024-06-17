@@ -10,7 +10,7 @@ export const deleteProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.softDeleteVariants(ids)
+    await service.softDeleteProductVariants(ids)
     return new StepResponse(void 0, ids)
   },
   async (prevIds, { container }) => {
@@ -22,6 +22,6 @@ export const deleteProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.restoreVariants(prevIds)
+    await service.restoreProductVariants(prevIds)
   }
 )

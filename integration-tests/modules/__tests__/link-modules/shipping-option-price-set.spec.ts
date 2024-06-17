@@ -37,7 +37,7 @@ medusaIntegrationTestRunner({
           name: "Test",
           type: "default",
         })
-        const fulfillmentSet = await fulfillmentModule.create({
+        const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test",
           type: "test-type",
         })
@@ -65,7 +65,7 @@ medusaIntegrationTestRunner({
           },
         })
 
-        const priceSet = await pricingModule.create({
+        const priceSet = await pricingModule.createPriceSets({
           prices: [
             {
               amount: 3000,

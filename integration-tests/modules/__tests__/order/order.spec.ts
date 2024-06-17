@@ -2,13 +2,16 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryService,
+  IInventoryServiceNext,
   IOrderModuleService,
+<<<<<<< HEAD
   IPaymentModuleService,
-  IPricingModuleService,
   IProductModuleService,
+=======
+  IPricingModuleService,
+>>>>>>> chore/rm-main-entity-concept
   IRegionModuleService,
-  ITaxModuleService,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -16,6 +19,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import {IInventoryService} from "@medusajs/types";
 
 jest.setTimeout(50000)
 
@@ -27,12 +31,16 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
+<<<<<<< HEAD
     let productModule: IProductModuleService
-    let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
     let inventoryModule: IInventoryService
+=======
+    let pricingModule: IPricingModuleService
+    let inventoryModule: IInventoryServiceNext
+    let stockLocationModule: IStockLocationServiceNext
+>>>>>>> chore/rm-main-entity-concept
     let fulfillmentModule: IFulfillmentModuleService
-    let taxModule: ITaxModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery
 
@@ -41,13 +49,11 @@ medusaIntegrationTestRunner({
       cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-      pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
       paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       fulfillmentModule = appContainer.resolve(
         ModuleRegistrationName.FULFILLMENT
       )
-      taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       remoteQuery = appContainer.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
       orderModule = appContainer.resolve(ModuleRegistrationName.ORDER)

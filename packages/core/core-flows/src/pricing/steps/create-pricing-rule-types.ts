@@ -42,6 +42,6 @@ export const createPricingRuleTypesStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    await pricingModule.delete(ruleTypeIds)
+    await pricingModule.deleteRuleTypes(ruleTypeIds)
   }
 )
