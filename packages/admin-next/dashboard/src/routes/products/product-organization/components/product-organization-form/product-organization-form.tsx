@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -13,7 +14,6 @@ import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../lib/client"
 import { CategoryCombobox } from "../../../common/components/category-combobox"
-import { HttpTypes } from "@medusajs/types"
 
 type ProductOrganizationFormProps = {
   product: HttpTypes.AdminProduct
@@ -34,7 +34,7 @@ export const ProductOrganizationForm = ({
 
   const collections = useComboboxData({
     queryKey: ["product_collections"],
-    queryFn: sdk.admin.productCollection.list,
+    queryFn: (params) => sdk.admin.productCollection.list(params),
     getOptions: (data) =>
       data.collections.map((collection) => ({
         label: collection.title!,

@@ -5,14 +5,10 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { CreateShippingProfileReq } from "../../types/api-payloads"
-import {
-  ShippingProfileListRes,
-  ShippingProfileRes,
-} from "../../types/api-responses"
 
-import { DeleteResponse } from "@medusajs/types"
-import { client } from "../../lib/client"
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
+import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
@@ -23,13 +19,13 @@ export const shippingProfileQueryKeys = queryKeysFactory(
 
 export const useCreateShippingProfile = (
   options?: UseMutationOptions<
-    ShippingProfileRes,
-    Error,
-    CreateShippingProfileReq
+    HttpTypes.AdminShippingProfileResponse,
+    FetchError,
+    HttpTypes.AdminCreateShippingProfile
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.shippingProfiles.create(payload),
+    mutationFn: (payload) => sdk.admin.shippingProfile.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({
         queryKey: shippingProfileQueryKeys.lists(),
@@ -45,14 +41,14 @@ export const useShippingProfile = (
   id: string,
   query?: Record<string, any>,
   options?: UseQueryOptions<
-    ShippingProfileRes,
-    Error,
-    ShippingProfileRes,
+    HttpTypes.AdminShippingProfileResponse,
+    FetchError,
+    HttpTypes.AdminShippingProfileResponse,
     QueryKey
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.shippingProfiles.retrieve(id, query),
+    queryFn: () => sdk.admin.shippingProfile.retrieve(id, query),
     queryKey: shippingProfileQueryKeys.detail(id, query),
     ...options,
   })
@@ -61,19 +57,19 @@ export const useShippingProfile = (
 }
 
 export const useShippingProfiles = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminShippingProfileListParams,
   options?: Omit<
     UseQueryOptions<
-      ShippingProfileListRes,
-      Error,
-      ShippingProfileListRes,
+      HttpTypes.AdminShippingProfileListResponse,
+      FetchError,
+      HttpTypes.AdminShippingProfileListResponse,
       QueryKey
     >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.shippingProfiles.list(query),
+    queryFn: () => sdk.admin.shippingProfile.list(query),
     queryKey: shippingProfileQueryKeys.list(query),
     ...options,
   })
@@ -82,12 +78,19 @@ export const useShippingProfiles = (
 }
 
 export const useDeleteShippingProfile = (
-  profileId: string,
-  options?: UseMutationOptions<DeleteResponse, Error, void>
+  id: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminShippingProfileDeleteResponse,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.shippingProfiles.delete(profileId),
+    mutationFn: () => sdk.admin.shippingProfile.delete(id),
     onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: shippingProfileQueryKeys.detail(id),
+      })
       queryClient.invalidateQueries({
         queryKey: shippingProfileQueryKeys.lists(),
       })

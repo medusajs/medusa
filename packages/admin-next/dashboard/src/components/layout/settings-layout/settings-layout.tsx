@@ -58,7 +58,7 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/shipping-profiles",
       },
       {
-        label: t("location.domain"),
+        label: t("stockLocations.domain"),
         to: "/settings/locations",
       },
     ],
