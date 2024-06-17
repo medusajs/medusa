@@ -80,10 +80,15 @@ export type LinkModuleBootstrapOptions = {
   injectedDependencies?: Record<string, any>
 }
 
+export type RegisterModuleJoinerConfig =
+  | ModuleJoinerConfig
+  | ((modules: ModuleJoinerConfig[]) => ModuleJoinerConfig)
+
 class MedusaModule {
   private static instances_: Map<string, { [key: string]: IModuleService }> =
     new Map()
   private static modules_: Map<string, ModuleAlias[]> = new Map()
+  private static customLinks_: RegisterModuleJoinerConfig[] = []
   private static loading_: Map<string, Promise<any>> = new Map()
   private static joinerConfig_: Map<string, ModuleJoinerConfig> = new Map()
   private static moduleResolutions_: Map<string, ModuleResolution> = new Map()
@@ -201,6 +206,14 @@ class MedusaModule {
     MedusaModule.joinerConfig_.set(moduleKey, config)
 
     return config
+  }
+
+  public static setCustomLink(config: RegisterModuleJoinerConfig): void {
+    MedusaModule.customLinks_.push(config)
+  }
+
+  public static getCustomLinks(): RegisterModuleJoinerConfig[] {
+    return MedusaModule.customLinks_
   }
 
   public static getModuleInstance(
