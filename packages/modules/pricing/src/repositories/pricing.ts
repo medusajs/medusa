@@ -1,4 +1,4 @@
-import { MedusaError, MikroOrmBase } from "@medusajs/utils"
+import { MedusaError, MikroOrmBase, PriceListStatus } from "@medusajs/utils"
 
 import {
   CalculatedPriceSetDTO,
@@ -77,7 +77,12 @@ export class PricingRepository
       })
       .leftJoin("price as price1", "price1.id", "price1.id")
       .leftJoin("price_rule as pr", "pr.price_id", "price1.id")
-      .leftJoin("price_list as pl", "pl.id", "price1.price_list_id")
+      .leftJoin("price_list as pl", function () {
+        this.on("pl.id", "price1.price_list_id").andOn(
+          "pl.status",
+          knex.raw("?", [PriceListStatus.ACTIVE])
+        )
+      })
       .leftJoin("price_list_rule as plr", "plr.price_list_id", "pl.id")
       .leftJoin(
         "price_list_rule_value as plrv",

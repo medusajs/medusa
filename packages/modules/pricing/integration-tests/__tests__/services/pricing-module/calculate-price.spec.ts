@@ -5,7 +5,7 @@ import {
   IPricingModuleService,
   PricingTypes,
 } from "@medusajs/types"
-import { PriceListType } from "@medusajs/utils"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
@@ -41,6 +41,7 @@ const createPriceLists = async (
       title: "Test Price List",
       description: "test description",
       type: PriceListType.SALE,
+      status: PriceListStatus.ACTIVE,
       rules,
       prices,
       ...priceListOverride,
