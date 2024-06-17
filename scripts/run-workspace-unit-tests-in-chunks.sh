@@ -22,6 +22,5 @@ for workspace in $(echo "$workspaces" | jq -r '.[]'); do
 done
 
 command="yarn run test $filters"
-echo "$command"
 # Run the test in the selected chunk
 eval "$command"
