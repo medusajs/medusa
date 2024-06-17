@@ -18,7 +18,8 @@ describe("Entity builder", () => {
         email: model.text(),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -67,7 +68,8 @@ describe("Entity builder", () => {
         email: model.text(),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -117,7 +119,8 @@ describe("Entity builder", () => {
         email: model.text(),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string | null
@@ -167,7 +170,8 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -231,7 +235,8 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]).default("guest"),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -296,7 +301,8 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]).nullable(),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -366,7 +372,8 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -418,7 +425,8 @@ describe("Entity builder", () => {
         emails: model.hasOne(() => email).nullable(),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -471,7 +479,8 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email, { mappedBy: "owner" }),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -527,7 +536,8 @@ describe("Entity builder", () => {
           delete: ["email"],
         })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -566,7 +576,7 @@ describe("Entity builder", () => {
         },
       })
 
-      const Email = createMikrORMEntity(email)
+      const Email = entityBuilder(email)
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
       expect(emailMetaData.className).toEqual("Email")
       expect(emailMetaData.path).toEqual("Email")
@@ -610,7 +620,8 @@ describe("Entity builder", () => {
           delete: ["email"],
         })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -656,7 +667,7 @@ describe("Entity builder", () => {
         },
       })
 
-      const Email = createMikrORMEntity(email)
+      const Email = entityBuilder(email)
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
       expect(emailMetaData.className).toEqual("Email")
       expect(emailMetaData.path).toEqual("Email")
@@ -706,7 +717,8 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -760,7 +772,8 @@ describe("Entity builder", () => {
         }),
       })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -817,7 +830,8 @@ describe("Entity builder", () => {
           delete: ["emails"],
         })
 
-      const User = createMikrORMEntity(user)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -875,8 +889,9 @@ describe("Entity builder", () => {
           delete: ["emails"],
         })
 
-      const User = createMikrORMEntity(user)
-      const Email = createMikrORMEntity(email)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -973,8 +988,9 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const User = createMikrORMEntity(user)
-      const Email = createMikrORMEntity(email)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1081,8 +1097,9 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const User = createMikrORMEntity(user)
-      const Email = createMikrORMEntity(email)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1189,8 +1206,9 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const User = createMikrORMEntity(user)
-      const Email = createMikrORMEntity(email)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1304,8 +1322,9 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const User = createMikrORMEntity(user)
-      const Email = createMikrORMEntity(email)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1418,7 +1437,8 @@ describe("Entity builder", () => {
         username: model.text(),
       })
 
-      expect(() => createMikrORMEntity(email)).toThrow(
+      const entityBuilder = createMikrORMEntity()
+      expect(() => entityBuilder(email)).toThrow(
         'Missing property "email" on "user" entity. Make sure to define it as a relationship'
       )
     })
@@ -1438,7 +1458,8 @@ describe("Entity builder", () => {
         email: model.manyToMany(() => email),
       })
 
-      expect(() => createMikrORMEntity(email)).toThrow(
+      const entityBuilder = createMikrORMEntity()
+      expect(() => entityBuilder(email)).toThrow(
         'Invalid relationship reference for "email" on "user" entity. Make sure to define a hasOne or hasMany relationship'
       )
     })
@@ -1484,8 +1505,9 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team),
       })
 
-      const User = createMikrORMEntity(user)
-      const Team = createMikrORMEntity(team)
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1539,6 +1561,7 @@ describe("Entity builder", () => {
           reference: "m:n",
           name: "teams",
           entity: "Team",
+          pivotTable: "team_users",
         },
       })
 
@@ -1568,6 +1591,374 @@ describe("Entity builder", () => {
           reference: "m:n",
           name: "users",
           entity: "User",
+          pivotTable: "team_users",
+        },
+      })
+    })
+
+    test("define mappedBy on one side", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "team_users",
+          mappedBy: "users",
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "team_users",
+        },
+      })
+    })
+
+    test("throw error when unable to locate relationship via mappedBy", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      expect(() => entityBuilder(user)).toThrow(
+        'Missing property "users" on "team" entity. Make sure to define it as a relationship'
+      )
+    })
+
+    test("throw error when mappedBy relationship is not a manyToMany", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.belongsTo(() => team, { mappedBy: "teams" }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      expect(() => entityBuilder(user)).toThrow(
+        'Invalid relationship reference for "users" on "team" entity. Make sure to define a manyToMany relationship'
+      )
+    })
+
+    test("define mappedBy on both sides", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user, { mappedBy: "teams" }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "team_users",
+          mappedBy: "users",
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "team_users",
+          /**
+           * The other side should be inversed in order for Mikro ORM
+           * to work. Both sides cannot have mappedBy.
+           */
+          inversedBy: "teams",
+        },
+      })
+    })
+
+    test("define mappedBy on both sides and reverse order of registering entities", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user, { mappedBy: "teams" }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const Team = entityBuilder(team)
+      const User = entityBuilder(user)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "team_users",
+          /**
+           * The other side should be inversed in order for Mikro ORM
+           * to work. Both sides cannot have mappedBy.
+           */
+          inversedBy: "users",
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "team_users",
+          mappedBy: "teams",
         },
       })
     })
