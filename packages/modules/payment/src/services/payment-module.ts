@@ -871,7 +871,7 @@ export default class PaymentModuleService
       case PaymentActions.SUCCESSFUL: {
         const [payment] = await this.listPayments(
           {
-            id: event.data.resource_id,
+            payment_session_id: event.data.resource_id,
           },
           {},
           sharedContext
