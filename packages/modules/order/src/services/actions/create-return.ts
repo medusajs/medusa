@@ -13,14 +13,6 @@ import { Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
-async function retrieveOrder(service, orderId, sharedContext) {
-  return await service.retrieve(
-    orderId,
-    { relations: ["items"] },
-    sharedContext
-  )
-}
-
 function createReturnReference(em, data, order) {
   return em.create(Return, {
     order_id: data.order_id,
@@ -133,11 +125,12 @@ export async function createReturn(
   data: OrderTypes.CreateOrderReturnDTO,
   sharedContext?: Context
 ) {
-  const order = await retrieveOrder(
-    this.orderService_,
+  const order = await this.orderService_.retrieve(
     data.order_id,
+    { relations: ["items"] },
     sharedContext
   )
+
   const em = sharedContext!.transactionManager as any
   const returnRef = createReturnReference(em, data, order)
   const actions: CreateOrderChangeActionDTO[] = []

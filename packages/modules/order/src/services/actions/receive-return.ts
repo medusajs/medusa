@@ -3,16 +3,7 @@ import { MathBN, ReturnStatus, promiseAll } from "@medusajs/utils"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
-async function retrieveReturn(service, returnId, sharedContext) {
-  return await service.retrieveReturn(
-    returnId,
-    {
-      select: ["id", "order_id"],
-      relations: ["items"],
-    },
-    sharedContext
-  )
-}
+async function retrieveReturn(service, returnId, sharedContext) {}
 
 function createReturnItems(data) {
   return data.items.map((item) => ({
@@ -89,7 +80,15 @@ export async function receiveReturn(
   data: OrderTypes.ReceiveOrderReturnDTO,
   sharedContext?: Context
 ) {
-  const returnEntry = await retrieveReturn(this, data.return_id, sharedContext)
+  const returnEntry = await this.retrieveReturn(
+    data.return_id,
+    {
+      select: ["id", "order_id"],
+      relations: ["items"],
+    },
+    sharedContext
+  )
+
   const items = createReturnItems(data)
   const change = await createOrderChange(
     this,
