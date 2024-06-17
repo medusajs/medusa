@@ -110,7 +110,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const [priceSet, priceSet_2] = await pricingModule.create([
+        const [priceSet, priceSet_2] = await pricingModule.createPriceSets([
           {
             prices: [
               {

@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createPriceSetsStepId = "create-price-sets"
 export const createPriceSetsStep = createStep(
@@ -10,7 +10,7 @@ export const createPriceSetsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    const priceSets = await pricingModule.create(data)
+    const priceSets = await pricingModule.createPriceSets(data)
 
     return new StepResponse(
       priceSets,
@@ -26,6 +26,6 @@ export const createPriceSetsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    await pricingModule.delete(priceSets)
+    await pricingModule.deletePriceSets(priceSets)
   }
 )
