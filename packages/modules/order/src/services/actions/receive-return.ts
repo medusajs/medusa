@@ -3,8 +3,6 @@ import { MathBN, ReturnStatus, promiseAll } from "@medusajs/utils"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
-async function retrieveReturn(service, returnId, sharedContext) {}
-
 function createReturnItems(data) {
   return data.items.map((item) => ({
     action: ChangeActionType.RECEIVE_RETURN_ITEM,
