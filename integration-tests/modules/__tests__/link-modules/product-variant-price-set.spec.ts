@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query product variants and price set link with remote query", async () => {
-        const [product] = await productModule.create([
+        const [product] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [

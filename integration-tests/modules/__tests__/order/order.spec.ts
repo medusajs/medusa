@@ -2,11 +2,16 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryService,
+  IInventoryServiceNext,
   IOrderModuleService,
+<<<<<<< HEAD
   IPaymentModuleService,
   IProductModuleService,
+=======
+  IPricingModuleService,
+>>>>>>> chore/rm-main-entity-concept
   IRegionModuleService,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -14,6 +19,7 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
+import {IInventoryService} from "@medusajs/types";
 
 jest.setTimeout(50000)
 
@@ -25,9 +31,15 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
+<<<<<<< HEAD
     let productModule: IProductModuleService
     let paymentModule: IPaymentModuleService
     let inventoryModule: IInventoryService
+=======
+    let pricingModule: IPricingModuleService
+    let inventoryModule: IInventoryServiceNext
+    let stockLocationModule: IStockLocationServiceNext
+>>>>>>> chore/rm-main-entity-concept
     let fulfillmentModule: IFulfillmentModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery

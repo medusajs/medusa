@@ -107,7 +107,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -209,7 +209,7 @@ medusaIntegrationTestRunner({
         it("should create cart with customer from email and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [
@@ -1265,7 +1265,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [productWithSpecialTax] = await productModule.create([
+          const [productWithSpecialTax] = await productModule.createProducts([
             {
               // This product ID is setup in the tax structure fixture (setupTaxStructure)
               id: "product_id_1",
@@ -1274,7 +1274,7 @@ medusaIntegrationTestRunner({
             } as any,
           ])
 
-          const [productWithDefaultTax] = await productModule.create([
+          const [productWithDefaultTax] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [

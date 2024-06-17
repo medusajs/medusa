@@ -2,13 +2,12 @@ import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryService,
-  IPaymentModuleService,
+  IInventoryServiceNext,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationService,
+  IStockLocationServiceNext,
   ITaxModuleService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
@@ -32,9 +31,8 @@ medusaIntegrationTestRunner({
     let scModuleService: ISalesChannelModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
-    let paymentModule: IPaymentModuleService
-    let stockLocationModule: IStockLocationService
-    let inventoryModule: IInventoryService
+    let inventoryModule: IInventoryServiceNext
+    let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
     let taxModule: ITaxModuleService
     let remoteLink, remoteQuery
@@ -48,7 +46,6 @@ medusaIntegrationTestRunner({
       )
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       stockLocationModule = appContainer.resolve(
         ModuleRegistrationName.STOCK_LOCATION
@@ -80,7 +77,7 @@ medusaIntegrationTestRunner({
           name: "Warehouse",
         })
 
-        const [product, product_2] = await productModule.create([
+        const [product, product_2] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [
