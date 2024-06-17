@@ -10,6 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { inventoryItemsQueryKeys } from "./inventory.tsx"
 
 const PRODUCTS_QUERY_KEY = "products" as const
 export const productsQueryKeys = queryKeysFactory(PRODUCTS_QUERY_KEY)
@@ -255,6 +256,10 @@ export const useCreateProduct = (
       sdk.admin.product.create(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: productsQueryKeys.lists() })
+      // if `manage_inventory` is true on created variants that will create inventory items automatically
+      queryClient.invalidateQueries({
+        queryKey: inventoryItemsQueryKeys.lists(),
+      })
       options?.onSuccess?.(data, variables, context)
     },
     ...options,

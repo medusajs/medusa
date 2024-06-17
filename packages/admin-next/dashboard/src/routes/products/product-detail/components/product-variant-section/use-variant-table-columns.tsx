@@ -1,24 +1,30 @@
-import { PencilSquare, Trash } from "@medusajs/icons"
-import { Badge, usePrompt } from "@medusajs/ui"
+import { Buildings, Component, PencilSquare, Trash } from "@medusajs/icons"
+import { Badge, usePrompt, clx } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { HttpTypes, InventoryItemDTO } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
+import { useMemo } from "react"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
 
 const VariantActions = ({
   variant,
   product,
 }: {
-  variant: HttpTypes.AdminProductVariant
+  variant: HttpTypes.AdminProductVariant & {
+    inventory_items: { inventory: InventoryItemDTO }[]
+  }
   product: HttpTypes.AdminProduct
 }) => {
   const { mutateAsync } = useDeleteVariant(product.id, variant.id)
   const { t } = useTranslation()
   const prompt = usePrompt()
+
+  const inventoryItemsCount = variant.inventory_items?.length || 0
+  const hasInventoryItem = inventoryItemsCount === 1
+  const hasInventoryKit = inventoryItemsCount > 1
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -37,6 +43,23 @@ const VariantActions = ({
     await mutateAsync()
   }
 
+  const [inventoryItemLink, inventoryKitLink] = useMemo(() => {
+    if (!variant.inventory_items?.length) {
+      return ["", ""]
+    }
+
+    const itemId = variant.inventory_items![0].inventory.id
+    const itemLink = `/inventory/${itemId}`
+
+    const itemIds = variant.inventory_items!.map((i) => i.inventory.id)
+    const params = { id: itemIds }
+    const query = new URLSearchParams(params).toString()
+
+    const kitLink = `/inventory?${query}`
+
+    return [itemLink, kitLink]
+  }, [variant.inventory_items])
+
   return (
     <ActionMenu
       groups={[
@@ -47,16 +70,26 @@ const VariantActions = ({
               to: `variants/${variant.id}/edit`,
               icon: <PencilSquare />,
             },
-          ],
-        },
-        {
-          actions: [
             {
               label: t("actions.delete"),
               onClick: handleDelete,
               icon: <Trash />,
             },
-          ],
+            hasInventoryItem
+              ? {
+                  label: t("products.variant.inventory.actions.inventoryItems"),
+                  to: inventoryItemLink,
+                  icon: <Buildings />,
+                }
+              : false,
+            hasInventoryKit
+              ? {
+                  label: t("products.variant.inventory.actions.inventoryKit"),
+                  to: inventoryKitLink,
+                  icon: <Component />,
+                }
+              : false,
+          ].filter(Boolean),
         },
       ]}
     />
@@ -140,6 +173,60 @@ export const useProductVariantTableColumns = (
         },
       }),
       ...optionColumns,
+      columnHelper.accessor("inventory_items", {
+        header: () => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{t("fields.inventory")}</span>
+          </div>
+        ),
+        cell: ({ getValue, row }) => {
+          const variant = row.original
+
+          if (!variant.manage_inventory) {
+            return t("products.variant.inventory.notManaged")
+          }
+
+          const inventory: InventoryItemDTO[] = getValue().map(
+            (i) => i.inventory
+          )
+
+          const hasInventoryKit = inventory.length > 1
+
+          const locations = {}
+
+          inventory.forEach((i) => {
+            i.location_levels.forEach((l) => {
+              locations[l.id] = true
+            })
+          })
+
+          const locationCount = Object.keys(locations).length
+
+          const text = hasInventoryKit
+            ? t("products.variant.tableItemAvailable", {
+                availableCount: variant.inventory_quantity,
+              })
+            : t("products.variant.tableItem", {
+                availableCount: variant.inventory_quantity,
+                locationCount,
+                count: locationCount,
+              })
+
+          return (
+            <div className="flex h-full w-full items-center gap-2 overflow-hidden">
+              {hasInventoryKit && <Component style={{ marginTop: 1 }} />}
+              <span
+                className={clx("truncate", {
+                  "text-ui-fg-error": !variant.inventory_quantity,
+                })}
+                title={text}
+              >
+                {text}
+              </span>
+            </div>
+          )
+        },
+      }),
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
