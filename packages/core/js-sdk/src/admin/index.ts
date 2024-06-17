@@ -1,6 +1,7 @@
 import { Client } from "../client"
 import { Customer } from "./customer"
 import { Fulfillment } from "./fulfillment"
+import { FulfillmentProvider } from "./fulfillment-provider"
 import { FulfillmentSet } from "./fulfillment-set"
 import { InventoryItem } from "./inventory-item"
 import { Invite } from "./invite"
@@ -31,6 +32,7 @@ export class Admin {
   public salesChannel: SalesChannel
   public fulfillmentSet: FulfillmentSet
   public fulfillment: Fulfillment
+  public fulfillmentProvider: FulfillmentProvider
   public shippingOption: ShippingOption
   public shippingProfile: ShippingProfile
   public inventoryItem: InventoryItem
@@ -51,6 +53,7 @@ export class Admin {
     this.salesChannel = new SalesChannel(client)
     this.fulfillmentSet = new FulfillmentSet(client)
     this.fulfillment = new Fulfillment(client)
+    this.fulfillmentProvider = new FulfillmentProvider(client)
     this.shippingOption = new ShippingOption(client)
     this.shippingProfile = new ShippingProfile(client)
     this.inventoryItem = new InventoryItem(client)

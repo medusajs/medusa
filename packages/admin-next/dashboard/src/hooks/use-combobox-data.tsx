@@ -53,7 +53,7 @@ export const useComboboxData = <
   const { data, ...rest } = useInfiniteQuery({
     queryKey: [...queryKey, query],
     queryFn: async ({ pageParam = 0 }) => {
-      return queryFn({
+      return await queryFn({
         q: query,
         limit: pageSize,
         offset: pageParam,
@@ -77,7 +77,11 @@ export const useComboboxData = <
   const disabled = !rest.isPending && !options.length && !searchValue
 
   // // make sure that the default value is included in the option, if its not in options already
-  if (defaultValue && !options.find((o) => o.value === defaultValue)) {
+  if (
+    defaultValue &&
+    defaultOptions.length &&
+    !options.find((o) => o.value === defaultValue)
+  ) {
     options.unshift(defaultOptions[0])
   }
 

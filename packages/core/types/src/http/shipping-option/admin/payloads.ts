@@ -1,24 +1,24 @@
 import { RuleOperatorType } from "../../../common"
 import { ShippingOptionPriceType } from "../../../fulfillment"
 
-interface AdminCreateShippingOptionRule {
+export interface AdminCreateShippingOptionRule {
   operator: RuleOperatorType
   attribute: string
   value: string | string[]
 }
 
-interface AdminCreateShippingOptionType {
+export interface AdminCreateShippingOptionType {
   label: string
   description: string
   code: string
 }
 
-interface AdminCreateShippingOptionPriceWithCurrency {
+export interface AdminCreateShippingOptionPriceWithCurrency {
   currency_code: string
   amount: number
 }
 
-interface AdminCreateShippingOptionPriceWithRegion {
+export interface AdminCreateShippingOptionPriceWithRegion {
   region_id: string
   amount: number
 }
@@ -38,17 +38,18 @@ export interface AdminCreateShippingOption {
   rules?: AdminCreateShippingOptionRule[]
 }
 
-interface AdminUpdateShippingOptionRule extends AdminCreateShippingOptionRule {
-  id: string
+export interface AdminUpdateShippingOptionRule
+  extends AdminCreateShippingOptionRule {
+  id?: string
 }
 
-interface AdminUpdateShippingOptionPriceWithCurrency {
+export interface AdminUpdateShippingOptionPriceWithCurrency {
   id?: string
   currency_code?: string
   amount?: number
 }
 
-interface AdminUpdateShippingOptionPriceWithRegion {
+export interface AdminUpdateShippingOptionPriceWithRegion {
   id?: string
   region_id?: string
   amount?: number

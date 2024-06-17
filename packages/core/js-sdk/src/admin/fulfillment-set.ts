@@ -24,7 +24,7 @@ export class FulfillmentSet {
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminFulfillmentResponse>(
+    return await this.client.fetch<HttpTypes.AdminFulfillmentSetResponse>(
       `/admin/fulfillment-sets/${id}/service-zones`,
       {
         method: "POST",
@@ -35,7 +35,7 @@ export class FulfillmentSet {
     )
   }
 
-  async retrieveServiceZones(
+  async retrieveServiceZone(
     fulfillmentSetId: string,
     serviceZoneId: string,
     query?: HttpTypes.SelectParams,
@@ -58,7 +58,7 @@ export class FulfillmentSet {
     query?: HttpTypes.SelectParams,
     headers?: ClientHeaders
   ) {
-    return await this.client.fetch<HttpTypes.AdminFulfillmentResponse>(
+    return await this.client.fetch<HttpTypes.AdminFulfillmentSetResponse>(
       `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
       {
         method: "POST",

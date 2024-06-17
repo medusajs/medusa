@@ -1,8 +1,9 @@
 import { createColumnHelper } from "@tanstack/react-table"
 
-import { SalesChannelDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+
 import { StatusCell } from "../../../components/table/table-cells/common/status-cell"
 import { TextHeader } from "../../../components/table/table-cells/common/text-cell"
 import {
@@ -14,7 +15,7 @@ import {
   NameHeader,
 } from "../../../components/table/table-cells/sales-channel/name-cell"
 
-const columnHelper = createColumnHelper<SalesChannelDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminSalesChannel>()
 
 export const useSalesChannelTableColumns = () => {
   const { t } = useTranslation()

@@ -76,20 +76,22 @@ export const NoRecords = ({
   return (
     <div
       className={clx(
-        "flex h-[400px] w-full flex-col items-center justify-center gap-y-6",
+        "flex h-[400px] w-full flex-col items-center justify-center gap-y-4",
         className
       )}
     >
-      <div className="flex flex-col items-center gap-y-2">
-        <ExclamationCircle />
+      <div className="flex flex-col items-center gap-y-3">
+        <ExclamationCircle className="text-ui-fg-subtle" />
 
-        <Text size="small" leading="compact" weight="plus">
-          {title ?? t("general.noRecordsTitle")}
-        </Text>
+        <div className="flex flex-col items-center gap-y-1">
+          <Text size="small" leading="compact" weight="plus">
+            {title ?? t("general.noRecordsTitle")}
+          </Text>
 
-        <Text size="small" className="text-ui-fg-muted">
-          {message ?? t("general.noRecordsMessage")}
-        </Text>
+          <Text size="small" className="text-ui-fg-muted">
+            {message ?? t("general.noRecordsMessage")}
+          </Text>
+        </div>
       </div>
 
       {buttonVariant === "default" && <DefaultButton action={action} />}
