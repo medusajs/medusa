@@ -105,7 +105,7 @@ export const setupTaxStructure = async (service: ITaxModuleService) => {
   ])
 
   const [calProd, calType, deType, canProd, canType, qcType] =
-    await service.create([
+    await service.createTaxRates([
       {
         tax_region_id: cal.id,
         name: "CA Reduced Rate for Products",

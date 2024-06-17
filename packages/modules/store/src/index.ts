@@ -4,3 +4,5 @@ import { ModuleExports } from "@medusajs/types"
 export const moduleDefinition: ModuleExports = {
   service: StoreModuleService,
 }
+
+export default moduleDefinition

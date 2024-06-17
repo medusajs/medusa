@@ -1,5 +1,5 @@
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
+import { IRegionModuleService } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
@@ -15,14 +15,12 @@ medusaIntegrationTestRunner({
     describe("Remote Query", () => {
       let appContainer
       let regionModule: IRegionModuleService
-      let paymentModule: IPaymentModuleService
       let remoteQuery
       let remoteLink
 
       beforeAll(async () => {
         appContainer = getContainer()
         regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
