@@ -9,7 +9,7 @@ const inventoryDetailQuery = (id: string) => ({
   queryKey: inventoryItemsQueryKeys.detail(id),
   queryFn: async () =>
     sdk.admin.inventoryItem.retrieve(id, {
-      fields: "*variant",
+      fields: "*variants,*variants.product,*variants.options",
     }),
 })
 
