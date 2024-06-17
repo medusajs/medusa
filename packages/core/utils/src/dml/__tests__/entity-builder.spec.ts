@@ -24,11 +24,22 @@ describe("Entity builder", () => {
         id: number
         username: string
         email: string
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -57,6 +68,15 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -74,11 +94,22 @@ describe("Entity builder", () => {
         id: number
         username: string
         email: string
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -108,6 +139,15 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -125,11 +165,22 @@ describe("Entity builder", () => {
         id: number
         username: string | null
         email: string
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -158,6 +209,15 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -177,12 +237,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest"
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -218,7 +289,17 @@ describe("Entity builder", () => {
           nullable: false,
           name: "role",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
+
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
         "admin",
@@ -242,12 +323,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest"
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -284,6 +376,15 @@ describe("Entity builder", () => {
           nullable: false,
           name: "role",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
@@ -308,12 +409,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest" | null
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -349,6 +461,15 @@ describe("Entity builder", () => {
           nullable: true,
           name: "role",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
@@ -377,7 +498,12 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{ email: string; isVerified: boolean }>
+        deleted_at: Date | null
+        email: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+        }>
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -409,6 +535,15 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -431,7 +566,12 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }> | null
+        deleted_at: Date | null
+        emails: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+        }> | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -462,6 +602,15 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: true,
           mappedBy: "user",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -515,6 +664,15 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "owner",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -574,6 +732,15 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const Email = entityBuilder(email)
@@ -596,6 +763,15 @@ describe("Entity builder", () => {
           columnType: "boolean",
           name: "isVerified",
           nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
           getter: false,
           setter: false,
         },
@@ -665,6 +841,15 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const Email = entityBuilder(email)
@@ -698,6 +883,15 @@ describe("Entity builder", () => {
           onDelete: "cascade",
           owner: true,
           reference: "1:1",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -754,6 +948,15 @@ describe("Entity builder", () => {
           orphanRemoval: true,
           mappedBy: "user",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -809,6 +1012,15 @@ describe("Entity builder", () => {
           entity: "Email",
           mappedBy: "the_user",
           orphanRemoval: true,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -867,6 +1079,15 @@ describe("Entity builder", () => {
           orphanRemoval: true,
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -928,6 +1149,15 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -968,6 +1198,15 @@ describe("Entity builder", () => {
           reference: "m:1",
           onDelete: "cascade",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
   })
@@ -995,12 +1234,15 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
+        deleted_at: Date | null
         email: EntityConstructor<{
           email: string
           isVerified: boolean
+          deleted_at: Date | null
           user: EntityConstructor<{
             id: number
             username: string
+            deleted_at: Date | null
           }>
         }>
       }>()
@@ -1008,12 +1250,15 @@ describe("Entity builder", () => {
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
+        deleted_at: Date | null
         user: EntityConstructor<{
           id: number
           username: string
+          deleted_at: Date | null
           email: EntityConstructor<{
             email: string
             isVerified: boolean
+            deleted_at: Date | null
           }>
         }>
       }>()
@@ -1047,6 +1292,15 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1078,6 +1332,15 @@ describe("Entity builder", () => {
           nullable: false,
           owner: true,
           mappedBy: "email",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1156,6 +1419,15 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1187,6 +1459,15 @@ describe("Entity builder", () => {
           nullable: true,
           owner: true,
           mappedBy: "email",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1265,6 +1546,15 @@ describe("Entity builder", () => {
           mappedBy: "user",
           orphanRemoval: true,
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1303,6 +1593,15 @@ describe("Entity builder", () => {
           name: "user_id",
           nullable: false,
           reference: "m:1",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1381,6 +1680,15 @@ describe("Entity builder", () => {
           mappedBy: "user",
           orphanRemoval: true,
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1419,6 +1727,15 @@ describe("Entity builder", () => {
           name: "user_id",
           nullable: true,
           reference: "m:1",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1563,6 +1880,15 @@ describe("Entity builder", () => {
           entity: "Team",
           pivotTable: "team_users",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1592,6 +1918,15 @@ describe("Entity builder", () => {
           name: "users",
           entity: "User",
           pivotTable: "team_users",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1669,6 +2004,15 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           mappedBy: "users",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1698,6 +2042,15 @@ describe("Entity builder", () => {
           name: "users",
           entity: "User",
           pivotTable: "team_users",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1814,6 +2167,15 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           mappedBy: "users",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1848,6 +2210,15 @@ describe("Entity builder", () => {
            * to work. Both sides cannot have mappedBy.
            */
           inversedBy: "teams",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1929,6 +2300,15 @@ describe("Entity builder", () => {
            */
           inversedBy: "users",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1959,6 +2339,15 @@ describe("Entity builder", () => {
           entity: "User",
           pivotTable: "team_users",
           mappedBy: "teams",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -2065,6 +2454,15 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           inversedBy: "activeTeamsUsers",
         },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -2102,6 +2500,15 @@ describe("Entity builder", () => {
           entity: "User",
           pivotTable: "team_users",
           mappedBy: "activeTeams",
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
