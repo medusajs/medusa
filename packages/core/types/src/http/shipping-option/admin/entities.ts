@@ -26,6 +26,17 @@ export interface AdminShippingOptionRule {
   deleted_at: string | null
 }
 
+// TODO: This type is complete, but it's not clear what the `rules` field is supposed to return in all cases.
+export interface AdminShippingOptionPriceRule {
+  id: string
+  value: string
+}
+
+export interface AdminShippingOptionPrice extends AdminPrice {
+  price_rules: AdminShippingOptionPriceRule[]
+  rules_count: number
+}
+
 export interface AdminShippingOption {
   id: string
   name: string
@@ -39,7 +50,7 @@ export interface AdminShippingOption {
   shipping_profile_id: string
   shipping_profile: AdminShippingProfile
   rules: AdminShippingOptionRule[]
-  prices: AdminPrice[]
+  prices: AdminShippingOptionPrice[]
   data: Record<string, unknown> | null
   metadata: Record<string, unknown> | null
   created_at: Date

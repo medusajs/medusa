@@ -1,14 +1,15 @@
+import { HttpTypes } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../../../types/routing"
-import { HttpTypes } from "@medusajs/types"
 
 export function maybeApplyPriceListsFilter() {
   return async (req: MedusaRequest, _, next: NextFunction) => {
-    const filterableFields: HttpTypes.AdminProductParams = req.filterableFields
+    const filterableFields: HttpTypes.AdminProductListParams =
+      req.filterableFields
 
     if (!filterableFields.price_list_id) {
       return next()

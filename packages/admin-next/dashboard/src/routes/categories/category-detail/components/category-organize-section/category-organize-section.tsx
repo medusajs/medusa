@@ -3,13 +3,13 @@ import {
   PencilSquare,
   TriangleRightMini,
 } from "@medusajs/icons"
-import { AdminProductCategoryResponse, HttpTypes } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { Badge, Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InlineLink } from "../../../../../components/common/inline-link"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { useProductCategory } from "../../../../../hooks/api/categories"
 import { getCategoryChildren, getCategoryPath } from "../../../common/utils"
@@ -60,7 +60,7 @@ export const CategoryOrganizeSection = ({
 const PathDisplay = ({
   category,
 }: {
-  category: AdminProductCategoryResponse["product_category"]
+  category: HttpTypes.AdminProductCategory
 }) => {
   const [expanded, setExpanded] = useState(false)
 
@@ -137,12 +137,12 @@ const PathDisplay = ({
                     {chip.name}
                   </Text>
                 ) : (
-                  <InlineLink
+                  <LinkButton
                     to={`/categories/${chip.id}`}
                     className="txt-compact-xsmall-plus text-ui-fg-subtle hover:text-ui-fg-base focus-visible:text-ui-fg-base"
                   >
                     {chip.name}
-                  </InlineLink>
+                  </LinkButton>
                 )}
                 {index < chips.length - 1 && <TriangleRightMini />}
               </div>
@@ -170,7 +170,7 @@ const PathDisplay = ({
 const ChildrenDisplay = ({
   category,
 }: {
-  category: AdminProductCategoryResponse["product_category"]
+  category: HttpTypes.AdminProductCategory
 }) => {
   const {
     product_category: withChildren,

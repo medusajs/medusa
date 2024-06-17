@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -223,11 +224,11 @@ export const useProduct = (
 }
 
 export const useProducts = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminProductListParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminProductListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminProductListResponse,
       QueryKey
     >,
