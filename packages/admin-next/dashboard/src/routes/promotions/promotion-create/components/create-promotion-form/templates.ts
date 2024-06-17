@@ -1,9 +1,17 @@
+const commonHiddenFields = [
+  "type",
+  "application_method.type",
+  "application_method.allocation",
+]
+
 export const templates = [
   {
     id: "amount_off_products",
     type: "standard",
     title: "Amount off products",
     description: "Discount specific products or collection of products",
+    hiddenFields: [...commonHiddenFields],
+    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -19,6 +27,8 @@ export const templates = [
     type: "standard",
     title: "Amount off order",
     description: "Discounts the total order amount",
+    hiddenFields: [...commonHiddenFields],
+    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -34,6 +44,8 @@ export const templates = [
     type: "standard",
     title: "Percentage off product",
     description: "Discounts a percentage off selected products",
+    hiddenFields: [...commonHiddenFields],
+    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -49,6 +61,8 @@ export const templates = [
     type: "standard",
     title: "Percentage off order",
     description: "Discounts a percentage of the total order amount",
+    hiddenFields: [...commonHiddenFields],
+    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -64,6 +78,8 @@ export const templates = [
     type: "buy_get",
     title: "Buy X Get Y",
     description: "Buy X product(s), get Y product(s)",
+    hiddenFields: [...commonHiddenFields, "application_method.value"],
+    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "buyget",

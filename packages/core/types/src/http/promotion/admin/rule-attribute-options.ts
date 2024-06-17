@@ -5,6 +5,11 @@ export interface RuleAttributeOptionsResponse {
   field_type: string
   required: boolean
   disguised: boolean
+  operators: {
+    id: string
+    value: string
+    label: string
+  }[]
 }
 
 export interface AdminRuleAttributeOptionsListResponse {

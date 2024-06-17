@@ -1131,15 +1131,15 @@
         "description": "The code your customers will enter during checkout."
       },
       "value": {
-        "title": "Value"
+        "title": "Promotion Value"
       },
       "value_type": {
         "fixed": {
-          "title": "Fixed amount",
+          "title": "Coupon Value",
           "description": "eg. 100"
         },
         "percentage": {
-          "title": "Percentage",
+          "title": "Coupon Value",
           "description": "eg. 8%"
         }
       }

@@ -68,7 +68,7 @@ export const EditRulesForm = ({
             ruleType={ruleType}
             setRulesToRemove={setRulesToRemove}
             rulesToRemove={rulesToRemove}
-            promotionId={promotion.id}
+            promotion={promotion}
           />
         </RouteDrawer.Body>
 

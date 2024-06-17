@@ -42,17 +42,25 @@ export const EditRulesWrapper = ({
   const { mutateAsync: updatePromotionRules, isPending } =
     usePromotionUpdateRules(promotion.id, ruleType)
 
-  const handleSubmit = (rulesToRemove?: { id: string }[]) => {
+  const handleSubmit = (
+    rulesToRemove?: { id: string; disguised: boolean; attribute: string }[]
+  ) => {
     return async function (data: { rules: PromotionRuleResponse[] }) {
       const applicationMethodData: Record<any, any> = {}
       const { rules: allRules = [] } = data
       const disguisedRules = allRules.filter((rule) => rule.disguised)
+      const disguisedRulesToRemove =
+        rulesToRemove?.filter((r) => r.disguised) || []
 
       // For all the rules that were disguised, convert them to actual values in the
       // database, they are currently all under application_method. If more of these are coming
       // up, abstract this away.
       for (const rule of disguisedRules) {
         applicationMethodData[rule.attribute] = getRuleValue(rule)
+      }
+
+      for (const rule of disguisedRulesToRemove) {
+        applicationMethodData[rule.attribute] = null
       }
 
       // This variable will contain the rules that are actual rule objects, without the disguised
@@ -77,14 +85,14 @@ export const EditRulesWrapper = ({
             return {
               attribute: rule.attribute,
               operator: rule.operator,
-              values: rule.operator === "eq" ? rule.values[0] : rule.values,
+              values: rule.values,
             } as any
           }),
         }))
 
       rulesToRemove?.length &&
         (await removePromotionRules({
-          rule_ids: rulesToRemove.map((r) => r.id!),
+          rule_ids: rulesToRemove.filter((r) => !!r.id).map((r) => r.id!),
         }))
 
       rulesToUpdate.length &&
