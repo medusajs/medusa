@@ -166,7 +166,7 @@ export const setShippingOptionsPricesStep = createStep(
         continue
       }
 
-      await pricingService.update(shippingOptionData.price_set_id, {
+      await pricingService.updatePriceSets(shippingOptionData.price_set_id, {
         prices: shippingOptionData.prices,
       })
     }
@@ -187,7 +187,7 @@ export const setShippingOptionsPricesStep = createStep(
       if (!isDefined(prices)) {
         continue
       }
-      await pricingService.update(data_.price_set_id, { prices })
+      await pricingService.updatePriceSets(data_.price_set_id, { prices })
     }
   }
 )

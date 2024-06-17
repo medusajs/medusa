@@ -123,7 +123,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetTwo] = await pricingModule.create([
+          const [priceSet, priceSetTwo] = await pricingModule.createPriceSets([
             {
               prices: [
                 {
@@ -222,7 +222,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const [priceSet] = await pricingModule.create([
+          const [priceSet] = await pricingModule.createPriceSets([
             { prices: [{ amount: 3000, currency_code: "usd" }] },
           ])
 
@@ -1337,14 +1337,15 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetDefaultTax] = await pricingModule.create([
-            {
-              prices: [{ amount: 3000, currency_code: "usd" }],
-            },
-            {
-              prices: [{ amount: 2000, currency_code: "usd" }],
-            },
-          ])
+          const [priceSet, priceSetDefaultTax] =
+            await pricingModule.createPriceSets([
+              {
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+              {
+                prices: [{ amount: 2000, currency_code: "usd" }],
+              },
+            ])
 
           await remoteLink.create([
             {
@@ -1736,7 +1737,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
 
