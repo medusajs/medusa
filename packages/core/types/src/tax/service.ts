@@ -3,21 +3,21 @@ import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
-  FilterableTaxRegionProps,
   FilterableTaxRateProps,
-  TaxRateDTO,
-  TaxRegionDTO,
-  TaxRateRuleDTO,
   FilterableTaxRateRuleProps,
-  TaxableItemDTO,
-  TaxCalculationContext,
+  FilterableTaxRegionProps,
   ItemTaxLineDTO,
   ShippingTaxLineDTO,
+  TaxableItemDTO,
   TaxableShippingDTO,
+  TaxCalculationContext,
+  TaxRateDTO,
+  TaxRateRuleDTO,
+  TaxRegionDTO,
 } from "./common"
 import {
-  CreateTaxRateRuleDTO,
   CreateTaxRateDTO,
+  CreateTaxRateRuleDTO,
   CreateTaxRegionDTO,
   UpdateTaxRateDTO,
   UpsertTaxRateDTO,
@@ -40,18 +40,18 @@ export interface ITaxModuleService extends IModuleService {
    * A simple example that retrieves a tax rate by its ID:
    *
    * ```ts
-   * const taxRate = await taxModuleService.retrieve("txr_123")
+   * const taxRate = await taxModuleService.retrieveTaxRate("txr_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const taxRate = await taxModuleService.retrieve("txr_123", {
+   * const taxRate = await taxModuleService.retrieveTaxRate("txr_123", {
    *   relations: ["tax_region"],
    * })
    * ```
    */
-  retrieve(
+  retrieveTaxRate(
     taxRateId: string,
     config?: FindConfig<TaxRateDTO>,
     sharedContext?: Context
@@ -70,7 +70,7 @@ export interface ITaxModuleService extends IModuleService {
    * To retrieve a list of tax rates using their IDs:
    *
    * ```ts
-   * const taxRates = await taxModuleService.list({
+   * const taxRates = await taxModuleService.listTaxRates({
    *   id: ["txr_123", "txr_321"],
    * })
    * ```
@@ -78,7 +78,7 @@ export interface ITaxModuleService extends IModuleService {
    * To specify relations that should be retrieved within the tax rate:
    *
    * ```ts
-   * const taxRates = await taxModuleService.list(
+   * const taxRates = await taxModuleService.listTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   },
@@ -91,7 +91,7 @@ export interface ITaxModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const taxRates = await taxModuleService.list(
+   * const taxRates = await taxModuleService.listTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   },
@@ -103,7 +103,7 @@ export interface ITaxModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listTaxRates(
     filters?: FilterableTaxRateProps,
     config?: FindConfig<TaxRateDTO>,
     sharedContext?: Context
@@ -122,7 +122,7 @@ export interface ITaxModuleService extends IModuleService {
    * To retrieve a list of tax rates using their IDs:
    *
    * ```ts
-   * const [taxRates, count] = await taxModuleService.listAndCount(
+   * const [taxRates, count] = await taxModuleService.listAndCountTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   }
@@ -132,7 +132,7 @@ export interface ITaxModuleService extends IModuleService {
    * To specify relations that should be retrieved within the tax rate:
    *
    * ```ts
-   * const [taxRates, count] = await taxModuleService.listAndCount(
+   * const [taxRates, count] = await taxModuleService.listAndCountTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   },
@@ -145,7 +145,7 @@ export interface ITaxModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [taxRates, count] = await taxModuleService.listAndCount(
+   * const [taxRates, count] = await taxModuleService.listAndCountTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   },
@@ -157,7 +157,7 @@ export interface ITaxModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountTaxRates(
     filters?: FilterableTaxRateProps,
     config?: FindConfig<TaxRateDTO>,
     sharedContext?: Context
@@ -171,7 +171,7 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO[]>} The created tax rates.
    *
    * @example
-   * const taxRates = await taxModuleService.create([
+   * const taxRates = await taxModuleService.createTaxRates([
    *   {
    *     tax_region_id: "txreg_123",
    *     name: "Default rate",
@@ -194,7 +194,7 @@ export interface ITaxModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createTaxRates(
     data: CreateTaxRateDTO[],
     sharedContext?: Context
   ): Promise<TaxRateDTO[]>
@@ -207,13 +207,16 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO>} The created tax rate.
    *
    * @example
-   * const taxRate = await taxModuleService.create({
+   * const taxRate = await taxModuleService.createTaxRates({
    *   tax_region_id: "txreg_123",
    *   name: "Default rate",
    *   rate: 10,
    * })
    */
-  create(data: CreateTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
+  createTaxRates(
+    data: CreateTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO>
 
   /**
    * This method updates an existing tax rate.
@@ -224,11 +227,11 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO>} The updated tax rate.
    *
    * @example
-   * const taxRate = await taxModuleService.update("txr_123", {
+   * const taxRate = await taxModuleService.updateTaxRates("txr_123", {
    *   rate: 10,
    * })
    */
-  update(
+  updateTaxRates(
     taxRateId: string,
     data: UpdateTaxRateDTO,
     sharedContext?: Context
@@ -243,14 +246,14 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO[]>} The updated tax rates.
    *
    * @example
-   * const taxRates = await taxModuleService.update(
+   * const taxRates = await taxModuleService.updateTaxRates(
    *   ["txr_123", "txr_321"],
    *   {
    *     rate: 10,
    *   }
    * )
    */
-  update(
+  updateTaxRates(
     taxRateIds: string[],
     data: UpdateTaxRateDTO,
     sharedContext?: Context
@@ -265,7 +268,7 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO[]>} The updated tax rates.
    *
    * @example
-   * const taxRates = await taxModuleService.update(
+   * const taxRates = await taxModuleService.updateTaxRates(
    *   {
    *     id: ["txr_123", "txr_321"],
    *   },
@@ -274,7 +277,7 @@ export interface ITaxModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateTaxRates(
     selector: FilterableTaxRateProps,
     data: UpdateTaxRateDTO,
     sharedContext?: Context
@@ -288,12 +291,15 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO>} The created or updated tax rate.
    *
    * @example
-   * const taxRate = await taxModuleService.upsert({
+   * const taxRate = await taxModuleService.upsertTaxRates({
    *   id: "txr_123",
    *   rate: 10,
    * })
    */
-  upsert(data: UpsertTaxRateDTO, sharedContext?: Context): Promise<TaxRateDTO>
+  upsertTaxRates(
+    data: UpsertTaxRateDTO,
+    sharedContext?: Context
+  ): Promise<TaxRateDTO>
 
   /**
    * This method updates or creates tax rates if they don't exist.
@@ -303,14 +309,14 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<TaxRateDTO[]>} The created or updated tax rates.
    *
    * @example
-   * const taxRates = await taxModuleService.upsert([
+   * const taxRates = await taxModuleService.upsertTaxRates([
    *   {
    *     id: "txr_123",
    *     rate: 10,
    *   },
    * ])
    */
-  upsert(
+  upsertTaxRates(
     data: UpsertTaxRateDTO[],
     sharedContext?: Context
   ): Promise<TaxRateDTO[]>
@@ -323,9 +329,9 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the tax rates are deleted successfully.
    *
    * @example
-   * await taxModuleService.delete(["txr_123", "txr_321"])
+   * await taxModuleService.deleteTaxRates(["txr_123", "txr_321"])
    */
-  delete(taxRateIds: string[], sharedContext?: Context): Promise<void>
+  deleteTaxRates(taxRateIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a tax rate by its ID.
@@ -335,9 +341,9 @@ export interface ITaxModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the tax rate is deleted successfully.
    *
    * @example
-   * await taxModuleService.delete("txr_123")
+   * await taxModuleService.deleteTaxRates("txr_123")
    */
-  delete(taxRateId: string, sharedContext?: Context): Promise<void>
+  deleteTaxRates(taxRateId: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method restores soft deleted tax rates by their IDs.
@@ -354,9 +360,9 @@ export interface ITaxModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await taxModuleService.restore(["txr_123", "txr_321"])
+   * await taxModuleService.restoreTaxRates(["txr_123", "txr_321"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreTaxRates<TReturnableLinkableKeys extends string = string>(
     taxRateIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -668,9 +674,9 @@ export interface ITaxModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await taxModuleService.softDelete(["txr_123", "txr_321"])
+   * await taxModuleService.softDeleteTaxRates(["txr_123", "txr_321"])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteTaxRates<TReturnableLinkableKeys extends string = string>(
     taxRateIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
