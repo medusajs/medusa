@@ -325,7 +325,15 @@
       "create": {
         "header": "Create Variant"
       },
+      "tableItemAvailable": "{{availableCount}} available",
+      "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
+      "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
       "inventory": {
+        "notManaged": "Not managed",
+        "actions": {
+          "inventoryItems": "Go to inventory item",
+          "inventoryKit": "Show inventory items"
+        },
         "header": "Stock & Inventory",
         "editItemDetails": "Edit item details",
         "manageInventoryLabel": "Manage inventory",
