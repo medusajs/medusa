@@ -3,7 +3,6 @@ import { IPricingModuleService } from "@medusajs/types"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
-  SuiteOptions,
 } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
@@ -11,12 +10,9 @@ import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     let eventBusEmitSpy
 
     beforeEach(() => {
@@ -886,7 +882,7 @@ moduleIntegrationTestRunner({
 
       describe("updatePriceListPrices", () => {
         it("should update a price to a priceList successfully", async () => {
-          const [priceSet] = await service.create([
+          const [priceSet] = await service.createPriceSets([
             {
               rules: [
                 { rule_attribute: "region_id" },
@@ -988,7 +984,7 @@ moduleIntegrationTestRunner({
             { name: "region_id", rule_attribute: "region_id" },
           ])
 
-          const [priceSet] = await service.create([
+          const [priceSet] = await service.createPriceSets([
             { rules: [{ rule_attribute: "region_id" }] },
           ])
 
@@ -1031,7 +1027,7 @@ moduleIntegrationTestRunner({
 
       describe("removePrices", () => {
         it("should remove prices from a priceList successfully", async () => {
-          const [priceSet] = await service.create([
+          const [priceSet] = await service.createPriceSets([
             { rules: [{ rule_attribute: "region_id" }] },
           ])
 
