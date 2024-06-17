@@ -8,7 +8,6 @@ import { useMemo } from "react"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { useDeleteVariant } from "../../../../../hooks/api/products"
-import { useNavigate } from "react-router-dom"
 
 const VariantActions = ({
   variant,
@@ -21,7 +20,6 @@ const VariantActions = ({
 }) => {
   const { mutateAsync } = useDeleteVariant(product.id, variant.id)
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const prompt = usePrompt()
 
   const inventoryItemsCount = variant.inventory_items?.length || 0
@@ -45,18 +43,22 @@ const VariantActions = ({
     await mutateAsync()
   }
 
-  const handleInventoryItemNavigation = () => {
-    const itemId = variant.inventory_items![0].inventory.id
-    navigate(`/inventory/${itemId}`)
-  }
+  const [inventoryItemLink, inventoryKitLink] = useMemo(() => {
+    if (!variant.inventory_items?.length) {
+      return ["", ""]
+    }
 
-  const handleInventoryKitNavigation = () => {
+    const itemId = variant.inventory_items![0].inventory.id
+    const itemLink = `/inventory/${itemId}`
+
     const itemIds = variant.inventory_items!.map((i) => i.inventory.id)
     const params = { id: itemIds }
     const query = new URLSearchParams(params).toString()
 
-    navigate(`/inventory?${query}`)
-  }
+    const kitLink = `/inventory?${query}`
+
+    return [itemLink, kitLink]
+  }, [variant.inventory_items])
 
   return (
     <ActionMenu
@@ -76,14 +78,14 @@ const VariantActions = ({
             hasInventoryItem
               ? {
                   label: t("products.variant.inventory.actions.inventoryItems"),
-                  onClick: handleInventoryItemNavigation,
+                  to: inventoryItemLink,
                   icon: <Buildings />,
                 }
               : false,
             hasInventoryKit
               ? {
                   label: t("products.variant.inventory.actions.inventoryKit"),
-                  onClick: handleInventoryKitNavigation,
+                  to: inventoryKitLink,
                   icon: <Component />,
                 }
               : false,
@@ -179,6 +181,10 @@ export const useProductVariantTableColumns = (
         ),
         cell: ({ getValue, row }) => {
           const variant = row.original
+
+          if (!variant.manage_inventory) {
+            return "-"
+          }
 
           const inventory: InventoryItemDTO[] = getValue().map(
             (i) => i.inventory
