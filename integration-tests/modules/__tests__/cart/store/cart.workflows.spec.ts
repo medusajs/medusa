@@ -130,7 +130,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -240,7 +240,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -380,7 +380,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -583,7 +583,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -802,7 +802,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -929,7 +929,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const priceSet = await pricingModule.create({
+            const priceSet = await pricingModule.createPriceSets({
               prices: [
                 {
                   amount: 3000,
@@ -1440,7 +1440,7 @@ medusaIntegrationTestRunner({
             type: "default",
           })
 
-          fulfillmentSet = await fulfillmentModule.create({
+          fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1451,7 +1451,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          priceSet = await pricingModule.create({
+          priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
         })
@@ -1641,7 +1641,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -1760,7 +1760,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
