@@ -1962,5 +1962,148 @@ describe("Entity builder", () => {
         },
       })
     })
+
+    test("define multiple many to many relationships to the same entity", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        activeTeamsUsers: model.manyToMany(() => user, {
+          mappedBy: "activeTeams",
+        }),
+        users: model.manyToMany(() => user, { mappedBy: "teams" }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        activeTeams: model.manyToMany(() => team, {
+          mappedBy: "activeTeamsUsers",
+        }),
+        teams: model.manyToMany(() => team, { mappedBy: "users" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const Team = entityBuilder(team)
+      const User = entityBuilder(user)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+        activeTeams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+          activeTeams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "team_users",
+          /**
+           * The other side should be inversed in order for Mikro ORM
+           * to work. Both sides cannot have mappedBy.
+           */
+          inversedBy: "users",
+        },
+        activeTeams: {
+          reference: "m:n",
+          name: "activeTeams",
+          entity: "Team",
+          pivotTable: "team_users",
+          inversedBy: "activeTeamsUsers",
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "team_users",
+          mappedBy: "teams",
+        },
+        activeTeamsUsers: {
+          reference: "m:n",
+          name: "activeTeamsUsers",
+          entity: "User",
+          pivotTable: "team_users",
+          mappedBy: "activeTeams",
+        },
+      })
+    })
   })
 })
