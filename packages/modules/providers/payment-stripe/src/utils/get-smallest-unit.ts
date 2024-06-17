@@ -48,7 +48,15 @@ export function getSmallestUnit(
 ): number {
   const multiplier = getCurrencyMultiplier(currency)
   const smallestAmount = new BigNumber(MathBN.mult(amount, multiplier))
-  return smallestAmount.numeric
+
+  let numeric = smallestAmount.numeric
+
+  // Check if the currency requires rounding to the nearest ten
+  if (multiplier === 1e3) {
+    numeric = Math.ceil(numeric / 10) * 10
+  }
+
+  return numeric
 }
 
 /**
