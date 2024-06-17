@@ -1155,11 +1155,11 @@
       },
       "value_type": {
         "fixed": {
-          "title": "Coupon Value",
+          "title": "Promotion Value",
           "description": "eg. 100"
         },
         "percentage": {
-          "title": "Coupon Value",
+          "title": "Promotion Value",
           "description": "eg. 8%"
         }
       }

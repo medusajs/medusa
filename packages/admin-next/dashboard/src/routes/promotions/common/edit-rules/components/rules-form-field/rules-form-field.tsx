@@ -1,5 +1,5 @@
 import { XMarkMini } from "@medusajs/icons"
-import { PromotionDTO, PromotionRuleResponse } from "@medusajs/types"
+import { PromotionDTO } from "@medusajs/types"
 import { Badge, Button, Heading, Select, Text } from "@medusajs/ui"
 import { Fragment, useEffect } from "react"
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
@@ -10,6 +10,7 @@ import {
   usePromotionRules,
 } from "../../../../../../hooks/api/promotions"
 import { CreatePromotionSchemaType } from "../../../../promotion-create/components/create-promotion-form/form-schema"
+import { generateRuleAttributes } from "../edit-rules-form/utils"
 import { RuleValueFormField } from "../rule-value-form-field"
 import { requiredProductRule } from "./constants"
 
@@ -24,22 +25,6 @@ type RulesFormFieldType = {
     | "rules"
     | "application_method.target_rules"
 }
-
-const generateRuleAttributes = (rules?: PromotionRuleResponse[]) =>
-  (rules || []).map((rule) => ({
-    id: rule.id,
-    required: rule.required,
-    field_type: rule.field_type,
-    disguised: rule.disguised,
-    attribute: rule.attribute!,
-    operator: rule.operator!,
-    values:
-      rule.field_type === "number" || rule.operator === "eq"
-        ? typeof rule.values === "object"
-          ? rule.values[0]?.value
-          : rule.values
-        : rule?.values?.map((v: { value: string }) => v.value!),
-  }))
 
 export const RulesFormField = ({
   form,
@@ -124,10 +109,7 @@ export const RulesFormField = ({
     }
 
     form.resetField(scope)
-    console.log(
-      "generateRuleAttributes(rules) -- ",
-      generateRuleAttributes(rules)
-    )
+
     replace(generateRuleAttributes(rules) as any)
   }, [promotionType, isLoading])
 

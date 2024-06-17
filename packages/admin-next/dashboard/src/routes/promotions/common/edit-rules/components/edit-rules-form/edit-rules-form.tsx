@@ -1,14 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { PromotionDTO, PromotionRuleDTO } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
-import i18n from "i18next"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import * as zod from "zod"
 import { RouteDrawer } from "../../../../../../components/route-modal"
 import { RuleTypeValues } from "../../edit-rules"
 import { RulesFormField } from "../rules-form-field"
+import { EditRules, EditRulesType } from "./form-schema"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO
@@ -17,31 +16,6 @@ type EditPromotionFormProps = {
   handleSubmit: any
   isSubmitting: boolean
 }
-
-const EditRules = zod.object({
-  type: zod.string().optional(),
-  rules: zod.array(
-    zod.object({
-      id: zod.string().optional(),
-      attribute: zod
-        .string()
-        .min(1, { message: i18n.t("promotions.form.required") }),
-      operator: zod
-        .string()
-        .min(1, { message: i18n.t("promotions.form.required") }),
-      values: zod.union([
-        zod.number().min(1, { message: i18n.t("promotions.form.required") }),
-        zod.string().min(1, { message: i18n.t("promotions.form.required") }),
-        zod
-          .array(zod.string())
-          .min(1, { message: i18n.t("promotions.form.required") }),
-      ]),
-      required: zod.boolean().optional(),
-      disguised: zod.boolean().optional(),
-      field_type: zod.string().optional(),
-    })
-  ),
-})
 
 export const EditRulesForm = ({
   promotion,
@@ -52,7 +26,7 @@ export const EditRulesForm = ({
   const { t } = useTranslation()
   const [rulesToRemove, setRulesToRemove] = useState([])
 
-  const form = useForm<zod.infer<typeof EditRules>>({
+  const form = useForm<EditRulesType>({
     defaultValues: { rules: [], type: promotion.type },
     resolver: zodResolver(EditRules),
   })
@@ -64,7 +38,7 @@ export const EditRulesForm = ({
       <form onSubmit={handleFormSubmit} className="flex h-full flex-col">
         <RouteDrawer.Body>
           <RulesFormField
-            form={form}
+            form={form as any}
             ruleType={ruleType}
             setRulesToRemove={setRulesToRemove}
             rulesToRemove={rulesToRemove}

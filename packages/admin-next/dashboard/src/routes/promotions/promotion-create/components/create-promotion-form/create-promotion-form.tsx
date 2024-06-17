@@ -133,7 +133,6 @@ export const CreatePromotionForm = () => {
       }).then(() => handleSuccess())
     },
     async (error) => {
-      console.log("error - ", error)
       // TODO: showcase error when something goes wrong
       // Wait for alert component and use it here
     }

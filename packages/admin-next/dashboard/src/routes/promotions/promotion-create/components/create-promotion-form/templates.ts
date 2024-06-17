@@ -11,7 +11,6 @@ export const templates = [
     title: "Amount off products",
     description: "Discount specific products or collection of products",
     hiddenFields: [...commonHiddenFields],
-    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -28,7 +27,6 @@ export const templates = [
     title: "Amount off order",
     description: "Discounts the total order amount",
     hiddenFields: [...commonHiddenFields],
-    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -45,7 +43,6 @@ export const templates = [
     title: "Percentage off product",
     description: "Discounts a percentage off selected products",
     hiddenFields: [...commonHiddenFields],
-    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -62,7 +59,6 @@ export const templates = [
     title: "Percentage off order",
     description: "Discounts a percentage of the total order amount",
     hiddenFields: [...commonHiddenFields],
-    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "standard",
@@ -79,7 +75,6 @@ export const templates = [
     title: "Buy X Get Y",
     description: "Buy X product(s), get Y product(s)",
     hiddenFields: [...commonHiddenFields, "application_method.value"],
-    hiddenRelations: [],
     defaults: {
       is_automatic: "false",
       type: "buyget",
