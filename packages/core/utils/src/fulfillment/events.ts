@@ -27,7 +27,7 @@ const eventBaseNames: [
   "fulfillmentLabel",
 ]
 
-export const FulfillmentEvents = buildEventNamesFromEntityName(
-  eventBaseNames,
-  Modules.FULFILLMENT
-)
+export const FulfillmentEvents = {
+  ...buildEventNamesFromEntityName(eventBaseNames, Modules.FULFILLMENT),
+  SHIPMENT_CREATED: "shipment.created",
+}
