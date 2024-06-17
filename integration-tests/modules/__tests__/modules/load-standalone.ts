@@ -28,7 +28,7 @@ medusaIntegrationTestRunner({
           Modules.PRODUCT
         ] as unknown as IProductModuleService
 
-        const productList = await product.list()
+        const productList = await product.listProducts()
 
         expect(productList).toEqual(expect.arrayContaining([]))
       })

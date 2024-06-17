@@ -40,7 +40,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
       let productTwo: ProductDTO
 
       beforeEach(async () => {
-        productOne = await service.create({
+        productOne = await service.createProducts({
           id: "product-1",
           title: "product 1",
           status: ProductStatus.PUBLISHED,
@@ -56,20 +56,20 @@ moduleIntegrationTestRunner<IProductModuleService>({
           ],
         } as CreateProductDTO)
 
-        productTwo = await service.create({
+        productTwo = await service.createProducts({
           id: "product-2",
           title: "product 2",
           status: ProductStatus.PUBLISHED,
         } as CreateProductDTO)
 
-        variantOne = await service.createVariants({
+        variantOne = await service.createProductVariants({
           id: "test-1",
           title: "variant 1",
           product_id: productOne.id,
           options: { size: "large" },
         } as CreateProductVariantDTO)
 
-        variantTwo = await service.createVariants({
+        variantTwo = await service.createProductVariants({
           id: "test-2",
           title: "variant",
           product_id: productTwo.id,
@@ -80,7 +80,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountVariants", () => {
         it("should return variants and count queried by ID", async () => {
-          const results = await service.listAndCountVariants({
+          const results = await service.listAndCountProductVariants({
             id: variantOne.id,
           })
 
@@ -93,7 +93,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return variants and count based on the options and filter parameter", async () => {
-          let results = await service.listAndCountVariants(
+          let results = await service.listAndCountProductVariants(
             {
               id: variantOne.id,
             },
@@ -109,11 +109,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          results = await service.listAndCountVariants({}, { take: 1 })
+          results = await service.listAndCountProductVariants({}, { take: 1 })
 
           expect(results[1]).toEqual(2)
 
-          results = await service.listAndCountVariants({}, { take: 1, skip: 1 })
+          results = await service.listAndCountProductVariants(
+            {},
+            { take: 1, skip: 1 }
+          )
 
           expect(results[1]).toEqual(2)
           expect(results[0]).toEqual([
@@ -124,7 +127,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for variants", async () => {
-          const results = await service.listAndCountVariants(
+          const results = await service.listAndCountProductVariants(
             {
               id: variantOne.id,
             },
@@ -151,7 +154,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveVariant", () => {
         it("should return the requested variant", async () => {
-          const result = await service.retrieveVariant(variantOne.id)
+          const result = await service.retrieveProductVariant(variantOne.id)
 
           expect(result).toEqual(
             expect.objectContaining({
@@ -162,7 +165,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const result = await service.retrieveVariant(variantOne.id, {
+          const result = await service.retrieveProductVariant(variantOne.id, {
             select: ["id", "title", "product.title"] as any,
             relations: ["product"],
           })
@@ -183,7 +186,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveVariant("does-not-exist")
+            await service.retrieveProductVariant("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -196,14 +199,16 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("updateVariants", () => {
         it("should update the title of the variant successfully", async () => {
-          await service.upsertVariants([
+          await service.upsertProductVariants([
             {
               id: variantOne.id,
               title: "new test",
             },
           ])
 
-          const productVariant = await service.retrieveVariant(variantOne.id)
+          const productVariant = await service.retrieveProductVariant(
+            variantOne.id
+          )
           expect(productVariant.title).toEqual("new test")
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
@@ -218,16 +223,19 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should upsert the options of a variant successfully", async () => {
-          await service.upsertVariants([
+          await service.upsertProductVariants([
             {
               id: variantOne.id,
               options: { size: "small" },
             },
           ])
 
-          const productVariant = await service.retrieveVariant(variantOne.id, {
-            relations: ["options"],
-          })
+          const productVariant = await service.retrieveProductVariant(
+            variantOne.id,
+            {
+              relations: ["options"],
+            }
+          )
           expect(productVariant.options).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -248,13 +256,16 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should do a partial update on the options of a variant successfully", async () => {
-          await service.updateVariants(variantOne.id, {
+          await service.updateProductVariants(variantOne.id, {
             options: { size: "small", color: "red" },
           })
 
-          const productVariant = await service.retrieveVariant(variantOne.id, {
-            relations: ["options"],
-          })
+          const productVariant = await service.retrieveProductVariant(
+            variantOne.id,
+            {
+              relations: ["options"],
+            }
+          )
 
           expect(productVariant.options).toEqual(
             expect.arrayContaining([
@@ -272,7 +283,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateVariants("does-not-exist", {})
+            await service.updateProductVariants("does-not-exist", {})
           } catch (e) {
             error = e
           }
@@ -293,7 +304,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             options: { size: "small" },
           }
 
-          const variant = await service.createVariants(data)
+          const variant = await service.createProductVariants(data)
 
           expect(variant).toEqual(
             expect.objectContaining({
@@ -321,15 +332,15 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("softDelete variant", () => {
         it("should soft delete a variant and its relations", async () => {
-          const beforeDeletedVariants = await service.listVariants(
+          const beforeDeletedVariants = await service.listProductVariants(
             { id: variantOne.id },
             {
               relations: ["options"],
             }
           )
 
-          await service.softDeleteVariants([variantOne.id])
-          const deletedVariants = await service.listVariants(
+          await service.softDeleteProductVariants([variantOne.id])
+          const deletedVariants = await service.listProductVariants(
             { id: variantOne.id },
             {
               relations: ["options"],

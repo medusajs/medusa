@@ -106,7 +106,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -216,7 +216,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -336,7 +336,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -559,7 +559,7 @@ medusaIntegrationTestRunner({
             sales_channel_id: salesChannel.id,
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -668,7 +668,7 @@ medusaIntegrationTestRunner({
             sales_channel_id: salesChannel.id,
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -778,7 +778,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -905,7 +905,7 @@ medusaIntegrationTestRunner({
               name: "Warehouse",
             })
 
-            const [product] = await productModule.create([
+            const [product] = await productModule.createProducts([
               {
                 title: "Test product",
                 variants: [

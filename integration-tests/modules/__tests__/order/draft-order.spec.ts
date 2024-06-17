@@ -77,7 +77,7 @@ medusaIntegrationTestRunner({
           name: "Warehouse",
         })
 
-        const [product, product_2] = await productModule.create([
+        const [product, product_2] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [

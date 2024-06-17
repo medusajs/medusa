@@ -20,7 +20,7 @@ export const getVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    const variants = await productModuleService.listVariants(
+    const variants = await productModuleService.listProductVariants(
       data.filter,
       data.config
     )

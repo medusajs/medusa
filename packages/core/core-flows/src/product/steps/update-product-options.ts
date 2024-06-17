@@ -20,12 +20,12 @@ export const updateProductOptionsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listOptions(data.selector, {
+    const prevData = await service.listProductOptions(data.selector, {
       select: selects,
       relations,
     })
 
-    const productOptions = await service.updateOptions(
+    const productOptions = await service.updateProductOptions(
       data.selector,
       data.update
     )
@@ -40,7 +40,7 @@ export const updateProductOptionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertOptions(
+    await service.upsertProductOptions(
       prevData.map((o) => ({
         ...o,
         values: o.values?.map((v) => v.value),

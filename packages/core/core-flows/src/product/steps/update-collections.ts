@@ -20,12 +20,12 @@ export const updateCollectionsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listCollections(data.selector, {
+    const prevData = await service.listProductCollections(data.selector, {
       select: selects,
       relations,
     })
 
-    const collections = await service.updateCollections(
+    const collections = await service.updateProductCollections(
       data.selector,
       data.update
     )
@@ -40,7 +40,7 @@ export const updateCollectionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertCollections(
+    await service.upsertProductCollections(
       prevData.map((r) => ({
         ...(r as unknown as ProductTypes.UpdateProductCollectionDTO),
       }))

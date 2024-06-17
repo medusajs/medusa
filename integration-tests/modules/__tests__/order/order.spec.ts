@@ -5,7 +5,6 @@ import {
   IInventoryServiceNext,
   IOrderModuleService,
   IPricingModuleService,
-  IProductModuleService,
   IRegionModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
@@ -26,7 +25,6 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
-    let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
     let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationServiceNext
@@ -38,7 +36,6 @@ medusaIntegrationTestRunner({
       appContainer = getContainer()
       cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       fulfillmentModule = appContainer.resolve(

@@ -22,14 +22,14 @@ async function createProductsWithVariants(
 ): Promise<[ProductDTO, ProductVariantDTO[]]> {
   const { variants: variantsData, ...productData } = productsData
 
-  const [product] = await productModule.create([productData])
+  const [product] = await productModule.createProducts([productData])
 
   const variantsDataWithProductId = variantsData?.map((variantData) => {
     return { ...variantData, product_id: product.id }
   })
 
   const variants = variantsDataWithProductId
-    ? await productModule.createVariants(variantsDataWithProductId)
+    ? await productModule.createProductVariants(variantsDataWithProductId)
     : []
 
   return [product, variants]

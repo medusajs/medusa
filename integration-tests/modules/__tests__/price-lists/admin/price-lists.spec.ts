@@ -50,7 +50,7 @@ medusaIntegrationTestRunner({
           name: "US",
           currency_code: "USD",
         })
-        ;[product] = await productModule.create([
+        ;[product] = await productModule.createProducts([
           {
             title: "test product",
             variants: [
