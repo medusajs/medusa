@@ -55,7 +55,7 @@ export class Product {
     )
   }
   async list(
-    queryParams?: HttpTypes.AdminProductParams,
+    queryParams?: HttpTypes.AdminProductListParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminProductListResponse>(
