@@ -183,7 +183,7 @@ export const useProductVariantTableColumns = (
           const variant = row.original
 
           if (!variant.manage_inventory) {
-            return "-"
+            return t("products.variant.inventory.notManaged")
           }
 
           const inventory: InventoryItemDTO[] = getValue().map(

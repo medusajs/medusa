@@ -328,6 +328,7 @@
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
       "inventory": {
+        "notManaged": "Not managed",
         "actions": {
           "inventoryItems": "Go to inventory item",
           "inventoryKit": "Show inventory items"
