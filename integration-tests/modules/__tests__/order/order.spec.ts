@@ -2,12 +2,12 @@ import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
-  IInventoryService,
+  IInventoryServiceNext,
   IOrderModuleService,
-  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
+  IStockLocationServiceNext,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -28,8 +28,8 @@ medusaIntegrationTestRunner({
     let regionModuleService: IRegionModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
-    let paymentModule: IPaymentModuleService
-    let inventoryModule: IInventoryService
+    let inventoryModule: IInventoryServiceNext
+    let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery
@@ -40,7 +40,6 @@ medusaIntegrationTestRunner({
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       fulfillmentModule = appContainer.resolve(
         ModuleRegistrationName.FULFILLMENT
