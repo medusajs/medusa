@@ -1,10 +1,9 @@
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useProductCategories } from "../../../../../hooks/api/categories"
-import {
-  CategoryTree,
-  CategoryTreeItem,
-} from "../../../common/components/category-tree"
+import { CategoryTree } from "../../../common/components/category-tree"
+import { CategoryTreeItem } from "../../../common/types"
+import { insertCategoryTreeItem } from "../../../common/utils"
 import { CreateCategorySchema } from "./schema"
 
 type CreateCategoryNestingProps = {
@@ -48,9 +47,8 @@ export const CreateCategoryNesting = ({ form }: CreateCategoryNestingProps) => {
       name: watchedName,
       parent_category_id: parentCategoryId,
       rank: watchedRank,
+      category_children: null,
     }
-
-    console.log("inserting", temp)
 
     return insertCategoryTreeItem(product_categories ?? [], temp)
   }, [product_categories, watchedName, parentCategoryId, watchedRank])
@@ -61,7 +59,6 @@ export const CreateCategoryNesting = ({ form }: CreateCategoryNestingProps) => {
       shouldTouch: true,
     })
 
-    console.log("rank", rank)
     form.setValue("rank", rank, {
       shouldDirty: true,
       shouldTouch: true,
@@ -81,77 +78,4 @@ export const CreateCategoryNesting = ({ form }: CreateCategoryNestingProps) => {
       isLoading={isPending || !product_categories}
     />
   )
-}
-
-/**
- * Since we allow the user to go back and forth between the two steps of the form,
- * we need to handle restoring the state of the tree when it re-renders.
- */
-const insertCategoryTreeItem = (
-  categories: CategoryTreeItem[],
-  newItem: Omit<CategoryTreeItem, "category_children">
-): CategoryTreeItem[] => {
-  const seen = new Set<string>()
-
-  const remove = (
-    items: CategoryTreeItem[],
-    id: string
-  ): CategoryTreeItem[] => {
-    const stack = [...items]
-    const result: CategoryTreeItem[] = []
-
-    while (stack.length > 0) {
-      const item = stack.pop()!
-      if (item.id !== id) {
-        if (item.category_children) {
-          item.category_children = remove(item.category_children, id)
-        }
-        result.push(item)
-      }
-    }
-
-    return result
-  }
-
-  const insert = (items: CategoryTreeItem[]): CategoryTreeItem[] => {
-    const stack = [...items]
-
-    while (stack.length > 0) {
-      const item = stack.pop()!
-      if (seen.has(item.id)) {
-        continue // Prevent revisiting the same node
-      }
-      seen.add(item.id)
-
-      if (item.id === newItem.parent_category_id) {
-        if (!item.category_children) {
-          item.category_children = []
-        }
-        item.category_children.push({ ...newItem, category_children: null })
-        item.category_children.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
-        return categories
-      }
-      if (item.category_children) {
-        stack.push(...item.category_children)
-      }
-    }
-    return items
-  }
-
-  categories = remove(categories, newItem.id)
-
-  if (newItem.parent_category_id === null && newItem.rank === null) {
-    categories.unshift({ ...newItem, category_children: null })
-  } else if (newItem.parent_category_id === null && newItem.rank !== null) {
-    categories.splice(newItem.rank, 0, {
-      ...newItem,
-      category_children: null,
-    })
-  } else {
-    categories = insert(categories)
-  }
-
-  categories.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
-
-  return categories
 }

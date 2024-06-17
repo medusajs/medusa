@@ -14,8 +14,8 @@ import Nestable from "react-nestable"
 
 import { useTranslation } from "react-i18next"
 import "react-nestable/dist/styles/index.css"
+import { CategoryTreeItem } from "../../types"
 import "./styles.css"
-import { CategoryTreeItem } from "./types"
 
 type CategoryTreeProps = {
   value: CategoryTreeItem[]
@@ -198,7 +198,6 @@ export const CategoryBranch = ({
         <Text size="small" leading="compact">
           {item.name}
         </Text>
-        <Text>{item.rank}</Text>
         {isNew && (
           <Badge size="2xsmall" color="blue">
             {t("categories.fields.new.label")}
