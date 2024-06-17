@@ -36,7 +36,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const [rateOne, rateTwo] = await service.create([
+        const [rateOne, rateTwo] = await service.createTaxRates([
           {
             tax_region_id: taxRegion.id,
             rate: 10,
@@ -123,7 +123,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const [rateOne, rateTwo] = await service.create([
+        const [rateOne, rateTwo] = await service.createTaxRates([
           {
             tax_region_id: taxRegion.id,
             rate: 10,
