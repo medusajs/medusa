@@ -113,8 +113,6 @@ export const insertCategoryTreeItem = (
           item.category_children = []
         }
 
-        // insert the newItem at the index that matches the rank. If the rank does not correspond to an index, push it to the end
-        // Make sure to also update the rank of the other items to match their new index
         if (newItem.rank === null) {
           item.category_children.push(newItem)
         } else {
