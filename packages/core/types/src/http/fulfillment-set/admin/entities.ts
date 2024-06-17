@@ -1,4 +1,5 @@
 import { GeoZoneType } from "../../../fulfillment"
+import { AdminShippingOption } from "../../shipping-option"
 
 export interface AdminGeoZone {
   id: string
@@ -14,9 +15,10 @@ export interface AdminGeoZone {
 
 export interface AdminServiceZone {
   id: string
+  name: string
   fulfillment_set_id: string
   geo_zones: AdminGeoZone[]
-  shipping_options: any[]
+  shipping_options: AdminShippingOption[]
   created_at: string
   updated_at: string
   deleted_at: string | null

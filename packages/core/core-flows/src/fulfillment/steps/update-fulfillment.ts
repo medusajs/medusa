@@ -21,9 +21,9 @@ export const updateFulfillmentStep = createStep(
       relations,
     })
 
-    await service.updateFulfillment(id, data)
+    const updated = await service.updateFulfillment(id, data)
 
-    return new StepResponse(void 0, fulfillment)
+    return new StepResponse(updated, fulfillment)
   },
   async (fulfillment, { container }) => {
     if (!fulfillment) {

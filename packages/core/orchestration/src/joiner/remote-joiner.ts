@@ -1,6 +1,6 @@
 import {
+  InternalJoinerServiceConfig,
   JoinerRelationship,
-  JoinerServiceConfig,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   RemoteExpandProperty,
@@ -32,7 +32,8 @@ type InternalImplodeMapping = {
 }
 
 export class RemoteJoiner {
-  private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
+  private serviceConfigCache: Map<string, InternalJoinerServiceConfig> =
+    new Map()
 
   private static filterFields(
     data: any,
@@ -146,73 +147,85 @@ export class RemoteJoiner {
   private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
     const expandedRelationships: Map<
       string,
-      { fieldAlias; relationships: JoinerRelationship[] }
+      { fieldAlias; relationships: Map<string, JoinerRelationship> }
     > = new Map()
 
     for (const service of serviceConfigs) {
-      if (this.serviceConfigCache.has(service.serviceName!)) {
-        throw new Error(`Service "${service.serviceName}" is already defined.`)
+      const service_ = service as Omit<ModuleJoinerConfig, "relationships"> & {
+        relationships?: Map<string, JoinerRelationship>
       }
 
-      service.fieldAlias ??= {}
-      service.relationships ??= []
-      service.extends ??= []
+      if (this.serviceConfigCache.has(service_.serviceName!)) {
+        throw new Error(`Service "${service_.serviceName}" is already defined.`)
+      }
+
+      service_.fieldAlias ??= {}
+      service_.extends ??= []
+      service_.relationships ??= new Map()
+
+      if (Array.isArray(service_.relationships)) {
+        const relationships = new Map()
+        for (const relationship of service_.relationships) {
+          relationships.set(relationship.alias, relationship)
+        }
+        service_.relationships = relationships
+      }
 
       // add aliases
       const isReadOnlyDefinition =
-        !isDefined(service.serviceName) || service.isReadOnlyLink
+        !isDefined(service_.serviceName) || service_.isReadOnlyLink
       if (!isReadOnlyDefinition) {
-        service.alias ??= []
+        service_.alias ??= []
 
-        if (!Array.isArray(service.alias)) {
-          service.alias = [service.alias]
+        if (!Array.isArray(service_.alias)) {
+          service_.alias = [service_.alias]
         }
 
         if (this.options.autoCreateServiceNameAlias) {
-          service.alias.push({ name: service.serviceName! })
+          service_.alias.push({ name: service_.serviceName! })
         }
 
         // handle alias.name as array
-        for (let idx = 0; idx < service.alias.length; idx++) {
-          const alias = service.alias[idx]
+        for (let idx = 0; idx < service_.alias.length; idx++) {
+          const alias = service_.alias[idx]
           if (!Array.isArray(alias.name)) {
             continue
           }
 
           for (const name of alias.name) {
-            service.alias.push({
+            service_.alias.push({
               name,
               args: alias.args,
             })
           }
-          service.alias.splice(idx, 1)
+          service_.alias.splice(idx, 1)
           idx--
         }
 
         // self-reference
-        for (const alias of service.alias) {
+        for (const alias of service_.alias) {
           if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
             const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
 
-            if (service.serviceName === defined?.serviceName) {
+            if (service_.serviceName === defined?.serviceName) {
               continue
             }
 
             throw new Error(
-              `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
+              `Cannot add alias "${alias.name}" for "${service_.serviceName}". It is already defined for Service "${defined?.serviceName}".`
             )
           }
 
           const args =
-            service.args || alias.args
-              ? { ...service.args, ...alias.args }
+            service_.args || alias.args
+              ? { ...service_.args, ...alias.args }
               : undefined
 
-          service.relationships?.push({
+          service_.relationships?.set(alias.name as string, {
             alias: alias.name as string,
             foreignKey: alias.name + "_id",
             primaryKey: "id",
-            serviceName: service.serviceName!,
+            serviceName: service_.serviceName!,
             args,
           })
           this.cacheServiceConfig(
@@ -222,19 +235,22 @@ export class RemoteJoiner {
           )
         }
 
-        this.cacheServiceConfig(serviceConfigs, service.serviceName)
+        this.cacheServiceConfig(serviceConfigs, service_.serviceName)
       }
 
-      for (const extend of service.extends) {
+      for (const extend of service_.extends) {
         if (!expandedRelationships.has(extend.serviceName)) {
           expandedRelationships.set(extend.serviceName, {
             fieldAlias: {},
-            relationships: [],
+            relationships: new Map(),
           })
         }
 
         const service_ = expandedRelationships.get(extend.serviceName)!
-        service_.relationships.push(extend.relationship)
+        service_.relationships.set(
+          extend.relationship.alias,
+          extend.relationship
+        )
         Object.assign(service_.fieldAlias ?? {}, extend.fieldAlias)
       }
     }
@@ -248,21 +264,21 @@ export class RemoteJoiner {
       }
 
       const service_ = this.serviceConfigCache.get(serviceName)!
-      service_.relationships?.push(...relationships)
+      relationships.forEach((relationship, alias) => {
+        service_.relationships!.set(alias, relationship)
+      })
       Object.assign(service_.fieldAlias!, fieldAlias ?? {})
 
       if (Object.keys(service_.fieldAlias!).length) {
-        const conflictAliases = service_.relationships!.filter(
-          (relationship) => {
-            return fieldAlias[relationship.alias]
-          }
-        )
+        const conflictAliases = Array.from(
+          service_.relationships!.keys()
+        ).filter((alias) => fieldAlias[alias])
 
         if (conflictAliases.length) {
           throw new Error(
-            `Conflict configuration for service "${serviceName}". The following aliases are already defined as relationships: ${conflictAliases
-              .map((relationship) => relationship.alias)
-              .join(", ")}`
+            `Conflict configuration for service "${serviceName}". The following aliases are already defined as relationships: ${conflictAliases.join(
+              ", "
+            )}`
           )
         }
       }
@@ -274,7 +290,7 @@ export class RemoteJoiner {
   private getServiceConfig(
     serviceName?: string,
     serviceAlias?: string
-  ): JoinerServiceConfig | undefined {
+  ): InternalJoinerServiceConfig | undefined {
     if (serviceAlias) {
       const name = `alias_${serviceAlias}`
       return this.serviceConfigCache.get(name)
@@ -546,7 +562,7 @@ export class RemoteJoiner {
 
   private async expandProperty(
     items: any[],
-    parentServiceConfig: JoinerServiceConfig,
+    parentServiceConfig: InternalJoinerServiceConfig,
     expand?: RemoteExpandProperty,
     options?: RemoteJoinerOptions
   ): Promise<void> {
@@ -554,8 +570,8 @@ export class RemoteJoiner {
       return
     }
 
-    const relationship = parentServiceConfig?.relationships?.find(
-      (relation) => relation.alias === expand.property
+    const relationship = parentServiceConfig?.relationships?.get(
+      expand.property
     )
 
     if (relationship) {
@@ -657,7 +673,7 @@ export class RemoteJoiner {
   private parseExpands(
     initialService: RemoteExpandProperty,
     query: RemoteJoinerQuery,
-    serviceConfig: JoinerServiceConfig,
+    serviceConfig: InternalJoinerServiceConfig,
     expands: RemoteJoinerQuery["expands"],
     implodeMapping: InternalImplodeMapping[],
     options?: RemoteJoinerOptions
@@ -679,7 +695,7 @@ export class RemoteJoiner {
   private parseProperties(
     initialService: RemoteExpandProperty,
     query: RemoteJoinerQuery,
-    serviceConfig: JoinerServiceConfig,
+    serviceConfig: InternalJoinerServiceConfig,
     expands: RemoteJoinerQuery["expands"],
     implodeMapping: InternalImplodeMapping[],
     options?: RemoteJoinerOptions
@@ -725,9 +741,7 @@ export class RemoteJoiner {
         const fullPath = [BASE_PATH, ...currentPath, prop].join(".")
         const fullAliasPath = [BASE_PATH, ...currentAliasPath, prop].join(".")
 
-        const relationship = currentServiceConfig.relationships?.find(
-          (relation) => relation.alias === prop
-        )
+        const relationship = currentServiceConfig.relationships?.get(prop)
 
         const isCurrentProp =
           fullPath === BASE_PATH + "." + expand.property ||
@@ -862,9 +876,7 @@ export class RemoteJoiner {
       path: fullPath,
       isList:
         fieldAliasIsList ||
-        !!serviceConfig.relationships?.find(
-          (relationship) => relationship.alias === parentFieldAlias
-        )?.isList,
+        !!serviceConfig.relationships?.get(parentFieldAlias)?.isList,
     })
 
     const extMapping = expands as unknown[]
@@ -895,9 +907,7 @@ export class RemoteJoiner {
 
     const partialPath: string[] = []
     for (const partial of path.split(".")) {
-      const relationship = currentServiceConfig.relationships?.find(
-        (relation) => relation.alias === partial
-      )
+      const relationship = currentServiceConfig.relationships?.get(partial)
 
       if (relationship) {
         currentServiceConfig = this.getServiceConfig(relationship.serviceName)!

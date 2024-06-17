@@ -1,3 +1,4 @@
+import { AdminFulfillmentSet } from "../../fulfillment-set"
 import { AdminSalesChannel } from "../../sales-channel"
 
 export interface AdminStockLocationAddress {
@@ -18,5 +19,5 @@ export interface AdminStockLocation {
   address_id: string
   address?: AdminStockLocationAddress
   sales_channels?: AdminSalesChannel[]
-  fulfillment_sets?: any[]
+  fulfillment_sets?: AdminFulfillmentSet[]
 }

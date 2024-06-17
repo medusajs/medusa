@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -11,10 +12,9 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
-import { ExtendedStockLocationDTO } from "../../../../../types/api-responses"
 
 type EditLocationFormProps = {
-  location: ExtendedStockLocationDTO
+  location: HttpTypes.AdminStockLocation
 }
 
 const EditLocationSchema = zod.object({
@@ -55,23 +55,30 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
   const { mutateAsync, isPending } = useUpdateStockLocation(location.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      await mutateAsync({
-        name: values.name,
-        address: values.address,
-      })
-      handleSuccess()
+    const { name, address } = values
 
-      toast.success(t("general.success"), {
-        description: t("locations.toast.update"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+    await mutateAsync(
+      {
+        name: name,
+        address: address,
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("stockLocations.edit.successToast"),
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
+          handleSuccess()
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   })
 
   return (

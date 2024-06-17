@@ -16,6 +16,7 @@ type ListSummaryProps = {
    * Determines whether the center text is truncated if there is no space in the container
    */
   inline?: boolean
+  variant?: "base" | "compact"
 
   className?: string
 }
@@ -23,6 +24,7 @@ type ListSummaryProps = {
 export const ListSummary = ({
   list,
   className,
+  variant = "compact",
   inline,
   n = 2,
 }: ListSummaryProps) => {
@@ -35,10 +37,12 @@ export const ListSummary = ({
   return (
     <div
       className={clx(
-        "text-ui-fg-subtle txt-compact-small gap-x-1 overflow-hidden",
+        "text-ui-fg-subtle gap-x-1 overflow-hidden",
         {
           "inline-flex": inline,
           flex: !inline,
+          "txt-compact-small": variant === "compact",
+          "txt-small": variant === "base",
         },
         className
       )}
