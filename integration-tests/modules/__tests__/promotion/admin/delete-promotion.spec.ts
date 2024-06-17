@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete promotion successfully", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "TEST",
           type: "standard",
           application_method: {
@@ -47,7 +47,7 @@ medusaIntegrationTestRunner({
 
         expect(deleteRes.status).toEqual(200)
 
-        const promotions = await promotionModuleService.list({
+        const promotions = await promotionModuleService.listPromotions({
           id: [createdPromotion.id],
         })
 

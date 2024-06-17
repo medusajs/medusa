@@ -558,7 +558,7 @@ medusaIntegrationTestRunner({
             },
           ]
 
-          const appliedPromotion = await promotionModule.create({
+          const appliedPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_APPLIED",
             type: PromotionType.STANDARD,
             application_method: {
@@ -573,7 +573,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const createdPromotion = await promotionModule.create({
+          const createdPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_TEST",
             type: PromotionType.STANDARD,
             application_method: {
@@ -1308,7 +1308,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          const appliedPromotion = await promotionModule.create({
+          const appliedPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_APPLIED",
             type: PromotionType.STANDARD,
             application_method: {

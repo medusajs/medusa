@@ -38,7 +38,7 @@ export const getPromotionCodesToApply = createStep(
 
     const promotionCodesToApply: Set<string> = new Set(
       (
-        await promotionService.list(
+        await promotionService.listPromotions(
           { code: adjustmentCodes },
           { select: ["code"], take: null }
         )
