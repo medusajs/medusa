@@ -10,7 +10,7 @@ import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   deletePaymentSessionStep,
   updatePaymentCollectionStep,
-} from "../../payment-collection"
+} from "../../../payment-collection"
 
 type WorklowInput = {
   cart_id: string
