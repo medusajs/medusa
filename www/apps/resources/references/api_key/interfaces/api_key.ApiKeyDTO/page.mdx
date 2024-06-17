@@ -1,0 +1,11 @@
+---
+displayed_sidebar: apiKeyReference
+---
+
+import { TypeList } from "docs-ui"
+
+# ApiKeyDTO
+
+The API key details.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"token","type":"`string`","description":"The token of the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"redacted","type":"`string`","description":"The redacted form of the API key's token. This is useful\nwhen showing portion of the token. For example `sk_...123`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"The title of the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[ApiKeyType](../../types/api_key.ApiKeyType/page.mdx)","description":"The type of the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_used_at","type":"`null` \\| `Date`","description":"The date the API key was last used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string`","description":"Who created the API key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date the API key was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"revoked_by","type":"`null` \\| `string`","description":"Who revoked the API key. For example,\nthe ID of the user that revoked it.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"revoked_at","type":"`null` \\| `Date`","description":"The date the API key was revoked.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ApiKeyDTO"/>

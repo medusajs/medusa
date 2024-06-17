@@ -1,0 +1,89 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Local Notification Provider Module`,
+}
+
+# {metadata.title}
+
+The Local Notification Provider Module simulates sending a notification, but only logs the notification's details in the terminal. This is useful for development.
+
+---
+
+## Install the Local Notification Module
+
+<Note>
+
+The Local Notification Provider Module is installed by default in your application.
+
+</Note>
+
+To install the Local Notification Provider Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/notification-local
+```
+
+Next, add the module into the `providers` array of the Notification Module:
+
+<Note>
+
+Only one provider can be defined for a channel.
+
+</Note>
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          // ...
+          {
+            resolve: "@medusajs/notification-local",
+            options: {
+              config: {
+                local: {
+                  channels: ["email"],
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+})
+```
+
+### Local Notification Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `channels`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The channels this notification module is used to send notifications for. While the local notification module doesn't actually send the notification,
+      it's important to specify its channels to make sure it's used when a notification for that channel is created.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

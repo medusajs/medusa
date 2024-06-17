@@ -1,0 +1,89 @@
+export const metadata = {
+  title: `${pageNumber} Common Data Model Definitions`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn where to find resources on common data model definitions related to field's column types, relations, and indices.
+
+## MikroORM Learning Resources
+
+Refer to the following resources to learn about common definitions:
+
+1. [Field column types](https://mikro-orm.io/docs/defining-entities).
+2. [Creating indices](https://mikro-orm.io/docs/defining-entities#indexes).
+
+Refer to MikroORM's documentation for more details related to your use case.
+
+---
+
+## Relations Between Data Models
+
+You can build relations between data models in the same module using foreign keys.
+
+Refer to [MikroORM's relations definitions](https://mikro-orm.io/docs/relationships) for more details.
+
+<Note>
+
+For building relationships between data models in different modules, refer to the [Module Relationships chapter](../../modules/module-relationships/page.mdx) instead.
+
+</Note>
+
+---
+
+## Example Data Model
+
+The following example showcase a data model with common definitions:
+
+```ts collapsibleLines="1-10" expandButtonLabel="Show Imports"
+import { 
+  Entity, 
+  Enum, 
+  OneToOne, 
+  PrimaryKey, 
+  Property,
+} from "@mikro-orm/core"
+import { BaseEntity } from "@medusajs/utils"
+// assuming this is another implemented data model
+import ProductVariant from "./product-variant"
+
+export enum MediaType {
+  MAIN = "main",
+  PREVIEW = "preview"
+}
+
+@Entity()
+class ProductMedia extends BaseEntity {
+  @PrimaryKey({ columnType: "text" })
+  id: string
+
+  @Property({ columnType: "text" })
+  name: string
+
+  @Enum({ items: ["main", "preview"] })
+  type: MediaType
+
+  @Property({ columnType: "text" })
+  file_key: string
+  
+  @Property({ columnType: "text" })
+  mime_type: string
+
+  @Property({ columnType: "text" })
+  variant_id: string
+
+  @OneToOne({
+    entity: ProductVariant,
+    onDelete: "cascade",
+  })
+  variant: ProductVariant
+}
+
+export default ProductMedia
+```
+
+In the example above:
+
+- The `ProductMedia` data model has the columns `id`, `name`, `type`, `file_key`, `mime_type`, and `variant_id`.
+- The data model has an index on the `variant_id` column.
+- The data model has a one-to-one relation to a `ProductVariant` data model.

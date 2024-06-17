@@ -1,0 +1,275 @@
+import { TypeList, CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Module Relationships`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about creating relationships between modules.
+
+## What is a Module Relationship?
+
+A module can have a relationship to another module in the form of a reference.
+
+The Medusa application resolves these relationships while maintaining isolation between the modules and allowing you to retrieve data across them.
+
+<Note title="Use module relationships when" type="success">
+
+- You want to build relationships between the data models of modules.
+- You want to assoaciate more fields with the data model of another module.
+
+</Note>
+
+<Note title="Don't use module relationships if" type="error">
+
+- You’re building relationships between data models in the same module. Use foreign keys instead.
+
+</Note>
+
+---
+
+## How to Create a Module Relationship?
+
+<Note title="Steps Summary">
+
+1. Define a `__joinerConfig` method in the module's main service.
+2. Configure module to be queryable.
+
+</Note>
+
+Consider you’re creating a data model that adds custom fields associated with a product:
+
+```ts title="src/modules/hello/models/custom-product-data.ts" highlights={[["17"]]} collapsibleLines="1-8" expandButtonLabel="Show Imports"
+import { BaseEntity } from "@medusajs/utils"
+import { 
+  Entity, 
+  PrimaryKey, 
+  Property,
+} from "@mikro-orm/core"
+
+@Entity()
+export class CustomProductData extends BaseEntity {
+  @PrimaryKey({ columnType: "text" })
+  id!: string
+
+  @Property({ columnType: "text" })
+  custom_field: string
+
+  @Property({ columnType: "text", nullable: true })
+  product_id?: string
+}
+```
+
+The `CustomProductData` data model has a `product_id` field to reference the product it adds custom fields for.
+
+<Note title="Tip">
+
+When you add a new data model, make sure to:
+
+- [Create a migration for it.](../../../basics/data-models/page.mdx#create-a-migration)
+- [Add it to the second parameter of the main service's factory function.](../service-factory/page.mdx#abstractModuleServiceFactory-parameters)
+
+</Note>
+
+### 1. Define `__joinerConfig` Method
+
+To create a relationship to the `product` data model of the Product Module, create a public `__joinerConfig` method in your main module's service:
+
+export const relationshipsHighlight = [
+  ["39", "serviceName", "The name of the module that this relationship is referencing."],
+  ["40", "alias", "The alias of the data model you’re referencing in the other module."],
+  ["41", "primaryKey", "The name of the field you’re referencing in the other module’s data model."],
+  ["42", "foreignKey", "The name of the field in your data models referencing the other module’s model."],
+]
+
+```ts title="src/modules/hello/service.ts" highlights={relationshipsHighlight} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+// other imports...
+import { MyCustom } from "./models/custom-product-data"
+import { CustomProductData } from "./models/custom-product-data"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
+
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
+    // ...
+  >(
+    // ...
+  ) {
+  
+    // ...
+  
+    __joinerConfig(): ModuleJoinerConfig {
+      return {
+        serviceName: "helloModuleService",
+        alias: [
+          {
+            name: ["my_custom"],
+            args: {
+              entity: MyCustom.name,
+            },
+          },
+          {
+            name: ["custom_product_data"],
+            args: {
+              entity: CustomProductData.name,
+              // Only needed if data model isn't main data model
+              // of service
+              methodSuffix: "CustomProductDatas",
+            },
+          },
+        ],
+        relationships: [
+          {
+            serviceName: Modules.PRODUCT,
+            alias: "product",
+            primaryKey: "id",
+            foreignKey: "product_id",
+          },
+        ],
+      }
+    }
+    
+    // ...
+}
+```
+
+This creates a relationship to the `Product` data model of the Product Module using the alias `product`. The `product_id` fields in your data models are considered references to the `id` field of the `Product` data model.
+
+#### `__joinerConfig` Return Type
+
+<TypeList types={[
+  {
+    name: "serviceName",
+    type: "`string`",
+    optional: false,
+    description: "The name of your module (as added in `medusa-config.js`)."
+  },
+  {
+    name: "alias",
+    type: "`object[]`",
+    description: "The alias definitions for each data model in your module. This allows other modules to reference your module's data models in relationships.",
+    children: [
+      {
+        name: "name",
+        type: "`string[]`",
+        description: "The alias names of a data model used later when fetching or referencing the data model."
+      },
+      {
+        name: "args",
+        type: "`object`",
+        description: "The alias's arguments.",
+        children: [
+          {
+            name: "entity",
+            type: "string",
+            description: "The name of the data model this alias is defined for."
+          },
+          {
+            name: "methodSuffix",
+            type: "string",
+            description: "The plural name of the data model. This is only required if the data model isn't the main data model of the module's service."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    name: "relationships",
+    type: "`object[]`",
+    description: "Your module's relationships to other modules.",
+    children: [
+      {
+        name: "serviceName",
+        type: "`string`",
+        optional: false,
+        description: "The name of the module (as added in `medusa-config.js`) that this relationship is referencing. When referencing a Medusa commerce module, use the `Modules` enum imported from `@medusajs/modules-sdk`."
+      },
+      {
+        name: "alias",
+        type: "`string`",
+        optional: false,
+        description: "The alias of the data model you’re referencing in the other module. You can find it in the `__joinerConfig` method of the other module's service."
+      },
+      {
+        name: "primaryKey",
+        type: "`string`",
+        optional: false,
+        description: "The name of the field you’re referencing in the other module’s data model."
+      },
+      {
+        name: "foreignKey",
+        type: "`string`",
+        optional: false,
+        description: "The name of the field in your data models that references the other module’s data model."
+      }
+    ]
+  }
+]} sectionTitle="Define __joinerConfig Method" />
+
+### 2. Adjust Module Configuration
+
+To use relationships in a module, adjust its configuration object passed to `modules` in `medusa-config.js`:
+
+export const configHighlights = [
+  ["7", "isQueryable", "Enable this property to use relationships in a module."]
+]
+
+```js title="medusa-config.js" highlights={configHighlights}
+module.exports = defineConfig({
+  // ...
+  modules: {
+    helloModuleService: {
+      // ...
+      definition: {
+        isQueryable: true,
+      },
+    },
+  },
+})
+```
+
+Enabling the `isQueryable` property is required to use relationships in a module.
+
+---
+
+## Reference Inner Data Models
+
+If the data model you’re referencing isn’t the main data model of the main module service, pass to the relationship definition the `args` property:
+
+```ts title="src/modules/hello/service.ts" highlights={[["20", "methodSuffix", "The suffix of the referenced data model's methods."]]}
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
+    // ...
+  >(
+    // ...
+  ) {
+  
+    // ...
+  
+    __joinerConfig(): ModuleJoinerConfig {
+      return {
+        // ...
+        relationships: [
+          {
+            serviceName: Modules.PRODUCT,
+            primaryKey: "id",
+            foreignKey: "variant_id",
+            alias: "variant",
+            args: {
+              methodSuffix: "Variants",
+            },
+          },
+        ],
+      }
+    }
+  }
+```
+
+The `args` property’s value is an object accepting a `methodSuffix` property. The `methodSuffix` property’s value is the plural name of the data model.
+
+---
+
+## Querying Module Relationships
+
+The next chapter explains how to query data across module relationships.

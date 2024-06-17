@@ -1,0 +1,216 @@
+export const metadata = {
+  title: `${pageNumber} Data Management Tips`,
+}
+
+# {metadata.title}
+
+This chapter provides some tips when implementing a service that manages a data model.
+
+## Filter Records
+
+Medusa provides a `buildQuery` utility method that accepts filters and returns a query object. Then, the query object can be passed to the Repository’s find and list methods to filter the retrieved methods.
+
+For example:
+
+```ts title="src/services/my-custom.ts" highlights={[["8"], ["14"]]}
+// other imports
+import {
+  Selector,
+  buildQuery,
+} from "@medusajs/medusa"
+
+class MyCustomService extends TransactionBaseService {
+  async list(
+    selector: Selector<MyCustom>
+  ): Promise<MyCustom[]> {
+    const myCustomRepo =
+      this.activeManager_.getRepository(MyCustom)
+
+    const query = buildQuery(selector)
+
+    return await myCustomRepo.find(query)
+  }
+}
+```
+
+The `buildQuery` method accepts a parameter of type `Selector` provided by Medusa. `Selector` accepts the target data model as a type argument.
+
+When implementing a `list` method like the above, you can define a selector parameter that can be passed to the method to apply filters on the retrieved records.
+
+For example, to use this method in another resource:
+
+```ts
+const items = await myCustomService.list({
+  name: "John",
+})
+```
+
+---
+
+## Paginate Records
+
+The `buildQuery` method accepts an optional second parameter of type `FindConfig`, also provided by Medusa. Like `Selector`, it accepts the target data model as a type argument.
+
+For example, you can change the implementation of the `list` method to the following:
+
+```ts title="src/services/my-custom.ts" highlights={[["7", "12"]]}
+// other imports...
+import { FindConfig } from "@medusajs/medusa"
+
+class MyCustomService extends TransactionBaseService {
+  async list(
+    selector: Selector<MyCustom>,
+    config?: FindConfig<MyCustom>
+  ): Promise<MyCustom[]> {
+    const myCustomRepo =
+      this.activeManager_.getRepository(MyCustom)
+
+    const query = buildQuery(selector, config)
+
+    return await myCustomRepo.find(query)
+  }
+}
+```
+
+You add a new parameter to the `list` method of type `FindConfig<MyCustom>`, then pass that parameter to `buildQuery`.
+
+You can now pass pagination fields to the method in another resource:
+
+```ts
+const items = await myCustomService.list(
+  {},
+  {
+    take: 20,
+  }
+)
+```
+
+This returns only the first `20` records in the database.
+
+Other pagination fields include:
+
+- `skip`: A number indicating how many items to skip before retrieving the records.
+- `order`: An object whose keys are names of fields to sort the list by, and value is either `ASC` for ascending sorting or `DESC` for descending sorting.
+
+---
+
+## Select Fields and Relations
+
+The `FindConfig` type accepts two additional properties:
+
+- `select`: An array of strings, each being the name of a field in the data model that should be retrieved. When not specified, all fields are retrieved.
+- `relations`: An array of strings, each being the name of a relation in the data model that should be retrieved.
+
+For example:
+
+```ts
+const items = await myCustomService.list(
+  {},
+  {
+    select: ["name"],
+  }
+)
+```
+
+---
+
+## Management Operations
+
+The repository provides all necessary operations to manage a data model including creating, updating, and deleting records. For a full list of repository methods, check out [Typeorm’s documentation](https://typeorm.io/repository-api).
+
+---
+
+## Example: CRUD Operations
+
+Below is an example of a service that implements Create, Read, Update, and Delete (CRUD) operations on a data model.
+
+<Details summaryContent="Example">
+
+  ```ts title="src/services/my-custom.ts"
+  import {
+    FindConfig,
+    Selector,
+    TransactionBaseService,
+    buildQuery,
+  } from "@medusajs/medusa"
+  import { MedusaError } from "@medusajs/utils"
+  import { MyCustom } from "../models/my-custom"
+  
+  class MyCustomService extends TransactionBaseService {
+    async list(
+      selector: Selector<MyCustom>,
+      config?: FindConfig<MyCustom>
+    ): Promise<MyCustom[]> {
+      const myCustomRepo =
+        this.activeManager_.getRepository(MyCustom)
+  
+      const query = buildQuery(selector, config)
+  
+      return await myCustomRepo.find(query)
+    }
+    async retrieve(
+      id: string,
+      config?: FindConfig<MyCustom>
+    ): Promise<MyCustom> {
+      const myCustomRepo =
+        this.activeManager_.getRepository(MyCustom)
+  
+      const query = buildQuery(
+        {
+          id,
+        },
+        config
+      )
+      const custom = await myCustomRepo.findOne(query)
+  
+      if (!custom) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Record was not found`
+        )
+      }
+  
+      return custom
+    }
+  
+    async create(data: Omit<MyCustom, "id">): Promise<MyCustom> {
+      return await this.atomicPhase_(async (manager) => {
+        const myCustomRepo = manager.getRepository(MyCustom)
+  
+        const custom = myCustomRepo.create(data)
+  
+        return await myCustomRepo.save(custom)
+      })
+    }
+  
+    async update(
+      id: string,
+      data: Omit<MyCustom, "id">
+    ): Promise<MyCustom> {
+      return await this.atomicPhase_(async (manager) => {
+        const myCustomRepo = manager.getRepository(MyCustom)
+        const custom = await this.retrieve(id)
+  
+        for (const [key, value] of Object.entries(data)) {
+          custom[key] = value
+        }
+  
+        return await myCustomRepo.save(custom)
+      })
+    }
+  
+    async delete(id: string): Promise<void> {
+      return await this.atomicPhase_(async (manager) => {
+        const myCustomRepo = manager.getRepository(MyCustom)
+  
+        await myCustomRepo.delete({
+          id,
+        })
+      })
+    }
+  }
+  
+  export default MyCustomService
+  ```
+
+</Details>

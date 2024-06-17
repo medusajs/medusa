@@ -1,0 +1,132 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Select Product Variants in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to select a product variant to be added to the cart in the storefront.
+
+<Note>
+
+{/* TODO add the link once available. */}
+
+The add-to-cart functionality is explained in the Cart's guides.
+
+</Note>
+
+If a product has different options and variants for those options, the customer has to choose the options when adding the product to the cart.
+
+Since a variant is a combination of the product options' values (for example, size `S` and color `Blue`), you find the variant based on the chosen option values.
+
+For example, in a React-based storefront:
+
+export const highlights = [
+  ["12", "{ params: { id } }: Params", "This is based on Next.js which passes the path parameters as a prop."],
+  ["17", "selectedOptions", "Store the options the customer selects."],
+  ["37", "selectedVariant", "Compute the selected variant based on the chosen option values combinations."],
+  ["66", "setSelectedOptions", "When an option's value is selected, add it to the selected options, which re-computes the selected variant."],
+  ["81", "selectedVariant", "Show the selected variant's ID, if computed."]
+]
+
+```tsx highlights={highlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useMemo, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+type Params = {
+  params: {
+    id: string
+  }
+}
+
+export default function Product({ params: { id } }: Params) {
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState<
+    HttpTypes.StoreProduct | undefined
+  >()
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    fetch(`http://localhost:9000/store/products/${id}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
+    })
+    .then((res) => res.json())
+    .then(({ product: dataProduct }) => {
+      setProduct(dataProduct)
+      setLoading(false)
+    })
+  }, [loading])
+
+  const selectedVariant = useMemo(() => {
+    if (
+      !product?.variants ||
+      !product.options || 
+      Object.keys(selectedOptions).length !== product.options?.length
+    ) {
+      return
+    }
+
+    return product.variants.find((variant) => variant.options?.every(
+      (optionValue) => optionValue.value === selectedOptions[optionValue.option_id!]
+    ))
+  }, [selectedOptions, product])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {product && (
+        <>
+          <h1>{product.title}</h1>
+          {(product.options?.length || 0) > 0 && (
+            <ul>
+              {product.options!.map((option) => (
+                <li key={option.id}>
+                  {option.title}
+                  {option.values?.map((optionValue) => (
+                    <button 
+                      key={optionValue.id}
+                      onClick={() => {
+                        setSelectedOptions((prev) => {
+                          return {
+                            ...prev,
+                            [option.id!]: optionValue.value!,
+                          }
+                        })
+                      }}
+                    >
+                      {optionValue.value}
+                    </button>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          )}
+          {selectedVariant && (
+            <span>Selected Variant: {selectedVariant.id}</span>
+          )}
+          {product.images?.map((image) => (
+            <img src={image.url} key={image.id} />
+          ))}
+        </>
+      )}
+    </div>
+  )
+}
+```
+
+In this example, you:
+
+- Store the selected options in the `selectedOptions` state variable. It's an object whose keys are options' ID, and values are the selected value of that option.
+- Compute the selected variable whenever the selected option is changed. When the customer chooses a value for all options, you find a product variant that has the same chosen option-value combinations.
+- Change the `selectedOptions`'s value whenever the customer clicks on an option value.
+- Show the ID of the selected variant when it's found.

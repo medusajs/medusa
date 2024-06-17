@@ -1,0 +1,124 @@
+---
+slug: /references/file-provider-module
+---
+
+import { TypeList } from "docs-ui"
+
+# How to Create a File Provider Module
+
+In this document, you’ll learn how to create a file provider module and the methods you must implement in its main service.
+
+---
+
+## 1. Create Module Directory
+
+Start by creating a new directory for your module. For example, `src/modules/my-file`.
+
+---
+
+## 2. Create the File Provider Service
+
+Create the file `src/modules/my-file/service.ts` that holds the implementation of the module's main service. It must extend the `AbstractFileProviderService` class imported from `@medusajs/utils`:
+
+```ts title="src/modules/my-file/service.ts"
+import { AbstractFileProviderService } from "@medusajs/utils"
+
+class MyFileProviderService extends AbstractFileProviderService {
+  // TODO implement methods
+}
+
+export default MyFileProviderService
+```
+
+### constructor
+
+### getIdentifier
+
+#### Returns
+
+<TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getIdentifier"/>
+
+### upload
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"`ProviderUploadFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="upload"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ProviderFileResultDTO&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProviderFileResultDTO","type":"`ProviderFileResultDTO`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
+
+### delete
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"`ProviderDeleteFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### getPresignedDownloadUrl
+
+#### Parameters
+
+<TypeList types={[{"name":"fileData","type":"`ProviderGetFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPresignedDownloadUrl"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+
+---
+
+## 3. Create Module Definition File
+
+Create the file `src/modules/my-file/index.ts` with the following content:
+
+```ts title="src/modules/my-file/index.ts"
+import MyFileProviderService from "./service"
+
+export default {
+  service: MyFileProviderService,
+}
+```
+
+This exports the module's definition, indicating that the `MyFileProviderService` is the main service of the module.
+
+---
+
+## 4. Use Module
+
+To use your File Provider Module, add it to the `providers` array of the File Module:
+
+<Note>
+
+The File Module accepts one provider only.
+
+</Note>
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+const modules = {
+  // ...
+  [Modules.FILE]: {
+    resolve: "@medusajs/file",
+    options: {
+      providers: [
+        {
+          resolve: "./dist/modules/my-file",
+          options: {
+            config: {
+              "my-file": {
+                // provider options...
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+}
+```

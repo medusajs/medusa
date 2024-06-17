@@ -95,7 +95,7 @@ const ChoiceBox = React.forwardRef<
     <Primitives.Item
       ref={ref}
       className={clx(
-        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed",
+        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus outline-none transition-fg disabled:bg-ui-bg-disabled group flex items-start gap-x-2 rounded-lg p-3 disabled:cursor-not-allowed data-[state=checked]:shadow-borders-interactive-with-shadow",
         className
       )}
       {...props}

@@ -1,0 +1,33 @@
+---
+displayed_sidebar: fulfillmentReference
+slug: /references/fulfillment/validateFulfillmentOption
+sidebar_label: validateFulfillmentOption
+---
+
+import { TypeList } from "docs-ui"
+
+# validateFulfillmentOption - Fulfillment Module Reference
+
+This documentation provides a reference to the `validateFulfillmentOption` method. This belongs to the Fulfillment Module.
+
+This method validates a fulfillment option with the provider it belongs to.
+
+## Example
+
+```ts
+const isValid =
+  await fulfillmentModuleService.validateFulfillmentOption(
+    "webshipper",
+    {
+      code: "express",
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"providerId","type":"`string`","description":"The fulfillment provider's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The fulfillment option to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateFulfillmentOption"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the fulfillment option is valid with the specified provider.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="validateFulfillmentOption"/>

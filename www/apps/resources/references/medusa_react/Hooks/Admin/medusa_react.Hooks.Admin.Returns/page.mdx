@@ -1,0 +1,156 @@
+---
+slug: /references/medusa-react/hooks/admin/returns
+---
+
+import { TypeList } from "docs-ui"
+
+# Returns
+
+Queries and Mutations listed here are used to send requests to the [Admin Return API Routes](https://docs.medusajs.com/api/admin#returns).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A return can be created by a customer or an admin to return items in an order.
+Admins can manage these returns and change their state.
+
+Related Guide: [How to manage returns](https://docs.medusajs.com/modules/orders/admin/manage-returns).
+
+## Mutations
+
+### useAdminReceiveReturn
+
+This hook marks a return as received. This also updates the status of associated order, claim, or swap accordingly.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminReceiveReturn } from "medusa-react"
+
+type ReceiveReturnData = {
+  items: {
+    item_id: string
+    quantity: number
+  }[]
+}
+
+type Props = {
+  returnId: string
+}
+
+const Return = ({ returnId }: Props) => {
+  const receiveReturn = useAdminReceiveReturn(
+    returnId
+  )
+  // ...
+
+  const handleReceive = (data: ReceiveReturnData) => {
+    receiveReturn.mutate(data, {
+      onSuccess: ({ return: dataReturn }) => {
+        console.log(dataReturn.status)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Return
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The return's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostReturnsReturnReceiveReq","type":"[AdminPostReturnsReturnReceiveReq](../../../../medusa/classes/medusa.AdminPostReturnsReturnReceiveReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the received return.","expandable":false,"children":[{"name":"items","type":"[Item](../../../../medusa/classes/medusa.Item-4/page.mdx)[]","description":"The Line Items that have been received.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"refund","type":"`number`","description":"The amount to refund.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the location to return items from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminReturnsRes","type":"[AdminReturnsRes](../../../../medusa/types/medusa.AdminReturnsRes/page.mdx)","optional":false,"defaultValue":"","description":"The return's details.","expandable":false,"children":[{"name":"return","type":"`Return`","description":"Return details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
+
+### useAdminCancelReturn
+
+This hook registers a return as canceled. The return can be associated with an order, claim, or swap.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCancelReturn } from "medusa-react"
+
+type Props = {
+  returnId: string
+}
+
+const Return = ({ returnId }: Props) => {
+  const cancelReturn = useAdminCancelReturn(
+    returnId
+  )
+  // ...
+
+  const handleCancel = () => {
+    cancelReturn.mutate(void 0, {
+      onSuccess: ({ order }) => {
+        console.log(order.returns)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Return
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The return's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelReturn"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminReturnsCancelRes","type":"[AdminReturnsCancelRes](../../../../medusa/types/medusa.AdminReturnsCancelRes/page.mdx)","optional":false,"defaultValue":"","description":"The associated order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelReturn"/>
+
+___
+
+## Queries
+
+### useAdminReturns
+
+This hook retrieves a list of Returns. The returns can be paginated.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminReturns } from "medusa-react"
+
+const Returns = () => {
+  const { returns, isLoading } = useAdminReturns()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {returns && !returns.length && (
+        <span>No Returns</span>
+      )}
+      {returns && returns.length > 0 && (
+        <ul>
+          {returns.map((returnData) => (
+            <li key={returnData.id}>
+              {returnData.status}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Returns
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"returns","type":"`Return`[]","description":"An array of returns details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReturns"/>

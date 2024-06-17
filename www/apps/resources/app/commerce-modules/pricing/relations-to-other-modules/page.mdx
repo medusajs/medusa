@@ -1,0 +1,23 @@
+export const metadata = {
+  title: `Relations between Pricing Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the link modules defined between the Pricing Module and other commerce modules.
+
+## Fulfillment Module
+
+A shipping option's price is stored as a price set. Medusa defines a link module that builds a relationship between the `PriceSet` and `ShippingOption` data models.
+
+![A diagram showcasing an example of how data models from the Pricing and Fulfillment modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716561747/Medusa%20Resources/pricing-fulfillment_spywwa.jpg)
+
+---
+
+## Product Module
+
+A product variant’s prices are stored as prices belonging to a price set. Medusa defines a link module that builds a relationship between the `ProductVariant` and the `PriceSet`.
+
+![A diagram showcasing an example of how data models from the Pricing and Product Module are linked. The PriceSet is linked to the ProductVariant of the Product Module.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709651039/Medusa%20Resources/pricing-product_m4xaut.jpg)
+
+So, when you want to add prices for a product variant, you create a price set and add the prices to it. You can then benefit from adding rules to prices or using the `calculatePrices` method to retrieve the price of a product variant within a specified context.

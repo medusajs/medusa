@@ -1,42 +1,33 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Customer } from "@medusajs/medusa"
-import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import {
-  PaginationState,
+  OnChangeFn,
   RowSelectionState,
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminCustomerKeys,
-  useAdminAddCustomersToCustomerGroup,
-  useAdminCustomers,
-} from "medusa-react"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import {
-  NoRecords,
-  NoResults,
-} from "../../../../../components/common/empty-table-content"
-import { Query } from "../../../../../components/filtering/query"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
-import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { queryClient } from "../../../../../lib/medusa"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useAddCustomersToGroup } from "../../../../../hooks/api/customer-groups"
+import { useCustomers } from "../../../../../hooks/api/customers"
+import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-customer-table-columns"
+import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
+import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { HttpTypes } from "@medusajs/types"
 
 type AddCustomersFormProps = {
   customerGroupId: string
 }
 
-const AddCustomersSchema = zod.object({
+export const AddCustomersSchema = zod.object({
   customer_ids: zod.array(zod.string()).min(1),
 })
 
@@ -57,19 +48,6 @@ export const AddCustomersForm = ({
 
   const { setValue } = form
 
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
-
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
@@ -83,55 +61,66 @@ export const AddCustomersForm = ({
     )
   }, [rowSelection, setValue])
 
-  const params = useQueryParams(["q"])
-  const { customers, count, isLoading, isError, error } = useAdminCustomers({
-    expand: "groups",
-    limit: PAGE_SIZE,
-    offset: pageIndex * PAGE_SIZE,
-    ...params,
+  const { searchParams, raw } = useCustomerTableQuery({ pageSize: PAGE_SIZE })
+  const filters = useCustomerTableFilters()
+
+  const { customers, count, isLoading, isError, error } = useCustomers({
+    fields: "id,email,first_name,last_name,*groups",
+    ...searchParams,
   })
+
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const state = typeof fn === "function" ? fn(rowSelection) : fn
+
+    const ids = Object.keys(state)
+
+    setValue("customer_ids", ids, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+
+    setRowSelection(state)
+  }
 
   const columns = useColumns()
 
-  const table = useReactTable({
+  const { table } = useDataTable({
     data: customers ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
+    count,
+    enablePagination: true,
+    enableRowSelection: (row) => {
+      return !row.original.groups?.map((gc) => gc.id).includes(customerGroupId)
     },
     getRowId: (row) => row.id,
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    meta: {
-      customerGroupId,
+    pageSize: PAGE_SIZE,
+    rowSelection: {
+      state: rowSelection,
+      updater,
     },
   })
 
-  const { mutateAsync, isLoading: isMutating } =
-    useAdminAddCustomersToCustomerGroup(customerGroupId)
+  const { mutateAsync, isPending } = useAddCustomersToGroup(customerGroupId)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        customer_ids: data.customer_ids.map((id) => ({ id })),
+        customer_ids: data.customer_ids,
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(adminCustomerKeys.lists())
+          toast.success(t("general.success"), {
+            description: t("customerGroups.customers.add.successToast", {
+              count: data.customer_ids.length,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
           handleSuccess(`/customer-groups/${customerGroupId}`)
         },
       }
     )
   })
-
-  const noRecords =
-    !isLoading &&
-    !customers?.length &&
-    !Object.values(params).filter(Boolean).length
 
   if (isError) {
     throw error
@@ -159,107 +148,43 @@ export const AddCustomersForm = ({
               type="submit"
               variant="primary"
               size="small"
-              isLoading={isMutating}
+              isLoading={isPending}
             >
-              {t("general.add")}
+              {t("actions.save")}
             </Button>
           </div>
         </RouteFocusModal.Header>
-        <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
-          {noRecords ? (
-            <div className="flex w-full flex-1 items-center justify-center">
-              <NoRecords />
-            </div>
-          ) : (
-            <div className="flex w-full flex-1 flex-col divide-y">
-              <div className="flex w-full items-center justify-between px-6 py-4">
-                <div></div>
-                <div className="flex items-center gap-x-2">
-                  <Query />
-                </div>
-              </div>
-              <div className="w-full flex-1 overflow-y-auto">
-                {(customers?.length || 0) > 0 ? (
-                  <Table>
-                    <Table.Header className="border-t-0">
-                      {table.getHeaderGroups().map((headerGroup) => {
-                        return (
-                          <Table.Row
-                            key={headerGroup.id}
-                            className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
-                          >
-                            {headerGroup.headers.map((header) => {
-                              return (
-                                <Table.HeaderCell key={header.id}>
-                                  {flexRender(
-                                    header.column.columnDef.header,
-                                    header.getContext()
-                                  )}
-                                </Table.HeaderCell>
-                              )
-                            })}
-                          </Table.Row>
-                        )
-                      })}
-                    </Table.Header>
-                    <Table.Body className="border-b-0">
-                      {table.getRowModel().rows.map((row) => (
-                        <Table.Row
-                          key={row.id}
-                          className={clx(
-                            "transition-fg",
-                            {
-                              "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                                row.getIsSelected(),
-                            },
-                            {
-                              "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                                row.original.groups
-                                  ?.map((cg) => cg.id)
-                                  .includes(customerGroupId),
-                            }
-                          )}
-                        >
-                          {row.getVisibleCells().map((cell) => (
-                            <Table.Cell key={cell.id}>
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
-                            </Table.Cell>
-                          ))}
-                        </Table.Row>
-                      ))}
-                    </Table.Body>
-                  </Table>
-                ) : (
-                  <div className="flex min-h-full flex-1 items-center justify-center">
-                    <NoResults />
-                  </div>
-                )}
-              </div>
-              <LocalizedTablePagination
-                canNextPage={table.getCanNextPage()}
-                canPreviousPage={table.getCanPreviousPage()}
-                nextPage={table.nextPage}
-                previousPage={table.previousPage}
-                count={count ?? 0}
-                pageIndex={pageIndex}
-                pageCount={table.getPageCount()}
-                pageSize={PAGE_SIZE}
-              />
-            </div>
-          )}
+        <RouteFocusModal.Body className="size-full overflow-hidden">
+          <DataTable
+            table={table}
+            columns={columns}
+            pageSize={PAGE_SIZE}
+            count={count}
+            filters={filters}
+            orderBy={[
+              "email",
+              "first_name",
+              "last_name",
+              "has_account",
+              "created_at",
+              "updated_at",
+            ]}
+            isLoading={isLoading}
+            layout="fill"
+            search
+            queryObject={raw}
+          />
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
   )
 }
 
-const columnHelper = createColumnHelper<Customer>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 const useColumns = () => {
   const { t } = useTranslation()
+  const base = useCustomerTableColumns()
 
   const columns = useMemo(
     () => [
@@ -279,21 +204,14 @@ const useColumns = () => {
             />
           )
         },
-        cell: ({ row, table }) => {
-          const { customerGroupId } = table.options.meta as {
-            customerGroupId: string
-          }
-
-          const isAdded = row.original.groups
-            ?.map((gc) => gc.id)
-            .includes(customerGroupId)
-
-          const isSelected = row.getIsSelected() || isAdded
+        cell: ({ row }) => {
+          const isPreSelected = !row.getCanSelect()
+          const isSelected = row.getIsSelected() || isPreSelected
 
           const Component = (
             <Checkbox
               checked={isSelected}
-              disabled={isAdded}
+              disabled={isPreSelected}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
               onClick={(e) => {
                 e.stopPropagation()
@@ -301,10 +219,10 @@ const useColumns = () => {
             />
           )
 
-          if (isAdded) {
+          if (isPreSelected) {
             return (
               <Tooltip
-                content={t("customerGroups.customerAlreadyAdded")}
+                content={t("customerGroups.customers.alreadyAddedTooltip")}
                 side="right"
               >
                 {Component}
@@ -315,23 +233,9 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("email", {
-        header: t("fields.email"),
-        cell: ({ getValue }) => getValue(),
-      }),
-      columnHelper.display({
-        id: "name",
-        header: t("fields.name"),
-        cell: ({ row }) => {
-          const name = [row.original.first_name, row.original.last_name]
-            .filter(Boolean)
-            .join(" ")
-
-          return name || "-"
-        },
-      }),
+      ...base,
     ],
-    [t]
+    [t, base]
   )
 
   return columns

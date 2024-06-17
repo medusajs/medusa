@@ -1,0 +1,82 @@
+export const metadata = {
+  title: `General Deployment Guide for the Medusa Admin`,
+}
+
+# {metadata.title}
+
+<Note type="soon">
+
+The following deployment guide doesn't support Medusa v2 yet.
+
+</Note>
+
+In this guide, you’ll learn the general steps to follow when deploying the Medusa Admin separately from the Medusa application.
+
+<Note type="check">
+
+- Deployed Medusa application.
+- [GitHub repository with the Medusa Admin's code](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
+
+</Note>
+
+## Configure Build Command
+
+In the `package.json` of the Medusa application, add or change a build script for the admin:
+
+```json title="package.json"
+"scripts": {
+  // other scripts
+  "build:admin": "medusa-admin build --deployment",
+}
+```
+
+When using the `--deployment` option, the Medusa application's URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. You'll configure this environment variable in a later step.
+
+---
+
+## Deploy to Hosting Provider
+
+The steps to deploy the admin are different based on the hosting provider you use. The following points cover common configurations across hosting providers:
+
+- If your hosting provider supports choosing a Framework Preset, choose the “Other” option as the Medusa Admin doesn’t follow known framework presets.
+- Set the build command of your deployed project to use the `build:admin` command:
+
+```bash npm2yarn
+npm run build:admin
+```
+
+- Set the output directory of your deployed project to `build`.
+- Add the environment variable `MEDUSA_ADMIN_BACKEND_URL` and set its value to the URL of your deployed Medusa application.
+- If your hosting provider supports URL rewrites, add a configuration to rewrite the `/(.*)` URL pattern to `/index.html`. For example, if you’re deploying to Vercel you add the following in `vercel.json`:
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+---
+
+## Configure CORS on the Deployed Application
+
+To send requests from the Medusa Admin dashboard to the Medusa application, set the `ADMIN_CORS` environment variable on your Medusa application to the admin’s URL:
+
+```bash
+ADMIN_CORS=<ADMIN_URL>
+```
+
+Where `<ADMIN_URL>` is the URL of your admin dashboard.
+
+Then, restart your Medusa application. Once the application is running again, you can use your admin dashboard.
+
+---
+
+## Create Admin User
+
+To create an admin user, run the following command on your deployed Medusa application:
+
+```bash
+npx medusa user --email admin@medusa-test.com --password supersecret
+```
+
+You can then log in using the specified email and password.

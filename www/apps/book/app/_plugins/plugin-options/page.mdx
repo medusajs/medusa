@@ -1,0 +1,144 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Plugin Options`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to access a plugin’s options in different resources.
+
+## Services
+
+In a plugin, a service’s constructor accepts a second parameter: an object holding the plugin’s options.
+
+For example:
+
+```ts title="src/services/erp.ts" highlights={[["6", "", "The plugin's options are passed as a parameter."], ["9", "", "Set the plugin's options in a class property."]]}
+import { TransactionBaseService } from "@medusajs/medusa"
+
+class ErpService extends TransactionBaseService {
+  protected options_: Record<string, unknown>
+
+  constructor(container, options) {
+    super(container, options)
+
+    this.options_ = options
+  }
+}
+
+export default ErpService
+```
+
+This adds an `options_` property to the `ErpService` and sets its value using the second parameter of the constructor. You can now use the options in other methods.
+
+---
+
+## API Routes
+
+To access a plugin’s options in an API route, it’s recommended to expose a getter method in the service for the `options_` property that the API route can use.
+
+For example:
+
+<CodeTabs group="resource-types">
+  <CodeTab label="Service" value="service">
+    
+    ```ts title="src/services/erp.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]}
+    import { TransactionBaseService } from "@medusajs/medusa"
+
+    class ErpService extends TransactionBaseService {
+      protected options_: Record<string, unknown>
+      // ...
+
+      get options(): Record<string, unknown> {
+        return this.options_
+      }
+    }
+
+    export default ErpService
+    ```
+
+  </CodeTab>
+  <CodeTab label="API Route" value="api-route">
+    
+    ```ts title="src/subscribers/customer-created.ts"
+    import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+    import ErpService from "../../services/erp"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ): Promise<void> {
+      const erpService: ErpService = req.scope.resolve("erpService")
+
+      const pluginOptions = erpService.options
+
+      // use plugin options...
+    }
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Subscribers
+
+The object parameter that a subscriber handler function accepts has a `pluginOptions` property. When a subscriber is created in a plugin, this property holds the plugin’s options.
+
+For example:
+
+```ts title="src/subscribers/product-updated.ts" highlights={[["7", "", "The plugin's options are passed in the object parameter."]]}
+import {
+  // other imports...
+  SubscriberArgs,
+} from "@medusajs/medusa"
+
+export default async function productUpdateHandler({
+  pluginOptions,
+}: SubscriberArgs) {
+  console.log(`Plugin options: ${pluginOptions}`)
+}
+
+// ...
+```
+
+---
+
+## Scheduled Job
+
+The object parameter that a scheduled job function accepts has a `pluginOptions` property. When a scheduled job is created in a plugin, this property holds the plugin’s options.
+
+For example:
+
+```ts title="src/jobs/once-a-day.ts" highlights={[["6", "", "The plugin's options are passed in the object parameter."]]}
+import {
+  // ...
+  ScheduledJobArgs,
+} from "@medusajs/medusa"
+
+export default function ({ pluginOptions }: ScheduledJobArgs) {
+  console.log(`Plugin options: ${pluginOptions}`)
+}
+
+// ...
+```
+
+---
+
+## Loaders
+
+In a plugin, a loader function accepts a second parameter: an object holding the plugin’s options.
+
+For example:
+
+```ts title="src/loaders/on-start.ts" highlights={[["5", "", "The plugin's options are passed as a second parameter to the loader."]]}
+import { MedusaContainer } from "@medusajs/medusa"
+
+export default function (
+  container: MedusaContainer,
+  options: Record<string, unknown>
+) {
+  console.log(`Plugin options: ${options}`)
+}
+```

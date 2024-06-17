@@ -1,21 +1,20 @@
-import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
 import type { Filter } from "../../../components/table/data-table"
+import { useRegions } from "../../api/regions"
+import { useSalesChannels } from "../../api/sales-channels"
 
 export const useOrderTableFilters = (): Filter[] => {
   const { t } = useTranslation()
 
-  const { regions } = useAdminRegions({
+  const { regions } = useRegions({
     limit: 1000,
     fields: "id,name",
-    expand: "",
   })
 
-  const { sales_channels } = useAdminSalesChannels({
+  const { sales_channels } = useSalesChannels({
     limit: 1000,
     fields: "id,name",
-    expand: "",
   })
 
   let filters: Filter[] = []
@@ -145,8 +144,9 @@ export const useOrderTableFilters = (): Filter[] => {
 
   filters = [
     ...filters,
-    paymentStatusFilter,
-    fulfillmentStatusFilter,
+    // TODO: enable when Payment, Fulfillments <> Orders are linked
+    // paymentStatusFilter,
+    // fulfillmentStatusFilter,
     ...dateFilters,
   ]
 

@@ -1,0 +1,149 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Auth Module`,
+}
+
+# {metadata.title}
+
+The Auth Module is the `@medusajs/auth` NPM package that provides authentication-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Basic User Authentication
+
+With the Auth Module, authenticate users using their email and password credentials.
+
+```ts
+const { success, authIdentity, error } =
+  await authModuleService.authenticate("emailpass", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+
+if (!success) {
+  // incorrect authentication details
+  throw new Error(error)
+}
+```
+
+### Third-Party and Social Authentication
+
+The Auth Module supports a variety of authentication methods, such as authenticating with third-party services and social platforms.
+
+```ts
+// in authentication API route
+const { success, authIdentity, location } =
+  await authModuleService.authenticate("google", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+
+if (!authIdentity && location) {
+  res.redirect(location)
+  return
+}
+
+// in callback API route
+const { success, authIdentity } =
+  await authModuleService.validateCallback("google", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    authScope: "admin",
+    protocol: req.protocol,
+  } as AuthenticationInput)
+```
+
+---
+
+## Configure Auth Module
+
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
+
+---
+
+## How to Use Auth Module's Service
+
+You can use the Auth Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.AUTH` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { 
+    MedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { 
+    ModuleRegistrationName,
+  } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const authModuleService: IAuthModuleService =
+      req.scope.resolve(ModuleRegistrationName.AUTH)
+
+    res.json({
+      authIdentitys: authModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { 
+    ModuleRegistrationName,
+  } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const authModuleService: IAuthModuleService =
+      container.resolve(ModuleRegistrationName.AUTH)
+
+    const authIdentitys = await authModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IAuthModuleService } from "@medusajs/types"
+  import { 
+    ModuleRegistrationName,
+  } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const authModuleService: IAuthModuleService =
+      container.resolve(
+        ModuleRegistrationName.AUTH
+      )
+    const authIdentitys = await authModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

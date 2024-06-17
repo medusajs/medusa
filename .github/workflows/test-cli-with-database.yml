@@ -8,10 +8,10 @@ jobs:
       NODE_ENV: CI
       REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
+      POSTGRES_URL: "postgres://postgres:postgres@localhost/cli-test"
     services:
       redis:
         image: redis
-        # Set health checks to wait until redis has started
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -45,14 +45,14 @@ jobs:
         uses: ./.github/actions/setup-server
         with:
           cache-extension: "cli-test"
-          node-version: "16.14"
+          node-version: 20
 
       - name: Install Medusa cli
-        run: npm i -g @medusajs/medusa-cli
+        run: npm i -g @medusajs/medusa-cli@preview
 
       - name: Create Medusa project
         run: |
-          medusa new cli-test --skip-db
+          medusa new cli-test --skip-db --v2 --branch feat/v2-ci
         working-directory: ..
 
       - name: run medusa dev
@@ -63,15 +63,9 @@ jobs:
         run: medusa migrations run
         working-directory: ../cli-test
 
-      - name: Seed db
-        run: yarn seed
-        working-directory: ../cli-test
-
       - name: Create admin user
         run: medusa user -e test@test.com -p password -i admin_123
         working-directory: ../cli-test
-
-      ##########################  Test medusa develop  ###############################
 
       - name: Run development server
         run: medusa develop &
@@ -79,8 +73,6 @@ jobs:
 
       - name: Testing development server
         uses: ./.github/actions/test-server
-
-      ###########################  Test medusa start  ################################
 
       - name: Starting medusa
         run: medusa start &

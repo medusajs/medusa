@@ -9,9 +9,7 @@ module.exports = {
   //      useCoverage ? `jest-junit` : []
   //    )
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
-  transform: {
-    "^.+\\.[jt]s?$": "@swc/jest",
-  },
+  transform: { "^.+\\.[jt]s?$": "@swc/jest" },
   modulePathIgnorePatterns: ["__fixtures__", "node_modules", "dist"],
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],

@@ -1,0 +1,36 @@
+export const metadata = {
+  title: `Tax Rates and Rules`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about tax rates and rules.
+
+## What are Tax Rates?
+
+A tax rate is a percentage amount used to calculate the tax amount for each taxable item’s price, such as line items or shipping methods, in a cart. The sum of all calculated tax amounts are then added to the cart’s total as a tax total.
+
+Each tax region has a default tax rate. This tax rate is applied to all taxable items of a cart in that region.
+
+### Combinable Tax Rates
+
+Tax regions can have parent tax regions. To inherit the tax rates of the parent tax region, set the `is_combinable` of the child’s tax rates to `true`.
+
+Then, when tax rates are retrieved for a taxable item in the child region, both the child and the parent tax regions’ applicable rates are returned.
+
+---
+
+## Override Tax Rates with Rules
+
+You can create tax rates that override the default for specific conditions or rules. For example, the default tax rate is 10%, but for products of type “Shirt” is %15.
+
+A tax region can have multiple tax rates, and each tax rate can have multiple tax rules. The [TaxRateRule data model](/references/tax/models/TaxRateRule) represents a tax rate’s rule.
+
+![A diagram showcasing the relation between TaxRegion, TaxRate, and TaxRateRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1711462167/Medusa%20Resources/tax-rate-rule_enzbp2.jpg)
+
+These two fields of the data model identify the rule’s target:
+
+- `reference`: the name of the table in the database that this rule points to. For example, `product_type`.
+- `reference_id`: the ID of the data model’s record that this points to. For example, a product type’s ID.
+
+So, to override the default tax rate for product types “Shirt”, you create a tax rate and associate with it a tax rule whose `reference` is `product_type` and `reference_id` the ID of the “Shirt” product type.

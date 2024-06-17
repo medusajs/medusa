@@ -1,0 +1,30 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+If you install the Medusa CLI tool with Yarn, then try to use the CLI tool but get the error:
+
+```bash noReport
+command not found: medusa
+```
+
+You have to add Yarn’s install location to the PATH variable:
+
+<CodeTabs group="operating-systems">
+  <CodeTab label="MacOS / Linux" value="unix">
+
+    ```plain
+    export PATH="$(yarn global bin):$PATH
+    ```
+
+  </CodeTab>
+  <CodeTab label="Windows" value="windows">
+
+    ```bash
+    # MAKE SURE TO INCLUDE %path%
+    setx path "%path%;c:\\users\\YOURUSERNAME\\appdata\\local\\yarnbin"
+    # YOURUSERNAME is your account username
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+You can learn more in [Yarn’s documentation](https://classic.yarnpkg.com/en/docs/cli/global#adding-the-install-location-to-your-path).

@@ -1,0 +1,55 @@
+---
+displayed_sidebar: customerReference
+slug: /references/customer/removeCustomerFromGroup
+sidebar_label: removeCustomerFromGroup
+---
+
+import { TypeList } from "docs-ui"
+
+# removeCustomerFromGroup - Customer Module Reference
+
+This documentation provides a reference to the `removeCustomerFromGroup` method. This belongs to the Customer Module.
+
+## removeCustomerFromGroup(groupCustomerPair, sharedContext?): Promise&#60;void&#62;
+
+This method removes a customer from a group.
+
+### Example
+
+```ts
+await customerModuleService.removeCustomerFromGroup({
+  customer_id: "cus_123",
+  customer_group_id: "cus_321",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"groupCustomerPair","type":"[GroupCustomerPair](../../../interfaces/customer.GroupCustomerPair/page.mdx)","description":"The details of the customer and the group it should be removed from.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"customer_id","type":"`string`","description":"The customer's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_group_id","type":"`string`","description":"The customer group's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/customer.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/customer.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="removeCustomerFromGroup"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the customer is removed from the group successfully.","expandable":false,"children":[]}]}  sectionTitle="removeCustomerFromGroup"/>
+
+## removeCustomerFromGroup(groupCustomerPairs, sharedContext?): Promise&#60;void&#62;
+
+This method removes customers from groups.
+
+### Example
+
+```ts
+await customerModuleService.removeCustomerFromGroup([
+  {
+    customer_id: "cus_123",
+    customer_group_id: "cus_321",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"groupCustomerPairs","type":"[GroupCustomerPair](../../../interfaces/customer.GroupCustomerPair/page.mdx)[]","description":"A list of items, each being the details of a customer and the group it should be removed from.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"customer_id","type":"`string`","description":"The customer's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_group_id","type":"`string`","description":"The customer group's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/customer.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/customer.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="removeCustomerFromGroup"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the customers are removed from the groups successfully.","expandable":false,"children":[]}]}  sectionTitle="removeCustomerFromGroup"/>

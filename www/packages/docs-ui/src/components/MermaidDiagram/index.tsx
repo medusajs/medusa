@@ -48,8 +48,6 @@ export const MermaidDiagram = ({ diagramContent }: MermaidDiagramProps) => {
     setIsZoomed(shouldZoom)
   }, [])
 
-  console.log(matchedRegex, result?.svg)
-
   return (
     <Suspense fallback={<Loading />}>
       <ControlledZoom

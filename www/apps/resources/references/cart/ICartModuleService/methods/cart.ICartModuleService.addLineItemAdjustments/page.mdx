@@ -1,0 +1,94 @@
+---
+displayed_sidebar: cartReference
+slug: /references/cart/addLineItemAdjustments
+sidebar_label: addLineItemAdjustments
+---
+
+import { TypeList } from "docs-ui"
+
+# addLineItemAdjustments - Cart Module Reference
+
+This documentation provides a reference to the `addLineItemAdjustments` method. This belongs to the Cart Module.
+
+## addLineItemAdjustments(data): Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;
+
+This method adds line item adjustments to line items.
+
+### Example
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.addLineItemAdjustments([
+    {
+      item_id: "caliadj_123",
+      code: "50%OFF",
+      amount: 3000,
+    },
+    {
+      item_id: "caliadj_321",
+      code: "10%OFF",
+      amount: 3000,
+    },
+  ])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateLineItemAdjustmentDTO](../../../interfaces/cart.CreateLineItemAdjustmentDTO/page.mdx)[]","description":"The line item adjustments to be created and added to line items.\nThe line item is specified by the `item_id` field.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the promotion that lead to\nthis adjustment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../types/cart.BigNumberInput/page.mdx)","description":"The amount to adjust the original amount with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"item_id","type":"`string`","description":"The associated item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promotion_id","type":"`string`","description":"The associated promotion's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The associated provider's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addLineItemAdjustments"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The added line item adjustments.","expandable":false,"children":[{"name":"LineItemAdjustmentDTO[]","type":"[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LineItemAdjustmentDTO","type":"`object`","description":"The line item adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addLineItemAdjustments"/>
+
+## addLineItemAdjustments(data): Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;
+
+This method adds a line item adjustment to a line item.
+
+### Example
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.addLineItemAdjustments({
+    item_id: "caliadj_123",
+    code: "50%OFF",
+    amount: 3000,
+  })
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateLineItemAdjustmentDTO](../../../interfaces/cart.CreateLineItemAdjustmentDTO/page.mdx)","description":"The line item adjustment to be created and added to a line item.\nThe line item is specified by the `item_id` field.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the promotion that lead to\nthis adjustment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../types/cart.BigNumberInput/page.mdx)","description":"The amount to adjust the original amount with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"item_id","type":"`string`","description":"The associated item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promotion_id","type":"`string`","description":"The associated promotion's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The associated provider's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addLineItemAdjustments"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The added line item adjustment.","expandable":false,"children":[{"name":"LineItemAdjustmentDTO[]","type":"[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LineItemAdjustmentDTO","type":"`object`","description":"The line item adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addLineItemAdjustments"/>
+
+## addLineItemAdjustments(cartId, data): Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;
+
+This method adds line item adjustments to line items in a cart.
+
+### Example
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.addLineItemAdjustments("cart_123", [
+    {
+      item_id: "caliadj_123",
+      code: "50%OFF",
+      amount: 3000,
+    },
+    {
+      item_id: "caliadj_321",
+      code: "10%OFF",
+      amount: 2000,
+    },
+  ])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[CreateLineItemAdjustmentDTO](../../../interfaces/cart.CreateLineItemAdjustmentDTO/page.mdx)[]","description":"The line item adjustments to be created and added to line items.\nThe line item is specified by the `item_id` field.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the promotion that lead to\nthis adjustment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../types/cart.BigNumberInput/page.mdx)","description":"The amount to adjust the original amount with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"item_id","type":"`string`","description":"The associated item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promotion_id","type":"`string`","description":"The associated promotion's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The associated provider's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addLineItemAdjustments"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The added line item adjustment.","expandable":false,"children":[{"name":"LineItemAdjustmentDTO[]","type":"[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LineItemAdjustmentDTO","type":"`object`","description":"The line item adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addLineItemAdjustments"/>

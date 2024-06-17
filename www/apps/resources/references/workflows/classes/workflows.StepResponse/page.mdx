@@ -1,0 +1,25 @@
+import { TypeList } from "docs-ui"
+
+# StepResponse
+
+This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.
+
+## Type parameters
+
+<TypeList types={[{"name":"TOutput","type":"`object`","description":"The type of the output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TCompensateInput","type":"`object`","description":"The type of the compensation input. If the step doesn't specify any compensation input, then the type of `TCompensateInput` is the same\nas that of `TOutput`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="StepResponse"/>
+
+## Methods
+
+- [permanentFailure](../../StepResponse/methods/workflows.StepResponse.permanentFailure/page.mdx)
+
+## constructor
+
+The constructor of the StepResponse
+
+### Type Parameters
+
+<TypeList types={[{"name":"TOutput","type":"`object`","description":"The type of the output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TCompensateInput","type":"`object`","description":"The type of the compensation input. If the step doesn't specify any compensation input, then the type of `TCompensateInput` is the same\nas that of `TOutput`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new StepResponse"/>
+
+### Parameters
+
+<TypeList types={[{"name":"output","type":"TOutput","description":"The output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"compensateInput","type":"TCompensateInput","description":"The input to be passed as a parameter to the step's compensation function. If not provided, the `output` will be provided instead.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new StepResponse"/>

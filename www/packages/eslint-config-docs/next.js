@@ -6,7 +6,8 @@ module.exports = {
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/prefer-ts-expect-error": "off"
+    "@typescript-eslint/prefer-ts-expect-error": "off",
+    "valid-jsdoc": "off"
   },
   ignorePatterns: [
     "next.config.js",

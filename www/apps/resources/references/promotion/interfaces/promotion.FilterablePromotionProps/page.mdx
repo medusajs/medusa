@@ -1,0 +1,11 @@
+---
+displayed_sidebar: promotionReference
+---
+
+import { TypeList } from "docs-ui"
+
+# FilterablePromotionProps
+
+The filters to apply on the retrieved promotions.
+
+<TypeList types={[{"name":"$and","type":"([FilterablePromotionProps](page.mdx) \\| [BaseFilterable](../promotion.BaseFilterable/page.mdx)&#60;[FilterablePromotionProps](page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterablePromotionProps](page.mdx) \\| [BaseFilterable](../promotion.BaseFilterable/page.mdx)&#60;[FilterablePromotionProps](page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the promotions by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string` \\| `string`[] \\| [OperatorMap](../../types/promotion.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter promotions by their code.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"budget_id","type":"`string`[] \\| [OperatorMap](../../types/promotion.OperatorMap/page.mdx)&#60;string&#62;","description":"Filter promotions by the ID of their associated campaign budget.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_automatic","type":"`boolean`","description":"Filter promotions by whether they're applied automatically.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[PromotionTypeValues](../../types/promotion.PromotionTypeValues/page.mdx)[]","description":"Filter promotions by their type.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FilterablePromotionProps"/>

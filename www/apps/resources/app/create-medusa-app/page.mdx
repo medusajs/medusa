@@ -1,0 +1,304 @@
+import { Table, DetailsList } from "docs-ui"
+import PortForwardingTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/forwarding.mdx"
+import DBUrlTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/db-url-error.mdx"
+import EaddrinuseTroubleshooting from "../troubleshooting/_sections/other/eaddrinuse.mdx"
+import DockerTroubleshooting from "../troubleshooting/_sections/database-errors/docker.mdx"
+import EagainTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/eagain-error.mdx"
+import TypeErrorTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/typeerror.mdx"
+import ConnectionErrorTroubleshooting from "../troubleshooting/_sections/database-errors/connection-error.mdx"
+import NoBrowserTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/no-browser-token-error.mdx"
+import OtherErrorsTroubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/other-errors.mdx"
+
+export const metadata = {
+  title: `create-medusa-app CLI Tool`,
+}
+
+# {metadata.title}
+
+The `create-medusa-app` CLI tool simplifies the process of creating a new Medusa project and provides an onboarding experience.
+
+<Note type="check">
+
+- [Node.js v16+](https://nodejs.org/en/download)
+- [Git CLI tool](https://git-scm.com/downloads)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+</Note>
+
+## Usage
+
+```bash
+npx create-medusa-app@latest
+```
+
+### Command Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+        `--repo-url <url>`
+
+      </Table.Cell>
+      <Table.Cell>
+        The repository URL to create the project from.
+      </Table.Cell>
+      <Table.Cell>
+      
+      `https://github.com/medusajs/medusa-starter-default`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--seed`
+
+      </Table.Cell>
+      <Table.Cell>
+        Whether to seed the database with demo data.
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--no-boilerplate`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Whether to remove all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). Useful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--no-browser`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Disables opening the browser at the end of the project creation and only shows success message.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--skip-db`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL with the `--db-url` option.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--db-url <url>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--no-migrations`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--directory-path <path>`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Allows specifying the parent directory path to create the directory of the new project in.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        The current directory the command is running in.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--with-nextjs-starter`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Installs the Next.js Starter storefront under the `{project-name}-storefront` directory, where `{project-name}` is the name of the project you enter in the first question. If the `{project-name}-storefront` directory already exists, random characters are added at the end of it.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--verbose`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Shows detailed logs. Useful when you're reporting an issue with the tool.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+        `--v2`
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Installs Medusa v2, which is still not ready for production.
+
+      </Table.Cell>
+      <Table.Cell>
+      
+        `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## Examples
+
+### Connect to a Vercel PostgreSQL Database
+
+To use a PostgreSQL database hosted on Vercel, use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+```
+
+<Note>
+
+If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+
+</Note>
+
+### Connect to a Supabase Database
+
+To connect to a Supabase database, use the `--db-url` option with its value being the connection URL to your Supabase database. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://postgres.<host>:<password>@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
+```
+
+<Note>
+
+If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+
+</Note>
+
+---
+
+## Troubleshooting
+
+<DetailsList
+  sections={[
+    {
+      title: "Errors when using VSCode or GitHub Codespaces",
+      content: <PortForwardingTroubleshooting />
+    },
+    {
+      title: "Can't connect to database with --db-url option",
+      content: <DBUrlTroubleshooting />
+    },
+    {
+      title: "Error: EADDRINUSE",
+      content: <EaddrinuseTroubleshooting />
+    },
+    {
+      title: "Can't Connect to PostgreSQL Docker Container",
+      content: <DockerTroubleshooting />
+    },
+    {
+      title: "EAGAIN Error",
+      content: <EagainTroubleshooting />
+    },
+    {
+      title: "TypeError: cmd is not a function",
+      content: <TypeErrorTroubleshooting />
+    },
+    {
+      title: "Error: connect ECONNREFUSED ::1:5432",
+      content: <ConnectionErrorTroubleshooting />
+    },
+    {
+      title: "Invalid Token Error After Using --no-browser option",
+      content: <NoBrowserTroubleshooting />
+    },
+    {
+      title: "Other Errors",
+      content: <OtherErrorsTroubleshooting />
+    }
+  ]}
+/>

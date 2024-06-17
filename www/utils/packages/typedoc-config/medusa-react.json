@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": [
+    "../../../../packages/medusa-react/tsconfig.json"
+  ],
+  "compilerOptions": {
+    "noImplicitReturns": false
+  }
+}

@@ -1,0 +1,27 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Event Modules`,
+}
+
+# {metadata.title}
+
+An Event Module implements the underlying publish/subscribe system that handles queueing events, emitting them, and executing their subscribers. 
+
+This makes the event architecture customizable, as you can either choose one of Medusa’s event modules or create your own.
+
+---
+
+## List of Event Modules
+
+By default, Medusa uses the Local Event Module. This module uses Node’s EventEmitter to implement the publish/subscribe system.
+
+This is useful for development. However, for production, it’s highly recommended to use other Event Modules, Redis Event Module.
+
+<ChildDocs type="item" hideItems={["Guides"]} onlyTopLevel={true} />
+
+---
+
+## Create a Event Module
+
+To create an event module, refer to [this guide](./create/page.mdx).

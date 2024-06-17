@@ -3,22 +3,22 @@ import { Select, Text, clx } from "@medusajs/ui"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { debounce } from "lodash"
-import { useAdminCustomer } from "medusa-react"
 import { PropsWithChildren, useCallback, useEffect, useState } from "react"
 import { Control, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-
 import { z } from "zod"
-import { medusa } from "../../../lib/medusa"
+
+import { useCustomer } from "../../../hooks/api/customers"
+import { client } from "../../../lib/client"
 import { getStylizedAmount } from "../../../lib/money-amount-helpers"
 import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../lib/order-helpers"
 import { TransferOwnershipSchema } from "../../../lib/schemas"
-import { Combobox } from "../../common/combobox"
 import { Form } from "../../common/form"
 import { Skeleton } from "../../common/skeleton"
+import { Combobox } from "../../inputs/combobox"
 
 type TransferOwnerShipFieldValues = z.infer<typeof TransferOwnershipSchema>
 
@@ -69,12 +69,12 @@ export const TransferOwnerShipForm = ({
     isLoading: isLoadingOwner,
     isError: isOwnerError,
     error: ownerError,
-  } = useAdminCustomer(currentOwnerId)
+  } = useCustomer(currentOwnerId)
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["customers", debouncedQuery],
-    async ({ pageParam = 0 }) => {
-      const res = await medusa.admin.customers.list({
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["customers", debouncedQuery],
+    queryFn: async ({ pageParam = 0 }) => {
+      const res = await client.customers.list({
         q: debouncedQuery,
         limit: 10,
         offset: pageParam,
@@ -82,15 +82,13 @@ export const TransferOwnerShipForm = ({
       })
       return res
     },
-    {
-      getNextPageParam: (lastPage) => {
-        const moreCustomersExist =
-          lastPage.count > lastPage.offset + lastPage.limit
-        return moreCustomersExist ? lastPage.offset + lastPage.limit : undefined
-      },
-      keepPreviousData: true,
-    }
-  )
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      const moreCustomersExist =
+        lastPage.count > lastPage.offset + lastPage.limit
+      return moreCustomersExist ? lastPage.offset + lastPage.limit : undefined
+    },
+  })
 
   const createLabel = (customer?: Customer) => {
     if (!customer) {

@@ -1,0 +1,37 @@
+export const metadata = {
+  title: `Payment`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn what a payment is and how it's created, captured, and refunded.
+
+## What's a Payment?
+
+When a payment session is authorized, a payment, represented by the [Payment data model](/references/payment/models/Payment), is created. This payment can later be captured or refunded.
+
+A payment carries along many of the data and relations of a payment session:
+
+- It belongs to the same payment collection.
+- It’s associated with the same payment provider, which handles further payment processing.
+- It stores the payment session’s `data` field in its `data` field, as it’s still useful for the payment provider’s processing.
+
+---
+
+## Capture Payments
+
+When a payment is captured, a capture, represented by the [Capture data model](/references/payment/models/Capture), is created. It holds details related to the capture, such as the amount, the capture date, and more.
+
+The payment can also be captured incrementally, each time a capture record is created for that amount.
+
+![A diagram showcasing how a payment's multiple captures are stored](https://res.cloudinary.com/dza7lstvk/image/upload/v1711565445/Medusa%20Resources/payment-capture_f5fve1.jpg)
+
+---
+
+## Refund Payments
+
+When a payment is refunded, a refund, represented by the [Refund data model](/references/payment/models/Refund), is created. It holds details related to the refund, such as the amount, refund date, and more.
+
+A payment can be refunded multiple times, and each time a refund record is created.
+
+![A diagram showcasing how a payment's multiple refunds are stored](https://res.cloudinary.com/dza7lstvk/image/upload/v1711565555/Medusa%20Resources/payment-refund_lgfvyy.jpg)

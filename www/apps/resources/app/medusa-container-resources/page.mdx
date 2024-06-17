@@ -1,0 +1,124 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Container Resources`,
+}
+
+# {metadata.title}
+
+This documentation page includes the list of resources registered in the Medusa container of your Medusa application.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+
+      Resource
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+      Description
+
+      </Table.HeaderCell>
+
+      <Table.HeaderCell>
+
+      Registration Name
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      Configurations
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The configurations that are exported from `medusa-config.js`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `configModule`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Logger
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An instance of Medusa CLI’s logger. You can use it to log messages to the terminal.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `logger`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Remote Query
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The remote query function.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `remoteQuery`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Remote Link
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The remote link function.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `remoteLink`
+
+      </Table.Cell>
+    </Table.Row>
+
+    <Table.Row>
+      <Table.Cell>
+
+      Modules' main services
+
+      </Table.Cell>
+      <Table.Cell>
+
+      The main service of every module added in `medusa-config.js`.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      - For custom modules, the registration name is the key of the module in the `modules` configuration.
+      - For Medusa's commerce modules, you can use the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk`.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

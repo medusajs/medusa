@@ -1,15 +1,83 @@
 "use client"
 
-import React from "react"
+import React, { useMemo } from "react"
 import { Card, CardList, MDXComponents, useSidebar } from "../.."
 import { SidebarItemType } from "types"
 
 type ChildDocsProps = {
   onlyTopLevel?: boolean
+  type?: "sidebar" | "item"
+  hideItems?: string[]
+  showItems?: string[]
+  hideTitle?: boolean
 }
 
-export const ChildDocs = ({ onlyTopLevel = false }: ChildDocsProps) => {
-  const { currentItems } = useSidebar()
+export const ChildDocs = ({
+  onlyTopLevel = false,
+  hideItems = [],
+  showItems,
+  type = "sidebar",
+  hideTitle = false,
+}: ChildDocsProps) => {
+  const { currentItems, getActiveItem } = useSidebar()
+  const filterType = useMemo(() => {
+    return showItems !== undefined
+      ? "show"
+      : hideItems.length > 0
+      ? "hide"
+      : "all"
+  }, [showItems, hideItems])
+
+  const filterCondition = (item: SidebarItemType): boolean => {
+    switch (filterType) {
+      case "hide":
+        return (
+          (!item.path || !hideItems.includes(item.path)) &&
+          !hideItems.includes(item.title)
+        )
+      case "show":
+        return (
+          (item.path !== undefined && showItems!.includes(item.path)) ||
+          showItems!.includes(item.title)
+        )
+      case "all":
+        return true
+    }
+  }
+
+  const filterItems = (items: SidebarItemType[]): SidebarItemType[] => {
+    return items
+      .filter(filterCondition)
+      .map((item) => Object.assign({}, item))
+      .map((item) => {
+        if (item.children && filterType === "hide") {
+          item.children = filterItems(item.children)
+        }
+
+        return item
+      })
+  }
+
+  const filteredItems = useMemo(() => {
+    const targetItems =
+      type === "sidebar"
+        ? currentItems
+          ? Object.assign({}, currentItems)
+          : undefined
+        : {
+            top: [...(getActiveItem()?.children || [])],
+            bottom: [],
+          }
+    if (filterType === "all" || !targetItems) {
+      return targetItems
+    }
+
+    return {
+      ...targetItems,
+      top: filterItems(targetItems.top),
+      bottom: filterItems(targetItems.bottom),
+    }
+  }, [currentItems, type, getActiveItem, filterItems])
 
   const getTopLevelElms = (items?: SidebarItemType[]) => (
     <CardList
@@ -33,7 +101,7 @@ export const ChildDocs = ({ onlyTopLevel = false }: ChildDocsProps) => {
         <React.Fragment key={key}>
           {HeadingComponent && (
             <>
-              <HeadingComponent>{item.title}</HeadingComponent>
+              {!hideTitle && <HeadingComponent>{item.title}</HeadingComponent>}
               <CardList
                 items={
                   item.children?.map((childItem) => ({
@@ -58,8 +126,8 @@ export const ChildDocs = ({ onlyTopLevel = false }: ChildDocsProps) => {
 
   return (
     <>
-      {getElms(currentItems?.top)}
-      {getElms(currentItems?.bottom)}
+      {getElms(filteredItems?.top)}
+      {getElms(filteredItems?.bottom)}
     </>
   )
 }

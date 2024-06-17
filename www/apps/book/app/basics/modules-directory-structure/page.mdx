@@ -1,0 +1,29 @@
+export const metadata = {
+  title: `${pageNumber} Modules Directory Structure`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the expected files and directories in your module.
+
+![Module Directory Structure Example](https://res.cloudinary.com/dza7lstvk/image/upload/v1714379976/Medusa%20Book/modules-dir-overview_nqq7ne.jpg)
+
+## index.ts
+
+The `index.ts` file in the root of your module's directory is the only required file. It must export the module's definition as explained in a [previous chapter](../modules-and-services/page.mdx).
+
+---
+
+## service.ts
+
+A module must have a main service. It's created in the `service.ts` file at the root of your module directory as explained in a [previous chapter](../modules-and-services/page.mdx).
+
+---
+
+## Other Directories
+
+The following directories are optional and their content are explained more in the following chapters:
+
+- `models`: Holds the data models representing tables in the database.
+- `migrations`: Holds the migration files used to reflect changes on the database.
+- `loaders`: Holds the scripts to run on the Medusa application's start-up.

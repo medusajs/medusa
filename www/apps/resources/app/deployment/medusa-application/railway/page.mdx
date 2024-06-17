@@ -1,0 +1,231 @@
+export const metadata = {
+  title: `Deploy Medusa Application to Railway`,
+}
+
+# {metadata.title}
+
+<Note type="soon">
+
+The following deployment guide doesn't support Medusa v2 yet.
+
+</Note>
+
+[Railway](https://railway.app/) is a hosting provider that you can use to deploy web applications and databases without having to worry about managing the full infrastructure.
+
+You can deploy a Medusa application to Railway instantly with this button:
+
+<a 
+  href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0">
+  <img src="https://railway.app/button.svg" alt="Deploy with Railway" className="mb-1"/>
+</a>
+
+<Note type="check">
+
+- Production Event Bus Module installed and configured in the Medusa application, such as the [Redis Event Bus Module](../../../architectural-modules/event/redis/page.mdx).
+- Production Cache Module installed and configured in the Medusa application, such as the [Redis Cache Module](../../../architectural-modules/cache/redis/page.mdx).
+- [Railway account](https://railway.app).
+- [GitHub repository with the Medusa application's code](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository).
+
+</Note>
+
+## Configure the Admin
+
+If you're using the Medusa Admin plugin, you have two options to deploy it: either with the Medusa application or separately.
+
+### Deploying with the Medusa Application
+
+To deploy the admin with the Medusa application:
+
+1. Your chosen plan must offer at least 2GB of RAM.
+2. Enable the autoRebuild option of the admin plugin:
+
+```js title="medusa-config.js" highlights={[["7"]]}
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      // other options...
+    },
+  },
+]
+```
+
+Alternatively, you can use a GitHub action to build the admin as explained [here](!docs!/deployment).
+
+### Deploying Separately
+
+To deploy the admin separately, disable the admin plugin's serve option:
+
+```js title="medusa-config.js" highlights={[["10"]]}
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // only enable `serve` in development
+      // you may need to add the NODE_ENV variable
+      // manually
+      serve: process.env.NODE_ENV === "development",
+      // other options...
+    },
+  },
+]
+```
+
+This ensures that the admin isn't built or served in production. You can also change `@medusajs/admin` dependency to be a dev dependency in `package.json`.
+
+You can alternatively remove the admin plugin for the plugins array.
+
+---
+
+## Add Nixpacks Configurations
+
+If you've created your project using `create-medusa-app`, you might receive errors during the deployment process as Railway uses NPM by default.
+
+To avoid that, create the file `nixpacks.toml` in the root of your Medusa application that configure Nixpacks to either use `yarn` or add the `--legacy-peer-deps` option to `npm install`:
+
+```toml title="nixpacks.toml"
+[phases.setup]
+nixPkgs = ['nodejs', 'yarn']
+
+[phases.install]
+cmds=['yarn install']
+```
+
+---
+
+## Deploy to Railway
+
+In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the Medusa application from the GitHub repository. 
+
+### Create the PostgreSQL Database
+
+On the Railway dashboard:
+
+1. Click on the ”New Project” button.
+2. Choose from the dropdown the ”Provision PostgreSQL” option.
+
+A new database is created and, after a few seconds, you'll be redirected to the project page with the created database.
+
+### Create the Redis Database
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the Database option.
+3. Choose Add Redis.
+
+A new Redis database is added to the project view.
+
+### Note about Modules
+
+If you use modules that require setting up other resources, add them at this point.
+
+### Deploy the Medusa Application Repository
+
+In the same project view:
+
+1. Click on the New button.
+2. Choose the ”GitHub Repo” option.
+3. If you still haven't given GitHub permissions to Railway, choose the ”Configure GitHub App” option to do that.
+4. Choose the repository from the GitHub Repo dropdown.
+
+It takes the Medusa application a few minutes for the deployment to finish. It may fail since you haven't added the environment variables yet.
+
+### Configure Environment Variables
+
+To configure the environment variables of your Medusa application:
+
+1. Click on the GitHub repository’s card.
+2. Choose the Variables tab.
+3. Add the following environment variables:
+
+```bash
+PORT=9000
+JWT_SECRET=something
+COOKIE_SECRET=something
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+REDIS_URL=${{Redis.REDIS_URL}}
+```
+
+Notice that the values of `DATABASE_URL` and `REDIS_URL` reference the values from the PostgreSQL and Redis databases you created.
+
+<Note type="warning">
+
+It’s highly recommended to use strong, randomly generated secrets for `JWT_SECRET` and `COOKIE_SECRET`.
+
+</Note>
+
+Make sure to add any other environment variables that are relevant for you here. For example, you can add environment variables related to Medusa Admin or your modules.
+
+### Change Start Command
+
+The start command is the command used to run the application. You’ll change it to run any available migrations, then run the Medusa application. This way it's guaranteed that migrations from your customizations or Medusa updates always run first before the application starts.
+
+To change the start command of your Medusa application:
+
+1. Click on the GitHub repository’s card.
+2. Click on the Settings tab and scroll down to the Deploy section.
+3. Paste the following in the Custom Start Command field:
+
+```bash
+medusa migrations run && medusa start
+```
+
+### Add Domain Name
+
+The last step is to add a domain name to your Medusa application. To do that:
+
+1. Click on the GitHub repository’s card.
+2. Click on the Settings tab and scroll down to the Networking section.
+3. Either click on the Custom Domain button to enter your own domain or the Generate Domain button to generate a random domain.
+
+---
+
+## Test the Deployed Application
+
+Every change you make to the settings redeploys the Medusa application. You can check the deployments of the application by clicking on the GitHub repository’s card and choosing the Deployments tab.
+
+After the application is redeployed successfully, open the app in your browser using the domain name. For example, you can open the URL `{your_app_url}/store/products` which returns the products in your store.
+
+### Health Route
+
+Access `/health` to get health status of your deployed application.
+
+### Testing the Medusa Admin
+
+If you deployed the Medusa Admin with the application, you can test it by going to `{your_app_url}/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
+
+---
+
+## Troubleshooting
+
+If you run into any issues or a problem with your deployed application, check the logs in your Railway container instance:
+
+1. Click on the GitHub repository’s card.
+2. Click on the Deployments tab.
+3. Click on the View Logs button.
+
+### Error: connect ENOENT
+
+This error may be thrown by a module that uses Redis. If you see it in your build or deploy logs, make sure that your Redis configurations are correct.
+
+---
+
+## Run Commands on the Medusa Application
+
+To run commands on your Medusa application, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
+
+For example, you can run commands on the application to seed the database or create a new user using [Medusa’s CLI tool](../../../medusa-cli/page.mdx).
+
+### Create Admin User
+
+Create an admin user by running the following command in the root of your Medusa application directory:
+
+```bash
+railway run npx medusa user --email admin@medusa-test.com --password supersecret
+```

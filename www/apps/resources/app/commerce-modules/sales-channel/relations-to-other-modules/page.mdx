@@ -1,0 +1,55 @@
+export const metadata = {
+  title: `Relations between Sales Channel Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the link modules defined between the Sales Channel Module and other commerce modules.
+
+## API Key Module
+
+A publishable API key allows you to easily specify the sales channel scope in a client request. Medusa defines a link module that builds a relationship between the `ApiKey` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and API Key modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1709812064/Medusa%20Resources/sales-channel-api-key_zmqi2l.jpg)
+
+Using the API Key Module, you create a publishable key and associate it with a sales channel. Learn more in [this document](../publishable-api-keys/page.mdx)
+
+---
+
+## Cart Module
+
+A cart is associated with the sales channel it's created in. Medusa defines a link module that builds a relationship between the `Cart` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how data models from the Cart and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1711538159/Medusa%20Resources/cart-sales-channel_n2oi0v.jpg)
+
+For example, if a customer adds an item to the cart in a mobile app, the cart is associated with the mobile app's sales channel. However, if a customer adds an item to the cart in a web storefront, the cart is associated with the storefront's sales channel.
+
+---
+
+## Order Module
+
+An order is associated with the sales channel it's created in. Medusa defines a link module that builds a relationship between the `Order` and the `SalesChannel` data models.
+
+![A diagram showcasing an example of how resources from the Order and Sales Channel modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1712315409/Medusa%20Resources/order-sales-channel_dy72gx.jpg)
+
+For example, if an order is created in a mobile app, it'll be associated with its sales channel. If another order is created through a POS system, it'll be associated with the POS's sales channel.
+
+---
+
+## Product Module
+
+A product has different availability for different sales channels. Medusa defines a link module that builds a relationship between the `Product` and the `SalesChannel` data models.
+
+A product can be available in more than one sales channel. Then, you can retrieve only the products of a sales channel.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Product modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1709809833/Medusa%20Resources/product-sales-channel_ciqj6i.jpg)
+
+---
+
+## Stock Location Module
+
+A stock location is associated with a sales channel. This scopes inventory quantities associated with that stock location by the associated sales channel.
+
+Medusa defines a link module that builds a relationship between the `SalesChannel` and `StockLocation` data models.
+
+![A diagram showcasing an example of how resources from the Sales Channel and Stock Location modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716796872/Medusa%20Resources/sales-channel-location_cqrih1.jpg)

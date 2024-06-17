@@ -1,0 +1,53 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `Payment Provider Module`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn what a payment provider module is.
+
+## What's a Payment Provider Module?
+
+A payment provider module registers a payment provider that handles payment processing. It can integrate third-party payment providers, such as Stripe.
+
+To authorize a payment amount with a payment provider, a payment session is created and associated with that payment provider. The payment provider is then used to handle the authorization.
+
+After the payment session is authorized, the payment provider is associated with the resulting payment and handles its payment processing, such as to capture or refund payment.
+
+### List of Payment Provider Modules
+
+<ChildDocs type="item" />
+
+---
+
+## System Payment Provider
+
+The Payment Module provides a `system` payment provider that acts as a placeholder payment provider. It doesn’t handle payment processing and delegates that to the merchant. It acts similarly to a cash-on-delivery (COD) payment method.
+
+---
+
+## How are Payment Providers Created?
+
+A payment provider is a TypeScript or JavaScript class that extends the `AbstractPaymentProvider` imported from `@medusajs/utils`. It can then be exported as the main service of a module.
+
+<Note title="Tip">
+
+Refer to [this guide](/references/payment/provider) on how to create a payment provider for the Payment Module.
+
+</Note>
+
+---
+
+## Configure Payment Providers
+
+The Payment Module accepts a `providers` option that allows you to register providers in your application.
+
+Learn more about this option in [this documentation](../module-options/page.mdx#providers).
+
+---
+
+## PaymentProvider Data Model
+
+When the Medusa application starts and registers the payment providers, it also creates a record of the `PaymentProvider` data model if none exists. This data model is used to reference a payment provider and determine whether it’s installed in the application.

@@ -5,16 +5,17 @@ const EllipsisHorizontal = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
         <path
-          stroke={color}
-          strokeWidth={1.5}
-          d="M3.75 10a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0Zm5.5 0a.75.75 0 1 1 1.5 0 .75.75 0 0 1-1.5 0Zm5.72-.53a.75.75 0 1 1 1.06 1.06.75.75 0 0 1-1.06-1.06Z"
+          fill={color}
+          fillRule="evenodd"
+          d="M6.306 7.5a1.194 1.194 0 1 1 2.389 0 1.194 1.194 0 0 1-2.39 0M1.194 7.5a1.194 1.194 0 1 1 2.39 0 1.194 1.194 0 0 1-2.39 0M11.417 7.5a1.194 1.194 0 1 1 2.389 0 1.194 1.194 0 0 1-2.39 0"
+          clipRule="evenodd"
         />
       </svg>
     )

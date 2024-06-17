@@ -1,0 +1,736 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa CLI Tool`,
+}
+
+# {metadata.title}
+
+The Medusa CLI tool provides commands that facilitate your development.
+
+<Note type="soon">
+
+Medusa's CLI tool doesn't fully support Medusa v2 yet.
+
+</Note>
+
+<Note type="check">
+
+- [Node.js v16+](https://nodejs.org/en/download)
+- [Git CLI tool](https://git-scm.com/downloads)
+
+</Note>
+
+## Usage
+
+In your Medusa application's directory, you can use the Medusa CLI tool using NPX. For example:
+
+```bash
+npx medusa --help
+```
+
+Alternatively, you can install the CLI tool globally:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+medusa --help
+```
+
+---
+
+## Commands
+
+### new
+
+Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project.
+
+```bash
+medusa new [<dir_name> [<starter_url>]]
+```
+
+#### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `dir_name`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the directory to create the Medusa application in.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `starter_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the directory to create the Medusa application in.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `https://github.com/medusajs/medusa-starter-default`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-y`, `--useDefaults`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip all prompts, such as databaes prompts. A database might not be created if default PostgreSQL credentials don't work.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-db`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip database creation.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--skip-env`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Skip populating `.env`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-user <user>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database user to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-database <database>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The name of the database used for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-pass <password>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database password to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database port to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--db-host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The database host to use for database setup.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--v2`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Installs Medusa v2, which is still not ready for production.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### develop
+
+Start Medusa application in development. This command watches files for any changes, then rebuilds the files and restarts the Medusa application.
+
+```bash
+npx medusa develop
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-H <host>`, `--host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set host of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `localhost`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <port>`, `--port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set port of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `9000`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### start
+
+Start the Medusa application in production.
+
+```bash
+npx medusa start
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-H <host>`, `--host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set host of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `localhost`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <port>`, `--port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set port of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `9000`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### migrations
+
+Perform migration actions to reflect changes on the database, such as running or reverting migrations.
+
+```bash
+npx medusa migrations <action>
+```
+
+#### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `action`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The action to perform. Values can be `run`, `show`, or `revert`.
+      `run` is used to run the migrations; `show` is used to only show 
+      what migrations are available to run; and `revert` is to undo the 
+      last migration.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### seed
+
+Runs latest migrations and populates the database with data from a provided JSON file.
+
+```bash
+npx medusa seed --seed-file=<file_path>
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-f=<file_path>`, `--seed-file=<file_path>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Path to the file holding the data to seed.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-m=<value>`, `--migrate=<value>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether to run migrations before seeding the database.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `true`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### user
+
+Create a new admin user.
+
+```bash
+npx medusa user --email <email> [--password <password>]
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-e <email>`, `--email <email>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's email.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <password>`, `--password <password>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's password.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      \-
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-i <id>`, `--id <id>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The user's ID.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      An automatically generated ID.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--invite`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Whether to create an invite instead of a user. When using this option, you don't need to specify a password.
+      If ran successfully, you'll receive the invite token in the output.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+      <Table.Cell>
+
+      `false`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### exec
+
+Run a custom CLI script. Learn more about it in [this guide](!docs!/advanced-development/custom-cli-scripts).
+
+```bash
+npx medusa exec [file] [args...]
+```
+
+#### Arguments
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Argument</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `file`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The path to the TypeScript or JavaScript file holding the function to execute.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Yes
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `args`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      A list of arguments to pass to the function. These arguments are passed in the `args` property of the function's object parameter.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      No
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### start-cluster
+
+Starts the Medusa application in [cluster mode](https://expressjs.com/en/advanced/best-practice-performance.html#run-your-app-in-a-cluster). Running in cluster mode significantly improves performance as the workload and tasks are distributed among all available instances instead of a single one.
+
+```bash
+npx medusa start-cluster
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-c <number>`, `--cpus <number>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      The number of CPUs that Medusa can consume.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Medusa will try to consume all CPUs.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-H <host>`, `--host <host>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set host of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `localhost`
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `-p <port>`, `--port <port>`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Set port of the Medusa server.
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      `9000`
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### telemetry
+
+Enable or disable the collection of anonymous data usage. If no option is provided, the command enables the collection of anonymous data usage.
+
+```bash
+npx medusa telemetry
+```
+
+#### Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--enable`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Enable telemetry (default).
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `--disable`
+      
+      </Table.Cell>
+      <Table.Cell>
+
+      Disable telemetry.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

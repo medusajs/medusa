@@ -1,0 +1,52 @@
+{
+  "name": "user-guide",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "yarn prep && next dev",
+    "dev:monorepo": "yarn prep && yarn dev -p 3004",
+    "build": "yarn prep && next build",
+    "build:dev": "NODE_ENV=test yarn build",
+    "start": "next start",
+    "start:monorepo": "yarn start -p 3004",
+    "lint": "next lint --fix",
+    "lint:content": "eslint --no-eslintrc -c .content.eslintrc.js app/**/*.mdx --fix",
+    "prep": "node ./scripts/prepare.mjs"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.0.0",
+    "@mdx-js/react": "^3.0.0",
+    "@medusajs/icons": "^1.2.0",
+    "@next/mdx": "^14.2.3",
+    "clsx": "^2.1.0",
+    "docs-ui": "*",
+    "next": "14.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rehype-mdx-code-props": "^2.0.0",
+    "rehype-slug": "^6.0.0",
+    "remark-directive": "^3.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-rehype-plugins": "*"
+  },
+  "devDependencies": {
+    "@types/mdx": "^2.0.10",
+    "@types/node": "^20",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.0.1",
+    "build-scripts": "*",
+    "eslint": "^8",
+    "eslint-config-docs": "*",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwind": "*",
+    "tailwindcss": "^3.3.0",
+    "tsconfig": "*",
+    "types": "*",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}

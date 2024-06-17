@@ -1,7 +1,0 @@
-export * from "./add-products-to-sales-channels"
-export * from "./create-sales-channels"
-export * from "./delete-sales-channels"
-export * from "./remove-products-from-sales-channels"
-export * from "./update-sales-channels"
-export * from "./add-locations-to-sales-channel"
-export * from "./remove-locations-from-sales-channel"

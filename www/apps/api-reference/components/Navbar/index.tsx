@@ -11,6 +11,7 @@ import { useMemo } from "react"
 import { config } from "../../config"
 import { usePathname } from "next/navigation"
 import VersionSwitcher from "../VersionSwitcher"
+import basePathUrl from "../../utils/base-path-url"
 
 const Navbar = () => {
   const { setMobileSidebarOpen, mobileSidebarOpen } = useSidebar()
@@ -22,6 +23,7 @@ const Navbar = () => {
       getNavbarItems({
         basePath: config.baseUrl,
         activePath: pathname,
+        version: "v2",
       }),
     [pathname]
   )
@@ -29,19 +31,15 @@ const Navbar = () => {
   return (
     <UiNavbar
       logo={{
-        light: "/images/logo-icon.png",
-        dark: "/images/logo-icon-dark.png",
+        light: basePathUrl("/images/logo-icon.png"),
+        dark: basePathUrl("/images/logo-icon-dark.png"),
       }}
       items={navbarItems}
       mobileMenuButton={{
         setMobileSidebarOpen,
         mobileSidebarOpen,
       }}
-      additionalActionsBefore={
-        <>
-          {process.env.NEXT_PUBLIC_VERSIONING === "true" && <VersionSwitcher />}
-        </>
-      }
+      additionalActionsBefore={<VersionSwitcher />}
       additionalActionsAfter={<FeedbackModal />}
       isLoading={isLoading}
     />

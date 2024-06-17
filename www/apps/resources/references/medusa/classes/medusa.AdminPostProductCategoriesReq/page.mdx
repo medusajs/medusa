@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# AdminPostProductCategoriesReq
+
+The details of the product category to create.
+
+## Properties
+
+<TypeList types={[{"name":"name","type":"`string`","description":"The name of the product category","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the product category.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_internal","type":"`boolean`","description":"If set to `true`, the product category will only be available to admins.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_active","type":"`boolean`","description":"If set to `false`, the product category will not be available in the storefront.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"parent_category_id","type":"`null` \\| `string`","description":"The ID of the parent product category","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="AdminPostProductCategoriesReq"/>

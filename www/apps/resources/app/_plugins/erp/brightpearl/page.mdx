@@ -1,0 +1,487 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Brightpearl Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Brightpearl](https://www.brightpearl.com/) is a Retail Operations Platform. It can be integrated to a business's different sales channels to provide features related to inventory management, automation, analytics and reporting, and more.
+
+Medusa provides an official Brightpearl plugin with the following features:
+
+- Send and sync orders with Brightpearl.
+- Listen for inventory and stock movements in Brightpearl.
+- Handle order returns through Brightpearl.
+
+---
+
+## Install the Brightpearl Plugin
+
+<Note type="check">
+
+- [Brightpearl account](https://www.brightpearl.com/)
+
+</Note>
+
+To install the Brightpearl plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-brightpearl
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "account", "The Brightpearl account ID."],
+  ["7", "backend_url", "The URL of the Medusa application."],
+  ["8", "channel_id", "The ID of the channel to map sales and credits to."],
+  ["9", "event_owner", "The ID of the contact used when sending the Goods-Out Note Event."],
+  ["10", "warehouse", "The ID of the warehouse to allocate order items' inventory from."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-brightpearl`,
+    options: {
+      account: process.env.BRIGHTPEARL_ACCOUNT,
+      backend_url: process.env.BRIGHTPEARL_BACKEND_URL,
+      channel_id: process.env.BRIGHTPEARL_CHANNEL_ID,
+      event_owner: process.env.BRIGHTPEARL_EVENT_OWNER,
+      warehouse: process.env.BRIGHTPEARL_WAREHOUSE,
+    },
+  },
+]
+```
+
+### Brightpearl Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `account`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      a string indicating your [Brightpearl account ID](https://help.brightpearl.com/s/article/360028541892#:~:text=Your%20account%20ID%20can%20be,your%20email%20address%20and%20password).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `backend_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL of your Medusa application. This is useful for webhooks.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `channel_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the channel to map sales and credits to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `event_owner`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the contact used when sending the [Goods-Out Note Event](https://api-docs.brightpearl.com/warehouse/goods-out-note%20event/post.html).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `warehouse`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the warehouse to allocate order items' inventory from.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `default_status_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the status to assign new orders. This value will also be used on 
+      swaps or claims if their respective options, `swap_status_id` and `claim_status_id`, are not provided.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `3`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `swap_status_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the status to assign new swaps.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Value of `default_status_id`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `claim_status_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the status to assign new claims.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Value of `default_status_id`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `payment_method_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the payment method code to register payments with.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `1220`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `sales_account_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the nominal code to assign line items to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `4000`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `shipping_account_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the nominal code to assign shipping lines to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `4040`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `discount_account_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the nominal code to use for discount-type refunds.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `gift_card_account_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the nominal code to use for gift card products and redeems.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `4000`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `inventory_sync_cron`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating a cron pattern that should be used to create a scheduled job 
+      for syncing inventory. If not provided, the scheduled job will not be created.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `cost_price_list`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ID of the price list to assign to created claims.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `1`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `base_currency`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ISO 3 character code of the currency to assign to created claims.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `EUR`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+BRIGHTPEARL_ACCOUNT=<YOUR_ACCOUNT>
+BRIGHTPEARL_CHANNEL_ID=<YOUR_CHANNEL_ID>
+BRIGHTPEARL_BACKEND_URL=<YOUR_BACKEND_URL>
+BRIGHTPEARL_EVENT_OWNER=<YOUR_EVENT_OWNER>
+BRIGHTPEARL_WAREHOUSE=<YOUR_WAREHOUSE>
+BRIGHTPEARL_DEFAULT_STATUS_ID=<YOUR_DEFAULT_STATUS_ID>
+BRIGHTPEARL_SWAP_STATUS_ID=<YOUR_SWAP_STATUS_ID>
+BRIGHTPEARL_CLAIM_STATUS_ID=<YOUR_CLAIM_STATUS_ID>
+BRIGHTPEARL_PAYMENT_METHOD_CODE=<YOUR_PAYMENT_METHOD_CODE>
+BRIGHTPEARL_SALES_ACCOUNT_CODE=<YOUR_SALES_ACCOUNT_CODE>
+BRIGHTPEARL_SHIPPING_ACCOUNT_CODE=<YOUR_SHIPPING_ACCOUNT_CODE>
+BRIGHTPEARL_DISCOUNT_ACCOUNT_CODE=<YOUR_DISCOUNT_ACCOUNT_CODE>
+BRIGHTPEARL_GIFT_CARD_ACCOUNT_CODE=<YOUR_GIFT_CARD_ACCOUNT_CODE>
+BRIGHTPEARL_INVENTORY_SYNC_CRON=<YOUR_INVENTORY_SYNC_CRON>
+BRIGHTPEARL_COST_PRICE_LIST=<YOUR_COST_PRICE_LIST>
+BRIGHTPEARL_BASE_CURRENCY=<YOUR_BASE_CURRENCY>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, place an order either using a [storefront](../../../nextjs-starter/page.mdx) or the [Store REST APIs](https://docs.medusajs.com/api/store). The order should appear on Brightpearl.
+
+---
+
+## How the Plugin Works
+
+### OAuth
+
+The plugin registers an OAuth app in Medusa allowing installation at `<MEDUSA_URL>/a/settings/apps`, where `<MEDUSA_URL>` is the URL of your Medusa application.
+
+The OAuth tokens are refreshed every hour to prevent unauthorized requests.
+
+### Orders and Fulfillments
+
+When an order is created in the Medusa application, it'll automatically be sent to Brightpearl and allocated there. Once allocated, it is up to Brightpearl to figure out how the order is to be fulfilled.
+
+The plugin listens for Goods-Out notes and tries to map each of these to a Medusa order. If the matching succeeds, the Medusa application sends the order to the fulfillment provider associated with the shipping method selected by the Customer.
+
+### Order Returns
+
+When line items in an order are returned, the plugin will generate a sales credit in Brightpearl.
+
+### Products
+
+The plugin doesn't automatically create products in Medusa, but listens for inventory changes in Brightpearl. Then, the plugin updates each product variant to reflect the inventory quantity listed in Brightpearl, thereby ensuring that the inventory levels in Medusa are always in sync with Brightpearl.

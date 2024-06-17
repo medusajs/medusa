@@ -8,7 +8,7 @@ import {
   CircleHalfSolid,
   CogSixTooth,
   MagnifyingGlass,
-  SidebarRight,
+  SidebarLeft,
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
@@ -19,11 +19,14 @@ import {
   UIMatch,
   useLocation,
   useMatches,
+  useNavigate,
 } from "react-router-dom"
 
 import { Skeleton } from "../../common/skeleton"
 
+import { useLogout } from "../../../hooks/api/auth"
 import { useMe } from "../../../hooks/api/users"
+import { queryClient } from "../../../lib/query-client"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
@@ -105,7 +108,6 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
             {!isLast && <span className="mx-2 -mt-0.5">›</span>}
           </li>
         )
@@ -140,7 +142,7 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
+          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 outline-none"
         )}
       >
         {fallback ? (
@@ -201,20 +203,19 @@ const ThemeToggle = () => {
 }
 
 const Logout = () => {
-  // const navigate = useNavigate()
-  // const { mutateAsync: logoutMutation } = useAdminDeleteSession()
+  const navigate = useNavigate()
+  const { mutateAsync: logoutMutation } = useLogout()
 
   const handleLayout = async () => {
-    // await logoutMutation(undefined, {
-    //   onSuccess: () => {
-    //     /**
-    //      * When the user logs out, we want to clear the query cache
-    //      */
-    //     queryClient.clear()
-    //     navigate("/login")
-    //   },
-    // })
-    // noop
+    await logoutMutation(undefined, {
+      onSuccess: () => {
+        /**
+         * When the user logs out, we want to clear the query cache
+         */
+        queryClient.clear()
+        navigate("/login")
+      },
+    })
   }
 
   return (
@@ -247,7 +248,11 @@ const LoggedInUser = () => {
       <DropdownMenu.Content align="center">
         <Profile />
         <DropdownMenu.Separator />
-        <Link to="https://docs.medusajs.com/user-guide" target="_blank">
+        <Link
+          // TODO change link once docs are public
+          to="https://medusa-docs-v2-git-docs-v2-medusajs.vercel.app/"
+          target="_blank"
+        >
           <DropdownMenu.Item>
             <BookOpen className="text-ui-fg-subtle mr-2" />
             Documentation
@@ -329,14 +334,14 @@ const ToggleSidebar = () => {
         variant="transparent"
         onClick={() => toggle("desktop")}
       >
-        <SidebarRight className="text-ui-fg-muted" />
+        <SidebarLeft className="text-ui-fg-muted" />
       </IconButton>
       <IconButton
         className="hidden max-lg:flex"
         variant="transparent"
         onClick={() => toggle("mobile")}
       >
-        <SidebarRight className="text-ui-fg-muted" />
+        <SidebarLeft className="text-ui-fg-muted" />
       </IconButton>
     </div>
   )
@@ -384,7 +389,7 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
     <Dialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-[220px] border-r">
+        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-full max-w-[240px] border-r">
           {children}
         </Dialog.Content>
       </Dialog.Portal>

@@ -1,0 +1,80 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `List Regions in Storefront`,
+}
+
+# {metadata.title}
+
+To list regions in your storefront, send a request to the [List Regions API route](!api!/store#regions_getregions):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(`http://localhost:9000/store/regions`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ regions }) => {
+    // use regions...
+    console.log(regions)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["17"], ["18"], ["19"], ["20"], ["21"], ["22"], ["23"], ["24"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function Regions() {
+    const [loading, setLoading] = useState(true)
+    const [regions, setRegions] = useState<
+      HttpTypes.StoreRegion[]
+    >([])
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/regions`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ regions: dataRegions }) => {
+        setRegions(dataRegions)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && regions.length === 0 && <span>No regions found.</span>}
+        {!loading && regions.length > 0 && (
+          <ul>
+            {regions.map((region) => (
+              <li key={region.id}>{region.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add a link to regions object in API reference (once available). */}
+
+The response has a `regions` field, which is an array of regions.

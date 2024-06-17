@@ -1,0 +1,136 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Inventory Module`,
+}
+
+# {metadata.title}
+
+The Inventory Module is the `@medusajs/inventory-next` NPM package that provides inventory-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Inventory Items Management
+
+Store and manage inventory of any stock-kept item, such as product variants.
+
+Inventory items hold details of the underlying stock-kept item, as well as inventory details such as whether the item requires shipping.
+
+```ts
+const inventoryItem =
+  await inventoryModuleService.create({
+    sku: "SHIRT",
+    title: "Green Medusa Shirt",
+    requires_shipping: true,
+  })
+```
+
+### Inventory Across Locations
+
+Inventory items' quantities are set per locations through inventory levels. This gives you more flexibility in managing the quantity of a stock-kept item across different locations, such as different warehouses.
+
+```ts
+const inventoryLevel =
+  await inventoryModuleService.createInventoryLevels([{
+    inventory_item_id: "iitem_123",
+    location_id: "sloc_123",
+    stocked_quantity: 20,
+  }])
+```
+
+### Reservation Management
+
+Reserve quantities of inventory items at specific locations for orders or other purposes. The reserved quantity isn't considered for purchase, but can be deleted to revert the reservation.
+
+```ts
+const reservationItem =
+  await inventoryModuleService.createReservationItems([{
+    inventory_item_id: "iitem_123",
+    location_id: "sloc_123",
+    quantity: 10,
+  }])
+```
+
+### Check Inventory Availability
+
+Check whether an inventory item has the necessary quantity for purchase. Any reserved quantity is considered unavailable.
+
+```ts
+const isAvailable =
+  await inventoryModuleService.confirmInventory(
+    inventoryItemId,
+    [locationId],
+    neededQuantity
+  )
+```
+
+---
+
+## How to Use Inventory Module's Service
+
+You can use the Inventory Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.INVENTORY` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const inventoryModuleService: IInventoryService =
+      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+
+    res.json({
+      inventory_items:
+        await inventoryModuleService.list({}),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const inventoryModuleService: IInventoryService =
+      container.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryItems =
+      await inventoryModuleService.list({})
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IInventoryService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const inventoryModuleService: IInventoryService =
+      container.resolve(ModuleRegistrationName.INVENTORY)
+
+    const inventoryItems =
+      await inventoryModuleService.list({})
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

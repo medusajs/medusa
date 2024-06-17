@@ -1,5 +1,19 @@
 # @medusajs/ui
 
+## 3.0.0
+
+### Major Changes
+
+- [#7076](https://github.com/medusajs/medusa/pull/7076) [`c3260a2c5a`](https://github.com/medusajs/medusa/commit/c3260a2c5add86ada641db91e834d9f9de62ed14) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui): Re-work `<Toaster />` and `<Toast />` based on `sonner`.
+
+  This update contains breaking changes to how toasts work in `@medusajs/ui`. This update has been made to provide a better user experience and to make it easier to use toasts in your Medusa application.
+
+  ### BREAKING CHANGES
+
+  The `useToast` hook has been removed. Users should instead use the `toast` function that is exported from the `@medusajs/ui` package. This function can be used to show toasts in your application. For more information on how to use the `toast` function, please refer to the documentation.
+
+  The `Toaster` component is still available but the options for the component have changed. The default position has been changed to `bottom-right`. For more information on the `Toaster` component, please refer to the documentation.
+
 ## 2.4.3
 
 ### Patch Changes

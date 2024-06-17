@@ -1,6 +1,6 @@
 import { Text, clx } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 
 type ItemType = "core" | "extension"
@@ -11,7 +11,7 @@ type NestedItemProps = {
 }
 
 export type NavItemProps = {
-  icon?: React.ReactNode
+  icon?: ReactNode
   label: string
   to: string
   items?: NestedItemProps[]
@@ -55,10 +55,11 @@ export const NavItem = ({
             : undefined
         }
         className={clx(
-          "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:py-1.5",
+          "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex items-center gap-x-2 rounded-md px-2 py-1 outline-none",
           {
             "bg-ui-bg-base hover:bg-ui-bg-base-hover shadow-elevation-card-rest":
-              location.pathname.startsWith(to),
+              location.pathname === to ||
+              location.pathname.startsWith(to + "/"), // TODO: utilise `NavLink` and `end` prop instead of this manual check
             "max-md:hidden": items && items.length > 0,
           }
         )}
@@ -81,7 +82,7 @@ export const NavItem = ({
             </Text>
           </Collapsible.Trigger>
           <Collapsible.Content className="flex flex-col pt-1">
-            <div className="flex h-[36px] w-full items-center gap-x-1 pl-2 md:hidden">
+            <div className="flex w-full items-center gap-x-1 pl-2 md:hidden">
               <div
                 role="presentation"
                 className="flex h-full w-5 items-center justify-center"
@@ -91,7 +92,7 @@ export const NavItem = ({
               <Link
                 to={to}
                 className={clx(
-                  "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover mb-2 mt-1 flex h-8 flex-1 items-center gap-x-2 rounded-md px-2 py-2.5 outline-none md:py-1.5",
+                  "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover mb-2 mt-1 flex flex-1 items-center gap-x-2 rounded-md px-2 py-1 outline-none",
                   {
                     "bg-ui-bg-base hover:bg-ui-bg-base text-ui-fg-base shadow-elevation-card-rest":
                       location.pathname.startsWith(to),
@@ -108,7 +109,7 @@ export const NavItem = ({
                 return (
                   <li
                     key={item.to}
-                    className="flex h-[36px] items-center gap-x-1 pl-2"
+                    className="flex h-[32px] items-center gap-x-1 pl-2"
                   >
                     <div
                       role="presentation"
@@ -119,7 +120,7 @@ export const NavItem = ({
                     <Link
                       to={item.to}
                       className={clx(
-                        "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex h-8 flex-1 items-center gap-x-2 rounded-md px-2 py-2.5 outline-none first-of-type:mt-1 last-of-type:mb-2 md:py-1.5",
+                        "text-ui-fg-subtle hover:text-ui-fg-base transition-fg hover:bg-ui-bg-subtle-hover flex flex-1 items-center gap-x-2 rounded-md px-2 py-1 outline-none first-of-type:mt-1 last-of-type:mb-2",
                         {
                           "bg-ui-bg-base text-ui-fg-base hover:bg-ui-bg-base shadow-elevation-card-rest":
                             location.pathname.startsWith(item.to),
@@ -141,14 +142,14 @@ export const NavItem = ({
   )
 }
 
-const Icon = ({ icon, type }: { icon?: React.ReactNode; type: ItemType }) => {
+const Icon = ({ icon, type }: { icon?: ReactNode; type: ItemType }) => {
   if (!icon) {
     return null
   }
 
   return type === "extension" ? (
     <div className="shadow-borders-base bg-ui-bg-base flex h-5 w-5 items-center justify-center rounded-[4px]">
-      <div className="h-4 w-4 overflow-hidden rounded-sm">{icon}</div>
+      <div className="h-[15px] w-[15px] overflow-hidden rounded-sm">{icon}</div>
     </div>
   ) : (
     icon

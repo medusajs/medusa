@@ -1,0 +1,35 @@
+import { Table } from "docs-ui"
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Event Name</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Data Payload</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `auth.deleted`
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Triggered when an auth identity is deleted.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      ```ts noCopy noReport
+      {
+        // the ID of the deleted auth identity
+        id,
+      }
+      ```
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

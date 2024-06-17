@@ -1,0 +1,46 @@
+{
+  "name": "@medusajs/core-flows",
+  "version": "0.0.9",
+  "description": "Set of workflow definitions for Medusa",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/core-flows"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/types": "^1.11.16",
+    "@swc/core": "^1.5.29",
+    "@swc/jest": "^0.2.36",
+    "cross-env": "^5.2.1",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
+    "@medusajs/utils": "^1.11.9",
+    "@medusajs/workflows-sdk": "^0.1.6",
+    "awilix": "^8.0.1",
+    "ulid": "^2.3.0"
+  },
+  "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "test": "jest --runInBand --bail --forceExit --passWithNoTests"
+  }
+}

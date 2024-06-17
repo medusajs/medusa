@@ -1,0 +1,125 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Product Module`,
+}
+
+# {metadata.title}
+
+The Product Module is the `@medusajs/product` NPM package that provides product-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Products Management
+
+Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
+
+```ts
+const products = await productService.create([
+  {
+    title: "Medusa Shirt",
+    options: [
+      {
+        title: "Color",
+      },
+    ],
+    variants: [
+      {
+        title: "Black Shirt",
+        options: [
+          {
+            value: "Black",
+          },
+        ],
+      },
+    ],
+  },
+])
+```
+
+### Product Organization
+
+The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
+
+```ts
+const category = await productService.createCategory({
+  name: "Shirts",
+})
+
+const products = await productService.update([
+  {
+    id: product.id,
+    categories: [
+      {
+        id: category.id,
+      },
+    ],
+  },
+])
+```
+
+---
+
+## How to Use Product Module's Service
+
+You can use the Product Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PRODUCT` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    res.json({ products: await productModuleService.list() })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const productModuleService: IProductModuleService =
+      container.resolve(ModuleRegistrationName.PRODUCT)
+
+    const products = await productModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const productModuleService: IProductModuleService =
+      container.resolve(ModuleRegistrationName.PRODUCT)
+
+    const products = await productModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

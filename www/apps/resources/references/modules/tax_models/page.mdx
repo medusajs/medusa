@@ -1,0 +1,28 @@
+---
+displayed_sidebar: taxModelReference
+slug: /references/tax/models
+---
+
+import { TypeList } from "docs-ui"
+
+# Tax Module Data Models Reference
+
+This documentation provides a reference to the data models in the Tax Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	TaxRate }|--|{ TaxRegion : tax_region
+	TaxRate ||--|| TaxRateRule : rules
+	TaxRegion }|--|{ TaxProvider : provider
+	TaxRegion }|--|{ TaxRegion : parent
+
+```
+
+## Classes
+
+- [TaxProvider](../../tax_models/classes/tax_models.TaxProvider/page.mdx)
+- [TaxRateRule](../../tax_models/classes/tax_models.TaxRateRule/page.mdx)
+- [TaxRate](../../tax_models/classes/tax_models.TaxRate/page.mdx)
+- [TaxRegion](../../tax_models/classes/tax_models.TaxRegion/page.mdx)

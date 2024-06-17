@@ -1,0 +1,259 @@
+export const metadata = {
+  title: `Docs Contribution Guidelines`,
+}
+
+# {metadata.title}
+
+Thank you for your interest in contributing to the documentation! You will be helping the open source community and other developers interested in learning more about Medusa and using it.
+
+<Note title="Tip">
+
+This guide is specific to contributing to the documentation. If you’re interested in contributing to Medusa’s codebase, check out the [contributing guidelines in the Medusa GitHub repository](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md).
+
+</Note>
+
+## Documentation Workspace
+
+Medusa's documentation projects are all part of the documentation yarn workspace, which you can find in the [medusa repository](https://github.com/medusajs/medusa) under the `www` directory.
+
+The workspace has the following two directories:
+
+- `apps`: this directory holds the different documentation websites and projects.
+  - `book`: includes the codebase for the Medusa Book. It's built with [Next.js 14](https://nextjs.org/).
+  - `resources`: includes the codebase for the Medusa Learning Resources documentation. It's built with [Next.js 14](https://nextjs.org/).
+  - `api-reference`: includes the codebase for the API reference website. It's built with [Next.js 14](https://nextjs.org/).
+  - `ui`: includes the codebase for the Medusa UI documentation website. It's built with [Next.js 14](https://nextjs.org/).
+- `packages`: this directory holds the shared packages and components necessary for the development of the projects in the `apps` directory.
+  - `docs-ui` includes the shared React components between the different apps.
+  - `remark-rehype-plugins` includes Remark and Rehype plugins used by the documentation projects.
+
+---
+
+## Documentation Content
+
+All documentation projects are built with Next.js. The content is writtin in MDX files.
+
+### Medusa Book Content
+
+The content of the Medusa Book is placed under the `www/apps/book/app` directory.
+
+### Medusa Learning Resources Content
+
+The content of the Medusa Resources documentation is placed under the `www/apps/resources/app` directory.
+
+<Note>
+
+Documentation pages under the `www/apps/resources/references` directory are generated automatically from the source code under the `packages/medusa` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
+
+</Note>
+
+### API Reference
+
+The API reference's content is split into two types:
+
+1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the `www/apps/api-reference/app/_mdx` directory. They are MDX files.
+2. OpenAPI specs that are shown to developers when checking the reference of an API Route. These are generated from OpenApi Spec comments, which are under the `www/utils/generated/oas-output` directory.
+
+### Medusa UI Documentation
+
+The content of the Medusa UI documentation are located under the `www/apps/ui/src/content/docs` directory. They are MDX files.
+
+The UI documentation also shows code examples, which are under the `www/apps/ui/src/examples` directory.
+
+The UI component props are generated from the source code and placed into the `www/apps/ui/src/specs` directory. To contribute to these props and their comments, check the comments in the source code under the `packages/design-system/ui` directory.
+
+---
+
+## Style Guide
+
+When you contribute to the documentation content, make sure to follow the [documentation style guide](https://www.notion.so/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0).
+
+---
+
+## How to Contribute
+
+If you’re fixing errors in an existing documentation page, you can scroll down to the end of the page and click on the “Edit this page” link. You’ll be redirected to the GitHub edit form of that page and you can make edits directly and submit a pull request (PR).
+
+If you’re adding a new page or contributing to the codebase, fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done,  create a PR in the Medusa repository.
+
+### Base Branch
+
+When you make an edit to an existing documentation page or fork the repository to make changes to the documentation, create a new branch.
+
+Documentation contributions always use `develop` as the base branch. Make sure to also open your PR against the `develop` branch.
+
+### Branch Name
+
+Make sure that the branch name starts with `docs/`. For example, `docs/fix-services`. Vercel deployed previews are only triggered for branches starting with `docs/`.
+
+### Pull Request Conventions
+
+When you create a pull request, prefix the title with `docs:` or `docs(PROJECT_NAME):`, where `PROJECT_NAME` is the name of the documentation project this pull request pertains to. For example, `docs(ui): fix titles`.
+
+In the body of the PR, explain clearly what the PR does. If the PR solves an issue, use [closing keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) with the issue number. For example, “Closes #1333”.
+
+---
+
+## Images
+
+If you are adding images to a documentation page, you can host the image on [Imgur](https://imgur.com) for free to include it in the PR. Our team will later upload it to our image hosting.
+
+---
+
+## NPM and Yarn Code Blocks
+
+If you’re adding code blocks that use NPM and Yarn, you must add the `npm2yarn` meta field.
+
+For example:
+
+~~~md
+```bash npm2yarn
+npm run start
+```
+~~~
+
+The code snippet must be written using NPM.
+
+### Global Option
+
+When a command uses the global option `-g`, add it at the end of the NPM command to ensure that it’s transformed to a Yarn command properly. For example:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+```
+
+---
+
+## Linting with Vale
+
+Medusa uses [Vale](https://vale.sh/) to lint documentation pages and perform checks on incoming PRs into the repository.
+
+### Result of Vale PR Checks
+
+You can check the result of running the "lint" action on your PR by clicking the Details link next to it. You can find there all errors that you need to fix.
+
+### Run Vale Locally
+
+If you want to check your work locally, you can do that by:
+
+1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
+2. Changing to the `www/vale` directory:
+
+```bash
+cd www/vale
+```
+
+3\. Running the `run-vale` script:
+
+```bash
+# to lint content for the main documentation
+./run-vale.sh docs content error references
+# to lint content for the API reference
+./run-vale.sh api-reference app/_mdx error
+# to lint content for the Medusa UI documentation
+./run-vale.sh ui src/content/docs error
+```
+
+{/* TODO need to enable MDX v1 comments first. */}
+
+{/* ### Linter Exceptions
+
+If it's needed to break some style guide rules in a document, you can wrap the parts that the linter shouldn't scan with the following comments in the `md` or `mdx` files:
+
+```md
+<!-- vale off -->
+
+content that shouldn't be scanned for errors here...
+
+<!-- vale on -->
+```
+
+You can also disable specific rules. For example:
+
+```md
+<!-- vale docs.Numbers = NO -->
+
+Medusa supports Node versions 14 and 16.
+
+<!-- vale docs.Numbers = YES -->
+```
+
+If you use this in your PR, you must justify its usage. */}
+
+---
+
+## Linting with ESLint
+
+Medusa uses ESlint to lint code blocks both in the content and the code base of the documentation apps.
+
+### Linting Content with ESLint
+
+Each PR runs through a check that lints the code in the content files using ESLint. The action's name is `content-eslint`.
+
+If you want to check content ESLint errors locally and fix them, you can do that by:
+
+1\. Install the dependencies in the `www` directory:
+
+```bash
+yarn install
+```
+
+2\. Run the turbo command in the `www` directory:
+
+```bash
+turbo run lint:content
+```
+
+This will fix any fixable errors, and show errors that require your action.
+
+### Linting Code with ESLint
+
+Each PR runs through a check that lints the code in the content files using ESLint. The action's name is `code-docs-eslint`.
+
+If you want to check code ESLint errors locally and fix them, you can do that by:
+
+1\. Install the dependencies in the `www` directory:
+
+```bash
+yarn install
+```
+
+2\. Run the turbo command in the `www` directory:
+
+```bash
+yarn lint
+```
+
+This will fix any fixable errors, and show errors that require your action.
+
+{/* TODO need to enable MDX v1 comments first. */}
+
+{/* ### ESLint Exceptions
+
+If some code blocks have errors that can't or shouldn't be fixed, you can add the following command before the code block:
+
+~~~md
+<!-- eslint-skip -->
+
+```js
+console.log("This block isn't linted")
+```
+
+```js
+console.log("This block is linted")
+```
+~~~
+
+You can also disable specific rules. For example:
+
+~~~md
+<!-- eslint-disable semi -->
+
+```js
+console.log("This block can use semicolons");
+```
+
+```js
+console.log("This block can't use semi colons")
+```
+~~~ */}

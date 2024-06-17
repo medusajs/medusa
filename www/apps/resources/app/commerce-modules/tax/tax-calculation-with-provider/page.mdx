@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `Tax Calculation with the Tax Provider`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how tax lines are calculated and what a tax provider is.
+
+## Tax Lines Calculation
+
+Tax lines are calculated and retrieved using the [getTaxLines method of the Tax Module’s main service](/references/tax/getTaxLines). It accepts an array of line items and shipping methods, and the context of the calculation.
+
+It returns the tax lines that are used to adjust the cart’s tax and grand totals.
+
+```ts
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    {
+      id: "cali_123",
+      product_id: "prod_123",
+      unit_price: 1000,
+      quantity: 1,
+    },
+    {
+      id: "casm_123",
+      shipping_option_id: "so_123",
+      unit_price: 2000,
+    },
+  ],
+  {
+    address: {
+      country_code: "us",
+    },
+  }
+)
+```
+
+The context object is used to determine which tax regions and rates to use in the calculation. It includes fields related to the address and customer.
+
+The example above returns the tax lines based on the tax region for the United States.
+
+---
+
+## Using the Tax Provider in the Calculation
+
+The tax lines retrieved by the `getTaxLines` method are actually retrieved from the tax region’s provider.
+
+A tax provider module whose main service implements the logic to shape tax lines. Each tax region has a tax provider.
+
+The Tax Module provides a `system` tax provider that only transforms calculated item and shipping tax rates into the required return type.
+
+{/* ---
+
+TODO add once tax provider guide is updated + add provider modules match other modules.
+
+## Create Tax Provider
+
+Refer to [this guide](/modules/tax/provider) to learn more about creating a tax provider. */}

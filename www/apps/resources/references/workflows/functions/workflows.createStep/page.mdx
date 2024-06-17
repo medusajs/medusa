@@ -1,0 +1,66 @@
+---
+slug: /references/workflows/createStep
+sidebar_label: createStep
+---
+
+import { TypeList } from "docs-ui"
+
+# createStep - Workflows API Reference
+
+This documentation provides a reference to the `createStep` . It belongs to the `@medusajs/workflows-sdk` package.
+
+This function creates a [StepFunction](../../types/workflows.StepFunction/page.mdx) that can be used as a step in a workflow constructed by the [createWorkflow](../workflows.createWorkflow/page.mdx) function.
+
+## Example
+
+```ts
+import {
+  createStep,
+  StepResponse,
+  StepExecutionContext,
+  WorkflowData
+} from "@medusajs/workflows-sdk"
+
+interface CreateProductInput {
+  title: string
+}
+
+export const createProductStep = createStep(
+  "createProductStep",
+  async function (
+    input: CreateProductInput,
+    context
+  ) {
+    const productService = context.container.resolve(
+      "productService"
+    )
+    const product = await productService.create(input)
+    return new StepResponse({
+      product
+    }, {
+      product_id: product.id
+    })
+  },
+  async function (
+    input,
+    context
+  ) {
+    const productService = context.container.resolve(
+      "productService"
+    )
+    await productService.delete(input.product_id)
+  }
+)
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"TInvokeInput","type":"`object`","description":"The type of the expected input parameter to the invocation function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeResultOutput","type":"`object`","description":"The type of the expected output parameter of the invocation function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TInvokeResultCompensateInput","type":"`object`","description":"The type of the expected input parameter to the compensation function.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createStep"/>
+
+## Parameters
+
+<TypeList types={[{"name":"nameOrConfig","type":"`string` \\| `object` & Omit&#60;TransactionStepsDefinition, \"next\" \\| \"uuid\" \\| \"action\"&#62;","description":"The name of the step or its configuration.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"invokeFn","type":"InvokeFn&#60;TInvokeInput, TInvokeResultOutput, TInvokeResultCompensateInput&#62;","description":"An invocation function that will be executed when the workflow is executed. The function must return an instance of [StepResponse](../../classes/workflows.StepResponse/page.mdx). The constructor of [StepResponse](../../classes/workflows.StepResponse/page.mdx)\naccepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"compensateFn","type":"CompensateFn&#60;TInvokeResultCompensateInput&#62;","description":"A compensation function that's executed if an error occurs in the workflow. It's used to roll-back actions when errors occur.\nIt accepts as a parameter the second argument passed to the constructor of the [StepResponse](../../classes/workflows.StepResponse/page.mdx) instance returned by the invocation function. If the\ninvocation function doesn't pass the second argument to `StepResponse` constructor, the compensation function receives the first argument\npassed to the `StepResponse` constructor instead.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createStep"/>
+
+## Returns
+
+<TypeList types={[{"name":"StepFunction","type":"[StepFunction](../../types/workflows.StepFunction/page.mdx)&#60;TInvokeInput, TInvokeResultOutput&#62;","optional":false,"defaultValue":"","description":"A step function to be used in a workflow.","expandable":false,"children":[]}]}  sectionTitle="createStep"/>

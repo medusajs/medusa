@@ -9,13 +9,13 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { format } from "date-fns"
-import { useAdminCancelOrder } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import {
   getOrderFulfillmentStatus,
   getOrderPaymentStatus,
 } from "../../../../../lib/order-helpers"
+import { useCancelOrder } from "../../../../../hooks/api/orders"
 
 type OrderGeneralSectionProps = {
   order: Order
@@ -25,7 +25,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useAdminCancelOrder(order.id)
+  const { mutateAsync } = useCancelOrder(order.id)
 
   const handleCancel = async () => {
     const res = await prompt({
@@ -41,7 +41,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
       return
     }
 
-    await mutateAsync(undefined)
+    await mutateAsync()
   }
 
   return (
@@ -54,13 +54,14 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
         <Text size="small" className="text-ui-fg-subtle">
           {t("orders.onDateFromSalesChannel", {
             date: format(new Date(order.created_at), "dd MMM, yyyy, HH:mm:ss"),
-            salesChannel: order.sales_channel.name,
+            salesChannel: order.sales_channel?.name,
           })}
         </Text>
       </div>
       <div className="flex items-center gap-x-4">
         <div className="flex items-center gap-x-1.5">
           <PaymentBadge order={order} />
+          {/*TODO: SHOW ORDER STATUS INSTEAD OF FULFILLMENT STATUS HERE - if the last fulfillment is canceled it looks like the order is canceled*/}
           <FulfillmentBadge order={order} />
         </div>
         <ActionMenu
@@ -98,6 +99,11 @@ const FulfillmentBadge = ({ order }: { order: Order }) => {
 
 const PaymentBadge = ({ order }: { order: Order }) => {
   const { t } = useTranslation()
+
+  /**
+   * TODO: revisit when Order<>Payment are linked
+   */
+  return null
 
   const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 

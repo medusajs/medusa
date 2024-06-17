@@ -85,6 +85,9 @@ export const Search = ({
       <InstantSearch
         indexName={algolia.mainIndexName}
         searchClient={searchClient}
+        future={{
+          preserveSharedStateOnUnmount: true,
+        }}
       >
         <div className={clsx("bg-medusa-bg-base flex")}>
           <SearchBox
@@ -119,7 +122,7 @@ export const Search = ({
             formRef={searchBoxRef}
           />
           <Button
-            variant="clear"
+            variant="transparent"
             className={clsx(
               "bg-medusa-bg-base block md:hidden",
               "border-0 border-solid",

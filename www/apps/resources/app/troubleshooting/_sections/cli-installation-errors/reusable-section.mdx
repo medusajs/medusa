@@ -1,0 +1,21 @@
+import { DetailsList } from "docs-ui"
+import PermissionErrorsSection from './permission-errors.md'
+import PowershellErrorSection from './powershell-error.md'
+import YarnErrorSection from './yarn-error.mdx'
+
+<DetailsList
+  sections={[
+    {
+      title: "NPM Error: EACCES Permissions Errors",
+      content: <PermissionErrorsSection />
+    },
+    {
+      title: "Powershell Error: command not found: medusa",
+      content: <PowershellErrorSection />
+    },
+    {
+      title: "Yarn Error: command not found: medusa",
+      content: <YarnErrorSection />
+    }
+  ]}
+/>

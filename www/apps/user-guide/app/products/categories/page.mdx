@@ -1,0 +1,91 @@
+---
+sidebar_position: 3
+---
+
+import { DotsSix, TriangleRightMini, EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Product Categories`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to create a category, edit existing categories, delete a category, and more.
+
+## Create a Category
+
+{/* TODO check for correctness */}
+
+To create a product category:
+
+1. Go to the Product → Categories page.
+2. Click on the “Create” button at the top right.
+3. In the form that opens, there are two steps:
+    1. In the first step:
+      1. Enter the category's name in the Title field. This is the only required field.
+      2. In the Handle field, enter a dash (`-`) separated string that's used as part of the category's URL when the customer views it on the storefront. If not specified, the handle is generated from the Title field's value.
+      3. Optionally set the category's description in the Description field.
+      4. In the Status field, you can change the status to “Inactive” if you’re creating the category, but you’re still not ready to use it.
+      5. In the Visibility field, you can change the visibility to “Private” if you’re creating an internal category that shouldn’t be shown to the customer.
+      6. Optionally, you can add under the Metadata section additional information in key-value pairs.
+      7. Once you're done, click the "Continue" button.
+    2. In the second step, you can nest the new category within other categories. To move categories around, use the <InlineIcon Icon={DotsSix} alt="drag" /> icon to drag categories to their correct position.
+4. Once you’re done, click the Save button.
+
+---
+
+## Edit a Category
+
+{/* TODO check for correctness */}
+
+To edit a product category:
+
+1. Go to the Product → Categories page.
+2. Click on the category to edit. If the category is nested in another, you may need to expand the parent category by clicking the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section of the category page.
+4. Choose Edit from the dropdown.
+4. In the drawer that opens, edit any of the fields of the category.
+5. Once you’re done, click the Save button.
+
+---
+
+## Change Products in a Category
+
+{/* TODO check for correctness */}
+
+To add or remove products from a category:
+
+1. Go to the Product → Categories page.
+2. Click on the category to edit. If the category is nested in another, you may need to expand the parent category by clicking the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon.
+3. In the Products section, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+4. Choose "Edit Products" from the dropdown.
+5. In the drawer that opens, check or uncheck the products based on what you're adding or removing.
+5. Once you’re done, click the Save button.
+
+---
+
+## Edit Categories Ranking
+
+{/* TODO check for correctness */}
+
+To edit the categories' ranking or hierarchy:
+
+1. Go to the Product → Categories page.
+2. Click on the "Edit ranking" button.
+3. In the form that opens, change the ranking of the categories. To move categories around, use the <InlineIcon Icon={DotsSix} alt="drag" /> icon to drag categories to their correct position.
+4. Once done, click the Save button.
+
+---
+
+## Delete a Category
+
+<Note type="warning">
+
+Deleting a category is irreversible.
+
+</Note>
+
+1. Go to the Product → Categories page.
+2. Click on the category to edit. If the category is nested in another, you may need to expand the parent category by clicking the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section of the category page.
+4. Choose Delete from the dropdown.

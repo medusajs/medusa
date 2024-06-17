@@ -1,0 +1,540 @@
+---
+slug: /references/js-client/AdminDiscountsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# AdminDiscountsResource
+
+This class is used to send requests to [Admin Discount API Routes](https://docs.medusajs.com/api/admin#discounts). All its method
+are available in the JS Client under the `medusa.admin.discounts` property.
+
+All methods in this class require [authentication](../../../modules/user/page.mdx).
+
+Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
+The methods in this class can be used to manage discounts, their conditions, resources, and more.
+
+Related Guide: [How to manage discounts](https://docs.medusajs.com/modules/discounts/admin/manage-discounts).
+
+## Methods
+
+### addRegion
+
+Add a Region to the list of Regions a Discount can be used in.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.addRegion(discountId, regionId)
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"The ID of the region to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addRegion"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the discount's details.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addRegion"/>
+
+### create
+
+Create a discount with a given set of rules that defines how the discount is applied.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.create({
+  code: "TEST",
+  rule: {
+    type: DiscountRuleType.FIXED,
+    value: 10,
+    allocation: AllocationType.ITEM
+  },
+  regions: ["reg_XXXXXXXX"],
+  is_dynamic: false,
+  is_disabled: false
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[AdminPostDiscountsReq](../../../medusa/classes/medusa.AdminPostDiscountsReq/page.mdx)","description":"The discount to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"A unique code that will be used to redeem the discount","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rule","type":"[AdminPostDiscountsDiscountRule](../../../medusa/classes/medusa.AdminPostDiscountsDiscountRule/page.mdx)","description":"The discount rule that defines how discounts are calculated","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`DiscountRuleType`","description":"The discount rule's type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"The discount rule's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"allocation","type":"`AllocationType`","description":"The discount rule's allocation.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The discount rule's description.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"conditions","type":"[AdminCreateCondition](../../../medusa/classes/medusa.AdminCreateCondition/page.mdx)[]","description":"The discount rule's conditions.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"operator","type":"`DiscountConditionOperator`","description":"The operator of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"The products associated with the discount condition, if the discount condition's type is `products`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_collections","type":"`string`[]","description":"The product collections associated with the discount condition, if the discount condition's type is `product_collections`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The product types associated with the discount condition, if the discount condition's type is `product_types`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_tags","type":"`string`[]","description":"The product tags associated with the discount condition, if the discount condition's type is `product_tags`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_groups","type":"`string`[]","description":"The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"is_dynamic","type":"`boolean`","description":"Whether the discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated discount codes that all have to follow a common set of rules.","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"regions","type":"`string`[]","description":"A list of region IDs representing the Regions in which the Discount can be used.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"starts_at","type":"`Date`","description":"The date and time at which the discount should be available.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ends_at","type":"`Date`","description":"The date and time at which the discount should no longer be available.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"valid_duration","type":"`string`","description":"The duration the discount runs between","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"usage_limit","type":"`number`","description":"Maximum number of times the discount can be used","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the discount's details.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
+
+### update
+
+Update a discount with a given set of rules that define how the discount is applied.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.update(discountId, {
+  code: "TEST"
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostDiscountsDiscountReq](../../../medusa/classes/medusa.AdminPostDiscountsDiscountReq/page.mdx)","description":"The attributes to update in the discount.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"A unique code that will be used to redeem the discount","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rule","type":"[AdminUpdateDiscountRule](../../../medusa/classes/medusa.AdminUpdateDiscountRule/page.mdx)","description":"The discount rule that defines how discounts are calculated","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The discount rule's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The discount rule's description.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`number`","description":"The discount rule's value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allocation","type":"`AllocationType`","description":"The discount rule's allocation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"conditions","type":"[AdminUpsertCondition](../../../medusa/classes/medusa.AdminUpsertCondition/page.mdx)[]","description":"The discount rule's discount conditions.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"operator","type":"`DiscountConditionOperator`","description":"The discount condition's operator.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The discount condition's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"The products associated with the discount condition, if the discount condition's type is `products`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_collections","type":"`string`[]","description":"The product collections associated with the discount condition, if the discount condition's type is `product_collections`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The product types associated with the discount condition, if the discount condition's type is `product_types`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_tags","type":"`string`[]","description":"The product tags associated with the discount condition, if the discount condition's type is `product_tags`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_groups","type":"`string`[]","description":"The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"is_disabled","type":"`boolean`","description":"Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"starts_at","type":"`Date`","description":"The date and time at which the discount should be available.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ends_at","type":"`null` \\| `Date`","description":"The date and time at which the discount should no longer be available.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"valid_duration","type":"`null` \\| `string`","description":"The duration the discount runs between","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"usage_limit","type":"`null` \\| `number`","description":"Maximum number of times the discount can be used","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"regions","type":"`string`[]","description":"A list of region IDs representing the Regions in which the Discount can be used.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An object containing metadata of the discount","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+### createDynamicCode
+
+Create a dynamic unique code that can map to a parent discount. This is useful if you want to automatically generate codes with the same rules and conditions.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.createDynamicCode(discountId, {
+  code: "TEST",
+  usage_limit: 1
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostDiscountsDiscountDynamicCodesReq](../../../medusa/classes/medusa.AdminPostDiscountsDiscountDynamicCodesReq/page.mdx)","description":"The dynamic code to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"A unique code that will be used to redeem the Discount","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"usage_limit","type":"`number`","description":"Maximum number of times the discount code can be used","optional":false,"defaultValue":"1","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createDynamicCode"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createDynamicCode"/>
+
+### delete
+
+Delete a discount. Deleting the discount will make it unavailable for customers to use.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.delete(discountId)
+.then(({ id, object, deleted }) => {
+  console.log(id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;DeleteResponse&#62;","optional":false,"defaultValue":"","description":"Resolves to the delete operation details.","expandable":false,"children":[{"name":"DeleteResponse","type":"[DeleteResponse](../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
+
+### deleteDynamicCode
+
+Delete a dynamic code from a discount.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.deleteDynamicCode(discountId, code)
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The code of the dynamic code to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteDynamicCode"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteDynamicCode"/>
+
+### retrieve
+
+Retrieve a discount.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.retrieve(discountId)
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetDiscountParams](../../../medusa/classes/medusa.AdminGetDiscountParams/page.mdx)","description":"Configurations to apply on the retrieved product category.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+### retrieveByCode
+
+Retrieve a discount's details by its discount code.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.retrieveByCode(code)
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"The code of the discount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCode"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCode"/>
+
+### list
+
+Retrieve a list of Discounts. The discounts can be filtered by fields such as `rule` or `is_dynamic`. The discounts can also be paginated.
+
+#### Example
+
+To list discounts:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.list()
+.then(({ discounts, limit, offset, count }) => {
+  console.log(discounts.id);
+})
+```
+
+To specify relations that should be retrieved within the discounts:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.list({
+  expand: "rule"
+})
+.then(({ discounts, limit, offset, count }) => {
+  console.log(discounts.id);
+})
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.list({
+  expand: "rule",
+  limit,
+  offset
+})
+.then(({ discounts, limit, offset, count }) => {
+  console.log(discounts.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetDiscountsParams](../../../medusa/classes/medusa.AdminGetDiscountsParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved discounts.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"rule","type":"[AdminGetDiscountsDiscountRuleParams](../../../medusa/classes/medusa.AdminGetDiscountsDiscountRuleParams/page.mdx)","description":"Filter discounts by their associated rule.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`DiscountRuleType`","description":"Type to filter discount rules by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allocation","type":"`AllocationType`","description":"Allocation to filter discount rules by.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"q","type":"`string`","description":"Search terms to search discounts' code fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_dynamic","type":"`boolean`","description":"Filter discounts by whether they're dynamic.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_disabled","type":"`boolean`","description":"Filter discounts by whether they're disabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the discounts' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the discounts' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of discounts with pagination fields.","expandable":false,"children":[{"name":"AdminDiscountsListRes","type":"[AdminDiscountsListRes](../../../medusa/types/medusa.AdminDiscountsListRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of discounts with pagination fields.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discounts","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)[]","description":"The list of discounts.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+### removeRegion
+
+Remove a Region from the list of Regions that a Discount can be used in. This does not delete a region, only the association between it and the discount.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.removeRegion(discountId, regionId)
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"The ID of the region to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="removeRegion"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="removeRegion"/>
+
+### createCondition
+
+Create a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter,
+based on the type of discount condition. For example, if the discount condition's type is `products`, the `products` field should be provided in the `payload` parameter.
+
+#### Example
+
+To create a condition in a discount:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+import { DiscountConditionOperator } from "@medusajs/medusa"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.createCondition(discountId, {
+  operator: DiscountConditionOperator.IN,
+  products: [productId]
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+To specify relations that should be retrieved as part of the response:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+import { DiscountConditionOperator } from "@medusajs/medusa"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.createCondition(discountId, {
+  operator: DiscountConditionOperator.IN,
+  products: [productId]
+}, {
+  expand: "rule"
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostDiscountsDiscountConditions](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditions/page.mdx)","description":"The discount condition to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"operator","type":"`DiscountConditionOperator`","description":"Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"The products associated with the discount condition, if the discount condition's type is `products`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_collections","type":"`string`[]","description":"The product collections associated with the discount condition, if the discount condition's type is `product_collections`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The product types associated with the discount condition, if the discount condition's type is `product_types`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_tags","type":"`string`[]","description":"The product tags associated with the discount condition, if the discount condition's type is `product_tags`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_groups","type":"`string`[]","description":"The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[AdminPostDiscountsDiscountConditionsParams](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditionsParams/page.mdx)","description":"Configurations to apply on the returned discount.","optional":false,"defaultValue":"{}","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createCondition"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createCondition"/>
+
+### updateCondition
+
+Update a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter,
+based on the type of discount condition. For example, if the discount condition's type is `products`, the `products` field should be provided in the `payload` parameter.
+
+#### Example
+
+To update a condition in a discount:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.updateCondition(discountId, conditionId, {
+  products: [
+    productId
+  ]
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+To specify relations that should be retrieved as part of the response:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.updateCondition(discountId, conditionId, {
+  products: [
+    productId
+  ]
+}, {
+  expand: "rule"
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"conditionId","type":"`string`","description":"The ID of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostDiscountsDiscountConditionsCondition](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditionsCondition/page.mdx)","description":"The attributes to update in the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"products","type":"`string`[]","description":"The products associated with the discount condition, if the discount condition's type is `products`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_collections","type":"`string`[]","description":"The product collections associated with the discount condition, if the discount condition's type is `product_collections`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The product types associated with the discount condition, if the discount condition's type is `product_types`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_tags","type":"`string`[]","description":"The product tags associated with the discount condition, if the discount condition's type is `product_tags`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_groups","type":"`string`[]","description":"The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"query","type":"[AdminPostDiscountsDiscountConditionsConditionParams](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionParams/page.mdx)","description":"Configurations to apply on the returned discount.","optional":false,"defaultValue":"{}","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="updateCondition"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="updateCondition"/>
+
+### deleteCondition
+
+Delete a discount condition. This doesn't delete resources associated to the discount condition.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.deleteCondition(discountId, conditionId)
+.then(({ id, object, deleted }) => {
+  console.log(id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The discount's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"conditionId","type":"`string`","description":"The ID of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteCondition"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;DeleteResponse&#62;","optional":false,"defaultValue":"","description":"Resolves to the deletion operation details.","expandable":false,"children":[{"name":"DeleteResponse","type":"[DeleteResponse](../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteCondition"/>
+
+### getCondition
+
+Retrieve a Discount Condition's details.
+
+#### Example
+
+A simple example that retrieves a discount condition by its ID:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.getCondition(discountId, conditionId)
+.then(({ discount_condition }) => {
+  console.log(discount_condition.id);
+})
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.getCondition(discountId, conditionId, {
+  expand: "discount_rule"
+})
+.then(({ discount_condition }) => {
+  console.log(discount_condition.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The ID of the discount that the condition belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"conditionId","type":"`string`","description":"The ID of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetDiscountsDiscountConditionsConditionParams](../../../medusa/classes/medusa.AdminGetDiscountsDiscountConditionsConditionParams/page.mdx)","description":"Configurations to apply on the retrieved discount condition.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getCondition"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountConditionsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the discount condition details.","expandable":false,"children":[{"name":"AdminDiscountConditionsRes","type":"[AdminDiscountConditionsRes](../../../medusa/types/medusa.AdminDiscountConditionsRes/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"discount_condition","type":"`DiscountCondition`","description":"Discount condition details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getCondition"/>
+
+### addConditionResourceBatch
+
+Add a batch of resources to a discount condition. The type of resource depends on the type of discount condition. For example, if the discount condition's type is `products`,
+the resources being added should be products.
+
+#### Example
+
+To add resources to a discount condition:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.addConditionResourceBatch(discountId, conditionId, {
+  resources: [{ id: itemId }]
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+To specify relations to include in the returned discount:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.addConditionResourceBatch(discountId, conditionId, {
+  resources: [{ id: itemId }]
+}, {
+  expand: "rule"
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The ID of the discount the condition belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"conditionId","type":"`string`","description":"The ID of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostDiscountsDiscountConditionsConditionBatchReq](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchReq/page.mdx)","description":"The resources to add to the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"resources","type":"`object`[]","description":"The resources to be added to the discount condition","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the item","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminPostDiscountsDiscountConditionsConditionBatchParams](../../../medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchParams/page.mdx)","description":"Configurations to apply on the retrieved discount.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addConditionResourceBatch"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addConditionResourceBatch"/>
+
+### deleteConditionResourceBatch
+
+Remove a batch of resources from a discount condition. This will only remove the association between the resource and the discount condition, not the resource itself.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.discounts.deleteConditionResourceBatch(discountId, conditionId, {
+  resources: [{ id: itemId }]
+})
+.then(({ discount }) => {
+  console.log(discount.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"discountId","type":"`string`","description":"The ID of the discount the condition belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"conditionId","type":"`string`","description":"The ID of the discount condition.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminDeleteDiscountsDiscountConditionsConditionBatchReq](../../../medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionBatchReq/page.mdx)","description":"The resources to remove.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"resources","type":"`object`[]","description":"The resources to be removed from the discount condition","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The id of the item","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteConditionResourceBatch"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminDiscountsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the details of the discount.","expandable":false,"children":[{"name":"AdminDiscountsRes","type":"[AdminDiscountsRes](../../../medusa/types/medusa.AdminDiscountsRes/page.mdx)","optional":false,"defaultValue":"","description":"The discount's details.","expandable":false,"children":[{"name":"discount","type":"[Discount](../../../medusa/classes/medusa.Discount/page.mdx)","description":"Discount details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the discount to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteConditionResourceBatch"/>

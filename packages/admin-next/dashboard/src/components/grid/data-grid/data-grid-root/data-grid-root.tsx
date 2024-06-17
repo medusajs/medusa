@@ -34,10 +34,14 @@ export interface DataGridRootProps<
   data?: TData[]
   columns: ColumnDef<TData>[]
   state: UseFormReturn<TFieldValues>
-  getSubRows: (row: TData) => TData[] | undefined
+  getSubRows?: (row: TData) => TData[]
 }
 
 const ROW_HEIGHT = 40
+
+/**
+ * TODO: THIS IS OLD DATAGRID COMPONENT - REMOVE THIS AFTER ALL TABLE HAVE BEEN MIGRATED TO THE NEW DATAGRIDROOT FROM ../../data-grid
+ */
 
 export const DataGridRoot = <
   TData,

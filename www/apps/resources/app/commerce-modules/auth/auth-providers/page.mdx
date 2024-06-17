@@ -1,0 +1,54 @@
+export const metadata = {
+  title: `Auth Providers`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how the Auth Module handles authentication using providers.
+
+## What's an Auth Provider Module?
+
+An auth provider module handles authenticating customers and users, either using custom logic or by integrating a third-party service.
+
+For example, the EmailPass Auth Provider Module authenticates a user using their email and password, whereas the Google Auth Provider Module authenticates users using their Google account.
+
+<Note type="soon">
+
+Support for the Google Auth Provider Module is coming soon.
+
+</Note>
+
+---
+
+## Configure Allowed Auth Providers of Actor Types
+
+By default, users of all actor types can authenticate with all installed auth provider moduless.
+
+To restrict the auth providers used for actor types, use the [authMethodsPerActor option](/references/medusa-config#http-authMethodsPerActor-1-3) in Medusa's configurations:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["google"],
+        customer: ["emailpass"],
+      },
+      // ...
+    },
+    // ...
+  },
+})
+```
+
+<Note title="Important">
+
+When you specify the `authMethodsPerActor` configuration, it overrides the default. So, if you don't specify any providers for an actor type, users of that actor type can't authenticate with any provider.
+
+</Note>
+
+---
+
+## How to Create an Auth Provider Module
+
+Refer to [this guide](/references/auth/provider) to learn how to create an auth provider module.

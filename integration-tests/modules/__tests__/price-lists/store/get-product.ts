@@ -1,19 +1,15 @@
+import { IPricingModuleService } from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   simpleCustomerFactory,
   simpleCustomerGroupFactory,
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
-
-import {
-  IPricingModuleService,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/types"
-import adminSeeder from "../../../../helpers/admin-seeder"
+import { createAdminUser } from "../../../../helpers/create-admin-user"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -43,7 +39,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
         await createDefaultRuleTypes(appContainer)
 
         await simpleRegionFactory(dbConnection, {

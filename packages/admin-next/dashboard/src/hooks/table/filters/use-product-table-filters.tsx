@@ -30,7 +30,6 @@ export const useProductTableFilters = (
     {
       limit: 1000,
       fields: "id,name",
-      expand: "",
     },
     {
       enabled: !isSalesChannelExcluded,

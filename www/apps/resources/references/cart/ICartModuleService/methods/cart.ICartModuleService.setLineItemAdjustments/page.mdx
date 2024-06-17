@@ -1,0 +1,44 @@
+---
+displayed_sidebar: cartReference
+slug: /references/cart/setLineItemAdjustments
+sidebar_label: setLineItemAdjustments
+---
+
+import { TypeList } from "docs-ui"
+
+# setLineItemAdjustments - Cart Module Reference
+
+This documentation provides a reference to the `setLineItemAdjustments` method. This belongs to the Cart Module.
+
+This method set the line item adjustments of line items in a cart. The existing line item adjustments, except those
+included in the specified list, of an item are removed and replaced with the specified adjustments.
+
+## Example
+
+```ts
+const lineItemAdjustments =
+  await cartModuleService.setLineItemAdjustments("cart_123", [
+    {
+      id: "adj_123",
+      item_id: "caliadj_123",
+    },
+    {
+      item_id: "caliadj_123",
+      code: "10%OFF",
+      amount: 2000,
+    },
+    {
+      item_id: "caliadj_321",
+      code: "50%OFF",
+      amount: 3000,
+    },
+  ])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"[UpsertLineItemAdjustmentDTO](../../../interfaces/cart.UpsertLineItemAdjustmentDTO/page.mdx)[]","description":"The line item adjustments to add to the line items.\nThe line item is specified by the `item_id` field. If the `id` field is specified, the adjustment\nis kept in the line item's adjustment and its attributes can be updated.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The associated item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the line item adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The code of the promotion that lead to the\nadjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../../../types/cart.BigNumberInput/page.mdx)","description":"The amount to adjust the original amount with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The description of the line item adjustment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"promotion_id","type":"`string`","description":"The associated promotion's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"The associated provider's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/cart.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/cart.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="setLineItemAdjustments"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The added line item adjustments.","expandable":false,"children":[{"name":"LineItemAdjustmentDTO[]","type":"[LineItemAdjustmentDTO](../../../interfaces/cart.LineItemAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"LineItemAdjustmentDTO","type":"`object`","description":"The line item adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="setLineItemAdjustments"/>

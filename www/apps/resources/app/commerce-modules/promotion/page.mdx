@@ -1,0 +1,139 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Promotion Module`,
+}
+
+# {metadata.title}
+
+The Promotion Module is the `@medusajs/promotion` NPM package that provides promotion-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Discount Functionalities
+
+A promotion discounts an amount or percentage of a cart's items, shipping methods, or the entire order.
+
+The Promotion Module allows you to store and manage promotions.
+
+```ts
+const promotion = await promotionModuleService.create({
+  code: "10%OFF",
+  type: "standard",
+  application_method: {
+    type: "percentage",
+    target_type: "order",
+    value: "10",
+    currency_code: "usd",
+  },
+})
+```
+
+### Flexible Promotion Rules
+
+A promotion has rules that restricts when it's applied. For example, you can create a promotion that's only applied to VIP customers.
+
+```ts
+const promotion = await promotionModuleService.create({
+  code: "10%OFF",
+  type: "standard",
+  application_method: {
+    type: "percentage",
+    target_type: "order",
+    value: "10",
+    currency_code: "usd",
+  },
+  rules: [
+    {
+      attribute: "customer_group_id",
+      operator: "eq",
+      values: ["VIP"],
+    },
+  ],
+})
+```
+
+### Campaign Management
+
+A campaign combines promotions under the same conditions, such as start and end dates.
+
+A campaign can also have an identifier for tracking purposes, such as tracking through tools like Google Analytics.
+
+```ts
+const campaign = await promotionModuleService.createCampaigns(
+  {
+    name: "Summer Discounts",
+    campaign_identifier: "G-123445",
+    starts_at: new Date("2024-05-02"),
+    ends_at: new Date("2024-07-20"),
+  }
+)
+```
+
+---
+
+## How to Use the Promotion Module's Service
+
+You can use the Promotion Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.PROMOTION` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const promotionModuleService: IPromotionModuleService =
+      request.scope.resolve(ModuleRegistrationName.PROMOTION)
+
+    res.json({
+      promotions: await promotionModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const promotionModuleService: IPromotionModuleService =
+      container.resolve(ModuleRegistrationName.PROMOTION)
+
+    const promotions = await promotionModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IPromotionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const promotionModuleService: IPromotionModuleService =
+      container.resolve(ModuleRegistrationName.PROMOTION)
+
+    const promotions = await promotionModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

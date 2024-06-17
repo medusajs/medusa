@@ -1,17 +1,13 @@
-import { Button, Toaster, useToast } from "@medusajs/ui"
+import { Button, Toaster, toast } from "@medusajs/ui"
 
 export default function ToasterWarning() {
-  const { toast } = useToast()
-
   return (
     <>
       <Toaster />
       <Button
         onClick={() =>
-          toast({
-            title: "Warning",
+          toast.warning("Warning", {
             description: "The quick brown fox jumps over the lazy dog.",
-            variant: "warning",
             duration: 5000,
           })
         }

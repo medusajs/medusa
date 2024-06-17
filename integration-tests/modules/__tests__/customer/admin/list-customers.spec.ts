@@ -141,6 +141,43 @@ medusaIntegrationTestRunner({
           })
         )
       })
+
+      it("should support searching of customers", async () => {
+        await customerModuleService.create([
+          {
+            first_name: "Jane",
+            last_name: "Doe",
+            email: "jane@me.com",
+          },
+          {
+            first_name: "John",
+            last_name: "Doe",
+            email: "john@me.com",
+          },
+          {
+            first_name: "LeBron",
+            last_name: "James",
+            email: "lebron@me.com",
+          },
+        ])
+
+        const response = await api.get(`/admin/customers?q=do`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.customers).toHaveLength(2)
+        expect(response.data.customers).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              first_name: "Jane",
+              last_name: "Doe",
+            }),
+            expect.objectContaining({
+              first_name: "John",
+              last_name: "Doe",
+            }),
+          ])
+        )
+      })
     })
   },
 })

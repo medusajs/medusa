@@ -1,0 +1,138 @@
+export const metadata = {
+  title: `Accept Payment Flow`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to implement an accept-payment flow.
+
+## Flow Overview
+
+![A diagram showcasing the payment flow's steps](https://res.cloudinary.com/dza7lstvk/image/upload/v1711566781/Medusa%20Resources/payment-flow_jblrvw.jpg)
+
+---
+
+## 1. Create a Payment Collection
+
+The payment collection holds all details related to a resource’s payment operations. So, you start off by creating a payment collection.
+
+For example:
+
+```ts
+const paymentCollection =
+  await paymentModuleService.createPaymentCollections({
+    region_id: "reg_123",
+    currency_code: "usd",
+    amount: 5000,
+  })
+```
+
+You can then link the payment collection to another resource, such as a cart in the Cart Module.
+
+<Note>
+
+Learn more about the `createPaymentCollections` method in [this reference](/references/payment/createPaymentCollections).
+
+</Note>
+
+---
+
+## 2. Create Payment Sessions
+
+The payment collection has one or more payment sessions, each being a payment amount to be authorized by a payment provider.
+
+So, after creating the payment collection, create at least one payment session for a provider.
+
+For example:
+
+```ts
+const paymentSession =
+  await paymentModuleService.createPaymentSession(
+    paymentCollection.id,
+    {
+      provider_id: "stripe",
+      currency_code: "usd",
+      amount: 5000,
+      data: {
+        // any necessary data for the
+        // payment provider
+      },
+    }
+  )
+```
+
+You can also create payment sessions for every supported payment provider to allow customers to choose from them.
+
+<Note>
+
+Learn more about the `createPaymentSession` method in [this reference](/references/payment/createPaymentSession).
+
+</Note>
+
+---
+
+## 3. Authorize Payment Session
+
+Once the customer chooses a payment session, start the authorization process. This may involve some action performed by the third-party payment provider, such as entering a 3DS code.
+
+For example:
+
+```ts
+const payment =
+  await paymentModuleService.authorizePaymentSession(
+    paymentSession.id,
+    {}
+  )
+```
+
+When the payment authorization is successful, a payment is created and returned.
+
+<Note>
+
+Learn more about the `authorizePaymentSession` method in [this reference](/references/payment/authorizePaymentSession).
+
+</Note>
+
+### Handling Additional Action
+
+If the payment authorization isn’t successful, either because it requires additional action or for another reason, the method updates the payment session with the new status and throws an error.
+
+In that case, you can catch that error and, if there are required actions, handle them accordingly, then retry the authorization.
+
+For example:
+
+```ts
+try {
+  const payment =
+    await paymentModuleService.authorizePaymentSession(
+      paymentSession.id,
+      {}
+    )
+} catch (e) {
+  // retrieve the payment session again
+  const updatedPaymentSession = (
+    await paymentModuleService.listPaymentSessions({
+      id: [paymentSession.id],
+    })
+  )[0]
+
+  if (updatedPaymentSession.status === "requires_more") {
+    // TODO perform required action
+    // TODO authorize payment again.
+  }
+}
+```
+
+---
+
+## 4. Payment Flow Complete
+
+The payment flow is complete once the payment session is authorized and the payment is created.
+
+You can then use the payment to capture the amount using the [capturePayment method](/references/payment/capturePayment). You can also refund captured amounts using the [refundPayment method](/references/payment/refundPayment).
+
+<Note>
+
+Some payment providers allow capturing the payment automatically once it’s authorized. In that case, you don’t need to do it manually.
+
+</Note>

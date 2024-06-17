@@ -1,0 +1,52 @@
+{
+  "name": "@medusajs/medusa-oas-cli",
+  "version": "0.3.2",
+  "description": "OAS CLI",
+  "main": "dist/index.js",
+  "bin": {
+    "medusa-oas": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "oas"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/oas/medusa-oas-cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "devDependencies": {
+    "@medusajs/types": "^1.11.15",
+    "@types/js-yaml": "^4.0.9",
+    "jest": "^29.1.0",
+    "js-yaml": "^4.1.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "4.9.5",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "build": "tsc --build",
+    "medusa-oas": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@medusajs/medusa": "^1.20.4",
+    "@medusajs/utils": "^1.11.8",
+    "@readme/json-schema-ref-parser": "^1.2.0",
+    "@readme/openapi-parser": "^2.4.0",
+    "@redocly/cli": "^1.7.0",
+    "@types/lodash": "^4.14.191",
+    "commander": "^10.0.0",
+    "execa": "1.0.0",
+    "lodash": "^4.17.21",
+    "openapi3-ts": "^3.1.2",
+    "swagger-inline": "^6.1.0",
+    "yargs": "^17.7.2"
+  }
+}

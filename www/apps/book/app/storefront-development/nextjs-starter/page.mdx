@@ -1,0 +1,68 @@
+export const metadata = {
+  title: `${pageNumber} Next.js Starter`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to install and use the Next.js Starter storefront.
+
+<Note type="soon">
+
+The Next.js starter is currently in development to fully support Medusa v2.
+
+</Note>
+
+## Install Next.js Starter
+
+<Note type="check">
+
+- [Node v18+](https://nodejs.org/en/)
+- At least one region in the Medusa application.
+
+</Note>
+
+1. Clone the `feat/v2` branch of the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
+
+```bash
+git clone https://github.com/medusajs/nextjs-starter-medusa -b feat/v2 my-medusa-storefront
+```
+
+2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable:
+
+```bash npm2yarn
+cd my-medusa-storefront
+npm install
+mv .env.template .env.local
+```
+
+3. While the Medusa application is running, start the Next.js storefront:
+
+```bash npm2yarn
+npm run dev
+```
+
+Your Next.js Starter Storefront is now running at `localhost:8000`.
+
+---
+
+## Customize Storefront
+
+To customize the storefront, refer to the following directories:
+
+- `src/app`: The storefront’s pages.
+- `src/modules`: The storefront’s components.
+- `src/styles`: The storefront’s styles.
+
+<Note title="Tip">
+
+You can learn more about development with Next.js through [their documentation](https://nextjs.org/docs/getting-started).
+
+</Note>
+
+---
+
+## Configurations and Compatible Plugins
+
+The Next.js Starter is compatible with some Medusa plugins out-of-the-box, such as the MeiliSearch or Stripe plugins. You can also change some of its configurations if necessary.
+
+Refer to the Next.js Starter reference for more details.

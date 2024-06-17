@@ -1,0 +1,63 @@
+export const metadata = {
+  title: `${pageNumber} Your First Customizations`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll build your first customizations with Medusa.
+
+## 1. Create API Route
+
+API Routes expose business logic through REST APIs. You can create custom API routes to expose custom business logic.
+
+To create an API route, create the file `src/api/store/hello-world/route.ts` with the following content:
+
+```ts title="src/api/store/hello-world/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const GET = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "Hello, world!",
+  })
+}
+```
+
+---
+
+## 2. Test Customizations
+
+To test out your customizations:
+
+1. Start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+2. Send a `GET` request to `/store/hello-world`:
+
+```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/hello-world"
+curl http://localhost:9000/store/hello-world
+```
+
+In the response, you’ll receive the following object:
+
+```json
+{
+  "message": "Hello, world!"
+}
+```
+
+---
+
+## Next Steps
+
+Congratulations, you’ve made your first customization with Medusa!
+
+You can now start your in-depth learning journey to become an expert.

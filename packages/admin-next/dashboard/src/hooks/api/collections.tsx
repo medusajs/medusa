@@ -1,3 +1,5 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { FindParams, HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -5,18 +7,10 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query"
-import { client } from "../../lib/client"
-import { queryClient } from "../../lib/medusa"
+import { sdk } from "../../lib/client"
+import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import {
-  CreateProductCollectionReq,
-  UpdateProductCollectionReq,
-} from "../../types/api-payloads"
-import {
-  ProductCollectionDeleteRes,
-  ProductCollectionListRes,
-  ProductCollectionRes,
-} from "../../types/api-responses"
+import { productsQueryKeys } from "./products"
 
 const COLLECTION_QUERY_KEY = "collections" as const
 export const collectionsQueryKeys = queryKeysFactory(COLLECTION_QUERY_KEY)
@@ -25,9 +19,9 @@ export const useCollection = (
   id: string,
   options?: Omit<
     UseQueryOptions<
-      ProductCollectionRes,
-      Error,
-      ProductCollectionRes,
+      { collection: HttpTypes.AdminCollection },
+      FetchError,
+      { collection: HttpTypes.AdminCollection },
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -35,7 +29,7 @@ export const useCollection = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: collectionsQueryKeys.detail(id),
-    queryFn: async () => client.collections.retrieve(id),
+    queryFn: async () => sdk.admin.productCollection.retrieve(id),
     ...options,
   })
 
@@ -43,12 +37,12 @@ export const useCollection = (
 }
 
 export const useCollections = (
-  query?: Record<string, any>,
+  query?: FindParams & HttpTypes.AdminCollectionFilters,
   options?: Omit<
     UseQueryOptions<
-      ProductCollectionListRes,
-      Error,
-      ProductCollectionListRes,
+      PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>,
+      FetchError,
+      PaginatedResponse<{ collections: HttpTypes.AdminCollection[] }>,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -56,7 +50,7 @@ export const useCollections = (
 ) => {
   const { data, ...rest } = useQuery({
     queryKey: collectionsQueryKeys.list(query),
-    queryFn: async () => client.collections.list(query),
+    queryFn: async () => sdk.admin.productCollection.list(query),
     ...options,
   })
 
@@ -66,14 +60,13 @@ export const useCollections = (
 export const useUpdateCollection = (
   id: string,
   options?: UseMutationOptions<
-    ProductCollectionRes,
-    Error,
-    UpdateProductCollectionReq
+    { collection: HttpTypes.AdminCollection },
+    FetchError,
+    HttpTypes.AdminUpdateCollection
   >
 ) => {
   return useMutation({
-    mutationFn: (payload: UpdateProductCollectionReq) =>
-      client.collections.update(id, payload),
+    mutationFn: (payload) => sdk.admin.productCollection.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({
@@ -86,15 +79,44 @@ export const useUpdateCollection = (
   })
 }
 
-export const useCreateCollection = (
+export const useUpdateCollectionProducts = (
+  id: string,
   options?: UseMutationOptions<
-    ProductCollectionRes,
-    Error,
-    CreateProductCollectionReq
+    { collection: HttpTypes.AdminCollection },
+    FetchError,
+    HttpTypes.AdminUpdateCollectionProducts
   >
 ) => {
   return useMutation({
-    mutationFn: (payload) => client.collections.create(payload),
+    mutationFn: (payload) =>
+      sdk.admin.productCollection.updateProducts(id, payload),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
+      queryClient.invalidateQueries({
+        queryKey: collectionsQueryKeys.detail(id),
+      })
+      /**
+       * Invalidate products list query to ensure that the products collections are updated.
+       */
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.lists(),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateCollection = (
+  options?: UseMutationOptions<
+    { collection: HttpTypes.AdminCollection },
+    FetchError,
+    HttpTypes.AdminCreateCollection
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) => sdk.admin.productCollection.create(payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
 
@@ -106,10 +128,14 @@ export const useCreateCollection = (
 
 export const useDeleteCollection = (
   id: string,
-  options?: UseMutationOptions<ProductCollectionDeleteRes, Error, void>
+  options?: UseMutationOptions<
+    HttpTypes.DeleteResponse<"collection">,
+    FetchError,
+    void
+  >
 ) => {
   return useMutation({
-    mutationFn: () => client.collections.delete(id),
+    mutationFn: () => sdk.admin.productCollection.delete(id),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({

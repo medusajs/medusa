@@ -1,0 +1,25 @@
+export const metadata = {
+  title: `Relations between Inventory Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the link modules defined between the Inventory Module and other commerce modules.
+
+## Product Module
+
+Each product variant has different inventory details. Medusa defines a link module that builds a relationship between the `ProductVariant` and `InventoryItem` data models.
+
+![A diagram showcasing an example of how data models from the Inventory and Product Module are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709658720/Medusa%20Resources/inventory-product_ejnray.jpg)
+
+A product variant, whose `manage_inventory` field is enabled, has an associated inventory item. Through that inventory's items relations in the Inventory Module, you can manage and check the variant's inventory quantity.
+
+---
+
+## Stock Location Module
+
+Reservation items and inventory items are associated with a location. The Medusa application forms a relation between the `ReservationItem` and `StockLocation` data models, and the `InventoryLevel` and `StockLocation` data models.
+
+![A diagram showcasing an example of how data models from the Inventory and Stock Location modules are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709660383/Medusa%20Resources/inventory-stock-location_yp26k3.jpg)
+
+The stock location provides address details of the location.

@@ -30,7 +30,8 @@
     "build:js:cjs": "tsc --project tsconfig.cjs.json && tsc-alias -p tsconfig.cjs.json",
     "build:js:esm": "tsc --project tsconfig.esm.json && tsc-alias -p tsconfig.esm.json",
     "clean": "rimraf dist",
-    "dev": "yarn build:js:cjs && yarn build:js:esm"
+    "dev": "yarn build:js:cjs && yarn build:js:esm",
+    "lint": "eslint src --fix"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -38,6 +39,7 @@
     "@types/react-google-recaptcha": "^2.1.6",
     "clsx": "^2.0.0",
     "cpy-cli": "^5.0.0",
+    "eslint": "^8",
     "eslint-config-docs": "*",
     "next": "14.1.0",
     "react": "^18.2.0",
@@ -59,12 +61,13 @@
   },
   "dependencies": {
     "@medusajs/icons": "^1.2.0",
-    "@medusajs/ui": "^2.4.1",
+    "@medusajs/ui": "^3.0.0",
     "@octokit/request": "^8.1.1",
     "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.55.0",
     "@uidotdev/usehooks": "^2.4.1",
     "algoliasearch": "^4.20.0",
+    "copy-text-to-clipboard": "^3.2.0",
     "mermaid": "^10.9.0",
     "npm-to-yarn": "^2.1.0",
     "prism-react-renderer": "2.3.1",

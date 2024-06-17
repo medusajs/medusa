@@ -38,6 +38,7 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
         ])
@@ -50,7 +51,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             code: "TEST",
-            campaign: null,
             is_automatic: false,
             type: "standard",
             created_at: expect.any(String),
@@ -68,6 +68,40 @@ medusaIntegrationTestRunner({
         ])
       })
 
+      it("should support search of promotions", async () => {
+        await promotionModuleService.create([
+          {
+            code: "first",
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 100,
+              currency_code: "USD",
+            },
+          },
+          {
+            code: "second",
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 100,
+              currency_code: "USD",
+            },
+          },
+        ])
+
+        const response = await api.get(`/admin/promotions?q=fir`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.promotions).toEqual([
+          expect.objectContaining({
+            code: "first",
+          }),
+        ])
+      })
+
       it("should get all promotions and its count filtered", async () => {
         await promotionModuleService.create([
           {
@@ -77,12 +111,13 @@ medusaIntegrationTestRunner({
               type: "fixed",
               target_type: "order",
               value: 100,
+              currency_code: "USD",
             },
           },
         ])
 
         const response = await api.get(
-          `/admin/promotions?fields=code,created_at,application_method.id&expand=application_method`,
+          `/admin/promotions?fields=code,created_at,application_method.id`,
           adminHeaders
         )
 

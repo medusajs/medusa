@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `${pageNumber} Run Workflow Steps in Parallel`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to run workflow steps in parallel.
+
+## parallelize Utility Function
+
+If your workflow has steps that don’t rely on one another’s results, you can run them in parallel. The workflow will wait until all specified steps are finished before continuing with the rest of its implementation.
+
+The `parallelize` utility function imported from the `@medusajs/workflows-sdk` package allows you to run the steps in parallel.
+
+For example:
+
+export const highlights = [
+  ["23", "[prices, productSalesChannel]", "The result of the steps. `prices` is the result of `createPricesStep`, and `productSalesChannel` is the result of `attachProductToSalesChannelStep`."],
+  ["23", "parallelize", "Run the steps passed as parameters in parallel."],
+]
+
+```ts highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
+import {
+  createWorkflow,
+  parallelize,
+} from "@medusajs/workflows-sdk"
+import { ProductDTO } from "@medusajs/types"
+import {
+  createProductStep,
+  getProductStep,
+  createPricesStep,
+  attachProductToSalesChannelStep,
+} from "./steps"
+
+interface WorkflowInput {
+  title: string
+}
+
+const myWorkflow = createWorkflow<
+  WorkflowInput,
+  ProductDTO
+>("my-workflow", (input) => {
+   const product = createProductStep(input)
+
+   const [prices, productSalesChannel] = parallelize(
+     createPricesStep(product),
+     attachProductToSalesChannelStep(product)
+   )
+
+   const id = product.id
+   return getProductStep(product.id)
+ }
+)
+```
+
+The `parallelize` function accepts the steps to run in parallel as a parameter.
+
+It returns an array of each step’s result. The results are ordered in the result array by the order they're passed in the function's parameter.

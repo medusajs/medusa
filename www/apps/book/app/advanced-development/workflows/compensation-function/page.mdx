@@ -1,0 +1,117 @@
+export const metadata = {
+  title: `${pageNumber} Compensation Function`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn how to add a compensation function to a step.
+
+## Compensation Function
+
+Errors can occur in a workflow. To avoid data inconsistency, define a function to run when an error occurs in a step. This function is called the compensation function.
+
+For example:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["16"], ["17"], ["18"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+// other imports...
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  "step-1",
+  async () => {
+    const message = `Hello from step one!`
+
+    console.log(message)
+
+    return new StepResponse(message)
+  },
+  async () => {
+    console.log("Oops! Rolling back my changes...")
+  }
+)
+```
+
+Each step can have a compensation function. The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+
+### Test Compensation Function
+
+1. Add another step that throws an error:
+
+```ts title="src/workflows/hello-world.ts"
+// ...
+const step2 = createStep(
+  "step-2",
+  async () => {
+    throw new Error("Throwing an error...")
+  }
+)
+```
+
+2. Use the steps in a workflow. For example:
+
+```ts title="src/workflows/hello-world.ts" collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import {
+  // other imports...
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+
+// ...
+
+type WorkflowOutput = {
+  message: string
+}
+
+const myWorkflow = createWorkflow<
+  {},
+  WorkflowOutput
+>("hello-world", function (input) {
+  const str1 = step1()
+  step2()
+
+  return {
+    message: str1,
+  }
+})
+
+export default myWorkflow
+```
+
+3. Execute the workflow from a resource, such as an API route:
+
+```ts title="src/api/store/workflow/route.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+import myWorkflow from "../../../workflows/hello-world"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await myWorkflow(req.scope)
+    .run()
+
+  res.send(result)
+}
+```
+
+4. Run the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+5. Send a `GET` request to `/store/workflow`:
+
+```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflows"
+curl http://localhost:9000/store/workflow
+```
+
+In the console, you'll see:
+
+- `Hello from step one!` logged in the terminal, indicating that the first step ran successfully.
+- `Oops! Rolling back my changes...` logged in the terminal, indicating that the second step failed and the compensation function of the first step ran consequently.

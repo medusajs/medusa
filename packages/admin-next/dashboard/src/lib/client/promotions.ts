@@ -1,5 +1,8 @@
-import { AdminGetPromotionsParams } from "@medusajs/medusa"
-
+import {
+  AdminGetPromotionsParams,
+  AdminGetPromotionsRuleValueParams,
+} from "@medusajs/medusa"
+import { AdminRuleValueOptionsListResponse } from "@medusajs/types"
 import {
   BatchAddPromotionRulesReq,
   BatchRemovePromotionRulesReq,
@@ -13,7 +16,6 @@ import {
   PromotionRes,
   PromotionRuleAttributesListRes,
   PromotionRuleOperatorsListRes,
-  PromotionRuleValuesListRes,
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
@@ -46,8 +48,10 @@ async function addPromotionRules(
   payload: BatchAddPromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/add`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      create: payload.rules,
+    }
   )
 }
 
@@ -57,8 +61,10 @@ async function updatePromotionRules(
   payload: BatchUpdatePromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/update`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      update: payload.rules,
+    }
   )
 }
 
@@ -68,26 +74,41 @@ async function removePromotionRules(
   payload: BatchRemovePromotionRulesReq
 ) {
   return postRequest<PromotionRes>(
-    `/admin/promotions/${id}/${ruleType}/batch/remove`,
-    payload
+    `/admin/promotions/${id}/${ruleType}/batch`,
+    {
+      delete: payload.rule_ids,
+    }
   )
 }
 
-async function listPromotionRules(id: string, ruleType: string) {
+async function listPromotionRules(
+  id: string | null,
+  ruleType: string,
+  query?: Record<string, string>
+) {
   return getRequest<PromotionRuleAttributesListRes>(
-    `/admin/promotions/${id}/${ruleType}`
+    `/admin/promotions/${id}/${ruleType}`,
+    query
   )
 }
 
-async function listPromotionRuleAttributes(ruleType: string) {
+async function listPromotionRuleAttributes(
+  ruleType: string,
+  promotionType?: string
+) {
   return getRequest<PromotionRuleAttributesListRes>(
-    `/admin/promotions/rule-attribute-options/${ruleType}`
+    `/admin/promotions/rule-attribute-options/${ruleType}?promotion_type=${promotionType}`
   )
 }
 
-async function listPromotionRuleValues(ruleType: string, ruleValue: string) {
-  return getRequest<PromotionRuleValuesListRes>(
-    `/admin/promotions/rule-value-options/${ruleType}/${ruleValue}`
+async function listPromotionRuleValues(
+  ruleType: string,
+  ruleValue: string,
+  query?: AdminGetPromotionsRuleValueParams
+) {
+  return getRequest<AdminRuleValueOptionsListResponse>(
+    `/admin/promotions/rule-value-options/${ruleType}/${ruleValue}`,
+    query
   )
 }
 

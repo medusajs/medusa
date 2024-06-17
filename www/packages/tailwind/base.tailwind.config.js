@@ -5,8 +5,6 @@ import presets from "./theme-presets"
 module.exports = {
   presets: [require("@medusajs/ui-preset")],
   darkMode: ["class", `[data-theme="dark"]`], // hooks into docusaurus' dark mode settings
-  // TODO: remove anything that can be replaced by the
-  // UI preset
   theme: {
     extend: {
       colors: {
@@ -23,7 +21,11 @@ module.exports = {
               hover: "var(--docs-bg-base-hover)",
               pressed: "var(--docs-bg-base-pressed)",
             },
-            component: "var(--docs-bg-component)",
+            component: {
+              DEFAULT: "var(--docs-bg-component)",
+              hover: "var(--docs-bg-component-hover)",
+              pressed: "var(--docs-bg-component-pressed)",
+            },
             "switch-off": {
               DEFAULT: "var(--docs-bg-switch-off)",
               hover: "var(--docs-bg-switch-off-hover)",
@@ -38,6 +40,10 @@ module.exports = {
             field: {
               DEFAULT: "var(--docs-bg-field)",
               hover: "var(--docs-bg-field-hover)",
+              component: {
+                DEFAULT: "var(--docs-bg-field-component)",
+                hover: "var(--docs-bg-field-component-hover)",
+              },
             },
           },
           fg: {
@@ -58,7 +64,6 @@ module.exports = {
           border: {
             base: "var(--docs-border-base)",
             strong: "var(--docs-border-strong)",
-            loud: "var(--docs-border-loud)",
             interactive: "var(--docs-border-interactive)",
             error: "var(--docs-border-error)",
             danger: "var(--docs-border-danger)",
@@ -85,7 +90,6 @@ module.exports = {
               hover: "var(--docs-button-transparent-hover)",
               pressed: "var(--docs-button-transparent-pressed)",
             },
-            disabled: "var(--docs-button-disabled)",
           },
           tag: {
             neutral: {
@@ -144,21 +148,39 @@ module.exports = {
             },
           },
           code: {
-            text: {
-              base: "var(--docs-code-text-base)",
-              subtle: "var(--docs-code-text-subtle)",
-              highlight: "var(--docs-code-text-highlight)",
-            },
-            icon: "var(--docs-code-icon)",
             bg: {
               base: {
                 DEFAULT: "var(--docs-code-bg-base)",
-                // Need this one for color-fade
-                transparent: "var(--docs-code-bg-transparent)",
               },
               header: "var(--docs-code-bg-header)",
             },
             border: "var(--docs-code-border)",
+          },
+          contrast: {
+            bg: {
+              base: {
+                DEFAULT: "var(--docs-contrast-bg-base)",
+                pressed: "var(--docs-contrast-bg-base-pressed)",
+                hover: "var(--docs-contrast-bg-base-hover)",
+              },
+              subtle: "var(--docs-contrast-bg-subtle)",
+              highlight: "var(--docs-contrast-bg-highlight)",
+              alpha: "var(--docs-contrast-bg-alpha)",
+            },
+            fg: {
+              primary: "var(--docs-contrast-fg-primary)",
+              secondary: "var(--docs-contrast-fg-secondary)",
+            },
+            border: {
+              base: "var(--docs-contrast-border-base)",
+              top: "var(--docs-contrast-border-top)",
+              bot: "var(--docs-contrast-border-bot)",
+            },
+            // not in UI but necessary for show more button
+            button: {
+              DEFAULT: "#3D3D3F",
+              hover: "#505052",
+            },
           },
         },
         /* docs defaults */
@@ -170,55 +192,61 @@ module.exports = {
         },
       },
       boxShadow: {
-        "card-rest":
-          "0px 2px 4px 0px rgba(3, 7, 18, 0.04), 0px 1px 2px -1px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08)",
-        "card-rest-dark":
-          "0px 2px 4px 0px rgba(0, 0, 0, 0.40), 0px 1px 2px -1px rgba(255, 255, 255, 0.16), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        "card-hover":
-          "0px 2px 8px 0px rgba(3, 7, 18, 0.10), 0px 1px 2px -1px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08)",
-        "card-hover-dark":
-          "0px 2px 8px 0px rgba(0, 0, 0, 0.40), 0px 1px 2px -1px rgba(255, 255, 255, 0.16), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        tooltip:
-          "0px 4px 8px 0px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08)",
-        "tooltip-dark":
-          "0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        flyout:
-          "0px 8px 16px 0px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08)",
-        "flyout-dark":
-          "0px 8px 16px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        modal:
-          "0px 2px 24px 0px rgba(3, 7, 18, 0.08), 0px 16px 32px 0px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08), 0px 0px 0px 2px rgba(229, 231, 235, 0.40) inset, 0px 0px 0px 1px #FFF inset",
-        "modal-dark":
-          "0px 2px 24px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        "navbar-dark": "0px 1px 0px 0px #2E2E32",
-        "button-colored":
-          "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
-        "button-colored-dark":
-          "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
-        "button-colored-focused":
-          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.20), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.20), 0px 1.75px 0px 0px rgba(255, 255, 255, 0.16) inset",
-        "button-colored-focused-dark":
-          "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60)",
+        "elevation-card-rest":
+          "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 2px 4px 0px rgba(0, 0, 0, 0.04)",
+        "elevation-card-rest-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32)",
+        "elevation-card-hover":
+          "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 2px 8px 0px rgba(0, 0, 0, 0.1)",
+        "elevation-card-hover-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 1px 4px 0px rgba(0, 0, 0, 0.48), 0px 2px 8px 0px rgba(0, 0, 0, 0.48)",
+        "elevation-tooltip":
+          "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 2px 4px 0px rgba(0, 0, 0, 0.08), 0px 4px 8px 0px rgba(0, 0, 0, 0.08)",
+        "elevation-tooltip-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 2px 4px 0px rgba(0, 0, 0, 0.32), 0px 4px 8px 0px rgba(0, 0, 0, 0.32)",
+        "elevation-flyout":
+          "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 4px 8px 0px rgba(0, 0, 0, 0.08), 0px 8px 16px 0px rgba(0, 0, 0, 0.08)",
+        "elevation-flyout-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 4px 8px 0px rgba(0, 0, 0, 0.32), 0px 8px 16px 0px rgba(0, 0, 0, 0.32)",
+        "elevation-modal":
+          "0px 0px 0px 1px rgba(255, 255, 255, 1) inset, 0px 0px 0px 1.5px rgba(228, 228, 231, 0.6) inset, 0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 8px 16px 0px rgba(0, 0, 0, 0.08), 0px 16px 32px 0px rgba(0, 0, 0, 0.08)",
+        "elevation-modal-dark":
+          "0px 0px 0px 1px rgba(24, 24, 27, 1) inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.06) inset, 0px -1px 0px 0px rgba(255, 255, 255, 0.04), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 8px 16px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32)",
         "button-neutral":
-          "0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
+          "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08)",
         "button-neutral-dark":
-          "0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.08), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
         "button-neutral-focused":
-          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 0.5px 0px 0px rgba(3, 7, 18, 0.16), 0px 0.25px 0px 0px rgba(3, 7, 18, 0.16)",
+          "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 0px 0px 2px rgba(255, 255, 255, 1), 0px 0px 0px 4px rgba(59, 130, 246, 0.6)",
         "button-neutral-focused-dark":
-          "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #1B1B1F, 0px 0.5px 0px 0px rgba(0, 0, 0, 0.60), 0px 0.25px 0px 0px rgba(0, 0, 0, 0.60), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
-        "button-secondary":
-          "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
-        "button-secondary-dark":
-          "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
-        "button-secondary-focus":
-          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
-        "button-secondary-focus-dark":
-          "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
-        // TODO remove if not used
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.08), 0px 0px 0px 1px rgba(39, 39, 42, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
+        "button-danger":
+          "0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(190, 18, 60, 0.4), 0px 0px 0px 1px rgba(190, 18, 60, 1)",
+        "button-danger-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.16), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(159, 18, 57, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
+        "button-danger-focused":
+          "0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(190, 18, 60, 0.4), 0px 0px 0px 1px rgba(190, 18, 60, 1), 0px 0px 0px 2px rgba(255, 255, 255, 1), 0px 0px 0px 4px rgba(59, 130, 246, 0.6)",
+        "button-danger-focused-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.16), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(159, 18, 57, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
+        "button-inverted":
+          "0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(0, 0, 0, 0.4), 0px 0px 0px 1px rgba(24, 24, 27, 1)",
+        "button-inverted-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 0px 0px 1px rgba(82, 82, 91, 1), 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
+        "button-inverted-focused":
+          "0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(0, 0, 0, 0.4), 0px 0px 0px 1px rgba(24, 24, 27, 1), 0px 0px 0px 2px rgba(255, 255, 255, 1), 0px 0px 0px 4px rgba(59, 130, 246, 0.6)",
+        "button-inverted-focused-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px rgba(82, 82, 91, 1), 0px 0px 0px 2px rgba(24, 24, 27, 1), 0px 0px 0px 4px rgba(96, 165, 250, 0.8)",
+
+        "elevation-code-block":
+          "0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.20) inset",
+        "elevation-code-block-dark":
+          "0px 0px 0px 1px #27272A inset, 0px 0px 0px 1.5px rgba(255, 255, 255, 0.10) inset",
         active: "0px 0px 0px 3px #E1F0FF",
         "active-dark": "0px 0px 0px 3px #2C2250",
-        navbar: "0px 1px 0px 0px #E6E8EB",
+        "border-base":
+          "0px 1px 2px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.08)",
+        "border-base-dark":
+          "0px -1px 0px 0px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px rgba(255, 255, 255, 0.12), 0px 0px 0px 1px #18181B, 0px 0px 1px 1.5px rgba(0, 0, 0, 0.24), 0px 2px 2px 0px rgba(0, 0, 0, 0.24)",
       },
       borderRadius: {
         xxs: "2px",
@@ -232,36 +260,16 @@ module.exports = {
       lineHeight: {
         DEFAULT: "24px",
       },
-      backgroundImage: ({ theme }) => ({
-        "button-neutral":
-          "linear-gradient(180deg, rgba(3, 7, 18, 0.00) 0%, rgba(3, 7, 18, 0.03) 100%)",
-        "button-neutral-dark":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "no-image": "none",
-        "button-inverted":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-inverted-dark":
-          "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.12) 100%)",
-        "button-danger":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-dark":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-hover":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-hover-dark":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-pressed":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
-        "button-danger-pressed-dark":
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
-        "code-fade": `linear-gradient(90deg, ${theme(
-          "colors.medusa.code.bg.base.transparent"
-        )}, ${theme("colors.medusa.code.bg.base.DEFAULT")} 24px)`,
-        fade: "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
-        "fade-dark":
-          "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
-        diagrams: "url('/img/diagrams-bg.png')",
-      }),
+      backgroundImage: {
+        "code-fade-top-to-bottom": `linear-gradient(180deg, #27272A 0%, rgba(39, 39, 42, 0.00) 100%)`,
+        "code-fade-bottom-to-top": `linear-gradient(180deg, rgba(39, 39, 42, 0.00) 0%, #27272A 100%)`,
+        "base-code-fade-right-to-left": `linear-gradient(90deg, #18181b7d, #18181B)`,
+        "subtle-code-fade-right-to-left": `linear-gradient(90deg, #27272aa3, #27272A)`,
+        "code-fade-top-to-bottom-dark": `linear-gradient(180deg, #2F2F32 0%, rgba(47, 47, 50, 0.00) 100%)`,
+        "code-fade-bottom-to-top-dark": `linear-gradient(180deg, rgba(47, 47, 50, 0.00) 0%, #2F2F32 100%)`,
+        "base-code-fade-right-to-left-dark": `linear-gradient(90deg, #27272aa3, #27272A)`,
+        "subtle-code-fade-right-to-left-dark": `linear-gradient(90deg, #30303380, #303033)`,
+      },
       screens: {
         xs: "576px",
         lg: "1025px",
@@ -371,7 +379,7 @@ module.exports = {
           },
         ],
         "compact-x-small": [
-          "12px",
+          "13px",
           {
             lineHeight: "20px",
             fontWeight: "400",
@@ -420,21 +428,21 @@ module.exports = {
           },
         ],
         "code-label": [
-          "13px",
+          "12px",
           {
             lineHeight: "20px",
             fontWeight: "400",
           },
         ],
         "code-body": [
-          "13px",
+          "12px",
           {
-            lineHeight: "24px",
+            lineHeight: "22px",
             fontWeight: "400",
           },
         ],
       },
-      keyframes: ({ theme }) => ({
+      keyframes: {
         fadeIn: {
           from: { opacity: 0 },
           to: { opacity: 1 },
@@ -588,7 +596,7 @@ module.exports = {
             backgroundColor: "transparent",
           },
         },
-      }),
+      },
       animation: {
         fadeIn: "fadeIn 500ms",
         fadeOut: "fadeOut 500ms",
@@ -722,6 +730,21 @@ module.exports = {
           },
           ".animate-bg-surface": {
             "--animation-color": "var(--docs-bg-subtle-pressed)",
+          },
+          ".code-block-highlight-dark": {
+            "*::selection": {
+              "background-color": "var(--docs-contrast-bg-highlight)",
+            },
+          },
+          ".code-block-highlight-light": {
+            "*::selection": {
+              "background-color": "var(--docs-bg-highlight)",
+            },
+          },
+          ".badge": {
+            "&::selection": {
+              "background-color": "var(--docs-bg-highlight)",
+            },
           },
         })
         addComponents({

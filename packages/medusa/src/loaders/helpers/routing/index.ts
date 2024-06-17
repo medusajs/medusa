@@ -1,25 +1,19 @@
-import { promiseAll, wrapHandler } from "@medusajs/utils"
+import { ConfigModule } from "@medusajs/types"
+import { parseCorsOrigins, promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
-import { Router, json, text, urlencoded, type Express } from "express"
+import { type Express, json, Router, text, urlencoded } from "express"
 import { readdir } from "fs/promises"
-import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
-import {
-  authenticate,
-  authenticateCustomer,
-  errorHandler,
-  requireCustomerAuthentication,
-} from "../../../api/middlewares"
-import { ConfigModule } from "../../../types/global"
 import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import { authenticate, errorHandler } from "../../../utils/middlewares"
 import logger from "../../logger"
 import {
   AsyncRouteHandler,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
   MiddlewareRoute,
-  MiddlewareVerb,
   MiddlewaresConfig,
+  MiddlewareVerb,
   ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
@@ -38,7 +32,7 @@ const log = ({
     return
   }
 
-  logger.info(message)
+  logger.debug(message)
 }
 
 /**
@@ -304,10 +298,6 @@ export class RoutesLoader {
 
           const config: RouteConfig = {
             routes: [],
-            shouldRequireAdminAuth: false,
-            shouldRequireCustomerAuth: false,
-            shouldAppendCustomer: false,
-            shouldAppendAuthCors: false,
           }
 
           /**
@@ -319,6 +309,7 @@ export class RoutesLoader {
               ? (import_[AUTHTHENTICATE] as boolean)
               : true
 
+          config.optedOutOfAuth = !shouldRequireAuth
           /**
            * If the developer has not exported the
            * CORS flag we default to true.
@@ -327,29 +318,24 @@ export class RoutesLoader {
             import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
 
           if (route.startsWith("/admin")) {
+            config.routeType = "admin"
             if (shouldAddCors) {
               config.shouldAppendAdminCors = true
-            }
-
-            if (shouldRequireAuth) {
-              config.shouldRequireAdminAuth = true
             }
           }
 
           if (route.startsWith("/store")) {
-            config.shouldAppendCustomer = true
-
+            config.routeType = "store"
             if (shouldAddCors) {
               config.shouldAppendStoreCors = true
             }
           }
 
           if (route.startsWith("/auth") && shouldAddCors) {
-            config.shouldAppendAuthCors = true
-          }
-
-          if (shouldRequireAuth && route.startsWith("/store/me")) {
-            config.shouldRequireCustomerAuth = shouldRequireAuth
+            config.routeType = "auth"
+            if (shouldAddCors) {
+              config.shouldAppendAuthCors = true
+            }
           }
 
           const handlers = Object.keys(import_).filter((key) => {
@@ -533,7 +519,7 @@ export class RoutesLoader {
             const childPath = join(dirPath, entry.name)
 
             if (entry.isDirectory()) {
-              return this.createRoutesMap({
+              return await this.createRoutesMap({
                 dirPath: childPath,
                 parentPath: parentPath ?? dirPath,
               })
@@ -568,8 +554,6 @@ export class RoutesLoader {
     }
 
     if (mostSpecificConfig?.bodyParser) {
-      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
-
       this.router[method.toLowerCase()](
         path,
         ...getBodyParserMiddleware(mostSpecificConfig?.bodyParser)
@@ -595,6 +579,7 @@ export class RoutesLoader {
         continue
       }
 
+      const config = descriptor.config
       const routes = descriptor.config.routes
 
       /**
@@ -602,7 +587,7 @@ export class RoutesLoader {
        * not opted out of.
        */
 
-      if (descriptor.config.shouldAppendAdminCors) {
+      if (config.shouldAppendAdminCors) {
         /**
          * Apply the admin cors
          */
@@ -610,14 +595,14 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.admin_cors || ""
+              this.configModule.projectConfig.http.adminCors
             ),
             credentials: true,
           })
         )
       }
 
-      if (descriptor.config.shouldAppendAuthCors) {
+      if (config.shouldAppendAuthCors) {
         /**
          * Apply the auth cors
          */
@@ -625,14 +610,14 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.auth_cors || ""
+              this.configModule.projectConfig.http.authCors
             ),
             credentials: true,
           })
         )
       }
 
-      if (descriptor.config.shouldAppendStoreCors) {
+      if (config.shouldAppendStoreCors) {
         /**
          * Apply the store cors
          */
@@ -640,32 +625,29 @@ export class RoutesLoader {
           descriptor.route,
           cors({
             origin: parseCorsOrigins(
-              this.configModule.projectConfig.store_cors || ""
+              this.configModule.projectConfig.http.storeCors
             ),
             credentials: true,
           })
         )
       }
 
-      if (descriptor.config.shouldAppendCustomer) {
-        /**
-         * Add the customer to the request object
-         */
-        this.router.use(descriptor.route, authenticateCustomer())
+      // We only apply the auth middleware to store routes to populate the auth context. For actual authentication, users can just reapply the middleware.
+      if (!config.optedOutOfAuth && config.routeType === "store") {
+        this.router.use(
+          descriptor.route,
+          authenticate("customer", ["bearer", "session"], {
+            allowUnauthenticated: true,
+          })
+        )
       }
 
-      if (descriptor.config.shouldRequireCustomerAuth) {
-        /**
-         * Require the customer to be authenticated
-         */
-        this.router.use(descriptor.route, requireCustomerAuthentication())
-      }
-
-      if (descriptor.config.shouldRequireAdminAuth) {
-        /**
-         * Require the admin to be authenticated
-         */
-        this.router.use(descriptor.route, authenticate())
+      if (!config.optedOutOfAuth && config.routeType === "admin") {
+        // We probably don't want to allow access to all endpoints using an api key, but it will do until we revamp our routing.
+        this.router.use(
+          descriptor.route,
+          authenticate("user", ["bearer", "session", "api-key"])
+        )
       }
 
       for (const route of routes) {

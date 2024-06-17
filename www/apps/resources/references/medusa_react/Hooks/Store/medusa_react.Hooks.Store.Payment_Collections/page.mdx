@@ -1,0 +1,360 @@
+---
+slug: /references/medusa-react/hooks/store/payment_collections
+---
+
+import { TypeList } from "docs-ui"
+
+# Payment Collections
+
+Queries and Mutations listed here are used to send requests to the [Store Payment Collection API Routes](https://docs.medusajs.com/api/store#payment-collections).
+
+A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
+
+## Mutations
+
+### useManageMultiplePaymentSessions
+
+This hook creates, updates, or deletes a list of payment sessions of a Payment Collections. If a payment session is not provided in the `sessions` array, it's deleted.
+
+#### Example
+
+To add two new payment sessions:
+
+```tsx
+import React from "react"
+import { useManageMultiplePaymentSessions } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const managePaymentSessions = useManageMultiplePaymentSessions(
+    paymentCollectionId
+  )
+
+  const handleManagePaymentSessions = () => {
+    managePaymentSessions.mutate({
+      // Total amount = 10000
+      sessions: [
+        {
+          provider_id: "stripe",
+          amount: 5000,
+        },
+        {
+          provider_id: "manual",
+          amount: 5000,
+        },
+      ]
+    }, {
+      onSuccess: ({ payment_collection }) => {
+        console.log(payment_collection.payment_sessions)
+      }
+    })
+  }
+  
+  // ...
+}
+
+export default PaymentCollection
+```
+
+To update a payment session and another one by not including it in the payload:
+
+```tsx
+import React from "react"
+import { useManageMultiplePaymentSessions } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const managePaymentSessions = useManageMultiplePaymentSessions(
+    paymentCollectionId
+  )
+
+  const handleManagePaymentSessions = () => {
+    managePaymentSessions.mutate({
+      // Total amount = 10000
+      sessions: [
+        {
+          provider_id: "stripe",
+          amount: 10000,
+          session_id: "ps_123456"
+        },
+      ]
+    }, {
+      onSuccess: ({ payment_collection }) => {
+        console.log(payment_collection.payment_sessions)
+      }
+    })
+  }
+  
+  // ...
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManageMultiplePaymentSessions"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"StorePostPaymentCollectionsBatchSessionsReq","type":"[StorePostPaymentCollectionsBatchSessionsReq](../../../../medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the payment sessions to manage.","expandable":false,"children":[{"name":"sessions","type":"[StorePostPaymentCollectionsSessionsReq](../../../../medusa/classes/medusa.StorePostPaymentCollectionsSessionsReq/page.mdx)[]","description":"Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider_id","type":"`string`","description":"The ID of the Payment Provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"The payment amount","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"session_id","type":"`string`","description":"The ID of the Payment Session to be updated. If no ID is provided, a new payment session is created.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManageMultiplePaymentSessions"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StorePaymentCollectionsRes","type":"[StorePaymentCollectionsRes](../../../../medusa/types/medusa.StorePaymentCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"Payment collection's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[{"name":"NOT_PAID","type":"`\"not_paid\"`","description":"The payment collection isn't paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AWAITING","type":"`\"awaiting\"`","description":"The payment collection is awaiting payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment collection is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PARTIALLY_AUTHORIZED","type":"`\"partially_authorized\"`","description":"Some of the payments in the payment collection are authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment collection is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customer_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"captured_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"refunds","type":"Collection&#60;[Refund](../../../../payment_models/classes/payment_models.Refund/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captures","type":"Collection&#60;[Capture](../../../../payment_models/classes/payment_models.Capture/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"`number`","description":"COMPUTED PROPERTIES START *","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManageMultiplePaymentSessions"/>
+
+### useManagePaymentSession
+
+This hook creates a Payment Session for a payment provider in a Payment Collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useManagePaymentSession } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const managePaymentSession = useManagePaymentSession(
+    paymentCollectionId
+  )
+
+  const handleManagePaymentSession = (
+    providerId: string
+  ) => {
+    managePaymentSession.mutate({
+      provider_id: providerId
+    }, {
+      onSuccess: ({ payment_collection }) => {
+        console.log(payment_collection.payment_sessions)
+      }
+    })
+  }
+  
+  // ...
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManagePaymentSession"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"StorePaymentCollectionSessionsReq","type":"[StorePaymentCollectionSessionsReq](../../../../medusa/classes/medusa.StorePaymentCollectionSessionsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the payment session to manage.","expandable":false,"children":[{"name":"provider_id","type":"`string`","description":"The ID of the Payment Provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManagePaymentSession"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StorePaymentCollectionsRes","type":"[StorePaymentCollectionsRes](../../../../medusa/types/medusa.StorePaymentCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"Payment collection's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[{"name":"NOT_PAID","type":"`\"not_paid\"`","description":"The payment collection isn't paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AWAITING","type":"`\"awaiting\"`","description":"The payment collection is awaiting payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment collection is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PARTIALLY_AUTHORIZED","type":"`\"partially_authorized\"`","description":"Some of the payments in the payment collection are authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment collection is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customer_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"captured_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"refunds","type":"Collection&#60;[Refund](../../../../payment_models/classes/payment_models.Refund/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captures","type":"Collection&#60;[Capture](../../../../payment_models/classes/payment_models.Capture/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"`number`","description":"COMPUTED PROPERTIES START *","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useManagePaymentSession"/>
+
+### useAuthorizePaymentSession
+
+This hook authorizes a Payment Session of a Payment Collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAuthorizePaymentSession } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const authorizePaymentSession = useAuthorizePaymentSession(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleAuthorizePayment = (paymentSessionId: string) => {
+    authorizePaymentSession.mutate(paymentSessionId, {
+      onSuccess: ({ payment_collection }) => {
+        console.log(payment_collection.payment_sessions)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSession"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The payment session's ID.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSession"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StorePaymentCollectionsRes","type":"[StorePaymentCollectionsRes](../../../../medusa/types/medusa.StorePaymentCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"Payment collection's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[{"name":"NOT_PAID","type":"`\"not_paid\"`","description":"The payment collection isn't paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AWAITING","type":"`\"awaiting\"`","description":"The payment collection is awaiting payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment collection is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PARTIALLY_AUTHORIZED","type":"`\"partially_authorized\"`","description":"Some of the payments in the payment collection are authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment collection is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customer_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"captured_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"refunds","type":"Collection&#60;[Refund](../../../../payment_models/classes/payment_models.Refund/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captures","type":"Collection&#60;[Capture](../../../../payment_models/classes/payment_models.Capture/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"`number`","description":"COMPUTED PROPERTIES START *","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSession"/>
+
+### useAuthorizePaymentSessionsBatch
+
+This hook authorize the Payment Sessions of a Payment Collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAuthorizePaymentSessionsBatch } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const authorizePaymentSessions = useAuthorizePaymentSessionsBatch(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleAuthorizePayments = (paymentSessionIds: string[]) => {
+    authorizePaymentSessions.mutate({
+      session_ids: paymentSessionIds
+    }, {
+      onSuccess: ({ payment_collection }) => {
+        console.log(payment_collection.payment_sessions)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSessionsBatch"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"StorePostPaymentCollectionsBatchSessionsAuthorizeReq","type":"[StorePostPaymentCollectionsBatchSessionsAuthorizeReq](../../../../medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsAuthorizeReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the payment sessions to authorize.","expandable":false,"children":[{"name":"session_ids","type":"`string`[]","description":"List of Payment Session IDs to authorize.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSessionsBatch"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StorePaymentCollectionsRes","type":"[StorePaymentCollectionsRes](../../../../medusa/types/medusa.StorePaymentCollectionsRes/page.mdx)","optional":false,"defaultValue":"","description":"The payment collection's details.","expandable":false,"children":[{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"Payment collection's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[{"name":"NOT_PAID","type":"`\"not_paid\"`","description":"The payment collection isn't paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AWAITING","type":"`\"awaiting\"`","description":"The payment collection is awaiting payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment collection is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PARTIALLY_AUTHORIZED","type":"`\"partially_authorized\"`","description":"Some of the payments in the payment collection are authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment collection is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customer_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"captured_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"refunds","type":"Collection&#60;[Refund](../../../../payment_models/classes/payment_models.Refund/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captures","type":"Collection&#60;[Capture](../../../../payment_models/classes/payment_models.Capture/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"`number`","description":"COMPUTED PROPERTIES START *","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAuthorizePaymentSessionsBatch"/>
+
+### usePaymentCollectionRefreshPaymentSession
+
+This hook refreshes a Payment Session's data to ensure that it is in sync with the Payment Collection.
+
+#### Example
+
+```ts
+import React from "react"
+import { usePaymentCollectionRefreshPaymentSession } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const refreshPaymentSession = usePaymentCollectionRefreshPaymentSession(
+    paymentCollectionId
+  )
+  // ...
+
+  const handleRefreshPaymentSession = (paymentSessionId: string) => {
+    refreshPaymentSession.mutate(paymentSessionId, {
+      onSuccess: ({ payment_session }) => {
+        console.log(payment_session.status)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="usePaymentCollectionRefreshPaymentSession"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The payment session's ID.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="usePaymentCollectionRefreshPaymentSession"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"StorePaymentCollectionsSessionRes","type":"[StorePaymentCollectionsSessionRes](../../../../medusa/types/medusa.StorePaymentCollectionsSessionRes/page.mdx)","optional":false,"defaultValue":"","description":"The details of the payment session.","expandable":false,"children":[{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"Payment session's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PENDING","type":"`\"pending\"`","description":"The payment is pending.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"REQUIRES_MORE","type":"`\"requires_more\"`","description":"The payment requires an action.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ERROR","type":"`\"error\"`","description":"An error occurred while processing the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="usePaymentCollectionRefreshPaymentSession"/>
+
+___
+
+## Queries
+
+### usePaymentCollection
+
+This hook retrieves a Payment Collection's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { usePaymentCollection } from "medusa-react"
+
+type Props = {
+  paymentCollectionId: string
+}
+
+const PaymentCollection = ({
+  paymentCollectionId
+}: Props) => {
+  const { 
+    payment_collection, 
+    isLoading
+  } = usePaymentCollection(
+    paymentCollectionId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {payment_collection && (
+        <span>{payment_collection.status}</span>
+      )}
+    </div>
+  )
+}
+
+export default PaymentCollection
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The payment collection's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="usePaymentCollection"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"Payment collection's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"status","type":"[PaymentCollectionStatus](../../../../utils/enums/utils.PaymentCollectionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentCollectionStatus.NOT_PAID","expandable":false,"children":[{"name":"NOT_PAID","type":"`\"not_paid\"`","description":"The payment collection isn't paid.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AWAITING","type":"`\"awaiting\"`","description":"The payment collection is awaiting payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment collection is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PARTIALLY_AUTHORIZED","type":"`\"partially_authorized\"`","description":"Some of the payments in the payment collection are authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment collection is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_providers","type":"Collection&#60;[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payment_sessions","type":"Collection&#60;[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"context","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[PaymentSessionStatus](../../../../utils/enums/utils.PaymentSessionStatus/page.mdx)","description":"","optional":false,"defaultValue":"PaymentSessionStatus.PENDING","expandable":false,"children":[]},{"name":"authorized_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"status\"` \\| `\"data\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment","type":"`null` \\| [Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payments","type":"Collection&#60;[Payment](../../../../payment_models/classes/payment_models.Payment/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number` \\| `BigNumber`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_amount","type":"[BigNumberRawValue](../../../../types/types/types.BigNumberRawValue/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"customer_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"captured_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"refunds","type":"Collection&#60;[Refund](../../../../payment_models/classes/payment_models.Refund/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captures","type":"Collection&#60;[Capture](../../../../payment_models/classes/payment_models.Capture/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection","type":"[PaymentCollection](../../../../payment_models/classes/payment_models.PaymentCollection/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_collection_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_session","type":"[PaymentSession](../../../../payment_models/classes/payment_models.PaymentSession/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_amount","type":"`number`","description":"COMPUTED PROPERTIES START *","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refunded_amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[EntityDateColumns](../../../../types/DAL/types/types.DAL.EntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalPaymentCollectionProps`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="usePaymentCollection"/>

@@ -1,0 +1,30 @@
+---
+displayed_sidebar: pricingReference
+slug: /references/pricing/restorePriceLists
+sidebar_label: restorePriceLists
+---
+
+import { TypeList } from "docs-ui"
+
+# restorePriceLists - Pricing Module Reference
+
+This documentation provides a reference to the `restorePriceLists` method. This belongs to the Pricing Module.
+
+This method restores a soft deleted price lists by its IDs.
+
+## Example
+
+```ts
+await pricingModuleService.restorePriceLists([
+  "plist_123",
+  "plist_321",
+])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"priceListIds","type":"`string`[]","description":"The list of &#123;summary&#125;","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[RestoreReturn](../../../interfaces/pricing.RestoreReturn/page.mdx)&#60;TReturnableLinkableKeys&#62;","description":"Configurations determining which relations to restore along with each of the price lists. You can pass to its `returnLinkableKeys`\nproperty any of the price list's relation attribute names, such as `price_list_rules`.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"returnLinkableKeys","type":"TReturnableLinkableKeys[]","description":"An array of strings, each being the ID attribute names of the entity's relations.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="restorePriceLists"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;","optional":false,"defaultValue":"","description":"An object that includes the IDs of related records that were restored, such as the ID of associated price list rules.\nThe object's keys are the ID attribute names of the price list entity's relations, such as `price_list_rule_id`,\nand its value is an array of strings, each being the ID of the record associated with the price list through this relation,\nsuch as the IDs of associated price list rules.\n\nIf there are no related records restored, the promise resolves to `void`.","expandable":false,"children":[{"name":"void \\| Record&#60;string, string[]&#62;","type":"`void` \\| `Record<string, string[]>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="restorePriceLists"/>

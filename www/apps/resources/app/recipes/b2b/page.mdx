@@ -1,0 +1,869 @@
+import { AcademicCapSolid, UsersSolid } from "@medusajs/icons"
+
+export const metadata = {
+  title: `B2B Recipe`,
+}
+
+# {metadata.title}
+
+This recipe provides the general steps to implement a B2B store with Medusa.
+
+## Overview
+
+In a B2B store, you provide different types of customers with relevant pricing, products, shopping experience, and more.
+
+Medusa’s commerce modules, including Sales Channel, Customer, and Pricing modules facilitate implementing this setup. Medusa’s architecture and extendible nature allow you to customize your store based on your use case.
+
+<Note title="Related use-case">
+
+[Visionary: Frictionless B2B ecommerce with Medusa](https://medusajs.com/blog/visionary/)
+
+</Note>
+
+---
+
+## Create B2B Sales Channel
+
+Use sales channels to set product availability per channel. In this case, create a B2B sales channel that includes only B2B products.
+
+You can create a sales channel through the Medusa Admin or Admin REST APIs.
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Option 1: Use Medusa Admin",
+    text: "Create the sales channel using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#sales-channels_postsaleschannels",
+    title: "Option 2: Using the REST APIs",
+    text: "Create the sales channel using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Create a Publishable API Key
+
+Use publishable API keys to specify the context of client requests:
+
+- You associate the publishable API key with one or more sales channels.
+- In a client such as a storefront, you pass the publishable API key in the header of your requests.
+
+Then, all products retrieved belong to the associated sales channel(s).
+
+You can create a publishable API key through the Medusa Admin or the Admin REST APIs, then associate it with the B2B sales channel. Later, you'll use this key when developing your B2B storefront.
+
+{/* TODO add links */}
+
+### Create Key
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Option 1: Use Medusa Admin",
+    text: "Create the publishable API key using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#api-keys_postapikeys",
+    title: "Option 2: Using the REST APIs",
+    text: "Create the publishable API key using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+### Associate Key with Sales Channel
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Option 1: Use Medusa Admin",
+    text: "Associate the publishable API key with the B2B sales channel using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "#",
+    title: "Option 2: Using the REST APIs",
+    text: "Associate the publishable API key with the B2B sales channel using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Add Products to B2B Sales Channel
+
+You can create new products or add existing ones to the B2B sales channel using the Medusa Admin or Admin REST APIs.
+
+### Create Products
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Using Medusa Admin",
+    text: "Create products using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#products_postproducts",
+    title: "Using REST APIs",
+    text: "Create products using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+### Add Products to Sales Channel
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Using Medusa Admin",
+    text: "Add the products to the B2B sales channel using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#sales-channels_postsaleschannelsidproductsbatchadd",
+    title: "Using REST APIs",
+    text: "Add the products to the B2B sales channel using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Create B2B Module with Relationship to Customer Groups
+
+Use customer groups to organize your customers into different groups. Then, you can apply different prices for each group.
+
+This is useful in B2B sales, as you often negotiate special prices with each customer or company.
+
+You can create a B2B module that adds necessary data models to represent a B2B company. Then, you link that company to a customer group. Any customer belonging to that group also belongs to the company, meaning they're a B2B customer.
+
+<CardList items={[
+  {
+    href: "!docs!/basics/modules-and-services",
+    title: "Create Module",
+    text: "Learn how to create a module in Medusa.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/basics/data-models",
+    title: "Create Data Models",
+    text: "Learn how to create data models.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+<Card
+  href="!docs!/advanced-development/modules/module-relationships"
+  title="Create Module Relationships"
+  text="Learn how to create a relationship between modules."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+  className="mt-1"
+/>
+
+<Details summaryContent="Example">
+  In this section, you'll create a B2B module that has a `Company` data model. The `Company` data model has a relationship to the `CustomerGroup` data model of the Customer Module.
+
+  Start by creating the `src/modules/b2b` directory.
+
+  Then, create the file `src/modules/b2b/models/company.ts` with the following content:
+
+  ```ts title="src/modules/b2b/models/company.ts" highlights={[["23", "", "Field will be used to create a relationship to customer groups."]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+  import { BaseEntity } from "@medusajs/utils"
+  import { 
+    Entity, 
+    PrimaryKey, 
+    Property,
+  } from "@mikro-orm/core"
+
+  @Entity()
+  export class Company extends BaseEntity {
+    @PrimaryKey({ columnType: "text" })
+    id!: string
+
+    @Property({ columnType: "text" })
+    name: string
+
+    @Property({ columnType: "text" })
+    city: string
+
+    @Property({ columnType: "text" })
+    country_code: string
+
+    @Property({ columnType: "text" })
+    customer_group_id?: string
+  }
+  ```
+
+  This creates a `Company` data model with some relevant fields. Most importantly, it has a `customer_group_id` field. It'll later be used when creating the relationship to the `CustomerGroup` data model in the Customer Module.
+
+  Next, create the migration in the file `src/modules/b2b/migrations/Migration20240516081502.ts` with the following content:
+
+  ```ts title="src/modules/b2b/migrations/Migration20240516081502.ts"
+  import { Migration } from "@mikro-orm/migrations"
+  
+  export class Migration20240516081502 extends Migration {
+
+    async up(): Promise<void> {
+      this.addSql("create table if not exists \"company\" (\"id\" text not null, \"name\" text not null, \"city\" text not null, \"country_code\" text not null, \"customer_group_id\" text not null, constraint \"company_pkey\" primary key (\"id\"));")
+    }
+
+    async down(): Promise<void> {
+      this.addSql("drop table if exists \"company\" cascade;")
+    }
+  }
+  ```
+
+  You'll run the migration to reflect the data model in the database after finishing the module definition.
+
+  Before creating the module's main service, create the file `src/types/b2b/index.ts` with some helper types:
+
+  ```ts title="src/types/b2b/index.ts"
+  import { CustomerGroupDTO } from "@medusajs/types"
+
+  export type CompanyDTO = {
+    id: string
+    name: string
+    city: string
+    country_code: string
+    customer_group_id?: string
+    customer_group?: CustomerGroupDTO
+  }
+
+  export type CreateCompanyDTO = {
+    name: string
+    city: string
+    country_code: string
+    customer_group_id?: string
+  }
+
+  ```
+
+  You can now create the module's main service at `src/modules/b2b/service.ts` with the following content:
+
+export const mainServiceHighlights = [
+  ["42", "relationships", "Implement the relationship to the `CustomerGroup` data model in the Customer Module."],
+  ["56", "create", "Implement a create method to create a company."]
+]
+  
+  ```ts title="src/modules/b2b/service.ts" highlights={mainServiceHighlights} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+  import { ModulesSdkUtils } from "@medusajs/utils"
+  import { ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/types"
+  import { Modules } from "@medusajs/modules-sdk"
+  import { Company } from "./models/company"
+  import { CompanyDTO, CreateCompanyDTO } from "../../types/b2b"
+  
+  type InjectedDependencies = {
+    companyService: ModulesSdkTypes.InternalModuleService<any>
+  }
+
+  type AllModelsDTO = {
+    Company: {
+      dto: CompanyDTO
+    }
+  }
+
+  class B2bModuleService extends ModulesSdkUtils
+    .abstractModuleServiceFactory<
+      InjectedDependencies,
+      CompanyDTO,
+      AllModelsDTO
+    >(Company, []) {
+      companyService_: ModulesSdkTypes.InternalModuleService<Company>
+
+      constructor({ companyService }: InjectedDependencies) {
+        // @ts-ignore
+        super(...arguments)
+        this.companyService_ = companyService
+      }
+
+      __joinerConfig(): ModuleJoinerConfig {
+        return {
+          serviceName: "b2bModuleService",
+          alias: [
+            {
+              name: ["company"],
+              args: {
+                entity: Company.name,
+              },
+            },
+          ],
+          relationships: [
+            {
+              serviceName: Modules.CUSTOMER,
+              alias: "customer_group",
+              primaryKey: "id",
+              foreignKey: "customer_group_id",
+              args: {
+                methodSuffix: "CustomerGroups",
+              },
+            },
+          ],
+        }
+      }
+
+      async create(data: CreateCompanyDTO): Promise<CompanyDTO> {
+        const company = this.companyService_.create(data)
+
+        return company
+      }
+    }
+
+  export default B2bModuleService
+  ```
+
+  This creates a `B2bModuleService` that extends the service factory and implements:
+
+  - The module's relationship to the `CustomerGroup` data model in the Customer Module within the `__joinerConfig` method.
+  - A `create` method to create a company.
+
+  Next, create the module definition at `src/modules/b2b/index.ts` with the following content:
+
+  ```ts title="src/modules/b2b/index.ts"
+  import B2bModuleService from "./service"
+  
+  export default {
+    service: B2bModuleService,
+  }
+  ```
+
+  Finally, add the module to the `modules` object in `medusa-config.js`:
+
+  ```js title="medusa-config.js"
+  module.exports = defineConfig({
+    // ...
+    modules: {
+      b2bModuleService: {
+        resolve: "./modules/b2b",
+        definition: {
+          isQueryable: true,
+        },
+      },
+    },
+  })
+  ```
+
+  You can now run migrations with the following commands:
+
+  ```bash npm2yarn
+  npx medusa migrations run
+  ```
+
+  ### Add Create Company API Route
+
+  To test out using the B2B Module, you'll add an API route to create a company.
+
+  Start by creating the file `src/workflows/create-company.ts` with the following content:
+
+export const workflowHighlights = [
+  ["23", "tryToCreateCustomerGroupStep", "This step creates the customer group if its data is passed in the `customer_group` property."],
+  ["36", "createCustomerGroupsWorkflow", "Use the `createCustomerGroupsWorkflow` defined by Medusa to create the customer group."],
+  ["44", "", "Set the ID of the new customer group in the `customer_group_id` property so that it's added to the created company."],
+  ["54", "createCompanyStep", "This step creates the company."],
+]
+
+  ```ts title="src/workflows/create-company.ts" highlights={workflowHighlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
+  import { 
+    StepResponse, 
+    createStep, 
+    createWorkflow,
+  } from "@medusajs/workflows-sdk"
+  import { 
+    createCustomerGroupsWorkflow,
+  } from "@medusajs/core-flows"
+  import { CreateCustomerGroupDTO } from "@medusajs/types"
+  import { CompanyDTO, CreateCompanyDTO } from "../types/b2b"
+  import B2bModuleService from "../modules/b2b/service"
+  
+  export type CreateCompanyWorkflowInput = CreateCompanyDTO & {
+    customer_group?: CreateCustomerGroupDTO
+  }
+
+  type CreateCompanyWorkflowOutput = {
+    company: CompanyDTO
+  }
+
+  type CreateCustomerGroupStepInput = CreateCompanyWorkflowInput
+
+  const tryToCreateCustomerGroupStep = createStep(
+    "try-to-create-customer-group-step",
+    async (
+      { 
+        customer_group, 
+        ...company
+      }: CreateCustomerGroupStepInput, 
+      { container }) => {
+        if (!customer_group) {
+          return new StepResponse({ company })
+        }
+
+        // create customer group
+        const { result } = await createCustomerGroupsWorkflow(
+            container
+          ).run({
+            input: {
+              customersData: [customer_group],
+            },
+          })
+
+        company.customer_group_id = result[0].id
+        
+        return new StepResponse({ company })
+    }
+  )
+
+  export type CreateCompanyStep = {
+    companyData: CreateCompanyDTO
+  }
+
+  const createCompanyStep = createStep(
+    "create-company-step",
+    async (
+      { companyData }: CreateCompanyStep,
+      { container }) => {
+      const b2bModuleService: B2bModuleService = container
+        .resolve(
+          "b2bModuleService"
+        )
+
+      const company = await b2bModuleService.create(
+        companyData
+      )
+
+      return new StepResponse({ company })
+    }
+  )
+
+  export const createCompanyWorkflow = createWorkflow<
+    CreateCompanyWorkflowInput,
+    CreateCompanyWorkflowOutput
+  >(
+    "create-company",
+    function (input) {
+      const { 
+        company: companyData,
+      } = tryToCreateCustomerGroupStep(input)
+
+      const company = createCompanyStep({ companyData })
+
+      return company
+    }
+  )
+  ```
+
+  You create a workflow with two steps:
+
+  1. The first one tries to create a customer group if its data is provided in the `customer_group` property and sets its value in the `customer_group_id` field.
+  2. The second one creates the company.
+
+  Then, create the file `src/api/admin/b2b/company/route.ts` with the following content:
+
+  ```ts title="src/api/admin/b2b/company/route.ts" collapsibleLines="1-9" expandButtonLabel="Show Imports"
+  import type { 
+    MedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+  import { 
+    CreateCompanyWorkflowInput, 
+    createCompanyWorkflow,
+  } from "../../../../workflows/create-company"
+
+  type CreateCompanyReq = CreateCompanyWorkflowInput
+
+  export async function POST(
+    req: MedusaRequest<CreateCompanyReq>, 
+    res: MedusaResponse
+  ) {
+    const { result } = await createCompanyWorkflow(req.scope)
+      .run({
+        input: req.body,
+      })
+
+    res.json({
+      company: result.company,
+    })
+  }
+  ```
+
+  The API route uses the workflow to create the company. It passes the request body as the workflow's input.
+
+  ### Test API Route
+
+  To test the API route, start the Medusa application:
+
+  ```bash npm2yarn
+  npm run dev
+  ```
+  
+  Next, make sure you authenticate as an admin user as explained in [this Authentication guide](!api!/api/admin#authentication).
+
+  Then, send a `POST` request to the `/admin/b2b/company` API route:
+
+  ```bash
+  curl -X POST 'localhost:9000/admin/b2b/company' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer {jwt_token}' \
+  --data '{
+      "name": "Acme",
+      "city": "London",
+      "country_code": "gb",
+      "customer_group": {
+          "name": "B2B"
+      }
+  }'
+  ```
+
+  This creates a company and its associated customer group.
+
+  <Note title="Tip">
+
+  You can alternatively pass a `customer_group_id` to use an existing customer group.
+
+  </Note>
+
+</Details>
+
+## Add B2B Customers
+
+After adding your B2B customer group, add B2B customers and assign them to the B2B customer group.
+
+You can do that through the Medusa Admin or Admin REST APIs.
+
+### Create Customers
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Option 1: Use Medusa Admin",
+    text: "Create the customers using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#customers_postcustomers",
+    title: "Option 2: Using the REST APIs",
+    text: "Create the customers using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+### Assign Customers to Groups
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Option 1: Use Medusa Admin",
+    text: "Assign the customers to the B2B customer group using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#customer-groups_postcustomergroupsidcustomersbatch",
+    title: "Option 2: Using the REST APIs",
+    text: "Assign the customers to the B2B customer group using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Create B2B Price List
+
+Use price lists to set different prices for each B2B customer group, among other conditions.
+
+You can create a price list using the Medusa Admin or the Admin REST APIs. Make sure to set the B2B customer group as a condition.
+
+{/* TODO add links */}
+
+<CardList items={[
+  {
+    href: "#",
+    title: "Using Medusa Admin",
+    text: "Create the price list using the Medusa Admin.",
+    startIcon: <UsersSolid />,
+    showLinkIcon: false,
+    badge: {
+      variant: "blue",
+      children: "Guide Soon"
+    }
+  },
+  {
+    href: "!api!/api/admin#price-lists_postpricelists",
+    title: "Using REST APIs",
+    text: "Create the price list using the REST APIs.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Create Custom Data Model
+
+To implement a more advanced B2B sales flow, add custom data models such as `Company`, `Employee`, `Admin`, and `Buyer` to your B2B module.
+
+This provides more granular control of your B2B sales and allows you to build features like privileges, limits, and more. 
+
+<Card
+  href="!docs!/basics/data-models"
+  title="Create a Data Model"
+  text="Learn how to create a custom data model in a module."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+---
+
+## Create an API Route to Check Customers
+
+On the frontend clients communicating with your store, such as the storefront, you need to check whether the currently logged-in customer is a B2B customer.
+
+The API route can check if the customer has any group with an associated company.
+
+<Card
+  href="!docs!/basics/api-routes"
+  title="Create an API Route"
+  text="Learn how to create an API Route in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+<Details summaryContent="Example">
+
+  For example, create the API route `src/api/store/b2b/check-customer/route.ts` with the following content:
+
+export const checkCustomerHighlights = [
+  ["16", "retrieve", "Retrieve the customer along with its groups."],
+  ["20", "list", "List the companies that have a customer group ID matching any of the customer's group IDs."],
+  ["25", "", "Return whether there are any companies associated with the customer's groups."]
+]
+
+  ```ts title="src/api/store/b2b/check-customer/route.ts" highlights={checkCustomerHighlights} collapsibleLines="1-5" expandButtonLabel="Show Imports"
+  import type { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ICustomerModuleService } from "@medusajs/types"
+  import B2bModuleService from "../../../../modules/b2b/service"
+  
+  export async function GET(
+    req: AuthenticatedMedusaRequest, 
+    res: MedusaResponse
+  ) {
+    const customerModuleService: ICustomerModuleService = req
+      .scope.resolve(ModuleRegistrationName.CUSTOMER)
+    const b2bModuleService: B2bModuleService = req.scope.resolve(
+      "b2bModuleService"
+    )
+
+    const customer = await customerModuleService.retrieve(req.auth.actor_id, {
+      relations: ["groups"],
+    })
+
+    const companies = await b2bModuleService.list({
+      customer_group_id: customer.groups.map((group) => group.id),
+    })
+
+    res.json({
+      is_b2b: companies.length > 0,
+    })
+  }
+  ```
+
+  This creates a `GET` API Route at `/store/b2b/check-customer` that:
+
+  1. Retrieves the customer along with its groups using the Customer Module's main service.
+  2. Lists the companies that have a customer group ID matching any of the customer's group IDs.
+  3. Return an `is_b2b` field whose value is `true` if there are any companies associated with the customer's groups.
+
+  Before using the API route, create the file `src/api/middlewares.ts` with the following content:
+
+  ```ts title="src/api/middlewares.ts"
+  import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+
+  export const config: MiddlewaresConfig = {
+    routes: [
+      {
+        matcher: "/store/b2b*",
+        middlewares: [
+          authenticate("store", ["bearer", "session"]),
+        ],
+      },
+    ],
+  }
+  ```
+
+  This ensures that only logged-in customers can use the API route.
+
+  ### Test API Route
+
+  To test out the API route:
+
+  1. Start the Medusa application.
+  2. Obtain an authentication JWT token for a new customer. Do that by sending a `POST` request to the `/auth/store/emailpass` API Route:
+
+  ```bash
+  curl -X POST 'http://localhost:9000/auth/store/emailpass' \
+  -H 'Content-Type: application/json' \
+  --data-raw '{
+      "email": "test@medusajs.com",
+      "password": "supersecret"
+  }'
+  ```
+  
+  3. Send a `POST` request to the `/store/customers` API route that registers the customer. Make sure to pass the authentication JWT token from the previous token in the header:
+
+  ```bash
+  curl -X POST 'http://localhost:9000/store/customers' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer {jwt_token}' \
+  --data-raw '{
+      "email": "test@medusajs.com",
+      "password": "supersecret"
+  }'
+  ```
+
+  4. Add the customer to the B2B group as explained in a [previous section](#add-b2b-customers).
+  5. Send a `GET` request to the `/store/b2b/check-customer` API route you created in this section:
+
+  ```bash
+  curl 'http://localhost:9000/store/b2b/check-customer' \
+  --header 'Authorization: Bearer {jwt_token}'
+  ```
+
+  You'll receive a JSON response as the following:
+
+  ```json
+  {
+    "is_b2b": true
+  }
+  ```
+
+</Details>
+
+## Customize Admin
+
+<Note type="soon">
+
+Admin customizations are coming soon!
+
+</Note>
+
+Based on your use case, you may need to customize the Medusa Admin to add new widgets or pages.
+
+The Medusa Admin plugin can be extended to add widgets, new pages, and setting pages.
+
+<CardList items={[
+  {
+    href: "!docs!/advanced-development/admin/widgets",
+    title: "Create Admin Widget",
+    text: "Learn how to add widgets into existing admin pages.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/advanced-development/admin/ui-routes",
+    title: "Create Admin UI Routes",
+    text: "Learn how to add new pages to your Medusa Admin.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/advanced-development/admin/setting-pages",
+    title: "Create Admin Setting Page",
+    text: "Learn how to add new page to the Medusa Admin settings.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+---
+
+## Customize Storefront
+
+Medusa provides a Next.js storefront to use with your application. You can either customize it or build your own to represent your B2B features.
+
+Use the publishable API key you associated with your B2B sales channel in the storefront to ensure only B2B products are retrieved.
+
+<CardList items={[
+  {
+    href: "/nextjs-starter",
+    title: "Next.js Storefront",
+    text: "Learn how to install and customize the Next.js storefront.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+  {
+    href: "!docs!/storefront-development/tips",
+    title: "Storefront Tips",
+    text: "Find tips on developing a custom storefront.",
+    startIcon: <AcademicCapSolid />,
+    showLinkIcon: false
+  },
+]} />
+
+<Card
+  href="!api!/api/store#publishable-api-key"
+  title="Use Publishable API Keys"
+  text="Learn how to use the publishable API key in client requests."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+  className="mt-1"
+/>

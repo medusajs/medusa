@@ -1,0 +1,55 @@
+{
+  "name": "medusa-dev-cli",
+  "description": "CLI helpers for contributors working on Medusa",
+  "version": "0.0.32",
+  "author": "Sebastian Rindom <skrindom@gmail.com>",
+  "bin": {
+    "medusa-dev": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "configstore": "^5.0.1",
+    "del": "^6.0.0",
+    "execa": "^4.1.0",
+    "find-yarn-workspace-root": "^2.0.0",
+    "fs-extra": "^9.0.1",
+    "glob": "^8.1.0",
+    "got": "^11.8.6",
+    "is-absolute": "^1.0.0",
+    "lodash": "^4.17.21",
+    "signal-exit": "^3.0.7",
+    "verdaccio": "^4.10.0",
+    "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.5.29",
+    "@swc/jest": "^0.2.36",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "typescript": "^4.4.4"
+  },
+  "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
+  "keywords": [
+    "medusa"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/medusa-dev-cli"
+  },
+  "scripts": {
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "test": "jest --passWithNoTests -- src",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+}

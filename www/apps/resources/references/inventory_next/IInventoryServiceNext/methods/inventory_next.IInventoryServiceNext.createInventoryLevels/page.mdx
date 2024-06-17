@@ -1,0 +1,65 @@
+---
+displayed_sidebar: inventoryNextReference
+slug: /references/inventory-next/createInventoryLevels
+sidebar_label: createInventoryLevels
+---
+
+import { TypeList } from "docs-ui"
+
+# createInventoryLevels - Inventory Next Module Reference
+
+This documentation provides a reference to the `createInventoryLevels` method. This belongs to the Inventory Next Module.
+
+## createInventoryLevels(data, context?): Promise&#60;[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)[]&#62;
+
+This method creates inventory levels.
+
+### Example
+
+```ts
+const inventoryLevels =
+  await inventoryModuleService.createInventoryLevels([
+    {
+      inventory_item_id: "iitem_123",
+      location_id: "loc_123",
+      stocked_quantity: 10,
+    },
+    {
+      inventory_item_id: "iitem_321",
+      location_id: "loc_321",
+      stocked_quantity: 20,
+      reserved_quantity: 10,
+    },
+  ])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateInventoryLevelInput](../../../interfaces/inventory_next.CreateInventoryLevelInput/page.mdx)[]","description":"The details of the inventory levels to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"`number`","description":"The reserved quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[Context](../../../interfaces/inventory_next.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/inventory_next.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createInventoryLevels"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created inventory levels.","expandable":false,"children":[{"name":"InventoryLevelDTO[]","type":"[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"InventoryLevelDTO","type":"`object`","description":"The inventory level details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createInventoryLevels"/>
+
+## createInventoryLevels(data, context?): Promise&#60;[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)&#62;
+
+This method creates an inventory level.
+
+### Example
+
+```ts
+const inventoryLevels =
+  await inventoryModuleService.createInventoryLevels({
+    inventory_item_id: "iitem_123",
+    location_id: "loc_123",
+    stocked_quantity: 10,
+  })
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateInventoryLevelInput](../../../interfaces/inventory_next.CreateInventoryLevelInput/page.mdx)","description":"The details of the inventory level to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"`number`","description":"The reserved quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[Context](../../../interfaces/inventory_next.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/inventory_next.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createInventoryLevels"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created inventory level.","expandable":false,"children":[{"name":"InventoryLevelDTO","type":"[InventoryLevelDTO](../../../interfaces/inventory_next.InventoryLevelDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string`","description":"The associated inventory item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The associated location's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"`number`","description":"The reserved quantity of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"available_quantity","type":"`number`","description":"The available quantity of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"The creation date of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"The update date of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `string` \\| `Date`","description":"The deletion date of the inventory level.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createInventoryLevels"/>

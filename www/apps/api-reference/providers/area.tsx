@@ -21,8 +21,8 @@ const AreaProvider = ({ area: passedArea, children }: AreaProviderProps) => {
   const { defaultFilters, setDefaultFilters } = useSearch()
 
   useEffect(() => {
-    if (!defaultFilters.includes(area)) {
-      setDefaultFilters([area])
+    if (!defaultFilters.includes(`${area}-v2`)) {
+      setDefaultFilters([`${area}-v2`])
     }
   }, [area, defaultFilters, setDefaultFilters])
 

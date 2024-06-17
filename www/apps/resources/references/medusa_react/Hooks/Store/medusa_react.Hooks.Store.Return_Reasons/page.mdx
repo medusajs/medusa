@@ -1,0 +1,93 @@
+---
+slug: /references/medusa-react/hooks/store/return_reasons
+---
+
+import { TypeList } from "docs-ui"
+
+# Return Reasons
+
+Queries listed here are used to send requests to the [Store Return Reason API Routes](https://docs.medusajs.com/api/store#return-reasons).
+
+Return reasons are key-value pairs that are used to specify why an order return is being created.
+
+## Queries
+
+### useReturnReasons
+
+This hook retrieves a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront.
+
+#### Example
+
+```ts
+import React from "react"
+import { useReturnReasons } from "medusa-react"
+
+const ReturnReasons = () => {
+  const { 
+    return_reasons, 
+    isLoading
+  } = useReturnReasons()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {return_reasons?.length && (
+        <ul>
+          {return_reasons.map((returnReason) => (
+            <li key={returnReason.id}>
+              {returnReason.label}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default ReturnReasons
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"return_reasons","type":"`ReturnReason`[]","description":"An array of return reasons details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useReturnReasons"/>
+
+### useReturnReason
+
+This hook retrieves a Return Reason's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useReturnReason } from "medusa-react"
+
+type Props = {
+  returnReasonId: string
+}
+
+const ReturnReason = ({ returnReasonId }: Props) => {
+  const { 
+    return_reason, 
+    isLoading
+  } = useReturnReason(
+    returnReasonId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {return_reason && <span>{return_reason.label}</span>}
+    </div>
+  )
+}
+
+export default ReturnReason
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The return reason's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useReturnReason"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"return_reason","type":"`ReturnReason`","description":"Return reason details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useReturnReason"/>

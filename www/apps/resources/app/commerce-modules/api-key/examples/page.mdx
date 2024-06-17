@@ -1,0 +1,340 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the API Key Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll find common examples of how you can use the API Key Module in your application.
+
+## Create an API Key
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    const apiKey = await apiKeyModuleService.create({
+      title: "Publishable API key",
+      type: "publishable",
+      created_by: "user_123",
+    })
+
+    res.json({
+      api_key: apiKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeApiKeyModule,
+  } from "@medusajs/api-key"
+
+  export async function POST(request: Request) {
+    const apiKeyModuleService = await initializeApiKeyModule()
+
+    const apiKey = await apiKeyModuleService.create({
+      title: "Publishable API key",
+      type: "publishable",
+      created_by: "user_123",
+    })
+
+    return NextResponse.json({
+      api_key: apiKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List API Keys
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    res.json({
+      api_keys: await apiKeyModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeApiKeyModule,
+  } from "@medusajs/api-key"
+
+  export async function GET(request: Request) {
+    const apiKeyModuleService = await initializeApiKeyModule()
+
+    return NextResponse.json({
+      api_keys: await apiKeyModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Revoke an API Key
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { 
+    ModuleRegistrationName,
+  } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: AuthenticatedMedusaRequest,
+    res: MedusaResponse
+  ) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    const revokedKey = await apiKeyModuleService.revoke(
+      request.params.id,
+      {
+        revoked_by: request.auth_context.actor_id,
+      }
+    )
+
+    res.json({
+      api_key: revokedKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeApiKeyModule,
+  } from "@medusajs/api-key"
+
+  type ContextType = {
+    params: {
+      id: string
+      user_id: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const apiKeyModuleService = await initializeApiKeyModule()
+
+    const revokedKey = await apiKeyModuleService.revoke(
+      params.id,
+      {
+        revoked_by: params.user_id,
+      }
+    )
+
+    return NextResponse.json({
+      api_key: revokedKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Verify or Authenticate Token
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    const authenticatedToken =
+      await apiKeyModuleService.authenticate(request.params.token)
+
+    res.json({
+      is_authenticated: !!authenticatedToken,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeApiKeyModule,
+  } from "@medusajs/api-key"
+
+  type ContextType = {
+    params: {
+      token: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const apiKeyModuleService = await initializeApiKeyModule()
+
+    const authenticatedToken =
+      await apiKeyModuleService.authenticate(request.params.token)
+
+    return NextResponse.json({
+      is_authenticated: !!authenticatedToken,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Roll API Key
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: AuthenticatedMedusaRequest,
+    res: MedusaResponse
+  ) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    const revokedKey = await apiKeyModuleService.revoke(
+      request.params.id,
+      {
+        revoked_by: request.auth_context.actor_id,
+      }
+    )
+
+    const newKey = await apiKeyModuleService.create({
+      title: revokedKey.title,
+      type: revokedKey.type,
+      created_by: revokedKey.created_by,
+    })
+
+    res.json({
+      api_key: newKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeApiKeyModule,
+  } from "@medusajs/api-key"
+
+  type ContextType = {
+    params: {
+      id: string
+      user_id: string
+    }
+  }
+
+  export async function POST(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const apiKeyModuleService = await initializeApiKeyModule()
+
+    const revokedKey = await apiKeyModuleService.revoke(params.id, {
+      revoked_by: params.user_id,
+    })
+
+    const newKey = await apiKeyModuleService.create({
+      title: revokedKey.title,
+      type: revokedKey.type,
+      created_by: revokedKey.created_by,
+    })
+
+    return NextResponse.json({
+      api_key: newKey,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [API Key Module's main service reference](/references/api-key) provides a reference to all the methods available for use with examples for each.

@@ -35,7 +35,7 @@ export const LearningPath = ({
   return (
     <div
       className={clsx(
-        "rounded shadow-card-rest dark:shadow-card-rest-dark bg-docs-bg-surface mt-docs_1.5 mb-docs_4",
+        "rounded shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark bg-docs-bg-surface mt-docs_1.5 mb-docs_4",
         className
       )}
     >

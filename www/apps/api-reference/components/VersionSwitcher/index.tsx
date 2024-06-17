@@ -1,34 +1,22 @@
 "use client"
 
 import { Toggle } from "docs-ui"
-import { useVersion } from "../../providers/version"
 import clsx from "clsx"
+import { usePathname } from "next/navigation"
 
 const VersionSwitcher = () => {
-  const { version, changeVersion } = useVersion()
+  const pathname = usePathname()
 
   return (
     <div className="flex gap-0.5 justify-center items-center">
-      <span
-        className={clsx(
-          version === "1" && "text-medusa-fg-subtle",
-          version === "2" && "text-medusa-fg-disabled"
-        )}
-      >
-        V1
-      </span>
+      <span className={clsx("text-medusa-fg-disabled")}>V1</span>
       <Toggle
-        checked={version === "2"}
-        onCheckedChange={(checked) => changeVersion(checked ? "2" : "1")}
+        checked={true}
+        onCheckedChange={() => {
+          location.href = process.env.NEXT_PUBLIC_API_V1_URL + pathname
+        }}
       />
-      <span
-        className={clsx(
-          version === "1" && "text-medusa-fg-disabled",
-          version === "2" && "text-medusa-fg-subtle"
-        )}
-      >
-        V2
-      </span>
+      <span className={clsx("text-medusa-fg-subtle")}>V2</span>
     </div>
   )
 }

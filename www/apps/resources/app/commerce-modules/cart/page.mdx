@@ -1,0 +1,133 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Cart Module`,
+}
+
+# {metadata.title}
+
+The Cart Module is the `@medusajs/cart` NPM package that provides cart-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Cart Management
+
+Store and manage carts, including their addresses, line items, shipping methods, and more.
+
+```ts
+const cart = await cartModuleService.create({
+  currency_code: "usd",
+  shipping_address: {
+    address_1: "1512 Barataria Blvd",
+    country_code: "us",
+  },
+  items: [
+    {
+      title: "Shirt",
+      unit_price: 1000,
+      quantity: 1,
+    },
+  ],
+})
+```
+
+### Apply Promotions
+
+Apply promotions or discounts to line items and shipping methods by adding adjustment lines that are factored into their subtotals.
+
+```ts
+const lineAdjustments =
+  await cartModuleService.addLineItemAdjustments({
+    item_id: "cali_123",
+    code: "50OFF",
+    amount: 500,
+  })
+
+const shippingAdjustments =
+  await cartModuleService.addShippingMethodAdjustments({
+    shipping_method_id: "casm_123",
+    code: "FREESHIPPING",
+    amount: 1000,
+  })
+```
+
+### Cart Context and Scoping
+
+A cart is scoped to a sales channel, region, and a customer.
+
+When used with their respective modules and other commerce modules, you benefit from features like:
+
+- Checking product availability in a sales channel.
+- Retrieving pricing per region.
+- Applying promotions based on the customer's group.
+
+---
+
+## How to Use Cart Module's Service
+
+You can use the Cart Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.CART` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { res } from "express"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const cartModuleService: ICartModuleService =
+      req.scope.resolve(ModuleRegistrationName.CART)
+
+    res.json({
+      carts: await cartModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const cartModuleService: ICartModuleService =
+      container.resolve(ModuleRegistrationName.CART)
+
+    const carts = await cartModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { ICartModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const cartModuleService: ICartModuleService =
+      container.resolve(
+        ModuleRegistrationName.CART
+      )
+    
+    const carts = await cartModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

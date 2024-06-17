@@ -2,10 +2,12 @@ name: Medusa Pipeline
 on:
   push:
     branches:
-    - develop
+      - develop
+      - v1.x
   pull_request:
     branches:
-    - develop
+      - develop
+      - v1.x
 
 jobs:
   setup:
@@ -16,8 +18,8 @@ jobs:
     outputs:
       module-matrix: ${{ steps.set-module-matrix.outputs.matrix }}
       module-chunks: ${{ steps.set-module-chunks.outputs.chunks }}
-      api-matrix: ${{ steps.set-api-matrix.outputs.matrix }}
-      api-chunks: ${{ steps.set-api-chunks.outputs.chunks }}
+      http-matrix: ${{ steps.set-http-matrix.outputs.matrix }}
+      http-chunks: ${{ steps.set-http-chunks.outputs.chunks }}
       unit-tests-matrix: ${{ steps.set-unit-tests-matrix.outputs.matrix }}
       unit-tests-chunks: ${{ steps.set-unit-tests-chunks.outputs.chunks }}
     steps:
@@ -34,7 +36,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: 20
           cache: "yarn"
 
       - name: Assert changed
@@ -56,16 +58,16 @@ jobs:
         env:
           CHUNKS: ${{ steps.set-module-chunks.outputs.chunks }}
 
-      - id: set-api-chunks
-        name: Set API Chunks
-        working-directory: integration-tests/api
+      - id: set-http-chunks
+        name: Set HTTP Chunks
+        working-directory: integration-tests/http
         run: echo "chunks=$(yarn run jest --listTests --json | jq -cM '[_nwise(length / 2 | ceil)]')" >> $GITHUB_OUTPUT
 
-      - id: set-api-matrix
-        name: Set API Matrix
+      - id: set-http-matrix
+        name: Set HTTP Matrix
         run: echo "matrix=$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')" >> $GITHUB_OUTPUT
         env:
-          CHUNKS: ${{ steps.set-api-chunks.outputs.chunks }}
+          CHUNKS: ${{ steps.set-http-chunks.outputs.chunks }}
 
       - id: set-unit-tests-chunks
         name: Set Unit Tests Chunks
@@ -155,75 +157,75 @@ jobs:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
 
-  integration-tests-api-matrix:
-    needs: setup
-    name: Shard (${{ matrix.chunk }}) API Integration Tests
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        chunk: ${{ fromJSON(needs.setup.outputs.api-matrix) }}
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  integration-tests-http-matrix:
+   needs: setup
+   name: Shard (${{ matrix.chunk }}) HTTP Integration Tests
+   runs-on: ubuntu-latest
+   strategy:
+     fail-fast: false
+     matrix:
+       chunk: ${{ fromJSON(needs.setup.outputs.http-matrix) }}
+   env:
+     TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+     TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  
+   services:
+     redis:
+       image: redis
+       options: >-
+         --health-cmd "redis-cli ping"
+         --health-interval 1s
+         --health-timeout 10s
+         --health-retries 10
+       ports:
+         - 6379:6379
+     postgres:
+       image: postgres
+       env:
+         POSTGRES_PASSWORD: postgres
+         POSTGRES_USER: postgres
+       options: >-
+         --health-cmd pg_isready
+         --health-interval 1s
+         --health-timeout 10s
+         --health-retries 10
+       ports:
+         - 5432:5432
 
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 6379:6379
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 5432:5432
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v3
+       with:
+         fetch-depth: 0
+  
+     - name: Install dependencies
+       uses: ./.github/actions/cache-deps
+       with:
+         extension: pipeline
+  
+     - name: Run HTTP integration tests
+       run: yarn test:integration:http
+       env:
+         DB_USERNAME: postgres
+         DB_PASSWORD: postgres
+         NODE_OPTIONS: "--max_old_space_size=4096"
+         CHUNK: ${{ matrix.chunk }}
+         CHUNKS: ${{ needs.setup.outputs.http-chunks }}
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: pipeline
-
-      - name: Run API integration tests
-        run: yarn test:integration:api
-        env:
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres
-          NODE_OPTIONS: "--max_old_space_size=4096"
-          CHUNK: ${{ matrix.chunk }}
-          CHUNKS: ${{ needs.setup.outputs.api-chunks }}
-
-  integration-tests-api:
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    needs: integration-tests-api-matrix
-    steps:
-      - run: exit 1
-        if: >-
-          ${{
-               contains(needs.integration-tests-api-matrix.result, 'failure')
-            || contains(needs.integration-tests-api-matrix.result, 'cancelled')
-            || contains(needs.integration-tests-api-matrix.result, 'skipped')
-          }}
-      - run: exit 0
-        if: ${{ contains(needs.integration-tests-api-matrix.result, 'success') }}
+  integration-tests-http:
+   if: ${{ always() }}
+   runs-on: ubuntu-latest
+   needs: integration-tests-http-matrix
+   steps:
+     - run: exit 1
+       if: >-
+         ${{
+              contains(needs.integration-tests-http-matrix.result, 'failure')
+           || contains(needs.integration-tests-http-matrix.result, 'cancelled')
+           || contains(needs.integration-tests-http-matrix.result, 'skipped')
+         }}
+     - run: exit 0
+       if: ${{ contains(needs.integration-tests-http-matrix.result, 'success') }}
 
   unit-tests:
     if: ${{ always() }}
@@ -239,51 +241,6 @@ jobs:
           }}
       - run: exit 0
         if: ${{ contains(needs.unit-tests-matrix.result, 'success') }}
-
-  integration-tests-plugins:
-    needs: setup
-    runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: pipeline
-
-      - name: Run plugin integration tests
-        run: yarn test:integration:plugins
-        env:
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres
-          NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-modules-matrix:
     needs: setup
@@ -344,41 +301,3 @@ jobs:
           }}
       - run: exit 0
         if: ${{ contains(needs.integration-tests-modules-matrix.result, 'success') }}
-
-  integration-tests-repositories:
-    needs: setup
-    runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 1s
-          --health-timeout 10s
-          --health-retries 10
-        ports:
-          - 5432:5432
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: pipeline
-
-      - name: Run repository integration tests
-        run: yarn test:integration:repositories
-        env:
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres

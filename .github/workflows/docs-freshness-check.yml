@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
@@ -34,8 +34,8 @@ jobs:
 
       - name: Install Workspace dependencies
         run: yarn install
-        working-directory: docs-util
+        working-directory: www/utils
 
       - name: Perform Freshness Check
         run: yarn check:freshness
-        working-directory: docs-util/packages/scripts
+        working-directory: www/utils/packages/scripts

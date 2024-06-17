@@ -5,24 +5,25 @@
 import {
   CreateApiKeyDTO,
   CreateCampaignDTO,
-  CreateCustomerDTO,
+  CreateFulfillmentSetDTO,
   CreateInviteDTO,
   CreatePriceListDTO,
-  CreateProductCollectionDTO,
   CreatePromotionDTO,
   CreatePromotionRuleDTO,
-  CreateRegionDTO,
   CreateSalesChannelDTO,
+  CreateServiceZoneDTO,
+  CreateShippingOptionDTO,
+  CreateShippingProfileDTO,
   CreateStockLocationInput,
+  InventoryNext,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
-  UpdateCustomerDTO,
   UpdatePriceListDTO,
-  UpdateProductCollectionDTO,
   UpdatePromotionDTO,
   UpdatePromotionRuleDTO,
-  UpdateRegionDTO,
   UpdateSalesChannelDTO,
+  UpdateServiceZoneDTO,
+  UpdateShippingOptionDTO,
   UpdateStockLocationInput,
   UpdateStoreDTO,
   UpdateUserDTO,
@@ -31,20 +32,12 @@ import {
 // Auth
 export type EmailPassReq = { email: string; password: string }
 
-// Regions
-export type CreateRegionReq = CreateRegionDTO
-export type UpdateRegionReq = UpdateRegionDTO
-
 // Stores
 export type UpdateStoreReq = UpdateStoreDTO
 
 // API Keys
 export type CreateApiKeyReq = CreateApiKeyDTO
 export type UpdateApiKeyReq = UpdateApiKeyDTO
-
-// Customers
-export type CreateCustomerReq = CreateCustomerDTO
-export type UpdateCustomerReq = UpdateCustomerDTO
 
 // Sales Channels
 export type CreateSalesChannelReq = CreateSalesChannelDTO
@@ -61,14 +54,42 @@ export type CreateInviteReq = CreateInviteDTO
 // Stock Locations
 export type CreateStockLocationReq = CreateStockLocationInput
 export type UpdateStockLocationReq = UpdateStockLocationInput
+export type UpdateStockLocationSalesChannelsReq = {
+  add?: string[]
+  remove?: string[]
+}
+export type CreateFulfillmentSetReq = CreateFulfillmentSetDTO
+export type CreateServiceZoneReq = CreateServiceZoneDTO
+export type UpdateServiceZoneReq =
+  | UpdateServiceZoneDTO
 
-// Product Collections
-export type CreateProductCollectionReq = CreateProductCollectionDTO
-export type UpdateProductCollectionReq = UpdateProductCollectionDTO
+  // Shipping Options
+  | { region_id: string; amount: number }
+export type CreateShippingOptionReq = CreateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number }
+    | { region_id: string; amount: number }
+  )[]
+}
+export type UpdateShippingOptionReq = UpdateShippingOptionDTO & {
+  /**
+   * The shipping option pricing
+   */
+  prices: (
+    | { currency_code: string; amount: number; id?: string }
+    | { region_id: string; amount: number; id?: string }
+  )[]
+}
+
+// Shipping Profile
+export type CreateShippingProfileReq = CreateShippingProfileDTO
 
 // Price Lists
 export type CreatePriceListReq = CreatePriceListDTO
-export type UpdatePriceListReq = UpdatePriceListDTO
+export type UpdatePriceListReq = Omit<UpdatePriceListDTO, "id">
 export type AddPriceListPricesReq = {
   prices: {
     currency_code: string
@@ -80,7 +101,7 @@ export type DeletePriceListPricesReq = { ids: string[] }
 
 // Promotion
 export type CreatePromotionReq = CreatePromotionDTO
-export type UpdatePromotionReq = UpdatePromotionDTO
+export type UpdatePromotionReq = Omit<UpdatePromotionDTO, "id">
 export type BatchAddPromotionRulesReq = { rules: CreatePromotionRuleDTO[] }
 export type BatchRemovePromotionRulesReq = { rule_ids: string[] }
 export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
@@ -88,3 +109,10 @@ export type BatchUpdatePromotionRulesReq = { rules: UpdatePromotionRuleDTO[] }
 // Campaign
 export type CreateCampaignReq = CreateCampaignDTO
 export type UpdateCampaignReq = UpdateCampaignDTO
+
+// Reservations
+export type UpdateReservationReq = Omit<
+  InventoryNext.UpdateReservationItemInput,
+  "id"
+>
+export type CreateReservationReq = InventoryNext.CreateReservationItemInput

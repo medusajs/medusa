@@ -1,0 +1,145 @@
+get:
+  operationId: GetCustomersIdAddressesAddress_id
+  summary: List Addresses
+  description: >-
+    Retrieve a list of addresses in a customer. The addresses can be filtered by
+    fields like FILTER FIELDS. The addresses can also be paginated.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+    - name: address_id
+      in: path
+      description: The customer's address id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/get.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
+post:
+  operationId: PostCustomersIdAddressesAddress_id
+  summary: Add Addresses to Customer
+  description: Add a list of addresses to a customer.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+    - name: address_id
+      in: path
+      description: The customer's address id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/post.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}
+delete:
+  operationId: DeleteCustomersIdAddressesAddress_id
+  summary: Remove Addresses from Customer
+  description: >-
+    Remove a list of addresses from a customer. This doesn't delete the Address,
+    only the association between the Address and the customer.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The customer's ID.
+      required: true
+      schema:
+        type: string
+    - name: address_id
+      in: path
+      description: The customer's address id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_customers_{id}_addresses_{address_id}/delete.sh
+  tags:
+    - Customers
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

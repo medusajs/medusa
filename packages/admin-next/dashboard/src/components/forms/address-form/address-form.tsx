@@ -5,8 +5,8 @@ import { z } from "zod"
 
 import { Control } from "react-hook-form"
 import { AddressSchema } from "../../../lib/schemas"
-import { CountrySelect } from "../../common/country-select"
 import { Form } from "../../common/form"
+import { CountrySelect } from "../../inputs/country-select"
 
 type AddressFieldValues = z.infer<typeof AddressSchema>
 

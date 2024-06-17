@@ -1,0 +1,144 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `API Key Module`,
+}
+
+# {metadata.title}
+
+The API Key Module is the `@medusajs/api-key` NPM package that provides API-key-related features in your Medusa and Node.js applications.
+
+## Features
+
+### API Key Types and Management
+
+Store and manage API keys in your store. You can create both publishable and secret API keys for different use cases, such as:
+
+- Publishable API Key associated with resources like sales channels.
+- Authentication token for admin users to access Admin API Routes.
+- Password reset tokens when a user or customer requests to reset their password.
+
+```ts
+const pubApiKey = await apiKeyModuleService.create({
+  title: "Publishable API key",
+  type: "publishable",
+  created_by: "user_123",
+})
+
+const secretApiKey = await apiKeyModuleService.create({
+  title: "Authentication Key",
+  type: "secret",
+  created_by: "user_123",
+})
+```
+
+### Token Verification
+
+Verify tokens of secret API keys to authenticate users or actions, such as verifying a password reset token.
+
+```ts
+const authenticatedToken =
+    await apiKeyModuleService.authenticate("sk_123")
+
+if (!authenticatedToken) {
+  console.error("Couldn't verify token")
+} else {
+  console.log("Token verified successfully!")
+}
+```
+
+### Revoke Keys
+
+Revoke keys to disable their use permenantly.
+
+```ts
+const revokedKey = await apiKeyModuleService.revoke("apk_1", {
+  revoked_by: "user_123",
+})
+```
+
+### Roll API Keys
+
+Roll API keys by revoking a key then re-creating it.
+
+```ts
+const revokedKey = await apiKeyModuleService.revoke("apk_1", {
+  revoked_by: "user_123",
+})
+
+const newKey = await apiKeyModuleService.create({
+  title: revokedKey.title,
+  type: revokedKey.type,
+  created_by: revokedKey.created_by,
+})
+```
+
+---
+
+## How to Use API Key Module's Service
+
+You can use the API Key Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.API_KEY` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const apiKeyModuleService: IApiKeyModuleService =
+      request.scope.resolve(ModuleRegistrationName.API_KEY)
+
+    res.json({
+      api_keys: await apiKeyModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const apiKeyModuleService: IApiKeyModuleService =
+      container.resolve(ModuleRegistrationName.API_KEY)
+
+    const apiKeys = await apiKeyModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+      const apiKeyModuleService: IApiKeyModuleService =
+        container.resolve(
+          ModuleRegistrationName.API_KEY
+        )
+
+      const apiKeys = await apiKeyModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

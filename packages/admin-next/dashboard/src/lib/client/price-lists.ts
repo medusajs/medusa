@@ -32,20 +32,18 @@ async function deletePriceList(id: string) {
 }
 
 async function addPriceListPrices(id: string, payload: AddPriceListPricesReq) {
-  return postRequest<PriceListRes>(
-    `/admin/price-lists/${id}/prices/batch/add`,
-    payload
-  )
+  return postRequest<PriceListRes>(`/admin/price-lists/${id}/prices/batch`, {
+    create: payload.prices,
+  })
 }
 
 async function removePriceListPrices(
   id: string,
   payload: DeletePriceListPricesReq
 ) {
-  return postRequest<PriceListRes>(
-    `/admin/price-lists/${id}/prices/batch/remove`,
-    payload
-  )
+  return postRequest<PriceListRes>(`/admin/price-lists/${id}/prices/batch`, {
+    delete: payload.ids,
+  })
 }
 
 export const priceLists = {

@@ -1,0 +1,248 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `MeiliSearch Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[MeiliSearch](https://www.meilisearch.com/) is a super-fast, open source search engine built in Rust. It comes with a wide range of features including typo-tolerance, filtering, and sorting.
+
+MeiliSearch also provides a pleasant developer experience, as it is extremely intuitive and newcomer-friendly. So, even if you're new to the search engine ecosystem, [their documentation](https://docs.meilisearch.com/) is resourceful enough for everyone to go through and understand.
+
+---
+
+## Install the MeiliSearch Plugin
+
+<Note type="check">
+
+- [MeiliSearch installed](https://docs.meilisearch.com/learn/getting_started/quick_start.html#setup-and-installation)
+- [MeiliSearch master key](https://www.meilisearch.com/docs/learn/security/master_api_keys#protecting-a-meilisearch-instance)
+
+</Note>
+
+To install the Algolia plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-meilisearch
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "config", "The MeiliSearch connection configuration object."],
+  ["7", "host", "The MeiliSearch host."],
+  ["8", "apiKey", "The MeiliSearch master key."],
+  ["10", "settings", "Settings of indices created in MeiliSearch."],
+  ["11", "products", "The name of an index to create. In this example, it's `products`."],
+  ["12", "indexSettings", "The settings of the index."],
+  ["13", "searchableAttributes", "The attributes that can be searched in the index."],
+  ["18", "displayedAttributes", "The attributes to retrieve in the search results."],
+  ["27", "transformer", "A function that shapes the object to be indexed."]
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-meilisearch`,
+    options: {
+      config: {
+        host: process.env.MEILISEARCH_HOST,
+        apiKey: process.env.MEILISEARCH_API_KEY,
+      },
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: [
+              "title", 
+              "description",
+              "variant_sku",
+            ],
+            displayedAttributes: [
+              "id", 
+              "title", 
+              "description", 
+              "variant_sku", 
+              "thumbnail", 
+              "handle",
+            ],
+          },
+          transformer: (product) => ({ 
+            id: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
+
+### MeiliSearch Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `config`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of MeiliSearch connection configurations. It accepts two properties:
+
+      - `host`: A string indicating the MeiliSearch host. For example, `http://127.0.0.1:7700`.
+      - `apiKey`: A string indicating the [MeiliSearch master key](https://www.meilisearch.com/docs/learn/security/master_api_keys#protecting-a-meilisearch-instance).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of settings. Its keys are names of indices to create in MeiliSearch (in the example above, `products`), and values are an object of the index's settings.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings.[indexName].indexSettings`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of index settings. It accepts two properties:
+
+      - `searchableAttributes`: An array of field names that can be searched.
+      - `displayedAttributes`: An array of field names retrieved in search results.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      If `settings` is provided, this property is required.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings.[indexName].transformer`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A function used to change the shape of the indexed records. For example, you can add details related to variants or custom relations, or filter out certain products.
+
+      The function accepts as a parameter that data model object to index, such as a product, and returns an object to be indexed.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings.[indexName].primaryKey`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating which field in the data model acts as a primary key of a document. It's used to enforce unique documents in an index. Learn more in [MeiliSearch's documentation](https://docs.meilisearch.com/learn/core_concepts/primary_key.html#primary-field).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `id`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+MEILISEARCH_HOST=<YOUR_MEILISEARCH_HOST>
+MEILISEARCH_API_KEY=<YOUR_MASTER_KEY>
+```
+
+---
+
+## Test the Plugin
+
+<Note type="check">
+
+- [MeiliSearch running in the background](https://www.meilisearch.com/docs/learn/getting_started/quick_start#running-meilisearch).
+
+</Note>
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, send a `POST` request to the `/store/products/search`:
+
+```bash apiTesting testApiUrl="http://localhost:9000/store/products/search" testApiMethod="POST" testBodyParams={{"q": "shirt"}}
+curl -X POST http://localhost:9000/store/products/search \ 
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "q": "shirt"
+  }'
+```
+
+The response contains a `hits` array with the results from the MeiliSearch search engine.
+
+### Add or Update Products
+
+If you add or update products in your Medusa application, it'll be reflected in the MeiliSearch indices.
+
+---
+
+## Add Search to your Storefront
+
+<Note type="check">
+
+- [MeiliSearch API key](https://www.meilisearch.com/docs/learn/security/master_api_keys#creating-an-api-key).
+
+</Note>
+
+### Next.js Starter
+
+Refer to the [Next.js Starter guide](../../../nextjs-starter/page.mdx#configure-meilisearch) to learn how to configure MeiliSearch.
+
+### Custom Storefront
+
+To integrate MeiliSearch's search functionalities in your custom storefront, refer to [MeiliSearch's documentation](https://docs.meilisearch.com/learn/what_is_meilisearch/sdks.html#front-end-tools).

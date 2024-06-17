@@ -1,0 +1,71 @@
+---
+sidebar_position: 2
+sidebar_label: Manage Payments
+---
+
+import { 
+  EllipsisHorizontal, 
+} from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Order's Payments`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage an order’s payment, including capturing and refunding the payment.
+
+## Overview
+
+When a customer places an order, using the payment provider they choose during checkout, they authorize the payment.
+
+The payment isn’t automatically captured. You must capture it manually from the Medusa Admin.
+
+---
+
+## Capture Payment
+
+<Note>
+
+Payment is only captured once.
+
+</Note>
+
+To capture an order’s payment:
+
+1. Open the order details page.
+2. Scroll to the Payments section.
+3. Click on the Capture button.
+
+---
+
+## Refund Payment
+
+<Note type="warning">
+
+Refunding payments is irreversible.
+
+</Note>
+
+<Note type="check">
+
+Payment can only be refunded if it's captured.
+
+</Note>
+
+{/* TODO check info after #5 */}
+
+To refund an order’s payment:
+
+1. Open the order details page.
+2. Scroll to the Payment section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+4. Choose "Refund" from the dropdown.
+5. In the drawer that opens:
+    - Enter the amount to refund in the "Refund amount" field.
+    - In the Reason field, choose a reason for the refund.
+    - Optionally enter a note that the customer can view in the Note field.
+    - If you don’t want the customer to receive a notification that the payment has been refunded, uncheck the “Send notifications” checkbox.
+6. Once you’re done, click on the Complete button.
+
+Check refund details in the Payment, Summary, and Timeline sections.

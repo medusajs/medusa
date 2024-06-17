@@ -1,0 +1,126 @@
+export const metadata = {
+  title: `${pageNumber} Middlewares`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about middlewares and how to create them.
+
+## What is a Middleware?
+
+A middleware is a function executed when a request is sent to an API Route.
+
+---
+
+## How to Create a Middleware?
+
+Middlewares are defined in the special file `src/api/middlewares.ts`. The file must export an object of middleware configurations.
+
+For example:
+
+```ts title="src/api/middlewares.ts"
+import { MiddlewaresConfig } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store*",
+      middlewares: [
+        (req, res, next) => {
+          console.log("Received a request!")
+
+          next()
+        },
+      ],
+    },
+  ],
+}
+```
+
+The middleware configurations object has the property `routes`. Its value is an array of middleware route objects, where each object is a middleware to apply to a route pattern.
+
+In the example above, you define a middleware that logs the message `Received a request!` whenever a request is sent to an API route path starting with `/store`.
+
+<Note>
+
+The `matcher` property can be a string or a regular expression.
+
+</Note>
+
+### Test Middleware
+
+To test the middleware:
+
+1. Start the application:
+
+```bash npm2yarn
+npm run dev
+```
+
+2. Send a request to any API route starting with `/store`.
+3. See the following message in the terminal:
+
+```bash
+Received a request!
+```
+
+---
+
+## When to Use Middlewares
+
+<Note type="success" title="Use middlewares when">
+
+- You want to protect API routes by a custom condition.
+- You're modifying the request body.
+
+</Note>
+
+---
+
+## Middleware Function Parameters
+
+The middleware function accepts three parameters:
+
+1. A request object of type `MedusaRequest`.
+2. A response object of type `MedusaResponse`.
+3. A function of type `MedusaNextFunction` that executes the next middleware in the stack.
+
+<Note title="Important">
+
+You must call the `next` function in the middleware. Otherwise, other middlewares and the API route handler won’t execute.
+
+</Note>
+
+---
+
+## Restrict HTTP Methods
+
+In addition to the `matcher` configuration, you can restrict which HTTP methods the middleware is applied to.
+
+For example:
+
+export const highlights = [["7", "", "Apply the middleware only on `POST` requests"]]
+
+```ts title="src/api/middlewares.ts" highlights={highlights}
+import { MiddlewaresConfig } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store*",
+      method: ["POST", "PUT"],
+      middlewares: [
+        (req, res, next) => {
+          console.log("Received a request!")
+
+          next()
+        },
+      ],
+    },
+  ],
+}
+```
+
+The object in the `routes` array accepts the property `method` whose value is one or more HTTP methods to apply the middleware to.
+
+This applies the middleware only when a `POST` or `PUT` request is sent to an API route path starting with `/store`.

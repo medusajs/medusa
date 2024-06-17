@@ -1,0 +1,99 @@
+import { CheckCircleSolid, BuildingStorefront, BuildingsSolid, ComputerDesktop, FlyingBox } from "@medusajs/icons"
+import { config } from "@/config"
+
+export const metadata = {
+  title: `${pageNumber} Introduction - ${config.titleSuffix}`,
+}
+
+# {pageNumber} Introduction
+
+Medusa is a digital commerce platform with a built-in framework for customizations and integrations.
+
+Medusa's framework includes two types of tools:
+
+1. Modules that provide commerce functionalities, such as Product, Order, and Cart modules.
+2. Customization tools to build your business features, such as custom data models, business logic, flows, and API endpoints.
+
+With these tools, you save time you would spend with other platforms on maintaining and setting up your customizations. Instead, you rapidly build important features for your business.
+
+--- 
+
+## Get started
+
+
+<Note type="check">
+
+- [Node.js v16+](https://nodejs.org/en/download)
+- [Git CLI tool](https://git-scm.com/downloads)
+- [PostgreSQL](https://www.postgresql.org/download/)
+
+</Note>
+
+Create your first Medusa store by running the following command:
+
+```bash
+npx create-medusa-app@latest --v2
+```
+
+---
+
+## Who is Medusa for
+
+Medusa is for ambitious businesses and developers that are limited by traditional ecommerce solutions:
+
+- You want rich commerce features that are customizable and flexible enough to support your business use case as if you built them from scratch.
+- You want your custom requirements built as an integral part of the commerce application’s features and architecture, rather than hacked into it.
+- You want to customize your commerce flows by integrating external services without data inconsistency and irregularity.
+
+<CardList items={[
+  {
+    title: "Use Case: D2C",
+    text: "How Matt Sleeps built a unique D2C experience with Medusa",
+    href: "https://medusajs.com/blog/matt-sleeps/",
+    startIcon: <FlyingBox />,
+    isExternal: true
+  },
+  {
+    title: "Use Case: OMS",
+    text: "How Makro Pro Built an OMS with Medusa",
+    href: "https://medusajs.com/blog/makro-pro/",
+    startIcon: <CheckCircleSolid />,
+    isExternal: true
+  },
+  {
+    title: "Use Case: Marketplace",
+    text: "How Foraged built a custom marketplace with Medusa",
+    href: "https://medusajs.com/blog/foraged/",
+    startIcon: <BuildingStorefront />,
+    isExternal: true
+  },
+  {
+    title: "Use Case: POS",
+    text: "How Tekla built a global webshop and a POS system with Medusa",
+    href: "https://medusajs.com/blog/tekla-pos/",
+    startIcon: <ComputerDesktop />,
+    isExternal: true
+  },
+  {
+    title: "Use Case: B2B",
+    text: "How Visionary built B2B commerce with Medusa",
+    href: "https://medusajs.com/blog/visionary/",
+    startIcon: <BuildingsSolid />,
+    isExternal: true
+  },
+  {
+    title: "Use Case: Platform",
+    text: "How Catalog built a B2B platform for SMBs with Medusa",
+    href: "https://medusajs.com/blog/catalog/",
+    startIcon: <BuildingsSolid />,
+    isExternal: true
+  }
+]} itemsPerRow={2} />
+
+---
+
+## Who is this book for
+
+This book is for TypeScript or JavaScript developers looking to master Medusa and build their commerce applications. By following this book, you’ll learn about Medusa’s concept, from basic to advanced, with easy-to-follow examples to assist you along the way.
+
+By the end of this book, you’ll be an expert Medusa developer, leading teams using Medusa from the beginning till deployment.

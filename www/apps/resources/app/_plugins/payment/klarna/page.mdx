@@ -1,0 +1,271 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Klarna Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Klarna](https://www.klarna.com/) is a payment provider that allows customers to pay in different ways including direct payment, installment payments, payment after delivery, and more.
+
+---
+
+## Install the Klarna Plugin
+
+<Note type="check">
+
+- [Klarna business account](https://slack.com)
+
+</Note>
+
+To install the Klarna plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-payment-klarna
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "backend_url", "The Klarna URL."],
+  ["7", "url", "The base Klarna URL based on your environment."],
+  ["8", "user", "The Klarna Merchant ID (MID)."],
+  ["9", "password", "The string associated with the Klarna Merchant ID (MID) used for authorization."],
+  ["10", "merchant_urls", "The merchant URLs to use for orders."],
+  ["15", "payment_collection_urls", "The merchant URLs to use for payment collections."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-payment-klarna`,
+    options: {
+      backend_url: process.env.KLARNA_BACKEND_URL,
+      url: process.env.KLARNA_URL,
+      user: process.env.KLARNA_USER,
+      password: process.env.KLARNA_PASSWORD,
+      merchant_urls: {
+        terms: process.env.KLARNA_MERCHANT_TERMS_URL,
+        checkout: process.env.KLARNA_MERCHANT_CHECKOUT_URL,
+        confirmation: process.env.KLARNA_MERCHANT_CONFIRMATION_URL,
+      },
+      payment_collection_urls: {
+        terms: process.env.KLARNA_PAYCOL_TERMS_URL,
+        checkout: process.env.KLARNA_PAYCOL_CHECKOUT_URL,
+        confirmation: process.env.KLARNA_PAYCOL_CONFIRMATION_URL,
+      },
+    },
+  },
+]
+```
+
+### Klarna Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `backend_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Klarna URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [base Klarna URL based on your environment](https://docs.klarna.com/api/api-urls/).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `user`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The [Klarna Merchant ID (MID)](https://www.klarna.com/us/business/merchant-support/what-is-a-merchant-id/).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `password`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The string associated with the Klarna Merchant ID (MID) used for [API authorization](https://docs.klarna.com/api/authentication/).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `merchant_urls`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of merchant URLs passed to [Klarna's APIs](https://docs.klarna.com/api/payments/#operation/createCreditSession) for orders. It accepts the following keys:
+
+      - `terms`: The terms URL.
+      - `checkout`: The checkout URL.
+      - `confirmation`: The confirmation URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `payment_collection_urls`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of merchant URLs passed to [Klarna's APIs](https://docs.klarna.com/api/payments/#operation/createCreditSession) for payment collections. It accepts the following keys:
+
+      - `terms`: The terms URL.
+      - `checkout`: The checkout URL.
+      - `confirmation`: The confirmation URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `language`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating [Klarna's locale](https://docs.klarna.com/klarna-payments/in-depth-knowledge/puchase-countries-currencies-locales/#data-mapping).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `en-US`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+KLARNA_BACKEND_URL=<YOUR_KLARNA_BACKEND_URL>
+KLARNA_URL=<YOUR_KLARNA_URL>
+KLARNA_USER=<YOUR_KLARNA_USER>
+KLARNA_PASSWORD=<YOUR_KLARNA_PASSWORD>
+KLARNA_MERCHANT_TERMS_URL=<YOUR_KLARNA_MERCHANT_TERMS_URL>
+KLARNA_MERCHANT_CHECKOUT_URL=<YOUR_KLARNA_MERCHANT_CHECKOUT_URL>
+KLARNA_MERCHANT_CONFIRMATION_URL=<YOUR_KLARNA_MERCHANT_CONFIRMATION_URL>
+KLARNA_PAYCOL_TERMS_URL=<YOUR_KLARNA_PAYCOL_TERMS_URL>
+KLARNA_PAYCOL_CHECKOUT_URL=<YOUR_KLARNA_PAYCOL_CHECKOUT_URL>
+KLARNA_PAYCOL_CONFIRMATION_URL=<YOUR_KLARNA_PAYCOL_CONFIRMATION_URL>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, you must enable the Klarna Payment Provider in at least one region to use it. You can do that using either the [Medusa Admin](!user-guide!/settings/regions/providers), or the [Admin API Routes](https://docs.medusajs.com/api/admin#regions_postregionsregionpaymentproviders).
+
+Finally, try to place an order using either a [storefront](../../../nextjs-starter/page.mdx) or the [Store API Routes](https://docs.medusajs.com/api/store). You can use Klarna during checkout and to process the order's payment.

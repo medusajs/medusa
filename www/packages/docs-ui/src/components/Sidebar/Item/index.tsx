@@ -16,6 +16,8 @@ export type SidebarItemProps = {
   expandItems?: boolean
   currentLevel?: number
   isSidebarTitle?: boolean
+  sidebarHasParent?: boolean
+  isMobile?: boolean
 } & React.AllHTMLAttributes<HTMLLIElement>
 
 export const SidebarItem = ({
@@ -24,6 +26,8 @@ export const SidebarItem = ({
   expandItems = false,
   className,
   currentLevel = 1,
+  sidebarHasParent = false,
+  isMobile = false,
 }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
   const {
@@ -34,8 +38,8 @@ export const SidebarItem = ({
     sidebarRef,
   } = useSidebar()
   const active = useMemo(
-    () => isItemActive(item, nested),
-    [isItemActive, item, nested]
+    () => !isMobile && isItemActive(item, nested),
+    [isItemActive, item, nested, isMobile]
   )
   const collapsed = !expandItems && !isItemActive(item, true)
   const ref = useRef<HTMLLIElement>(null)
@@ -53,18 +57,15 @@ export const SidebarItem = ({
   const classNames = useMemo(
     () =>
       clsx(
-        "flex items-center justify-between gap-docs_0.5 rounded-docs_sm px-docs_0.5 py-[6px] hover:no-underline",
-        "border",
+        "flex items-center justify-between gap-docs_0.5 rounded-docs_xs px-docs_0.5 py-[6px]",
+        "hover:no-underline hover:bg-medusa-bg-component-hover",
         !canHaveTitleStyling && "text-compact-small-plus text-medusa-fg-subtle",
         canHaveTitleStyling &&
           "text-compact-x-small-plus text-medusa-fg-muted uppercase",
+        !item.path && "cursor-default",
         item.path !== undefined &&
-          active && ["!text-medusa-fg-base bg-medusa-bg-base-pressed"],
-        (item.path === undefined || !active) && "border-transparent",
-        item.path !== undefined && active && " border-medusa-border-base",
-        item.path !== undefined &&
-          !active &&
-          "hover:bg-medusa-bg-base-hover border-transparent"
+          active &&
+          "text-medusa-fg-base bg-medusa-bg-component-hover"
       ),
     [canHaveTitleStyling, active, item.path]
   )
@@ -131,7 +132,11 @@ export const SidebarItem = ({
   return (
     <li
       className={clsx(
-        canHaveTitleStyling && !collapsed && "my-docs_1.5",
+        canHaveTitleStyling &&
+          !collapsed && [
+            !sidebarHasParent && "my-docs_1.5",
+            sidebarHasParent && "[&:not(:first-child)]:my-docs_1.5",
+          ],
         !canHaveTitleStyling &&
           !nested &&
           active &&

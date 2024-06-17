@@ -1,0 +1,42 @@
+post:
+  operationId: PostPromotionsIdRulesBatchAdd
+  summary: Add Adds to Promotion
+  description: Add a list of adds to a promotion.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The promotion's ID.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminPostPromotionsPromotionRulesBatchAddReq.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_promotions_{id}_rules_batch_add/post.sh
+  tags:
+    - Promotions
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

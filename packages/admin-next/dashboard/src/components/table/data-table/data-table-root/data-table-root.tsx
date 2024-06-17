@@ -183,6 +183,8 @@ export const DataTableRoot = <TData,>({
                 const to = navigateTo ? navigateTo(row) : undefined
                 const isRowDisabled = hasSelect && !row.getCanSelect()
 
+                const isOdd = row.depth % 2 !== 0
+
                 return (
                   <Table.Row
                     key={row.id}
@@ -190,10 +192,11 @@ export const DataTableRoot = <TData,>({
                     className={clx(
                       "transition-fg group/row [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
                       {
+                        "bg-ui-bg-subtle hover:bg-ui-bg-subtle-hover": isOdd,
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
+                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                           isRowDisabled,
                       }
                     )}
@@ -228,6 +231,8 @@ export const DataTableRoot = <TData,>({
                           className={clx({
                             "bg-ui-bg-base group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover group-hover/row:bg-ui-bg-base-hover transition-fg sticky left-0 after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                               isStickyCell,
+                            "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
+                              isOdd && isStickyCell,
                             "left-[68px]":
                               isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":

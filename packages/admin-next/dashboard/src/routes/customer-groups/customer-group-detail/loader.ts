@@ -1,13 +1,15 @@
-import { AdminCustomerGroupsRes } from "@medusajs/medusa"
-import { Response } from "@medusajs/medusa-js"
-import { adminProductKeys } from "medusa-react"
 import { LoaderFunctionArgs } from "react-router-dom"
-
-import { medusa, queryClient } from "../../../lib/medusa"
+import { productsQueryKeys } from "../../../hooks/api/products"
+import { client } from "../../../lib/client"
+import { queryClient } from "../../../lib/query-client"
+import { HttpTypes } from "@medusajs/types"
 
 const customerGroupDetailQuery = (id: string) => ({
-  queryKey: adminProductKeys.detail(id),
-  queryFn: async () => medusa.admin.customerGroups.retrieve(id),
+  queryKey: productsQueryKeys.detail(id),
+  queryFn: async () =>
+    client.customerGroups.retrieve(id, {
+      fields: "+customers.id",
+    }),
 })
 
 export const customerGroupLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -15,8 +17,8 @@ export const customerGroupLoader = async ({ params }: LoaderFunctionArgs) => {
   const query = customerGroupDetailQuery(id!)
 
   return (
-    queryClient.getQueryData<Response<AdminCustomerGroupsRes>>(
-      query.queryKey
-    ) ?? (await queryClient.fetchQuery(query))
+    queryClient.getQueryData<{
+      customer_group: HttpTypes.AdminCustomerGroup
+    }>(query.queryKey) ?? (await queryClient.fetchQuery(query))
   )
 }

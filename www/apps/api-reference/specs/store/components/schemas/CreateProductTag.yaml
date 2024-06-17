@@ -1,0 +1,10 @@
+type: object
+description: The tag's tags.
+x-schemaName: CreateProductTag
+required:
+  - value
+properties:
+  value:
+    type: string
+    title: value
+    description: The tag's value.

@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `${pageNumber} Module's Container`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll learn about the module's container and how to register resources in that container.
+
+## Module's Container
+
+Each module has a local container only used by the resources of that module.
+
+So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container.
+
+---
+
+## Resources Registered in the Module's Container
+
+Some resources registered in the module's container are:
+
+- The module's main service.
+- A generated service for each data model in your module. The registration name is the camel-case data model name suffixed by `Service`. For example, `myCustomService`.
+
+![Example of registered resources in the container](https://res.cloudinary.com/dza7lstvk/image/upload/v1714400573/Medusa%20Book/modules-container_mkcbaq.jpg)
+
+---
+
+## Resolve Resources
+
+### Services
+
+A service's constructor accepts as a first parameter an object used to resolve resources registered in the module's container.
+
+For example:
+
+```ts highlights={[["5"], ["12"]]}
+import { ModulesSdkTypes } from "@medusajs/types"
+import { MyCustom } from "./models/my-custom"
+
+type InjectedDependencies = {
+  myCustomService: ModulesSdkTypes.InternalModuleService<any>
+}
+
+export default class HelloModuleService {
+  protected myCustomService_: 
+    ModulesSdkTypes.InternalModuleService<MyCustom>
+  constructor({ myCustomService }: InjectedDependencies) {
+    this.myCustomService_ = myCustomService
+  }
+
+  // ...
+}
+```
+
+### Loader
+
+A loader function in a module accepts as a parameter an object having the property `container`. Its value is the module's container used to resolve resources.
+
+For example:
+
+```ts highlights={[["8"]]}
+import {
+  LoaderOptions,
+} from "@medusajs/modules-sdk"
+
+export default function helloWorldLoader({
+  container,
+}: LoaderOptions) {
+  const myCustomService = container.resolve("myCustomService")
+  
+  // ...
+}
+```

@@ -1,0 +1,57 @@
+---
+sidebar_position: 2
+sidebar_label: "Executions"
+---
+
+import { ArrowsPointingOut } from "@medusajs/icons"
+
+export const metadata = {
+  title: `View Executions`,
+}
+
+# {metadata.title}
+
+In this documentation, you'll learn how to view executions in your store and their details.
+
+## What is an Execution?
+
+An execution refers to a workflow that's been executed. You can view a workflow execution's progress, details, and raw JSON data all from the Medusa Admin.
+
+---
+
+## View Executions
+
+To view all workflow executions, go to Settings → Executions. You'll find a list of executions with general details.
+
+---
+
+## View Execution Details
+
+To view an execution's details:
+
+1. Go to Settings → Executions.
+2. Click on the execution to view it.
+
+On the execution's page, you'll find multiple sections with the execution's details.
+
+### Summary Section
+
+In the first section, you'll find a summary of the execution, including its status, workflow ID, transaction ID, and progress.
+
+### Timeline
+
+The timeline diagram shows you the execution step by step. You can zoom in and pan to view the entire diagram.
+
+If you click on a step, you'll be shown the details in the History section.
+
+### History
+
+The History section shows you the execution of the steps in a linear path.
+
+If you click on a step, you'll see its definition, output, and compensation input.
+
+For a failed step, you'll see the error that occurred.
+
+### JSON
+
+The JSON section allows you to see view the execution's details as a raw JSON by clicking the <InlineIcon Icon={ArrowsPointingOut} alt="expand" /> icon.

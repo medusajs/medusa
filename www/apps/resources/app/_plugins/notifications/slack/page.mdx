@@ -1,0 +1,160 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Slack Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+Slack is a communication platform used by teams and organizations for collaboration and messaging. This plugin sends merchants a slack message when a new order is placed.
+
+The notification contains details about the order including:
+
+- Customer's details and address.
+- Items ordered, their quantity, and the price.
+- Order totals including Tax amount.
+- Promotion details if there are any (this is optional and can be turned off).
+
+---
+
+## Install the Slack Plugin
+
+<Note type="check">
+
+- [Slack account](https://slack.com)
+- [A Slack app](https://api.slack.com/start/quickstart#creating)
+- [Activate incoming webhooks in Slack and create a new webhook](https://api.slack.com/start/quickstart#webhooks)
+
+</Note>
+
+To install the Slack plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-slack-notification
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "slack_url", "The Slack webhook URL."],
+  ["7", "show_discount_code", "Whether to show the discount code after creating the Slack app."],
+  ["8", "admin_orders_url", "The prefix of the URL of the order detail pages on your admin panel."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-slack-notification`,
+    options: {
+      slack_url: process.env.SLACK_WEBHOOK_URL,
+      show_discount_code: false,
+      admin_orders_url: `http://localhost:7001/a/orders`,
+    },
+  },
+]
+```
+
+### Twilio SMS Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `slack_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Slack webhook URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `show_discount_code`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A boolean whether to show the discount code after creating the Slack app.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `false`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `admin_orders_url`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the prefix of the URL of the order detail pages on your admin panel.
+      If you’re using Medusa Admin locally, it should be `http://localhost:7001/a/orders`. This results in a URL like `http://localhost:7001/a/orders/order_01FYP7DM7PS43H9VQ1PK59ZR5G`.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No, but if not provided the order URL in the messages will be `/order_01FYP7DM7PS43H9VQ1PK59ZR5G`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+SLACK_WEBHOOK_URL=<YOUR_WEBHOOK_URL>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, place an order using either a [storefront](../../../nextjs-starter/page.mdx) or the [Store API Routes](https://docs.medusajs.com/api/store). A message is sent to the DM or slack channel you configured in the Slack webhook.

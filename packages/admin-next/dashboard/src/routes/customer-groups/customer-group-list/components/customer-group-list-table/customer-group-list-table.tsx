@@ -1,12 +1,21 @@
-import { Button, Container, Heading } from "@medusajs/ui"
-import { useAdminCustomerGroups } from "medusa-react"
+import { PencilSquare, Trash } from "@medusajs/icons"
+import { Button, Container, Heading, toast, usePrompt } from "@medusajs/ui"
+import { createColumnHelper } from "@tanstack/react-table"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
+
+import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
+import {
+  useCustomerGroups,
+  useDeleteCustomerGroup,
+} from "../../../../../hooks/api/customer-groups"
+import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns/use-customer-group-table-columns"
+import { useCustomerGroupTableFilters } from "../../../../../hooks/table/filters/use-customer-group-table-filters"
+import { useCustomerGroupTableQuery } from "../../../../../hooks/table/query/use-customer-group-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useCustomerGroupTableColumns } from "./use-customer-group-table-columns"
-import { useCustomerGroupTableFilters } from "./use-customer-group-table-filters"
-import { useCustomerGroupTableQuery } from "./use-customer-group-table-query"
+import { HttpTypes } from "@medusajs/types"
 
 const PAGE_SIZE = 20
 
@@ -17,19 +26,13 @@ export const CustomerGroupListTable = () => {
     pageSize: PAGE_SIZE,
   })
   const { customer_groups, count, isLoading, isError, error } =
-    useAdminCustomerGroups(
-      {
-        ...searchParams,
-        expand: "customers",
-        fields: "id,name,customers,customers.id",
-      },
-      {
-        keepPreviousData: true,
-      }
-    )
+    useCustomerGroups({
+      ...searchParams,
+      fields: "id,name,customers.id",
+    })
 
   const filters = useCustomerGroupTableFilters()
-  const columns = useCustomerGroupTableColumns()
+  const columns = useColumns()
 
   const { table } = useDataTable({
     data: customer_groups ?? [],
@@ -68,5 +71,90 @@ export const CustomerGroupListTable = () => {
         isLoading={isLoading}
       />
     </Container>
+  )
+}
+
+const CustomerGroupRowActions = ({
+  group,
+}: {
+  group: HttpTypes.AdminCustomerGroup
+}) => {
+  const { t } = useTranslation()
+  const prompt = usePrompt()
+
+  const { mutateAsync } = useDeleteCustomerGroup(group.id)
+
+  const handleDelete = async () => {
+    const res = await prompt({
+      title: t("customerGroups.delete.title"),
+      description: t("customerGroups.delete.description", {
+        name: group.name,
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+    })
+
+    if (!res) {
+      return
+    }
+
+    await mutateAsync(undefined, {
+      onSuccess: () => {
+        toast.success(t("general.success"), {
+          description: t("customerGroups.delete.successToast", {
+            name: group.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+      },
+      onError: (error) => {
+        toast.error(t("general.error"), {
+          description: error.message,
+          dismissLabel: t("actions.close"),
+        })
+      },
+    })
+  }
+
+  return (
+    <ActionMenu
+      groups={[
+        {
+          actions: [
+            {
+              label: t("actions.edit"),
+              to: `/customer-groups/${group.id}/edit`,
+              icon: <PencilSquare />,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              label: t("actions.delete"),
+              onClick: handleDelete,
+              icon: <Trash />,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
+
+const useColumns = () => {
+  const columns = useCustomerGroupTableColumns()
+
+  return useMemo(
+    () => [
+      ...columns,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => <CustomerGroupRowActions group={row.original} />,
+      }),
+    ],
+    [columns]
   )
 }

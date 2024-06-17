@@ -1,6 +1,6 @@
 import { stringify } from "qs"
 
-const baseUrl = "http://localhost:9000"
+const baseUrl = __BACKEND_URL__ ?? "http://localhost:9000"
 
 const commonHeaders: HeadersInit = {
   Accept: "application/json",
@@ -51,6 +51,7 @@ async function makeRequest<
 
   if (!response.ok) {
     const errorData = await response.json()
+
     // Temp: Add a better error type
     throw new Error(`API error ${response.status}: ${errorData.message}`)
   }

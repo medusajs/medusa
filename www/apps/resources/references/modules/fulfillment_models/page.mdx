@@ -1,0 +1,44 @@
+---
+displayed_sidebar: fulfillmentModelReference
+slug: /references/fulfillment/models
+---
+
+import { TypeList } from "docs-ui"
+
+# Fulfillment Module Data Models Reference
+
+This documentation provides a reference to the data models in the Fulfillment Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	Fulfillment }|--|{ ShippingOption : shipping_option
+	Fulfillment }|--|{ FulfillmentProvider : provider
+	Fulfillment ||--|| Address : delivery_address
+	Fulfillment ||--|| FulfillmentItem : items
+	Fulfillment ||--|| FulfillmentLabel : labels
+	FulfillmentSet ||--|| ServiceZone : service_zones
+	GeoZone }|--|{ ServiceZone : service_zone
+	ServiceZone ||--|| ShippingOption : shipping_options
+	ShippingOption }|--|{ ShippingProfile : shipping_profile
+	ShippingOption }|--|{ FulfillmentProvider : provider
+	ShippingOption ||--|| ShippingOptionType : type
+	ShippingOption ||--|| ShippingOptionRule : rules
+
+```
+
+## Classes
+
+- [Address](../../fulfillment_models/classes/fulfillment_models.Address/page.mdx)
+- [FulfillmentItem](../../fulfillment_models/classes/fulfillment_models.FulfillmentItem/page.mdx)
+- [FulfillmentLabel](../../fulfillment_models/classes/fulfillment_models.FulfillmentLabel/page.mdx)
+- [FulfillmentProvider](../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)
+- [FulfillmentSet](../../fulfillment_models/classes/fulfillment_models.FulfillmentSet/page.mdx)
+- [Fulfillment](../../fulfillment_models/classes/fulfillment_models.Fulfillment/page.mdx)
+- [GeoZone](../../fulfillment_models/classes/fulfillment_models.GeoZone/page.mdx)
+- [ServiceZone](../../fulfillment_models/classes/fulfillment_models.ServiceZone/page.mdx)
+- [ShippingOptionRule](../../fulfillment_models/classes/fulfillment_models.ShippingOptionRule/page.mdx)
+- [ShippingOptionType](../../fulfillment_models/classes/fulfillment_models.ShippingOptionType/page.mdx)
+- [ShippingOption](../../fulfillment_models/classes/fulfillment_models.ShippingOption/page.mdx)
+- [ShippingProfile](../../fulfillment_models/classes/fulfillment_models.ShippingProfile/page.mdx)

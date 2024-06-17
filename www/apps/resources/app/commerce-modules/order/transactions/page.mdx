@@ -1,0 +1,79 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Transactions`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about an order’s transactions and its use.
+
+## What is a Transaction?
+
+A transaction represents any order payment process, such as capturing or refunding an amount. It’s represented by the [Transaction data model](/references/order/models/Transaction).
+
+The transaction’s main purpose is to ensure a correct balance between paid and outstanding amounts.
+
+---
+
+## Checking Outstanding Amount
+
+The order’s total is stored in the `OrderSummary`'s `total` field. To check the outstanding amount of the order, its transaction amounts are summed. Then, the following conditions are checked:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Condition</Table.HeaderCell>
+      <Table.HeaderCell>Result</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      summary’s total - transaction amounts total = 0
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      There’s no outstanding amount.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      summary’s total - transaction amounts total > 0
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The customer owes additional payment to the merchant.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      summary’s total - transaction amounts total < 0
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The merchant owes the customer a refund.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Transaction Reference
+
+The Order Module doesn’t provide payment processing functionalities, so it doesn’t store payments that can be processed. For that, use the Payment Module or custom logic.
+
+The `Transaction` data model has two fields that determine which data model and record holds the actual payment’s details:
+
+- `reference`: indicates the table’s name in the database. For example, `payment` if you’re using the Payment Module.
+- `reference_id`: indicates the ID of the record in the table. For example, `pay_123`.

@@ -1,5 +1,5 @@
-import { getConfigFile, isDefined } from "medusa-core-utils"
-import { ConfigModule } from "../types/global"
+import { ConfigModule } from "@medusajs/types"
+import { getConfigFile, isDefined } from "@medusajs/utils"
 import logger from "./logger"
 
 const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
@@ -18,6 +18,72 @@ export const handleConfigError = (error: Error): void => {
   process.exit(1)
 }
 
+const buildHttpConfig = (projectConfig: ConfigModule["projectConfig"]) => {
+  const http = projectConfig.http ?? {}
+
+  http.jwtExpiresIn = http?.jwtExpiresIn ?? "1d"
+  http.authCors = http.authCors ?? ""
+  http.storeCors = http.storeCors ?? ""
+  http.adminCors = http.adminCors ?? ""
+
+  http.jwtSecret = http?.jwtSecret ?? process.env.JWT_SECRET
+
+  if (!http.jwtSecret) {
+    errorHandler(
+      `[medusa-config] ⚠️ http.jwtSecret not found.${
+        isProduction ? "" : "Using default 'supersecret'."
+      }`
+    )
+
+    http.jwtSecret = "supersecret"
+  }
+
+  http.cookieSecret =
+    projectConfig.http?.cookieSecret ?? process.env.COOKIE_SECRET
+
+  if (!http.cookieSecret) {
+    errorHandler(
+      `[medusa-config] ⚠️ http.cookieSecret not found.${
+        isProduction ? "" : " Using default 'supersecret'."
+      }`
+    )
+
+    http.cookieSecret = "supersecret"
+  }
+
+  return http
+}
+
+const normalizeProjectConfig = (
+  projectConfig: ConfigModule["projectConfig"]
+) => {
+  if (!projectConfig?.redisUrl) {
+    console.log(
+      `[medusa-config] ⚠️ redisUrl not found. A fake redis instance will be used.`
+    )
+  }
+
+  projectConfig.http = buildHttpConfig(projectConfig)
+
+  let workedMode = projectConfig?.workerMode
+
+  if (!isDefined(workedMode)) {
+    const env = process.env.MEDUSA_WORKER_MODE
+    if (isDefined(env)) {
+      if (env === "shared" || env === "worker" || env === "server") {
+        workedMode = env
+      }
+    } else {
+      workedMode = "shared"
+    }
+  }
+
+  return {
+    ...projectConfig,
+    workerMode: workedMode,
+  }
+}
+
 export default (rootDirectory: string): ConfigModule => {
   const { configModule, error } = getConfigFile<ConfigModule>(
     rootDirectory,
@@ -28,55 +94,11 @@ export default (rootDirectory: string): ConfigModule => {
     handleConfigError(error)
   }
 
-  if (!configModule?.projectConfig?.redis_url) {
-    console.log(
-      `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
-    )
-  }
-
-  const jwt_secret =
-    configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
-  if (!jwt_secret) {
-    errorHandler(
-      `[medusa-config] ⚠️ jwt_secret not found.${
-        isProduction
-          ? ""
-          : " fallback to either cookie_secret or default 'supersecret'."
-      }`
-    )
-  }
-
-  const cookie_secret =
-    configModule?.projectConfig?.cookie_secret ?? process.env.COOKIE_SECRET
-  if (!cookie_secret) {
-    errorHandler(
-      `[medusa-config] ⚠️ cookie_secret not found.${
-        isProduction
-          ? ""
-          : " fallback to either cookie_secret or default 'supersecret'."
-      }`
-    )
-  }
-
-  let worker_mode = configModule?.projectConfig?.worker_mode
-  if (!isDefined(worker_mode)) {
-    const env = process.env.MEDUSA_WORKER_MODE
-    if (isDefined(env)) {
-      if (env === "shared" || env === "worker" || env === "server") {
-        worker_mode = env
-      }
-    } else {
-      worker_mode = "shared"
-    }
-  }
+  const projectConfig = normalizeProjectConfig(configModule.projectConfig)
 
   return {
-    projectConfig: {
-      jwt_secret: jwt_secret ?? "supersecret",
-      cookie_secret: cookie_secret ?? "supersecret",
-      ...configModule?.projectConfig,
-      worker_mode,
-    },
+    projectConfig,
+    admin: configModule?.admin ?? {},
     modules: configModule.modules ?? {},
     featureFlags: configModule?.featureFlags ?? {},
     plugins: configModule?.plugins ?? [],

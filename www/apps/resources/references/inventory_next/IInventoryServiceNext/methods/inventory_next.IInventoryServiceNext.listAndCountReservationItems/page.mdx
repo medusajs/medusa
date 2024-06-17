@@ -1,0 +1,62 @@
+---
+displayed_sidebar: inventoryNextReference
+slug: /references/inventory-next/listAndCountReservationItems
+sidebar_label: listAndCountReservationItems
+---
+
+import { TypeList } from "docs-ui"
+
+# listAndCountReservationItems - Inventory Next Module Reference
+
+This documentation provides a reference to the `listAndCountReservationItems` method. This belongs to the Inventory Next Module.
+
+This method retrieves a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters.
+
+## Example
+
+To retrieve a list of reservation items using their IDs:
+
+```ts
+const [reservationItems, count] =
+  await inventoryModuleService.listAndCountReservationItems({
+    id: ["resitem_123", "resitem_321"],
+  })
+```
+
+To specify relations that should be retrieved within the reservation items:
+
+```ts
+const [reservationItems, count] =
+  await inventoryModuleService.listAndCountReservationItems(
+    {
+      id: ["resitem_123", "resitem_321"],
+    },
+    {
+      relations: ["inventory_item"],
+    }
+  )
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [reservationItems, count] =
+  await inventoryModuleService.listAndCountReservationItems(
+    {
+      id: ["resitem_123", "resitem_321"],
+    },
+    {
+      relations: ["inventory_item"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"selector","type":"[FilterableReservationItemProps](../../../interfaces/inventory_next.FilterableReservationItemProps/page.mdx)","description":"The filters to apply on the retrieved reservation items.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter reservation items by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`string` \\| `string`[]","description":"Filter reservation items by the ID of their associated line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_item_id","type":"`string` \\| `string`[]","description":"Filter reservation items by the ID of their associated inventory item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string` \\| `string`[]","description":"Filter reservation items by the ID of their associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string` \\| [StringComparisonOperator](../../../interfaces/inventory_next.StringComparisonOperator/page.mdx)","description":"Description filters to apply on the reservation items' `description` attribute.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string` \\| `string`[]","description":"The \"created by\" values to filter reservation items by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number` \\| [NumericalComparisonOperator](../../../interfaces/inventory_next.NumericalComparisonOperator/page.mdx)","description":"Filters to apply on the reservation items' `quantity` attribute.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"[FindConfig](../../../interfaces/inventory_next.FindConfig/page.mdx)&#60;[ReservationItemDTO](../../../interfaces/inventory_next.ReservationItemDTO/page.mdx)&#62;","description":"The configurations determining how the reservation item is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a reservation item.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[Context](../../../interfaces/inventory_next.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/inventory_next.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCountReservationItems"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[ReservationItemDTO](../../../interfaces/inventory_next.ReservationItemDTO/page.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"The list of reservation items along with their total count.","expandable":false,"children":[{"name":"ReservationItemDTO[]","type":"[ReservationItemDTO](../../../interfaces/inventory_next.ReservationItemDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCountReservationItems"/>

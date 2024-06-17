@@ -1,0 +1,89 @@
+---
+sidebar_position: 1
+---
+
+import { SquareTwoStack, EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `API Key Management`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage publishable API keys in the Medusa Admin.
+
+## What is a Publishable API Key
+
+Publishable API key define resources associated with a public API key. This API key is used by developers when developing a storefront.
+
+Currently, publishable API keys are only associated with sales channels.
+
+---
+
+## Create a Publishable API Key
+
+To create a publishable API key:
+
+1. Go to Settings → API key management.
+2. Click on the Create button at the top right.
+3. In the new form that opens, enter the title of the API key.
+4. Click the Save button.
+
+---
+
+## Copy Token of Publishable API Key
+
+To copy the token of an API key:
+
+1. Go to Settings → API key management.
+2. Find the API key you want to copy.
+3. Click the <InlineIcon Icon={SquareTwoStack} alt="copy" /> icon in the Key column of the API key.
+
+---
+
+## Edit Publishable API Key Details
+
+To edit the details of an API key:
+
+1. Go to Settings → API key management.
+2. Find the publishable API key in the list and click on it.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Edit from the dropdown.
+5. In the drawer that opens, edit the publishable API key's details.
+6. Once you're done, click the Save button.
+
+---
+
+## Revoke Publishable API Key
+
+<Note type="warning">
+
+Revoking a publishable API key is irreversible.
+
+</Note>
+
+To revoke a publishable API key:
+
+1. Go to Settings → API key management.
+2. Find the publishable API key in the list and click on it.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Revoke from the dropdown.
+5. Confirm revoking the publishable API key by clicking the Revoke button in the pop-up.
+
+---
+
+## Delete Publishable API Key
+
+<Note type="warning">
+
+Deleting a publishable API key is irreversible.
+
+</Note>
+
+To delete a publishable API key:
+
+1. Go to Settings → API key management.
+2. Find the publishable API key in the list and click on it.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Delete from the dropdown.
+5. Confirm deleting the publishable API key by clicking the Delete button in the pop-up.

@@ -1,0 +1,82 @@
+export const metadata = {
+  title: `${pageNumber} Create a Batch Job`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to create and process a batch job
+
+<Note type="check">
+
+The API routes used in this chapter require admin user authentication, and the authentication token is referred to in code snippets as `<API_TOKEN>`. Refer to [this guide](https://docs.medusajs.com/api/admin#authentication) on authenticating admin users.
+
+</Note>
+
+## 1. Start Medusa Application
+
+```bash npm2yarn
+npm run dev
+```
+
+## 2. Create a Batch Job
+
+Use the [Create Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs) to create a new batch job with the same type as the batch job strategy.
+
+For example:
+
+```bash
+curl -X POST 'http://localhost:9000/admin/batch-jobs' \
+-H 'x-medusa-access-token: <API_TOKEN>' \
+-H 'Content-Type: application/json' \
+--data-raw '{
+    "type": "custom",
+    "context": { }
+}'
+```
+
+In the request body of this API route, you must pass two parameters:
+
+- `type`: The batch job’s type. You use `custom`, which is the type of batch job strategy created in the previous chapter.
+- `context`: An object holding any additional details you want to pass to the batch job.
+
+This API route creates a batch job in the database. The Medusa application then triggers the processing of the batch job asynchronously.
+
+## 3. Retrieve Batch Job Status
+
+To check the current status of the batch job, send a request to the [Get a Batch Job API route](https://docs.medusajs.com/api/admin#batch-jobs_getbatchjobsbatchjob):
+
+```bash
+curl 'http://localhost:9000/admin/batch-jobs/<BATCH_JOB_ID>' \
+-H 'x-medusa-access-token: <API_TOKEN>'
+```
+
+Replace `<BATCH_JOB_ID>` with the ID of the batch job returned in the previous step.
+
+This API route returns the batch job object. Among its properties, the `status` property indicates the status of the batch job. If it started processing, the status is `processing`. If it’s completed, the status is `completed`.
+
+## 4. Check Console
+
+Once the batch job’s status is `completed`, check the terminal. You’ll find the following messages:
+
+```bash
+info:    Processing batch.created which has 1 subscribers
+info:    Processing batch.pre_processed which has 0 subscribers
+info:    Processing batch.confirmed which has 1 subscribers
+Processing the batch job!
+info:    Processing batch.processing which has 0 subscribers
+info:    Processing batch.completed which has 0 subscribers
+```
+
+These messages indicate the different stages of the batch job’s lifecycle. Whenever the batch job’s status is changed, an event is triggered to allow batch job strategies to handle them.
+
+When the batch job’s status is `confirmed`, the batch job is processed, which is why the `Processing the batch job!` message is logged.
+
+In the next chapter, you’ll learn more about the batch job’s lifecycle.
+
+---
+
+## Alternative Method: BatchJobService
+
+You can alternatively create and process a batch job using the `BatchJobService`.
+
+Refer to the `BatchJobService` reference to learn how to use the `create` method.

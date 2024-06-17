@@ -1,0 +1,41 @@
+---
+displayed_sidebar: authReference
+slug: /references/auth/authenticate
+sidebar_label: authenticate
+---
+
+import { TypeList } from "docs-ui"
+
+# authenticate - Auth Module Reference
+
+This documentation provides a reference to the `authenticate` method. This belongs to the Auth Module.
+
+This method is used to authenticate a user using a provider. The `authenticate` method of the
+underlying provider is called, passing it the `providerData` parameter as a parameter. The method
+returns the data returned by the provider.
+
+Refer to [this guide](https://docs.medusajs.com/experimental/auth/auth-flows) to learn more about the authentication flows.
+
+## Example
+
+The following example is in the context of an API route, where
+`req` is an instance of the `MedusaRequest` object:
+
+```ts
+const { success, authIdentity, location, error } =
+  await authModuleService.authenticate("emailpass", {
+    url: req.url,
+    headers: req.headers,
+    query: req.query,
+    body: req.body,
+    protocol: req.protocol,
+  } as AuthenticationInput)
+```
+
+## Parameters
+
+<TypeList types={[{"name":"provider","type":"`string`","description":"The ID of the provider to authenticate the user with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerData","type":"[AuthenticationInput](../../../interfaces/auth.AuthenticationInput/page.mdx)","description":"The data to pass to the provider to authenticate the user.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"URL of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, string>`","description":"Headers of incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`Record<string, string>`","description":"Query params of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"body","type":"`Record<string, string>`","description":"Body of the incoming authentication request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"protocol","type":"`string`","description":"Protocol of the incoming authentication request (For example, `https`).","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="authenticate"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[AuthenticationResponse](../../../interfaces/auth.AuthenticationResponse/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The details of the authentication result.","expandable":false,"children":[{"name":"AuthenticationResponse","type":"[AuthenticationResponse](../../../interfaces/auth.AuthenticationResponse/page.mdx)","optional":false,"defaultValue":"","description":"The details of the authentication response.","expandable":false,"children":[{"name":"success","type":"`boolean`","description":"Whether the authentication was successful.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"authIdentity","type":"`any`","description":"The authenticated user's details.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string`","description":"If an error occurs during the authentication process,\nwhether within the Auth Module or a third-party provider,\nthe error message is set in this field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location","type":"`string`","description":"The URL to redirect to for further authentication action\nwith a third-party provider. This takes precedence before\nthe `success` field.\n\nSo, after checking that authentication is successful,\nyou should check whether this field is defined and, if so, redirect to the\nspecified location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"successRedirectUrl","type":"`string`","description":"Some authentication providers support redirecting to a specified URL on\nsuccess. In those cases, the URL to redirect to is set in this field.\n\nSo, if `success` is true, there's no `location` set, and this field\nis set, you can redirect to this URL.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="authenticate"/>

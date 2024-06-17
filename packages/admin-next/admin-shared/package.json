@@ -1,12 +1,21 @@
 {
   "name": "@medusajs/admin-shared",
-  "version": "0.0.0",
+  "description": "Shared code for Medusa admin packages.",
+  "version": "0.0.1",
+  "author": "Kasper Kristensen <kasper@medusajs.com>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsup"
   },
   "devDependencies": {
+    "@types/react": "^18.3.2",
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
   "packageManager": "yarn@3.2.1"

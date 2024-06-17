@@ -1,0 +1,83 @@
+---
+sidebar_position: 1
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Regions`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to view and manage regions in your Medusa Admin.
+
+## View Regions
+
+To view your regions, go to Settings → Regions. You'll find a list of available regions in your store.
+
+---
+
+## Create a Region
+
+To create a region:
+
+1. Go to Settings → Regions.
+2. Click the Create button.
+3. In the form that opens:
+    1. Enter the region's name in the Name field.
+    2. Choose the region's currency in the Currency field. If you can't find a currency, make sure to [add it to the store first](../../store/page.mdx#add-currencies).
+    3. Enter the tax rate and, optionally, the tax code of the region.
+    4. Enable the "Tax inclusive pricing" field to specify that all prices of that region include taxes.
+    5. To add countries to the region:
+        1. Click the "Add countries" button.
+        2. In the list shown, check the checkbox next to the countries to add.
+        3. Once you're done, click the Save button.
+    6. Under the Providers section, select the available payment and fulfillment providers in the region.
+4. Once you’re done, click on the Save button.
+
+---
+
+## Edit a Region
+
+To edit a region's details:
+
+1. Go to Settings → Regions.
+2. Click on the region you want to edit.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Edit from the dropdown.
+5. In the drawer that opens, edit the region's details.
+6. Once done, click the Save button.
+
+---
+
+## Edit Region's Tax Settings
+
+When you create a region, taxes settings are created for that region as well.
+
+To view and edit a region's tax settings:
+
+1. Go to Settings → Regions.
+2. Click on the region you want to edit.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose "Tax settings" from the dropdown.
+
+This opens the taxes page of the region. Learn more about managing taxes in [this guide](../../taxes/manage/page.mdx).
+
+---
+
+## Delete a Region
+
+<Note type="warning">
+
+Deleting a region is irreversible.
+
+</Note>
+
+To delete a region:
+
+1. Go to Settings → Regions.
+2. Click on the region you want to delete.
+3. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the first section.
+4. Choose Delete from the dropdown.
+5. Confirm deleting the region by entering its name and clicking the Delete button in the pop-up.

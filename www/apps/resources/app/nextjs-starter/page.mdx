@@ -1,0 +1,287 @@
+import { DetailsList } from "docs-ui"
+import CmaOptionTroubleshooting from "../troubleshooting/_sections/nextjs/cma-option.mdx"
+import CorsErrorTroubleshooting from "../troubleshooting/_sections/other/cors-errors.mdx"
+import ModuleXErrorTroubleshooting from "../troubleshooting/_sections/common-installation-errors/module-x-error.mdx"
+
+export const metadata = {
+  title: `Next.js Starter`,
+}
+
+# {metadata.title}
+
+<Note type="soon">
+
+Next.js starter is currently in development and doesn't fully support Medusa v2 yet.
+
+</Note>
+
+The Next.js Starter storefront provides rich commerce features and a sleek design. Developers and businesses can use it as-is or as a starting point to build a storefront for their Medusa application.
+
+<Note type="check">
+
+- [Node.js v18+](https://nodejs.org/en/download)
+- At least one region in the Medusa application.
+
+</Note>
+
+## Installation
+
+{/* TODO add when we support next.js starter in create-medusa-app v2 */}
+
+{/* ### Option 1: Medusa Application + Next.js Starter
+
+The `create-medusa-app` CLI tool accepts the `--with-nextjs-starter` option that installs the Next.js storefront along with the Medusa application:
+
+```bash
+npx create-medusa-app@latest --with-nextjs-starter
+```
+
+Refer to the [create-medusa-app reference](../create-medusa-app/page.mdx) for more details on prerequisites, steps, and troubleshooting. */}
+
+{/* ### Option 2: Next.js Starter Only */}
+
+{/* <Note type="check">
+
+- At least one region in the Medusa application.
+
+</Note> */}
+
+1. Clone the `v2` branch of the [Next.js Starter](https://github.com/medusajs/nextjs-starter-medusa):
+
+```bash
+git clone https://github.com/medusajs/nextjs-starter-medusa -b v2 my-medusa-storefront
+```
+
+2. Change to the `my-medusa-storefront` directory, install the dependencies, and rename the template environment variable:
+
+```bash npm2yarn
+cd my-medusa-storefront
+npm install
+mv .env.template .env.local
+```
+
+3. While the Medusa application is running, start the Next.js storefront:
+
+```bash npm2yarn
+npm run dev
+```
+
+Your Next.js Starter Storefront is now running at `localhost:8000`.
+
+---
+
+## Troubleshooting
+
+<DetailsList
+  sections={[
+    {
+      title: "Next.js storefront not working using option 1",
+      content: <CmaOptionTroubleshooting />
+    },
+    {
+      title: "CORS Error",
+      content: <CorsErrorTroubleshooting />
+    },
+    {
+      title: `Resolve "Cannot find module X" Errors`,
+      content: <ModuleXErrorTroubleshooting />
+    }
+  ]}
+/>
+
+## Payment Providers
+
+The Next.js Starter storefront is compatible with Medusa's Stripe and PayPal plugins.
+
+### Stripe Integration
+
+{/* TODO add links to stripe module once supported. */}
+
+{/* <Note type="check">
+
+- [Stripe plugin](../plugins/payment/stripe/page.mdx) installed in the Medusa application.
+
+</Note> */}
+
+In your Next.js Starter project, set the following environment variables for the Stripe integration:
+
+```bash
+NEXT_PUBLIC_STRIPE_KEY=<YOUR_PUBLISHABLE_KEY>
+```
+
+Where `<YOUR_PUBLISHABLE_KEY>` is your Stripe publishable key. You can retrieve it from your [Stripe dashboard](https://dashboard.stripe.com/) by going to Developers → API Keys.
+
+Then, restart the Next.js Starter storefront. You can now use Stripe during checkout.
+
+### PayPal Integration
+
+{/* TODO add links to paypal module once supported. */}
+
+{/* <Note type="check">
+
+- [PayPal plugin](../plugins/payment/paypal/page.mdx) installed in the Medusa application.
+
+</Note> */}
+
+In your Next.js Starter project, set the following environment variables for the PayPal integration:
+
+```bash
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=<YOUR_CLIENT_ID>
+```
+
+Where `<YOUR_CLIENT_ID>` is your PayPal client ID. You can retrieve it from the [PayPal developer dashboard](https://developer.paypal.com/developer/applications/).
+
+Then, restart the Next.js Starter storefront. You can now use PayPal during checkout.
+
+---
+
+## Search Engine
+
+The Next.js Starter storefront is compatible with Medusa's MeiliSearch and Algolia plugins.
+
+### Enable Search Engine
+
+To enable the search engine, change the value of the feature in `store.config.json`:
+
+```json
+{
+  "features": {
+    "search": false
+  }
+}
+```
+
+Then, restart your Next.js storefront. You'll see a "Search" link in the navigation bar.
+
+### Configure MeiliSearch
+
+{/* TODO add link to meilisearch plugin/module once available. */}
+
+{/* <Note type="check">
+
+- [MeiliSearch plugin](../plugins/search/meilisearch/page.mdx) installed in the Medusa application.
+
+</Note> */}
+
+In your Next.js Starter storefront, set the following environment variables for the MeiliSearch integration:
+
+```bash
+NEXT_PUBLIC_SEARCH_ENDPOINT=<YOUR_MEILISEARCH_URL>
+NEXT_PUBLIC_INDEX_NAME=products
+NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_API_KEY>
+```
+
+Where:
+
+- `<YOUR_MEILISEARCH_URL>` is the URL MeiliSearch is running on. The default is `http://127.0.0.1:7700`.
+- `NEXT_PUBLIC_INDEX_NAME` is the index name of the products in MeiliSearch. By default, it’s `products`.
+- `<YOUR_API_KEY>` is the API key used to search through MeiliSearch indexes. To create a new API Key, make sure that the MeiliSearch service is running and send the following request:
+
+```bash
+curl \
+  -X POST '<MEILISEARCH_URL>/keys' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <MEILISEARCH_MASTER_KEY>' \
+  --data-binary '{
+    "description": "Search products",
+    "actions": ["search"],
+    "indexes": ["products"],
+    "expiresAt": "2024-01-01T00:00:00Z"
+  }'
+```
+
+Make sure to replace `<MEILISEARCH_URL>` with the URL MeiliSearch is running on and `<MEILISEARCH_MASTER_KEY>` with your MeiliSearch master key.
+
+Then, restart the Next.js Starter storefront. You can search through available products by clicking the search icon in the navigation bar.
+
+<Note title="Tip">
+
+To make sure the Next.js Starter storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa application at least the fields `title`, `handle`, `description`, and `thumbnail`.
+
+</Note>
+
+### Configure Algolia
+
+{/* TODO add links to algolia plugin/module once available. */}
+
+{/* <Note type="check">
+
+- [Algolia plugin](../plugins/search/algolia/page.mdx) installed in the Medusa application.
+
+</Note> */}
+
+In your Next.js Starter's directory, install the `algoliasearch` package:
+
+```bash npm2yarn
+npm install algoliasearch
+```
+
+Then, set the following environment variables for the Algolia integration:
+
+```bash
+NEXT_PUBLIC_SEARCH_APP_ID=<YOUR_APP_ID>
+NEXT_PUBLIC_SEARCH_API_KEY=<YOUR_SEARCH_API_KEY>
+NEXT_PUBLIC_INDEX_NAME=products
+```
+
+Where:
+
+- `<YOUR_APP_ID>` and `<YOUR_SEARCH_API_KEY>` are the Algolia App ID and Algolia Search API Key respectively. You can retrieve them from Algolia by going to [API Keys in your account settings](https://www.algolia.com/account/api-keys/all).
+- `NEXT_PUBLIC_INDEX_NAME` is the index name of the products in Algolia. By default, it’s `products`.
+
+Next, change the content of `src/lib/search-client.ts` to the following:
+
+```ts title="src/lib/search-client.ts"
+import algoliasearch from "algoliasearch/lite"
+
+const appId = process.env.NEXT_PUBLIC_SEARCH_APP_ID || ""
+
+const apiKey = process.env.NEXT_PUBLIC_SEARCH_API_KEY || ""
+
+export const searchClient = algoliasearch(appId, apiKey)
+
+export const SEARCH_INDEX_NAME =
+  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
+```
+
+And change the content of `src/app/(main)/search/actions.ts` to the following:
+
+```ts title="src/app/(main)/search/actions.ts"
+"use server"
+
+import { 
+  searchClient,
+  SEARCH_INDEX_NAME,
+} from "@lib/search-client"
+
+/**
+ * Uses MeiliSearch or Algolia to search for a query
+ * @param {string} query - search query
+ */
+export async function search(query: string) {
+  const index = searchClient.initIndex(SEARCH_INDEX_NAME)
+  const { hits } = await index.search(query)
+
+  return hits
+}
+```
+
+Then, restart the Next.js Starter storefront. You can search through available products by clicking the search icon in the navigation bar.
+
+<Note title="Tip">
+
+To make sure the Next.js Starter storefront properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa application at least the fields `title`, `handle`, `description`, and `thumbnail`.
+
+</Note>
+
+---
+
+## Change Medusa Application URL
+
+By default, the Medusa application runs at `http://localhost:9000`. This value is defined in your Next.js Starter storefront under the environment variable `NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
+
+To change the URL of the Medusa application in the storefront, set the `NEXT_PUBLIC_MEDUSA_BACKEND_URL` environment variable:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://example.com
+```

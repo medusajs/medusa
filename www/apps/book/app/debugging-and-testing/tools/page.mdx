@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `${pageNumber} Debugging and Testing Tools`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about debugging and testing tools you can use.
+
+<Note title="Tip">
+
+Since the Medusa server is a Node.js server, you can use any Node.js testing tool you prefer, even if it’s not listed here.
+
+</Note>
+
+## Jest
+
+[Jest](https://jestjs.io/) is a JavaScript testing framework. Your Medusa project is already configured with Jest; you can use it out-of-the-box.
+
+For example, consider the following service created at `src/modules/hello/service.ts`:
+
+```ts title="src/modules/hello/service.ts"
+import { TransactionBaseService } from "@medusajs/medusa"
+
+class HelloWorldService extends TransactionBaseService {
+  constructor(container) {
+    super(arguments[0])
+  }
+  getMessage(): string {
+    return "Hello, world!"
+  }
+}
+
+export default HelloWorldService
+
+```
+
+You can write a test for it in the file `src/modules/hello/__tests__/hello-world.ts`: 
+
+```ts title="src/modules/hello/__tests__/hello-world.ts"
+import HelloWorldService from "../hello-world"
+
+describe("HelloWorldService", () => {
+  const helloWorldService = new HelloWorldService()
+
+  it("should return hello world message", () => {
+    expect(helloWorldService.getMessage()).toBe("Hello, world!")
+  })
+})
+```
+
+Then, run the following command in the root of your Medusa project to run the test:
+
+```bash npm2yarn
+npm run test
+```
+
+This command looks for TypeScript and JavaScript files under any directory named `__tests__` and runs them.
+
+---
+
+## IDE Debugging Tools
+
+Your IDE may provide a debugging tool for Node.js. In that case, you can use that tool to debug your Medusa customizations.
+
+For example, if you’re using VSCode, refer to [this guide](https://code.visualstudio.com/docs/nodejs/nodejs-debugging) to learn how to configure and use the debugger.
+
+---
+
+## Node.js Debugger
+
+You can also use Node.js’s Debugger API to debug your Medusa customizations.
+
+Refer to [Node.js’s documentation](https://nodejs.org/docs/latest-v18.x/api/debugger.html) for more details.

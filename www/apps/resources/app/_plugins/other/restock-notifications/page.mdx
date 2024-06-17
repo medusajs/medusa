@@ -1,0 +1,189 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Restock Notifications Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+Customers browsing your products may find something that they need, but it's out of stock. In this scenario, you can keep them interested in your product by notifying them when the product is back in stock.
+
+The Restock Notifications plugin provides new API Routes to subscribe customers to restock notifications of a specific product variant. It also triggers the `restock-notification.restocked` event whenever a product variant's stock quantity is above a specified threshold.
+
+However, this plugin doesn't actually implement the sending of the notification, only the required implementation to trigger restock events and allow customers to subscribe to product variants' stock status. To send the notification, use a Notification plugin.
+
+---
+
+## Install the Restock Notifications Plugin
+
+To install the Restock Notifications plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-restock-notification
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+```js title="medusa-config.js"
+const plugins = [
+  // other plugins...
+  {
+    resolve: `medusa-plugin-restock-notification`,
+    options: {
+      // optional options
+    },
+  },
+]
+```
+
+### Restock Notifications Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `trigger_delay`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the time in milliseconds to delay the triggering of the `restock-notification.restocked` event.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `0`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `inventory_required`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the minimum inventory quantity to consider a product variant as restocked.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `0`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Run Migrations
+
+The plugin requires changes in the database. So, before using it, run the `migrations` command:
+
+```bash
+npx medusa migrations run
+```
+
+---
+
+## Test the Plugin
+
+<Note type="check">
+
+- An out-of-stock product variant. You can edit a variant's stock quantity for testing either using the [Medusa Admin](!user-guide!/products/manage) or the [Admin API Routes](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant).
+
+</Note>
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, send a `POST` request to the API Route `/restock-notifications/variants/{variant_id}` to subscribe to restock notifications of a product variant ID:
+
+```bash apiTesting testApiUrl="http://localhost:9000/restock-notifications/variants/{variant_id}" testApiMethod="POST" testPathParams={{"variant_id": "variant_01G1G5V2MRX2V3PVSR2WXYPFB6"}} testBodyParams={{"email": "example@gmail.com"}}
+curl -X POST http://localhost:9000/restock-notifications/variants/variant_01G1G5V2MRX2V3PVSR2WXYPFB6 \ 
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "email": "example@gmail.com"
+  }'
+```
+
+The API Route accepts the following request body parameters:
+
+1. `email`: a string indicating the email that is subscribing to the product variant's restock notification.
+2. `sales_channel_id`: an optional string indicating the ID of the sales channel to check the stock quantity in when subscribing.
+
+After subscribing to the out-of-stock variant, change its stock quantity to the minimum inventory required to test the event trigger. The new stock quantity should be any value above `0` if you didn't set the `inventory_required` option.
+
+{/* [Medusa Admin](../../user-guide/products/manage.mdx#manage-product-variants) */}
+
+You can use the Medusa Admin or the [Admin API Routes](https://docs.medusajs.com/api/admin#products_postproductsproductvariantsvariant) to update the quantity.
+
+After you update the quantity, the `restock-notification.restocked` is emitted.
+
+---
+
+## Example: Implement Notification Sending with SendGrid
+
+<Note title="Tip">
+
+The SendGrid plugin already listens to and handles the `restock-notification.restocked` event. So, if you install it, you don't need to manually create a subscriber that handles this event as explained here. This example is only provided for reference on how to send a notification to the customer using a Notification plugin.
+
+</Note>
+
+Here's an example of a subscriber that listens to the `restock-notification.restocked` event and uses the [SendGrid plugin](../../notifications/sendgrid/page.mdx) to send the subscribed customers an email:
+
+```ts title="src/subscribers/restock-notification.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+  ProductVariantService,
+} from "@medusajs/medusa"
+
+export default async function handleRestockNotification({
+  data,
+  container,
+}: SubscriberArgs<Record<string, string>>) {
+  const sendgridService = container.resolve("sendgridService")
+  const productVariantService: ProductVariantService =
+    container.resolve("productVariantService")
+
+  // retrieve variant
+  const variant = await productVariantService.retrieve(
+    data.variant_id
+  )
+
+  sendgridService.sendEmail({
+    templateId: "restock-notification",
+    from: "hello@medusajs.com",
+    to: data.emails,
+    dynamic_template_data: {
+      // any data necessary for your template...
+      variant,
+    },
+  })
+}
+
+export const config: SubscriberConfig = {
+  event: "restock-notification.restocked",
+}
+```
+
+The handler function receives in the `data` property of the first parameter the following properties:
+
+- `variant_id`: The ID of the variant that has been restocked.
+- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant.
+
+In the handler function, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the `SendGridService`.

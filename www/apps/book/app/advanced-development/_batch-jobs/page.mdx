@@ -1,0 +1,95 @@
+export const metadata = {
+  title: `${pageNumber} Batch Jobs`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what batch jobs are and how to create them.
+
+## What are Batch Jobs and Strategies?
+
+A batch job is a task performed asynchronously and iteratively in the background of your Medusa application. The task's implementation is defined in a batch job strategy.
+
+The Medusa application provides API Routes to create a batch job and tracks its progress. You can also create it using the `BatchJobService`'s `create` method.
+
+When a batch job is created, the associated batch job strategy is used to process it.
+
+---
+
+## How to Create a Batch Job Strategy?
+
+A batch job strategy is a class created in a TypeScript or JavaScript file under the `src/strategies` directory. The class must extend the `AbstractBatchJobStrategy` class from the `@medusajs/medusa` package.
+
+For example, create the file `src/strategies/custom.ts` with the following content:
+
+export const highlights = [
+  ["8", "", "A unique identifier associated with the strategy."],
+  ["9", "", "The type of batch job that this strategy is used for."],
+  ["11", "processJob", "Defines the task to perform when the batch job is processed."],
+  ["14", "buildTemplate", "This method is only useful if your batch job provides a template file or text that users can download."]
+]
+
+```ts title="src/strategies/custom.ts" highlights={highlights}
+import {
+  AbstractBatchJobStrategy,
+  BatchJobService,
+} from "@medusajs/medusa"
+
+class CustomJobStrategy extends AbstractBatchJobStrategy {
+  protected batchJobService_: BatchJobService
+  static identifier = "custom-strategy"
+  static batchType = "custom"
+
+  async processJob(batchJobId: string): Promise<void> {
+    console.log("Processing the batch job!")
+  }
+  async buildTemplate(): Promise<string> {
+    return ""
+  }
+}
+
+export default CustomJobStrategy
+```
+
+This creates a batch job strategy implementing the required properties and methods.
+
+### Properties
+
+A batch job strategy must implement the following properties:
+
+- `identifier`: A unique identifier associated with the strategy.
+- `batchType`: The type of batch job that this strategy is used for. A batch job has a type, and, when it's created, the strategy having that type is used to process the job.
+
+### Methods
+
+A batch job strategy must implement the following methods:
+
+- `processJob`: Defines the task to perform when the batch job is processed.
+- `buildTemplate`: This method is only useful if your batch job provides a template file or text that users can download. For example, you can return a template CSV file that showcases the accepted CSV format for product import. If your batch job doesn’t support that, you can return an empty string.
+
+A batch job strategy can also implement methods that run before and after a batch job is processed or when it fails. Refer to the Batch Job Strategy reference for all available methods.
+
+---
+
+## When to Use
+
+<Note title="Use batch jobs when" type="success">
+
+- You’re implementing an asynchronous job that’s triggered manually.
+- You're tracking the status of the asynchronous job.
+- You're keeping track of all batch job executions, which are stored in the database.
+
+</Note>
+
+<Note title="Don’t use batch jobs if" type="error">
+
+- You want to trigger the asynchronous job automatically. Instead, use scheduled jobs. You can also create the batch job in a scheduled job.
+- You want the task to be performed and finished before consecutive tasks. Instead, use a service.
+
+</Note>
+
+---
+
+## Test Batch Job Strategy
+
+To test a batch job strategy, use the Admin API Routes to create a batch job of the same type. This is covered in the next chapter.

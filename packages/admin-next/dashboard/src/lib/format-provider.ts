@@ -13,6 +13,6 @@ export const formatProvider = (id: string) => {
     name
       .split("-")
       .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-      .join(" ") + (type ? ` (${type})` : "")
+      .join(" ") + (type ? ` (${type.toUpperCase()})` : "")
   )
 }

@@ -1,0 +1,42 @@
+---
+displayed_sidebar: promotionReference
+slug: /references/promotion/registerUsage
+sidebar_label: registerUsage
+---
+
+import { TypeList } from "docs-ui"
+
+# registerUsage - Promotion Module Reference
+
+This documentation provides a reference to the `registerUsage` method. This belongs to the Promotion Module.
+
+This method adjusts the budget for each campaign associated with the promotions' specified computed actions.
+It adjusts the `used` property of a `CampaignBudget` to account for the adjustment amounts in the specified associated
+computed actions.
+
+## Example
+
+```ts
+await promotionModuleService.registerUsage([
+  {
+    action: "addItemAdjustment",
+    item_id: "cali_123",
+    amount: 50,
+    code: "50OFF",
+  },
+  {
+    action: "addShippingMethodAdjustment",
+    shipping_method_id: "casm_123",
+    amount: 5000,
+    code: "FREESHIPPING",
+  },
+])
+```
+
+## Parameters
+
+<TypeList types={[{"name":"computedActions","type":"[ComputeActions](../../../types/promotion.ComputeActions/page.mdx)[]","description":"The computed actions to adjust their promotion's campaign budget.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="registerUsage"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the campaign budgets have been adjusted successfully.","expandable":false,"children":[]}]}  sectionTitle="registerUsage"/>

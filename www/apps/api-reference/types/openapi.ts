@@ -1,7 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types"
 
 export type Area = "admin" | "store"
-export type Version = "1" | "2"
 
 export type Code = {
   lang: string
@@ -88,6 +87,7 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   isRequired?: boolean
   "x-featureFlag"?: string
   "x-expandable"?: string
+  "x-schemaName"?: string
 }
 
 export type PropertiesObject = {
@@ -113,4 +113,12 @@ export type ExpandedDocument = Document & {
   expandedTags?: {
     [k: string]: PathsObject
   }
+}
+
+export type TagObject = OpenAPIV3.TagObject & {
+  "x-associatedSchema"?: OpenAPIV3.ReferenceObject
+}
+
+export type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
+  operationPath?: string
 }

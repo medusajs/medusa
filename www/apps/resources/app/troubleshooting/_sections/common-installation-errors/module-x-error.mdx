@@ -1,0 +1,24 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+This error can occur while installing any of Medusa's projects (for example, Next.js Starter Template). There is no specific cause to this error.
+
+One way to resolve it is by removing the `node_modules` directory in the project and re-installing the dependencies:
+
+<CodeTabs group="operating-systems">
+  <CodeTab label="MacOS / Linux" value="unix">
+
+    ```bash
+    rm -rf node_modules
+    yarn install
+    ```
+
+  </CodeTab>
+  <CodeTab label="Windows" value="windows">
+
+    ```bash
+    rd /s /q node_modules
+    yarn install
+    ```
+
+  </CodeTab>
+</CodeTabs>

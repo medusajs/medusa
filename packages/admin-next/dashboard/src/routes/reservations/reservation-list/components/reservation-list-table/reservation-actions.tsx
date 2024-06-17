@@ -1,9 +1,10 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { ExtendedReservationItem } from "@medusajs/medusa"
-import { usePrompt } from "@medusajs/ui"
-import { useAdminDeleteReservation } from "medusa-react"
-import { useTranslation } from "react-i18next"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { ExtendedReservationItem } from "@medusajs/medusa"
+import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
+import { usePrompt } from "@medusajs/ui"
+import { useTranslation } from "react-i18next"
 
 export const ReservationActions = ({
   reservation,
@@ -12,7 +13,7 @@ export const ReservationActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { mutateAsync } = useAdminDeleteReservation(reservation.id)
+  const { mutateAsync } = useDeleteReservationItem(reservation.id)
 
   const handleDelete = async () => {
     const res = await prompt({

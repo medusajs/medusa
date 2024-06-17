@@ -1,0 +1,353 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the Product Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll find common examples of how you can use the Product Module in your application.
+
+## Create Product
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const products = await productModuleService.create([
+      {
+        title: "Medusa Shirt",
+        options: [
+          {
+            title: "Color",
+          },
+        ],
+        variants: [
+          {
+            title: "Black Shirt",
+            options: [
+              {
+                value: "Black",
+              },
+            ],
+          },
+        ],
+      },
+    ])
+
+    res.json({ products })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function POST(request: Request) {
+    const productModuleService = await initializeProductModule()
+
+    const products = await productModuleService.create([
+      {
+        title: "Medusa Shirt",
+        options: [
+          {
+            title: "Color",
+          },
+        ],
+        variants: [
+          {
+            title: "Black Shirt",
+            options: [
+              {
+                value: "Black",
+              },
+            ],
+          },
+        ],
+      },
+    ])
+
+    return NextResponse.json({ products })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Products
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const products = await productModuleService.list()
+
+    res.json({ products })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function GET(request: Request) {
+    const productModuleService = await initializeProductModule()
+
+    const products = await productModuleService.list()
+
+    return NextResponse.json({ products })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve a Product by its ID
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const product = await productModuleService.retrieve(
+      request.params.id
+    )
+
+    res.json({ product })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function GET(
+    request: Request, 
+    { params }: { params: Record<string, any> }) {
+    
+    const { id } = params
+    const productModuleService = await initializeProductModule()
+
+    const product = await productModuleService.retrieve(
+      id
+    )
+
+    return NextResponse.json({ product })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve a Product by its Handle
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const data = await productModuleService.list({
+      handle: "shirt",
+    })
+
+    res.json({ product: data[0] })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function GET(request: Request) {
+    const productModuleService = await initializeProductModule()
+
+    const data = await productModuleService.list({
+      handle: "shirt",
+    })
+
+    return NextResponse.json({ product: data[0] })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve Categories
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const categories = await productModuleService.listCategories()
+
+    res.json({ categories })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function GET(request: Request) {
+    const productModuleService = await initializeProductModule()
+
+    const categories = await productModuleService.listCategories()
+
+    return NextResponse.json({ categories })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve Category by Handle
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IProductModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ) {
+    const productModuleService: IProductModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+
+    const data = await productModuleService.listCategories({
+      handle: request.params.handle,
+    })
+
+    res.json({ category: data[0] })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializeProductModule,
+  } from "@medusajs/product"
+
+  export async function GET(
+    request: Request, 
+    { params }: { params: Record<string, any> }) {
+    
+    const { handle } = params
+    const productModuleService = await initializeProductModule()
+
+    const data = await productModuleService.listCategories({
+      handle,
+    })
+
+    return NextResponse.json({ category: data[0] })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [Product Module's main service reference](/references/product) provides a reference to all the methods available for use with examples for each.

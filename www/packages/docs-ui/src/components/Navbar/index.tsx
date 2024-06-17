@@ -6,10 +6,21 @@ import { NavbarLogo, NavbarLogoProps } from "./Logo"
 import { NavbarMobileMenu } from "./MobileMenu"
 import { NavbarSearchModalOpener } from "./SearchModalOpener"
 import { NavbarMobileMenuButtonProps } from "./MobileMenu/Button"
+import { NavbarDivider } from "./NavbarDivider"
+
+export type NavbarItem =
+  | {
+      type: "link"
+      props: NavbarLinkProps
+    }
+  | {
+      type: "divider"
+      props?: Record<string, unknown>
+    }
 
 export type NavbarProps = {
   logo: NavbarLogoProps
-  items: NavbarLinkProps[]
+  items: NavbarItem[]
   showSearchOpener?: boolean
   showColorModeToggle?: boolean
   additionalActionsAfter?: React.ReactNode
@@ -45,9 +56,14 @@ export const Navbar = ({
       >
         <div className="hidden w-full items-center gap-docs_0.5 lg:flex lg:w-auto lg:gap-docs_1.5">
           <NavbarLogo {...logo} />
-          {items.map((item, index) => (
-            <NavbarLink key={index} {...item} />
-          ))}
+          {items.map(({ type, props }, index) => {
+            switch (type) {
+              case "divider":
+                return <NavbarDivider key={index} />
+              default:
+                return <NavbarLink key={index} {...props} />
+            }
+          })}
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-docs_0.5 lg:flex">
           {additionalActionsBefore}

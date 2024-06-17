@@ -5,9 +5,6 @@ import { Loading } from "@/components"
 export type CommonProps = {
   expandUrl?: string
   sectionTitle?: string
-  siteUrl?: string
-  // TODO replace this with inferring pathname when using Next.js only
-  pathname?: string
 }
 
 export type Type = {
@@ -32,16 +29,14 @@ const TypeListItems = lazy(async () => import("./Items"))
 export const TypeList = ({
   types,
   className,
-  siteUrl,
   sectionTitle,
   expandUrl,
-  pathname,
   ...props
 }: ParameterTypesType) => {
   return (
     <div
       className={clsx(
-        "bg-docs-bg-surface shadow-card-rest rounded my-docs_1",
+        "bg-docs-bg-surface shadow-elevation-card-rest rounded my-docs_1",
         className
       )}
       {...props}
@@ -51,8 +46,6 @@ export const TypeList = ({
           types={types}
           expandUrl={expandUrl}
           sectionTitle={sectionTitle}
-          siteUrl={siteUrl}
-          pathname={pathname}
         />
       </Suspense>
     </div>

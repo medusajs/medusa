@@ -1,0 +1,169 @@
+---
+slug: /references/medusa-react/hooks/store/products
+---
+
+import { TypeList } from "docs-ui"
+
+# Products
+
+Queries listed here are used to send requests to the [Store Product API Routes](https://docs.medusajs.com/api/store#products).
+
+Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards) in a store.
+Using the methods in this class, you can filter products by categories, collections, sales channels, and more.
+
+Related Guide: [How to show products in a storefront](https://docs.medusajs.com/modules/products/storefront/show-products).
+
+## Queries
+
+### useProducts
+
+This hook retrieves a list of products. The products can be filtered by fields such as `id` or `q` passed in the `query` parameter. The products can also be sorted or paginated.
+This hook can also be used to retrieve a product by its handle.
+
+For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
+`region_id`, `currency_code`, and `cart_id` when available.
+
+Passing `sales_channel_id` ensures retrieving only products available in the specified sales channel.
+You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+
+#### Example
+
+To list products:
+
+```tsx
+import React from "react"
+import { useProducts } from "medusa-react"
+
+const Products = () => {
+  const { products, isLoading } = useProducts()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && !products.length && <span>No Products</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Products
+```
+
+To specify relations that should be retrieved within the products:
+
+```tsx
+import React from "react"
+import { useProducts } from "medusa-react"
+
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    expand: "variants"
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && !products.length && <span>No Products</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Products
+```
+
+By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useProducts } from "medusa-react"
+
+const Products = () => {
+  const { 
+    products,
+    limit,
+    offset, 
+    isLoading
+  } = useProducts({
+    expand: "variants",
+    limit: 50,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && !products.length && <span>No Products</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Products
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[StoreGetProductsParams](../../../../medusa/classes/medusa.StoreGetProductsParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved products.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"100","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"IDs to filter products by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search products' title, description, variants' title and sku, and collections' title.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"collection_id","type":"`string`[]","description":"Filter products by their associated product collection's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tags","type":"`string`[]","description":"Filter products by their associated tags' value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string`","description":"Title to filter products by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"Description to filter products by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"handle","type":"`string`","description":"Handle to filter products by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"Filter products by whether they're gift cards.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"type_id","type":"`string`[]","description":"Filter products by their associated product type's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id","type":"`string`[]","description":"Filter products by their associated sales channels' ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"category_id","type":"`string`[]","description":"Filter products by their associated product category's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"include_category_children","type":"`boolean`","description":"Whether to include product category children in the response.","optional":true,"defaultValue":"","expandable":false,"featureFlag":"product_categories","children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the products' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the products' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string`","description":"Retrieve prices for a cart ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"Retrieve prices for a region ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"Retrieve prices for a currency code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useProducts"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"[PricedProduct](../../../../medusa/types/medusa.PricedProduct/page.mdx)[]","description":"An array of products details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useProducts"/>
+
+### useProduct
+
+This hook retrieves a Product's details. For accurate and correct pricing of the product based on the customer's context, it's highly recommended to pass fields such as
+`region_id`, `currency_code`, and `cart_id` when available.
+
+Passing `sales_channel_id` ensures retrieving only products available in the current sales channel.
+You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+
+#### Example
+
+```ts
+import React from "react"
+import { useProduct } from "medusa-react"
+
+type Props = {
+  productId: string
+}
+
+const Product = ({ productId }: Props) => {
+  const { product, isLoading } = useProduct(productId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {product && <span>{product.title}</span>}
+    </div>
+  )
+}
+
+export default Product
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useProduct"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"product","type":"[PricedProduct](../../../../medusa/types/medusa.PricedProduct/page.mdx)","description":"Product details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variants","type":"[PricedVariant](../../../../medusa/types/medusa.PricedVariant/page.mdx)[]","description":"The product variants and their prices.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useProduct"/>

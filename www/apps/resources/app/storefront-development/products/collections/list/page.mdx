@@ -1,0 +1,213 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `List Product Collections in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to list product collections in the storefront, including paginating and filtering them.
+
+## List Product Collections
+
+To retrieve the list of product collections, send a request to the [List Product Collections API route](!api!/store#collections_getcollections):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+  ```ts
+  fetch(`http://localhost:9000/store/collections`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ collections }) => {
+    // use collections...
+    console.log(collections)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["17"], ["18"], ["19"], ["20"],
+  ["21"], ["22"], ["23"], ["24"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function Collections() {
+    const [loading, setLoading] = useState(true)
+    const [collections, setCollections] = useState<
+      HttpTypes.StoreCollection[]
+    >([])
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/collections`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ collections: dataCollections }) => {
+        setCollections(dataCollections)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && collections.length === 0 && (
+          <span>No product collections found.</span>
+        )}
+        {!loading && collections.length > 0 && (
+          <ul>
+            {collections.map((collection) => (
+              <li key={collection.id}>{collection.title}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add link to product colleciton object */}
+
+The response has a `collections` field, which is an array of product collections.
+
+---
+
+## Paginate Product Collections
+
+To paginate product collections, pass the following query parameters:
+
+- `limit`: The number of product collections to return in the request.
+- `offset`: The number of product collections to skip before the returned product collections. You can calculate this by multiplying the current page with the limit.
+
+The response object returns a `count` field, which is the total count of product collections. Use it to determine whether there are more product collections that can be loaded.
+
+For example:
+
+export const paginateHighlights = [
+  ["20", "offset", "Calculate the number of product collections to skip based on the current page and limit."],
+  ["28", "searchParams.toString()", "Pass the pagination parameters in the query."], 
+  ["33", "count", "The total number of product collections in the Medusa application."],
+  ["45", "setHasMorePages", "Set whether there are more pages based on the total count."],
+  ["64", "button", "Show a button to load more product collections if there are more pages."]
+]
+
+```tsx highlights={paginateHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+export default function Collections() {
+  const [loading, setLoading] = useState(true)
+  const [collections, setCollections] = useState<
+    HttpTypes.StoreCollection[]
+  >([])
+  const limit = 20
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMorePages, setHasMorePages] = useState(false)
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const offset = (currentPage - 1) * limit
+
+    const searchParams = new URLSearchParams({
+      limit: `${limit}`,
+      offset: `${offset}`,
+    })
+
+    fetch(`http://localhost:9000/store/collections?${
+      searchParams.toString()
+    }`, {
+      credentials: "include",
+    })
+    .then((res) => res.json())
+    .then(({ collections: dataCollections, count }) => {
+      setCollections((prev) => {
+        if (prev.length > offset) {
+          // product collections already added because 
+          // the same request has already been sent
+          return prev
+        }
+        return [
+          ...prev,
+          ...dataCollections,
+        ]
+      })
+      setHasMorePages(count > limit * currentPage)
+      setLoading(false)
+    })
+  }, [loading])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {!loading && collections.length === 0 && (
+        <span>No product collections found.</span>
+      )}
+      {!loading && collections.length > 0 && (
+        <ul>
+          {collections.map((collection) => (
+            <li key={collection.id}>{collection.title}</li>
+          ))}
+        </ul>
+      )}
+      {!loading && hasMorePages && (
+        <button 
+          onClick={() => {
+            setCurrentPage((prev) => prev + 1)
+            setLoading(true)
+          }}
+          disabled={loading}
+        >
+          Load More
+        </button>
+      )}
+    </div>
+  )
+}
+```
+
+---
+
+## Filter Collections
+
+The List Product Collections API route accepts query parameters to filter the collections by title, handle, and more.
+
+Refer to the [API reference](!api!/store#collections_getcollections) for the list of accepted query parameters.
+
+For example:
+
+```ts
+const searchParams = new URLSearchParams({
+  title: "test",
+})
+
+fetch(`http://localhost:9000/store/collections?${
+  searchParams.toString()
+}`, {
+  credentials: "include",
+})
+.then((res) => res.json())
+.then(({ collections, count }) => {
+  // TODO set collections...
+})
+```

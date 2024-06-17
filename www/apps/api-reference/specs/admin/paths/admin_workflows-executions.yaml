@@ -1,0 +1,37 @@
+get:
+  operationId: GetWorkflowsExecutions
+  summary: List Workflows Executions
+  description: >-
+    Retrieve a list of workflows executions. The workflows executions can be
+    filtered by fields such as `id`. The workflows executions can also be sorted
+    or paginated.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_workflows-executions/get.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

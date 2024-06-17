@@ -1,6 +1,16 @@
 /** This file is auto-generated. Do not modify it manually. */
 import type { RegionCountryDTO } from "@medusajs/types"
 
+export function getCountryByIso2(
+  iso2: string | null
+): Omit<RegionCountryDTO, "id"> | undefined {
+  if (!iso2) {
+    return
+  }
+
+  return countries.find((c) => c.iso_2 === iso2)
+}
+
 export const countries: Omit<RegionCountryDTO, "id">[] = [
   {
     iso_2: "af",

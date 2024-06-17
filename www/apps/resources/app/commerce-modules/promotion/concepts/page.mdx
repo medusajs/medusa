@@ -1,0 +1,98 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Promotion Concepts`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about the main promotion and rule concepts in the Promotion Module.
+
+## What is a Promotion?
+
+A promotion, represented by the [Promotion data model](/references/promotion/models/Promotion), represents a discount applied on cart items, shipping methods, or entire orders.
+
+A promotion has two types:
+
+- `standard`: A standard promotion with rules.
+- `buyget`: “A buy X get Y” promotion with rules.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+      
+      `standard` Promotion Examples
+      
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+      
+      `buyget` Promotion Examples
+      
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      A coupon code that gives customers 10% off their entire order.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Buy two shirts and get another for free.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A coupon code that gives customers $15 off any shirt in their order.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Buy two shirts and get 10% off the entire order.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      A discount applied automatically for VIP customers that removes 10% off their shipping method’s amount.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Spend $100 and get free shipping.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+## PromotionRule
+
+A promotion can be restricted by a set of rules, each rule is represented by the [PromotionRule data model](/references/promotion/models/PromotionRule). For example, you can create a promotion that only customers of the `VIP` customer group can use.
+
+![A diagram showcasing the relation between Promotion and PromotionRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1709833196/Medusa%20Resources/promotion-promotion-rule_msbx0w.jpg)
+
+A `PromotionRule`'s `attribute` field indicates the field's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
+
+When testing whether a promotion can be applied to a cart, the rule's `attribute` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
+
+---
+
+## Flexible Rules
+
+The `PromotionRule`'s `operator` field adds more flexibility to the rule’s condition rather than simple equality (`eq`).
+
+For example, to restrict the promotion to only `VIP` and `B2B` customer groups:
+
+- Add a `PromotionRule` with its `attribute` field set to `customer_group_id` and `operator` field to `in`.
+- Add two `PromotionRuleValue` associated with the rule: one with the value `VIP` and the other `B2B`.
+
+![A diagram showcasing the relation between PromotionRule and PromotionRuleValue when a rule has multiple values](https://res.cloudinary.com/dza7lstvk/image/upload/v1709897383/Medusa%20Resources/promotion-promotion-rule-multiple_hctpmt.jpg)
+
+In this case, a customer’s group must be in the `VIP` and `B2B` set of values to use the promotion.

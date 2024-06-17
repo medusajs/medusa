@@ -1,0 +1,48 @@
+plugins:
+  - "./plugins/medusa/index.js"
+
+# Allows to replace a $ref with `type: object` in order to avoid infinite loops
+# when Redocly attempts to render circular references.
+decorators:
+  medusa/circular-patch:
+    schemas:
+      GiftCardTransaction:
+        - GiftCard
+        - Order
+      LineItemAdjustment:
+        - LineItem
+      LineItemTaxLine:
+        - LineItem
+      CustomerGroupResponse:
+        - CustomerResponse
+      ProductCategoryResponse:
+        - ProductCategoryResponse
+      AdminShippingOption:
+        - AdminShippingOption
+      AdminProductCategory:
+        - AdminProductCategory
+        - AdminProduct
+      BaseProduct:
+        - BaseProduct
+      StoreProduct:
+        - StoreProductCategory
+
+# Similar config to /www/docs/docusaurus.config.js > redocusaurus
+# Allows to emulate rendering of API public documentation when using `yarn redocly preview-docs openapi.yaml`
+theme:
+  openapi:
+    theme:
+      colors:
+        primary:
+          dark: "#242526"
+      sidebar:
+        width: "250px"
+    disableSearch: true
+    expandResponses: "200,204"
+    generatedPayloadSamplesMaxDepth: 4
+    hideDownloadButton: true
+    hideRequestPayloadSample: true
+    nativeScrollbars: true
+    requiredPropsFirst: true
+    showObjectSchemaExamples: true
+    sortTagsAlphabetically: true

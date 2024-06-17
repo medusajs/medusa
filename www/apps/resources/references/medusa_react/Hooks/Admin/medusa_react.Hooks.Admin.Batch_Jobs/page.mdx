@@ -1,0 +1,263 @@
+---
+slug: /references/medusa-react/hooks/admin/batch_jobs
+---
+
+import { TypeList } from "docs-ui"
+
+# Batch Jobs
+
+Queries and mutations listed here are used to send requests to the [Admin Batch Job API Routes](https://docs.medusajs.com/api/admin#batch-jobs).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A batch job is a task that is performed by the Medusa backend asynchronusly. For example, the Import Product feature is implemented using batch jobs.
+The methods in this class allow admins to manage the batch jobs and their state.
+
+Related Guide: [How to import products](https://docs.medusajs.com/modules/products/admin/import-products).
+
+## Mutations
+
+### useAdminCreateBatchJob
+
+This hook creates a Batch Job to be executed asynchronously in the Medusa backend. If `dry_run` is set to `true`, the batch job will not be executed until the it is confirmed,
+which can be done using the [useAdminConfirmBatchJob](../../../../modules/medusa_react/page.mdx#useadminconfirmbatchjob) hook.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateBatchJob } from "medusa-react"
+
+const CreateBatchJob = () => {
+  const createBatchJob = useAdminCreateBatchJob()
+  // ...
+
+  const handleCreateBatchJob = () => {
+    createBatchJob.mutate({
+      type: "publish-products",
+      context: {},
+      dry_run: true
+    }, {
+      onSuccess: ({ batch_job }) => {
+        console.log(batch_job)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateBatchJob
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostBatchesReq","type":"[AdminPostBatchesReq](../../../../medusa/classes/medusa.AdminPostBatchesReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the batch job to create.","expandable":false,"children":[{"name":"type","type":"`string`","description":"The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"Additional infomration regarding the batch to be used for processing.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"dry_run","type":"`boolean`","description":"Set a batch job in dry\\_run mode, which would delay executing the batch job until it's confirmed.","optional":false,"defaultValue":"false","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateBatchJob"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminBatchJobRes","type":"[AdminBatchJobRes](../../../../medusa/types/medusa.AdminBatchJobRes/page.mdx)","optional":false,"defaultValue":"","description":"The batch job's details.","expandable":false,"children":[{"name":"batch_job","type":"`BatchJob`","description":"Batch job details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateBatchJob"/>
+
+### useAdminCancelBatchJob
+
+This hook marks a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCancelBatchJob } from "medusa-react"
+
+type Props = {
+  batchJobId: string
+}
+
+const BatchJob = ({ batchJobId }: Props) => {
+  const cancelBatchJob = useAdminCancelBatchJob(batchJobId)
+  // ...
+
+  const handleCancel = () => {
+    cancelBatchJob.mutate(undefined, {
+      onSuccess: ({ batch_job }) => {
+        console.log(batch_job)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default BatchJob
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the batch job.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelBatchJob"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminBatchJobRes","type":"[AdminBatchJobRes](../../../../medusa/types/medusa.AdminBatchJobRes/page.mdx)","optional":false,"defaultValue":"","description":"The batch job's details.","expandable":false,"children":[{"name":"batch_job","type":"`BatchJob`","description":"Batch job details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelBatchJob"/>
+
+___
+
+## Queries
+
+### useAdminBatchJobs
+
+This hook retrieves a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated.
+
+#### Example
+
+To list batch jobs:
+
+```ts
+import React from "react"
+import { useAdminBatchJobs } from "medusa-react"
+
+const BatchJobs = () => {
+  const { 
+    batch_jobs, 
+    limit,
+    offset,
+    count,
+    isLoading
+  } = useAdminBatchJobs()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {batch_jobs?.length && (
+        <ul>
+          {batch_jobs.map((batchJob) => (
+            <li key={batchJob.id}>
+              {batchJob.id}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default BatchJobs
+```
+
+To specify relations that should be retrieved within the batch jobs:
+
+```ts
+import React from "react"
+import { useAdminBatchJobs } from "medusa-react"
+
+const BatchJobs = () => {
+  const { 
+    batch_jobs, 
+    limit,
+    offset,
+    count,
+    isLoading
+  } = useAdminBatchJobs({
+    expand: "created_by_user",
+    limit: 10,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {batch_jobs?.length && (
+        <ul>
+          {batch_jobs.map((batchJob) => (
+            <li key={batchJob.id}>
+              {batchJob.id}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default BatchJobs
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import React from "react"
+import { useAdminBatchJobs } from "medusa-react"
+
+const BatchJobs = () => {
+  const { 
+    batch_jobs, 
+    limit,
+    offset,
+    count,
+    isLoading
+  } = useAdminBatchJobs({
+    expand: "created_by_user",
+    limit: 20,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {batch_jobs?.length && (
+        <ul>
+          {batch_jobs.map((batchJob) => (
+            <li key={batchJob.id}>
+              {batchJob.id}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default BatchJobs
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetBatchParams](../../../../medusa/classes/medusa.AdminGetBatchParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved batch jobs.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"10","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"IDs to filter batch jobs by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`[]","description":"Types to filter batch jobs by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"confirmed_at","type":"`null` \\| [DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `confirmed_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"pre_processed_at","type":"`null` \\| [DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `pre_processed_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"completed_at","type":"`null` \\| [DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `completed_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"failed_at","type":"`null` \\| [DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `failed_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_at","type":"`null` \\| [DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `canceled_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the batch jobs' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminBatchJobs"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"batch_jobs","type":"`BatchJob`[]","description":"An array of batch job details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminBatchJobs"/>
+
+### useAdminBatchJob
+
+This hook retrieves the details of a batch job.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminBatchJob } from "medusa-react"
+
+type Props = {
+  batchJobId: string
+}
+
+const BatchJob = ({ batchJobId }: Props) => {
+  const { batch_job, isLoading } = useAdminBatchJob(batchJobId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {batch_job && <span>{batch_job.created_by}</span>}
+    </div>
+  )
+}
+
+export default BatchJob
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the batch job.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminBatchJob"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"batch_job","type":"`BatchJob`","description":"Batch job details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminBatchJob"/>

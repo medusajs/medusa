@@ -1,0 +1,79 @@
+export const metadata = {
+  title: `Tax Lines in Cart Module`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about tax lines in a cart and how to retrieve tax lines with the Tax Module.
+
+## What are Tax Lines?
+
+A tax line indicates the tax rate of a line item or a shipping method. The [LineItemTaxLine data model](/references/cart/models/LineItemTaxLine) represents a line item’s tax line, and the [ShippingMethodTaxLine data model](/references/cart/models/ShippingMethodTaxLine) represents a shipping method’s tax line.
+
+![A diagram showcasing the relation between other data models and the tax line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534431/Medusa%20Resources/cart-tax-lines_oheaq6.jpg)
+
+---
+
+## Tax Inclusivity
+
+By default, the tax amount is calculated by taking the tax rate from the line item or shipping method’s amount, and then added to the item/method’s subtotal.
+
+However, line items and shipping methods have an `is_tax_inclusive` field that, when enabled, indicates that the item or method’s price already includes taxes.
+
+So, instead of calculating the tax rate and adding it to the item/method’s subtotal, it’s calculated as part of the subtotal.
+
+<Note>
+
+The following diagram is a simplified showcase of how a subtotal is calculated from the taxes perspective.
+
+</Note>
+
+![A diagram showing an example of calculating the subtotal of a line item using its taxes](https://res.cloudinary.com/dza7lstvk/image/upload/v1711535295/Medusa%20Resources/cart-tax-inclusive_shpr3t.jpg)
+
+---
+
+## Retrieving Tax Lines
+
+When using the Cart and Tax modules together, you can use the `getTaxLines` method of the Tax Module’s main service. It retrieves the tax lines for a cart’s line items and shipping methods.
+
+```ts
+// retrieve the cart
+const cart = await cartModuleService.retrieve("cart_123", {
+  relations: [
+    "items.tax_lines",
+    "shipping_methods.tax_lines",
+    "shipping_address",
+  ],
+})
+
+// retrieve the tax lines
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    ...(cart.items as TaxableItemDTO[]),
+    ...(cart.shipping_methods as TaxableShippingDTO[]),
+  ],
+  {
+    address: {
+      ...cart.shipping_address,
+      country_code:
+        cart.shipping_address.country_code || "us",
+    },
+  }
+)
+```
+
+Then, use the returned tax lines to set the line items and shipping methods’ tax lines:
+
+```ts
+// set line item tax lines
+await cartModuleService.setLineItemTaxLines(
+  cart.id,
+  taxLines.filter((line) => "line_item_id" in line)
+)
+
+// set shipping method tax lines
+await cartModuleService.setLineItemTaxLines(
+  cart.id,
+  taxLines.filter((line) => "shipping_line_id" in line)
+)
+```

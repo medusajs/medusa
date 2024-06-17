@@ -1,0 +1,296 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `MinIO Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[MinIO](https://min.io/) is an open-source object storage server  compatible with the Amazon S3 API. It allows users to store  photos, videos, backups, and more.
+
+With the MinIO plugin, you'll benefit from basic and advanced storage functionalities, including public and private uploads, and presigned URLs.
+
+---
+
+## Install the MinIO Plugin
+
+<Note type="check">
+
+- [Install MinIO](https://min.io/docs/minio/linux/index.html).
+- Change port to `9001` using the [console address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-console-address) and [address](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html#minio.server.-address) CLI options.
+- [MinIO bucket with public access policy](https://min.io/docs/minio/linux/administration/console/managing-objects.html#creating-buckets).
+- [MinIO access and secret access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1)
+
+</Note>
+
+To install the MinIO plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-file-minio
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "bucket", "The bucket to upload files to."],
+  ["7", "access_key_id", "The MinIO access key."],
+  ["8", "secret_access_key", "The MinIO secret access key."],
+  ["9", "endpoint", "The URL of your MinIO server."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-file-minio`,
+    options: {
+      bucket: process.env.MINIO_BUCKET,
+      access_key_id: process.env.MINIO_ACCESS_KEY,
+      secret_access_key: process.env.MINIO_SECRET_KEY,
+      endpoint: process.env.MINIO_ENDPOINT,
+    },
+  },
+]
+```
+
+### MinIO Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `bucket`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the bucket to upload files to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `access_key_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [MinIO access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `secret_access_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the [MinIO secret access key](https://min.io/docs/minio/linux/administration/console/security-and-access.html#id1).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `endpoint`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the URL of your MinIO server.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `private_bucket`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the bucket to use for private media, such as the CSV file of exported products.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Required if you're using import/export features that require a private bucket.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `private_access_key_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the MinIO access key to use for private uploads.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The value of `access_key_id`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `private_secret_access_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the MinIO secret access key to use for private uploads.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The value of `secret_access_key`.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `download_url_duration`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the expiry time of presigned URLs in seconds.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `60`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+MINIO_BUCKET=<BUCKET>
+MINIO_ACCESS_KEY=<ACCESS_KEY>
+MINIO_SECRET_KEY=<SECRET_KEY>
+MINIO_ENDPOINT=<ENDPOINT>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, upload a product image either using the [Medusa Admin](!user-guide!/products/manage#manage-product-media) or the [Admin API routes](https://docs.medusajs.com/api/admin#uploads_postuploads).
+
+---
+
+## Next.js Starter Template Configuration
+
+If you’re using the [Next.js Starter storefront](../../../nextjs-starter/page.mdx), add the following option to the exported object in `next.config.js`:
+
+```jsx title="next.config.js"
+const { withStoreConfig } = require("./store-config")
+
+// ...
+
+module.exports = withStoreConfig({
+  // ...
+  images: {
+    domains: [
+      // ...
+      "{minio_domain}",
+    ],
+  },
+})
+```
+
+This adds the MinIO domain into the configured images domain names. If you don't add the configuration, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
+
+Make sure to replace `{minio_domain}` with the MinIO domain. For example, `127.0.0.1`.

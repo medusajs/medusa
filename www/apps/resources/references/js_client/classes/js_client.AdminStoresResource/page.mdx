@@ -1,0 +1,164 @@
+---
+slug: /references/js-client/AdminStoresResource
+---
+
+import { TypeList } from "docs-ui"
+
+# AdminStoresResource
+
+This class is used to send requests to [Admin Store API Routes](https://docs.medusajs.com/api/admin#store). All its method
+are available in the JS Client under the `medusa.admin.store` property.
+
+All methods in this class require [authentication](../../../modules/user/page.mdx).
+
+A store indicates the general configurations and details about the commerce store. By default, there's only one store in the Medusa backend.
+Admins can manage the store and its details or configurations.
+
+## Methods
+
+### update
+
+Update the store's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.update({
+  name: "Medusa Store"
+})
+.then(({ store }) => {
+  console.log(store.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[AdminPostStoreReq](../../../medusa/classes/medusa.AdminPostStoreReq/page.mdx)","description":"The attributes to update in the store.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the Store","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"swap_link_template","type":"`string`","description":"A template for Swap links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Swap Cart ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_link_template","type":"`string`","description":"A template for payment links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Cart ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"invite_link_template","type":"`string`","description":"A template for invite links - use `&#123;&#123;invite\\_token&#125;&#125;` to insert the invite token","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_currency_code","type":"`string`","description":"The default currency code of the Store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currencies","type":"`string`[]","description":"Array of available currencies in the store. Each currency is in 3 character ISO code format.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminStoresRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the store's details.","expandable":false,"children":[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+### addCurrency
+
+Add a currency code to the available currencies in a store. This doesn't create new currencies, as currencies are defined within the Medusa backend. 
+To create a currency, you can [create a migration](https://docs.medusajs.com/development/entities/migrations/create) that inserts the currency into the database.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.addCurrency("eur")
+.then(({ store }) => {
+  console.log(store.currencies);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"currency_code","type":"`string`","description":"The code of the currency to add to the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addCurrency"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminStoresRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the store's details.","expandable":false,"children":[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addCurrency"/>
+
+### deleteCurrency
+
+Delete a currency code from the available currencies in a store. This doesn't completely delete the currency and it can be added again later to the store.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.deleteCurrency("eur")
+.then(({ store }) => {
+  console.log(store.currencies);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"currency_code","type":"`string`","description":"The code of the currency to delete from the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteCurrency"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminStoresRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the store's details.","expandable":false,"children":[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="deleteCurrency"/>
+
+### retrieve
+
+Retrieve the store's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.retrieve()
+.then(({ store }) => {
+  console.log(store.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminExtendedStoresRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the store's details.","expandable":false,"children":[{"name":"AdminExtendedStoresRes","type":"[AdminExtendedStoresRes](../../../medusa/types/medusa.AdminExtendedStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details with additional details like payment and tax providers.","expandable":false,"children":[{"name":"store","type":"[ExtendedStoreDTO](../../../medusa/types/medusa.ExtendedStoreDTO/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_providers","type":"[PaymentProvider](../../../payment_models/classes/payment_models.PaymentProvider/page.mdx)[]","description":"The store's payment providers.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"fulfillment_providers","type":"[FulfillmentProvider](../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)[]","description":"The store's fulfillment providers.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]},{"name":"feature_flags","type":"[FeatureFlagsResponse](../../../medusa/types/medusa.FeatureFlagsResponse/page.mdx)","description":"The feature flags enabled in the store's backend.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`boolean` \\| `Record<string, boolean>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"modules","type":"[ModulesResponse](../../../medusa/types/medusa.ModulesResponse/page.mdx)","description":"The modules installed in the store's backend.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"module","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resolution","type":"`string` \\| `false`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+### listPaymentProviders
+
+Retrieve a list of available payment providers in a store.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.listPaymentProviders()
+.then(({ payment_providers }) => {
+  console.log(payment_providers.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listPaymentProviders"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminPaymentProvidersList&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of payment providers.","expandable":false,"children":[{"name":"AdminPaymentProvidersList","type":"[AdminPaymentProvidersList](../../../medusa/types/medusa.AdminPaymentProvidersList/page.mdx)","optional":false,"defaultValue":"","description":"The list of payment providers in a store.","expandable":false,"children":[{"name":"payment_providers","type":"[PaymentProvider](../../../payment_models/classes/payment_models.PaymentProvider/page.mdx)[]","description":"An array of payment providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listPaymentProviders"/>
+
+### listTaxProviders
+
+Retrieve a list of available tax providers in a store.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.store.listTaxProviders()
+.then(({ tax_providers }) => {
+  console.log(tax_providers.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listTaxProviders"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminTaxProvidersList&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of tax providers.","expandable":false,"children":[{"name":"AdminTaxProvidersList","type":"[AdminTaxProvidersList](../../../medusa/types/medusa.AdminTaxProvidersList/page.mdx)","optional":false,"defaultValue":"","description":"The list of tax providers in a store.","expandable":false,"children":[{"name":"tax_providers","type":"[TaxProvider](../../../tax_models/classes/tax_models.TaxProvider/page.mdx)[]","description":"An array of tax providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="listTaxProviders"/>

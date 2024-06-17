@@ -1,0 +1,98 @@
+---
+sidebar_label: "Authentication Flows"
+---
+
+export const metadata = {
+  title: `Authentication Flows with the Auth Provider`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about how the Auth Provider is used in an authentication flow.
+
+## How to Authenticate a User
+
+To authenticate a user, you use the [authenticate method of the Auth Module's main service](/references/auth/authenticate). For example:
+
+```ts
+const data = await authModuleService.authenticate(
+  "emailpass",
+  // passed to auth provider
+  {
+    // ...
+  }
+)
+```
+
+This method calls the `authenticate` method of the provider specified in the first parameter and returns its data.
+
+---
+
+## Basic Authentication Flow
+
+If the `authenticate` method returns the following object:
+
+```ts
+data = {
+	success: true,
+	authIdentity: {
+    // ...
+  },
+}
+```
+
+Then, the user is authenticated successfully, and their authentication details are available within the `authIdentity` object.
+
+<Note>
+
+Check out the [AuthIdentity](/references/auth/models/AuthIdentity) reference for the expected fields in `authIdentity`.
+
+</Note>
+
+![Diagram showcasing the basic authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711373749/Medusa%20Resources/basic-auth_lgpqsj.jpg)
+
+---
+
+## Authentication with Third-Party Service Flow
+
+If the `authenticate` method returns the following object:
+
+```ts
+data = {
+  success: true,
+  location: "https://....",
+}
+```
+
+It means the authentication process requires the user to perform an action with a third-party service. For example, when using the `google` provider, the user goes to the URL specified in the `location`'s value to log in with their Google account. 
+
+![Diagram showcasing the first part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711374847/Medusa%20Resources/third-party-auth-1_enyedy.jpg)
+
+### validateCallback
+
+Providers handling this authentication flow must implement the `validateCallback` method. It implements the logic to validate the authentication with the third-party service.
+
+So, once the user performs the required action, the third-party service must redirect to an API route that uses the [validateCallback method of the Auth Module's main service](/references/auth/validateCallback). The method calls the specified provider’s `validateCallback` method passing it the authentication details it received in the second parameter:
+
+```ts
+const data = await authModuleService.validateCallback(
+    "google",
+    // passed to auth provider
+    {
+      // ...
+    }
+  )
+```
+
+If the authentication is successful, the `validateCallback` method returns the same data as the basic authentication:
+
+```ts
+data = {
+	success: true,
+	authIdentity: {
+    // ...
+  },
+}
+```
+
+![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)

@@ -1,0 +1,256 @@
+---
+slug: /references/medusa-react/hooks/admin/notes
+---
+
+import { TypeList } from "docs-ui"
+
+# Notes
+
+Queries and Mutations listed here are used to send requests to the [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+Notes are created by admins and can be associated with any resource. For example, an admin can add a note to an order for additional details or remarks.
+
+## Mutations
+
+### useAdminCreateNote
+
+This hook creates a Note which can be associated with any resource.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateNote } from "medusa-react"
+
+const CreateNote = () => {
+  const createNote = useAdminCreateNote()
+  // ...
+
+  const handleCreate = () => {
+    createNote.mutate({
+      resource_id: "order_123",
+      resource_type: "order",
+      value: "We delivered this order"
+    }, {
+      onSuccess: ({ note }) => {
+        console.log(note.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateNote
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostNotesReq","type":"[AdminPostNotesReq](../../../../medusa/classes/medusa.AdminPostNotesReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the note to be created.","expandable":false,"children":[{"name":"resource_id","type":"`string`","description":"The ID of the resource which the Note relates to. For example, an order ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_type","type":"`string`","description":"The type of resource which the Note relates to. For example, `order`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The content of the Note to create.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminNotesRes","type":"[AdminNotesRes](../../../../medusa/types/medusa.AdminNotesRes/page.mdx)","optional":false,"defaultValue":"","description":"The note's details.","expandable":false,"children":[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
+
+### useAdminUpdateNote
+
+This hook updates a Note's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateNote } from "medusa-react"
+
+type Props = {
+  noteId: string
+}
+
+const Note = ({ noteId }: Props) => {
+  const updateNote = useAdminUpdateNote(noteId)
+  // ...
+
+  const handleUpdate = (
+    value: string
+  ) => {
+    updateNote.mutate({
+      value
+    }, {
+      onSuccess: ({ note }) => {
+        console.log(note.value)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Note
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The note's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostNotesNoteReq","type":"[AdminPostNotesNoteReq](../../../../medusa/classes/medusa.AdminPostNotesNoteReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the note.","expandable":false,"children":[{"name":"value","type":"`string`","description":"The description of the Note.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminNotesRes","type":"[AdminNotesRes](../../../../medusa/types/medusa.AdminNotesRes/page.mdx)","optional":false,"defaultValue":"","description":"The note's details.","expandable":false,"children":[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
+
+### useAdminDeleteNote
+
+This hook deletes a Note.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteNote } from "medusa-react"
+
+type Props = {
+  noteId: string
+}
+
+const Note = ({ noteId }: Props) => {
+  const deleteNote = useAdminDeleteNote(noteId)
+  // ...
+
+  const handleDelete = () => {
+    deleteNote.mutate()
+  }
+
+  // ...
+}
+
+export default Note
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The note's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteNote"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteNote"/>
+
+___
+
+## Queries
+
+### useAdminNotes
+
+This hook retrieves a list of notes. The notes can be filtered by fields such as `resource_id` passed in 
+the `query` parameter. The notes can also be paginated.
+
+#### Example
+
+To list notes:
+
+```tsx
+import React from "react"
+import { useAdminNotes } from "medusa-react"
+
+const Notes = () => {
+  const { notes, isLoading } = useAdminNotes()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {notes && !notes.length && <span>No Notes</span>}
+      {notes && notes.length > 0 && (
+        <ul>
+          {notes.map((note) => (
+            <li key={note.id}>{note.resource_type}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Notes
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminNotes } from "medusa-react"
+
+const Notes = () => {
+  const { 
+    notes, 
+    limit,
+    offset,
+    isLoading
+  } = useAdminNotes({
+    limit: 40,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {notes && !notes.length && <span>No Notes</span>}
+      {notes && notes.length > 0 && (
+        <ul>
+          {notes.map((note) => (
+            <li key={note.id}>{note.resource_type}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Notes
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetNotesParams](../../../../medusa/classes/medusa.AdminGetNotesParams/page.mdx)","description":"Filters and pagination configurations applied on retrieved notes.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"Resource ID to filter notes by.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"notes","type":"`Note`[]","description":"An array of notes","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
+
+### useAdminNote
+
+This hook retrieves a note's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminNote } from "medusa-react"
+
+type Props = {
+  noteId: string
+}
+
+const Note = ({ noteId }: Props) => {
+  const { note, isLoading } = useAdminNote(noteId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {note && <span>{note.resource_type}</span>}
+    </div>
+  )
+}
+
+export default Note
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The note's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNote"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNote"/>

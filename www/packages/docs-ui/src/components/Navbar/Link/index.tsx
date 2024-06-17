@@ -2,7 +2,7 @@
 
 import React from "react"
 import clsx from "clsx"
-import { Link, LinkProps } from "@/components"
+import { Badge, BadgeProps, Link, LinkProps } from "@/components"
 
 export type NavbarLinkProps = {
   href: string
@@ -10,6 +10,7 @@ export type NavbarLinkProps = {
   className?: string
   activeValuePattern?: RegExp
   isActive?: boolean
+  badge?: BadgeProps
 } & LinkProps
 
 export const NavbarLink = ({
@@ -17,6 +18,7 @@ export const NavbarLink = ({
   label,
   className,
   isActive,
+  badge,
 }: NavbarLinkProps) => {
   return (
     <Link
@@ -30,6 +32,9 @@ export const NavbarLink = ({
       )}
     >
       {label}
+      {badge && (
+        <Badge {...badge} className={clsx(badge.className, "ml-docs_0.5")} />
+      )}
     </Link>
   )
 }

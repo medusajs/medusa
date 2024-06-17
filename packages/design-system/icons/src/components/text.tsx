@@ -5,19 +5,27 @@ const Text = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
+        <g
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M2.572 12.355h6.493M5.826 4.823l-3.96 9.18M9.771 14.003l-3.945-9.18M18.134 8.451v5.538M17.319 9.253a2.784 2.784 0 1 1-3.938 3.937 2.784 2.784 0 0 1 3.938-3.937Z"
-        />
+          clipPath="url(#a)"
+        >
+          <path d="M7.783 11.278 4.609 3.722h-.158l-3.173 7.556M2.024 9.5h5.012M9.93 6.82c.432-.466 1.047-.653 1.672-.653 1.048 0 1.897.85 1.897 1.897v3.214" />
+          <path d="M11.056 8.611H13.5v.222a2.445 2.445 0 0 1-2.444 2.445 1.334 1.334 0 0 1 0-2.667" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

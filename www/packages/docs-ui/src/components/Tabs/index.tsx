@@ -4,23 +4,40 @@ import React from "react"
 import { Tabs as UiTabs } from "@medusajs/ui"
 import { ComponentProps } from "react"
 import clsx from "clsx"
-import { Key } from "types"
 
-export const Tabs = (props: ComponentProps<typeof UiTabs> & Key) => (
-  <UiTabs {...props} />
+type TabsProps = ComponentProps<typeof UiTabs> & {
+  layoutType?: "horizontal" | "vertical"
+}
+
+export const Tabs = ({
+  layoutType = "horizontal",
+  className,
+  ...props
+}: TabsProps) => (
+  <UiTabs
+    {...props}
+    className={clsx(
+      className,
+      layoutType === "vertical" && [
+        "flex gap-docs_1",
+        "[&_[role=tablist]]:flex-col [&_[role=tablist]]:items-start",
+        "[&_[role=tablist]+*]:flex-1 [&_[role=tablist]+*]:!mt-0",
+      ]
+    )}
+  />
 )
 
 export const TabsList = ({
   className,
   ...props
-}: ComponentProps<typeof UiTabs.List> & Key) => (
+}: ComponentProps<typeof UiTabs.List>) => (
   <UiTabs.List {...props} className={clsx(className, "gap-docs_0.5")} />
 )
 
 export const TabsTrigger = ({
   className,
   ...props
-}: ComponentProps<typeof UiTabs.Trigger> & Key) => (
+}: ComponentProps<typeof UiTabs.Trigger>) => (
   <UiTabs.Trigger
     {...props}
     className={clsx(
@@ -43,6 +60,6 @@ export const TabsContentWrapper = ({
   <div {...props} className={clsx(className, "mt-docs_0.5")} />
 )
 
-export const TabsContent = (
-  props: ComponentProps<typeof UiTabs.Content> & Key
-) => <UiTabs.Content {...props} />
+export const TabsContent = (props: ComponentProps<typeof UiTabs.Content>) => (
+  <UiTabs.Content {...props} />
+)

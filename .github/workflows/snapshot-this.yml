@@ -12,7 +12,7 @@ jobs:
   snapshot:
     name: Snapshot Release
     if: |
-      github.event.issue.pull_request && 
+      github.event.issue.pull_request &&
       github.event.comment.body == '/snapshot-this'
     runs-on: ubuntu-latest
     steps:
@@ -79,7 +79,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
@@ -120,7 +120,7 @@ jobs:
                   '```sh\n' +
                   `yarn add ${tag}\n` +
                   '```'
-                )).join('\n') + 
+                )).join('\n') +
                 `\n\n> Latest commit: ${context.sha}`
 
               )

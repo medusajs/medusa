@@ -1,0 +1,268 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Workflows`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about workflows and how to define and execute them.
+
+## What is a Workflow?
+
+A workflow is a series of queries and actions that complete a task.
+
+You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps. This makes it possible to keep track of your Workflow’s progress, automatically retry failing steps, and roll back steps.
+
+---
+
+## How to Create and Execute a Workflow
+
+### 1. Create the Steps
+
+A workflow is made of a series of steps. A step is created using the `createStep` utility function imported from `@medusajs/workflows-sdk`.
+
+Create the file `src/workflows/hello-world.ts` with the following content:
+
+```ts title="src/workflows/hello-world.ts"
+import { 
+  createStep,
+  StepResponse,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep("step-1", async () => {
+  return new StepResponse(`Hello from step one!`)
+})
+```
+
+This creates one step that returns a hello message.
+
+Steps can accepts input parameters. For example:
+
+```ts title="src/workflows/hello-world.ts"
+type WorkflowInput = {
+  name: string
+}
+
+const step2 = createStep(
+  "step-2",
+  async ({ name }: WorkflowInput) => {
+    return new StepResponse(`Hello ${name} from step two!`)
+  }
+)
+```
+
+### 2. Create a Workflow
+
+Next, create the workflow using the `createWorkflow` function:
+
+```ts title="src/workflows/hello-world.ts"
+import {
+  // other imports...
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+
+// ...
+
+type WorkflowOutput = {
+  message: string
+}
+
+const myWorkflow = createWorkflow<
+  WorkflowInput,
+  WorkflowOutput
+>("hello-world", function (input) {
+  const str1 = step1()
+  // to pass input
+  const str2 = step2(input)
+
+  return {
+    message: str1,
+  }
+})
+
+export default myWorkflow
+
+```
+
+This creates a `hello-world` workflow. When you create a workflow, it’s constructed but not executed yet.
+
+### 3. Execute the Workflow
+
+You can execute a workflow from different resources within Medusa.
+
+- Use API routes to execute the workflow in response to an API request or a webhook.
+- Use subscribers to execute a workflow when an event is triggered.
+- Use scheduled jobs to execute a workflow on a regular schedule.
+
+To execute the workflow, invoke it passing the Medusa container as a parameter. Then, use its `run` method:
+
+<CodeTabs group="resource-types">
+  <CodeTab label="API Route" value="api-route">
+    
+    ```ts title="src/api/store/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]}
+    import type {
+      MedusaRequest,
+      MedusaResponse,
+    } from "@medusajs/medusa"
+    import myWorkflow from "../../../workflows/hello-world"
+
+    export async function GET(
+      req: MedusaRequest,
+      res: MedusaResponse
+    ) {
+      const { result } = await myWorkflow(req.scope)
+        .run({
+          input: {
+            name: req.query.name as string,
+          },
+        })
+
+      res.send(result)
+    }
+    ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscriber">
+    
+    ```ts title="src/subscribers/customer-created.ts" highlights={[["13"], ["14"], ["15"], ["16"], ["17"], ["18"]]}
+    import {
+      type SubscriberConfig,
+      type SubscriberArgs,
+      CustomerService,
+      Customer,
+    } from "@medusajs/medusa"
+    import myWorkflow from "../workflows/hello-world"
+
+    export default async function handleCustomerCreate({
+      data,
+      container,
+    }: SubscriberArgs<Customer>) {
+      const { result } = await myWorkflow(container)
+        .run({
+          input: {
+            name: data.first_name,
+          },
+        })
+
+      console.log(result)
+    }
+
+    export const config: SubscriberConfig = {
+      event: CustomerService.Events.CREATED,
+    }
+    ```
+
+  </CodeTab>
+  <CodeTab label="Scheduled Job" value="scheduled-job">
+    
+    ```ts title="src/jobs/message-daily.ts" highlights={[["10"], ["11"], ["12"], ["13"], ["14"], ["15"]]}
+    import {
+      type ScheduledJobConfig,
+      type ScheduledJobArgs,
+    } from "@medusajs/medusa"
+    import myWorkflow from "../workflows/hello-world"
+
+    export default async function handler({
+      container,
+    }: ScheduledJobArgs) {
+      const { result } = await myWorkflow(container)
+        .run({
+          input: {
+            name: "John",
+          },
+        })
+
+      console.log(result.message)
+    }
+
+    export const config: ScheduledJobConfig = {
+      name: "run-once-a-day",
+      schedule: `0 0 * * *`,
+    }
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+### 4. Test Workflow
+
+To test out your workflow, start your Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, send a `GET` request to `/store/workflow`:
+
+```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflow"
+curl http://localhost:9000/store/workflow
+```
+
+You’ll receive the following response:
+
+```json
+{
+  "message": "Hello from step one!"
+}
+```
+
+---
+
+## When to Use Workflows
+
+<Note title="Use workflows when" type="success">
+
+- You're defining a flow with interactions across multiple systems and services.
+- You're defining flows to be used across different resources. For example, if you want to invoke the flow manually through an API Router, but also want to automate its running through a scheduled job.
+- You want to define how the series of actions are rolled-back when an error occurs.
+
+</Note>
+
+---
+
+## Resolve Resources
+
+Each step in the workflow receives as a second parameter a `context` object. The object holds a `container` property which is the Medusa container. Use it to resolve other resources, such as services, of your Medusa application.
+
+For example:
+
+export const highlights = [
+  ["14", "resolve", "Resolve the `IProductModuleService`."],
+  ["14", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+]
+
+```ts title="src/workflows/product-count.ts" highlights={highlights}
+import {
+  createStep,
+  StepResponse,
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+type WorkflowOutput = {
+  count: number
+}
+
+const step1 = createStep("step-1", async (_, context) => {
+  const productModuleService: IProductModuleService =
+    context.container.resolve(ModuleRegistrationName.PRODUCT)
+  return new StepResponse(
+    (await productModuleService.listAndCount())[1]
+  )
+})
+
+const myWorkflow = createWorkflow<unknown, WorkflowOutput>(
+  "product-count",
+  function () {
+    const count = step1()
+
+    return {
+      count,
+    }
+  }
+)
+
+export default myWorkflow
+```

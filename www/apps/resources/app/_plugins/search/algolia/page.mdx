@@ -1,0 +1,232 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Algolia Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Algolia](https://www.algolia.com/) is a search engine service that allows developers to integrate advanced search functionalities into their websites including typo tolerance, recommended results, and quick responses.
+
+Algolia is used for a wide range of use cases, including commerce stores. By integrating Algolia into your commerce application, you provide your customers with a better user experience and help them find what they’re looking for swifltly.
+
+---
+
+## Install the Algolia Plugin
+
+<Note type="check">
+
+- [Algolia account](https://www.algolia.com/users/sign_up)
+- [Algolia app ID](https://support.algolia.com/hc/en-us/articles/11040113398673-Where-can-I-find-my-application-ID-and-the-index-name)
+- [Algolia API key](https://support.algolia.com/hc/en-us/articles/11972559809681-How-do-I-find-my-Admin-API-key)
+
+</Note>
+
+To install the Algolia plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-algolia
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "applicationId", "The Algolia app ID."],
+  ["7", "adminApiKey", "The Algolia API key."],
+  ["8", "settings", "Settings of indices created in Algolia."],
+  ["9", "products", "The name of an index to create. In this example, it's `products`."],
+  ["10", "indexSettings", "The settings of the index."],
+  ["11", "searchableAttributes", "The attributes that can be searched in the index."],
+  ["12", "attributesToRetrieve", "The attributes to retrieve in the search results."],
+  ["26", "transformer", "A function that shapes the object to be indexed."]
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-algolia`,
+    options: {
+      applicationId: process.env.ALGOLIA_APP_ID,
+      adminApiKey: process.env.ALGOLIA_ADMIN_API_KEY,
+      settings: {
+        products: {
+          indexSettings: {
+            searchableAttributes: ["title", "description"],
+            attributesToRetrieve: [
+              "id",
+              "title",
+              "description",
+              "handle",
+              "thumbnail",
+              "variants",
+              "variant_sku",
+              "options",
+              "collection_title",
+              "collection_handle",
+              "images",
+            ],
+          },
+          transformer: (product) => ({ 
+            objectID: product.id, 
+            // other attributes...
+          }),
+        },
+      },
+    },
+  },
+]
+```
+
+### Algolia Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `applicationId`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Algolia app ID.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `adminApiKey`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Algolia API key.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of settings. Its keys are names of indices to create in Algolia (in the example above, `products`), and values are an object of the index's settings.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings.[indexName].indexSettings`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of index settings. It accepts two properties:
+
+      - `searchableAttributes`: An array of field names that can be searched.
+      - `attributesToRetrieve`: An array of field names retrieved in search results.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      If `settings` is provided, this property is required.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `settings.[indexName].transformer`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A function used to change the shape of the indexed records. For example, you can add details related to variants or custom relations, or filter out certain products.
+
+      The function accepts as a parameter that data model object to index, such as a product, and returns an object to be indexed.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+ALGOLIA_APP_ID=<YOUR_APP_ID>
+ALGOLIA_ADMIN_API_KEY=<YOUR_ADMIN_API_KEY>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, send a `POST` request to the `/store/products/search`:
+
+```bash apiTesting testApiUrl="http://localhost:9000/store/products/search" testApiMethod="POST" testBodyParams={{"q": "shirt"}}
+curl -X POST http://localhost:9000/store/products/search \ 
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "q": "shirt"
+  }'
+```
+
+The response contains a `hits` array with the results from the Algolia search engine.
+
+### Add or Update Products
+
+If you add or update products in your Medusa application, it'll be reflected in the Algolia indices.
+
+---
+
+## Add Search to your Storefront
+
+### Next.js Starter
+
+Refer to the [Next.js Starter guide](../../../nextjs-starter/page.mdx#configure-algolia) to learn how to configure Algolia.
+
+### Custom Storefront
+
+To integrate Algolia's search functionalities in your custom storefront, refer to [Algolia's InstantSearch.js documentation](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/js/).

@@ -1,0 +1,62 @@
+---
+displayed_sidebar: regionReference
+slug: /references/region/listAndCountCountries
+sidebar_label: listAndCountCountries
+---
+
+import { TypeList } from "docs-ui"
+
+# listAndCountCountries - Region Module Reference
+
+This documentation provides a reference to the `listAndCountCountries` method. This belongs to the Region Module.
+
+This method retrieves a paginated list of countries along with the total count of available countries satisfying the provided filters.
+
+## Example
+
+To retrieve a list of countries using their IDs:
+
+```ts
+const [countries, count] =
+  await regionModuleService.listAndCountCountries({
+    iso_2: ["us", "eur"],
+  })
+```
+
+To specify relations that should be retrieved within the countries:
+
+```ts
+const [countries, count] =
+  await regionModuleService.listAndCountCountries(
+    {
+      iso_2: ["us", "eur"],
+    },
+    {
+      relations: ["region"],
+    }
+  )
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const [countries, count] =
+  await regionModuleService.listAndCountCountries(
+    {
+      iso_2: ["us", "eur"],
+    },
+    {
+      relations: ["region"],
+      take: 20,
+      skip: 2,
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"filters","type":"[FilterableRegionCountryProps](../../../interfaces/region.FilterableRegionCountryProps/page.mdx)","description":"The filters to apply on the retrieved countries.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterableRegionCountryProps](../../../interfaces/region.FilterableRegionCountryProps/page.mdx) \\| [BaseFilterable](../../../interfaces/region.BaseFilterable/page.mdx)&#60;[FilterableRegionCountryProps](../../../interfaces/region.FilterableRegionCountryProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableRegionCountryProps](../../../interfaces/region.FilterableRegionCountryProps/page.mdx) \\| [BaseFilterable](../../../interfaces/region.BaseFilterable/page.mdx)&#60;[FilterableRegionCountryProps](../../../interfaces/region.FilterableRegionCountryProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter the countries by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"iso_2","type":"`string` \\| `string`[]","description":"Filter countries by their ISO 2 code.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"iso_3","type":"`string` \\| `string`[]","description":"Filter countries by their ISO 3 code.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"num_code","type":"`string` \\| `number`[]","description":"Filter countries by their code number.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string` \\| `string`[]","description":"Filter countries by their name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"display_name","type":"`string` \\| `string`[]","description":"Filter countries by their display name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"[FindConfig](../../../interfaces/region.FindConfig/page.mdx)&#60;[RegionCountryDTO](../../../interfaces/region.RegionCountryDTO/page.mdx)&#62;","description":"The configurations determining how the country is retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a country.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/region.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/region.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCountCountries"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[RegionCountryDTO](../../../interfaces/region.RegionCountryDTO/page.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"The list of countries along with their total count.","expandable":false,"children":[{"name":"RegionCountryDTO[]","type":"[RegionCountryDTO](../../../interfaces/region.RegionCountryDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="listAndCountCountries"/>

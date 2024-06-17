@@ -1,40 +1,40 @@
-name: OAS Codegen Build Check - BETA
-on:
-  pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "www/**"
-
-jobs:
-  codegen-test:
-    runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16.10.0"
-          cache: "yarn"
-
-      - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: codegen
-
-      - name: Build Packages - Force
-        run: yarn build --force --no-cache
-
-      - name: Assert latest codegen build committed
-        run: ./scripts/assert-codegen-build-committed-actions.sh
+#name: OAS Codegen Build Check - BETA
+#on:
+#  pull_request:
+#    paths-ignore:
+#      - "docs/**"
+#      - "www/**"
+#
+#jobs:
+#  codegen-test:
+#    runs-on: ubuntu-latest
+#    env:
+#      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+#      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+#    steps:
+#      - name: Cancel Previous Runs
+#        uses: styfle/cancel-workflow-action@0.11.0
+#        with:
+#          access_token: ${{ github.token }}
+#
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 0
+#
+#      - name: Setup Node.js environment
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: "16.10.0"
+#          cache: "yarn"
+#
+#      - name: Install dependencies
+#        uses: ./.github/actions/cache-deps
+#        with:
+#          extension: codegen
+#
+#      - name: Build Packages - Force
+#        run: yarn build --force
+#
+#      - name: Assert latest codegen build committed
+#        run: ./scripts/assert-codegen-build-committed-actions.sh

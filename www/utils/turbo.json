@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "lint": { },
+    "watch": { },
+    "generate:references": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "generate:oas": {
+      "dependsOn": [
+        "^build"
+      ]
+    }
+  }
+}

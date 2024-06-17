@@ -1,0 +1,484 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the Pricing Module`,
+}
+
+# {metadata.title}
+
+In this document, you’ll find common examples of how you can use the Pricing Module in your application.
+
+## Create a Price Set
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    // A rule type with \`rule_field=region_id\` should
+    // already be present in the database
+    const priceSet = await pricingModuleService.create([
+      {
+        rules: [{ rule_field: "region_id" }],
+        prices: [
+          {
+            currency_code: request.body.currency_code,
+            amount: request.body.amount,
+            rules: {
+              region_id: request.body.region_id,
+            },
+          },
+        ],
+      },
+    ])
+
+    res.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  export async function POST(request: Request) {
+    const pricingModuleService = await initializePricingModule()
+    const body = await request.json()
+
+    // A rule type with \`rule_field=region_i\` should 
+    // already be present in the database
+    const priceSet = await pricingModuleService.create([
+      {
+        rules: [{ rule_field: "region_id" }],
+        prices: [
+          {
+            currency_code: body.currency_code,
+            amount: body.amount,
+            rules: {
+              region_id: body.region_id,
+            },
+          },
+        ],
+      },
+    ])
+
+    return NextResponse.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Price Sets
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const priceSets = await pricingModuleService.list()
+
+    res.json({ price_sets: priceSets })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import { 
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  export async function GET(request: Request) {
+    const pricingModuleService = await initializePricingModule()
+
+    const priceSets = await pricingModuleService.list()
+
+    return NextResponse.json({ price_sets: priceSets })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve a Price Set by its ID
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const priceSet = await pricingModuleService.retrieve(
+      request.params.id
+    )
+
+    res.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  type ContextType = {
+    params: {
+      id: string
+    }
+  }
+
+  export async function GET(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const pricingModuleService = await initializePricingModule()
+
+    const priceSet = await pricingModuleService.retrieve(
+      params.id
+    )
+
+    return NextResponse.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Create a Rule Type
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const ruleType = await pricingModuleService.createRuleTypes([{
+      name: "Customer Group",
+      rule_attribute: "customer_group_id",
+    }])
+
+    res.json({ rule_type: ruleType })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  export async function POST(
+    request: Request
+  ) {
+    const pricingModuleService = await initializePricingModule()
+
+    const ruleType = await pricingModuleService.createRuleTypes([{
+      name: "Customer Group",
+      rule_attribute: "customer_group_id",
+    }])
+
+    return NextResponse.json({ rule_type: ruleType })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Add Prices with Rules
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const priceSet = await pricingModuleService.addPrices({
+      priceSetId: request.body.price_set_id,
+      prices: [
+        {
+          amount: 500,
+          currency_code: "USD",
+          rules: {
+            region_id: request.body.region_id,
+          },
+        },
+      ],
+    })
+
+    res.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  export async function POST(request: Request) {
+    const pricingModuleService = await initializePricingModule()
+    const body = await request.json()
+
+    const priceSet = await pricingModuleService.addPrices({
+      priceSetId: body.price_set_id,
+      prices: [
+      {
+          amount: 500,
+          currency_code: "USD",
+          rules: {
+            region_id: body.region_id,
+          },
+        },
+      ],
+    })
+
+    return NextResponse.json({ price_set: priceSet })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Create Price List
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import {
+    IPricingModuleService,
+    PriceListType,
+  } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const priceLists =
+      await pricingModuleService.createPriceLists([
+        {
+          title: "My Sale",
+          description: "This is my sale",
+          type: PriceListType.SALE,
+          starts_at: Date.parse("01/10/2023").toString(),
+          ends_at: Date.parse("31/10/2023").toString(),
+          rules: {
+            region_id: ["DE", "DK"],
+          },
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "pset_124",
+            },
+          ],
+        },
+      ])
+
+    res.json({ price_lists: priceLists })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+  import { PriceListType } from "@medusajs/medusa"
+  
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  export async function POST(request: Request) {
+    const pricingModuleService = await initializePricingModule()
+
+    const priceLists = 
+      await pricingModuleService.createPriceLists([
+        {
+          title: "My Sale",
+          description: "This is my sale",
+          type: PriceListType.SALE,
+          starts_at: Date.parse("01/10/2023").toString(),
+          ends_at: Date.parse("31/10/2023").toString(),
+          rules: {
+            region_id: ["DE", "DK"],
+          },
+          prices: [
+            {
+              amount: 400,
+              currency_code: "EUR",
+              price_set_id: "pset_124",
+            },
+          ],
+        },
+      ])
+
+    return NextResponse.json({ price_lists: priceLists })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Calculate Prices For a Currency
+
+<CodeTabs groupId="app-type">
+  <CodeTab value="medusa" label="Medusa API Router">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const pricingModuleService: IPricingModuleService =
+      request.scope.resolve(ModuleRegistrationName.PRICING)
+
+    const price = await pricingModuleService.calculatePrices(
+      {
+        id: [request.params.id],
+      },
+      {
+        context: {
+          currency_code: request.params.currency_code,
+        },
+      }
+    )
+
+    res.json({ price })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab value="nextjs" label="Next.js App Router">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializePricingModule,
+  } from "@medusajs/pricing"
+
+  type ContextType = {
+    params: {
+      id: string
+      currency_code: string
+    }
+  }
+
+  export async function GET(
+    request: Request,
+    { params }: ContextType
+  ) {
+    const pricingModuleService = await initializePricingModule()
+
+    const price = await pricingModuleService.calculatePrices({
+      id: [params.id],
+    }, {
+      context: {
+        currency_code: params.currency_code,
+      },
+    })
+
+    return NextResponse.json({ price })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [Pricing Module's main service reference](/references/pricing) provides a reference to all the methods available for use with examples for each.

@@ -4,7 +4,16 @@ level: error
 ignorecase: false
 tokens:
   - the [a-z]\w+ [mM]odule
-  - the \w+ module
+  - the [A-Z]\w+ module
 exceptions:
   - the custom module
   - the commerce module
+  - the transpiled module
+  - the main module
+  - the same module
+  - the other module
+  - the referencing module
+  - the link module
+  - the first module
+  - the second module
+  - the provider module

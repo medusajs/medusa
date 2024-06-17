@@ -1,0 +1,27 @@
+import { ChildDocs } from "docs-ui"
+
+export const metadata = {
+  title: `File Provider Modules`,
+}
+
+# {metadata.title}
+
+A File Module exposes the functionalities to upload assets, such as product images, to the Medusa application.
+
+---
+
+## What is a File Provider Module?
+
+A file provider module implements the logic of handling uploads and downloads. The File Module must have one file provider module configured.
+
+By default, Medusa uses the Local File Module. This module uploads files to the `uploads` directory of your Medusa application.
+
+This is useful for development. However, for production, it’s highly recommended to use other File Modules, such as the S3 Module.
+
+<ChildDocs type="item" hideItems={["Guides"]} onlyTopLevel={true} />
+
+---
+
+## Create a File Provider Module
+
+To create a file provider module, refer to [this guide](/references/file-provider-module).

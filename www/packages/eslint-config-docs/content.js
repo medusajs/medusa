@@ -17,8 +17,9 @@ module.exports = {
   },
   plugins: ["prettier", "markdown"],
   ignorePatterns: [
-    "**/content/references/**",
-    "**/content/**/events-list.md"
+    "**/references/**",
+    "**/events-reference/**",
+    "**/_events-table/**"
   ],
   rules: {
     "no-undef": "off",
@@ -32,7 +33,9 @@ module.exports = {
     camelcase: "off",
     "no-invalid-this": "off",
     "max-len": [
-      "error",
+      // TODO change back to error once we figure out
+      // a way to use HTML comments in new MDX
+      "warn",
       {
         code: 64,
       },
@@ -75,7 +78,7 @@ module.exports = {
     "space-infix-ops": "off",
     "eol-last": ["error", "always"],
     "react/prop-types": "off",
-    "react/jsx-no-undef": "off"
+    "react/jsx-no-undef": "off",
   },
   overrides: [
     {
@@ -106,6 +109,10 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": "off",
+        "prefer-rest-params": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
+        "@typescript-eslint/ban-types": "off"
       },
     },
   ],

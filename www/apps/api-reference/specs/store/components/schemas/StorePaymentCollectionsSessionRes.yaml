@@ -1,8 +1,0 @@
-type: object
-description: The details of the payment session.
-required:
-  - payment_session
-properties:
-  payment_session:
-    description: Payment session's details.
-    $ref: ./PaymentSession.yaml

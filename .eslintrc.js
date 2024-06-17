@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  parser: "@babel/eslint-parser",
   parserOptions: {
     requireConfigFile: false,
     ecmaFeatures: {
@@ -81,29 +80,63 @@ module.exports = {
       parserOptions: {
         project: [
           "./packages/medusa/tsconfig.json",
-          "./packages/medusa-payment-stripe/tsconfig.spec.json",
-          "./packages/medusa-payment-paypal/tsconfig.spec.json",
-          "./packages/admin-ui/tsconfig.json",
-          "./packages/admin-ui/tsconfig.spec.json",
+
           "./packages/admin-next/dashboard/tsconfig.json",
-          "./packages/event-bus-local/tsconfig.spec.json",
-          "./packages/event-bus-redis/tsconfig.spec.json",
-          "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
-          "./packages/medusa-plugin-algolia/tsconfig.spec.json",
+          "./packages/admin-next/admin-sdk/tsconfig.json",
+          "./packages/admin-next/admin-shared/tsconfig.json",
+          "./packages/admin-next/admin-vite-plugin/tsconfig.json",
+
           "./packages/inventory/tsconfig.spec.json",
           "./packages/stock-location/tsconfig.spec.json",
-          "./packages/cache-redis/tsconfig.spec.json",
-          "./packages/cache-inmemory/tsconfig.spec.json",
-          "./packages/create-medusa-app/tsconfig.json",
-          "./packages/product/tsconfig.json",
-          "./packages/orchestration/tsconfig.json",
-          "./packages/workflows-sdk/tsconfig.spec.json",
+
           "./packages/core-flows/tsconfig.spec.json",
-          "./packages/types/tsconfig.json",
-          "./packages/workflow-engine-redis/tsconfig.spec.json",
-          "./packages/workflow-engine-inmemory/tsconfig.spec.json",
-          "./packages/fulfillment/tsconfig.spec.json",
-          "./packages/fulfillment-manual/tsconfig.spec.json",
+
+          "./packages/cli/create-medusa-app/tsconfig.spec.json",
+          "./packages/cli/medusa-cli/tsconfig.spec/json",
+          "./packages/cli/medusa-dev-cli/tsconfig.spec.json",
+          "./packages/cli/oas/medusa-oas-cli/tsconfig.spec.json",
+
+          "./packages/core/orchestration/tsconfig.json",
+          "./packages/core/workflows-sdk/tsconfig.spec.json",
+          "./packages/core/modules-sdk/tsconfig.spec.json",
+          "./packages/core/js-sdk/tsconfig.spec.json",
+          "./packages/core/types/tsconfig.spec.json",
+          "./packages/core/utils/tsconfig.spec.json",
+          "./packages/core/medusa-test-utils/tsconfig.spec.json",
+
+          "./packages/modules/product/tsconfig.json",
+          "./packages/modules/event-bus-local/tsconfig.spec.json",
+          "./packages/modules/event-bus-redis/tsconfig.spec.json",
+          "./packages/modules/cache-redis/tsconfig.spec.json",
+          "./packages/modules/cache-inmemory/tsconfig.spec.json",
+          "./packages/modules/workflow-engine-redis/tsconfig.spec.json",
+          "./packages/modules/workflow-engine-inmemory/tsconfig.spec.json",
+          "./packages/modules/fulfillment/tsconfig.spec.json",
+          "./packages/modules/api-key/tsconfig.spec.json",
+          "./packages/modules/auth/tsconfig.spec.json",
+          "./packages/modules/cart/tsconfig.spec.json",
+          "./packages/modules/currency/tsconfig.spec.json",
+          "./packages/modules/customer/tsconfig.spec.json",
+          "./packages/modules/file/tsconfig.spec.json",
+          "./packages/modules/inventory-next/tsconfig.spec.json",
+          "./packages/modules/stock-location-next/tsconfig.spec.json",
+          "./packages/modules/order/tsconfig.spec.json",
+          "./packages/modules/payment/tsconfig.spec.json",
+          "./packages/modules/pricing/tsconfig.spec.json",
+          "./packages/modules/promotion/tsconfig.spec.json",
+          "./packages/modules/region/tsconfig.spec.json",
+          "./packages/modules/sales-channel/tsconfig.spec.json",
+          "./packages/modules/store/tsconfig.spec.json",
+          "./packages/modules/tax/tsconfig.spec.json",
+          "./packages/modules/workflow-engine-inmemory/tsconfig.spec.json",
+          "./packages/modules/workflow-engine-redis/tsconfig.spec.json",
+          "./packages/modules/link-modules/tsconfig.spec.json",
+          "./packages/modules/user/tsconfig.spec.json",
+
+          "./packages/modules/providers/file-local/tsconfig.spec.json",
+          "./packages/modules/providers/file-s3/tsconfig.spec.json",
+          "./packages/modules/providers/fulfillment-manual/tsconfig.spec.json",
+          "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
         ],
       },
       rules: {
@@ -188,48 +221,6 @@ module.exports = {
       },
     },
     {
-      files: ["packages/admin-ui/ui/**/*.ts", "packages/admin-ui/ui/**/*.tsx"],
-      plugins: ["unused-imports"],
-      extends: [
-        "plugin:react/recommended",
-        "plugin:react/jsx-runtime",
-        "plugin:react-hooks/recommended",
-      ],
-      parser: "@typescript-eslint/parser",
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-        sourceType: "module", // Allows for the use of imports
-        project: "./packages/admin-ui/ui/tsconfig.json",
-      },
-      globals: {
-        __BASE__: "readonly",
-      },
-      env: {
-        browser: true,
-      },
-      rules: {
-        "prettier/prettier": "error",
-        "react/prop-types": "off",
-        "new-cap": "off",
-        "require-jsdoc": "off",
-        "valid-jsdoc": "off",
-        "no-unused-expressions": "off",
-        "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
-          "warn",
-          {
-            vars: "all",
-            varsIgnorePattern: "^_",
-            args: "after-used",
-            argsIgnorePattern: "^_",
-          },
-        ],
-      },
-    },
-    {
       files: [
         "packages/admin-next/dashboard/**/*.ts",
         "packages/admin-next/dashboard/**/*.tsx",
@@ -279,25 +270,11 @@ module.exports = {
       },
     },
     {
-      files: ["packages/admin-ui/lib/**/*.ts"],
-      parser: "@typescript-eslint/parser",
-      parserOptions: {
-        project: "./packages/admin-ui/tsconfig.json",
-      },
-    },
-    {
-      files: ["packages/admin/**/*.ts"],
-      parser: "@typescript-eslint/parser",
-      parserOptions: {
-        project: "./packages/admin/tsconfig.json",
-      },
-    },
-    {
       files: [
-        "packages/medusa-payment-stripe/src/admin/**/*.ts",
-        "packages/medusa-payment-stripe/src/admin/**/*.tsx",
+        "packages/admin-next/app/**/*.ts",
+        "packages/admin-next/app/**/*.tsx",
       ],
-      plugins: ["unused-imports"],
+      plugins: ["unused-imports", "react-refresh"],
       extends: [
         "plugin:react/recommended",
         "plugin:react/jsx-runtime",
@@ -310,7 +287,10 @@ module.exports = {
         },
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
-        project: "./packages/medusa-payment-stripe/tsconfig.admin.json",
+        project: "./packages/admin-next/app/tsconfig.json",
+      },
+      globals: {
+        __BASE__: "readonly",
       },
       env: {
         browser: true,
@@ -321,6 +301,10 @@ module.exports = {
         "new-cap": "off",
         "require-jsdoc": "off",
         "valid-jsdoc": "off",
+        "react-refresh/only-export-components": [
+          "warn",
+          { allowConstantExport: true },
+        ],
         "no-unused-expressions": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [

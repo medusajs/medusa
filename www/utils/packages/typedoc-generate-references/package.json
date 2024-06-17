@@ -1,0 +1,40 @@
+{
+  "name": "typedoc-generate-references",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env ts-node src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
+    "generate:references": "yarn start generate all --merge"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "0.0.0",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "randomcolor": "^0.6.2",
+    "ts-node": "^10.9.1",
+    "typedoc-plugin-custom": "*",
+    "typedoc-plugin-markdown-medusa": "*",
+    "typedoc-plugin-rename-defaults": "^0.7.0",
+    "types": "*",
+    "typescript": "5.2",
+    "utils": "*",
+    "yaml": "^2.3.4"
+  },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.4",
+    "@types/pluralize": "^0.0.33",
+    "cross-env": "^7.0.3"
+  }
+}

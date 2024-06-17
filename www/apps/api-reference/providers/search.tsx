@@ -3,11 +3,10 @@
 import {
   usePageLoading,
   SearchProvider as UiSearchProvider,
-  AiAssistantCommandIcon,
-  AiAssistantProvider,
-  searchFilters,
+  searchFiltersV2,
 } from "docs-ui"
 import { config } from "../config"
+import basePathUrl from "../utils/base-path-url"
 
 type SearchProviderProps = {
   children: React.ReactNode
@@ -33,49 +32,26 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
             title: "Getting started? Try one of the following terms.",
             items: [
               "Install Medusa with create-medusa-app",
-              "Next.js quickstart",
-              "Admin dashboard quickstart",
-              "Commerce modules",
-              "Medusa architecture",
+              "What is an API route?",
+              "What is a Module?",
+              "What is a Workflow?",
             ],
           },
           {
             title: "Developing with Medusa",
             items: [
-              "Recipes",
-              "How to create API routes",
-              "How to create an entity",
-              "How to create a plugin",
+              "How to create a Module",
+              "How to create an API route",
+              "How to create a data model",
               "How to create an admin widget",
             ],
           },
         ],
         checkInternalPattern: new RegExp(
-          `^${config.baseUrl}/api/(admin|store)`
+          `^${config.baseUrl}${basePathUrl("/api/(admin|store)")}`
         ),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV2,
       }}
-      commands={[
-        {
-          name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
-          component: (
-            <AiAssistantProvider
-              apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
-              websiteId={process.env.NEXT_PUBLIC_AI_WEBSITE_ID || "temp"}
-              recaptchaSiteKey={
-                process.env.NEXT_PUBLIC_AI_API_ASSISTANT_RECAPTCHA_SITE_KEY ||
-                "temp"
-              }
-            />
-          ),
-          title: "AI Assistant",
-          badge: {
-            variant: "purple",
-            children: "Beta",
-          },
-        },
-      ]}
     >
       {children}
     </UiSearchProvider>

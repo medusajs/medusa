@@ -5,16 +5,33 @@ const Spinner = React.forwardRef<SVGSVGElement, IconProps>(
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={20}
-        height={20}
+        width={15}
+        height={15}
         fill="none"
         ref={ref}
         {...props}
       >
-        <path
-          fill={color}
-          d="M14.865 14.865c.437.437.441 1.154-.053 1.526A8 8 0 1 1 9.634 2.008c.618-.028 1.072.527 1.014 1.143-.059.615-.609 1.056-1.224 1.118a5.76 5.76 0 1 0 3.785 10.514c.514-.345 1.219-.355 1.656.082Z"
-        />
+        <g
+          stroke={color}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          clipPath="url(#a)"
+        >
+          <path d="M7.667 1.056v2.222" />
+          <path d="m12.224 2.943-1.572 1.571" opacity={0.88} />
+          <path d="M14.111 7.5H11.89" opacity={0.75} />
+          <path d="m12.224 12.057-1.572-1.571" opacity={0.63} />
+          <path d="M7.667 13.945v-2.223" opacity={0.5} />
+          <path d="m3.11 12.057 1.57-1.571" opacity={0.38} />
+          <path d="M1.222 7.5h2.222" opacity={0.25} />
+          <path d="m3.11 2.943 1.57 1.571" opacity={0.13} />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M0 0h15v15H0z" />
+          </clipPath>
+        </defs>
       </svg>
     )
   }

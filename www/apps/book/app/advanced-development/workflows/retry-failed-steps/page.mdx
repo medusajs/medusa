@@ -1,0 +1,87 @@
+export const metadata = {
+  title: `${pageNumber} Retry Failed Steps`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to configure steps to allow retrial on failure.
+
+## Configure a Step’s Retrial
+
+By default, when an error occurs in a step, the step and the workflow fail, and the execution stops.
+
+You can configure the step to retry on failure. The `createStep` function can accept a configuration object instead of the step’s name as a first parameter:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["10"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
+import { 
+  createStep, 
+  StepResponse, 
+  createWorkflow,
+} from "@medusajs/workflows-sdk"
+
+const step1 = createStep(
+  {
+    name: "step-1",
+    maxRetries: 2,
+  },
+  async () => {
+    console.log("Executing step 1")
+
+    throw new Error("Oops! Something happened.")
+  }
+)
+
+type WorkflowOutput = {
+  message: string
+}
+
+const myWorkflow = createWorkflow<
+  {},
+  WorkflowOutput
+>("hello-world", function () {
+  const str1 = step1()
+
+  return {
+    message: str1,
+  }
+})
+
+export default myWorkflow
+```
+
+The step’s configuration object accepts a `maxRetries` property, which is a number indicating the number of times a step can be retried when it fails.
+
+When you execute the above workflow, you’ll see the following result in the terminal:
+
+```bash
+Executing step 1
+Executing step 1
+Executing step 1
+error:   Oops! Something happened.
+Error: Oops! Something happened.
+```
+
+The first line indicates the first time the step was executed, and the next two lines indicate the times the step was retried. After that, the step and workflow fail.
+
+---
+
+## Step Retry Intervals
+
+By default, a step is retried immediately after it fails.
+
+To specify a wait time before a step is retried, pass a `retryInterval` property to the step's configuration object. Its value is a number of seconds to wait before retrying the step.
+
+For example:
+
+```ts title="src/workflows/hello-world.ts" highlights={[["5"]]}
+const step1 = createStep(
+  {
+    name: "step-1",
+    maxRetries: 2,
+    retryInterval: 2, // 2 seconds
+  },
+  async () => {
+    // ...
+  }
+)
+```

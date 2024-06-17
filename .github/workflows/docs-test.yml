@@ -1,11 +1,11 @@
 name: Documentation Tests
-on: 
+on:
   pull_request:
     paths:
       - www/**
 
 jobs:
-  docs-test:
+  apps-test:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: 20
           cache: "yarn"
 
       - name: Install dependencies
@@ -34,14 +34,18 @@ jobs:
         working-directory: www
         run: yarn install
 
-      - name: Build Docusaurus website
+      - name: Build Doc Apps
         working-directory: www
+        run: yarn build
         env:
-          NODE_OPTIONS: "--max-old-space-size=8192"
-          API_URL: "https://docs.medusajs.com"
-        run: yarn build:docs
-        
-  vale-docs:
+          NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+          NEXT_PUBLIC_DOCS_URL: "https://medusa-docs.vercel.app"
+          NEXT_PUBLIC_UI_URL: "https://docs-ui.vercel.app"
+          # TODO change once we have actual URLs
+          NEXT_PUBLIC_RESOURCES_URL: "http://example.com"
+          NEXT_PUBLIC_USER_GUIDE_URL: "http://example.com"
+
+  vale-book:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
     steps:
@@ -55,23 +59,146 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
       - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
-        run: ./get-files.sh docs content references
+        run: ./get-files.sh book app
         id: directories
 
       - name: Vale Linter
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         uses: errata-ai/vale-action@reviewdog
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
+  vale-resources:
+    if: ${{ startsWith(github.head_ref, 'docs/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh resources app contribution-guidelines usage
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: "--minAlertLevel=error"
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+
+  vale-user-guide:
+    if: ${{ startsWith(github.head_ref, 'docs/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
+      - name: Get Directories to Scan
+        working-directory: www/vale
+        run: ./get-files.sh user-guide app
+        id: directories
+
+      - name: Vale Linter
+        uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
+        with:
+          files: ${{ steps.directories.outputs.LIST }}
+          fail_on_error: true
+          vale_flags: "--minAlertLevel=error"
+          reporter: github-pr-check
+          token: ${{ github.token }}
+          filter_mode: nofilter
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
+
   vale-ui:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -86,23 +213,44 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
       - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
         run: ./get-files.sh ui src/content/docs
         id: directories
 
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
           filter_mode: nofilter
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   vale-api:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -117,23 +265,44 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build packages
+        run: yarn build
+        working-directory: www/utils
+
+      # reviewdog throws an error when the number
+      # of file changes in a PR is > 300, so
+      # we retrieve the number of changed files
+      # and only run the linter if the number is
+      # less than 300. This is to avoid a PR hanging in
+      # an error state
+      - name: Get PR files number
+        working-directory: www/utils/packages/scripts
+        run: "yarn check:pr-files-count ${{ github.ref_name }}"
+        id: pr-files
+
       - name: Get Directories to Scan
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         working-directory: www/vale
         run: ./get-files.sh api-reference app/_mdx
         id: directories
 
       - name: Vale Linter
         uses: errata-ai/vale-action@reviewdog
+        if: ${{ steps.pr-files.outputs.files_lt_threshold == 'true' }}
         with:
           files: ${{ steps.directories.outputs.LIST }}
           fail_on_error: true
-          vale_flags: '--minAlertLevel=error'
+          vale_flags: "--minAlertLevel=error"
           reporter: github-pr-check
           token: ${{ github.token }}
-          filter_mode: nofilter
+          filter_mode: diff_context
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ github.token }}
-        
+
   content-eslint:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -155,7 +324,7 @@ jobs:
       - name: Run Eslint
         working-directory: www
         run: yarn lint:content
-  
+
   code-docs-eslint:
     if: ${{ startsWith(github.head_ref, 'docs/') }}
     runs-on: ubuntu-latest
@@ -176,6 +345,10 @@ jobs:
       - name: Install dependencies
         working-directory: www
         run: yarn install
+
+      - name: Build packages
+        working-directory: www
+        run: yarn build:packages
 
       - name: Run Eslint
         working-directory: www

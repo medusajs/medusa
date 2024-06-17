@@ -1,0 +1,77 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Update Cart in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn how to update different details of a cart.
+
+<Note>
+
+All cart updates are performed using the [Update Cart API route](!api!/store#carts_postcartsid).
+
+</Note>
+
+## Update Cart's Region
+
+If a customer changes their region, you must update their cart to be associated with that region.
+
+For example:
+
+export const updateRegionHighlights = [
+  ["8", `"new_id"`, "Pass the new chosen region's ID."]
+]
+
+```ts highlights={updateRegionHighlights}
+fetch(`http://localhost:9000/store/carts/${cartId}`, {
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    region_id: "new_id",
+  }),
+})
+.then((res) => res.json())
+.then(({ cart }) => {
+  // use cart...
+  console.log(cart)
+})
+```
+
+The Update Cart API route accepts a `region_id` request body parameter, whose value is the new region to associate with the cart.
+
+---
+
+## Update Cart's Customer
+
+If a guest customer logs in, you must update the cart to be associated with the logged-in customer.
+
+For example:
+
+export const updateCustomerHighlights = [
+  ["8", `"logged_in_id"`, "Pass the logged-in customer's ID."]
+]
+
+```ts highlights={updateCustomerHighlights}
+fetch(`http://localhost:9000/store/carts/${cartId}`, {
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    customer_id: "logged_in_id",
+  }),
+})
+.then((res) => res.json())
+.then(({ cart }) => {
+  // use cart...
+  console.log(cart)
+})
+```
+
+The Update Cart API route accepts a `customer_id` request body parameter, whose value is the customer to associate with the cart.

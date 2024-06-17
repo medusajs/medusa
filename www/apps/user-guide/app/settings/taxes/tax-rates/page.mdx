@@ -1,0 +1,105 @@
+---
+sidebar_position: 2
+---
+
+import { EllipsisHorizontal, XMark } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Tax Rates`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage tax rates in your Medusa Admin.
+
+## Create a Tax Rate
+
+To create a tax rate:
+
+1. Go to Settings → Taxes.
+2. Click on the region to create a tax rate in.
+3. Under the Tax Rates section, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right.
+4. Choose Create from the dropdown.
+5. In the form that opens:
+    1. Enter the name, rate, and code of the tax rate in their respective fields.
+    2. If the tax rate overrides product taxes:
+        1. Enable the "Product overrides" field.
+        2. Click the "Add product overrides" button.
+        3. From the list of shown products, check the checkbox next to the product to add.
+        4. Once you're done, click the Save button at the bottom.
+    3. If the tax rate overrides product type taxes:
+        1. Enable the "Product type overrides" field.
+        2. Click the "Add product type overrides" button.
+        3. From the list of shown product types, check the checkbox next to the type to add.
+        4. Once you're done, click the Save button at the bottom.
+    4. If the tax rate overrides shipping option taxes:
+        1. Enable the "Shipping option overrides" field.
+        2. Click the "Add shipping option overrides" button.
+        3. From the list of shown shipping options, check the checkbox next to the type to add.
+        4. Once you're done, click the Save button at the bottom.
+6. Once you're done, click the Save button.
+
+---
+
+## Edit Tax Rates
+
+To edit a tax rate:
+
+1. Go to Settings → Taxes.
+2. Click on the region to edits its tax rate.
+3. Find the tax rate in the list under the Tax Rates section and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at its right.
+4. Choose "Edit rate" from the dropdown.
+5. In the drawer that opens, edit the tax rate's details.
+6. Once done, click the Save button.
+
+---
+
+## Edit Tax Rate Overrides
+
+To edit the overrides of a tax rate:
+
+1. Go to Settings → Taxes.
+2. Click on the region to edits its tax rate.
+3. Find the tax rate in the list under the Tax Rates section and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at its right.
+4. Choose "Edit overrides" from the dropdown.
+5. In the form that opens:
+    1. To change the product overrides
+        1. Enable the "Product overrides" field if it's not enabled.
+        2. To add products:
+            1. Click the "Add product overrides" button.
+            2. From the list of shown products, check the checkbox next to the product to add.
+            3. Once you're done, click the Save button at the bottom.
+        3. To remove a product, click the <InlineIcon Icon={XMark} alt="X" /> icon next to the product.
+    2. To change the product type overrides
+        1. Enable the "Product type overrides" field if it's not enabled.
+        2. To add products:
+            1. Click the "Add product type overrides" button.
+            2. From the list of shown product types, check the checkbox next to the type to add.
+            3. Once you're done, click the Save button at the bottom.
+        3. To remove a product type, click the <InlineIcon Icon={XMark} alt="X" /> icon next to the product.
+    3. To change the shipping option overrides
+        1. Enable the "Shipping option overrides" field if it's not enabled.
+        2. To add shipping options:
+            1. Click the "Add shipping option overrides" button.
+            2. From the list of shown shipping options, check the checkbox next to the shipping option to add.
+            3. Once you're done, click the Save button at the bottom.
+        3. To remove a shipping option, click the <InlineIcon Icon={XMark} alt="X" /> icon next to the shipping option.
+6. Once you're done, click the Save button.
+
+---
+
+## Delete a Tax Rate
+
+<Note type="warning">
+
+Deleting a tax rate is irreversible.
+
+</Note>
+
+To delete a tax rate:
+
+1. Go to Settings → Taxes.
+2. Click on the region to delete its tax rate.
+3. Find the tax rate in the list under the Tax Rates section and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at its right.
+4. Choose Delete from the dropdown.
+5. Confirm deleting the tax rate by clicking the Delete button.

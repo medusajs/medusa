@@ -1,0 +1,266 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the Region Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll find common examples of how you can use the Region Module in your application.
+
+## Create a Region
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    const region = await regionModuleService.create({
+      name: "Europe",
+      currency_code: "eur",
+    })
+
+    res.json({
+      region,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeRegionModule,
+  } from "@medusajs/region"
+
+  export async function POST(request: Request) {
+    const regionModuleService = await initializeRegionModule()
+
+    const region = await regionModuleService.create({
+      name: "Europe",
+      currency_code: "eur",
+    })
+
+    res.json({
+      region,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Regions
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    res.json({
+      regions: await regionModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeRegionModule,
+  } from "@medusajs/region"
+
+  export async function GET(request: Request) {
+    const regionModuleService = await initializeRegionModule()
+
+    return NextResponse.json({
+      regions: await regionModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve a Region by its ID
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    const region = await regionModuleService.retrieve("reg_123")
+
+    res.json({ region })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeRegionModule,
+  } from "@medusajs/region"
+
+  export async function GET(
+    request: Request
+  ) {
+    const regionModuleService = await initializeRegionModule()
+
+    const region = await regionModuleService.retrieve("reg_123")
+
+    return NextResponse.json({ region })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Update a Region
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    const region = await regionModuleService.update("reg_123", {
+      automatic_taxes: false,
+    })
+
+    res.json({ region })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeRegionModule,
+  } from "@medusajs/region"
+
+  export async function POST(
+    request: Request
+  ) {
+    const regionModuleService = await initializeRegionModule()
+
+    const region = await regionModuleService.update("reg_123", {
+      automatic_taxes: false,
+    })
+
+    return NextResponse.json({ region })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Delete a Region
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    await regionModuleService.delete("reg_123")
+
+    res.status(200)
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeRegionModule,
+  } from "@medusajs/region"
+
+  export async function DELETE(
+    request: Request
+  ) {
+    const regionModuleService = await initializeRegionModule()
+
+    await regionModuleService.delete("reg_123")
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [Region Module's main service reference](/references/region) provides a reference to all the methods available for use with examples for each.

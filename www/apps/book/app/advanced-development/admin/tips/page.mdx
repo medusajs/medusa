@@ -1,0 +1,52 @@
+export const metadata = {
+  title: `${pageNumber} Admin Development Tips`,
+}
+
+# {metadata.title}
+
+In this chapter, you'll find some tips for your admin development.
+
+## Routing Functionalities
+
+To navigate or link to other pages, or use other routing functionalities, use the [react-router-dom](https://reactrouter.com/en/main) package:
+
+```bash npm2yarn
+npm install react-router-dom
+```
+
+For example:
+
+export const highlights = [
+  ["9", "Link", "Add a link to another page"],
+  ["9", '"/orders', "Add the path without the `/app` prefix."]
+]
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={highlights}
+import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { Container } from "@medusajs/ui"
+import { Link } from "react-router-dom"
+
+// The widget
+const ProductWidget = () => {
+  return (
+    <Container>
+      <Link to={"/orders"}>View Orders</Link>
+    </Container>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.after",
+})
+
+export default ProductWidget
+```
+
+This adds a widget in a product's details page with a link to the Orders page. The link's path must be without the `/app` prefix.
+
+<Note title="Learn more">
+
+Refer to [react-router-dom’s documentation](https://reactrouter.com/en/main) for other available components and hooks.
+
+</Note>

@@ -1,10 +1,13 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { MedusaContainer, Subscriber } from "@medusajs/types"
+import {
+  IEventBusModuleService,
+  MedusaContainer,
+  Subscriber,
+} from "@medusajs/types"
 import { kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
-import { EventBusService } from "../../../services"
 import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
 
@@ -16,14 +19,12 @@ type SubscriberModule<T> = {
 }
 
 export class SubscriberLoader {
-  protected isV2_: boolean
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
-  protected activityId_: string
   protected rootDir_: string
   protected excludes: RegExp[] = [
     /\.DS_Store/,
-    /(\.ts\.map|\.js\.map|\.d\.ts)/,
+    /(\.ts\.map|\.js\.map|\.d\.ts|\.md)/,
     /^_[^/\\]*(\.[^/\\]+)?$/,
   ]
 
@@ -33,15 +34,11 @@ export class SubscriberLoader {
   constructor(
     rootDir: string,
     container: MedusaContainer,
-    options: Record<string, unknown> = {},
-    activityId: string,
-    isV2: boolean = false
+    options: Record<string, unknown> = {}
   ) {
     this.rootDir_ = rootDir
     this.pluginOptions_ = options
     this.container_ = container
-    this.activityId_ = activityId
-    this.isV2_ = isV2
   }
 
   private validateSubscriber(
@@ -163,7 +160,7 @@ export class SubscriberLoader {
     /**
      * If the handler is not anonymous, use the name
      */
-    if (handlerName && !handlerName.startsWith("default")) {
+    if (handlerName && !handlerName.startsWith("_default")) {
       return kebabCase(handlerName)
     }
 
@@ -185,27 +182,26 @@ export class SubscriberLoader {
     config: SubscriberConfig
     handler: SubscriberHandler<T>
   }) {
-    const resName = this.isV2_
-      ? ModuleRegistrationName.EVENT_BUS
-      : "eventBusService"
-    const eventBusService: EventBusService = this.container_.resolve(resName)
+    const eventBusService: IEventBusModuleService = this.container_.resolve(
+      ModuleRegistrationName.EVENT_BUS
+    )
 
     const { event } = config
 
     const events = Array.isArray(event) ? event : [event]
 
-    const subscriber = async (data: T, eventName: string) => {
-      return handler({
-        eventName,
-        data,
-        container: this.container_,
-        pluginOptions: this.pluginOptions_,
-      })
-    }
-
     const subscriberId = this.inferIdentifier(fileName, config, handler)
 
     for (const e of events) {
+      const subscriber = async (data: T) => {
+        return handler({
+          eventName: e,
+          data,
+          container: this.container_,
+          pluginOptions: this.pluginOptions_,
+        })
+      }
+
       eventBusService.subscribe(e, subscriber as Subscriber, {
         ...(config.context ?? {}),
         subscriberId,
@@ -220,6 +216,7 @@ export class SubscriberLoader {
       await readdir(this.rootDir_)
       hasSubscriberDir = true
     } catch (err) {
+      logger.debug(`No subscriber directory found in ${this.rootDir_}`)
       hasSubscriberDir = false
     }
 

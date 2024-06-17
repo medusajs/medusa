@@ -1,0 +1,245 @@
+---
+slug: /references/medusa-react/hooks/admin/stores
+---
+
+import { TypeList } from "docs-ui"
+
+# Stores
+
+Queries and Mutations listed here are used to send requests to the [Admin Store API Routes](https://docs.medusajs.com/api/admin#store).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A store indicates the general configurations and details about the commerce store. By default, there's only one store in the Medusa backend.
+Admins can manage the store and its details or configurations.
+
+## Mutations
+
+### useAdminUpdateStore
+
+This hook updates the store's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateStore } from "medusa-react"
+
+function Store() {
+  const updateStore = useAdminUpdateStore()
+  // ...
+
+  const handleUpdate = (
+    name: string
+  ) => {
+    updateStore.mutate({
+      name
+    }, {
+      onSuccess: ({ store }) => {
+        console.log(store.name)
+      }
+    })
+  }
+}
+
+export default Store
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostStoreReq","type":"[AdminPostStoreReq](../../../../medusa/classes/medusa.AdminPostStoreReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the store.","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the Store","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"swap_link_template","type":"`string`","description":"A template for Swap links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Swap Cart ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_link_template","type":"`string`","description":"A template for payment links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Cart ID","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"invite_link_template","type":"`string`","description":"A template for invite links - use `&#123;&#123;invite\\_token&#125;&#125;` to insert the invite token","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_currency_code","type":"`string`","description":"The default currency code of the Store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currencies","type":"`string`[]","description":"Array of available currencies in the store. Each currency is in 3 character ISO code format.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs with additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateStore"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateStore"/>
+
+### useAdminAddStoreCurrency
+
+This hook adds a currency code to the available currencies in a store. This doesn't create new currencies, as currencies are defined within the Medusa backend. 
+To create a currency, you can [create a migration](https://docs.medusajs.com/development/entities/migrations/create) that inserts the currency into the database.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminAddStoreCurrency } from "medusa-react"
+
+const Store = () => {
+  const addCurrency = useAdminAddStoreCurrency()
+  // ...
+
+  const handleAdd = (code: string) => {
+    addCurrency.mutate(code, {
+      onSuccess: ({ store }) => {
+        console.log(store.currencies)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Store
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The code of the currency to add to the store.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddStoreCurrency"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminAddStoreCurrency"/>
+
+### useAdminDeleteStoreCurrency
+
+This hook deletes a currency code from the available currencies in a store. This doesn't completely 
+delete the currency and it can be added again later to the store.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteStoreCurrency } from "medusa-react"
+
+const Store = () => {
+  const deleteCurrency = useAdminDeleteStoreCurrency()
+  // ...
+
+  const handleAdd = (code: string) => {
+    deleteCurrency.mutate(code, {
+      onSuccess: ({ store }) => {
+        console.log(store.currencies)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Store
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"The code of the currency to remove from the store.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteStoreCurrency"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminStoresRes","type":"[AdminStoresRes](../../../../medusa/types/medusa.AdminStoresRes/page.mdx)","optional":false,"defaultValue":"","description":"The store's details.","expandable":false,"children":[{"name":"store","type":"[Store](../../../../store_models/classes/store_models.Store/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteStoreCurrency"/>
+
+___
+
+## Queries
+
+### useAdminStorePaymentProviders
+
+This hook retrieves a list of available payment providers in a store.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminStorePaymentProviders } from "medusa-react"
+
+const PaymentProviders = () => {
+  const { 
+    payment_providers,
+    isLoading
+  } = useAdminStorePaymentProviders()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {payment_providers && !payment_providers.length && (
+        <span>No Payment Providers</span>
+      )}
+      {payment_providers && 
+        payment_providers.length > 0 &&(
+          <ul>
+            {payment_providers.map((provider) => (
+              <li key={provider.id}>{provider.id}</li>
+            ))}
+          </ul>
+      )}
+    </div>
+  )
+}
+
+export default PaymentProviders
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"payment_providers","type":"[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx)[]","description":"An array of payment providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminStorePaymentProviders"/>
+
+### useAdminStoreTaxProviders
+
+This hook retrieves a list of available tax providers in a store.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminStoreTaxProviders } from "medusa-react"
+
+const TaxProviders = () => {
+  const { 
+    tax_providers,
+    isLoading
+  } = useAdminStoreTaxProviders()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_providers && !tax_providers.length && (
+        <span>No Tax Providers</span>
+      )}
+      {tax_providers && 
+        tax_providers.length > 0 &&(
+          <ul>
+            {tax_providers.map((provider) => (
+              <li key={provider.id}>{provider.id}</li>
+            ))}
+          </ul>
+      )}
+    </div>
+  )
+}
+
+export default TaxProviders
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"tax_providers","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)[]","description":"An array of tax providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminStoreTaxProviders"/>
+
+### useAdminStore
+
+This hook retrieves the store's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminStore } from "medusa-react"
+
+const Store = () => {
+  const { 
+    store,
+    isLoading
+  } = useAdminStore()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {store && <span>{store.name}</span>}
+    </div>
+  )
+}
+
+export default Store
+```
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"store","type":"[ExtendedStoreDTO](../../../../medusa/types/medusa.ExtendedStoreDTO/page.mdx)","description":"Store details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"","optional":false,"defaultValue":"[]","expandable":false,"children":[]},{"name":"default_currency_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_region_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"default_location_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"payment_providers","type":"[PaymentProvider](../../../../payment_models/classes/payment_models.PaymentProvider/page.mdx)[]","description":"The store's payment providers.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`\"is_enabled\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"fulfillment_providers","type":"[FulfillmentProvider](../../../../fulfillment_models/classes/fulfillment_models.FulfillmentProvider/page.mdx)[]","description":"The store's fulfillment providers.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_enabled","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]},{"name":"feature_flags","type":"[FeatureFlagsResponse](../../../../medusa/types/medusa.FeatureFlagsResponse/page.mdx)","description":"The feature flags enabled in the store's backend.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`boolean` \\| `Record<string, boolean>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"modules","type":"[ModulesResponse](../../../../medusa/types/medusa.ModulesResponse/page.mdx)","description":"The modules installed in the store's backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminStore"/>

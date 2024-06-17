@@ -6,8 +6,11 @@ import {
 } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
-import adminSeeder from "../../../../helpers/admin-seeder"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(50000)
 
@@ -32,7 +35,7 @@ medusaIntegrationTestRunner({
       })
 
       beforeEach(async () => {
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, appContainer)
       })
 
       describe("DELETE /store/carts/:id/promotions", () => {
@@ -46,6 +49,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "300",
               apply_to_quantity: 1,
+              currency_code: "usd",
               max_quantity: 1,
               target_rules: [
                 {
@@ -66,6 +70,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "300",
               apply_to_quantity: 1,
+              currency_code: "usd",
               max_quantity: 1,
               target_rules: [
                 {
@@ -186,6 +191,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "100",
               max_quantity: 1,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "name",
@@ -217,6 +223,7 @@ medusaIntegrationTestRunner({
               allocation: "each",
               value: "100",
               max_quantity: 1,
+              currency_code: "usd",
               target_rules: [
                 {
                   attribute: "name",

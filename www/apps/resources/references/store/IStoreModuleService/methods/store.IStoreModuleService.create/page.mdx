@@ -1,0 +1,62 @@
+---
+displayed_sidebar: storeReference
+slug: /references/store/create
+sidebar_label: create
+---
+
+import { TypeList } from "docs-ui"
+
+# create - Store Module Reference
+
+This documentation provides a reference to the `create` method. This belongs to the Store Module.
+
+## create(data, sharedContext?): Promise&#60;[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)[]&#62;
+
+This method creates stores.
+
+### Example
+
+```ts
+const stores = await storeModuleService.create([
+  {
+    name: "Acme",
+    supported_currency_codes: ["usd", "eur"],
+    default_currency_code: "usd",
+  },
+  {
+    name: "Acme 2",
+    supported_currency_codes: ["usd"],
+    default_currency_code: "usd",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateStoreDTO](../../../interfaces/store.CreateStoreDTO/page.mdx)[]","description":"The stores to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"The supported currency codes of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_currency_code","type":"`string`","description":"The default currency code of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`string`","description":"The associated default sales channel's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_region_id","type":"`string`","description":"The associated default region's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_location_id","type":"`string`","description":"The associated default location's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, any>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/store.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/store.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="create"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created stores.","expandable":false,"children":[{"name":"StoreDTO[]","type":"[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"StoreDTO","type":"`object`","description":"The store details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="create"/>
+
+## create(data, sharedContext?): Promise&#60;[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)&#62;
+
+This method creates a store.
+
+### Example
+
+```ts
+const store = await storeModuleService.create({
+  name: "Acme",
+  supported_currency_codes: ["usd", "eur"],
+  default_currency_code: "usd",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateStoreDTO](../../../interfaces/store.CreateStoreDTO/page.mdx)","description":"The store to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"The supported currency codes of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_currency_code","type":"`string`","description":"The default currency code of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`string`","description":"The associated default sales channel's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_region_id","type":"`string`","description":"The associated default region's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_location_id","type":"`string`","description":"The associated default location's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, any>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/store.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/store.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="create"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created store.","expandable":false,"children":[{"name":"StoreDTO","type":"[StoreDTO](../../../interfaces/store.StoreDTO/page.mdx)","optional":false,"defaultValue":"","description":"The store details.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"supported_currency_codes","type":"`string`[]","description":"The supported currency codes of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, any>`","description":"Holds custom data in key-value pairs.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string`","description":"The created at of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string`","description":"The updated at of the store.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"default_currency_code","type":"`string`","description":"The default currency code of the store.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_sales_channel_id","type":"`string`","description":"The associated default sales channel's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_region_id","type":"`string`","description":"The associated default region's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"default_location_id","type":"`string`","description":"The associated default location's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="create"/>

@@ -1,0 +1,110 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Local File Provider Module`,
+}
+
+# {metadata.title}
+
+The Local File Provider Module stores files uploaded to your Medusa application in the `/uploads` directory.
+
+---
+
+## Install the Local File Module
+
+<Note>
+
+The Local File Module is installed by default in your application.
+
+</Note>
+
+To install the Local File Provider Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/file-local-next
+```
+
+Next, add the module into the `providers` array of the File Module:
+
+<Note>
+
+The File Module accepts one provider only.
+
+</Note>
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = {
+  // ...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/file-local-next",
+            options: {
+              config: {
+                local: {
+                  // provider options...
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+### Local File Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `upload_dir`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The directory to upload files to.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `uploads`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `upload_dir`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The URL of the Medusa application.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `http://localhost:9000`
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

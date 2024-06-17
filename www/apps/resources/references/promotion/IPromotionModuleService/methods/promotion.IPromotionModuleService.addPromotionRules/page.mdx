@@ -1,0 +1,37 @@
+---
+displayed_sidebar: promotionReference
+slug: /references/promotion/addPromotionRules
+sidebar_label: addPromotionRules
+---
+
+import { TypeList } from "docs-ui"
+
+# addPromotionRules - Promotion Module Reference
+
+This documentation provides a reference to the `addPromotionRules` method. This belongs to the Promotion Module.
+
+This method adds promotion rules to a promotion.
+
+## Example
+
+```ts
+const promotionRules =
+  await promotionModuleService.addPromotionRules(
+    "promo_123",
+    [
+      {
+        attribute: "customer_group_id",
+        operator: "in",
+        values: ["VIP", "VVIP"],
+      },
+    ]
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"promotionId","type":"`string`","description":"The promotion's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rulesData","type":"[CreatePromotionRuleDTO](../../../interfaces/promotion.CreatePromotionRuleDTO/page.mdx)[]","description":"The promotion rules to be created and added to the promotion.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"attribute","type":"`string`","description":"The attribute of the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"operator","type":"[PromotionRuleOperatorValues](../../../types/promotion.PromotionRuleOperatorValues/page.mdx)","description":"The operator of the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"values","type":"`string` \\| `string`[]","description":"The values of the promotion rule.\nWhen provided, `PromotionRuleValue` records are\ncreated and associated with the promotion rule.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The description of the promotion rule.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/promotion.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/promotion.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="addPromotionRules"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PromotionRuleDTO](../../../interfaces/promotion.PromotionRuleDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The promotion rules created.","expandable":false,"children":[{"name":"PromotionRuleDTO[]","type":"[PromotionRuleDTO](../../../interfaces/promotion.PromotionRuleDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PromotionRuleDTO","type":"`object`","description":"The promotion rule details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="addPromotionRules"/>

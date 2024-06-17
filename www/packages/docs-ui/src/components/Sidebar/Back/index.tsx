@@ -11,7 +11,7 @@ export const SidebarBack = () => {
   return (
     <div
       className={clsx(
-        "my-docs_1.5 cursor-pointer",
+        "mb-docs_1.5 cursor-pointer",
         "flex items-center gap-docs_0.5 rounded-docs_sm px-docs_0.5 py-[6px] hover:no-underline",
         "border border-transparent",
         "text-medusa-fg-subtle text-medium-plus"

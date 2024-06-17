@@ -1,0 +1,3775 @@
+{
+	"id": 32442,
+	"name": "utils",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 32444,
+			"name": "FulfillmentUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32453,
+					"name": "FulfillmentEvents",
+					"variant": "declaration",
+					"kind": 32,
+					"flags": {
+						"isConst": true
+					},
+					"type": {
+						"type": "intersection",
+						"types": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32454,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32455,
+											"name": "created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.created"
+											}
+										},
+										{
+											"id": 32456,
+											"name": "updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.updated"
+											}
+										},
+										{
+											"id": 32457,
+											"name": "deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.deleted"
+											}
+										},
+										{
+											"id": 32458,
+											"name": "restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.restored"
+											}
+										},
+										{
+											"id": 32459,
+											"name": "attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.attached"
+											}
+										},
+										{
+											"id": 32460,
+											"name": "detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment-set.detached"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32455,
+												32456,
+												32457,
+												32458,
+												32459,
+												32460
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32461,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32462,
+											"name": "fulfillment_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.created"
+											}
+										},
+										{
+											"id": 32463,
+											"name": "service_zone_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.created"
+											}
+										},
+										{
+											"id": 32464,
+											"name": "geo_zone_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.created"
+											}
+										},
+										{
+											"id": 32465,
+											"name": "shipping_option_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.created"
+											}
+										},
+										{
+											"id": 32466,
+											"name": "shipping_profile_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.created"
+											}
+										},
+										{
+											"id": 32467,
+											"name": "shipping_option_rule_created",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.created"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32462,
+												32463,
+												32464,
+												32465,
+												32466,
+												32467
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32468,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32469,
+											"name": "fulfillment_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.updated"
+											}
+										},
+										{
+											"id": 32470,
+											"name": "service_zone_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.updated"
+											}
+										},
+										{
+											"id": 32471,
+											"name": "geo_zone_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.updated"
+											}
+										},
+										{
+											"id": 32472,
+											"name": "shipping_option_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.updated"
+											}
+										},
+										{
+											"id": 32473,
+											"name": "shipping_profile_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.updated"
+											}
+										},
+										{
+											"id": 32474,
+											"name": "shipping_option_rule_updated",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.updated"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32469,
+												32470,
+												32471,
+												32472,
+												32473,
+												32474
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32475,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32476,
+											"name": "fulfillment_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.deleted"
+											}
+										},
+										{
+											"id": 32477,
+											"name": "service_zone_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.deleted"
+											}
+										},
+										{
+											"id": 32478,
+											"name": "geo_zone_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.deleted"
+											}
+										},
+										{
+											"id": 32479,
+											"name": "shipping_option_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.deleted"
+											}
+										},
+										{
+											"id": 32480,
+											"name": "shipping_profile_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.deleted"
+											}
+										},
+										{
+											"id": 32481,
+											"name": "shipping_option_rule_deleted",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.deleted"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32476,
+												32477,
+												32478,
+												32479,
+												32480,
+												32481
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32482,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32483,
+											"name": "fulfillment_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.restored"
+											}
+										},
+										{
+											"id": 32484,
+											"name": "service_zone_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.restored"
+											}
+										},
+										{
+											"id": 32485,
+											"name": "geo_zone_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.restored"
+											}
+										},
+										{
+											"id": 32486,
+											"name": "shipping_option_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.restored"
+											}
+										},
+										{
+											"id": 32487,
+											"name": "shipping_profile_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.restored"
+											}
+										},
+										{
+											"id": 32488,
+											"name": "shipping_option_rule_restored",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.restored"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32483,
+												32484,
+												32485,
+												32486,
+												32487,
+												32488
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32489,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32490,
+											"name": "fulfillment_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.attached"
+											}
+										},
+										{
+											"id": 32491,
+											"name": "service_zone_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.attached"
+											}
+										},
+										{
+											"id": 32492,
+											"name": "geo_zone_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.attached"
+											}
+										},
+										{
+											"id": 32493,
+											"name": "shipping_option_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.attached"
+											}
+										},
+										{
+											"id": 32494,
+											"name": "shipping_profile_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.attached"
+											}
+										},
+										{
+											"id": 32495,
+											"name": "shipping_option_rule_attached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.attached"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32490,
+												32491,
+												32492,
+												32493,
+												32494,
+												32495
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 32496,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 32497,
+											"name": "fulfillment_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "fulfillment.detached"
+											}
+										},
+										{
+											"id": 32498,
+											"name": "service_zone_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "service-zone.detached"
+											}
+										},
+										{
+											"id": 32499,
+											"name": "geo_zone_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "geo-zone.detached"
+											}
+										},
+										{
+											"id": 32500,
+											"name": "shipping_option_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option.detached"
+											}
+										},
+										{
+											"id": 32501,
+											"name": "shipping_profile_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-profile.detached"
+											}
+										},
+										{
+											"id": 32502,
+											"name": "shipping_option_rule_detached",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "literal",
+												"value": "shipping-option-rule.detached"
+											}
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												32497,
+												32498,
+												32499,
+												32500,
+												32501,
+												32502
+											]
+										}
+									]
+								}
+							}
+						]
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 32445,
+					"name": "GeoZoneType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32446,
+							"name": "COUNTRY",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "country"
+							}
+						},
+						{
+							"id": 32447,
+							"name": "PROVINCE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "province"
+							}
+						},
+						{
+							"id": 32448,
+							"name": "CITY",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "city"
+							}
+						},
+						{
+							"id": 32449,
+							"name": "ZIP",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "zip"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32446,
+								32447,
+								32448,
+								32449
+							]
+						}
+					]
+				},
+				{
+					"id": 32450,
+					"name": "ShippingOptionPriceType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32451,
+							"name": "CALCULATED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "calculated"
+							}
+						},
+						{
+							"id": 32452,
+							"name": "FLAT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "flat"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32451,
+								32452
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"children": [
+						32445,
+						32450
+					]
+				},
+				{
+					"title": "Variables",
+					"children": [
+						32453
+					]
+				}
+			]
+		},
+		{
+			"id": 32443,
+			"name": "MedusaModuleType",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"type": {
+				"type": "query",
+				"queryType": {
+					"type": "reference",
+					"target": 32443,
+					"name": "MedusaModuleType",
+					"package": "@medusajs/utils"
+				}
+			},
+			"defaultValue": "..."
+		},
+		{
+			"id": 32575,
+			"name": "InventoryUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32576,
+					"name": "InventoryEvents",
+					"variant": "declaration",
+					"kind": 32,
+					"flags": {
+						"isConst": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 32577,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 32578,
+									"name": "created",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32579,
+									"name": "updated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32580,
+									"name": "deleted",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32581,
+									"name": "restored",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32582,
+									"name": "reservation_item_created",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32583,
+									"name": "reservation_item_updated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32584,
+									"name": "reservation_item_deleted",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32585,
+									"name": "inventory_level_deleted",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32586,
+									"name": "inventory_level_created",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32587,
+									"name": "inventory_level_updated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										32578,
+										32579,
+										32580,
+										32581,
+										32582,
+										32583,
+										32584,
+										32585,
+										32586,
+										32587
+									]
+								}
+							]
+						}
+					},
+					"defaultValue": "..."
+				}
+			],
+			"groups": [
+				{
+					"title": "Variables",
+					"children": [
+						32576
+					]
+				}
+			]
+		},
+		{
+			"id": 32588,
+			"name": "LinkUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32604,
+					"name": "composeLinkName",
+					"variant": "declaration",
+					"kind": 64,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 32605,
+							"name": "composeLinkName",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 32606,
+									"name": "args",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isRest": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "any"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				},
+				{
+					"id": 32607,
+					"name": "composeTableName",
+					"variant": "declaration",
+					"kind": 64,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 32608,
+							"name": "composeTableName",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"parameters": [
+								{
+									"id": 32609,
+									"name": "args",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isRest": true
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "any"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "string"
+							}
+						}
+					]
+				},
+				{
+					"id": 32589,
+					"name": "LINKS",
+					"variant": "declaration",
+					"kind": 32,
+					"flags": {
+						"isConst": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 32590,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 32591,
+									"name": "ProductVariantInventoryItem",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32592,
+									"name": "ProductVariantPriceSet",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32593,
+									"name": "ShippingOptionPriceSet",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32594,
+									"name": "CartPaymentCollection",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32595,
+									"name": "RegionPaymentProvider",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32596,
+									"name": "CartPromotion",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32597,
+									"name": "SalesChannelLocation",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32598,
+									"name": "FulfillmentSetLocation",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32599,
+									"name": "OrderPromotion",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32600,
+									"name": "OrderSalesChannel",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32601,
+									"name": "PublishableApiKeySalesChannel",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32602,
+									"name": "ProductShippingProfile",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32603,
+									"name": "ProductSalesChannel",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										32591,
+										32592,
+										32593,
+										32594,
+										32595,
+										32596,
+										32597,
+										32598,
+										32599,
+										32600,
+										32601,
+										32602,
+										32603
+									]
+								}
+							]
+						}
+					},
+					"defaultValue": "..."
+				}
+			],
+			"groups": [
+				{
+					"title": "Variables",
+					"children": [
+						32589
+					]
+				},
+				{
+					"title": "Functions",
+					"children": [
+						32604,
+						32607
+					]
+				}
+			]
+		},
+		{
+			"id": 32503,
+			"name": "OrderUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32504,
+					"name": "OrderStatus",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The order's status."
+							}
+						]
+					},
+					"children": [
+						{
+							"id": 32505,
+							"name": "PENDING",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order is pending."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "pending"
+							}
+						},
+						{
+							"id": 32506,
+							"name": "COMPLETED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order is completed"
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "completed"
+							}
+						},
+						{
+							"id": 32507,
+							"name": "DRAFT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order is a draft."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "draft"
+							}
+						},
+						{
+							"id": 32508,
+							"name": "ARCHIVED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order is archived."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "archived"
+							}
+						},
+						{
+							"id": 32509,
+							"name": "CANCELED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order is canceled."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "canceled"
+							}
+						},
+						{
+							"id": 32510,
+							"name": "REQUIRES_ACTION",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order requires action."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "requires_action"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32505,
+								32506,
+								32507,
+								32508,
+								32509,
+								32510
+							]
+						}
+					]
+				},
+				{
+					"id": 32511,
+					"name": "OrderChangeStatus",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The order change's status."
+							}
+						]
+					},
+					"children": [
+						{
+							"id": 32512,
+							"name": "CONFIRMED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order change is confirmed."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "confirmed"
+							}
+						},
+						{
+							"id": 32513,
+							"name": "DECLINED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order change is declined."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "declined"
+							}
+						},
+						{
+							"id": 32514,
+							"name": "REQUESTED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order change is requested."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "requested"
+							}
+						},
+						{
+							"id": 32515,
+							"name": "PENDING",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order change is pending."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "pending"
+							}
+						},
+						{
+							"id": 32516,
+							"name": "CANCELED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The order change is canceled."
+									}
+								]
+							},
+							"type": {
+								"type": "literal",
+								"value": "canceled"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32512,
+								32513,
+								32514,
+								32515,
+								32516
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"children": [
+						32504,
+						32511
+					]
+				}
+			]
+		},
+		{
+			"id": 32610,
+			"name": "PaymentCollectionStatus",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The payment collection's status."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 32611,
+					"name": "NOT_PAID",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment collection isn't paid."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "not_paid"
+					}
+				},
+				{
+					"id": 32612,
+					"name": "AWAITING",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment collection is awaiting payment."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "awaiting"
+					}
+				},
+				{
+					"id": 32613,
+					"name": "AUTHORIZED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment collection is authorized."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "authorized"
+					}
+				},
+				{
+					"id": 32614,
+					"name": "PARTIALLY_AUTHORIZED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Some of the payments in the payment collection are authorized."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "partially_authorized"
+					}
+				},
+				{
+					"id": 32615,
+					"name": "CANCELED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment collection is canceled."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "canceled"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32611,
+						32612,
+						32613,
+						32614,
+						32615
+					]
+				}
+			]
+		},
+		{
+			"id": 32616,
+			"name": "PaymentSessionStatus",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The status of a payment session."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 32617,
+					"name": "AUTHORIZED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is authorized."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "authorized"
+					}
+				},
+				{
+					"id": 32618,
+					"name": "PENDING",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is pending."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "pending"
+					}
+				},
+				{
+					"id": 32619,
+					"name": "REQUIRES_MORE",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment requires an action."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "requires_more"
+					}
+				},
+				{
+					"id": 32620,
+					"name": "ERROR",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An error occurred while processing the payment."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "error"
+					}
+				},
+				{
+					"id": 32621,
+					"name": "CANCELED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The payment is canceled."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "canceled"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32617,
+						32618,
+						32619,
+						32620,
+						32621
+					]
+				}
+			]
+		},
+		{
+			"id": 32622,
+			"name": "PaymentWebhookEvents",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"children": [
+				{
+					"id": 32623,
+					"name": "WebhookReceived",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"type": {
+						"type": "literal",
+						"value": "payment.webhook_received"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32623
+					]
+				}
+			]
+		},
+		{
+			"id": 32624,
+			"name": "PaymentActions",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Normalized events from payment provider to internal payment module events."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 32625,
+					"name": "AUTHORIZED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Payment session has been authorized and there are available funds for capture."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "authorized"
+					}
+				},
+				{
+					"id": 32626,
+					"name": "SUCCESSFUL",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Payment was successful and the mount is captured."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "captured"
+					}
+				},
+				{
+					"id": 32627,
+					"name": "FAILED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Payment failed."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "failed"
+					}
+				},
+				{
+					"id": 32628,
+					"name": "NOT_SUPPORTED",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Received an event that is not processable."
+							}
+						]
+					},
+					"type": {
+						"type": "literal",
+						"value": "not_supported"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32625,
+						32626,
+						32627,
+						32628
+					]
+				}
+			]
+		},
+		{
+			"id": 32629,
+			"name": "PriceListStatus",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"children": [
+				{
+					"id": 32630,
+					"name": "ACTIVE",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"type": {
+						"type": "literal",
+						"value": "active"
+					}
+				},
+				{
+					"id": 32631,
+					"name": "DRAFT",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"type": {
+						"type": "literal",
+						"value": "draft"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32630,
+						32631
+					]
+				}
+			]
+		},
+		{
+			"id": 32632,
+			"name": "PriceListType",
+			"variant": "declaration",
+			"kind": 8,
+			"flags": {},
+			"children": [
+				{
+					"id": 32633,
+					"name": "SALE",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"type": {
+						"type": "literal",
+						"value": "sale"
+					}
+				},
+				{
+					"id": 32634,
+					"name": "OVERRIDE",
+					"variant": "declaration",
+					"kind": 16,
+					"flags": {},
+					"type": {
+						"type": "literal",
+						"value": "override"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumeration Members",
+					"children": [
+						32633,
+						32634
+					]
+				}
+			]
+		},
+		{
+			"id": 32642,
+			"name": "RuleAttributeInput",
+			"variant": "declaration",
+			"kind": 2097152,
+			"flags": {},
+			"type": {
+				"type": "union",
+				"types": [
+					{
+						"type": "intrinsic",
+						"name": "string"
+					},
+					{
+						"type": "intrinsic",
+						"name": "undefined"
+					}
+				]
+			}
+		},
+		{
+			"id": 32635,
+			"name": "ReservedPricingRuleAttributes",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"type": {
+				"type": "array",
+				"elementType": {
+					"type": "intrinsic",
+					"name": "string"
+				}
+			},
+			"defaultValue": "..."
+		},
+		{
+			"id": 32636,
+			"name": "getInvalidRuleAttributes",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"signatures": [
+				{
+					"id": 32637,
+					"name": "getInvalidRuleAttributes",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"parameters": [
+						{
+							"id": 32638,
+							"name": "ruleAttributes",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 32642,
+									"name": "RuleAttributeInput",
+									"package": "@medusajs/utils"
+								}
+							}
+						}
+					],
+					"type": {
+						"type": "array",
+						"elementType": {
+							"type": "intrinsic",
+							"name": "string"
+						}
+					}
+				}
+			]
+		},
+		{
+			"id": 32639,
+			"name": "validateRuleAttributes",
+			"variant": "declaration",
+			"kind": 64,
+			"flags": {},
+			"signatures": [
+				{
+					"id": 32640,
+					"name": "validateRuleAttributes",
+					"variant": "signature",
+					"kind": 4096,
+					"flags": {},
+					"parameters": [
+						{
+							"id": 32641,
+							"name": "ruleAttributes",
+							"variant": "param",
+							"kind": 32768,
+							"flags": {},
+							"type": {
+								"type": "array",
+								"elementType": {
+									"type": "reference",
+									"target": 32642,
+									"name": "RuleAttributeInput",
+									"package": "@medusajs/utils"
+								}
+							}
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "void"
+					}
+				}
+			]
+		},
+		{
+			"id": 32517,
+			"name": "ProductUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32518,
+					"name": "ProductStatus",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32519,
+							"name": "DRAFT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "draft"
+							}
+						},
+						{
+							"id": 32520,
+							"name": "PROPOSED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "proposed"
+							}
+						},
+						{
+							"id": 32521,
+							"name": "PUBLISHED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "published"
+							}
+						},
+						{
+							"id": 32522,
+							"name": "REJECTED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "rejected"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32519,
+								32520,
+								32521,
+								32522
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"children": [
+						32518
+					]
+				}
+			]
+		},
+		{
+			"id": 32523,
+			"name": "PromotionUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32524,
+					"name": "PromotionType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32525,
+							"name": "STANDARD",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "standard"
+							}
+						},
+						{
+							"id": 32526,
+							"name": "BUYGET",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "buyget"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32525,
+								32526
+							]
+						}
+					]
+				},
+				{
+					"id": 32527,
+					"name": "ApplicationMethodType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32528,
+							"name": "FIXED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "fixed"
+							}
+						},
+						{
+							"id": 32529,
+							"name": "PERCENTAGE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "percentage"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32528,
+								32529
+							]
+						}
+					]
+				},
+				{
+					"id": 32530,
+					"name": "ApplicationMethodTargetType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32531,
+							"name": "ORDER",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "order"
+							}
+						},
+						{
+							"id": 32532,
+							"name": "SHIPPING_METHODS",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "shipping_methods"
+							}
+						},
+						{
+							"id": 32533,
+							"name": "ITEMS",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "items"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32531,
+								32532,
+								32533
+							]
+						}
+					]
+				},
+				{
+					"id": 32534,
+					"name": "ApplicationMethodAllocation",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32535,
+							"name": "EACH",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "each"
+							}
+						},
+						{
+							"id": 32536,
+							"name": "ACROSS",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "across"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32535,
+								32536
+							]
+						}
+					]
+				},
+				{
+					"id": 32537,
+					"name": "PromotionRuleOperator",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32538,
+							"name": "GTE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "gte"
+							}
+						},
+						{
+							"id": 32539,
+							"name": "LTE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "lte"
+							}
+						},
+						{
+							"id": 32540,
+							"name": "GT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "gt"
+							}
+						},
+						{
+							"id": 32541,
+							"name": "LT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "lt"
+							}
+						},
+						{
+							"id": 32542,
+							"name": "EQ",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "eq"
+							}
+						},
+						{
+							"id": 32543,
+							"name": "NE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "ne"
+							}
+						},
+						{
+							"id": 32544,
+							"name": "IN",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "in"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32538,
+								32539,
+								32540,
+								32541,
+								32542,
+								32543,
+								32544
+							]
+						}
+					]
+				},
+				{
+					"id": 32545,
+					"name": "CampaignBudgetType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32546,
+							"name": "SPEND",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "spend"
+							}
+						},
+						{
+							"id": 32547,
+							"name": "USAGE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "usage"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32546,
+								32547
+							]
+						}
+					]
+				},
+				{
+					"id": 32548,
+					"name": "ComputedActions",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32549,
+							"name": "ADD_ITEM_ADJUSTMENT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "addItemAdjustment"
+							}
+						},
+						{
+							"id": 32550,
+							"name": "ADD_SHIPPING_METHOD_ADJUSTMENT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "addShippingMethodAdjustment"
+							}
+						},
+						{
+							"id": 32551,
+							"name": "REMOVE_ITEM_ADJUSTMENT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "removeItemAdjustment"
+							}
+						},
+						{
+							"id": 32552,
+							"name": "REMOVE_SHIPPING_METHOD_ADJUSTMENT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "removeShippingMethodAdjustment"
+							}
+						},
+						{
+							"id": 32553,
+							"name": "CAMPAIGN_BUDGET_EXCEEDED",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "campaignBudgetExceeded"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32549,
+								32550,
+								32551,
+								32552,
+								32553
+							]
+						}
+					]
+				},
+				{
+					"id": 32554,
+					"name": "PromotionActions",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32555,
+							"name": "ADD",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "add"
+							}
+						},
+						{
+							"id": 32556,
+							"name": "REMOVE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "remove"
+							}
+						},
+						{
+							"id": 32557,
+							"name": "REPLACE",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "replace"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32555,
+								32556,
+								32557
+							]
+						}
+					]
+				},
+				{
+					"id": 32558,
+					"name": "RuleType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32559,
+							"name": "RULES",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "rules"
+							}
+						},
+						{
+							"id": 32560,
+							"name": "TARGET_RULES",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "target_rules"
+							}
+						},
+						{
+							"id": 32561,
+							"name": "BUY_RULES",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "buy_rules"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32559,
+								32560,
+								32561
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"children": [
+						32524,
+						32527,
+						32530,
+						32534,
+						32537,
+						32545,
+						32548,
+						32554,
+						32558
+					]
+				}
+			]
+		},
+		{
+			"id": 32562,
+			"name": "ShippingProfileUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32563,
+					"name": "ShippingProfileType",
+					"variant": "declaration",
+					"kind": 8,
+					"flags": {},
+					"children": [
+						{
+							"id": 32564,
+							"name": "DEFAULT",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "default"
+							}
+						},
+						{
+							"id": 32565,
+							"name": "GIFT_CARD",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "gift_card"
+							}
+						},
+						{
+							"id": 32566,
+							"name": "CUSTOM",
+							"variant": "declaration",
+							"kind": 16,
+							"flags": {},
+							"type": {
+								"type": "literal",
+								"value": "custom"
+							}
+						}
+					],
+					"groups": [
+						{
+							"title": "Enumeration Members",
+							"children": [
+								32564,
+								32565,
+								32566
+							]
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Enumerations",
+					"children": [
+						32563
+					]
+				}
+			]
+		},
+		{
+			"id": 32567,
+			"name": "UserUtils",
+			"variant": "declaration",
+			"kind": 4,
+			"flags": {},
+			"children": [
+				{
+					"id": 32568,
+					"name": "UserEvents",
+					"variant": "declaration",
+					"kind": 32,
+					"flags": {
+						"isConst": true
+					},
+					"type": {
+						"type": "reflection",
+						"declaration": {
+							"id": 32569,
+							"name": "__type",
+							"variant": "declaration",
+							"kind": 65536,
+							"flags": {},
+							"children": [
+								{
+									"id": 32570,
+									"name": "created",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32571,
+									"name": "updated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32572,
+									"name": "invite_created",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32573,
+									"name": "invite_updated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "..."
+								},
+								{
+									"id": 32574,
+									"name": "invite_token_generated",
+									"variant": "declaration",
+									"kind": 1024,
+									"flags": {},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									},
+									"defaultValue": "\"invite.token_generated\""
+								}
+							],
+							"groups": [
+								{
+									"title": "Properties",
+									"children": [
+										32570,
+										32571,
+										32572,
+										32573,
+										32574
+									]
+								}
+							]
+						}
+					},
+					"defaultValue": "..."
+				}
+			],
+			"groups": [
+				{
+					"title": "Variables",
+					"children": [
+						32568
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Namespaces",
+			"children": [
+				32444,
+				32575,
+				32588,
+				32503,
+				32517,
+				32523,
+				32562,
+				32567
+			]
+		},
+		{
+			"title": "Enumerations",
+			"children": [
+				32610,
+				32616,
+				32622,
+				32624,
+				32629,
+				32632
+			]
+		},
+		{
+			"title": "Type Aliases",
+			"children": [
+				32642
+			]
+		},
+		{
+			"title": "Variables",
+			"children": [
+				32443,
+				32635
+			]
+		},
+		{
+			"title": "Functions",
+			"children": [
+				32636,
+				32639
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"32442": {
+			"sourceFileName": "../../../packages/utils/src/index.ts",
+			"qualifiedName": ""
+		},
+		"32443": {
+			"sourceFileName": "../../../packages/utils/src/index.ts",
+			"qualifiedName": "MedusaModuleType"
+		},
+		"32444": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/index.ts",
+			"qualifiedName": ""
+		},
+		"32445": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType"
+		},
+		"32446": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.COUNTRY"
+		},
+		"32447": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.PROVINCE"
+		},
+		"32448": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.CITY"
+		},
+		"32449": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/geo-zone.ts",
+			"qualifiedName": "GeoZoneType.ZIP"
+		},
+		"32450": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType"
+		},
+		"32451": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType.CALCULATED"
+		},
+		"32452": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/shipping-options.ts",
+			"qualifiedName": "ShippingOptionPriceType.FLAT"
+		},
+		"32453": {
+			"sourceFileName": "../../../packages/utils/src/fulfillment/events.ts",
+			"qualifiedName": "FulfillmentEvents"
+		},
+		"32454": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32455": {
+			"sourceFileName": "",
+			"qualifiedName": "created"
+		},
+		"32456": {
+			"sourceFileName": "",
+			"qualifiedName": "updated"
+		},
+		"32457": {
+			"sourceFileName": "",
+			"qualifiedName": "deleted"
+		},
+		"32458": {
+			"sourceFileName": "",
+			"qualifiedName": "restored"
+		},
+		"32459": {
+			"sourceFileName": "",
+			"qualifiedName": "attached"
+		},
+		"32460": {
+			"sourceFileName": "",
+			"qualifiedName": "detached"
+		},
+		"32461": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32462": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_created"
+		},
+		"32463": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_created"
+		},
+		"32464": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_created"
+		},
+		"32465": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_created"
+		},
+		"32466": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_created"
+		},
+		"32467": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_created"
+		},
+		"32468": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32469": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_updated"
+		},
+		"32470": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_updated"
+		},
+		"32471": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_updated"
+		},
+		"32472": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_updated"
+		},
+		"32473": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_updated"
+		},
+		"32474": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_updated"
+		},
+		"32475": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32476": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_deleted"
+		},
+		"32477": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_deleted"
+		},
+		"32478": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_deleted"
+		},
+		"32479": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_deleted"
+		},
+		"32480": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_deleted"
+		},
+		"32481": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_deleted"
+		},
+		"32482": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32483": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_restored"
+		},
+		"32484": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_restored"
+		},
+		"32485": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_restored"
+		},
+		"32486": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_restored"
+		},
+		"32487": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_restored"
+		},
+		"32488": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_restored"
+		},
+		"32489": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32490": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_attached"
+		},
+		"32491": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_attached"
+		},
+		"32492": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_attached"
+		},
+		"32493": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_attached"
+		},
+		"32494": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_attached"
+		},
+		"32495": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_attached"
+		},
+		"32496": {
+			"sourceFileName": "../../../packages/utils/src/event-bus/utils.ts",
+			"qualifiedName": "__type"
+		},
+		"32497": {
+			"sourceFileName": "",
+			"qualifiedName": "fulfillment_detached"
+		},
+		"32498": {
+			"sourceFileName": "",
+			"qualifiedName": "service_zone_detached"
+		},
+		"32499": {
+			"sourceFileName": "",
+			"qualifiedName": "geo_zone_detached"
+		},
+		"32500": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_detached"
+		},
+		"32501": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_profile_detached"
+		},
+		"32502": {
+			"sourceFileName": "",
+			"qualifiedName": "shipping_option_rule_detached"
+		},
+		"32503": {
+			"sourceFileName": "../../../packages/utils/src/order/index.ts",
+			"qualifiedName": ""
+		},
+		"32504": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus"
+		},
+		"32505": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.PENDING"
+		},
+		"32506": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.COMPLETED"
+		},
+		"32507": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.DRAFT"
+		},
+		"32508": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.ARCHIVED"
+		},
+		"32509": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.CANCELED"
+		},
+		"32510": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderStatus.REQUIRES_ACTION"
+		},
+		"32511": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus"
+		},
+		"32512": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.CONFIRMED"
+		},
+		"32513": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.DECLINED"
+		},
+		"32514": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.REQUESTED"
+		},
+		"32515": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.PENDING"
+		},
+		"32516": {
+			"sourceFileName": "../../../packages/utils/src/order/status.ts",
+			"qualifiedName": "OrderChangeStatus.CANCELED"
+		},
+		"32517": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": ""
+		},
+		"32518": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": "ProductStatus"
+		},
+		"32519": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": "ProductStatus.DRAFT"
+		},
+		"32520": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": "ProductStatus.PROPOSED"
+		},
+		"32521": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": "ProductStatus.PUBLISHED"
+		},
+		"32522": {
+			"sourceFileName": "../../../packages/utils/src/product/index.ts",
+			"qualifiedName": "ProductStatus.REJECTED"
+		},
+		"32523": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": ""
+		},
+		"32524": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionType"
+		},
+		"32525": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionType.STANDARD"
+		},
+		"32526": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionType.BUYGET"
+		},
+		"32527": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodType"
+		},
+		"32528": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodType.FIXED"
+		},
+		"32529": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodType.PERCENTAGE"
+		},
+		"32530": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodTargetType"
+		},
+		"32531": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodTargetType.ORDER"
+		},
+		"32532": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodTargetType.SHIPPING_METHODS"
+		},
+		"32533": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodTargetType.ITEMS"
+		},
+		"32534": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodAllocation"
+		},
+		"32535": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodAllocation.EACH"
+		},
+		"32536": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ApplicationMethodAllocation.ACROSS"
+		},
+		"32537": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator"
+		},
+		"32538": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.GTE"
+		},
+		"32539": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.LTE"
+		},
+		"32540": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.GT"
+		},
+		"32541": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.LT"
+		},
+		"32542": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.EQ"
+		},
+		"32543": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.NE"
+		},
+		"32544": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionRuleOperator.IN"
+		},
+		"32545": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "CampaignBudgetType"
+		},
+		"32546": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "CampaignBudgetType.SPEND"
+		},
+		"32547": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "CampaignBudgetType.USAGE"
+		},
+		"32548": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions"
+		},
+		"32549": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions.ADD_ITEM_ADJUSTMENT"
+		},
+		"32550": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT"
+		},
+		"32551": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions.REMOVE_ITEM_ADJUSTMENT"
+		},
+		"32552": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT"
+		},
+		"32553": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "ComputedActions.CAMPAIGN_BUDGET_EXCEEDED"
+		},
+		"32554": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionActions"
+		},
+		"32555": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionActions.ADD"
+		},
+		"32556": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionActions.REMOVE"
+		},
+		"32557": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "PromotionActions.REPLACE"
+		},
+		"32558": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "RuleType"
+		},
+		"32559": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "RuleType.RULES"
+		},
+		"32560": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "RuleType.TARGET_RULES"
+		},
+		"32561": {
+			"sourceFileName": "../../../packages/utils/src/promotion/index.ts",
+			"qualifiedName": "RuleType.BUY_RULES"
+		},
+		"32562": {
+			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
+			"qualifiedName": ""
+		},
+		"32563": {
+			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
+			"qualifiedName": "ShippingProfileType"
+		},
+		"32564": {
+			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
+			"qualifiedName": "ShippingProfileType.DEFAULT"
+		},
+		"32565": {
+			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
+			"qualifiedName": "ShippingProfileType.GIFT_CARD"
+		},
+		"32566": {
+			"sourceFileName": "../../../packages/utils/src/shipping/index.ts",
+			"qualifiedName": "ShippingProfileType.CUSTOM"
+		},
+		"32567": {
+			"sourceFileName": "../../../packages/utils/src/user/index.ts",
+			"qualifiedName": ""
+		},
+		"32568": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "UserEvents"
+		},
+		"32569": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object"
+		},
+		"32570": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object.created"
+		},
+		"32571": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object.updated"
+		},
+		"32572": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object.invite_created"
+		},
+		"32573": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object.invite_updated"
+		},
+		"32574": {
+			"sourceFileName": "../../../packages/utils/src/user/events.ts",
+			"qualifiedName": "__object.invite_token_generated"
+		},
+		"32575": {
+			"sourceFileName": "../../../packages/utils/src/inventory/index.ts",
+			"qualifiedName": ""
+		},
+		"32576": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "InventoryEvents"
+		},
+		"32577": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object"
+		},
+		"32578": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.created"
+		},
+		"32579": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.updated"
+		},
+		"32580": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.deleted"
+		},
+		"32581": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.restored"
+		},
+		"32582": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.reservation_item_created"
+		},
+		"32583": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.reservation_item_updated"
+		},
+		"32584": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.reservation_item_deleted"
+		},
+		"32585": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.inventory_level_deleted"
+		},
+		"32586": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.inventory_level_created"
+		},
+		"32587": {
+			"sourceFileName": "../../../packages/utils/src/inventory/events.ts",
+			"qualifiedName": "__object.inventory_level_updated"
+		},
+		"32588": {
+			"sourceFileName": "../../../packages/utils/src/link/index.ts",
+			"qualifiedName": ""
+		},
+		"32589": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "LINKS"
+		},
+		"32590": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object"
+		},
+		"32591": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.ProductVariantInventoryItem"
+		},
+		"32592": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.ProductVariantPriceSet"
+		},
+		"32593": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.ShippingOptionPriceSet"
+		},
+		"32594": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.CartPaymentCollection"
+		},
+		"32595": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.RegionPaymentProvider"
+		},
+		"32596": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.CartPromotion"
+		},
+		"32597": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.SalesChannelLocation"
+		},
+		"32598": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.FulfillmentSetLocation"
+		},
+		"32599": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.OrderPromotion"
+		},
+		"32600": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.OrderSalesChannel"
+		},
+		"32601": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.PublishableApiKeySalesChannel"
+		},
+		"32602": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.ProductShippingProfile"
+		},
+		"32603": {
+			"sourceFileName": "../../../packages/utils/src/link/links.ts",
+			"qualifiedName": "__object.ProductSalesChannel"
+		},
+		"32604": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "composeLinkName"
+		},
+		"32605": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "composeLinkName"
+		},
+		"32606": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "args"
+		},
+		"32607": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "composeTableName"
+		},
+		"32608": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "composeTableName"
+		},
+		"32609": {
+			"sourceFileName": "../../../packages/utils/src/link/compose-link-name.ts",
+			"qualifiedName": "args"
+		},
+		"32610": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus"
+		},
+		"32611": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus.NOT_PAID"
+		},
+		"32612": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus.AWAITING"
+		},
+		"32613": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus.AUTHORIZED"
+		},
+		"32614": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus.PARTIALLY_AUTHORIZED"
+		},
+		"32615": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-collection.ts",
+			"qualifiedName": "PaymentCollectionStatus.CANCELED"
+		},
+		"32616": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus"
+		},
+		"32617": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus.AUTHORIZED"
+		},
+		"32618": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus.PENDING"
+		},
+		"32619": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus.REQUIRES_MORE"
+		},
+		"32620": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus.ERROR"
+		},
+		"32621": {
+			"sourceFileName": "../../../packages/utils/src/payment/payment-session.ts",
+			"qualifiedName": "PaymentSessionStatus.CANCELED"
+		},
+		"32622": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentWebhookEvents"
+		},
+		"32623": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentWebhookEvents.WebhookReceived"
+		},
+		"32624": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentActions"
+		},
+		"32625": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentActions.AUTHORIZED"
+		},
+		"32626": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentActions.SUCCESSFUL"
+		},
+		"32627": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentActions.FAILED"
+		},
+		"32628": {
+			"sourceFileName": "../../../packages/utils/src/payment/webhook.ts",
+			"qualifiedName": "PaymentActions.NOT_SUPPORTED"
+		},
+		"32629": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListStatus"
+		},
+		"32630": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListStatus.ACTIVE"
+		},
+		"32631": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListStatus.DRAFT"
+		},
+		"32632": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListType"
+		},
+		"32633": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListType.SALE"
+		},
+		"32634": {
+			"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+			"qualifiedName": "PriceListType.OVERRIDE"
+		},
+		"32635": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "ReservedPricingRuleAttributes"
+		},
+		"32636": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "getInvalidRuleAttributes"
+		},
+		"32637": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "getInvalidRuleAttributes"
+		},
+		"32638": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "ruleAttributes"
+		},
+		"32639": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "validateRuleAttributes"
+		},
+		"32640": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "validateRuleAttributes"
+		},
+		"32641": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "ruleAttributes"
+		},
+		"32642": {
+			"sourceFileName": "../../../packages/utils/src/pricing/rule-type.ts",
+			"qualifiedName": "RuleAttributeInput"
+		}
+	}
+}

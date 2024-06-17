@@ -1,0 +1,121 @@
+---
+sidebar_position: 2
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Price Lists`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage price lists and their related information.
+
+## View Price List Details
+
+To view a price list’s details:
+
+1. Go to the Pricing page.
+2. Click on the price list you want to view.
+
+---
+
+## Change Price List Status
+
+{/* TODO check for correctness */}
+
+<Note>
+
+Publishing a price list makes it and its prices available to customers. Unpublishing a price list makes it and its prices unavailable to customers.
+
+</Note>
+
+To change a price list’s status:
+
+1. Go to the Pricing page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon next to the price list.
+3. If the price list is a draft, click on "Mark as active" in the dropdown to publish it. Otherwise, if the price list is active or published, click on the "Mark as draft" in the dropdown to unpublish it.
+
+---
+
+## Edit Price List’s Details
+
+{/* TODO check for correctness */}
+
+To edit a price list’s details:
+
+1. Go to the price list’s details page.
+2. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon in the first section.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit the price list's details.
+5. Once you’re done , click on the Save button.
+
+---
+
+## Manage Prices
+
+### Add Products
+
+{/* TODO check for correctness */}
+
+To add new products to the price list:
+
+1. Go to the price list’s details page.
+2. Under the Prices section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+3. Choose “Add products" in the dropdown.
+4. This opens a form with two steps:
+    1. In the first step, choose the products to add to the price list. Once you're done, click the Continue button.
+    2. In the second step, enter the prices of each product variant. The prices editor is based on the [bulk editor](../../tips/bulk-editor/page.mdx).
+        - To add a currency, click on the "Add currency" button and select the currency.
+5. Once you're done, click the Save button.
+
+### Edit a Product’s Prices
+
+{/* TODO check for correctness */}
+
+To edit the prices of a product in the price list:
+
+1. Go to the price list’s details page.
+2. In the Prices section, click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon.
+3. Choose “Edit prices" from the dropdown.
+4. This opens the prices editor, which is based on the [bulk editor](../../tips/bulk-editor/page.mdx).
+    - To add a currency, click on the "Add currency" button and select the currency.
+5. Once you're done, click the Save button.
+
+### Remove a Product From Price List
+
+{/* TODO check for correctness */}
+
+<Note type="warning">
+
+Removing a product from a price list is irreversible.
+
+</Note>
+
+To remove a product from a price list:
+
+1. Go to the price list’s details page.
+2. Find the product you want to delete in the Prices section.
+3. Click on the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon to its right.
+4. Choose Remove from the dropdown.
+5. Confirm deleting the product's prices by clicking the “Confirm” button in the pop-up.
+
+---
+
+## Delete Price List
+
+{/* TODO check for correctness */}
+
+<Note type="warning">
+
+Deleting a price list is irreversible.
+
+</Note>
+
+To delete a price list:
+
+1. Go to the Pricing page.
+2. Find the price list to delete and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon to its right.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the price list by entering the price list's name, then clicking the Confirm button.

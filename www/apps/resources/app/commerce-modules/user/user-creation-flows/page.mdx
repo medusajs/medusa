@@ -1,0 +1,75 @@
+export const metadata = {
+  title: `User Creation Flows`,
+}
+
+# {metadata.title}
+
+This document provides flows to create a user.
+
+## Invite Users
+
+Another possible flow to create a user is by sending them an invite. Then, once they accept it, you create a new user for them:
+
+```ts
+// create invite
+const invite = await userModuleService.createInvites({
+  email: "user@example.com",
+})
+
+// later, accept invite and create user
+const invite =
+  await userModuleService.validateInviteToken("secret123")
+
+await userModuleService.updateInvites({
+  id: invite.id,
+  accepted: true,
+})
+
+const user = await userModuleService.create({
+  email: invite.email,
+})
+```
+
+### Invite Expiry
+
+An invite has an expiry date. You can renew the expiry date and refresh the token using the `refreshInviteTokens` method:
+
+```ts
+await userModuleService.refreshInviteTokens(["invite_123"])
+```
+
+---
+
+## Straightforward Creation
+
+Finally, you can create a user using the [create method of the User Module’s main service](/references/user/create):
+
+```ts
+const user = await userModuleService.create({
+  email: "user@example.com",
+})
+```
+
+### With the Auth Module
+
+By combining the User and Auth Modules, you can use the Auth Module for authenticating users, and the User Module to manage those users.
+
+So, when a user is authenticated, and you receive the `AuthIdentity` object, you can use it to create a user if it doesn’t exist:
+
+```ts
+const { success, authIdentity } =
+  await authModuleService.authenticate("emailpass", {
+    // ...
+  })
+
+// assuming authIdentity is defined
+const [, count] = await userModuleService.listAndCount({
+  email: authIdentity.entity_id,
+})
+
+if (!count) {
+  const user = await userModuleService.create({
+    email: authIdentity.entity_id,
+  })
+}
+```

@@ -1,0 +1,80 @@
+export const metadata = {
+  title: `${pageNumber} Loaders`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about loaders and how to use them.
+
+## What is a Loader?
+
+A loader is a function executed when the Medusa application starts.
+
+A module can define loaders to execute on application start-up.
+
+---
+
+## How to Create a Loader?
+
+A loader is created in a TypeScript or JavaScript file under a module's `loaders` directory.
+
+For example, create the file `src/modules/hello/loaders/hello-world.ts` with the following content:
+
+```ts title="src/modules/hello/loaders/hello-world.ts"
+export default function helloWorldLoader() {
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!"
+  )
+}
+```
+
+### Export Loader in Module Definition
+
+You must export your loaders in the module definition.
+
+To do that, import the loader in `src/modules/hello/index.ts` and export it in the module's definition:
+
+```ts title="src/modules/hello/index.ts"
+// other imports...
+import helloWorldLoader from "./loaders/hello-world"
+
+// ...
+
+export default {
+  // ...
+  loaders: [helloWorldLoader],
+}
+```
+
+The value of the `loaders` property is an array of loader functions.
+
+### Test Loader
+
+Start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Among the messages logged in the terminal, you’ll see the following message:
+
+```bash
+[HELLO MODULE] Just started the Medusa application!
+```
+
+---
+
+## When to Use Loaders
+
+<Note title="Use loaders when" type="success">
+
+- You're performing an action at application start-up.
+- You're establishing a one-time connection with an external system.
+
+</Note>
+
+<Note title="Don't use loaders if" type="error">
+
+- You want to perform an action continuously or at a set time pattern in the application. Use scheduled jobs instead, which is explained in the next chapter.
+
+</Note>

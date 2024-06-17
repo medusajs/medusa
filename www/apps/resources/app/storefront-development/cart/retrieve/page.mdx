@@ -1,0 +1,129 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Cart in Storefront`,
+}
+
+# {metadata.title}
+
+You can retrieve a cart by sending a request to the [Get a Cart API route](!api!/store#carts_getcartsid).
+
+Assuming you stored the cart's ID in the `localStorage` as explained in the [Create Cart guide](../create/page.mdx), pass that ID as a path parameter to the request.
+
+For example:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["1", "cartId", "Pass the customer's cart ID as a path parameter."],
+]
+
+  ```ts highlights={fetchHighlights}
+  fetch(`http://localhost:9000/store/carts/${cartId}`, {
+    credentials: "include",
+  })
+  .then((res) => res.json())
+  .then(({ cart }) => {
+    // use cart...
+    console.log(cart)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["16", "cartId", "Retrieve the cart ID from `localStorage`."],
+  ["18", "TODO", "You can create the cart and set it here as explained in the Create Cart guide."],
+  ["22"], ["23"], ["24"], ["25"], ["26"], ["27"], ["28"],
+  ["31", "formatPrice", "This function was previously created to format product prices. You can re-use the same function."],
+  ["34", "currency_code", "If you reuse the `formatPrice` function, pass the currency code as a parameter."],
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function Cart() {
+    const [cart, setCart] = useState<
+      HttpTypes.StoreCart
+    >()
+
+    useEffect(() => {
+      if (cart) {
+        return
+      }
+
+      const cartId = localStorage.getItem("cart_id")
+      if (!cartId) {
+        // TODO create cart
+        return
+      }
+
+      fetch(`http://localhost:9000/store/carts/${cartId}`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ cart: dataCart }) => {
+        setCart(dataCart)
+      })
+    }, [cart])
+
+    const formatPrice = (amount: number): string => {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: cart?.currency_code,
+      })
+      .format(amount)
+    }
+
+    return (
+      <div>
+        {!cart && <span>Loading...</span>}
+        {cart && (
+          <>
+            <span>Cart ID: {cart.id}</span>
+            <ul>
+              {cart.items?.map((item) => (
+                <li key={item.id}>
+                  {item.title} -
+                  Quantity: {item.quantity} -
+                  Price: {formatPrice(item.unit_price)}
+                </li>
+              ))}
+            </ul>
+            <span>Cart Total: {formatPrice(cart.total)}</span>
+          </>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add a link to cart object in API reference (once available). */}
+
+The response of the Retrieve Cart API route has a `cart` field, which is a cart object.
+
+---
+
+## Format Prices
+
+When displaying the cart's totals or line item's price, make sure to format the price as implemented in the `formatPrice` function shown in the above snippet:
+
+```ts
+const formatPrice = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: cart?.currency_code,
+  })
+  .format(amount)
+}
+```
+
+Since this is the same function used to format the prices of products, you can define the function in one place and re-use it where necessary. In that case, make sure to pass the currency code as a parameter.

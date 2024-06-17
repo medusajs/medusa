@@ -1,10 +1,14 @@
-import { getSetDifference, stringToSelectRelationObject } from "@medusajs/utils"
+import {
+  getSetDifference,
+  isPresent,
+  stringToSelectRelationObject,
+} from "@medusajs/utils"
 import { pick } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { BaseEntity } from "../interfaces"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
+import { MedusaError, isDefined } from "@medusajs/utils"
+import { RequestQueryFields } from "@medusajs/types"
+import { FindConfig, QueryConfig } from "../types/common"
 
-export function pickByConfig<TModel extends BaseEntity>(
+export function pickByConfig<TModel>(
   obj: TModel | TModel[],
   config: FindConfig<TModel>
 ): Partial<TModel> | Partial<TModel>[] {
@@ -20,12 +24,10 @@ export function pickByConfig<TModel extends BaseEntity>(
   return obj
 }
 
-export function prepareListQuery<
-  T extends RequestQueryFields,
-  TEntity extends BaseEntity
->(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
-  const isMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
-
+export function prepareListQuery<T extends RequestQueryFields, TEntity>(
+  validated: T,
+  queryConfig: QueryConfig<TEntity> = {}
+) {
   // TODO: this function will be simplified a lot once we drop support for the old api
   const { order, fields, limit = 50, expand, offset = 0 } = validated
   let {
@@ -88,7 +90,6 @@ export function prepareListQuery<
     }
   })
 
-  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
   const notAllowedFields: string[] = []
 
   if (allowedFields.length) {
@@ -183,19 +184,16 @@ export function prepareListQuery<
         `Order field ${orderField} is not valid`
       )
     }
-  } else {
-    if (!isMedusaV2) {
-      orderBy["created_at"] = "DESC"
-    }
   }
 
+  const finalOrder = isPresent(orderBy) ? orderBy : undefined
   return {
     listConfig: {
       select: select.length ? select : undefined,
       relations: Array.from(allRelations),
       skip: offset,
       take: limit ?? defaultLimit,
-      order: orderBy,
+      order: finalOrder,
     },
     remoteQueryConfig: {
       // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
@@ -207,17 +205,17 @@ export function prepareListQuery<
         ? {
             skip: offset,
             take: limit ?? defaultLimit,
-            order: orderBy,
+            order: finalOrder,
           }
         : {},
     },
   }
 }
 
-export function prepareRetrieveQuery<
-  T extends RequestQueryFields,
-  TEntity extends BaseEntity
->(validated: T, queryConfig?: QueryConfig<TEntity>) {
+export function prepareRetrieveQuery<T extends RequestQueryFields, TEntity>(
+  validated: T,
+  queryConfig?: QueryConfig<TEntity>
+) {
   const { listConfig, remoteQueryConfig } = prepareListQuery(
     validated,
     queryConfig

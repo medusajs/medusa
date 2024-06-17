@@ -1,13 +1,13 @@
 import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import jwt from "jsonwebtoken"
 
 export const createAuthenticatedCustomer = async (
   appContainer: MedusaContainer,
   customerData: Partial<CreateCustomerDTO> = {}
 ) => {
-  const { jwt_secret } = appContainer.resolve("configModule").projectConfig
+  const { http } = appContainer.resolve("configModule").projectConfig
   const authService = appContainer.resolve(ModuleRegistrationName.AUTH)
   const customerModuleService = appContainer.resolve(
     ModuleRegistrationName.CUSTOMER
@@ -20,14 +20,22 @@ export const createAuthenticatedCustomer = async (
     ...customerData,
   })
 
-  const authUser = await authService.create({
+  const authIdentity = await authService.create({
     entity_id: "store_user",
     provider: "emailpass",
-    scope: "store",
-    app_metadata: { customer_id: customer.id },
+    app_metadata: {
+      customer_id: customer.id,
+    },
   })
 
-  const token = jwt.sign(authUser, jwt_secret)
+  const token = jwt.sign(
+    {
+      actor_id: customer.id,
+      actor_type: "customer",
+      auth_identity_id: authIdentity.id,
+    },
+    http.jwtSecret
+  )
 
-  return { customer, authUser, jwt: token }
+  return { customer, authIdentity, jwt: token }
 }

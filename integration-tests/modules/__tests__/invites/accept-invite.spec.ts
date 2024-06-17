@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to accept an invite with an invalid invite token", async () => {
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass`, {
           email: "potential_member@test.com",
           password: "supersecret",
         })
@@ -58,7 +58,7 @@ medusaIntegrationTestRunner({
           email: "potential_member@test.com",
         })
 
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass`, {
           email: "potential_member@test.com",
           password: "supersecret",
         })
@@ -92,7 +92,7 @@ medusaIntegrationTestRunner({
           email: "potential_member@test.com",
         })
 
-        const authResponse = await api.post(`/auth/admin/emailpass`, {
+        const authResponse = await api.post(`/auth/user/emailpass`, {
           email: "some-email@test.com",
           password: "supersecret",
         })

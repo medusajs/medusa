@@ -1,0 +1,42 @@
+post:
+  operationId: PostWorkflowsExecutionsWorkflow_idStepsSuccess
+  summary: Add Successes to Workflows Execution
+  description: Add a list of successes to a workflows execution.
+  x-authenticated: true
+  parameters:
+    - name: workflow_id
+      in: path
+      description: The workflows execution's workflow id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostWorkflowsAsyncResponseReq.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_steps_success/post.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

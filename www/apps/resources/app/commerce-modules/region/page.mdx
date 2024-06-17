@@ -1,0 +1,136 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Region Module`,
+}
+
+# {metadata.title}
+
+The Region Module is the `@medusajs/region` NPM package that provides region-related features in your Medusa and Node.js applications.
+
+## What is a Region?
+
+A region represents the area you sell products in. Each region can cover multiple countries, but uses a single currency.
+
+---
+
+## Features
+
+### Region Management
+
+You can manage your regions to create, update, retrieve, or delete them.
+
+```ts
+const region = await regionModuleService.create({
+  name: "Europe",
+  currency_code: "eur",
+})
+```
+
+### Multi-Currency Support
+
+As each region has a currency, you can support multiple currencies in your store by creating multiple regions.
+
+```ts
+const regions = await regionModuleService.create([
+  {
+    name: "Europe",
+    currency_code: "eur",
+  },
+  {
+    name: "United States of America",
+    currency_code: "usd",
+  },
+])
+```
+
+### Different Settings Per Region
+
+Each region has its own settings, such as what countries belong to a region or its tax settings. Each region has different tax rates, payment providers, and more provided by other commerce modules.
+
+```ts
+const regions = await regionModuleService.create([
+  {
+    name: "Europe",
+    currency_code: "eur",
+    countries: ["dk", "de", "fr", "it", "pt"],
+    automatic_taxes: true,
+  },
+  {
+    name: "United States of America",
+    currency_code: "usd",
+    countries: ["us"],
+    payment_providers: ["stripe"],
+  },
+])
+```
+
+---
+
+## How to Use Region Module's Service
+
+You can use the Region Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.REGION` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const regionModuleService: IRegionModuleService =
+      req.scope.resolve(ModuleRegistrationName.REGION)
+
+    res.json({
+      regions: await regionModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const regionModuleService: IRegionModuleService =
+      container.resolve(ModuleRegistrationName.REGION)
+
+    const regions = await regionModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IRegionModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const regionModuleService: IRegionModuleService =
+      container.resolve(
+        ModuleRegistrationName.REGION
+      )
+    
+    const regions = await regionModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

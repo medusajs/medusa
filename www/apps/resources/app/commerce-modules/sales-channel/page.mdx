@@ -1,0 +1,120 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Sales Channel Module`,
+}
+
+# {metadata.title}
+
+The Sales Channel Module is the `@medusajs/sales-channel` NPM package that provides sales-channel-related features in your Medusa and Node.js applications.
+
+## What's a Sales Channel?
+
+A sales channel indicates an online or offline platform that you sell products on.
+
+Some use case examples for using a sales channel:
+
+- Implement a B2B Ecommerce Store.
+- Specify different products for each channel you sell in.
+- Support omnichannel in your ecommerce store.
+
+---
+
+## Features
+
+### Sales Channel Management
+
+Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
+
+```ts
+const salesChannels = await salesChannelModuleService.create([
+  {
+    name: "B2B",
+  },
+  {
+    name: "Mobile App",
+  },
+])
+```
+
+### Product Availability
+
+Medusa links the Product and Sales Channel modules, allowing merchants to specify a product's availability per sales channel.
+
+For example, B2B customers viewing products only see products in the B2B sales channel.
+
+### Cart and Order Scoping
+
+Carts, available through the Cart Module, are scoped to a sales channel. Paired with the product availability feature, you benefit from more features like allowing only products available in sales channel in a cart.
+
+Orders are also scoped to a sales channel due to the relation between the Sales Channel and Order modules.
+
+---
+
+## How to Use Sales Channel Module's Service
+
+You can use the Sales Channel Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.SALES_CHANNEL` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    res.json({
+      sales_channels: await salesChannelModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    const salesChannels = await salesChannelModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      container.resolve(
+        ModuleRegistrationName.SALES_CHANNEL
+      )
+    
+    const salesChannels = await salesChannelModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

@@ -1,7 +1,7 @@
 import React from "react"
 import { ArrowUpRightOnBox } from "@medusajs/icons"
 import clsx from "clsx"
-import { LegacyLink } from "@/components"
+import { Badge, BadgeProps, Link } from "@/components"
 
 export type CardProps = {
   startIcon?: React.ReactNode
@@ -13,6 +13,8 @@ export type CardProps = {
   contentClassName?: string
   children?: React.ReactNode
   showLinkIcon?: boolean
+  isExternal?: boolean
+  badge?: BadgeProps
 }
 
 export const Card = ({
@@ -25,14 +27,17 @@ export const Card = ({
   contentClassName,
   children,
   showLinkIcon = true,
+  isExternal = false,
+  badge,
 }: CardProps) => {
   return (
     <div
       className={clsx(
         "bg-medusa-bg-subtle w-full rounded",
-        "shadow-card-rest dark:shadow-card-rest-dark py-docs_0.75 relative px-docs_1",
-        "flex items-start gap-docs_1 transition-shadow",
-        href && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
+        "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark p-docs_0.75 relative",
+        "flex items-start gap-docs_0.75 transition-shadow",
+        href &&
+          "hover:shadow-elevation-card-hover dark:hover:shadow-elevation-card-hover-dark",
         className
       )}
     >
@@ -40,8 +45,11 @@ export const Card = ({
       <div className="flex items-start gap-docs_1 justify-between flex-1">
         <div className={clsx("flex flex-col", contentClassName)}>
           {title && (
-            <span className="text-compact-medium-plus text-medusa-fg-base">
-              {title}
+            <span className={clsx(badge && "flex gap-docs_0.5")}>
+              <span className="text-compact-medium-plus text-medusa-fg-base">
+                {title}
+              </span>
+              {badge && <Badge {...badge} />}
             </span>
           )}
           {text && (
@@ -57,10 +65,10 @@ export const Card = ({
             {showLinkIcon && (
               <ArrowUpRightOnBox className="text-medusa-fg-subtle min-w-[20px]" />
             )}
-            {/* TODO replace with Link once we move away from Docusaurus */}
-            <LegacyLink
+            <Link
               href={href}
               className="absolute left-0 top-0 h-full w-full rounded"
+              target={isExternal ? "_blank" : undefined}
             />
           </>
         )}

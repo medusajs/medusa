@@ -1,0 +1,146 @@
+export const metadata = {
+  title: `${pageNumber} Data Models`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what data models are and how to create a data model.
+
+## What is a Data Model?
+
+A data model is a class that represents a table in the database. A data model is created in a module. You can then create a service that manages that data model.
+
+Data models are based on [MikroORM](https://mikro-orm.io/docs/quick-start). So, you can use its decorators, types, and utilities when creating a model.
+
+---
+
+## How to Create a Data Model
+
+<Note title="Steps Summary">
+
+1. Create data model class in a module.
+2. Generate migration for the data model.
+3. Add migration scripts to the module's definition.
+4. Run migration to add table for data model in the database.
+
+</Note>
+
+A data model is a class created in a TypeScript or JavaScript file under a module's `models` directory.
+
+For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
+
+```ts title="src/modules/hello/models/my-custom.ts"
+import { BaseEntity } from "@medusajs/utils"
+import { 
+  Entity, 
+  PrimaryKey, 
+  Property,
+} from "@mikro-orm/core"
+
+@Entity()
+export class MyCustom extends BaseEntity {
+  @PrimaryKey({ columnType: "text" })
+  id!: string
+
+  @Property({ columnType: "text" })
+  name: string
+}
+```
+
+This defines a new data model `MyCustom` with the fields `id` and `name`. Data models extend the `BaseEntity` class imported from `@medusajs/utils`.
+
+### Create a Migration
+
+After creating the data model, you must create a migration that creates a table in your database for this data model.
+
+A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It implements an `up` and `down` method, where the `up` method reflects changes on the database, and the `down` method reverts the changes from the database.
+
+<Details summaryContent="Generate with MikroORM">
+  MikroORM provides a CLI tool that helps you generate migrations. To use it:
+
+  1. Create the file `src/modules/hello/mikro-orm.config.dev.ts` with the following content:
+
+  ```ts highlights={[["8", "hello", "The module's name."]]}
+  import path from "path"
+  import { TSMigrationGenerator } from "@medusajs/utils"
+  import { MyCustom } from "./models/my-custom"
+
+  module.exports = {
+    entities: [MyCustom],
+    schema: "public",
+    clientUrl: "postgres://postgres@localhost/medusa-hello",
+    type: "postgresql",
+    migrations: {
+      path: path.join(__dirname, "migrations"),
+      generator: TSMigrationGenerator,
+    },
+  }
+  ```
+
+  2. Run the following command in the root directory of your Medusa application:
+
+  ```bash
+  npx cross-env MIKRO_ORM_CLI=./src/modules/hello/mikro-orm.config.dev.ts mikro-orm migration:create
+  ```
+
+  <Note title="Tip">
+
+  Add this command as a script in `package.json` for easy usage in the future. Use this command whenever you want to generate a new migration in your module.
+
+  </Note>
+
+  After running the command, a new file is created under the `src/modules/hello/migrations` directory. This file holds `up` and `down` methods that define the actions to execute when running and reverting the migration respectively.
+  
+</Details>
+
+For example:
+
+```ts title="src/modules/migrations/Migration20240429090012.ts"
+import { Migration } from "@mikro-orm/migrations"
+
+export class Migration20240429090012 extends Migration {
+
+  async up(): Promise<void> {
+    this.addSql("create table if not exists \"my_custom\" (\"id\" varchar(255) not null, \"name\" text not null, constraint \"my_custom_pkey\" primary key (\"id\"));")
+  }
+
+  async down(): Promise<void> {
+    this.addSql("drop table if exists \"my_custom\" cascade;")
+  }
+
+}
+```
+
+In the `up` method, you create the table `my_custom` and define its columns. In the `down` method, you drop the table.
+
+<Note title="Tip">
+
+The queries performed in each of the methods use PostgreSQL syntax.
+
+</Note>
+
+### Run Migration
+
+To reflect the changes in the migration, run the `migration` command:
+
+```bash npm2yarn
+npx medusa migrations run
+```
+
+If ran successfully, the `my_custom` table will be created in the database.
+
+---
+
+## When to Use Data Models
+
+<Note title="Use data models when" type="success">
+
+- You want to store data related to your customization in the database.
+
+</Note>
+
+<Note title="Don't use data models if" type="error">
+
+- You want to store simple key-value pairs related to an existing data model. Instead, use the `metadata` field that most existing models have, which is an object of custom key-value pairs.
+
+</Note>

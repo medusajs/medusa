@@ -1,0 +1,49 @@
+get:
+  operationId: GetWorkflowsExecutionsWorkflow_idTransaction_id
+  summary: 'List '
+  description: >-
+    Retrieve a list of  in a workflows execution. The  can be filtered by fields
+    like FILTER FIELDS. The  can also be paginated.
+  x-authenticated: true
+  parameters:
+    - name: workflow_id
+      in: path
+      description: The workflows execution's workflow id.
+      required: true
+      schema:
+        type: string
+    - name: transaction_id
+      in: path
+      description: The workflows execution's transaction id.
+      required: true
+      schema:
+        type: string
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_workflows-executions_{workflow_id}_{transaction_id}/get.sh
+  tags:
+    - Workflows Executions
+  responses:
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

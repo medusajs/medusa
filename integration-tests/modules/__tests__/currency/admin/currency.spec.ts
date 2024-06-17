@@ -53,6 +53,18 @@ medusaIntegrationTestRunner({
           expect.objectContaining({ code: "zwl", name: "Zimbabwean Dollar" })
         )
       })
+
+      it("should allow for searching of currencies", async () => {
+        const listResp = await api.get(
+          "/admin/currencies?q=zimbabwean",
+          adminHeaders
+        )
+
+        expect(listResp.data.currencies).toHaveLength(1)
+        expect(listResp.data.currencies[0]).toEqual(
+          expect.objectContaining({ code: "zwl", name: "Zimbabwean Dollar" })
+        )
+      })
     })
   },
 })

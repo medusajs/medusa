@@ -1,0 +1,33 @@
+---
+displayed_sidebar: fulfillmentReference
+slug: /references/fulfillment/validateShippingOption
+sidebar_label: validateShippingOption
+---
+
+import { TypeList } from "docs-ui"
+
+# validateShippingOption - Fulfillment Module Reference
+
+This documentation provides a reference to the `validateShippingOption` method. This belongs to the Fulfillment Module.
+
+This method checks whether a shipping option can be used for a specified context.
+
+## Example
+
+```ts
+const isValid =
+  await fulfillmentModuleService.validateShippingOption(
+    "so_123",
+    {
+      customer_group: "cg_vipgroup",
+    }
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"shippingOptionId","type":"`string`","description":"The shipping option's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context to check.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateShippingOption"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"Whether the shipping option is valid for the specified context.","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="validateShippingOption"/>

@@ -1,0 +1,344 @@
+---
+slug: /references/medusa-react/hooks/admin/users
+---
+
+import { TypeList } from "docs-ui"
+
+# Users
+
+Queries and Mutations listed here are used to send requests to the [Admin User API Routes](https://docs.medusajs.com/api/admin#users).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+A store can have more than one user, each having the same privileges. Admins can manage users, their passwords, and more.
+
+Related Guide: [How to manage users](https://docs.medusajs.com/modules/users/admin/manage-users).
+
+## Mutations
+
+### useAdminCreateUser
+
+This hook creates an admin user. The user has the same privileges as all admin users, and will be able to 
+authenticate and perform admin functionalities right after creation.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateUser } from "medusa-react"
+
+const CreateUser = () => {
+  const createUser = useAdminCreateUser()
+  // ...
+
+  const handleCreateUser = () => {
+    createUser.mutate({
+      email: "user@example.com",
+      password: "supersecret",
+    }, {
+      onSuccess: ({ user }) => {
+        console.log(user.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateUser
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminCreateUserPayload","type":"`AdminCreateUserPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateUser"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminUserRes","type":"[AdminUserRes](../../../../medusa/types/medusa.AdminUserRes/page.mdx)","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateUser"/>
+
+### useAdminUpdateUser
+
+This hook updates an admin user's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateUser } from "medusa-react"
+
+type Props = {
+  userId: string
+}
+
+const User = ({ userId }: Props) => {
+  const updateUser = useAdminUpdateUser(userId)
+  // ...
+
+  const handleUpdateUser = (
+    firstName: string
+  ) => {
+    updateUser.mutate({
+      first_name: firstName,
+    }, {
+      onSuccess: ({ user }) => {
+        console.log(user.first_name)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default User
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The user's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateUser"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminUpdateUserPayload","type":"`AdminUpdateUserPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateUser"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminUserRes","type":"[AdminUserRes](../../../../medusa/types/medusa.AdminUserRes/page.mdx)","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateUser"/>
+
+### useAdminDeleteUser
+
+This hook deletes a user. Once deleted, the user will not be able to authenticate or perform admin functionalities.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteUser } from "medusa-react"
+
+type Props = {
+  userId: string
+}
+
+const User = ({ userId }: Props) => {
+  const deleteUser = useAdminDeleteUser(userId)
+  // ...
+
+  const handleDeleteUser = () => {
+    deleteUser.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default User
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The user's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteUser"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteUser"/>
+
+### useAdminResetPassword
+
+This hook resets the password of an admin user using their reset password token. You must generate a reset password token first 
+for the user using the [useAdminSendResetPasswordToken](page.mdx#useadminsendresetpasswordtoken) hook, then use that token to reset the password in this hook.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminResetPassword } from "medusa-react"
+
+const ResetPassword = () => {
+  const resetPassword = useAdminResetPassword()
+  // ...
+
+  const handleResetPassword = (
+    token: string,
+    password: string
+  ) => {
+    resetPassword.mutate({
+      token,
+      password,
+    }, {
+      onSuccess: ({ user }) => {
+        console.log(user.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default ResetPassword
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminResetPasswordRequest","type":"[AdminResetPasswordRequest](../../../../medusa/classes/medusa.AdminResetPasswordRequest/page.mdx)","optional":false,"defaultValue":"","description":"The details of the password reset request.","expandable":false,"children":[{"name":"token","type":"`string`","description":"The password-reset token generated when the password reset was requested.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"The User's new password.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The User's email.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminResetPassword"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminUserRes","type":"[AdminUserRes](../../../../medusa/types/medusa.AdminUserRes/page.mdx)","optional":false,"defaultValue":"","description":"The user's details.","expandable":false,"children":[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminResetPassword"/>
+
+### useAdminSendResetPasswordToken
+
+This hook generates a password token for an admin user with a given email. This also triggers the `user.password_reset` event. So, if you have a Notification Service installed
+that can handle this event, a notification, such as an email, will be sent to the user. The token is triggered as part of the `user.password_reset` event's payload. 
+That token must be used later to reset the password using the [useAdminResetPassword](page.mdx#useadminresetpassword) hook.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminSendResetPasswordToken } from "medusa-react"
+
+const Login = () => {
+  const requestPasswordReset = useAdminSendResetPasswordToken()
+  // ...
+
+  const handleResetPassword = (
+    email: string
+  ) => {
+    requestPasswordReset.mutate({
+      email
+    }, {
+      onSuccess: () => {
+        // successful
+      }
+    })
+  }
+
+  // ...
+}
+
+export default Login
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminResetPasswordTokenRequest","type":"[AdminResetPasswordTokenRequest](../../../../medusa/classes/medusa.AdminResetPasswordTokenRequest/page.mdx)","optional":false,"defaultValue":"","description":"The details of the password reset token request.","expandable":false,"children":[{"name":"email","type":"`string`","description":"The User's email.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminSendResetPasswordToken"/>
+
+___
+
+## Queries
+
+### useAdminUsers
+
+This hook retrieves all admin users.
+
+#### Example
+
+To list users:
+
+```tsx
+import React from "react"
+import { useAdminUsers } from "medusa-react"
+
+const Users = () => {
+  const { users, isLoading } = useAdminUsers()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {users && !users.length && <span>No Users</span>}
+      {users && users.length > 0 && (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>{user.email}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Users
+```
+
+By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminUsers } from "medusa-react"
+
+const Users = () => {
+  const {
+    users,
+    limit,
+    offset,
+    isLoading
+  } = useAdminUsers({
+    limit: 20,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {users && !users.length && <span>No Users</span>}
+      {users && users.length > 0 && (
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>{user.email}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Users
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetUsersParams](../../../../medusa/classes/medusa.AdminGetUsersParams/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string` \\| `string`[]","description":"IDs to filter users by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search terms to search users' first name, last name, and email.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the users' `update_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the customer users' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the users' `deleted_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"email","type":"`string`","description":"Filter to apply on the users' `email` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string`","description":"Filter to apply on the users' `first_name` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"Filter to apply on the users' `last_name` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"role","type":"[UserRole](../../../../medusa/enums/medusa.UserRole/page.mdx)","description":"Filter to apply on the users' `role` field.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"MEMBER","type":"`\"member\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ADMIN","type":"`\"admin\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"DEVELOPER","type":"`\"developer\"`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned users.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUsers"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The limit applied on the retrieved items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before retrieving the list of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total count of items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"users","type":"Omit&#60;User, \"password_hash\"&#62;[]","description":"An array of users details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUsers"/>
+
+### useAdminUser
+
+This hook retrieves an admin user's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUser } from "medusa-react"
+
+type Props = {
+  userId: string
+}
+
+const User = ({ userId }: Props) => {
+  const { user, isLoading } = useAdminUser(
+    userId
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {user && <span>{user.first_name} {user.last_name}</span>}
+    </div>
+  )
+}
+
+export default User
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The user's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUser"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"user","type":"Omit&#60;User, \"password_hash\"&#62;","description":"User details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"last_name","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"avatar_url","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"`OptionalFields`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":true,"defaultValue":"null","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUser"/>

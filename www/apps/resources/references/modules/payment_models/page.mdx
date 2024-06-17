@@ -1,0 +1,33 @@
+---
+displayed_sidebar: paymentModelReference
+slug: /references/payment/models
+---
+
+import { TypeList } from "docs-ui"
+
+# Payment Module Data Models Reference
+
+This documentation provides a reference to the data models in the Payment Module
+
+## Relations Overview
+
+```mermaid
+erDiagram
+	Capture }|--|{ Payment : payment
+	Payment ||--|| Refund : refunds
+	Payment }|--|{ PaymentCollection : payment_collection
+	Payment ||--|| PaymentSession : payment_session
+	PaymentCollection }|--|{ PaymentProvider : payment_providers
+	PaymentCollection ||--|| PaymentSession : payment_sessions
+
+```
+
+## Classes
+
+- [Capture](../../payment_models/classes/payment_models.Capture/page.mdx)
+- [PaymentCollection](../../payment_models/classes/payment_models.PaymentCollection/page.mdx)
+- [PaymentMethodToken](../../payment_models/classes/payment_models.PaymentMethodToken/page.mdx)
+- [PaymentProvider](../../payment_models/classes/payment_models.PaymentProvider/page.mdx)
+- [PaymentSession](../../payment_models/classes/payment_models.PaymentSession/page.mdx)
+- [Payment](../../payment_models/classes/payment_models.Payment/page.mdx)
+- [Refund](../../payment_models/classes/payment_models.Refund/page.mdx)

@@ -1,9 +1,0 @@
-.DS_store
-src
-dist
-yarn.lock
-.babelrc
-jest.config.js
-
-.turbo
-.yarn

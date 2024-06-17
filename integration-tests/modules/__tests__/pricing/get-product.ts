@@ -1,9 +1,9 @@
 import { simpleCartFactory, simpleRegionFactory } from "../../../factories"
 
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import adminSeeder from "../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../helpers/create-default-rule-types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAdminUser } from "../../../helpers/create-admin-user"
 
 jest.setTimeout(5000000)
 
@@ -34,7 +34,7 @@ medusaIntegrationTestRunner({
       })
       beforeEach(async () => {
         await createDefaultRuleTypes(medusaContainer)
-        await adminSeeder(dbConnection)
+        await createAdminUser(dbConnection, adminHeaders, medusaContainer)
         await simpleRegionFactory(dbConnection, {
           id: "region-1",
           currency_code: "usd",

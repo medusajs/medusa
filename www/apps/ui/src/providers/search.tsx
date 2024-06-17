@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  AiAssistantCommandIcon,
+  AiAssistantIcon,
   AiAssistantProvider,
   SearchProvider as UiSearchProvider,
-  searchFilters,
+  searchFiltersV1,
 } from "docs-ui"
 import { absoluteUrl } from "../lib/absolute-url"
 
@@ -34,13 +34,13 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           },
         ],
         checkInternalPattern: new RegExp(`^${absoluteUrl()}/ui`),
-        filterOptions: searchFilters,
+        filterOptions: searchFiltersV1,
       }}
       initialDefaultFilters={["ui"]}
       commands={[
         {
           name: "ai-assistant",
-          icon: <AiAssistantCommandIcon />,
+          icon: <AiAssistantIcon />,
           component: (
             <AiAssistantProvider
               apiUrl={process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || "temp"}
@@ -53,7 +53,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
           ),
           title: "AI Assistant",
           badge: {
-            variant: "purple",
+            variant: "blue",
+            badgeType: "shaded",
             children: "Beta",
           },
         },

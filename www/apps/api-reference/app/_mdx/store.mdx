@@ -2,23 +2,20 @@
 import { Feedback, CodeTabs, CodeTab } from "docs-ui"
 import SectionContainer from "@/components/Section/Container"
 import formatReportLink from "@/utils/format-report-link"
-import VersionNote from "@/components/VersionNote"
 
 <SectionContainer noTopPadding={true}>
 
-<VersionNote />
+<Note type="warning" title="Production Warning">
 
-This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
+Medusa v2.0 is in development and not suitable for production
+environments. As such, the API reference is incomplete and subject to
+change, so please use it with caution.
 
-All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa backend URL.
+</Note>
 
-There are different ways you can send requests to these API Routes, including:
+This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa application. They are used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
-- Using Medusa's [JavaScript Client](https://docs.medusajs.com/js-client/overview)
-- Using the [Medusa React](https://docs.medusajs.com/medusa-react/overview) library
-- Using cURL
-
-Aside from this API reference, check out the [Commerce Modules](https://docs.medusajs.com/modules/overview) section of the documentation for guides on how to use these APIs in different scenarios.
+All API Routes are prefixed with `/store`. So, during development, the API Routes will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa application URL.
 
 <Feedback
   event="survey_api-ref"
@@ -36,65 +33,65 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
 
 ## Authentication
 
-There are two ways to send authenticated requests to the Medusa server: Using a JWT token or using a Cookie Session ID.
+There are two ways to send authenticated requests to the Medusa application: Using a JWT token or using a Cookie Session ID.
 
-### JWT Token
+### Bearer Authorization with JWT Tokens
 
-Use a JWT token to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
+Use a JWT token in a request's bearer authorization header to send authenticated requests. Authentication state is managed by the client, which is ideal for Jamstack applications and mobile applications.
 
 #### How to Obtain the JWT Token
 
-JWT tokens are obtained by sending a request to the [Customer Login (JWT) API Route](#auth_authtoken) passing it the customer's email and password in the request body. For example:
+{/* TODO add correct link to auth route */}
+
+JWT tokens are obtained by sending a request to the authentication route passing it the customer's email and password in the request body.
+
+For example:
 
 ```bash
-curl -X POST 'https://medusa-url.com/store/auth/token' \
+curl -X POST '{backend_url}/auth/store/emailpass' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "user@example.com",
   "password": "supersecret"
 }'
-
 ```
 
-If authenticated successfully, an object is returned in the response with the property `access_token` being the JWT token.
+<Note>
+
+{/* TODO add link to implementing login with google guide. */}
+
+Alternatively, you can use the `google` provider instead of `emailpass`.
+
+</Note>
+
+If authenticated successfully, an object is returned in the response with the property `token` being the JWT token.
 
 #### How to Use the JWT Token
 
-The JWT token can be used for Bearer Authentication. It's passed in the
-`Authorization` header as the following:
+Pass the JWT token in the authorization bearer header:
 
 
 ```bash
 Authorization: Bearer {jwt_token}
 ```
 
+---
+
 ### Cookie Session ID
 
-Use a cookie session to send authenticated requests.
+When you authenticate a customer and create a cookie session ID for them, the cookie session ID is passed automatically when sending the request from the browser, or with tools like Postman.
 
-#### How to Obtain the Cookie Session
+### How to Obtain the Cookie Session
 
+To obtain a cookie session ID, you must have a [JWT token for bearer authentication](#bearer-authorization-with-jwt-tokens).
 
-If you're sending requests through a browser, using Medusa's JS and Medusa React clients, or using
-tools like Postman, the cookie session should be automatically set when
-the customer is logged in.
+{/* TODO add a link to the session authentication route. */}
 
-
-If you're sending requests using cURL, you must set the Session ID in
-the cookie manually.
-
-
-To do that, send a request to [authenticate the
-customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
-
+Then, send a request to the session authentication API route. To view the cookie session ID, pass the `-v` option to the `curl` command:
 
 ```bash
-curl -v -X POST 'https://medusa-url.com/store/auth' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "email": "user@example.com",
-  "password": "supersecret"
-}'
+curl -v -X POST '{backend_url}/auth/session' \
+--header 'Authorization: Bearer {jwt_token}'
 ```
 
 
@@ -106,23 +103,27 @@ should find in the headers a Cookie header similar to this:
 Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
 ```
 
+#### How to Use the Cookie Session ID in cURL
 
 Copy the value after `connect.sid` (without the `;` at the end) and pass
 it as a cookie in subsequent requests as the following:
 
 
 ```bash
-curl 'https://medusa-url.com/store/customers/me/orders' \
+curl '{backend_url}/store/products' \
 -H 'Cookie: connect.sid={sid}'
 ```
 
+
 Where `{sid}` is the value of `connect.sid` that you copied.
+
+#### Including Credentials in the Fetch API
 
 If you're sending requests using JavaScript's Fetch API, you must pass the `credentials` option 
 with the value `include` to all the requests you're sending. For example:
 
 ```js
-fetch(`<BACKEND_URL>/admin/products`, {
+fetch(`<BACKEND_URL>/store/products`, {
   credentials: "include",
 })
 ```
@@ -147,18 +148,21 @@ Publishable API Keys allow you to send a request with a pre-defined scope. You c
 publishable API key with one or more resources, such as sales channels, then include the publishable
 API key in the header of your requests.
 
-The Medusa backend will infer the scope of the current
+The Medusa application will infer the scope of the current
 request based on the publishable API key. At the moment, publishable API keys only work with sales channels.
 
 It's highly recommended to create a publishable API key and pass it in the header of all your requests to the 
 store APIs.
 
-You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/).
+{/* TODO add link to the v2 guide */}
+
+{/* You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/). */}
 
 ### How to Create a Publishable API Key
 
-You can create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys),
-or using the [Medusa Admin](https://docs.medusajs.com/user-guide/settings/publishable-api-keys).
+{/* TODO add v2 links */}
+
+Create a publishable API key either using the admin REST APIs, or using the Medusa Admin.
 
 ### How to Use a Publishable API Key
 
@@ -167,45 +171,6 @@ You can pass the publishable API key in the header `x-publishable-api-key` in al
 ```bash
 x-publishable-api-key: {your_publishable_api_key}
 ```
-
-If you're using Medusa's JS or Medusa React clients, you can pass the publishable API key when you first
-initialize either clients. Then, the publishable API key will be automatically included in all your requests:
-
-<CodeTabs group="clients">
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    const medusa = new Medusa({
-      maxRetries: 3,
-      baseUrl: "https://api.example.com",
-      publishableApiKey,
-    })
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { MedusaProvider } from "medusa-react"
-
-    // define query client...
-
-    const App = () => {
-      return (
-        <MedusaProvider
-          queryClientProviderProps={{ client: queryClient }}
-          baseUrl="http://localhost:9000"
-          // ...
-          publishableApiKey={publishableApiKey}
-        >
-          <MyStorefront />
-        </MedusaProvider>
-      )
-    }
-    ```
-
-  </CodeTab>
-</CodeTabs>
 
 <Feedback
   event="survey_api-ref"
@@ -231,54 +196,6 @@ header in your requests:
 x-no-compression: true
 ```
 
-If you're using the Medusa JS Client, you can pass custom headers in the 
-last parameter of a method. For example:
-
-```ts
-medusa.products.list({}, {
-  "x-no-compression": true
-})
-.then(({ products, limit, offset, count }) => {
-  console.log(products.length)
-})
-```
-
-You can also pass the header when you first initialize the Medusa client:
-
-```ts
-const medusa = new Medusa({
-  maxRetries: 3,
-  baseUrl: "https://api.example.com",
-  customHeaders: {
-    "x-no-compression": true
-  }
-})
-```
-
-For Medusa React, it's not possible to pass custom headers for a query or mutation, but
-you can pass the header to the `MedusaProvider` and it will be added to all subsequent requests:
-
-```tsx
-import { MedusaProvider } from "medusa-react"
-
-// define query client...
-
-const App = () => {
-  return (
-    <MedusaProvider
-      queryClientProviderProps={{ client: queryClient }}
-      baseUrl="http://localhost:9000"
-      // ...
-      customHeaders={{
-        "x-no-compression": true
-      }}
-    >
-      <MyStorefront />
-    </MedusaProvider>
-  )
-}
-```
-
 <Feedback
   event="survey_api-ref"
   extraData={{
@@ -293,476 +210,53 @@ const App = () => {
 
 <SectionContainer noTopPadding={true}>
 
-## Expanding Fields
+## Select Fields and Relations
 
-
-In many API Routes you'll find an `expand` query parameter that can be passed
-to the API Route. You can use the `expand` query parameter to unpack an
-entity's relations and return them in the response.
-
-
-Please note that the relations you pass to `expand` replace any relations
-that are expanded by default in the request.
-
-
-### Expanding One Relation
-
-
-For example, when you retrieve a list of products, you can retrieve their collections by
-passing to the `expand` query parameter the value `collection`:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?expand=collection"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      expand: "collection"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        expand: "collection"
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-### Expanding Multiple Relations
-
-You can expand more than one relation by separating the relations in the
-`expand` query parameter with a comma.
-
-
-For example, to retrieve both the variants and the collection of the products,
-pass to the `expand` query parameter the value `variants,collection`:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?expand=variants,collection"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      expand: "variants,collection"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        expand: "variants,collection"
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-### Prevent Expanding Relations
-
-
-Some requests expand relations by default. You can prevent that by passing
-an empty expand value to retrieve an entity without any extra relations.
+Many API Routes accept a `fields` query that allows you to select which fields and relations should be returned in a record.
+Fields and relations are separated by a comma `,`.
 
 For example:
 
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?expand"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      expand: ""
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        expand: ""
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-This would retrieve the products with only their properties, without any
-relations like `collection`.
-
-<Feedback
-  event="survey_api-ref"
-  extraData={{
-    area: "store",
-    section: "expand"
-  }}
-  reportLink={formatReportLink("store", "Expanding Fields")}
-  pathName="/api/store"
-/>
-
-</SectionContainer>
-
-<SectionContainer noTopPadding={true}>
-
-## Selecting Fields
-
-
-In many API Routes you'll find a `fields` query parameter that can be passed
-to the API Route. You can use the `fields` query parameter to specify which
-fields in the entity should be returned in the response.
-
-
-Please note that if you pass a `fields` query parameter, only the fields you
-pass in the value along with the `id` of the entity will be returned in the
-response.
-
-
-Also, the `fields` query parameter does not affect the expanded relations.
-You'll have to use the `expand` parameter instead.
-
-
-### Selecting One Field
-
-
-For example, when you retrieve a list of products, you can retrieve only the
-titles of the products by passing `title` as a value to the `fields` query
-parameter:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      fields: "title"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        fields: "title"
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-As mentioned above, the expanded relations such as `variants` will still be
-returned as they're not affected by the `fields` parameter.
-
-
-You can ensure that only the `title` field is returned by passing an empty
-value to the `expand` query parameter. For example:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title&expand"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      fields: "title",
-      expand: ""
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        fields: "title",
-        expand: ""
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-### Selecting Multiple Fields
-
-
-You can pass more than one field by seperating the field names in the
-`fields` query parameter with a comma.
-
-
-For example, to select the `title` and `handle` of the products:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields=title,handle"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      fields: "title,handle"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        fields: "title,handle"
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-### Retrieve Only the ID
-
-
-You can pass an empty `fields` query parameter to return only the ID of an
-entity. For example:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      fields: ""
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        fields: ""
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-You can also pair with an empty `expand` query parameter to ensure that the
-relations aren't retrieved as well. For example:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?fields"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      fields: "",
-      expand: ""
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        fields: "",
-        expand: ""
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
+```bash
+curl 'localhost:9000/store/products?fields=title,handle'
+```
+
+This returns only the `title` and `handle` fields of a product.
+
+### Fields Operator
+
+By default, only the selected fields and relations are returned in the response.
+
+Before every field or relation, you can pass one of the following operators to change the default behavior:
+
+- `+`: Add the field to the fields returned by default. For example, `+title` returns the `title` field along with the fields returned by default.
+- `-`: Remove the field from the fields returned by default. For example, `-title` removes the `title` field from the fields returned by default.
+
+### Select Relations
+
+To select a relation, pass to `fields` the relation name prefixed by `*`. For example:
+
+```bash
+curl 'localhost:9000/store/products?fields=*variants'
+```
+
+This returns the variants of each product.
+
+### Select Fields in a Relation
+
+The `*` prefix selects all fields of the relation's data model.
+
+To select a specific field, pass a `.<field>` suffix instead of the `*` prefix. For example, `variants.title`.
+
+To specify multiple fields, pass each of the fields with the `<relation>.<field>` format, separated by a comma.
+
+For example:
+
+```bash
+curl 'localhost:9000/store/products?fields=variants.title,variants.sku'
+```
+
+This returns the variants of each product, but the variants only have their `id`, `title`, and `sku` fields. The `id` is always included.
 
 <Feedback
   event="survey_api-ref"
@@ -925,190 +419,61 @@ curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_
 ### Query Parameters
 
 
-In listing API Routes, such as list customers or list products, you can
-control the pagination using the query parameters `limit` and `offset`.
+In listing API Routes, such as list products, you can control the pagination using the query parameters `limit` and `offset`.
 
 
-`limit` is used to specify the maximum number of items that can be return in
-the response. `offset` is used to specify how many items to skip before
-returning the resulting entities.
+`limit` is used to specify the maximum number of items to be returned in the response. `offset` is used to specify how many items to skip before returning the resulting records.
 
 
-You can use the `offset` query parameter to change between pages. For
-example, if the limit is `50`, at page `1` the offset should be `0`; at page `2` the
-offset should be `50`, and so on.
+Use the `offset` query parameter to change between pages. For example, if the limit is `50`, at page `1` the offset should be `0`; at page `2` the offset should be `50`, and so on.
 
 
-For example, to limit the number of products returned in the List Products
-API Route:
+For example:
 
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?limit=5"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      limit: 5
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        limit: 5
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
+```bash
+curl "http://localhost:9000/store/products?limit=5"
+```
 
 
 ### Response Fields
 
 
-In the response of listing API Routes, aside from the entities retrieved,
+In the response of listing API Routes, aside from the records retrieved,
 there are three pagination-related fields returned:
 
 
 - `limit`: the maximum number of items that can be returned in the response.
-- `offset`: the number of items that were skipped before the entities in the result.
-- `count`: the total number of available items of this entity. It can be used to determine how many pages are there.
+- `offset`: the number of items that were skipped before the records in the result.
+- `count`: the total number of available items of this data model. It can be used to determine how many pages are there.
 
 
-For example, if the `count` is 100 and the `limit` is 50, you can divide the
+For example, if the `count` is `100` and the `limit` is `50`, divide the
 `count` by the `limit` to get the number of pages: `100/50 = 2 pages`.
 
 
 ### Sort Order
 
 
-The `order` field available on API Routes supporting pagination allows you to
-sort the retrieved items by an attribute of that item. For example, you can
-sort products by their `created_at` attribute by setting `order` to
-`created_at`:
+The `order` field (available on API Routes that support pagination) allows you to
+sort the retrieved items by a field of that item.
 
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?order=created_at"
-    ```
+For example, pass the query parameter `order=created_at` to sort products by their `created_at` field:
 
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      order: "created_at"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
+```bash
+curl "http://localhost:9000/store/products?order=created_at"
+```
 
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
+By default, the sort direction is ascending. To change it to
+descending, pass a dash (`-`) before the field name.
 
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        order: "created_at"
-      })
+For example:
 
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
+```bash
+curl "http://localhost:9000/store/products?order=-created_at"
+```
 
 
-By default, the sort direction will be ascending. To change it to
-descending, pass a dash (`-`) before the attribute name. For example:
-
-<CodeTabs group="clients">
-  <CodeTab label="cURL" value="curl">
-    
-    ```bash
-    curl "http://localhost:9000/store/products?order=-created_at"
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa JS Client" value="js-client">
-    
-    ```ts
-    import Medusa from "@medusajs/medusa-js"
-    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-    medusa.products.list({
-      order: "-created_at"
-    })
-    .then(({ products, limit, offset, count }) => {
-      console.log(products.length);
-    });
-    ```
-
-  </CodeTab>
-  <CodeTab label="Medusa React" value="medusa-react">
-    
-    ```tsx
-    import { useProducts } from "medusa-react"
-
-    const Products = () => {
-      const { products, isLoading } = useProducts({
-        order: "-created_at"
-      })
-
-      return (
-        <div>
-          {/* ... */}
-        </div>
-      )
-    }
-
-    export default Products
-    ```
-
-  </CodeTab>
-</CodeTabs>
-
-
-This sorts the products by their `created_at` attribute in the descending
-order.
+This sorts the products by their `created_at` field in the descending order.
 
 <Feedback
   event="survey_api-ref"

@@ -1,0 +1,59 @@
+---
+displayed_sidebar: pricingReference
+slug: /references/pricing/list
+sidebar_label: list
+---
+
+import { TypeList } from "docs-ui"
+
+# list - Pricing Module Reference
+
+This documentation provides a reference to the `list` method. This belongs to the Pricing Module.
+
+This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
+
+## Example
+
+To retrieve a list of price sets using their IDs:
+
+```ts
+const priceSets = await pricingModuleService.list({
+  id: ["pset_123", "pset_321"],
+})
+```
+
+To specify relations that should be retrieved within the price sets:
+
+```ts
+const priceSets = await pricingModuleService.list(
+  {
+    id: ["pset_123", "pset_321"],
+  },
+  {
+    relations: ["prices"],
+  }
+)
+```
+
+By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+const priceSets = await pricingModuleService.list(
+  {
+    id: ["pset_123", "pset_321"],
+  },
+  {
+    relations: ["prices"],
+    take: 20,
+    skip: 2,
+  }
+)
+```
+
+## Parameters
+
+<TypeList types={[{"name":"filters","type":"[FilterablePriceSetProps](../../../interfaces/pricing.FilterablePriceSetProps/page.mdx)","description":"The filters to apply on the retrieved price lists.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterablePriceSetProps](../../../interfaces/pricing.FilterablePriceSetProps/page.mdx) \\| [BaseFilterable](../../../interfaces/pricing.BaseFilterable/page.mdx)&#60;[FilterablePriceSetProps](../../../interfaces/pricing.FilterablePriceSetProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterablePriceSetProps](../../../interfaces/pricing.FilterablePriceSetProps/page.mdx) \\| [BaseFilterable](../../../interfaces/pricing.BaseFilterable/page.mdx)&#60;[FilterablePriceSetProps](../../../interfaces/pricing.FilterablePriceSetProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`[]","description":"IDs to filter price sets by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"money_amounts","type":"[FilterableMoneyAmountProps](../../../interfaces/pricing.FilterableMoneyAmountProps/page.mdx)","description":"Filters to apply on a price set's associated money amounts.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterableMoneyAmountProps](../../../interfaces/pricing.FilterableMoneyAmountProps/page.mdx) \\| [BaseFilterable](../../../interfaces/pricing.BaseFilterable/page.mdx)&#60;[FilterableMoneyAmountProps](../../../interfaces/pricing.FilterableMoneyAmountProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableMoneyAmountProps](../../../interfaces/pricing.FilterableMoneyAmountProps/page.mdx) \\| [BaseFilterable](../../../interfaces/pricing.BaseFilterable/page.mdx)&#60;[FilterableMoneyAmountProps](../../../interfaces/pricing.FilterableMoneyAmountProps/page.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`[]","description":"IDs to filter money amounts by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string` \\| `string`[]","description":"Currency codes to filter money amounts by.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"config","type":"[FindConfig](../../../interfaces/pricing.FindConfig/page.mdx)&#60;[PriceSetDTO](../../../interfaces/pricing.PriceSetDTO/page.mdx)&#62;","description":"The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a price set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="list"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PriceSetDTO](../../../interfaces/pricing.PriceSetDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of price sets.","expandable":false,"children":[{"name":"PriceSetDTO[]","type":"[PriceSetDTO](../../../interfaces/pricing.PriceSetDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PriceSetDTO","type":"`object`","description":"A price set's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="list"/>

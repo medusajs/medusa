@@ -1,0 +1,43 @@
+---
+displayed_sidebar: cartReference
+slug: /references/cart/setShippingMethodAdjustments
+sidebar_label: setShippingMethodAdjustments
+---
+
+import { TypeList } from "docs-ui"
+
+# setShippingMethodAdjustments - Cart Module Reference
+
+This documentation provides a reference to the `setShippingMethodAdjustments` method. This belongs to the Cart Module.
+
+This method sets the shipping method adjustment of shipping methods in a cart. The existing shipping method adjustments,
+except those included in the specified list, of an item are removed and replaced with the specified adjustments.
+
+## Example
+
+```ts
+const shippingMethodAdjustments =
+  await cartModuleService.setShippingMethodAdjustments(
+    "cart_123",
+    [
+      {
+        id: "casmadj_123",
+        shipping_method_id: "casm_123",
+        code: "FREESHIPPING",
+      },
+      {
+        shipping_method_id: "casm_321",
+        code: "10%OFF",
+        amount: 1500,
+      },
+    ]
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"([CreateShippingMethodAdjustmentDTO](../../../interfaces/cart.CreateShippingMethodAdjustmentDTO/page.mdx) \\| [UpdateShippingMethodAdjustmentDTO](../../../interfaces/cart.UpdateShippingMethodAdjustmentDTO/page.mdx))[]","description":"The shipping method adjustments to add to the shipping\nmethod. If the `id` field is specified, the adjustment is kept in the shipping method's adjustment and its attributes can be updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sharedContext","type":"[Context](../../../interfaces/cart.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/cart.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="setShippingMethodAdjustments"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ShippingMethodAdjustmentDTO](../../../interfaces/cart.ShippingMethodAdjustmentDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The added shipping method adjustments.","expandable":false,"children":[{"name":"ShippingMethodAdjustmentDTO[]","type":"[ShippingMethodAdjustmentDTO](../../../interfaces/cart.ShippingMethodAdjustmentDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ShippingMethodAdjustmentDTO","type":"`object`","description":"The shipping method adjustment details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="setShippingMethodAdjustments"/>

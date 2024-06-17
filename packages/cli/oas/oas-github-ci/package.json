@@ -1,0 +1,27 @@
+{
+  "name": "@medusajs/oas-github-ci",
+  "version": "1.0.27",
+  "description": "OAS Github CI",
+  "main": "scripts/build-openapi.js",
+  "files": [
+    "scripts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/oas/oas-github-ci"
+  },
+  "private": true,
+  "author": "Medusa",
+  "license": "MIT",
+  "scripts": {
+    "ci": "node scripts/build-openapi.js",
+    "preview:admin": "yarn medusa-oas docs --src-file ../../../../www/apps/api-reference/specs/admin/openapi.yaml --preview",
+    "preview:store": "yarn medusa-oas docs --src-file ../../../../www/apps/api-reference/specs/store/openapi.yaml --preview",
+    "test": "jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@medusajs/medusa-oas-cli": "0.3.2",
+    "execa": "^5.1.1"
+  }
+}

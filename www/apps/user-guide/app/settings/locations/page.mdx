@@ -1,0 +1,79 @@
+---
+sidebar_position: 7
+sidebar_label: "Locations"
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Manage Locations`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to manage the locations using the Medusa Admin.
+
+## Overview
+
+A location represents a physical stocking location, such as a warehouse. It's associated with a sales channel.
+
+When fulfilling an order, you can select the location to fulfill the items from. Similarly, when requesting or handling a return, you can select the location to return the item to. This automatically increments or decrements the quantity as necessary.
+
+An [inventory item's](../../inventory/page.mdx) quantity is set per location.
+
+---
+
+## Create a Location
+
+{/* TODO check info for correctness */}
+
+To create a location:
+
+1. Go to Settings → Locations.
+2. Click the Add Location button.
+3. In the form that opens:
+    1. Enter the location's name and address details.
+    2. To associate the location with one or more sales channel:
+        1. Enable the Sales Channels field.
+        2. Check the sales channels that the location is associated with.
+    3. Under the Metadata section, you can add additional data as key-value pairs.
+4. Once you're done, click the "Add location" button.
+
+---
+
+## Edit a Location
+
+To edit a location:
+
+1. Go to Settings → Locations.
+2. Click on the location to edit.
+3. Choose Edit from the dropdown.
+4. In the drawer that opens, edit the location's details.
+5. Once you're done, click the Save button.
+
+---
+
+## Change Associated Sales Channel
+
+{/* TODO check info for correctness */}
+
+1. Go to Settings → Locations.
+2. Click on the location to edit.
+3. Under the Sales Channels section:
+    1. To add a sales channel:
+        1. Click the "Add sales channels" button at the top right.
+        2. Check the sales channels you want to associate with the location.
+        3. Once you're done, click the Save button.
+    2. To delete a sales channel:
+        1. Find in the list the sales channel to delete and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at its right.
+        2. Choose Delete from the dropdown.
+        3. Confirm deleting the sales channel by clicking the Delete button.
+
+---
+
+## Delete a Location
+
+1. Go to Settings → Locations.
+2. Find the location to edit and click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at its right.
+3. Choose Delete from the dropdown.
+4. Confirm deleting the location by entering its name and clicking the Delete button in the pop-up.

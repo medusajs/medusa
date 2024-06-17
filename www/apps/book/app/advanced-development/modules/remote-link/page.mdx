@@ -1,0 +1,197 @@
+export const metadata = {
+  title: `${pageNumber} Remote Link`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what the remote link is and how to use it to manage links.
+
+## What is the Remote Link?
+
+The remote link is a class with utility methods to manage links defined by the link module. It’s registered in the Medusa container under the `remoteLink` registration name.
+
+For example:
+
+```ts collapsibleLines="1-9" expandButtonLabel="Show Imports"
+import { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+import { 
+  ContainerRegistrationKeys,
+} from "@medusajs/utils"
+import { 
+  RemoteLink,
+} from "@medusajs/modules-sdk"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const remoteLink: RemoteLink = req.scope.resolve(
+    ContainerRegistrationKeys.REMOTE_LINK
+  )
+    
+  // ...
+}
+```
+
+You can use its methods to manage links, such as create or delete links.
+
+### Create Link
+
+To create a link between records of two data models, use the `create` method of the remote link.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+await remoteLink.create({
+  [Modules.PRODUCT]: {
+    variant_id: product.variants[0].id,
+  },
+  [Modules.PRICING]: {
+    price_set_id: price.id,
+  },
+})
+```
+
+The `create` method accepts as a parameter an object. The object’s keys are the names of the linked modules.
+
+The value of each module’s property is an object. It defines the values of the linked fields.
+
+So, in the example above, you specify for the Product Module the value of the `variant_id`, and for the Pricing Module the value of `price_set_id`. These are the fields linked between the models of the two modules.
+
+### Dismiss Link
+
+To remove a link between records of two data models, use the `dismiss` method of the remote link. This doesn’t remove the records, only the relation between them.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+await remoteLink.dismiss({
+  [Modules.PRODUCT]: {
+    variant_id: product.variants[0].id,
+  },
+  [Modules.PRICING]: {
+    price_set_id: price.id,
+  },
+})
+```
+
+The `dismiss` method accepts the same parameter type as the [create method](#create-link).
+
+### Cascade Delete Linked Records
+
+If a record, such as a variant, is deleted, use the `delete` method of the remote link to delete all associated links with cascade delete enabled. 
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+await productModuleService.deleteVariants([variant.id])
+
+await remoteLink.delete({
+  [Modules.PRODUCT]: {
+    variant_id: variant.id,
+  },
+})
+```
+
+This deletes all records linked to the deleted variant with cascade delete enabled in their relationship.
+
+### Restore Linked Records
+
+If a record, such as a variant, that was previously soft-deleted is now restored, use the `restore` method of the remote link to restore all associated links that were cascade deleted.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+await productModuleService.restoreVariants([variant.id])
+
+await remoteLink.restore({
+  [Modules.PRODUCT]: {
+    variant_id: variant.id,
+  },
+})
+```
+
+---
+
+## Link Module's Service
+
+The remote link has a `getLinkModule` method to retrieve the service of the link module. This service has `list` and `retrieve` methods to retrieve the linked items.
+
+For example, to retrieve the link module of the Product and Pricing modules:
+
+export const linkModuleServiceHighlights = [
+  ["6", "Modules.PRODUCT", "The name of the first module in the link module's definition."],
+  ["7", '"variant_id"', "The foreign key that links to the record in the first module."],
+  ["8", "Modules.PRICING", "The name of the second module in the link module's definition."],
+  ["9", '"price_set_id"', "The foreign key that links to the record in the second module."],
+  ["12", "", "The link module's service is undefined if either of the modules isn't installed or there's no link module with the specified definition."]
+]
+
+```ts highlights={linkModuleServiceHighlights}
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+const linkModuleService = remoteLink.getLinkModule(
+  Modules.PRODUCT,
+  "variant_id",
+  Modules.PRICING,
+  "price_set_id"
+)
+
+if (!linkModuleService) {
+  return
+}
+```
+
+The `getLinkModule` method accepts four parameter:
+
+1. A string indicating the name of the first module in the link module's definition.
+2. A string indicating the foreign key that links to the record in the first module.
+3. A string indicating the name of the second module in the link module's definition.
+4. A string indicating the foreign key that links to the record in the second module.
+
+Notice that the returned link module service might be undefined if either of the modules isn't installed, or if there's no link module with the specified definition.
+
+### List Linked Items
+
+The link module's service has a `list` method that retrieves a list of linked records. It also accepts filters to retrieve specific linked items.
+
+For example, to retrieve the price sets linked to a variant:
+
+```ts
+import { Modules } from "@medusajs/utils"
+
+// ...
+
+const linkModuleService = remoteLink.getLinkModule(
+  Modules.PRODUCT,
+  "variant_id",
+  Modules.PRICING,
+  "price_set_id"
+)
+
+const items = await linkModuleService.list(
+  { variant_id: [variant.id] },
+  { select: ["variant_id", "price_set_id"] }
+)
+```

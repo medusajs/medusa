@@ -1,0 +1,224 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Redis Event Bus Module`,
+}
+
+# {metadata.title}
+
+The Redis Event Bus Module uses Redis to implement Medusa's pub/sub events system.
+
+It's powered by BullMQ and `io-redis`. BullMQ is responsible for the message queue and worker, and `io-redis` is the underlying Redis client that BullMQ connects to for events storage.
+
+In production, it's recommended to use this module.
+
+---
+
+## Install the Redis Events Bus Module
+
+<Note type="check">
+
+- [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/).
+
+</Note>
+
+To install Redis Event Bus Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/event-redis
+```
+
+Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+
+export const highlights = [
+  ["11", "redisUrl", "The Redis connection URL."]
+]
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.EVENT_BUS]: {
+      resolve: "@medusajs/event-redis",
+      options: { 
+        redisUrl: process.env.EVENTS_REDIS_URL,
+      },
+    },
+  },
+})
+```
+
+### Environment Variables
+
+Make sure to add the following environment variables:
+
+```bash
+EVENTS_REDIS_URL=<YOUR_REDIS_URL>
+```
+
+### Redis Event Bus Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `redisUrl`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Redis connection URL.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `redisOptions`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of Redis options. Refer to the [Redis API Reference](https://redis.github.io/ioredis/index.html#RedisOptions) for details on accepted properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `queueName`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating BullMQ's queue name.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `events-queue`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `queueOptions`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the BullMQ constructor. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v3.QueueOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `workerOptions`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to the BullMQ Worker constructor. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/interfaces/v3.WorkerOptions.html) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `jobOptions`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object of options to pass to jobs added to the BullMQ queue. Refer to [BullMQ's API reference](https://api.docs.bullmq.io/modules/v3.html#BulkJobOptions) for allowed properties.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Test the Module
+
+To test the module, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+You'll see the following message in the terminal's logs:
+
+```bash noCopy noReport
+Connection to Redis in module 'event-redis' established
+```

@@ -1,0 +1,32 @@
+---
+sidebar_position: 1
+---
+
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Create a Price List`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how to create a price list.
+
+{/* TODO check for correctness */}
+
+To create a price list:
+
+1. Go to the Pricing page.
+2. Click on the Create button.
+3. A form opens to create a price list. The form is split into three steps:
+    1. In the first step:
+        1. Under the Type section, choose the price list's type. It can be either Sale or Override.
+        2. Enter the title and description of the price list in their respective fields.
+        3. If the prices in the price list include taxes, enable the "Tax inclusive prices" field.
+        4. If the price list has a start or end date, set those in their respective fields.
+        5. To limit which customer groups can use the price list, enable the "Customer availability" field and check the checkbox next to the customer groups allowed to use the price list.
+        6. Once you're done, click the Continue button.
+    2. In the second step, choose the products that the price list applies to. Once you're done, click the Continue button.
+    3. In the third step, enter the price of each product variant. The price editor uses the [bulk editor](../../tips/bulk-editor/page.mdx).
+        - To add a currency, click on the "Add currency" button and select the currency.
+4. Once you're done, click the Save button.

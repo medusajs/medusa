@@ -1,0 +1,30 @@
+---
+displayed_sidebar: fulfillmentReference
+slug: /references/fulfillment/retrieveFulfillmentOptions
+sidebar_label: retrieveFulfillmentOptions
+---
+
+import { TypeList } from "docs-ui"
+
+# retrieveFulfillmentOptions - Fulfillment Module Reference
+
+This documentation provides a reference to the `retrieveFulfillmentOptions` method. This belongs to the Fulfillment Module.
+
+This method retrieves the fulfillment options of a fulfillment provider.
+
+## Example
+
+```ts
+const fulfillment =
+  await fulfillmentModuleService.retrieveFulfillmentOptions(
+    "ful_123"
+  )
+```
+
+## Parameters
+
+<TypeList types={[{"name":"providerId","type":"`string`","description":"The fulfillment provider's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieveFulfillmentOptions"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;[]&#62;","optional":false,"defaultValue":"","description":"The fulfillment provider's options.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62;[]","type":"`Record<string, unknown>`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="retrieveFulfillmentOptions"/>

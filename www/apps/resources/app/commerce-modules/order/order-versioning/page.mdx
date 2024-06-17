@@ -1,0 +1,33 @@
+export const metadata = {
+  title: `Order Versioning`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn how an order and its details are versioned.
+
+## What's Versioning?
+
+Versioning means assigning a version number to a record, such as an order and its items. This is useful to view the different versions of the order following changes in its lifetime.
+
+---
+
+## version Field
+
+The `Order` and `OrderSummary` data models have a `version` field that indicates the current order version. By default, its value is `1`.
+
+The `OrderItem` data model also has a `version` field, but it indicates the version it belongs to. For example, original items in the order have version `1`. Then, when a new item is added, its version is `2`. If an existing item is modified, such as its quantity has been changed, its version is updated.
+
+---
+
+## Order Change Versioning
+
+The `OrderChange` and `OrderChangeAction` data models also have a `version` field. When an order change is created, the `version` field’s value is the associated order’s version incremented.
+
+So, if the order’s `version` is `1`, the order change’s version is `2`.
+
+Then, once the order change is confirmed and applied to the order, the versions of the order and order summary change to that of the order change.
+
+![A diagram showcasing how the version of an order changes](https://res.cloudinary.com/dza7lstvk/image/upload/v1712304242/Medusa%20Resources/order-versioning_rsx2rn.jpg)
+
+Order items change depending on the version they were added or modified in, as explained in the earlier section.

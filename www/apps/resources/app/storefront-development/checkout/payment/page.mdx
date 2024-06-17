@@ -1,0 +1,342 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Checkout Step 4: Choose Payment Provider`,
+}
+
+# {metadata.title}
+
+The last step before completing the order is choosing the payment provider and performing any necessary actions.
+
+The actions required after choosing the payment provider are different for each provider. So, this guide doesn't cover that.
+
+## Payment Step Flow
+
+The payment step requires implementing the following flow:
+
+![A diagram illustrating the flow of the payment step](https://res.cloudinary.com/dza7lstvk/image/upload/v1718029777/Medusa%20Resources/storefront-payment_dxry7l.jpg)
+
+1. Retrieve the payment providers using the [List Payment Providers API route](!api!/store#payment-providers_getpaymentproviders).
+2. Customer chooses the payment provider to use.
+3. If the cart doesn't have an associated payment collection, create a payment collection for it.
+4. Initialize the payment sessions of the cart's payment collection using the [Initialize Payment Sessions API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+5. Optionally perform additional actions for payment based on the chosen payment provider. For example, if the customer chooses stripe, you show them the UI to enter their card details.
+
+---
+
+## Code Example
+
+For example, to implement the payment step flow:
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["6", "retrievePaymentProviders", "This function retrieves the payment provider that the customer can choose from."],
+  ["7", "fetch", "Retrieve available payment providers."],
+  ["18", "selectPaymentProvider", "This function is executed when the customer submits their chosen payment provider."],
+  ["25", "fetch", "Create a payment collection for the cart when it doesn't have one."],
+  ["47", "fetch", "Initialize the payment session in the payment collection for the chosen provider."],
+  ["65", "fetch", "Retrieve the cart again to update its data."],
+  ["76", "getPaymentUi", "This function shows the necessary UI based on the selected payment provider."],
+  ["77", "activePaymentSession", "The active session is the first in the payment collection's sessions."],
+  ["83", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
+  ["84", `"pp_stripe_"`, "Check if the chosen provider is Stripe."],
+  ["88", `"pp_system_default"`, "Check if the chosen provider is the default systen provider."],
+  ["90", "default", "Handle unrecognized providers."],
+]
+
+  ```ts highlights={fetchHighlights}
+  // assuming the cart is previously fetched
+  const cart = {
+    // cart object...
+  }
+
+  const retrievePaymentProviders = async () => {
+    const { payment_providers } = await fetch(
+      `http://localhost:9000/store/payment-providers?region_id=${
+        cart.region_id
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+
+    return payment_providers
+  }
+
+  const selectPaymentProvider = async (
+    selectedPaymentProviderId: string
+  ) => {
+    let paymentCollectionId = cart.payment_collection?.id
+
+    if (!paymentCollectionId) {
+      // create payment collection
+      const { payment_collection } = await fetch(
+        `http://localhost:9000/store/payment-collections`,
+        {
+          credentials: "include",
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cart_id: cart.id,
+            region_id: cart.region_id,
+            currency_code: cart.currency_code,
+            amount: cart.total,
+          }),
+        }
+      )
+      .then((res) => res.json())
+
+      paymentCollectionId = payment_collection.id
+    }
+
+    // initialize payment session
+    await fetch(`http://localhost:9000/store/payment-collections/${
+      paymentCollectionId
+    }/payment-sessions`,
+    {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        provider_id: selectedPaymentProviderId,
+      }),
+    })
+    .then((res) => res.json())
+
+    // re-fetch cart
+    const { 
+      cart: updatedCart,
+    } = await fetch(
+      `http://localhost:9000/store/carts/${cart.id}`, 
+      {
+        credentials: "include",
+      }
+    )
+    .then((res) => res.json())
+
+    return updatedCart
+  }
+
+  const getPaymentUi = () => {
+    const activePaymentSession = cart?.payment_collection?.
+      payment_sessions?.[0]
+    if (!activePaymentSession) {
+      return
+    }
+
+    switch(true) {
+      case activePaymentSession.provider_id.startsWith("pp_stripe_"):
+        // TODO handle Stripe UI
+        return "You chose stripe!"
+      case activePaymentSession.provider_id
+        .startsWith("pp_system_default"):
+        return "You chose manual payment! No additional actions required."
+      default:
+        return `You chose ${
+          activePaymentSession.provider_id
+        } which is in development.`
+    }
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["4", "useCart", "The `useCart` hook was defined in the Cart React Context documentation."],
+  ["23", "fetch", "Retrieve available payment providers."],
+  ["31", "setSelectedPaymentProvider", "If a payment provider was selected before, pre-fill it."],
+  ["37", "handleSelectProvider", "This function is executed when the customer submits their chosen payment provider."],
+  ["50", "fetch", "Create a payment collection for the cart when it doesn't have one."],
+  ["72", "fetch", "Initialize the payment session in the payment collection for the chosen provider."],
+  ["90", "fetch", "Retrieve the cart again to update its data."],
+  ["103", "getPaymentUi", "This function shows the necessary UI based on the selected payment provider."],
+  ["104", "activePaymentSession", "The active session is the first in the payment collection's sessions."],
+  ["110", "", "Test which payment provider is chosen based on the prefix of the provider ID."],
+  ["111", `"pp_stripe_"`, "Check if the chosen provider is Stripe."],
+  ["119", `"pp_system_default"`, "Check if the chosen provider is the default systen provider."],
+  ["125", "default", "Handle unrecognized providers."],
+  ["160", "getPaymentUi", "If a provider is chosen, render its UI."]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useCallback, useEffect, useState } from "react"
+  import { useCart } from "../../../providers/cart"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function CheckoutPaymentStep() {
+    const { cart, setCart } = useCart()
+    const [paymentProviders, setPaymentProviders] = useState<
+      HttpTypes.StorePaymentProvider[]
+    >([])
+    const [
+      selectedPaymentProvider, 
+      setSelectedPaymentProvider,
+    ] = useState<string | undefined>()
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+      if (!cart) {
+        return
+      }
+
+      fetch(`http://localhost:9000/store/payment-providers?region_id=${
+        cart.region_id
+      }`, {
+        credentials: "include",
+      })
+      .then((res) => res.json())
+      .then(({ payment_providers }) => {
+        setPaymentProviders(payment_providers)
+        setSelectedPaymentProvider(
+          cart.payment_collection?.payment_sessions?.[0]?.id
+        )
+      })
+    }, [cart])
+
+    const handleSelectProvider = async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      e.preventDefault()
+      if (!cart || !selectedPaymentProvider) {
+        return
+      }
+
+      setLoading(false)
+
+      let paymentCollectionId = cart.payment_collection?.id
+
+      if (!paymentCollectionId) {
+        // create payment collection
+        const { payment_collection } = await fetch(
+          `http://localhost:9000/store/payment-collections`,
+          {
+            credentials: "include",
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              cart_id: cart.id,
+              region_id: cart.region_id,
+              currency_code: cart.currency_code,
+              amount: cart.total,
+            }),
+          }
+        )
+        .then((res) => res.json())
+
+        paymentCollectionId = payment_collection.id
+      }
+
+      // initialize payment session
+      await fetch(`http://localhost:9000/store/payment-collections/${
+        paymentCollectionId
+      }/payment-sessions`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider_id: selectedPaymentProvider,
+        }),
+      })
+      .then((res) => res.json())
+
+      // re-fetch cart
+      const { 
+        cart: updatedCart,
+      } = await fetch(
+        `http://localhost:9000/store/carts/${cart.id}`, 
+        {
+          credentials: "include",
+        }
+      )
+      .then((res) => res.json())
+
+      setCart(updatedCart)
+      setLoading(false)
+    }
+
+    const getPaymentUi = useCallback(() => {
+      const activePaymentSession = cart?.payment_collection?.
+        payment_sessions?.[0]
+      if (!activePaymentSession) {
+        return
+      }
+
+      switch(true) {
+        case activePaymentSession.provider_id.startsWith("pp_stripe_"):
+          return (
+            <span>
+              You chose stripe!
+              {/* TODO add stripe UI */}
+            </span>
+          )
+        case activePaymentSession.provider_id
+          .startsWith("pp_system_default"):
+          return (
+            <span>
+              You chose manual payment! No additional actions required.
+            </span>
+          )
+        default:
+          return (
+            <span>
+              You chose {activePaymentSession.provider_id} which is 
+              in development.
+            </span>
+          )
+      }
+    } , [cart])
+
+    return (
+      <div>
+        <form>
+          <select 
+            value={selectedPaymentProvider}
+            onChange={(e) => setSelectedPaymentProvider(e.target.value)}
+          >
+            {paymentProviders.map((provider) => (
+              <option
+                key={provider.id}
+                value={provider.id}
+              >
+                {provider.id}
+              </option>
+            ))}
+          </select>
+          <button
+            disabled={loading} 
+            onClick={async (e) => {
+              await handleSelectProvider(e)
+            }}
+          >
+            Submit
+          </button>
+        </form>
+        {getPaymentUi()}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you:
+
+- Retrieve the payment providers from the Medusa application. You use those to show the customer the available options.
+- When the customer chooses a payment provider, you:
+    1. Check whether the cart has a payment collection. If not, create one using the [Create Payment Collection API route](!api!/store#payment-collections_postpaymentcollections).
+    2. Initialize the payment session for the chosen payment provider using the [Initialize Payment Session API route](!api!/store#payment-collections_postpaymentcollectionsidpaymentsessions).
+- Once the cart has a payment session, you optionally render the UI to perform additional actions. For example, if the customer chose stripe, you can show them the card form to enter their credit card.

@@ -31,33 +31,23 @@ const customFulfillmentProvider = {
 }
 
 module.exports = {
+  admin: {
+    disable: true,
+  },
   plugins: [],
   projectConfig: {
-    database_url: DB_URL,
-    database_type: "postgres",
-    jwt_secret: "test",
-    cookie_secret: "test",
+    databaseUrl: DB_URL,
+    databaseType: "postgres",
+    http: {
+      jwtSecret: "test",
+      cookieSecret: "test",
+    },
   },
   featureFlags: {
     medusa_v2: enableMedusaV2,
   },
   modules: {
-    [Modules.AUTH]: {
-      scope: "internal",
-      resources: "shared",
-      resolve: "@medusajs/auth",
-      options: {
-        providers: [
-          {
-            name: "emailpass",
-            scopes: {
-              admin: {},
-              store: {},
-            },
-          },
-        ],
-      },
-    },
+    [Modules.AUTH]: true,
     [Modules.USER]: {
       scope: "internal",
       resources: "shared",
@@ -81,6 +71,7 @@ module.exports = {
     [Modules.PRODUCT]: true,
     [Modules.PRICING]: true,
     [Modules.PROMOTION]: true,
+    [Modules.REGION]: true,
     [Modules.CUSTOMER]: true,
     [Modules.SALES_CHANNEL]: true,
     [Modules.CART]: true,
@@ -102,6 +93,24 @@ module.exports = {
       /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
       options: {
         providers: [customFulfillmentProvider],
+      },
+    },
+    [Modules.NOTIFICATION]: {
+      /** @type {import('@medusajs/types').LocalNotificationServiceOptions} */
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            options: {
+              config: {
+                "local-notification-provider": {
+                  name: "Local Notification Provider",
+                  channels: ["log", "email"],
+                },
+              },
+            },
+          },
+        ],
       },
     },
   },

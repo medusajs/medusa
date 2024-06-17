@@ -1,0 +1,151 @@
+{{> header}}
+
+{{> title}}
+
+{{incrementCurrentTitleLevel}}
+
+{{{ startSections }}}
+
+{{#with model}}
+
+{{#if (sectionEnabled "reflection_comment")}}
+
+{{#if hasComment}}
+
+{{> comment}}
+
+{{/if}}
+
+{{/if}}
+
+{{/with}}
+
+{{#if (sectionEnabled "reflection_example")}}
+
+{{{example model}}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_typeParameters")}}
+
+{{#if model.typeParameters}}
+
+{{{titleLevel}}} Type parameters
+
+{{#with model.typeParameters}}
+
+{{{typeParameter sectionTitle=../model.name}}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_hierarchy")}}
+
+{{#ifShowTypeHierarchy}}
+
+{{{titleLevel}}} Hierarchy
+
+{{#with model.typeHierarchy}}
+
+{{{hierarchy 0}}}
+
+{{/with}}
+
+{{/ifShowTypeHierarchy}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_implements")}}
+
+{{#if model.implementedTypes}}
+
+{{{titleLevel}}} Implements
+
+{{#each model.implementedTypes}}
+- {{{type}}}
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_implementedBy")}}
+
+{{#if model.implementedBy}}
+
+{{{titleLevel}}} Implemented by
+
+{{#each model.implementedBy}}
+- {{{type}}}
+{{/each}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_callable")}}
+
+{{#if model.signatures}}
+
+{{{titleLevel}}} Callable
+
+{{#with model}}
+
+{{incrementCurrentTitleLevel}}
+
+{{#each signatures}}
+
+{{{titleLevel}}} {{name}}
+
+{{incrementCurrentTitleLevel}}
+
+{{> member.signature-wrapper showSources=true }}
+
+{{decrementCurrentTitleLevel}}
+
+{{/each}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#if (sectionEnabled "reflection_indexable")}}
+
+{{#if model.indexSignature}}
+
+{{{titleLevel}}} Indexable
+
+{{#with model}}
+
+{{#with indexSignature}}
+
+{{incrementCurrentTitleLevel}}
+
+{{{indexSignatureTitle}}}
+
+{{> comment}}
+
+{{decrementCurrentTitleLevel}}
+
+{{/with}}
+
+{{/with}}
+
+{{/if}}
+
+{{/if}}
+
+{{#with model}}
+
+{{> main}}
+
+{{/with}}
+
+{{{ endSections }}}

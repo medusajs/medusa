@@ -1,4 +1,4 @@
-import { AdminGetRegionsParams } from "@medusajs/medusa"
+import { FindParams, HttpTypes } from "@medusajs/types"
 import { useQueryParams } from "../../use-query-params"
 
 type UseRegionTableQueryProps = {
@@ -17,7 +17,7 @@ export const useRegionTableQuery = ({
 
   const { offset, q, order, created_at, updated_at } = queryObject
 
-  const searchParams: AdminGetRegionsParams = {
+  const searchParams: FindParams & HttpTypes.AdminRegionFilters = {
     limit: pageSize,
     offset: offset ? Number(offset) : 0,
     order,

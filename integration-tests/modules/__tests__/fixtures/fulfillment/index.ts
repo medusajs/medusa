@@ -8,6 +8,7 @@ export function generateCreateFulfillmentData(
   data: Partial<CreateFulfillmentDTO> & {
     provider_id: string
     shipping_option_id: string
+    order_id: string
   }
 ) {
   const randomString = Math.random().toString(36).substring(7)
@@ -30,7 +31,8 @@ export function generateCreateFulfillmentData(
       country_code: "test-country-code_" + randomString,
       province: "test-province_" + randomString,
       phone: "test-phone_" + randomString,
-      full_name: "test-full-name_" + randomString,
+      first_name: "test-first-name_" + randomString,
+      last_name: "test-last-name_" + randomString,
     },
     items: data.items ?? [
       {
@@ -48,6 +50,7 @@ export function generateCreateFulfillmentData(
       },
     ],
     order: data.order ?? {},
+    order_id: data.order_id,
   }
 }
 

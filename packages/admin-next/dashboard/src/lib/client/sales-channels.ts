@@ -48,8 +48,10 @@ async function batchRemoveProducts(
   payload: RemoveProductsSalesChannelReq
 ) {
   return postRequest<AdminSalesChannelResponse>(
-    `/admin/sales-channels/${id}/products/batch/remove`,
-    payload
+    `/admin/sales-channels/${id}/products`,
+    {
+      remove: payload.product_ids,
+    }
   )
 }
 
@@ -58,8 +60,10 @@ async function batchAddProducts(
   payload: AddProductsSalesChannelReq
 ) {
   return postRequest<AdminSalesChannelResponse>(
-    `/admin/sales-channels/${id}/products/batch/add`,
-    payload
+    `/admin/sales-channels/${id}/products`,
+    {
+      add: payload.product_ids,
+    }
   )
 }
 

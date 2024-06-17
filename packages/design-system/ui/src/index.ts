@@ -36,15 +36,15 @@ export { Text } from "./components/text"
 export { Textarea } from "./components/textarea"
 export { Toast } from "./components/toast"
 export { Toaster } from "./components/toaster"
-export { Tooltip } from "./components/tooltip"
+export { Tooltip, TooltipProvider } from "./components/tooltip"
 
 // Hooks
 export { usePrompt } from "./hooks/use-prompt"
-export { useToast } from "./hooks/use-toast"
 export { useToggleState } from "./hooks/use-toggle-state"
 
 // Utils
 export { clx } from "./utils/clx"
+export { toast } from "./utils/toast"
 
 // Types
 export * from "./types"

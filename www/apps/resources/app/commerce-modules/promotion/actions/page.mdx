@@ -1,0 +1,133 @@
+export const metadata = {
+  title: `Promotion Actions`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about promotion actions and how they’re computed and used.
+
+## computeActions Method
+
+The Promotion Module's main service has a [computeActions method](/references/promotion/computeActions) that returns an array of actions to perform on a cart when one or more promotions are applied.
+
+Actions inform you what adjustment must be made to a cart item or shipping method. Each action is an object having the `action` field indicating the type of action.
+
+---
+
+## Action Types
+
+### `addItemAdjustment` Action
+
+The `addItemAdjustment` action indicates that an adjustment must be made to an item. For example, removing $5 off its amount.
+
+This action has the following format:
+
+```ts
+export interface AddItemAdjustmentAction {
+  action: "addItemAdjustment"
+  item_id: string
+  amount: number
+  code: string
+  description?: string
+}
+```
+
+This action means that a new record should be created of the `LineItemAdjustment` data model in the Cart Module.
+
+<Note>
+
+Refer to [this reference](/references/promotion/interfaces/promotion.AddItemAdjustmentAction) for details on the object’s properties.
+
+</Note>
+
+### `removeItemAdjustment` Action
+
+The `removeItemAdjustment` action indicates that an adjustment must be removed from a line item. For example, remove the $5 discount.
+
+The `computeActions` method accepts any previous item adjustments in the `items` property of the second parameter.
+
+This action has the following format:
+
+```ts
+export interface RemoveItemAdjustmentAction {
+  action: "removeItemAdjustment"
+  adjustment_id: string
+  description?: string
+  code: string
+}
+```
+
+This action means that a new record should be removed of the `LineItemAdjustment` with the specified ID in the `adjustment_id` property.
+
+<Note>
+
+Refer to [this reference](/references/promotion/interfaces/promotion.RemoveItemAdjustmentAction) for details on the object’s properties.
+
+</Note>
+
+### `addShippingMethodAdjustment` Action
+
+The `addShippingMethodAdjustment` action indicates that an adjustment must be made on a shipping method. For example, make the shipping method free.
+
+This action has the following format:
+
+```ts
+export interface AddShippingMethodAdjustment {
+  action: "addShippingMethodAdjustment"
+  shipping_method_id: string
+  amount: number
+  code: string
+  description?: string
+}
+```
+
+This action means that a new record should be created of the `ShippingMethodAdjustment` data model in the Cart Module.
+
+<Note>
+
+Refer to [this reference](/references/promotion/interfaces/promotion.AddShippingMethodAdjustment) for details on the object’s properties.
+
+</Note>
+
+### `removeShippingMethodAdjustment` Action
+
+The `removeShippingMethodAdjustment` action indicates that an adjustment must be removed from a shipping method. For example, remove the free shipping discount.
+
+The `computeActions` method accepts any previous shipping method adjustments in the `shipping_methods` property of the second parameter.
+
+This action has the following format:
+
+```ts
+export interface RemoveShippingMethodAdjustment {
+  action: "removeShippingMethodAdjustment"
+  adjustment_id: string
+  code: string
+}
+```
+
+When the Medusa application receives this action type, it removes the `ShippingMethodAdjustment` with the specified ID in the `adjustment_id` property.
+
+<Note>
+
+Refer to [this reference](/references/promotion/interfaces/promotion.RemoveShippingMethodAdjustment) for details on the object’s properties.
+
+</Note>
+
+### `campaignBudgetExceeded` Action
+
+When the `campaignBudgetExceeded` action is returned, the promotions within a campaign can no longer be used as the campaign budget has been exceeded.
+
+This action has the following format:
+
+```ts
+export interface CampaignBudgetExceededAction {
+  action: "campaignBudgetExceeded"
+  code: string
+}
+```
+
+<Note>
+
+Refer to [this reference](/references/promotion/interfaces/promotion.CampaignBudgetExceededAction) for details on the object’s properties.
+
+</Note>

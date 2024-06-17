@@ -1,17 +1,13 @@
-import { Button, Toaster, useToast } from "@medusajs/ui"
+import { Button, Toaster, toast } from "@medusajs/ui"
 
 export default function ToasterLoading() {
-  const { toast } = useToast()
-
   return (
     <>
       <Toaster />
       <Button
         onClick={() =>
-          toast({
-            title: "Loading",
+          toast.loading("Loading", {
             description: "The quick brown fox jumps over the lazy dog.",
-            variant: "loading",
             duration: 5000,
           })
         }

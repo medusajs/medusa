@@ -1,0 +1,238 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Mailchimp Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+[Mailchimp](https://mailchimp.com) is an email marketing service used to create newsletters and subscriptions.
+
+By integrating Mailchimp with Medusa, customers can subscribe from Medusa to your Mailchimp newsletter and are automatically added to your Mailchimp subscribers list.
+
+---
+
+## Install the Mailchimp Plugin
+
+<Note type="check">
+
+- [Mailchimp account](https://mailchimp.com/signup)
+- [Mailchimp API Key](https://mailchimp.com/help/about-api-keys/#Find_or_generate_your_API_key)
+- [Mailchimp Audience ID](https://mailchimp.com/help/find-audience-id/)
+
+</Note>
+
+To install the Mailchimp plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-mailchimp
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "api_key", "The Mailchimp API Key."],
+  ["7", "newsletter_list_id", "The Mailchimp Audience ID."],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-mailchimp`,
+    options: {
+      api_key: process.env.MAILCHIMP_API_KEY,
+      newsletter_list_id: 
+        process.env.MAILCHIMP_NEWSLETTER_LIST_ID,
+    },
+  },
+]
+```
+
+### Mailchimp Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `api_key`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Mailchimp API Key.
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `newsletter_list_id`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Mailchimp Audience ID.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+MAILCHIMP_API_KEY=<YOUR_API_KEY>
+MAILCHIMP_NEWSLETTER_LIST_ID=<YOUR_NEWSLETTER_LIST_ID>
+```
+
+---
+
+## Test the Plugin
+
+To test the plugin, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+This plugin adds new `POST` and `PUT` API Routes at `/mailchimp/subscribe`. These API Routes require in the body of the request an `email` field. You can also optionally include a `data` object that holds any additional data you want to send to Mailchimp. 
+
+Check out [Mailchimp’s subscription documentation](https://mailchimp.com/developer/marketing/api/list-merges/) for more details on the data you can send.
+
+### Without Additional Data
+
+Try sending a `POST` or `PUT` request to `/mailchimp/subscribe`:
+
+```bash noReport apiTesting testApiUrl="http://localhost:9000/mailchimp/subscribe" testApiMethod="POST" testBodyParams={{ "email": "example@gmail.com" }}
+curl -X POST http://localhost:9000/mailchimp/subscribe \ 
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "email": "example@gmail.com"
+  }'
+```
+
+When the subscription is successful, a `200` response code is returned with `OK` message.
+
+When the same email address is used again in the `POST`, a `400` response is returned. If this can occur in your usecase, use the `PUT` API Route instead.
+
+Check your Mailchimp dashboard, you should find the email added to your Audience list.
+
+### With Additional Data
+
+For example, send in the `data` request body parameter a `tags` array:
+
+```bash noReport apiTesting testApiUrl="http://localhost:9000/mailchimp/subscribe" testApiMethod="POST" testBodyParams={{ "email": "example@gmail.com" }}
+curl -X POST http://localhost:9000/mailchimp/subscribe \ 
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+    "email": "example@gmail.com",
+    "data": {
+        "tags": ["customer"]
+    }
+  }'
+```
+
+All fields inside `data` is sent to Mailchimp along with the email.
+
+---
+
+## Use MailchimpService
+
+Use the `MailchimpService` to subscribe users to the newsletter in other contexts. This service has a method `subscribeNewsletter` that subscribes a customer to the newsletter.
+
+For example:
+
+```ts title="src/subscribers/customer-created.ts"
+import {
+  type SubscriberConfig,
+  type SubscriberArgs,
+  CustomerService,
+} from "@medusajs/medusa"
+
+export default async function handleCustomerCreated({
+  data,
+  container,
+}: SubscriberArgs<Record<string, string>>) {
+  const mailchimpService = container.resolve("mailchimpService")
+
+  mailchimpService.subscribeNewsletter(
+    data.email,
+    { tags: ["customer"] } // optional
+  )
+}
+
+export const config: SubscriberConfig = {
+  event: CustomerService.Events.CREATED,
+}
+```
+
+This creates a subscriber that listens to the `CustomerService.Events.CREATED` (`customer.created`) event and subscribes the customer automatically using the `mailchimpService`.
+
+---
+
+## Add Subscription Form
+
+This section provides a simple example of adding a subscription form in your storefront. The code is for React-based frameworks, but you can use the same logic for your storefronts regardless of the framework you are using.
+
+You need to use [axios](https://github.com/axios/axios) to send API requests, so start by installing it in your storefront project:
+
+```bash npm2yarn
+npm install axios
+```
+
+Then, create the following component that uses the mailchimp plugin's API route to subscribe customers:
+
+```tsx
+import axios from "axios"
+import { useState } from "react"
+
+export default function NewsletterForm() {
+  const [email, setEmail] = useState("")
+
+  function subscribe(e) {
+    e.preventDefault()
+    if (!email) {
+      return
+    }
+
+    axios.post("http://localhost:9000/mailchimp/subscribe", {
+      email,
+    })
+      .then((e) => {
+        alert("Subscribed successfully!")
+        setEmail("")
+      })
+      .catch((e) => {
+        console.error(e)
+        alert("An error occurred")
+      })
+  }
+
+  return (
+    <form onSubmit={subscribe}>
+      <h2>Sign Up for our newsletter</h2>
+      <input 
+        type="email"
+        name="email" 
+        id="email" 
+        placeholder="example@gmail.com"
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <button type="submit">Subscribe</button>
+    </form>
+  )
+}
+```

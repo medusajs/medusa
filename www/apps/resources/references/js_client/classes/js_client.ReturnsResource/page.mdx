@@ -1,0 +1,47 @@
+---
+slug: /references/js-client/ReturnsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# ReturnsResource
+
+This class is used to send requests to [Store Return API Routes](https://docs.medusajs.com/api/store#returns). All its method
+are available in the JS Client under the `medusa.returns` property.
+
+A return can be created by a customer to return items in an order.
+
+Related Guide: [How to create a return in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-return).
+
+## Methods
+
+### create
+
+Create a return for an order. If a return shipping method is specified, the return is automatically fulfilled.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.returns.create({
+  order_id,
+  items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ]
+})
+.then((data) => {
+  console.log(data.return.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[StorePostReturnsReq](../../../medusa/classes/medusa.StorePostReturnsReq/page.mdx)","description":"The data of the return to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the Order to create the return for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"[Item](../../../medusa/classes/medusa.Item-6/page.mdx)[]","description":"The items to include in the return.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the line item to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason_id","type":"`string`","description":"The ID of the return reason. Return reasons can be retrieved from the List Return Reasons API Route.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"A note to add to the item returned.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"return_shipping","type":"[ReturnShipping](../../../medusa/classes/medusa.ReturnShipping-3/page.mdx)","description":"The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"option_id","type":"`string`","description":"The ID of the Shipping Option to create the Shipping Method from.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreReturnsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the return's details.","expandable":false,"children":[{"name":"StoreReturnsRes","type":"[StoreReturnsRes](../../../medusa/types/medusa.StoreReturnsRes/page.mdx)","optional":false,"defaultValue":"","description":"The return's details.","expandable":false,"children":[{"name":"return","type":"`Return`","description":"Return details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>

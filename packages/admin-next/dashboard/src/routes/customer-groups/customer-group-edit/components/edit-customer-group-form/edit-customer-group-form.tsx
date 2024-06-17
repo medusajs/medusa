@@ -1,7 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CustomerGroup } from "@medusajs/medusa"
-import { Button, Input } from "@medusajs/ui"
-import { useAdminUpdateCustomerGroup } from "medusa-react"
+import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as z from "zod"
@@ -10,12 +8,14 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useUpdateCustomerGroup } from "../../../../../hooks/api/customer-groups"
+import { HttpTypes } from "@medusajs/types"
 
 type EditCustomerGroupFormProps = {
-  group: CustomerGroup
+  group: HttpTypes.AdminCustomerGroup
 }
 
-const EditCustomerGroupSchema = z.object({
+export const EditCustomerGroupSchema = z.object({
   name: z.string().min(1),
 })
 
@@ -32,11 +32,18 @@ export const EditCustomerGroupForm = ({
     resolver: zodResolver(EditCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminUpdateCustomerGroup(group.id)
+  const { mutateAsync, isPending } = useUpdateCustomerGroup(group.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(data, {
-      onSuccess: () => {
+      onSuccess: ({ customer_group }) => {
+        toast.success(t("general.success"), {
+          description: t("customerGroups.edit.successToast", {
+            name: customer_group.name,
+          }),
+          dismissLabel: t("actions.close"),
+        })
+
         handleSuccess()
       },
     })
@@ -72,7 +79,7 @@ export const EditCustomerGroupForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" type="submit" isLoading={isLoading}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>

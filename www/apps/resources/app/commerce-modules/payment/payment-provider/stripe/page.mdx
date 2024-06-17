@@ -1,0 +1,210 @@
+---
+sidebar_label: "Stripe"
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Stripe Provider Module`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn about the Stripe provider module and how to install and use it in the Payment Module.
+
+## Features
+
+[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales.
+
+These features are also available in a safe test environment, allowing for a concern-free development process.
+
+---
+
+## Install the Stripe Provider Module
+
+<Note type="check">
+
+- [Stripe account](https://stripe.com/).
+- [Stripe API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
+- For deployed Medusa applications, a [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). When creating the Webhook, set the endpoint URL to `{medusa_url}/hooks/payment/stripe`, where `{medusa_url}` with the URL to your deployed Medusa application.
+
+</Note>
+
+To install the Stripe provider module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/payment-stripe
+```
+
+Next, add the module to the array of providers passed to the Payment Module:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/payment-stripe",
+            options: {
+              config: {
+                stripe: {
+                  credentials: {
+                    usd: {
+                      apiKey: process.env.STRIPE_USD_API_KEY,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+})
+```
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+STRIPE_USD_API_KEY=<YOUR_STRIPE_API_KEY>
+```
+
+### Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `credentials`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      An object where each entry is a stripe provider installation. The object’s keys are the name suffix of the provider, where the provider name will be formatted as `stripe-{key}`. For example, `stripe-usd`.
+
+      Each value is an object that accepts the following properties:
+
+      - `apiKey`: A string indicating the Stripe API key.
+      - `webhookSecret`: (optional in development) A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `capture`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Whether to automatically capture payment after authorization.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `false`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `automatic_payment_methods`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A boolean value indicating whether to enable Stripe's automatic payment methods. This is useful if you integrate services like Apple pay or Google pay.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `false`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `payment_description`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string used as the default description of a payment if none is available in cart.context.payment_description.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      \-
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Use Provider
+
+To use the Stripe provider, create a payment session for the provider:
+
+```ts
+const paymentSession =
+  await paymentModuleService.createPaymentSession(
+    "pay_col_123",
+    {
+      provider_id: "stripe-usd",
+      amount: 5000,
+      currency_code: "usd",
+      data: {
+        // any necessary data
+        // to pass to stripe
+      },
+    }
+  )
+```

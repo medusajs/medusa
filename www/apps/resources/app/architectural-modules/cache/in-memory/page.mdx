@@ -1,0 +1,80 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `In-Memory Cache Module`,
+}
+
+# {metadata.title}
+
+The In-Memory Cache Module uses a plain JavaScript Map object to store the cached data. This module is used by default in your Medusa application.
+
+This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
+
+For production, it’s recommended to use modules like [Redis Cache Module](../redis/page.mdx).
+
+---
+
+## Install the In-Memory Cache Module
+
+<Note>
+
+The In-Memory Cache Module is installed by default in your application.
+
+</Note>
+
+To install the In-Memory Cache Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/cache-inmemory
+```
+
+Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.CACHE]: {
+      resolve: "@medusajs/cache-inmemory",
+      options: {
+        // optional options
+      },
+    },
+  },
+})
+```
+
+### In-Memory Cache Module Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Default</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `ttl`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      The number of seconds an item can live in the cache before it’s removed.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `30` seconds
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

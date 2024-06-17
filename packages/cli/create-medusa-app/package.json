@@ -1,0 +1,69 @@
+{
+  "name": "create-medusa-app",
+  "version": "1.2.8",
+  "description": "Create a Medusa project using a single command.",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "bin": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node --esm src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
+  },
+  "dependencies": {
+    "boxen": "^5",
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "glob": "^7.1.6",
+    "inquirer": "^9.2.2",
+    "medusa-telemetry": "^0.0.17",
+    "nanoid": "^4.0.2",
+    "node-emoji": "^2.0.2",
+    "node-fetch": "^3.3.1",
+    "open": "^9.1.0",
+    "ora": "^6.3.0",
+    "pg": "^8.10.0",
+    "slugify": "^1.6.6",
+    "uuid": "^9.0.0",
+    "validator": "^13.9.0",
+    "wait-on": "^7.0.1",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/commander": "^2.12.2",
+    "@types/configstore": "^6.0.0",
+    "@types/inquirer": "^9.0.3",
+    "@types/node-emoji": "^1.8.2",
+    "@types/pg": "^8.6.6",
+    "@types/uuid": "^9.0.1",
+    "@types/validator": "^13.7.17",
+    "@types/wait-on": "^5.3.1",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "configstore": "^6.0.0",
+    "eslint": "^8.40.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=14.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/create-medusa-app"
+  },
+  "author": "Medusa",
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+}

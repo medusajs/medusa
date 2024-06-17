@@ -1,0 +1,154 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `IP Lookup (ipstack) Plugin`,
+}
+
+# {metadata.title}
+
+## Features
+
+Location detection in a commerce store is essential for multi-region support.
+
+Medusa provides an IP Lookup plugin that integrates the application with [ipstack](https://ipstack.com/) to detect a customer’s location and region.
+
+---
+
+## Install the IP Lookup Plugin
+
+<Note type="check">
+
+- [ipstack account](https://ipstack.com/)
+
+</Note>
+
+To install the IP Lookup plugin, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install medusa-plugin-ip-lookup
+```
+
+Next, add the plugin into the `plugins` array in `medusa-config.js`:
+
+export const highlights = [
+  ["6", "access_token", "The ipstack account’s access key"],
+]
+
+```js title="medusa-config.js" highlights={highlights}
+const plugins = [
+  // other plugins...
+  {
+    resolve: `medusa-plugin-ip-lookup`,
+    options: {
+      access_token: process.env.IPSTACK_ACCESS_KEY,
+    },
+  },
+]
+```
+
+### IP Lookup Plugin Options
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `access_token`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the ipstack account’s access key.
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+IPSTACK_ACCESS_KEY=<YOUR_ACCESS_KEY>
+```
+
+---
+
+## Test the Plugin
+
+The plugin provides two resources: the `IpLookupService` and the `preCartCreation` middleware.
+
+<Note>
+
+Due to how Express resolves the current IP when accessing your website from `localhost`, you won’t be able to test the plugin locally. You can either use tools like ngrok to expose the `9000` port to be accessed publicly, or you have to test it on a deployed Medusa application.
+
+</Note>
+
+### IpLookupService
+
+The `IpLookupService` has a method `lookupIp` that accepts the IP address as a parameter, sends a request to ipstack’s API, and returns the retrieved result.
+
+For example, you can use it in a custom API route:
+
+```ts title="src/api/store/customer-region/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+  RegionService,
+} from "@medusajs/medusa"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const ipLookupService = req.scope.resolve("ipLookupService")
+  const regionService =
+    req.scope.resolve<RegionService>("regionService")
+
+  const ip =
+    req.headers["x-forwarded-for"] || req.socket.remoteAddress
+
+  const { data } = await ipLookupService.lookupIp(ip)
+
+  if (!data.country_code) {
+    throw new Error("Couldn't detect country code.")
+  }
+
+  const region = await regionService.retrieveByCountryCode(
+    data.country_code
+  )
+
+  res.json({
+    region,
+  })
+}
+```
+
+### preCartCreation
+
+The `preCartCreation` middleware can be added as a middleware to any route to attach the region ID to that route based on the user’s location.
+
+For example, you can attach it to all `/store` routes to ensure the customer’s region is always detected:
+
+```ts title="src/api/middlewares.ts"
+import type { MiddlewaresConfig } from "@medusajs/medusa"
+const { preCartCreation } = require(
+  "medusa-plugin-ip-lookup/api/medusa-middleware"
+).default
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/store/*",
+      middlewares: [preCartCreation],
+    },
+  ],
+}
+```

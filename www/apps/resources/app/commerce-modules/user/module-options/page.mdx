@@ -1,0 +1,70 @@
+---
+sidebar_label: "Module Options"
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `User Module Options`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the options of the User Module.
+
+## Module Options
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.USER]: {
+      resolve: "@medusajs/user",
+      options: {
+        jwt_secret: process.env.JWT_SECRET,
+      },
+    },
+  },
+})
+```
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>Option</Table.HeaderCell>
+      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>Required</Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+      
+      `jwt_secret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the secret used to sign the invite tokens.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Environment Variables
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+JWT_SECRET=supersecret
+```

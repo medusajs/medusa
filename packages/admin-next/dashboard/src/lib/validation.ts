@@ -32,3 +32,16 @@ export const optionalInt = z
       message: i18next.t("validation.mustBePositive"),
     }
   )
+
+/**
+ * Schema for metadata form.
+ */
+export const metadataFormSchema = z.array(
+  z.object({
+    key: z.string(),
+    value: z.unknown(),
+    isInitial: z.boolean().optional(),
+    isDeleted: z.boolean().optional(),
+    isIgnored: z.boolean().optional(),
+  })
+)

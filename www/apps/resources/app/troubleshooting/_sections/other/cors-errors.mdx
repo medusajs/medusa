@@ -1,0 +1,19 @@
+If you are experiencing connection issues when trying to access your Medusa backend from a storefront or the admin dashboard, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
+
+You might see a log in your browser console, that looks like this:
+
+![CORS error log](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003322/Medusa%20Docs/Other/jnHK115_udgf2n.png)
+
+In your `medusa-config.js` , you should ensure that you've configured your CORS settings correctly:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      storeCors: process.env.STORE_CORS,
+      adminCors: process.env.ADMIN_CORS,
+    },
+    // ...
+  },
+})
+```

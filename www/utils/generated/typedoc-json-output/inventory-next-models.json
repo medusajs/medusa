@@ -1,0 +1,1550 @@
+{
+	"id": 4930,
+	"name": "inventory-next-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"text": "## Relations Overview\n\n",
+				"kind": "text"
+			},
+			{
+				"text": "```mermaid\nerDiagram\n\tReservationItem }|--|{ InventoryItem : inventory_item\n\tInventoryItem ||--|| InventoryLevel : location_levels\n\n```",
+				"kind": "code"
+			}
+		]
+	},
+	"children": [
+		{
+			"id": 4951,
+			"name": "InventoryItem",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4952,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4953,
+							"name": "new InventoryItem",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4951,
+								"name": "InventoryItem",
+								"package": "@medusajs/inventory-next"
+							}
+						}
+					]
+				},
+				{
+					"id": 4980,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 4954,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4955,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4956,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4957,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4958,
+					"name": "sku",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4959,
+					"name": "origin_country",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4960,
+					"name": "hs_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4961,
+					"name": "mid_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4962,
+					"name": "material",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4963,
+					"name": "weight",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4964,
+					"name": "length",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4965,
+					"name": "height",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4966,
+					"name": "width",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4967,
+					"name": "requires_shipping",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					},
+					"defaultValue": "true"
+				},
+				{
+					"id": 4968,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4969,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4970,
+					"name": "thumbnail",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4971,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4972,
+					"name": "location_levels",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 4981,
+								"name": "InventoryLevel",
+								"package": "@medusajs/inventory-next"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 4973,
+					"name": "reservation_items",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 4931,
+								"name": "ReservationItem",
+								"package": "@medusajs/inventory-next"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 4974,
+					"name": "reserved_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 4975,
+					"name": "stocked_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 4976,
+					"name": "beforeCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4977,
+							"name": "beforeCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4978,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4979,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4952
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4980,
+						4954,
+						4955,
+						4956,
+						4957,
+						4958,
+						4959,
+						4960,
+						4961,
+						4962,
+						4963,
+						4964,
+						4965,
+						4966,
+						4967,
+						4968,
+						4969,
+						4970,
+						4971,
+						4972,
+						4973,
+						4974,
+						4975
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4976,
+						4978
+					]
+				}
+			]
+		},
+		{
+			"id": 4981,
+			"name": "InventoryLevel",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4982,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4983,
+							"name": "new InventoryLevel",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4981,
+								"name": "InventoryLevel",
+								"package": "@medusajs/inventory-next"
+							}
+						}
+					]
+				},
+				{
+					"id": 4984,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4985,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4986,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4987,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4988,
+					"name": "inventory_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4989,
+					"name": "location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4990,
+					"name": "stocked_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "0"
+				},
+				{
+					"id": 4991,
+					"name": "reserved_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "0"
+				},
+				{
+					"id": 4992,
+					"name": "incoming_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					},
+					"defaultValue": "0"
+				},
+				{
+					"id": 4993,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 4994,
+					"name": "inventory_item",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 4951,
+						"name": "InventoryItem",
+						"package": "@medusajs/inventory-next"
+					}
+				},
+				{
+					"id": 4995,
+					"name": "available_quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4996,
+					"name": "beforeCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4997,
+							"name": "beforeCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4998,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4999,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 5000,
+					"name": "onLoad",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 5001,
+							"name": "onLoad",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4982
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4984,
+						4985,
+						4986,
+						4987,
+						4988,
+						4989,
+						4990,
+						4991,
+						4992,
+						4993,
+						4994,
+						4995
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4996,
+						4998,
+						5000
+					]
+				}
+			]
+		},
+		{
+			"id": 4931,
+			"name": "ReservationItem",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 4932,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4933,
+							"name": "new ReservationItem",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 4931,
+								"name": "ReservationItem",
+								"package": "@medusajs/inventory-next"
+							}
+						}
+					]
+				},
+				{
+					"id": 4934,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4935,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4936,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 4937,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4938,
+					"name": "line_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4939,
+					"name": "location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4940,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 4941,
+					"name": "external_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4942,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4943,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4944,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					},
+					"defaultValue": "null"
+				},
+				{
+					"id": 4945,
+					"name": "inventory_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 4946,
+					"name": "inventory_item",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": 4951,
+						"name": "InventoryItem",
+						"package": "@medusajs/inventory-next"
+					}
+				},
+				{
+					"id": 4947,
+					"name": "beforeCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4948,
+							"name": "beforeCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 4949,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isPrivate": true
+					},
+					"signatures": [
+						{
+							"id": 4950,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						4932
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						4934,
+						4935,
+						4936,
+						4937,
+						4938,
+						4939,
+						4940,
+						4941,
+						4942,
+						4943,
+						4944,
+						4945,
+						4946
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						4947,
+						4949
+					]
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				4951,
+				4981,
+				4931
+			]
+		}
+	],
+	"packageName": "@medusajs/inventory-next",
+	"symbolIdMap": {
+		"4930": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"4931": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem"
+		},
+		"4934": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.id"
+		},
+		"4935": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.created_at"
+		},
+		"4936": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.updated_at"
+		},
+		"4937": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.deleted_at"
+		},
+		"4938": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.line_item_id"
+		},
+		"4939": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.location_id"
+		},
+		"4940": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.quantity"
+		},
+		"4941": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.external_id"
+		},
+		"4942": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.description"
+		},
+		"4943": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.created_by"
+		},
+		"4944": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.metadata"
+		},
+		"4945": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.inventory_item_id"
+		},
+		"4946": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.inventory_item"
+		},
+		"4947": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.beforeCreate"
+		},
+		"4948": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.beforeCreate"
+		},
+		"4949": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.onInit"
+		},
+		"4950": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/reservation-item.ts",
+			"qualifiedName": "ReservationItem.onInit"
+		},
+		"4951": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem"
+		},
+		"4954": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.id"
+		},
+		"4955": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.created_at"
+		},
+		"4956": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.updated_at"
+		},
+		"4957": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.deleted_at"
+		},
+		"4958": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.sku"
+		},
+		"4959": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.origin_country"
+		},
+		"4960": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.hs_code"
+		},
+		"4961": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.mid_code"
+		},
+		"4962": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.material"
+		},
+		"4963": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.weight"
+		},
+		"4964": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.length"
+		},
+		"4965": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.height"
+		},
+		"4966": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.width"
+		},
+		"4967": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.requires_shipping"
+		},
+		"4968": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.description"
+		},
+		"4969": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.title"
+		},
+		"4970": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.thumbnail"
+		},
+		"4971": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.metadata"
+		},
+		"4972": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.location_levels"
+		},
+		"4973": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.reservation_items"
+		},
+		"4974": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.reserved_quantity"
+		},
+		"4975": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.stocked_quantity"
+		},
+		"4976": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.beforeCreate"
+		},
+		"4977": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.beforeCreate"
+		},
+		"4978": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.onInit"
+		},
+		"4979": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.onInit"
+		},
+		"4980": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-item.ts",
+			"qualifiedName": "InventoryItem.[OptionalProps]"
+		},
+		"4981": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel"
+		},
+		"4984": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.id"
+		},
+		"4985": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.created_at"
+		},
+		"4986": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.updated_at"
+		},
+		"4987": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.deleted_at"
+		},
+		"4988": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.inventory_item_id"
+		},
+		"4989": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.location_id"
+		},
+		"4990": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.stocked_quantity"
+		},
+		"4991": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.reserved_quantity"
+		},
+		"4992": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.incoming_quantity"
+		},
+		"4993": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.metadata"
+		},
+		"4994": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.inventory_item"
+		},
+		"4995": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.available_quantity"
+		},
+		"4996": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.beforeCreate"
+		},
+		"4997": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.beforeCreate"
+		},
+		"4998": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.onInit"
+		},
+		"4999": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.onInit"
+		},
+		"5000": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.onLoad"
+		},
+		"5001": {
+			"sourceFileName": "../../../packages/inventory-next/src/models/inventory-level.ts",
+			"qualifiedName": "InventoryLevel.onLoad"
+		}
+	}
+}

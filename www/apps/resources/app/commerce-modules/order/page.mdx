@@ -1,0 +1,168 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Order Module`,
+}
+
+# {metadata.title}
+
+The Order Module is the `@medusajs/order` NPM package that provides order-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Order Management
+
+Store and manage your orders to retriev, create, cancel, and perform other operations.
+
+```ts
+const order = await orderModuleService.create({
+  currency_code: "usd",
+  items: [
+    {
+      title: "Shirt",
+      quantity: 1,
+      unit_price: 3000,
+    },
+  ],
+  shipping_methods: [
+    {
+      name: "Express shipping",
+      amount: 3000,
+    },
+  ],
+})
+```
+
+### Draft Orders
+
+Allow merchants to create orders on behalf of their customers as draft orders that later are transformed to regular orders.
+
+```ts
+const draftOrder = await orderModuleService.create({
+  currency_code: "usd",
+  // other details...
+  status: "draft",
+})
+```
+
+### Apply Promotions
+
+Apply promotions or discounts to the order's items and shipping methods by adding adjustment lines that are factored into their subtotals.
+
+```ts
+const lineAdjustments =
+  await orderModuleService.addLineItemAdjustments({
+    item_id: "cali_123",
+    code: "50OFF",
+    amount: 500,
+  })
+
+const shippingAdjustments =
+  await orderModuleService.addShippingMethodAdjustments({
+    shipping_method_id: "casm_123",
+    code: "FREESHIPPING",
+    amount: 1000,
+  })
+```
+
+### Returns, Exchanges, and Other Order Changes
+
+<Note title="In Development" type="soon">
+
+Order Changes are still in development.
+
+</Note>
+
+Orders can be changed to return items from the customer, exchange an item with another, change the quantity of an item, or perform other changes.
+
+Changes are only applied after confirmation, and order history is preserved through versioning.
+
+```ts
+const orderChange =
+  await orderModuleService.createOrderChange({
+    order_id: "ord_123",
+  })
+
+// add item to the order
+await orderModuleService.addOrderAction({
+  order_change_id: orderChange.id,
+  action: "ADD_ITEM",
+  details: {
+    quantity: 1,
+    unit_price: 4000,
+    reference_id: "orditem_123",
+  },
+})
+
+// confirm order change and apply it to order
+await orderModuleService.confirmOrderChange("ord_123")
+```
+
+---
+
+## How to Use Order Module's Service
+
+You can use the Order Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.ORDER` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const orderModuleService: IOrderModuleService =
+      req.scope.resolve(ModuleRegistrationName.ORDER)
+
+    res.json({
+      orders: await orderModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const orderModuleService: IOrderModuleService =
+      container.resolve(ModuleRegistrationName.ORDER)
+
+    const orders = await orderModuleService.list()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IOrderModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const orderModuleService: IOrderModuleService =
+      container.resolve(
+        ModuleRegistrationName.ORDER
+      )
+    const orders = await orderModuleService.list()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

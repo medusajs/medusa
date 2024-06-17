@@ -1,0 +1,359 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the Tax Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll find common examples of how you can use the Tax Module in your application.
+
+## Create a Tax Region
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    const taxRegion = await taxModuleService.createTaxRegions({
+      country_code: "us",
+      default_tax_rate: {
+        rate: 10,
+        name: "Default rate",
+      },
+    })
+
+    res.json({
+      tax_region: taxRegion,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeTaxModule,
+  } from "@medusajs/tax"
+
+  export async function POST(request: Request) {
+    const taxModuleService = await initializeTaxModule()
+
+    const taxRegion = await taxModuleService.createTaxRegions({
+      country_code: "us",
+      default_tax_rate: {
+        rate: 10,
+        name: "Default rate",
+      },
+    })
+
+    return NextResponse.json({
+      tax_region: taxRegion,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Tax Regions
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    res.json({
+      tax_regions: await taxModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeTaxModule,
+  } from "@medusajs/tax"
+
+  export async function GET(request: Request) {
+    const taxModuleService = await initializeTaxModule()
+
+    return NextResponse.json({
+      tax_regions: await taxModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Create Tax Rate with Rules
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    const taxRate = await taxModuleService.create({
+      tax_region_id: "txreg_123",
+      name: "Custom rate",
+      rate: 15,
+      rules: [
+        {
+          reference: "product_type",
+          reference_id: "ptyp_1",
+        },
+        {
+          reference: "product",
+          reference_id: "prod_123",
+        },
+      ],
+    })
+
+    res.json({
+      tax_rate: taxRate,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeTaxModule,
+  } from "@medusajs/tax"
+
+  export async function POST(
+    request: Request
+  ) {
+    const taxModuleService = await initializeTaxModule()
+
+    const taxRate = await taxModuleService.create({
+      tax_region_id: "txreg_123",
+      name: "Custom rate",
+      rate: 15,
+      rules: [
+        {
+          reference: "product_type",
+          reference_id: "ptyp_1",
+        },
+        {
+          reference: "product",
+          reference_id: "prod_123",
+        },
+      ],
+    })
+
+    return NextResponse.json({
+      tax_rate: taxRate,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Tax Rates
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    res.json({
+      tax_rates: await taxModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeTaxModule,
+  } from "@medusajs/tax"
+
+  export async function GET(
+    request: Request
+  ) {
+    const taxModuleService = await initializeTaxModule()
+
+    return NextResponse.json({
+      tax_rates: await taxModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Get Tax Lines
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ITaxModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const taxModuleService: ITaxModuleService = req.scope.resolve(
+      ModuleRegistrationName.TAX
+    )
+
+    const taxLines = await taxModuleService.getTaxLines(
+      [
+        {
+          id: "cali_123",
+          product_id: "prod_123",
+          unit_price: 1000,
+        },
+        {
+          id: "casm_123",
+          shipping_option_id: "so_123",
+          unit_price: 2000,
+        },
+      ],
+      {
+        address: {
+          country_code: "us",
+          postal_code: "123456",
+        },
+        customer: {
+          id: "cus_123",
+          email: "user@example.com",
+          customer_groups: ["VIP"],
+        },
+      }
+    )
+
+    res.json({
+      tax_lines: taxLines,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeTaxModule,
+  } from "@medusajs/tax"
+
+  export async function GET(
+    request: Request
+  ) {
+    const taxModuleService = await initializeTaxModule()
+
+    const taxLines = await taxModuleService.getTaxLines(
+      [
+        {
+          id: "cali_123",
+          product_id: "prod_123",
+          unit_price: 1000,
+        },
+        {
+          id: "casm_123",
+          shipping_option_id: "so_123",
+          unit_price: 2000,
+        },
+      ],
+      {
+        address: {
+          country_code: "us",
+          postal_code: "123456",
+        },
+        customer: {
+          id: "cus_123",
+          email: "user@example.com",
+          customer_groups: ["VIP"],
+        },
+      }
+    )
+
+    return NextResponse.json({
+      tax_lines: taxLines,
+    })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [Tax Module's main service reference](/references/tax) provides a reference to all the methods available for use with examples for each.

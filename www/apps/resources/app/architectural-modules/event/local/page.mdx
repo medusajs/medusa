@@ -1,0 +1,58 @@
+export const metadata = {
+  title: `Local Event Bus Module`,
+}
+
+# {metadata.title}
+
+The Local Event Bus Module uses Node EventEmitter to implement Medusa's pub/sub events system. The Node EventEmitter is limited to a single process environment.
+
+This module is useful for development and testing, but it’s not recommended to be used in production.
+
+For production, it’s recommended to use modules like [Redis Event Bus Module](../redis/page.mdx).
+
+---
+
+## Install the Local Event Bus Module
+
+<Note>
+
+The Local Event Bus Module is installed by default in your application.
+
+</Note>
+
+To install Local Event Bus Module, run the following command in the directory of your Medusa application:
+
+```bash npm2yarn
+npm install @medusajs/event-local
+```
+
+Next, add the module into the `modules` property of the exported object in `medusa-config.js`:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    [Modules.EVENT_BUS]: true,
+  },
+})
+```
+
+---
+
+## Test the Module
+
+To test the module, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+You'll see the following message in the terminal's logs:
+
+```bash noCopy noReport
+Local Event Bus installed. This is not recommended for production.
+```

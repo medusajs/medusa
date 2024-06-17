@@ -1,0 +1,674 @@
+---
+slug: /references/medusa-react/hooks/admin/order_edits
+---
+
+import { TypeList } from "docs-ui"
+
+# Order Edits
+
+Queries and Mutations listed here are used to send requests to the [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
+
+Related Guide: [How to edit an order](https://docs.medusajs.com/modules/orders/admin/edit-order).
+
+## Mutations
+
+### useAdminCreateOrderEdit
+
+This hook creates an order edit.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateOrderEdit } from "medusa-react"
+
+const CreateOrderEdit = () => {
+  const createOrderEdit = useAdminCreateOrderEdit()
+
+  const handleCreateOrderEdit = (orderId: string) => {
+    createOrderEdit.mutate({
+      order_id: orderId,
+    }, {
+      onSuccess: ({ order_edit }) => {
+        console.log(order_edit.id)
+      }
+    })
+  }
+  
+  // ...
+}
+
+export default CreateOrderEdit
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrderEditsReq","type":"[AdminPostOrderEditsReq](../../../../medusa/classes/medusa.AdminPostOrderEditsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the order edit to create.","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the order to create the edit for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"internal_note","type":"`string`","description":"An optional note to associate with the order edit.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateOrderEdit"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateOrderEdit"/>
+
+### useAdminDeleteOrderEdit
+
+This hook deletes an order edit. Only order edits that have the status `created` can be deleted.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteOrderEdit } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const deleteOrderEdit = useAdminDeleteOrderEdit(
+    orderEditId
+  )
+  
+  const handleDelete = () => {
+    deleteOrderEdit.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"Order Edit's ID","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteOrderEdit"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteOrderEdit"/>
+
+### useAdminDeleteOrderEditItemChange
+
+This hook deletes a line item change that indicates the addition, deletion, or update of a line item in the original order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteOrderEditItemChange } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+  itemChangeId: string
+}
+
+const OrderEditItemChange = ({
+  orderEditId,
+  itemChangeId
+}: Props) => {
+  const deleteItemChange = useAdminDeleteOrderEditItemChange(
+    orderEditId, 
+    itemChangeId
+  )
+  
+  const handleDeleteItemChange = () => {
+    deleteItemChange.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEditItemChange
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderEditId","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"itemChangeId","type":"`string`","description":"The line item change's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteOrderEditItemChange"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditItemChangeDeleteRes","type":"[AdminOrderEditItemChangeDeleteRes](../../../../medusa/types/medusa.AdminOrderEditItemChangeDeleteRes/page.mdx)","optional":false,"defaultValue":"","description":"The details of deleting order edit item changes.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted Order Edit Item Change.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`\"item_change\"`","description":"The type of the object that was deleted.","optional":false,"defaultValue":"item_change","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether or not the Order Edit Item Change was deleted.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteOrderEditItemChange"/>
+
+### useAdminOrderEditUpdateLineItem
+
+This hook creates or updates a line item change in the order edit that indicates addition, deletion, or update of a line item 
+into an original order. Line item changes are only reflected on the original order after the order edit is confirmed.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminOrderEditUpdateLineItem } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+  itemId: string
+}
+
+const OrderEditItemChange = ({
+  orderEditId,
+  itemId
+}: Props) => {
+  const updateLineItem = useAdminOrderEditUpdateLineItem(
+    orderEditId, 
+    itemId
+  )
+  
+  const handleUpdateLineItem = (quantity: number) => {
+    updateLineItem.mutate({
+      quantity,
+    }, {
+      onSuccess: ({ order_edit }) => {
+        console.log(order_edit.items)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEditItemChange
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderEditId","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"itemId","type":"`string`","description":"The line item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditUpdateLineItem"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrderEditsEditLineItemsLineItemReq","type":"[AdminPostOrderEditsEditLineItemsLineItemReq](../../../../medusa/classes/medusa.AdminPostOrderEditsEditLineItemsLineItemReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to create or update of the line item change.","expandable":false,"children":[{"name":"quantity","type":"`number`","description":"The quantity to update","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditUpdateLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditUpdateLineItem"/>
+
+### useAdminOrderEditDeleteLineItem
+
+This hook creates a line item change in the order edit that indicates deleting an item in the original order. 
+The item in the original order will not be deleted until the order edit is confirmed.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminOrderEditDeleteLineItem } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+  itemId: string
+}
+
+const OrderEditLineItem = ({
+  orderEditId,
+  itemId
+}: Props) => {
+  const removeLineItem = useAdminOrderEditDeleteLineItem(
+    orderEditId, 
+    itemId
+  )
+  
+  const handleRemoveLineItem = () => {
+    removeLineItem.mutate(void 0, {
+      onSuccess: ({ order_edit }) => {
+        console.log(order_edit.changes)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEditLineItem
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"orderEditId","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"itemId","type":"`string`","description":"The line item's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditDeleteLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditDeleteLineItem"/>
+
+### useAdminUpdateOrderEdit
+
+This hook updates an Order Edit's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateOrderEdit } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const updateOrderEdit = useAdminUpdateOrderEdit(
+    orderEditId, 
+  )
+  
+  const handleUpdate = (
+    internalNote: string
+  ) => {
+    updateOrderEdit.mutate({
+      internal_note: internalNote
+    }, {
+      onSuccess: ({ order_edit }) => {
+        console.log(order_edit.internal_note)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateOrderEdit"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrderEditsOrderEditReq","type":"[AdminPostOrderEditsOrderEditReq](../../../../medusa/classes/medusa.AdminPostOrderEditsOrderEditReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the order edit.","expandable":false,"children":[{"name":"internal_note","type":"`string`","description":"An optional note to create or update in the order edit.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateOrderEdit"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateOrderEdit"/>
+
+### useAdminOrderEditAddLineItem
+
+This hook creates a line item change in the order edit that indicates adding an item in the original order. 
+The item will not be added to the original order until the order edit is confirmed.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminOrderEditAddLineItem } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const addLineItem = useAdminOrderEditAddLineItem(
+    orderEditId
+  )
+
+  const handleAddLineItem = 
+    (quantity: number, variantId: string) => {
+      addLineItem.mutate({
+        quantity,
+        variant_id: variantId,
+      }, {
+        onSuccess: ({ order_edit }) => {
+          console.log(order_edit.changes)
+        }
+      })
+    }
+  
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditAddLineItem"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostOrderEditsEditLineItemsReq","type":"[AdminPostOrderEditsEditLineItemsReq](../../../../medusa/classes/medusa.AdminPostOrderEditsEditLineItemsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the line item change to create.","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the product variant associated with the item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditAddLineItem"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEditAddLineItem"/>
+
+### useAdminRequestOrderEditConfirmation
+
+This hook requests customer confirmation of an order edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
+a notification to the customer about the order edit.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminRequestOrderEditConfirmation,
+} from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const requestOrderConfirmation = 
+    useAdminRequestOrderEditConfirmation(
+      orderEditId
+    )
+  
+  const handleRequestConfirmation = () => {
+    requestOrderConfirmation.mutate(void 0, {
+      onSuccess: ({ order_edit }) => {
+        console.log(
+          order_edit.requested_at, 
+          order_edit.requested_by
+        )
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRequestOrderEditConfirmation"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminRequestOrderEditConfirmation"/>
+
+### useAdminCancelOrderEdit
+
+This hook cancels an order edit.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminCancelOrderEdit,
+} from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const cancelOrderEdit = 
+    useAdminCancelOrderEdit(
+      orderEditId
+    )
+  
+  const handleCancel = () => {
+    cancelOrderEdit.mutate(void 0, {
+      onSuccess: ({ order_edit }) => {
+        console.log(
+          order_edit.id
+        )
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelOrderEdit"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelOrderEdit"/>
+
+### useAdminConfirmOrderEdit
+
+This hook confirms an order edit. This will reflect the changes in the order edit on the associated order.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminConfirmOrderEdit } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const confirmOrderEdit = useAdminConfirmOrderEdit(
+    orderEditId
+  )
+  
+  const handleConfirmOrderEdit = () => {
+    confirmOrderEdit.mutate(void 0, {
+      onSuccess: ({ order_edit }) => {
+        console.log(
+          order_edit.confirmed_at,
+          order_edit.confirmed_by
+        )
+      }
+    })
+  }
+
+  // ...
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminConfirmOrderEdit"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminOrderEditsRes","type":"[AdminOrderEditsRes](../../../../medusa/types/medusa.AdminOrderEditsRes/page.mdx)","optional":false,"defaultValue":"","description":"The order edit details.","expandable":false,"children":[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminConfirmOrderEdit"/>
+
+___
+
+## Queries
+
+### useAdminOrderEdit
+
+This hook retrieves an order edit's details.
+
+#### Example
+
+A simple example that retrieves an order edit by its ID:
+
+```tsx
+import React from "react"
+import { useAdminOrderEdit } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const { 
+    order_edit, 
+    isLoading, 
+  } = useAdminOrderEdit(orderEditId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {order_edit && <span>{order_edit.status}</span>}
+    </div>
+  )
+}
+
+export default OrderEdit
+```
+
+To specify relations that should be retrieved:
+
+```tsx
+import React from "react"
+import { useAdminOrderEdit } from "medusa-react"
+
+type Props = {
+  orderEditId: string
+}
+
+const OrderEdit = ({ orderEditId }: Props) => {
+  const { 
+    order_edit, 
+    isLoading, 
+  } = useAdminOrderEdit(
+    orderEditId,
+    {
+      expand: "order"
+    }
+  )
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {order_edit && <span>{order_edit.status}</span>}
+    </div>
+  )
+}
+
+export default OrderEdit
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order edit's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[GetOrderEditsOrderEditParams](../../../../medusa/classes/medusa.GetOrderEditsOrderEditParams/page.mdx)","description":"Configurations to apply on the retrieved order edit.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEdit"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"order_edit","type":"`OrderEdit`","description":"Order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEdit"/>
+
+### useAdminOrderEdits
+
+This hook retrieves a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter. 
+The order edits can also be paginated.
+
+#### Example
+
+To list order edits:
+
+```tsx
+import React from "react"
+import { useAdminOrderEdits } from "medusa-react"
+
+const OrderEdits = () => {
+  const { order_edits, isLoading } = useAdminOrderEdits()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {order_edits && !order_edits.length && (
+        <span>No Order Edits</span>
+      )}
+      {order_edits && order_edits.length > 0 && (
+        <ul>
+          {order_edits.map((orderEdit) => (
+            <li key={orderEdit.id}>
+              {orderEdit.status}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default OrderEdits
+```
+
+To specify relations that should be retrieved within the order edits:
+
+```tsx
+import React from "react"
+import { useAdminOrderEdits } from "medusa-react"
+
+const OrderEdits = () => {
+  const { order_edits, isLoading } = useAdminOrderEdits({
+    expand: "order"
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {order_edits && !order_edits.length && (
+        <span>No Order Edits</span>
+      )}
+      {order_edits && order_edits.length > 0 && (
+        <ul>
+          {order_edits.map((orderEdit) => (
+            <li key={orderEdit.id}>
+              {orderEdit.status}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default OrderEdits
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminOrderEdits } from "medusa-react"
+
+const OrderEdits = () => {
+  const { 
+    order_edits,
+    limit,
+    offset,
+    isLoading
+  } = useAdminOrderEdits({
+    expand: "order",
+    limit: 20,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {order_edits && !order_edits.length && (
+        <span>No Order Edits</span>
+      )}
+      {order_edits && order_edits.length > 0 && (
+        <ul>
+          {order_edits.map((orderEdit) => (
+            <li key={orderEdit.id}>
+              {orderEdit.status}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default OrderEdits
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[GetOrderEditsParams](../../../../medusa/classes/medusa.GetOrderEditsParams/page.mdx)","description":"Filters and pagination configurations applied to retrieved order edits.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"q","type":"`string`","description":"Search term to search order edits by their internal note.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"Filter the order edits by their associated order's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEdits"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_edits","type":"`OrderEdit`[]","description":"An array of order edit details","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminOrderEdits"/>

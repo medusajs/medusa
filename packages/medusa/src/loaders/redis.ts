@@ -2,7 +2,8 @@ import { asValue } from "awilix"
 import Redis from "ioredis"
 import FakeRedis from "ioredis-mock"
 import { EOL } from "os"
-import { ConfigModule, Logger, MedusaContainer } from "../types/global"
+import { Logger, MedusaContainer } from "../types/global"
+import { ConfigModule } from "@medusajs/types"
 
 type Options = {
   container: MedusaContainer
@@ -18,11 +19,11 @@ async function redisLoader({
 }: Options): Promise<{ shutdown: () => Promise<void> }> {
   let client!: Redis | FakeRedis
 
-  if (configModule.projectConfig.redis_url) {
-    client = new Redis(configModule.projectConfig.redis_url, {
+  if (configModule.projectConfig.redisUrl) {
+    client = new Redis(configModule.projectConfig.redisUrl, {
       // Lazy connect to properly handle connection errors
       lazyConnect: true,
-      ...(configModule.projectConfig.redis_options ?? {}),
+      ...(configModule.projectConfig.redisOptions ?? {}),
     })
 
     try {

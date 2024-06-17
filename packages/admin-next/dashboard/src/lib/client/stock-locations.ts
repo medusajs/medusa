@@ -1,8 +1,14 @@
 import {
+  CreateFulfillmentSetReq,
+  CreateServiceZoneReq,
   CreateStockLocationReq,
+  UpdateServiceZoneReq,
   UpdateStockLocationReq,
+  UpdateStockLocationSalesChannelsReq,
 } from "../../types/api-payloads"
 import {
+  FulfillmentSetDeleteRes,
+  ServiceZoneDeleteRes,
   StockLocationDeleteRes,
   StockLocationListRes,
   StockLocationRes,
@@ -21,6 +27,37 @@ async function createStockLocation(payload: CreateStockLocationReq) {
   return postRequest<StockLocationRes>(`/admin/stock-locations`, payload)
 }
 
+async function createFulfillmentSet(
+  locationId: string,
+  payload: CreateFulfillmentSetReq
+) {
+  return postRequest<StockLocationRes>(
+    `/admin/stock-locations/${locationId}/fulfillment-sets`,
+    payload
+  )
+}
+
+async function createServiceZone(
+  fulfillmentSetId: string,
+  payload: CreateServiceZoneReq
+) {
+  return postRequest<StockLocationRes>(
+    `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones`,
+    payload
+  )
+}
+
+async function updateServiceZone(
+  fulfillmentSetId: string,
+  serviceZoneId: string,
+  payload: UpdateServiceZoneReq
+) {
+  return postRequest<StockLocationRes>(
+    `/admin/fulfillment-sets/${fulfillmentSetId}/service-zones/${serviceZoneId}`,
+    payload
+  )
+}
+
 async function updateStockLocation(
   id: string,
   payload: UpdateStockLocationReq
@@ -28,8 +65,30 @@ async function updateStockLocation(
   return postRequest<StockLocationRes>(`/admin/stock-locations/${id}`, payload)
 }
 
+async function updateStockLocationSalesChannels(
+  id: string,
+  payload: UpdateStockLocationSalesChannelsReq
+) {
+  return postRequest<StockLocationRes>(
+    `/admin/stock-locations/${id}/sales-channels`,
+    payload
+  )
+}
+
 async function deleteStockLocation(id: string) {
   return deleteRequest<StockLocationDeleteRes>(`/admin/stock-locations/${id}`)
+}
+
+async function deleteFulfillmentSet(setId: string) {
+  return deleteRequest<FulfillmentSetDeleteRes>(
+    `/admin/fulfillment-sets/${setId}`
+  )
+}
+
+async function deleteServiceZone(setId: string, zoneId: string) {
+  return deleteRequest<ServiceZoneDeleteRes>(
+    `/admin/fulfillment-sets/${setId}/service-zones/${zoneId}`
+  )
 }
 
 export const stockLocations = {
@@ -38,4 +97,10 @@ export const stockLocations = {
   create: createStockLocation,
   update: updateStockLocation,
   delete: deleteStockLocation,
+  updateSalesChannels: updateStockLocationSalesChannels,
+  createFulfillmentSet,
+  deleteFulfillmentSet,
+  createServiceZone,
+  deleteServiceZone,
+  updateServiceZone,
 }

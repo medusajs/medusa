@@ -1,0 +1,222 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `List Products in Storefront`,
+}
+
+# {metadata.title}
+
+In this document, learn how to list, paginate, and filter products in the storefront.
+
+## List Products
+
+To list products, send a request to the [List Products API route](!api!/store#products_getproducts):
+
+<CodeTabs group="store-request">
+  <CodeTab label="Fetch API" value="fetch">
+
+export const fetchHighlights = [
+  ["4", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+]
+
+  ```ts highlights={fetchHighlights}
+  fetch(`http://localhost:9000/store/products`, {
+    credentials: "include",
+    headers: {
+      "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+    },
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    // use products...
+    console.log(data.products)
+  })
+  ```
+
+  </CodeTab>
+  <CodeTab label="React" value="react">
+
+export const highlights = [
+  ["17"], ["18"], ["19"], 
+  ["20", "process.env.NEXT_PUBLIC_PAK", "Pass the Publishable API key to retrieve products of associated sales channel(s)."], 
+  ["21"], ["22"], ["23"], ["24"], ["25"], ["26"], ["27"]
+]
+
+  ```tsx highlights={highlights}
+  "use client" // include with Next.js 13+
+
+  import { useEffect, useState } from "react"
+  import { HttpTypes } from "@medusajs/types"
+
+  export default function Products() {
+    const [loading, setLoading] = useState(true)
+    const [products, setProducts] = useState<
+      HttpTypes.StoreProduct[]
+    >([])
+
+    useEffect(() => {
+      if (!loading) {
+        return 
+      }
+
+      fetch(`http://localhost:9000/store/products`, {
+        credentials: "include",
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+        },
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data.products)
+        setLoading(false)
+      })
+    }, [loading])
+
+    return (
+      <div>
+        {loading && <span>Loading...</span>}
+        {!loading && products.length === 0 && <span>No products found.</span>}
+        {!loading && products.length > 0 && (
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>{product.title}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    )
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+{/* TODO add a link to product object in API reference (once available). */}
+
+The response has a `products` field, which is an array of products.
+
+---
+
+## Paginate Products
+
+To paginate products, pass the following query parameters:
+
+- `limit`: The number of products to return in the request.
+- `offset`: The number of products to skip before the returned products. You can calculate this by multiplying the current page with the limit.
+
+The response object returns a `count` field, which is the total count of products. Use it to determine whether there are more products that can be loaded.
+
+For example:
+
+export const paginateHighlights = [
+  ["20", "offset", "Calculate the number of products to skip based on the current page and limit."],
+  ["27", "searchParams.toString()", "Pass the pagination parameters in the query."], 
+  ["34", "count", "The total number of products in the Medusa application."],
+  ["45", "setHasMorePages", "Set whether there are more pages based on the total count."],
+  ["62", "button", "Show a button to load more products if there are more pages."]
+]
+
+```tsx highlights={paginateHighlights}
+"use client" // include with Next.js 13+
+
+import { useEffect, useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+
+export default function Products() {
+  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState<
+    HttpTypes.StoreProduct[]
+  >([])
+  const limit = 20
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMorePages, setHasMorePages] = useState(false)
+
+  useEffect(() => {
+    if (!loading) {
+      return 
+    }
+
+    const offset = (currentPage - 1) * limit
+
+    const searchParams = new URLSearchParams({
+      limit: `${limit}`,
+      offset: `${offset}`,
+    })
+
+    fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
+      credentials: "include",
+      headers: {
+        "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+      },
+    })
+    .then((res) => res.json())
+    .then(({ products: dataProducts, count }) => {
+      setProducts((prev) => {
+        if (prev.length > offset) {
+          // products already added because the same request has already been sent
+          return prev
+        }
+        return [
+          ...prev,
+          ...dataProducts,
+        ]
+      })
+      setHasMorePages(count > limit * currentPage)
+      setLoading(false)
+    })
+  }, [loading])
+
+  return (
+    <div>
+      {loading && <span>Loading...</span>}
+      {!loading && products.length === 0 && <span>No products found.</span>}
+      {!loading && products.length > 0 && (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+      {!loading && hasMorePages && (
+        <button 
+          onClick={() => {
+            setCurrentPage((prev) => prev + 1)
+            setLoading(true)
+          }}
+          disabled={loading}
+        >
+          Load More
+        </button>
+      )}
+    </div>
+  )
+}
+```
+
+---
+
+## Filter Products
+
+The List Products API route accepts query parameters to filter products by title, category, whether they're a gift card, and more.
+
+Refer to the [API reference](!api!/store#products_getproducts) for the list of accepted query parameters.
+
+For example, to run a query on the products:
+
+```ts
+const searchParams = new URLSearchParams({
+  // other params...
+  q: "Shirt",
+})
+
+fetch(`http://localhost:9000/store/products?${searchParams.toString()}`, {
+  credentials: "include",
+  headers: {
+    "x-publishable-api-key": process.env.NEXT_PUBLIC_PAK || "temp",
+  },
+})
+.then((res) => res.json())
+.then(({ products: dataProducts, count }) => {
+  // TODO set products...
+})
+```

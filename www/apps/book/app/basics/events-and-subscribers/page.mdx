@@ -1,0 +1,114 @@
+export const metadata = {
+  title: `${pageNumber} Events and Subscribers`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to handle events with subscribers.
+
+## What is an Event?
+
+When an action is performed in Medusa, such as creating a product, the Medusa application emits an event. You can listen to those events and perform an asynchronous action.
+
+---
+
+## What is a Subscriber?
+
+A subscriber is a function executed whenever its associated event is emitted.
+
+The subscriber is created in a TypeScript or JavaScript file under the `src/subscribers` directory.
+
+For example, create the file `src/subscribers/product-created.ts` with the following content:
+
+```ts title="src/subscribers/product-created.ts"
+import { type SubscriberConfig } from "@medusajs/medusa"
+
+// subscriber function
+export default async function productCreateHandler() {
+  console.log("A product was created")
+}
+
+// subscriber config
+export const config: SubscriberConfig = {
+  event: "product.created",
+}
+```
+
+A subscriber file must export:
+
+- The subscriber function that is an asynchronous function executed whenever the associated event is triggered.
+- A configuration object defining the event this subscriber is listening to.
+
+The above subscriber listens to the `product.created` event. Whenever the event is emitted, it logs in the terminal `A product is created`.
+
+{/* TODO add when we have the admin dashboard to use with V2 for easy testing. */}
+
+{/* ### Test Subscriber
+
+To test the subscriber, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, create a product using the Medusa Admin dashboard. Afterward, you’ll see the following messages logged in the terminal:
+
+```bash
+info:    Processing product.created which has 1 subscribers
+A product is created
+```
+
+The first message indicates that the `product.created` event was emitted, and the second one is the message logged from the subscriber. */}
+
+---
+
+## When to Use Subscribers
+
+<Note title="Use subscribers when" type="success">
+
+- You want to perform an action everytime a specific event is emitted in the Medusa application.
+
+</Note>
+
+---
+
+## Resolve Resources
+
+The subscriber function accepts an object parameter with the property `container`. Its value is the Medusa container, and you can use it to resolve other resources, such as services.
+
+For example:
+
+{/* TODO change how event names are loaded */}
+
+export const highlights = [
+  ["11"],
+  ["14", "resolve", "Resolve the `IProductModuleService`."],
+  ["14", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+]
+
+```ts title="src/subscribers/product-created.ts" highlights={highlights}
+import {
+  SubscriberArgs,
+  type SubscriberConfig,
+} from "@medusajs/medusa"
+import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+export default async function productCreateHandler({
+  data,
+  container,
+}: SubscriberArgs<Record<string, string>>) {
+  const productModuleService: IProductModuleService =
+    container.resolve(ModuleRegistrationName.PRODUCT)
+
+  const product = await productModuleService.retrieve(data.id)
+
+  console.log(`The product ${product.title} was created`)
+}
+
+export const config: SubscriberConfig = {
+  event: `product.created`,
+}
+```
+
+You use the container to resolve the `IProductModuleService`, then log the title of the created product.

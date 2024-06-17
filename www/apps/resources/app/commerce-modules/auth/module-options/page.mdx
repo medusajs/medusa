@@ -1,0 +1,70 @@
+---
+sidebar_label: "Module Options"
+---
+
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Auth Module Options`,
+}
+
+# {metadata.title}
+
+In this document, you'll learn about the options of the Auth Module.
+
+## providers
+
+The `providers` option is an array of auth provider modules.
+
+When the Medusa application starts, these providers are registered and can be used to handle authentication.
+
+For example:
+
+```js title="medusa-config.js"
+const { Modules } = require("@medusajs/modules-sdk")
+
+// ...
+
+module.exports = defineConfig({
+  // ...
+  modules: {
+    resolve: "@medusajs/auth",
+    options: {
+      providers: [
+        {
+          resolve: "@medusajs/auth-google",
+          options: {
+            config: {
+              google: {
+                // provider options...
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
+})
+```
+
+The `providers` option is an array of objects that accept the following properties:
+
+- `resolve`: A string indicating the package name of the auth provider module or the path to it.
+- `options`: An optional object of the auth provider module's options. The object must have the following property:
+  - `config`: An object whose key is the ID of the auth provider, and its value is an object of options to pass to the provider module.
+
+---
+
+## Auth CORS
+
+The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration. So, before using these routes, make sure to set that configuration.
+
+Refer to [Medusa's configuration guide](/references/medusa-config#authCors) for more details.
+
+---
+
+## authMethodsPerActor Configuration
+
+The Medusa application's configuration accept an `authMethodsPerActor` configuration which restricts the allowed auth providers used with an actor type.
+
+Learn more about the `authMethodsPerActor` configuration in [this guide](../auth-providers/page.mdx#configure-allowed-auth-providers-of-actor-types).

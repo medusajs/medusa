@@ -1,0 +1,53 @@
+export const metadata = {
+  title: `Relations between Product Module and Other Modules`,
+}
+
+# {metadata.title}
+
+This document showcases the link modules defined between the Product Module and other commerce modules.
+
+## Cart Module
+
+A cart's line item is associated with a product and its variant. Medusa defines a link module that builds a relationship between the `Cart`, `Product`, and `ProductVariant` data models.
+
+![A diagram showcasing an example of how data models from the Cart and Product modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716546229/Medusa%20Resources/cart-product_x82x9j.jpg)
+
+---
+
+## Order Module
+
+An order's line item is associated with the purchased product and its variant. Medusa defines a link module that builds a relationship between the `LineItem`, `Product`, and `ProductVariant` data models.
+
+![A diagram showcasing an example of how data models from the Order and Product modules are linked](https://res.cloudinary.com/dza7lstvk/image/upload/v1716556100/Medusa%20Resources/order-product_l6ylte.jpg)
+
+---
+
+## Pricing Module
+
+A product variant’s prices are stored as money amounts belonging to a price set. Medusa defines a link module that builds a relationship between the `ProductVariant` and the `PriceSet` data models.
+
+![A diagram showcasing an example of how data models from the Pricing and Product Module are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709651464/Medusa%20Resources/product-pricing_vlxsiq.jpg)
+
+So, to add prices for a product variant, create a price set and add the prices as money amounts to it.
+
+Learn more about the `PriceSet` data model in the [Pricing Concepts](../../pricing/concepts/page.mdx#price-list)
+
+---
+
+## Sales Channel Module
+
+A product can have different availability in different sales channels. Medusa defines a link module that builds a relationship between the `Product` and `SalesChannel` data models.
+
+![A diagram showcasing an example of how data models from the Product and Sales Channel modules are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709651840/Medusa%20Resources/product-sales-channel_t848ik.jpg)
+
+---
+
+## Inventory Module
+
+Each product variant has different inventory details. Medusa defines a link module that builds a relationship between the `ProductVariant` and `InventoryItem` data models.
+
+![A diagram showcasing an example of how data models from the Product and Inventory modules are linked.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709652779/Medusa%20Resources/product-inventory_kmjnud.jpg)
+
+When the `manage_inventory` field of a product variant is enabled, you can manage the variant's inventory in different locations through this relation.
+
+Learn more about the `InventoryItem` data model in the [Inventory Concepts](../../inventory/concepts/page.mdx#inventoryitem)

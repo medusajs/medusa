@@ -1,0 +1,17 @@
+By default, passing the `--with-nextjs-starter` to the `create-medusa-app` command starts both the Medusa application at `localhost:9000` and the Next.js Starter storefront at `localhost:8000` once the installation finishes successfully. The Medusa Admin also opens in your default browser.
+
+If, while following along the setup process, you try to access the Next.js storefront and it's not working, try to run the storefront manually while the Medusa application is still running.
+
+To do that, first, change to the directory of the storefront. The directory name is `{project_name}-storefront`, where `{project_name}` is the name you chose for the project while running the `create-medusa-app` command. For example:
+
+```bash
+cd my-medusa-store-storefront
+```
+
+Then, run the following command to start the storefront:
+
+```bash npm2yarn
+npm run dev
+```
+
+The storefront runs on `localhost:8000` now.

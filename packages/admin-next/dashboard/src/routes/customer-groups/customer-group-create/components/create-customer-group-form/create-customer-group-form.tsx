@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
-import { useAdminCreateCustomerGroup } from "medusa-react"
+import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -10,8 +9,9 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
+import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
-const CreateCustomerGroupSchema = zod.object({
+export const CreateCustomerGroupSchema = zod.object({
   name: zod.string().min(1),
 })
 
@@ -26,7 +26,7 @@ export const CreateCustomerGroupForm = () => {
     resolver: zodResolver(CreateCustomerGroupSchema),
   })
 
-  const { mutateAsync, isLoading } = useAdminCreateCustomerGroup()
+  const { mutateAsync, isPending } = useCreateCustomerGroup()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
@@ -35,7 +35,20 @@ export const CreateCustomerGroupForm = () => {
       },
       {
         onSuccess: ({ customer_group }) => {
+          toast.success(t("general.success"), {
+            description: t("customerGroups.create.successToast", {
+              name: customer_group.name,
+            }),
+            dismissLabel: t("actions.close"),
+          })
+
           handleSuccess(`/customer-groups/${customer_group.id}`)
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -55,7 +68,7 @@ export const CreateCustomerGroupForm = () => {
               type="submit"
               variant="primary"
               size="small"
-              isLoading={isLoading}
+              isLoading={isPending}
             >
               {t("actions.create")}
             </Button>
@@ -64,9 +77,9 @@ export const CreateCustomerGroupForm = () => {
         <RouteFocusModal.Body className="flex flex-col items-center pt-[72px]">
           <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
-              <Heading>{t("customerGroups.createCustomerGroup")}</Heading>
+              <Heading>{t("customerGroups.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
-                {t("customerGroups.createCustomerGroupHint")}
+                {t("customerGroups.create.hint")}
               </Text>
             </div>
             <div className="grid grid-cols-2 gap-4">

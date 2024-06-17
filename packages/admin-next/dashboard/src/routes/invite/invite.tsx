@@ -1,19 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UserRoles } from "@medusajs/medusa"
-import { Alert, Button, Heading, Input, Text, Tooltip } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { AnimatePresence, motion } from "framer-motion"
-import { useAdminAcceptInvite } from "medusa-react"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import i18n from "i18next"
-
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { decodeToken } from "react-jwt"
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
 import { isAxiosError } from "../../lib/is-axios-error"
+import { useAcceptInvite } from "../../hooks/api/invites"
+import { useCreateAuthUser } from "../../hooks/api/auth"
 
 const CreateAccountSchema = z
   .object({
@@ -34,9 +34,9 @@ const CreateAccountSchema = z
   })
 
 type DecodedInvite = {
-  invite_id: string
-  role: UserRoles
-  user_email: string
+  id: string
+  jti: UserRoles
+  exp: string
   iat: number
 }
 
@@ -49,7 +49,7 @@ export const Invite = () => {
   const isValidInvite = invite && validateDecodedInvite(invite)
 
   return (
-    <div className="min-h-dvh w-dvw bg-ui-bg-base relative flex items-center justify-center p-4">
+    <div className="bg-ui-bg-base relative flex min-h-dvh w-dvw items-center justify-center p-4">
       <div className="flex w-full max-w-[300px] flex-col items-center">
         <LogoBox
           className="mb-4"
@@ -185,7 +185,6 @@ const InvalidView = () => {
 const CreateView = ({
   onSuccess,
   token,
-  invite,
 }: {
   onSuccess: () => void
   token: string
@@ -197,7 +196,7 @@ const CreateView = ({
   const form = useForm<z.infer<typeof CreateAccountSchema>>({
     resolver: zodResolver(CreateAccountSchema),
     defaultValues: {
-      email: invite.user_email,
+      email: "",
       first_name: "",
       last_name: "",
       password: "",
@@ -205,37 +204,49 @@ const CreateView = ({
     },
   })
 
-  const { mutateAsync, isLoading } = useAdminAcceptInvite()
+  const { mutateAsync: createAuthUser, isPending: isCreatingAuthUser } =
+    useCreateAuthUser()
+
+  const { mutateAsync: acceptInvite, isPending: isAcceptingInvite } =
+    useAcceptInvite(token)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await mutateAsync(
-      {
-        user: {
-          first_name: data.first_name,
-          last_name: data.last_name,
-          password: data.password,
-        },
-        token: token!,
-      },
-      {
-        onSuccess,
-        onError: (error) => {
-          if (isAxiosError(error) && error.response?.status === 400) {
-            form.setError("root", {
-              type: "manual",
-              message: t("invite.invalidInvite"),
-            })
-            setInvalid(true)
-            return
-          }
+    try {
+      const { token: authToken } = await createAuthUser({
+        email: data.email,
+        password: data.password,
+      })
 
-          form.setError("root", {
-            type: "manual",
-            message: t("errors.serverError"),
-          })
-        },
+      const invitePayload = {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
       }
-    )
+
+      await acceptInvite({
+        ...invitePayload,
+        auth_token: authToken,
+      })
+      onSuccess()
+      toast.success(t("general.success"), {
+        description: t("invite.toast.accepted"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 400) {
+        form.setError("root", {
+          type: "manual",
+          message: t("invite.invalidInvite"),
+        })
+        setInvalid(true)
+        return
+      }
+
+      form.setError("root", {
+        type: "manual",
+        message: t("errors.serverError"),
+      })
+    }
   })
 
   return (
@@ -257,9 +268,7 @@ const CreateView = ({
                   <Form.Item>
                     <Form.Label>{t("fields.email")}</Form.Label>
                     <Form.Control>
-                      <Tooltip content={t("invite.emailTooltip")}>
-                        <Input autoComplete="off" {...field} disabled />
-                      </Tooltip>
+                      <Input autoComplete="off" {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>
@@ -343,7 +352,7 @@ const CreateView = ({
           <Button
             className="w-full"
             type="submit"
-            isLoading={isLoading}
+            isLoading={isCreatingAuthUser || isAcceptingInvite}
             disabled={invalid}
           >
             {t("invite.createAccount")}
@@ -367,7 +376,7 @@ const SuccessView = () => {
         </Text>
       </div>
       <Button variant="secondary" asChild className="w-full">
-        <Link to="/orders" replace>
+        <Link to="/login" replace>
           {t("invite.successAction")}
         </Link>
       </Button>
@@ -376,9 +385,9 @@ const SuccessView = () => {
 }
 
 const InviteSchema = z.object({
-  invite_id: z.string(),
-  role: z.string(),
-  user_email: z.string().email(),
+  id: z.string(),
+  jti: z.string(),
+  exp: z.number(),
   iat: z.number(),
 })
 

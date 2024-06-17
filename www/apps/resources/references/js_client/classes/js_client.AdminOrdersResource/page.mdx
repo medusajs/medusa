@@ -1,0 +1,724 @@
+---
+slug: /references/js-client/AdminOrdersResource
+---
+
+import { TypeList } from "docs-ui"
+
+# AdminOrdersResource
+
+This class is used to send requests to [Admin Order API Routes](https://docs.medusajs.com/api/admin#orders). All its method
+are available in the JS Client under the `medusa.admin.orders` property.
+
+All methods in this class require [authentication](../../../modules/user/page.mdx).
+
+Orders are purchases made by customers, typically through a storefront using [CartsResource](../js_client.CartsResource/page.mdx). Draft orders created by the admin are also transformed to an Order once the payment is captured.
+Managing orders include managing fulfillment, payment, claims, reservations, and more.
+
+Related Guide: [How to manage orders](https://docs.medusajs.com/modules/orders/admin/manage-orders).
+
+## Methods
+
+### update
+
+Update an order's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.update(orderId, {
+  email: "user@example.com"
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderReq](../../../medusa/classes/medusa.AdminPostOrdersOrderReq/page.mdx)","description":"The attributes to update in the order.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The email associated with the order","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"[AddressPayload](../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The order's billing address","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"[AddressPayload](../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"The order's shipping address","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`Record<string, unknown>`[]","description":"The line items of the order","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region","type":"`string`","description":"ID of the region that the order is associated with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discounts","type":"`Record<string, unknown>`[]","description":"The discounts applied to the order","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"The ID of the customer associated with the order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_method","type":"[PaymentMethod](../../../medusa/classes/medusa.PaymentMethod/page.mdx)","description":"The payment method chosen for the order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_method","type":"[ShippingMethod](../../../medusa/classes/medusa.ShippingMethod-3/page.mdx)[]","description":"The Shipping Method used for shipping the order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this order.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="update"/>
+
+### retrieve
+
+Retrieve an order's details.
+
+#### Example
+
+A simple example that retrieves an order by its ID:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.retrieve(orderId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.retrieve(orderId, {
+  expand: "customer"
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[FindParams](../../../medusa/classes/medusa.FindParams/page.mdx)","description":"Configurations to apply on the retrieved order.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+### list
+
+Retrieve a list of orders. The orders can be filtered by fields such as `status` or `display_id` passed in the `query` parameter. The order can also be paginated.
+
+#### Example
+
+To list orders:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.list()
+.then(({ orders, limit, offset, count }) => {
+  console.log(orders.length);
+})
+```
+
+To specify relations that should be retrieved within the orders:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.list({
+  expand: "customers"
+})
+.then(({ orders, limit, offset, count }) => {
+  console.log(orders.length);
+})
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.list({
+  expand: "customers",
+  limit,
+  offset
+})
+.then(({ orders, limit, offset, count }) => {
+  console.log(orders.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetOrdersParams](../../../medusa/classes/medusa.AdminGetOrdersParams/page.mdx)","description":"Filters and pagination configurations applied on the retrieved orders.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort retrieved orders by. By default, the sort order is ascending.\nTo change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search term to search orders' shipping address, first name, email, and display ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"ID to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"`string`[]","description":"Statuses to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment_status","type":"`string`[]","description":"Fulfillment statuses to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_status","type":"`string`[]","description":"Payment statuses to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"display_id","type":"`string`","description":"Display ID to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string`","description":"Cart ID to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"Customer ID to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"Email to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string` \\| `string`[]","description":"Regions to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"Currency code to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"`string`","description":"Tax rate to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id","type":"`string`[]","description":"Sales channel IDs to filter orders by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"canceled_at","type":"[DateComparisonOperator](../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the orders' `canceled_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"[DateComparisonOperator](../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the orders' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"[DateComparisonOperator](../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the orders' `updated_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of orders with pagination fields.","expandable":false,"children":[{"name":"AdminOrdersListRes","type":"[PaginatedResponse](../../../medusa/interfaces/medusa.PaginatedResponse/page.mdx) & `object`","description":"The list of orders with pagination fields.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+### complete
+
+Complete an order and change its status. A canceled order can't be completed.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.complete(orderId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="complete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="complete"/>
+
+### capturePayment
+
+Capture all the payments associated with an order. The payment of canceled orders can't be captured.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.capturePayment(orderId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order whose payments should be captured.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="capturePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="capturePayment"/>
+
+### refundPayment
+
+Refund an amount for an order. The amount must be less than or equal the `refundable_amount` of the order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.refundPayment(orderId, {
+  amount: 1000,
+  reason: "Do not like it"
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order whose customer should be refunded.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderRefundsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderRefundsReq/page.mdx)","description":"The refund's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"amount","type":"`number`","description":"The amount to refund. It should be less than or equal the `refundable\\_amount` of the order.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason","type":"`string`","description":"The reason for the Refund.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"A note with additional details about the Refund.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this Refund.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="refundPayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="refundPayment"/>
+
+### createFulfillment
+
+Create a Fulfillment of an Order using the fulfillment provider, and change the order's fulfillment status to either `partially_fulfilled` or `fulfilled`, depending on
+whether all the items were fulfilled.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createFulfillment(orderId, {
+  items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ]
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the fulfillment belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderFulfillmentsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderFulfillmentsReq/page.mdx)","description":"The fulfillment to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[Item](../../../medusa/classes/medusa.Item-2/page.mdx)[]","description":"The Line Items to include in the Fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the location where the items will be fulfilled from.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this fulfillment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createFulfillment"/>
+
+### cancelFulfillment
+
+Cancel an order's fulfillment and change its fulfillment status to `canceled`.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the fulfillment belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillmentId","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelFulfillment"/>
+
+### cancelSwapFulfillment
+
+Cancel a swap's fulfillment and change its fulfillment status to `canceled`.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the swap is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swapId","type":"`string`","description":"The ID of the swap the fulfillment belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillmentId","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelSwapFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelSwapFulfillment"/>
+
+### cancelClaimFulfillment
+
+Cancel a claim's fulfillment and change its fulfillment status to `canceled`.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the claim is associated with.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claimId","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillmentId","type":"`string`","description":"The fulfillment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelClaimFulfillment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelClaimFulfillment"/>
+
+### createShipment
+
+Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
+whether all the items were shipped.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createShipment(order_id, {
+  fulfillment_id
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderShipmentReq](../../../medusa/classes/medusa.AdminPostOrdersOrderShipmentReq/page.mdx)","description":"The shipment to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fulfillment_id","type":"`string`","description":"The ID of the Fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tracking_numbers","type":"`string`[]","description":"The tracking numbers for the shipment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be send related to this Shipment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createShipment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createShipment"/>
+
+### requestReturn
+
+Request and create a return for items in an order. If the return shipping method is specified, it will be automatically fulfilled.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.requestReturn(orderId, {
+  items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ]
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderReturnsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderReturnsReq/page.mdx)","description":"The return to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"items","type":"[OrdersReturnItem](../../../medusa/classes/medusa.OrdersReturnItem/page.mdx)[]","description":"The line items that will be returned.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_shipping","type":"[ReturnShipping](../../../medusa/classes/medusa.ReturnShipping-2/page.mdx)","description":"The Shipping Method to be used to handle the return shipment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"An optional note with information about the Return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"receive_now","type":"`boolean`","description":"A flag to indicate if the Return should be registerd as received immediately.","optional":true,"defaultValue":"false","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this Return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refund","type":"`number`","description":"The amount to refund.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the location used for the return.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="requestReturn"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the return under the `returns` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="requestReturn"/>
+
+### cancel
+
+Cancel an order and change its status. This will also cancel any associated fulfillments and payments, and it may fail if the payment or fulfillment Provider 
+is unable to cancel the payment/fulfillment.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancel(orderId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancel"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancel"/>
+
+### addShippingMethod
+
+Add a shipping method to an order. If another shipping method exists with the same shipping profile, the previous shipping method will be replaced.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.addShippingMethod(orderId, {
+  price: 1000,
+  option_id
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderShippingMethodsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderShippingMethodsReq/page.mdx)","description":"The shipping method to be added.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"price","type":"`number`","description":"The price (excluding VAT) that should be charged for the Shipping Method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"option_id","type":"`string`","description":"The ID of the Shipping Option to create the Shipping Method from.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.","optional":true,"defaultValue":"{}","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addShippingMethod"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="addShippingMethod"/>
+
+### archive
+
+Archive an order and change its status.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.archive(orderId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="archive"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="archive"/>
+
+### createSwap
+
+Create a swap for an order. This includes creating a return that is associated with the swap.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createSwap(orderId, {
+  return_items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ]
+})
+.then(({ order }) => {
+  console.log(order.swaps);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderSwapsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderSwapsReq/page.mdx)","description":"The swap to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"return_items","type":"[ReturnItem](../../../medusa/classes/medusa.ReturnItem/page.mdx)[]","description":"The Line Items to associate with the swap's return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_shipping","type":"[ReturnShipping](../../../medusa/classes/medusa.ReturnShipping-1/page.mdx)","description":"The shipping method associated with the swap's return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id","type":"`string`","description":"The ID of the sales channel associated with the swap.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_items","type":"[AdditionalItem](../../../medusa/classes/medusa.AdditionalItem-1/page.mdx)[]","description":"The new items to send to the Customer.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"custom_shipping_options","type":"[CustomShippingOption](../../../medusa/classes/medusa.CustomShippingOption/page.mdx)[]","description":"An array of custom shipping options to potentially create a Shipping Method from to send the additional items.","optional":true,"defaultValue":"[]","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this Swap.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"return_location_id","type":"`string`","description":"The ID of the location used for the associated return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"If set to `true`, swaps can be completed with items out of stock","optional":true,"defaultValue":"true","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSwap"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSwap"/>
+
+### cancelSwap
+
+Cancel a swap and change its status.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancelSwap(orderId, swapId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the swap belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swapId","type":"`string`","description":"The swap's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelSwap"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelSwap"/>
+
+### fulfillSwap
+
+Create a Fulfillment for a Swap and change its fulfillment status to `fulfilled`. If it requires any additional actions,
+its fulfillment status may change to `requires_action`.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.fulfillSwap(orderId, swapId, {
+  no_notification: true,
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the swap belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swapId","type":"`string`","description":"The swap's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderSwapsSwapFulfillmentsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapFulfillmentsReq/page.mdx)","description":"The fulfillment to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this swap.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the fulfillment's location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="fulfillSwap"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="fulfillSwap"/>
+
+### createSwapShipment
+
+Create a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
+whether all the items were shipped.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createSwapShipment(orderId, swapId, {
+  fulfillment_id
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the swap belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swapId","type":"`string`","description":"The swap's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderSwapsSwapShipmentsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapShipmentsReq/page.mdx)","description":"The shipment to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fulfillment_id","type":"`string`","description":"The ID of the Fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tracking_numbers","type":"`string`[]","description":"The tracking numbers for the shipment.","optional":true,"defaultValue":"[]","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be sent related to this Claim.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSwapShipment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createSwapShipment"/>
+
+### processSwapPayment
+
+Process a swap's payment either by refunding or issuing a payment. This depends on the `difference_due` of the swap. If `difference_due` is negative, the amount is refunded.
+If `difference_due` is positive, the amount is captured.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.processSwapPayment(orderId, swapId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the swap belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swapId","type":"`string`","description":"The swap's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="processSwapPayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `swaps` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="processSwapPayment"/>
+
+### createClaim
+
+Create a claim for an order. If a return shipping method is specified, a return will also be created and associated with the claim. If the claim's type is `refund`,
+the refund is processed as well.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createClaim(orderId, {
+  type: 'refund',
+  claim_items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ]
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The order's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderClaimsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsReq/page.mdx)","description":"The claim to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"type","type":"`\"replace\"` \\| `\"refund\"`","description":"The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_items","type":"[Item](../../../medusa/classes/medusa.Item-1/page.mdx)[]","description":"The Claim Items that the Claim will consist of.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_shipping","type":"[ReturnShipping](../../../medusa/classes/medusa.ReturnShipping/page.mdx)","description":"Optional details for the Return Shipping Method, if the items are to be sent back. Providing this field will result in a return being created and associated with the claim.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"additional_items","type":"[AdditionalItem](../../../medusa/classes/medusa.AdditionalItem/page.mdx)[]","description":"The new items to send to the Customer. This is only used if the claim's type is `replace`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../../medusa/classes/medusa.ShippingMethod-1/page.mdx)[]","description":"The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"refund_amount","type":"`number`","description":"The amount to refund the customer. This is used when the claim's type is `refund`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_address","type":"[AddressPayload](../../../medusa/classes/medusa.AddressPayload/page.mdx)","description":"An optional shipping address to send the claimed items to. If not provided, the parent order's shipping address will be used.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be send related to this Claim.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"return_location_id","type":"`string`","description":"The ID of the location used for the associated return.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createClaim"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the claim under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createClaim"/>
+
+### cancelClaim
+
+Cancel a claim and change its status. A claim can't be canceled if it has a refund, if its fulfillments haven't been canceled, of if its associated return hasn't been canceled.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.cancelClaim(orderId, claimId)
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the claim belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claimId","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelClaim"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="cancelClaim"/>
+
+### updateClaim
+
+Update a claim's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.updateClaim(orderId, claimId, {
+  no_notification: true
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the claim belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claimId","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderClaimsClaimReq](../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimReq/page.mdx)","description":"The attributes to update in the claim.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"claim_items","type":"[Item](../../../medusa/classes/medusa.Item-3/page.mdx)[]","description":"The Claim Items that the Claim will consist of.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../../medusa/classes/medusa.ShippingMethod-2/page.mdx)[]","description":"The Shipping Methods to send the additional Line Items with.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to true no notification will be send related to this Swap.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="updateClaim"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the claims under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="updateClaim"/>
+
+### fulfillClaim
+
+Create a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
+It may also change the status to `requires_action` if any actions are required.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.fulfillClaim(orderId, claimId, {
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the claim belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claimId","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderClaimsClaimFulfillmentsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimFulfillmentsReq/page.mdx)","description":"The fulfillment to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional set of key-value pairs to hold additional information.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"no_notification","type":"`boolean`","description":"If set to `true`, no notification will be sent to the customer related to this Claim.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the fulfillment's location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="fulfillClaim"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="fulfillClaim"/>
+
+### createClaimShipment
+
+Create a shipment for the claim and mark its fulfillment as shipped. If the shipment is created successfully, this changes the claim's fulfillment status
+to either `partially_shipped` or `shipped`, depending on whether all the items were shipped.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orders.createClaimShipment(orderId, claimId, {
+  fulfillment_id
+})
+.then(({ order }) => {
+  console.log(order.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the order that the claim belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claimId","type":"`string`","description":"The claim's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"[AdminPostOrdersOrderClaimsClaimShipmentsReq](../../../medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsReq/page.mdx)","description":"The shipment to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fulfillment_id","type":"`string`","description":"The ID of the Fulfillment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tracking_numbers","type":"`string`[]","description":"An array of tracking numbers for the shipment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createClaimShipment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminOrdersRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the order's details. You can access the swap under the `claims` property.","expandable":false,"children":[{"name":"AdminOrdersRes","type":"`object`","description":"The order's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createClaimShipment"/>

@@ -1,0 +1,36 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Publishable API Keys with Sales Channels`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn what publishable API keys are and how to use them with sales channels.
+
+## Without Publishable API Keys
+
+When using multiple sales channels, you’ll need to specify the ID of a storefront’s sales channel. This ensures that you retrieve the products available in that sales channel and associate the sales channel with the storefront’s carts and orders.
+
+The [Store API routes](!api!/store) accept the sales channel’s IDs differently depending on the API route's HTTP method. Some accept it as a query parameter whereas others accept it as a request body parameter.
+
+This approach is tedious and error-prone as your storefront scales and as you develop multiple types of storefronts.
+
+---
+
+## Introducing Publishable API Keys
+
+A publishable API key, provided by the API Key Module, is a client key scoped to one or more sales channels. When passed in the header of a request, the Medusa application infers the associated sales channels.
+
+So, instead of the approach, indicated in the previous section, of manually passing the sales channel’s ID based on the API route, you always pass the publishable API key in the header of your requests:
+
+```bash
+curl http://localhost:9000/store/products \
+  x-publishable-api-key: {your_publishable_api_key}
+```
+
+---
+
+## How to Create a Publishable API Key?
+
+To create a publishable API key, either use the Medusa Admin or the [Admin API Routes](!api!/admin#publishable-api-keys).

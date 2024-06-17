@@ -48,6 +48,7 @@ medusaIntegrationTestRunner({
             type: "fixed",
             target_type: "order",
             value: "100",
+            currency_code: "USD",
           },
         })
 
@@ -84,11 +85,12 @@ medusaIntegrationTestRunner({
             type: "fixed",
             target_type: "order",
             value: "100",
+            currency_code: "USD",
           },
         })
 
         const response = await api.get(
-          `/admin/promotions/${createdPromotion.id}?fields=id,code&expand=`,
+          `/admin/promotions/${createdPromotion.id}?fields=id,code`,
           adminHeaders
         )
 

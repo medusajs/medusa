@@ -1,0 +1,277 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Examples of the Sales Channel Module`,
+}
+
+# {metadata.title}
+
+In this guide, you’ll find common examples of how you can use the Sales Channel Module in your application.
+
+## Create a Sales Channel
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    const salesChannel = await salesChannelModuleService.create({
+      name: "B2B",
+    })
+
+    res.json({
+      sales_channel: salesChannel,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeSalesChannelModule,
+  } from "@medusajs/sales-channel"
+
+  export async function POST(request: Request) {
+    const salesChannelModuleService =
+      await initializeSalesChannelModule()
+
+    const salesChannel = await salesChannelModuleService.create({
+      name: "B2B",
+    })
+
+    return NextResponse.json({ sales_channel: salesChannel })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## List Sales Channels
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    res.json({
+      sales_channels: salesChannelModuleService.list(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeSalesChannelModule,
+  } from "@medusajs/sales-channel"
+
+  export async function GET(request: Request) {
+    const salesChannelModuleService =
+      await initializeSalesChannelModule()
+
+    const salesChannels = await salesChannelModuleService.list()
+
+    return NextResponse.json({ sales_channels: salesChannels })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Retrieve a Sales Channel by its ID
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    const salesChannel = await salesChannelModuleService.retrieve(
+      "sc_123"
+    )
+
+    res.json({
+      sales_channel: salesChannel,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeSalesChannelModule,
+  } from "@medusajs/sales-channel"
+
+  export async function GET(
+    request: Request
+  ) {
+    const salesChannelModuleService =
+      await initializeSalesChannelModule()
+
+    const salesChannel = await salesChannelModuleService.retrieve(
+      "sc_123"
+    )
+
+    return NextResponse.json({ sales_channel: salesChannel })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Update a Sales Channel
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function POST(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    const salesChannel = await salesChannelModuleService.update({
+      id: "sc_123",
+      description: "Sales channel for B2B customers",
+    })
+
+    res.json({
+      sales_channel: salesChannel,
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeSalesChannelModule,
+  } from "@medusajs/sales-channel"
+
+  export async function POST(
+    request: Request
+  ) {
+    const salesChannelModuleService =
+      await initializeSalesChannelModule()
+
+    const salesChannel = await salesChannelModuleService.update({
+      id: "sc_123",
+      description: "Sales channel for B2B customers",
+    })
+
+    return NextResponse.json({ sales_channel: salesChannel })
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## Delete a Sales Channel
+
+<CodeTabs groupId="app-type">
+  <CodeTab label="Medusa API Router" value="medusa">
+
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { ISalesChannelModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function DELETE(
+    request: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const salesChannelModuleService: ISalesChannelModuleService =
+      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+    await salesChannelModuleService.delete("sc_123")
+
+    res.status(200)
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Next.js App Router" value="nextjs">
+
+  ```ts
+  import { NextResponse } from "next/server"
+
+  import {
+    initialize as initializeSalesChannelModule,
+  } from "@medusajs/sales-channel"
+
+  export async function DELETE(
+    request: Request
+  ) {
+    const salesChannelModuleService =
+      await initializeSalesChannelModule()
+
+    await salesChannelModuleService.delete("sc_123")
+  }
+  ```
+
+  </CodeTab>
+</CodeTabs>
+
+---
+
+## More Examples
+
+The [Sales Channel Module's main service reference](/references/sales-channel) provides a reference to all the methods available for use with examples for each.

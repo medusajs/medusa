@@ -1,0 +1,63 @@
+name: Trigger Release and Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: choice
+        default: "preview"
+        description: What tag do you want to release?
+        required: true
+        options:
+          - preview
+          - next
+          - snapshot
+          - canary
+    branches:
+      - develop
+    paths-ignore:
+      - "docs/**"
+      - "www/**"
+      - ".github/**"
+  schedule:
+    - cron: "0 */3 * * *"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    name: Trigger Preview Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Creating .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Version packages
+        run: yarn changeset version --snapshot ${{ github.event.inputs.version || 'preview' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Dependencies
+        run: yarn install --no-immutable
+
+      - name: Build all packages
+        run: yarn build
+
+      - name: Publish packages under next tag
+        run: yarn changeset publish --no-git-tags --snapshot --tag ${{ github.event.inputs.version || 'preview' }}

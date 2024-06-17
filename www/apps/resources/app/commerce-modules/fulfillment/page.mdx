@@ -1,0 +1,182 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `Fulfillment Module`,
+}
+
+# {metadata.title}
+
+The Fulfillment Module is the `@medusajs/fulfillment` NPM package that provides fulfillment-related features in your Medusa and Node.js applications.
+
+## Features
+
+### Fulfillment Management
+
+Create fulfillments and keep track of their status, items, and more.
+
+```ts
+const fulfillment =
+  await fulfillmentModuleService.createFulfillment({
+    location_id: "loc_123",
+    provider_id: "webshipper",
+    delivery_address: {
+      country_code: "us",
+      city: "Strongsville",
+      address_1: "18290 Royalton Rd",
+    },
+    items: [
+      {
+        title: "Shirt",
+        sku: "SHIRT",
+        quantity: 1,
+        barcode: "123456",
+      },
+    ],
+    labels: [],
+    order: {},
+  })
+```
+
+### Integrate Third-Party Fulfillment Providers
+
+Use third-party fulfillment providers to provide customers with shipping options and fulfill their orders.
+
+```ts
+const shippingOption =
+  await fulfillmentModuleService.createShippingOptions({
+    // ...
+    provider_id: "webshipper",
+  })
+```
+
+### Restrict By Location and Rules
+
+Shipping options can be restricted to specific geographical locations. You can also specify custom rules to restrict shipping options.
+
+```ts
+const serviceZone =
+  await fulfillmentModuleService.createServiceZones({
+    name: "US",
+    fulfillment_set_id: "fset_123",
+    geo_zones: [
+      {
+        type: "country",
+        country_code: "us",
+      },
+    ],
+  })
+
+const shippingOption =
+  await fulfillmentModuleService.createShippingOptions({
+    name: "Express Shipping",
+    // restrict location
+    service_zone_id: serviceZone.id,
+    // restrict by custom rules
+    rules: [
+      {
+        field: "customer_group",
+        operator: "eq",
+        value: "vip",
+      },
+    ],
+    // ...
+  })
+```
+
+### Support Different Fulfillment Forms
+
+Support various fulfillment forms, such as shipping or pick up.
+
+```ts
+const fulfillmentSets = await fulfillmentModuleService.create(
+  [
+    {
+      name: "Shipping",
+      type: "shipping",
+    },
+    {
+      name: "Pick-up",
+      type: "pick-up",
+    },
+  ]
+)
+```
+
+---
+
+## Configure Fulfillment Module
+
+Refer to [this documentation](./module-options/page.mdx) for details on the module's options.
+
+---
+
+## How to Use Fulfillment Module's Service
+
+You can use the Fulfillment Module's main service by resolving from the Medusa container the resource `ModuleRegistrationName.API_KEY` imported from `@medusajs/modules-sdk`.
+
+For example:
+
+<CodeTabs groupId="resource-type">
+  <CodeTab label="API Route" value="api-route">
+
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IFulfillmentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export async function GET(
+    req: MedusaRequest,
+    res: MedusaResponse
+  ): Promise<void> {
+    const fulfillmentModuleService: IFulfillmentModuleService =
+      req.scope.resolve(ModuleRegistrationName.FULFILLMENT)
+
+    res.json({
+      fulfillments:
+        await fulfillmentModuleService.listFulfillments(),
+    })
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Subscriber" value="subscribers">
+
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IFulfillmentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  export default async function subscriberHandler({
+    container,
+  }: SubscriberArgs) {
+    const fulfillmentModuleService: IFulfillmentModuleService =
+      container.resolve(ModuleRegistrationName.FULFILLMENT)
+
+    const fulfillments = 
+      await fulfillmentModuleService.listFulfillments()
+  }
+  ```
+
+  </CodeTab>
+  <CodeTab label="Workflow Step" value="workflow-step">
+
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IFulfillmentModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+
+  const step1 = createStep(
+    "step-1", 
+    async (_, { container }) => {
+    const fulfillmentModuleService: IFulfillmentModuleService =
+      container.resolve(
+        ModuleRegistrationName.FULFILLMENT
+      )
+      
+    const fulfillments = 
+      await fulfillmentModuleService.listFulfillments()
+  })
+  ```
+
+  </CodeTab>
+</CodeTabs>

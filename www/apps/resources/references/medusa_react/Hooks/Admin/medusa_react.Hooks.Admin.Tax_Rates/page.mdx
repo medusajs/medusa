@@ -1,0 +1,633 @@
+---
+slug: /references/medusa-react/hooks/admin/tax_rates
+---
+
+import { TypeList } from "docs-ui"
+
+# Tax Rates
+
+Queries and Mutations listed here are used to send requests to the [Admin Tax Rate API Routes](https://docs.medusajs.com/api/admin#tax-rates).
+
+All hooks listed require [authentication](../../../../modules/user/page.mdx).
+
+Each region has at least a default tax rate. Admins can create and manage additional tax rates that can be applied for certain conditions, such as for specific product types.
+
+Related Guide: [How to manage tax rates](https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates).
+
+## Mutations
+
+### useAdminCreateTaxRate
+
+This hook creates a tax rate.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateTaxRate } from "medusa-react"
+
+type Props = {
+  regionId: string
+}
+
+const CreateTaxRate = ({ regionId }: Props) => {
+  const createTaxRate = useAdminCreateTaxRate()
+  // ...
+
+  const handleCreate = (
+    code: string,
+    name: string,
+    rate: number
+  ) => {
+    createTaxRate.mutate({
+      code,
+      name,
+      region_id: regionId,
+      rate,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default CreateTaxRate
+```
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostTaxRatesReq","type":"[AdminPostTaxRatesReq](../../../../medusa/classes/medusa.AdminPostTaxRatesReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the tax rate to create.","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the tax rate.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the tax rate.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"The ID of the Region that the tax rate belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"The numeric rate to charge.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"The IDs of the products associated with this tax rate.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"`string`[]","description":"The IDs of the shipping options associated with this tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The IDs of the types of products associated with this tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateTaxRate"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateTaxRate"/>
+
+### useAdminUpdateTaxRate
+
+This hook updates a tax rate's details.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminUpdateTaxRate } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const updateTaxRate = useAdminUpdateTaxRate(taxRateId)
+  // ...
+
+  const handleUpdate = (
+    name: string
+  ) => {
+    updateTaxRate.mutate({
+      name
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.name)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateTaxRate"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostTaxRatesTaxRateReq","type":"[AdminPostTaxRatesTaxRateReq](../../../../medusa/classes/medusa.AdminPostTaxRatesTaxRateReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the tax rate.","expandable":false,"children":[{"name":"code","type":"`string`","description":"The code of the tax rate.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the tax rate.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"The ID of the Region that the tax rate belongs to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"The numeric rate to charge.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"products","type":"`string`[]","description":"The IDs of the products associated with this tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_options","type":"`string`[]","description":"The IDs of the shipping options associated with this tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_types","type":"`string`[]","description":"The IDs of the types of product types associated with this tax rate","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateTaxRate"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateTaxRate"/>
+
+### useAdminDeleteTaxRate
+
+This hook deletes a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteTaxRate } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const deleteTaxRate = useAdminDeleteTaxRate(taxRateId)
+  // ...
+
+  const handleDelete = () => {
+    deleteTaxRate.mutate(void 0, {
+      onSuccess: ({ id, object, deleted }) => {
+        console.log(id)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteTaxRate"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteTaxRate"/>
+
+### useAdminCreateProductTaxRates
+
+This hook adds products to a tax rate.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateProductTaxRates } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const addProduct = useAdminCreateProductTaxRates(taxRateId)
+  // ...
+
+  const handleAddProduct = (productIds: string[]) => {
+    addProduct.mutate({
+      products: productIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.products)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostTaxRatesTaxRateProductsReq","type":"[AdminPostTaxRatesTaxRateProductsReq](../../../../medusa/classes/medusa.AdminPostTaxRatesTaxRateProductsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to associat with the tax rate.","expandable":false,"children":[{"name":"products","type":"`string`[]","description":"The IDs of the products to associate with this tax rate","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTaxRates"/>
+
+### useAdminDeleteProductTaxRates
+
+This hook removes products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteProductTaxRates } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const removeProduct = useAdminDeleteProductTaxRates(taxRateId)
+  // ...
+
+  const handleRemoveProduct = (productIds: string[]) => {
+    removeProduct.mutate({
+      products: productIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.products)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDeleteTaxRatesTaxRateProductsReq","type":"[AdminDeleteTaxRatesTaxRateProductsReq](../../../../medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the products to remove their associated with the tax rate.","expandable":false,"children":[{"name":"products","type":"`string`[]","description":"The IDs of the products to remove their association with this tax rate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTaxRates"/>
+
+### useAdminCreateProductTypeTaxRates
+
+This hook adds product types to a tax rate.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminCreateProductTypeTaxRates,
+} from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const addProductTypes = useAdminCreateProductTypeTaxRates(
+    taxRateId
+  )
+  // ...
+
+  const handleAddProductTypes = (productTypeIds: string[]) => {
+    addProductTypes.mutate({
+      product_types: productTypeIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.product_types)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTypeTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostTaxRatesTaxRateProductTypesReq","type":"[AdminPostTaxRatesTaxRateProductTypesReq](../../../../medusa/classes/medusa.AdminPostTaxRatesTaxRateProductTypesReq/page.mdx)","optional":false,"defaultValue":"","description":"The product types to add to the tax rate.","expandable":false,"children":[{"name":"product_types","type":"`string`[]","description":"The IDs of the types of products to associate with this tax rate","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTypeTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateProductTypeTaxRates"/>
+
+### useAdminDeleteProductTypeTaxRates
+
+This hook removes product types from a tax rate. This only removes the association between the 
+product types and the tax rate. It does not delete the product types.
+
+#### Example
+
+```ts
+import React from "react"
+import { 
+  useAdminDeleteProductTypeTaxRates,
+} from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const removeProductTypes = useAdminDeleteProductTypeTaxRates(
+    taxRateId
+  )
+  // ...
+
+  const handleRemoveProductTypes = (
+    productTypeIds: string[]
+  ) => {
+    removeProductTypes.mutate({
+      product_types: productTypeIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.product_types)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTypeTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDeleteTaxRatesTaxRateProductTypesReq","type":"[AdminDeleteTaxRatesTaxRateProductTypesReq](../../../../medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductTypesReq/page.mdx)","optional":false,"defaultValue":"","description":"Product types to remove from the tax rates.","expandable":false,"children":[{"name":"product_types","type":"`string`[]","description":"The IDs of the product types to remove their association with this tax rate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTypeTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteProductTypeTaxRates"/>
+
+### useAdminCreateShippingTaxRates
+
+This hook adds shipping options to a tax rate.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminCreateShippingTaxRates } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const addShippingOption = useAdminCreateShippingTaxRates(
+    taxRateId
+  )
+  // ...
+
+  const handleAddShippingOptions = (
+    shippingOptionIds: string[]
+  ) => {
+    addShippingOption.mutate({
+      shipping_options: shippingOptionIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.shipping_options)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateShippingTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminPostTaxRatesTaxRateShippingOptionsReq","type":"[AdminPostTaxRatesTaxRateShippingOptionsReq](../../../../medusa/classes/medusa.AdminPostTaxRatesTaxRateShippingOptionsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the shipping options to associate with the tax rate.","expandable":false,"children":[{"name":"shipping_options","type":"`string`[]","description":"The IDs of the shipping options to associate with this tax rate","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateShippingTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateShippingTaxRates"/>
+
+### useAdminDeleteShippingTaxRates
+
+This hook removes shipping options from a tax rate. This only removes the association between 
+the shipping options and the tax rate. It does not delete the shipping options.
+
+#### Example
+
+```ts
+import React from "react"
+import { useAdminDeleteShippingTaxRates } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const removeShippingOptions = useAdminDeleteShippingTaxRates(
+    taxRateId
+  )
+  // ...
+
+  const handleRemoveShippingOptions = (
+    shippingOptionIds: string[]
+  ) => {
+    removeShippingOptions.mutate({
+      shipping_options: shippingOptionIds,
+    }, {
+      onSuccess: ({ tax_rate }) => {
+        console.log(tax_rate.shipping_options)
+      }
+    })
+  }
+
+  // ...
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteShippingTaxRates"/>
+
+#### Mutation Function Parameters
+
+<TypeList types={[{"name":"AdminDeleteTaxRatesTaxRateShippingOptionsReq","type":"[AdminDeleteTaxRatesTaxRateShippingOptionsReq](../../../../medusa/classes/medusa.AdminDeleteTaxRatesTaxRateShippingOptionsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the shipping options to remove their associate with the tax rate.","expandable":false,"children":[{"name":"shipping_options","type":"`string`[]","description":"The IDs of the shipping options to remove their association with this tax rate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteShippingTaxRates"/>
+
+#### Mutation Function Returned Data
+
+<TypeList types={[{"name":"AdminTaxRatesRes","type":"[AdminTaxRatesRes](../../../../medusa/types/medusa.AdminTaxRatesRes/page.mdx)","optional":false,"defaultValue":"","description":"The tax rate's details.","expandable":false,"children":[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteShippingTaxRates"/>
+
+___
+
+## Queries
+
+### useAdminTaxRates
+
+This hook retrieves a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate` 
+passed in the `query` parameter. The tax rates can also be paginated.
+
+#### Example
+
+To list tax rates:
+
+```tsx
+import React from "react"
+import { useAdminTaxRates } from "medusa-react"
+
+const TaxRates = () => {
+  const { 
+    tax_rates, 
+    isLoading
+  } = useAdminTaxRates()
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_rates && !tax_rates.length && (
+        <span>No Tax Rates</span>
+      )}
+      {tax_rates && tax_rates.length > 0 && (
+        <ul>
+          {tax_rates.map((tax_rate) => (
+            <li key={tax_rate.id}>{tax_rate.code}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default TaxRates
+```
+
+To specify relations that should be retrieved within the tax rates:
+
+```tsx
+import React from "react"
+import { useAdminTaxRates } from "medusa-react"
+
+const TaxRates = () => {
+  const { 
+    tax_rates, 
+    isLoading
+  } = useAdminTaxRates({
+    expand: ["shipping_options"]
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_rates && !tax_rates.length && (
+        <span>No Tax Rates</span>
+      )}
+      {tax_rates && tax_rates.length > 0 && (
+        <ul>
+          {tax_rates.map((tax_rate) => (
+            <li key={tax_rate.id}>{tax_rate.code}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default TaxRates
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```tsx
+import React from "react"
+import { useAdminTaxRates } from "medusa-react"
+
+const TaxRates = () => {
+  const { 
+    tax_rates, 
+    limit,
+    offset,
+    isLoading
+  } = useAdminTaxRates({
+    expand: ["shipping_options"],
+    limit: 10,
+    offset: 0
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_rates && !tax_rates.length && (
+        <span>No Tax Rates</span>
+      )}
+      {tax_rates && tax_rates.length > 0 && (
+        <ul>
+          {tax_rates.map((tax_rate) => (
+            <li key={tax_rate.id}>{tax_rate.code}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default TaxRates
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"query","type":"[AdminGetTaxRatesParams](../../../../medusa/classes/medusa.AdminGetTaxRatesParams/page.mdx)","description":"Filters and pagination configurations applied to the retrieved tax rates.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"region_id","type":"`string` \\| `string`[]","description":"Filter tax rates by the IDs of their associates region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"Name to filter tax rates by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"Code to filter tax rates by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`number` \\| [NumericalComparisonOperator](../../../../medusa/classes/medusa.NumericalComparisonOperator/page.mdx)","description":"Number filters to filter tax rates' `rate` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"50","expandable":false,"children":[]},{"name":"expand","type":"`string`[]","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the tax rates' `update_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the customer tax rates' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the tax rates' `deleted_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"q","type":"`string`","description":"Term used to search tax rates by name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminTaxRates"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)[]","description":"An array of tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminTaxRates"/>
+
+### useAdminTaxRate
+
+This hook retrieves a tax rate's details.
+
+#### Example
+
+A simple example that retrieves a tax rate by its ID:
+
+```tsx
+import React from "react"
+import { useAdminTaxRate } from "medusa-react"
+
+type Props = {
+  taxRateId: string
+}
+
+const TaxRate = ({ taxRateId }: Props) => {
+  const { tax_rate, isLoading } = useAdminTaxRate(taxRateId)
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_rate && <span>{tax_rate.code}</span>}
+    </div>
+  )
+}
+
+export default TaxRate
+```
+
+To specify relations that should be retrieved:
+
+```tsx
+import React from "react"
+import { useAdminTaxRate } from "medusa-react"
+
+const TaxRate = (taxRateId: string) => {
+  const { tax_rate, isLoading } = useAdminTaxRate(taxRateId, {
+    expand: ["shipping_options"]
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {tax_rate && <span>{tax_rate.code}</span>}
+    </div>
+  )
+}
+
+export default TaxRate
+```
+
+#### Hook Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The tax rate's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"[AdminGetTaxRatesParams](../../../../medusa/classes/medusa.AdminGetTaxRatesParams/page.mdx)","description":"Configurations to apply on retrieved tax rates.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"region_id","type":"`string` \\| `string`[]","description":"Filter tax rates by the IDs of their associates region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"Name to filter tax rates by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"Code to filter tax rates by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`number` \\| [NumericalComparisonOperator](../../../../medusa/classes/medusa.NumericalComparisonOperator/page.mdx)","description":"Number filters to filter tax rates' `rate` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"50","expandable":false,"children":[]},{"name":"expand","type":"`string`[]","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`[]","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the tax rates' `update_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"created_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the customer tax rates' `created_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"deleted_at","type":"[DateComparisonOperator](../../../../medusa/classes/medusa.DateComparisonOperator/page.mdx)","description":"Date filters to apply on the tax rates' `deleted_at` date.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"lt","type":"`Date`","description":"The filtered date must be less than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gt","type":"`Date`","description":"The filtered date must be greater than this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gte","type":"`Date`","description":"The filtered date must be greater than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"lte","type":"`Date`","description":"The filtered date must be less than or equal to this value.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"q","type":"`string`","description":"Term used to search tax rates by name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminTaxRate"/>
+
+#### Query Returned Data
+
+<TypeList types={[{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"Tax rate details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_default","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_combinable","type":"`boolean`","description":"","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"tax_region_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_region","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"provider_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"provider","type":"[TaxProvider](../../../../tax_models/classes/tax_models.TaxProvider/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"country_code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"parent","type":"[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"Collection&#60;[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"children","type":"Collection&#60;[TaxRegion](../../../../tax_models/classes/tax_models.TaxRegion/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rules","type":"Collection&#60;[TaxRateRule](../../../../tax_models/classes/tax_models.TaxRateRule/page.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reference","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rate","type":"[TaxRate](../../../../tax_models/classes/tax_models.TaxRate/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"","optional":false,"defaultValue":"null","expandable":false,"children":[]},{"name":"[OptionalProps]","type":"[SoftDeletableEntityDateColumns](../../../../types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminTaxRate"/>

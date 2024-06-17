@@ -1,17 +1,34 @@
-import { NavbarLinkProps, navbarItems } from ".."
+import { NavbarItem, legacyNavbarItems, navbarItemsV1, navbarItemsV2 } from ".."
 
 type Options = {
   basePath: string
   activePath: string
+  version?: "v1" | "v2" | "legacy"
 }
 
 export function getNavbarItems({
   basePath,
   activePath,
-}: Options): NavbarLinkProps[] {
-  return navbarItems.map((item) => ({
-    ...item,
-    isActive: activePath === item.href,
-    href: `${basePath}${item.href}`,
-  }))
+  version = "legacy",
+}: Options): NavbarItem[] {
+  const navbarItems =
+    version === "v2"
+      ? navbarItemsV2
+      : version === "v1"
+      ? navbarItemsV1
+      : legacyNavbarItems
+  return navbarItems.map((item) => {
+    if (item.type === "divider") {
+      return item
+    }
+
+    return {
+      ...item,
+      props: {
+        ...item.props,
+        isActive: activePath === item.props?.href,
+        href: `${basePath}${item.props?.href}`,
+      },
+    }
+  })
 }

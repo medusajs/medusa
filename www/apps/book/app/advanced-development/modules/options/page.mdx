@@ -1,0 +1,109 @@
+import { CodeTabs, CodeTab } from "docs-ui"
+
+export const metadata = {
+  title: `${pageNumber} Module Options`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about passing options to your module from the Medusa application’s configurations and using them in the module’s resources.
+
+## What are Module Options?
+
+A module can receive options to customize or configure its functionality.
+
+For example, if you’re creating a module that integrates a third-party service, you’ll want to receive the integration credentials in the options rather than adding them directly in your code.
+
+---
+
+## How to Pass Options to a Module?
+
+To pass options to a module, add an `options` property to the module’s configuration in `medusa-config.js`.
+
+For example:
+
+```js title="medusa-config.js"
+module.exports = defineConfig({
+  // ...
+  modules: {
+    helloModuleService: {
+      resolve: "./modules/hello",
+      options: {
+        capitalize: true,
+      },
+    },
+  },
+})
+
+```
+
+The `options` property’s value is an object. You can pass any properties you want.
+
+---
+
+## Access Module Options in Main Service
+
+The module’s main service receives the module options as a second parameter.
+
+For example:
+
+```ts title="src/modules/hello/service.ts" highlights={[["15"], ["21"], ["25"], ["26"], ["27"]]}
+// ...
+
+// recommended to define type in another file
+type HelloModuleOptions = {
+  capitalize?: boolean
+}
+
+class HelloModuleService extends ModulesSdkUtils
+  .abstractModuleServiceFactory<
+  // ...
+  >(
+  // ...
+  ) {
+    // ...
+    protected options_: HelloModuleOptions
+    
+    constructor(
+      {
+        // ...
+      }: InjectedDependencies,
+      protected readonly moduleOptions: HelloModuleOptions
+    ) {
+      //...
+      
+      this.options_ = moduleOptions || {
+        capitalize: false,
+      }
+    }
+  }
+```
+
+---
+
+## Access Module Options in Loader
+
+The object that a module’s loaders receive as a parameter has an `options` property holding the module's options.
+
+For example:
+
+```ts title="src/modules/hello/loaders/hello-world.ts" highlights={[["11"], ["16"]]}
+import {
+  LoaderOptions,
+} from "@medusajs/modules-sdk"
+
+// recommended to define type in another file
+type HelloModuleOptions = {
+  capitalize?: boolean
+}
+
+export default function helloWorldLoader({
+  options,
+}: LoaderOptions<HelloModuleOptions>) {
+  
+  console.log(
+    "[HELLO MODULE] Just started the Medusa application!",
+    options
+  )
+}
+```

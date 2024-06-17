@@ -1,32 +1,23 @@
 get:
   operationId: GetInvites
-  summary: Lists Invites
-  description: Retrieve a list of invites.
+  summary: List Invites
+  description: >-
+    Retrieve a list of invites. The invites can be filtered by fields such as
+    `id`. The invites can also be sorted or paginated.
   x-authenticated: true
-  x-codegen:
-    method: list
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_invites/get.js
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_invites/get.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Invites
   responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/AdminListInvitesRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -39,40 +30,28 @@ get:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
-post:
-  operationId: PostInvites
-  summary: Create an Invite
-  description: >-
-    Create an Invite. This will generate a token associated with the invite and
-    trigger an `invite.created` event. If you have a Notification Provider
-    installed that handles this event, a notification should be sent to the
-    email associated with the invite to allow them to accept the invite.
-  x-authenticated: true
   requestBody:
     content:
       application/json:
-        schema:
-          $ref: ../components/schemas/AdminPostInvitesReq.yaml
-  x-codegen:
-    method: create
+        schema: {}
+post:
+  operationId: PostInvites
+  summary: Create Invite
+  description: Create a invite.
+  x-authenticated: true
+  parameters: []
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_invites/post.js
     - lang: Shell
       label: cURL
       source:
         $ref: ../code_samples/Shell/admin_invites/post.sh
-  security:
-    - api_token: []
-    - cookie_auth: []
-    - jwt_token: []
   tags:
     - Invites
   responses:
-    '200':
-      description: OK
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':
@@ -85,3 +64,7 @@ post:
       $ref: ../components/responses/invalid_request_error.yaml
     '500':
       $ref: ../components/responses/500_error.yaml
+  requestBody:
+    content:
+      application/json:
+        schema: {}

@@ -6,24 +6,26 @@ import {
   CampaignDTO,
   CurrencyDTO,
   CustomerGroupDTO,
+  FulfillmentDTO,
+  FulfillmentProviderDTO,
+  InventoryNext,
   InviteDTO,
+  OrderDTO,
   PaymentProviderDTO,
   PriceListDTO,
-  ProductCategoryDTO,
-  ProductCollectionDTO,
-  ProductDTO,
-  ProductTypeDTO,
-  ProductVariantDTO,
   PromotionDTO,
-  RegionDTO,
+  PromotionRuleDTO,
   SalesChannelDTO,
+  ShippingOptionDTO,
+  ShippingProfileDTO,
   StockLocationAddressDTO,
   StockLocationDTO,
   StoreDTO,
   UserDTO,
+  HttpTypes,
 } from "@medusajs/types"
-import { ProductTagDTO } from "@medusajs/types/dist/product"
-import { WorkflowExecutionDTO } from "../v2-routes/workflow-executions/types"
+
+import { WorkflowExecutionDTO } from "../routes/workflow-executions/types"
 
 type ListRes = {
   count: number
@@ -46,7 +48,7 @@ export type PromotionListRes = { promotions: PromotionDTO[] } & ListRes
 export type PromotionRuleAttributesListRes = { attributes: Record<any, any>[] }
 export type PromotionRuleOperatorsListRes = { operators: Record<any, any>[] }
 export type PromotionRuleValuesListRes = { values: Record<any, any>[] }
-export type PromotionRulesListRes = { rules: Record<any, any>[] }
+export type PromotionRulesListRes = { rules: PromotionRuleDTO[] }
 export type PromotionDeleteRes = DeleteRes
 
 // Users
@@ -62,10 +64,17 @@ export type ExtendedStoreDTO = StoreDTO & {
 export type StoreRes = { store: ExtendedStoreDTO }
 export type StoreListRes = { stores: ExtendedStoreDTO[] } & ListRes
 
-// Regions
-export type RegionRes = { region: RegionDTO }
-export type RegionListRes = { regions: RegionDTO[] } & ListRes
-export type RegionDeleteRes = DeleteRes
+// Fulfillments
+export type FulfillmentRes = { fulfillment: FulfillmentDTO }
+export type FulfillmentListRes = { fulfillments: FulfillmentDTO[] } & ListRes
+export type FulfillmentDeleteRes = DeleteRes
+
+// Reservations
+export type ReservationRes = { reservation: InventoryNext.ReservationItemDTO }
+export type ReservationListRes = {
+  reservations: InventoryNext.ReservationItemDTO[]
+} & ListRes
+export type ReservationDeleteRes = DeleteRes
 
 // Campaigns
 export type CampaignRes = { campaign: CampaignDTO }
@@ -87,28 +96,9 @@ export type InviteRes = { invite: InviteDTO }
 export type InviteListRes = { invites: InviteDTO[] } & ListRes
 export type InviteDeleteRes = DeleteRes
 
-// Products
-export type ExtendedProductDTO = ProductDTO & {
-  variants: ProductVariantDTO[] | null
-  sales_channels: SalesChannelDTO[] | null
-  collections: ProductCollectionDTO[] | null
-  categories: ProductCategoryDTO[] | null
-}
-export type ProductRes = { product: ExtendedProductDTO }
-export type ProductListRes = { products: ExtendedProductDTO[] } & ListRes
-export type ProductDeleteRes = DeleteRes
-
-// Categories
-export type CategoryRes = { category: ProductCategoryDTO }
-export type CategoriesListRes = { categories: ProductCategoryDTO[] } & ListRes
-
-// Tags
-export type TagRes = { tag: ProductTagDTO }
-export type TagsListRes = { tags: ProductTagDTO[] } & ListRes
-
-// Product Types
-export type ProductTypeRes = { product_type: ProductTypeDTO }
-export type ProductTypeListRes = { product_types: ProductTypeDTO[] } & ListRes
+// Orders
+export type OrderRes = { order: OrderDTO }
+export type OrderListRes = { orders: OrderDTO[] } & ListRes
 
 // Payments
 
@@ -126,20 +116,48 @@ export type StockLocationListRes = {
   stock_locations: ExtendedStockLocationDTO[]
 } & ListRes
 export type StockLocationDeleteRes = DeleteRes
+export type FulfillmentSetDeleteRes = DeleteRes
+export type ServiceZoneDeleteRes = DeleteRes
 
-// Worfklow Executions
+// Fulfillment providers
+export type FulfillmentProvidersListRes = {
+  fulfillment_providers: FulfillmentProviderDTO
+} & ListRes
+
+// Shipping options
+export type ShippingOptionRes = { shipping_option: ShippingOptionDTO }
+export type ShippingOptionDeleteRes = DeleteRes
+export type ShippingOptionListRes = {
+  shipping_options: ShippingOptionDTO[]
+} & ListRes
+
+// Shipping profile
+export type ShippingProfileRes = { shipping_profile: ShippingProfileDTO }
+export type ShippingProfileListRes = {
+  shipping_profiles: ShippingProfileDTO[]
+} & ListRes
+export type ShippingProfileDeleteRes = DeleteRes
+
+// Workflow Executions
 export type WorkflowExecutionRes = { workflow_execution: WorkflowExecutionDTO }
 export type WorkflowExecutionListRes = {
   workflow_executions: WorkflowExecutionDTO[]
 } & ListRes
 
-// Product Collections
-export type ProductCollectionRes = { collection: ProductCollectionDTO }
-export type ProductCollectionListRes = {
-  collections: ProductCollectionDTO[]
-} & ListRes
-export type ProductCollectionDeleteRes = DeleteRes
+// Taxes
+export type TaxRegionDeleteRes = DeleteRes
+export type TaxRateDeleteRes = DeleteRes
 
+// Reservations
+export type ReservationItemDeleteRes = DeleteRes
+
+export type ReservationItemListRes = {
+  reservations: InventoryNext.ReservationItemDTO[]
+} & ListRes
+
+export type ReservationItemRes = {
+  reservation: InventoryNext.ReservationItemDTO
+}
 // Price Lists
 export type PriceListRes = { price_list: PriceListDTO }
 export type PriceListListRes = { price_lists: PriceListDTO[] } & ListRes

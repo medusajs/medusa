@@ -3,8 +3,8 @@
 import React, { Suspense, cloneElement, useRef, useState } from "react"
 import { Loading } from "@/components"
 import clsx from "clsx"
-import { CSSTransition } from "react-transition-group"
 import { DetailsSummary } from "./Summary"
+import { useCollapsible } from "../../hooks"
 
 export type DetailsProps = {
   openInitial?: boolean
@@ -22,7 +22,11 @@ export const Details = ({
   ...props
 }: DetailsProps) => {
   const [open, setOpen] = useState(openInitial)
-  const [showContent, setShowContent] = useState(openInitial)
+  const { getCollapsibleElms, setCollapsed } = useCollapsible({
+    initialValue: !openInitial,
+    heightAnimation,
+    onClose: () => setOpen(false),
+  })
   const ref = useRef<HTMLDetailsElement>(null)
 
   const handleToggle = (e: React.MouseEvent<HTMLElement>) => {
@@ -36,10 +40,10 @@ export const Details = ({
       return
     }
     if (open) {
-      setShowContent(false)
+      setCollapsed(true)
     } else {
       setOpen(true)
-      setShowContent(true)
+      setCollapsed(false)
     }
   }
 
@@ -77,56 +81,11 @@ export const Details = ({
           open,
           onClick: handleToggle,
         })}
-      <CSSTransition
-        unmountOnExit
-        in={showContent}
-        timeout={150}
-        onEnter={(node: HTMLElement) => {
-          if (heightAnimation) {
-            node.classList.add("transition-[height]")
-            node.style.height = `0px`
-          } else {
-            node.classList.add(
-              "!mb-docs_2",
-              "!mt-0",
-              "translate-y-docs_1",
-              "transition-transform"
-            )
-          }
-        }}
-        onEntering={(node: HTMLElement) => {
-          if (heightAnimation) {
-            node.style.height = `${node.scrollHeight}px`
-          }
-        }}
-        onEntered={(node: HTMLElement) => {
-          if (heightAnimation) {
-            node.style.height = `auto`
-          }
-        }}
-        onExit={(node: HTMLElement) => {
-          if (heightAnimation) {
-            node.style.height = `${node.scrollHeight}px`
-          } else {
-            node.classList.add("transition-transform", "!-translate-y-docs_1")
-            setTimeout(() => {
-              setOpen(false)
-            }, 100)
-          }
-        }}
-        onExiting={(node: HTMLElement) => {
-          if (heightAnimation) {
-            node.style.height = `0px`
-            setTimeout(() => {
-              setOpen(false)
-            }, 100)
-          }
-        }}
-      >
+      {getCollapsibleElms(
         <Suspense fallback={<Loading className="!mb-docs_2 !mt-0" />}>
           {children}
         </Suspense>
-      </CSSTransition>
+      )}
     </details>
   )
 }

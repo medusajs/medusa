@@ -1,0 +1,139 @@
+---
+slug: /references/js-client/AdminVariantsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# AdminVariantsResource
+
+This class is used to send requests to [Admin Product Variant API Routes](https://docs.medusajs.com/api/admin#product-variants). All its method
+are available in the JS Client under the `medusa.admin.variants` property.
+
+All methods in this class require [authentication](../../../modules/user/page.mdx).
+
+Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
+Product variants can be managed through [AdminProductsResource](../js_client.AdminProductsResource/page.mdx).
+
+Related Guide: [How to manage product variants](https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants).
+
+## Methods
+
+### list
+
+Retrieve a list of product variants. The product variant can be filtered by fields such as `id` or `title` passed in the `query` parameter. The product variant can also be paginated.
+
+#### Example
+
+To list product variants:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.list()
+.then(({ variants, limit, offset, count }) => {
+  console.log(variants.length);
+})
+```
+
+To specify relations that should be retrieved within the product variants:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.list({
+  expand: "options"
+})
+.then(({ variants, limit, offset, count }) => {
+  console.log(variants.length);
+})
+```
+
+By default, only the first `100` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.list({
+  expand: "options",
+  limit,
+  offset
+})
+.then(({ variants, limit, offset, count }) => {
+  console.log(variants.length);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetVariantsParams](../../../medusa/classes/medusa.AdminGetVariantsParams/page.mdx)","description":"Filters and pagination configurations to apply on the retrieved product variants.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"q","type":"`string`","description":"Search term to search product variants' IDs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":true,"defaultValue":"20","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":true,"defaultValue":"0","expandable":false,"children":[]},{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"IDs to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"title","type":"`string` \\| `string`[]","description":"Titles to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory_quantity","type":"`number` \\| [NumericalComparisonOperator](../../../medusa/classes/medusa.NumericalComparisonOperator/page.mdx)","description":"Number filters to apply on product variants' `inventory_quantity` field.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`string`","description":"The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manage_inventory","type":"`boolean`","description":"Filter product variants by whether their inventory is managed or not.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"Filter product variants by whether they are allowed to be backordered or not.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string`","description":"Retrieve prices for a cart ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"Retrieve prices for a region ID.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"Retrieve prices for a currency code.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"Retrieve prices for a customer ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminVariantsListRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the list of product variants with pagination fields.","expandable":false,"children":[{"name":"AdminVariantsListRes","type":"[AdminVariantsListRes](../../../medusa/types/medusa.AdminVariantsListRes/page.mdx)","optional":false,"defaultValue":"","description":"The list of variants with pagination fields.","expandable":false,"children":[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variants","type":"[PricedVariant](../../../medusa/types/medusa.PricedVariant/page.mdx)[]","description":"An array of product variant details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
+
+### retrieve
+
+Retrieve a product variant's details.
+
+#### Example
+
+A simple example that retrieves a product variant by its ID:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.retrieve(variantId)
+.then(({ variant }) => {
+  console.log(variant.id);
+})
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.retrieve(variantId, {
+  expand: "options"
+})
+.then(({ variant }) => {
+  console.log(variant.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The product variant's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"query","type":"[AdminGetVariantParams](../../../medusa/classes/medusa.AdminGetVariantParams/page.mdx)","description":"Configurations to apply on the retrieved product variant.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"expand","type":"`string`","description":"Comma-separated relations that should be expanded in the returned data.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"fields","type":"`string`","description":"Comma-separated fields that should be included in the returned data.\nif a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.\nwithout prefix it will replace the entire default fields.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminVariantsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the product variant's details.","expandable":false,"children":[{"name":"AdminVariantsRes","type":"[AdminVariantsRes](../../../medusa/types/medusa.AdminVariantsRes/page.mdx)","optional":false,"defaultValue":"","description":"The product variant's details.","expandable":false,"children":[{"name":"variant","type":"[PricedVariant](../../../medusa/types/medusa.PricedVariant/page.mdx)","description":"Product variant's details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieve"/>
+
+### getInventory
+
+Retrieve the available inventory of a product variant.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.variants.getInventory(variantId)
+.then(({ variant }) => {
+  console.log(variant.inventory, variant.sales_channel_availability)
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"variantId","type":"`string`","description":"The product variant's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getInventory"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminGetVariantsVariantInventoryRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the inventory details of the product variant.","expandable":false,"children":[{"name":"AdminGetVariantsVariantInventoryRes","type":"[AdminGetVariantsVariantInventoryRes](../../../medusa/types/medusa.AdminGetVariantsVariantInventoryRes/page.mdx)","optional":false,"defaultValue":"","description":"The variant's inventory details.","expandable":false,"children":[{"name":"variant","type":"[VariantInventory](../../../medusa/types/medusa.VariantInventory/page.mdx)","description":"The product variant's inventory details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"the ID of the variant","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"inventory","type":"[ResponseInventoryItem](../../../medusa/types/medusa.ResponseInventoryItem/page.mdx)[]","description":"The inventory details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"location_levels","type":"[LevelWithAvailability](../../../medusa/types/medusa.LevelWithAvailability/page.mdx)[]","description":"The inventory's location levels.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sales_channel_availability","type":"`object`[]","description":"Details about the variant's inventory availability in sales channels.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"channel_name","type":"`string`","description":"Sales channel's name","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel_id","type":"`string`","description":"Sales channel's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"available_quantity","type":"`number`","description":"Available quantity in the sales channel","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getInventory"/>

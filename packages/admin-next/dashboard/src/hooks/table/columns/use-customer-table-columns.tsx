@@ -1,4 +1,3 @@
-import { Customer } from "@medusajs/medusa"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -18,8 +17,9 @@ import {
   FirstSeenCell,
   FirstSeenHeader,
 } from "../../../components/table/table-cells/customer/first-seen-cell"
+import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<Customer>()
+const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
 
 export const useCustomerTableColumns = () => {
   return useMemo(

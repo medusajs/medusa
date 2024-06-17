@@ -1,0 +1,82 @@
+---
+slug: /references/js-client/SwapsResource
+---
+
+import { TypeList } from "docs-ui"
+
+# SwapsResource
+
+This class is used to send requests to [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps). All its method
+are available in the JS Client under the `medusa.swaps` property.
+
+A swap is created by a customer or an admin to exchange an item with a new one.
+Creating a swap implicitely includes creating a return for the item being exchanged.
+
+Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
+
+## Methods
+
+### create
+
+Create a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
+To complete the swap, you must use the [CartsResource.complete](../js_client.CartsResource/page.mdx#complete) method passing it the ID of the swap's cart.
+
+An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
+key in the `Idempotency-Key` header.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.swaps.create({
+  order_id,
+  return_items: [
+    {
+      item_id,
+      quantity: 1
+    }
+  ],
+  additional_items: [
+    {
+      variant_id,
+      quantity: 1
+    }
+  ]
+})
+.then(({ swap }) => {
+  console.log(swap.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"payload","type":"[StorePostSwapsReq](../../../medusa/classes/medusa.StorePostSwapsReq/page.mdx)","description":"The data of the swap to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the Order to create the Swap for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_items","type":"[Item](../../../medusa/classes/medusa.Item-7/page.mdx)[]","description":"The items to include in the Return.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the order's line item to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason_id","type":"`string`","description":"The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons API Route.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"The note to add to the item being swapped.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_items","type":"[AdditionalItem](../../../medusa/classes/medusa.AdditionalItem-2/page.mdx)[]","description":"The items to exchange the returned items with.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the variant.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"return_shipping_option","type":"`string`","description":"The ID of the Shipping Option to create the Shipping Method from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreSwapsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the swap's details.","expandable":false,"children":[{"name":"StoreSwapsRes","type":"[StoreSwapsRes](../../../medusa/types/medusa.StoreSwapsRes/page.mdx)","optional":false,"defaultValue":"","description":"The swap's details.","expandable":false,"children":[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
+
+### retrieveByCartId
+
+Retrieve a Swap's details by the ID of its cart.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.swaps.retrieveByCartId(cartId)
+.then(({ swap }) => {
+  console.log(swap.id);
+})
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"cart_id","type":"`string`","description":"The cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCartId"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreSwapsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the swap's details.","expandable":false,"children":[{"name":"StoreSwapsRes","type":"[StoreSwapsRes](../../../medusa/types/medusa.StoreSwapsRes/page.mdx)","optional":false,"defaultValue":"","description":"The swap's details.","expandable":false,"children":[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="retrieveByCartId"/>

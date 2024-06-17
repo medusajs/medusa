@@ -1,0 +1,53 @@
+---
+displayed_sidebar: productReference
+slug: /references/product/createTypes
+sidebar_label: createTypes
+---
+
+import { TypeList } from "docs-ui"
+
+# createTypes - Product Module Reference
+
+This documentation provides a reference to the `createTypes` method. This belongs to the Product Module.
+
+## createTypes(data, sharedContext?): Promise&#60;[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)[]&#62;
+
+This method is used to create a product type.
+
+### Example
+
+```ts
+const productTypes = await productModuleService.createTypes([
+  {
+    value: "digital",
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateProductTypeDTO](../../../interfaces/product.CreateProductTypeDTO/page.mdx)[]","description":"The product types to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string`","description":"The product type's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/product.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/product.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createTypes"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of created product types.","expandable":false,"children":[{"name":"ProductTypeDTO[]","type":"[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProductTypeDTO","type":"`object`","description":"A product type's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createTypes"/>
+
+## createTypes(data, sharedContext?): Promise&#60;[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)&#62;
+
+This method is used to create a product type.
+
+### Example
+
+```ts
+const productType = await productModuleService.createTypes({
+  value: "digital",
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateProductTypeDTO](../../../interfaces/product.CreateProductTypeDTO/page.mdx)","description":"The product type to be created.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"value","type":"`string`","description":"The product type's value.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/product.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/product.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createTypes"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The created product type.","expandable":false,"children":[{"name":"ProductTypeDTO","type":"[ProductTypeDTO](../../../interfaces/product.ProductTypeDTO/page.mdx)","optional":false,"defaultValue":"","description":"A product type's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The value of the product type.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`string` \\| `Date`","description":"When the product type was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`string` \\| `Date`","description":"When the product type was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`string` \\| `Date`","description":"When the product type was deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createTypes"/>

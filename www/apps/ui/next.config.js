@@ -9,7 +9,7 @@ const nextConfig = {
         {
           source: "/:path*",
           destination: `${
-            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3002"
+            process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
           }/:path*`,
           basePath: false,
         },

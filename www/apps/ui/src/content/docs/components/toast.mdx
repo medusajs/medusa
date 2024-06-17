@@ -10,31 +10,25 @@ component: true
 
 ---
 
-Add the Toaster component somewhere in your tree
+Import the `toast` utility and `Toaster` component from `@medusajs/ui`:
 
 ```tsx
-import { Toaster } from "@medusajs/ui"
+import { Toaster, toast } from "@medusajs/ui"
 ```
+
+Then, add the `Toaster` component somewhere in your tree:
 
 ```tsx
 <Toaster />
 ```
 
-The `useToast` hook returns a `toast` function that you can use to display a toast.
+Finally, use the `toast` utility to display a toast:
 
 ```tsx
-import { useToast } from "@medusajs/ui"
-```
-
-```tsx
-const { toast } = useToast()
-
 return (
-
   <Button 
     onClick={() => 
-      toast({ 
-        title: "Toast title",
+      toast.info("Toast title", {
         description: "Toast body",
       })
     }
@@ -46,11 +40,38 @@ return (
 
 ## API Reference
 
+---
+
+### Toast Utility Functions
+
+The `toast` utility has the following functions to display different variants of toasts:
+
+- `info`
+- `error`
+- `success`
+- `warning`
+- `loading`
+
+Each of these functions accept two parameters:
+
+1. A string indicating the title of the toast.
+2. An object of props to pass to the underlying `Toast` component.
+
+### Toast Props
+
 <ComponentReference mainComponent="Toast" />
+
+### Toaster Props
+
+<ComponentReference mainComponent="Toaster" />
 
 ## Examples
 
 ---
+
+### Dismissable Toast
+
+<ComponentExample name="toaster-dismiss" />
 
 ### Warning
 

@@ -11,14 +11,16 @@ import {
 } from "@medusajs/icons"
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
+import { useStore } from "../../../hooks/api/store"
 import { Skeleton } from "../../common/skeleton"
-import { NavItem, NavItemProps } from "../nav-item"
-import { Shell } from "../shell"
+import { NavItem, NavItemProps } from "../../layout/nav-item"
+import { Shell } from "../../layout/shell"
 
-import extensions from "medusa-admin:routes/links"
+import routes from "virtual:medusa/routes/links"
+import { settingsRouteRegex } from "../../../lib/extension-helpers"
+import { Divider } from "../../common/divider"
 
 export const MainLayout = () => {
   return (
@@ -35,7 +37,7 @@ const MainSidebar = () => {
         <div className="bg-ui-bg-subtle sticky top-0">
           <Header />
           <div className="px-3">
-            <div className="border-ui-border-strong h-px w-full border-b border-dashed" />
+            <Divider variant="dashed" />
           </div>
         </div>
         <CoreRouteSection />
@@ -46,7 +48,7 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  const { store, isError, error } = useAdminStore()
+  const { store, isError, error } = useStore()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
@@ -86,10 +88,11 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
       label: t("orders.domain"),
       to: "/orders",
       items: [
-        {
-          label: t("draftOrders.domain"),
-          to: "/draft-orders",
-        },
+        // TODO: Enable when domin is introduced
+        // {
+        //   label: t("draftOrders.domain"),
+        //   to: "/draft-orders",
+        // },
       ],
     },
     {
@@ -105,10 +108,11 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
           label: t("categories.domain"),
           to: "/categories",
         },
-        {
-          label: t("giftCards.domain"),
-          to: "/gift-cards",
-        },
+        // TODO: Enable when domin is introduced
+        // {
+        //   label: t("giftCards.domain"),
+        //   to: "/gift-cards",
+        // },
       ],
     },
     {
@@ -135,8 +139,14 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <ReceiptPercent />,
-      label: t("discounts.domain"),
-      to: "/discounts",
+      label: t("promotions.domain"),
+      to: "/promotions",
+      items: [
+        {
+          label: t("campaigns.domain"),
+          to: "/campaigns",
+        },
+      ],
     },
     {
       icon: <CurrencyDollar />,
@@ -150,7 +160,7 @@ const CoreRouteSection = () => {
   const coreRoutes = useCoreRoutes()
 
   return (
-    <nav className="flex flex-col gap-y-1 py-2">
+    <nav className="flex flex-col gap-y-1 py-3">
       {coreRoutes.map((route) => {
         return <NavItem key={route.to} {...route} />
       })}
@@ -159,22 +169,30 @@ const CoreRouteSection = () => {
 }
 
 const ExtensionRouteSection = () => {
-  if (!extensions.links || extensions.links.length === 0) {
+  const { t } = useTranslation()
+
+  const links = routes.links
+
+  const extensionLinks = links.filter(
+    (link) => !settingsRouteRegex.test(link.path)
+  )
+
+  if (!extensionLinks.length) {
     return null
   }
 
   return (
     <div>
       <div className="px-3">
-        <div className="border-ui-border-strong h-px w-full border-b border-dashed" />
+        <Divider variant="dashed" />
       </div>
-      <div className="flex flex-col gap-y-1 py-2">
+      <div className="flex flex-col gap-y-1 py-3">
         <Collapsible.Root defaultOpen>
           <div className="px-4">
             <Collapsible.Trigger asChild className="group/trigger">
               <button className="text-ui-fg-subtle flex w-full items-center justify-between px-2">
                 <Text size="xsmall" weight="plus" leading="compact">
-                  Extensions
+                  {t("nav.extensions")}
                 </Text>
                 <div className="text-ui-fg-muted">
                   <ChevronDownMini className="group-data-[state=open]/trigger:hidden" />
@@ -185,7 +203,7 @@ const ExtensionRouteSection = () => {
           </div>
           <Collapsible.Content>
             <div className="flex flex-col gap-y-1 py-1 pb-4">
-              {extensions.links.map((link) => {
+              {extensionLinks.map((link) => {
                 return (
                   <NavItem
                     key={link.path}

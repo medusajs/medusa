@@ -14,7 +14,6 @@ export const useCustomerTableFilters = (
   const { customer_groups } = useCustomerGroups(
     {
       limit: 1000,
-      expand: "",
     },
     {
       enabled: !isGroupsExcluded,
@@ -26,7 +25,7 @@ export const useCustomerTableFilters = (
   if (customer_groups && !isGroupsExcluded) {
     const customerGroupFilter: Filter = {
       key: "groups",
-      label: t("customers.groups"),
+      label: t("customers.groups.label"),
       type: "select",
       multiple: true,
       options: customer_groups.map((s) => ({

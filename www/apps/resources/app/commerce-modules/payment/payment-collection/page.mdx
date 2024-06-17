@@ -1,0 +1,37 @@
+export const metadata = {
+  title: `Payment Collection`,
+}
+
+# {metadata.title}
+
+In this document, you’ll learn what a payment collection is and how to use it with the Cart Module.
+
+## What's a Payment Collection?
+
+A payment collection stores payment details related to a resource, such as a cart or an order. It’s represented by the [PaymentCollection data model](/references/payment/models/PaymentCollection).
+
+Every purchase or request for payment starts with a payment collection. The collection holds details necessary to complete the payment, including:
+
+- The payment sessions that represents the payment amount to authorize.
+- The payments that are created when a payment session is authorized. They can be captured and refunded.
+- The payment providers that handle the processing of each payment session, including the authorization, capture, and refund.
+
+---
+
+## Multiple Payments
+
+The payment collection supports multiple payment sessions and payments. You can use this to accept payments in increments or split payments across payment providers.
+
+![Diagram showcasing how a payment collection can have multiple payment sessions and payments](https://res.cloudinary.com/dza7lstvk/image/upload/v1711554695/Medusa%20Resources/payment-collection-multiple-payments_oi3z3n.jpg)
+
+---
+
+## Usage with the Cart Module
+
+The Cart Module provides cart management features. However, it doesn’t provide any features related to accepting payment.
+
+With the Payment Module, you can create a payment collection for the cart and process the payment.
+
+The Medusa application creates a link between the `PaymentCollection` and `Cart` data models. It also implements the payment flow during checkout as explained in [this documentation](../payment-flow/page.mdx).
+
+![Diagram showcasing the relation between the Payment and Cart modules](https://res.cloudinary.com/dza7lstvk/image/upload/v1711537849/Medusa%20Resources/cart-payment_ixziqm.jpg)

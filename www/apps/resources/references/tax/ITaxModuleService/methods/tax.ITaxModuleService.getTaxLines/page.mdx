@@ -1,0 +1,48 @@
+---
+displayed_sidebar: taxReference
+slug: /references/tax/getTaxLines
+sidebar_label: getTaxLines
+---
+
+import { TypeList } from "docs-ui"
+
+# getTaxLines - Tax Module Reference
+
+This documentation provides a reference to the `getTaxLines` method. This belongs to the Tax Module.
+
+This method retrieves tax lines for taxable items and shipping methods in a cart.
+
+Learn more in [this guide](https://docs.medusajs.com/experimental/tax/tax-calculation-with-provider/).
+
+## Example
+
+```ts
+const taxLines = await taxModuleService.getTaxLines(
+  [
+    {
+      id: "cali_123",
+      product_id: "prod_123",
+      unit_price: 1000,
+      quantity: 1,
+    },
+    {
+      id: "casm_123",
+      shipping_option_id: "so_123",
+      unit_price: 2000,
+    },
+  ],
+  {
+    address: {
+      country_code: "us",
+    },
+  }
+)
+```
+
+## Parameters
+
+<TypeList types={[{"name":"items","type":"([TaxableItemDTO](../../../interfaces/tax.TaxableItemDTO/page.mdx) \\| [TaxableShippingDTO](../../../interfaces/tax.TaxableShippingDTO/page.mdx))[]","description":"The items and shipping methods to retrieve their tax lines.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"calculationContext","type":"[TaxCalculationContext](../../../interfaces/tax.TaxCalculationContext/page.mdx)","description":"The context to pass to the underlying tax provider. It provides more\ndetails that are useful to provide accurate tax lines.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"address","type":"`object`","description":"The customer's address","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"country_code","type":"`string`","description":"The ISO 2 character currency code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"province_code","type":"`null` \\| `string`","description":"The province code.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"address_1","type":"`string`","description":"The first line of the address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"address_2","type":"`null` \\| `string`","description":"The second line of the address","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"city","type":"`string`","description":"The city.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"postal_code","type":"`string`","description":"The postal code.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customer","type":"`object`","description":"The customer's details.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The email of the customer.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_groups","type":"`string`[]","description":"The groups that the customer belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"is_return","type":"`boolean`","description":"Whether the tax lines are calculated for an order return.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/tax.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/tax.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getTaxLines"/>
+
+## Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;([ItemTaxLineDTO](../../../interfaces/tax.ItemTaxLineDTO/page.mdx) \\| [ShippingTaxLineDTO](../../../interfaces/tax.ShippingTaxLineDTO/page.mdx))[]&#62;","optional":false,"defaultValue":"","description":"The item and shipping methods' tax lines.","expandable":false,"children":[{"name":"(ItemTaxLineDTO \\| ShippingTaxLineDTO)[]","type":"([ItemTaxLineDTO](../../../interfaces/tax.ItemTaxLineDTO/page.mdx) \\| [ShippingTaxLineDTO](../../../interfaces/tax.ShippingTaxLineDTO/page.mdx))[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ItemTaxLineDTO \\| ShippingTaxLineDTO","type":"[ItemTaxLineDTO](../../../interfaces/tax.ItemTaxLineDTO/page.mdx) \\| [ShippingTaxLineDTO](../../../interfaces/tax.ShippingTaxLineDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getTaxLines"/>
