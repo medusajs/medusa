@@ -6,7 +6,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
-import { createPaymentSessionStep, deletePaymentSessionStep } from "../steps"
+import { createPaymentSessionStep } from "../steps"
+import { deletePaymentSessionsWorkflow } from "./delete-payment-sessions"
 
 interface WorkflowInput {
   payment_collection_id: string
@@ -40,14 +41,24 @@ export const createPaymentSessionsWorkflow = createWorkflow(
       }
     )
 
+    const deletePaymentSessionInput = transform(
+      { paymentCollection },
+      (data) => {
+        return {
+          ids:
+            data.paymentCollection?.payment_sessions?.map((ps) => ps.id) || [],
+        }
+      }
+    )
+
     // Note: We are deleting an existing active session before creating a new one
     // for a payment collection as we don't support split payments at the moment.
     // When we are ready to accept split payments, this along with other workflows
     // need to be handled correctly
     const [created] = parallelize(
       createPaymentSessionStep(paymentSessionInput),
-      deletePaymentSessionStep({
-        payment_session_id: paymentCollection.payment_sessions?.[0].id,
+      deletePaymentSessionsWorkflow.runAsStep({
+        input: deletePaymentSessionInput,
       })
     )
 
