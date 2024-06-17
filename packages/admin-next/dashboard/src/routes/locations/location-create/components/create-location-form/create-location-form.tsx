@@ -21,7 +21,7 @@ const CreateLocationSchema = zod.object({
     postal_code: zod.string().optional(),
     province: zod.string().optional(),
     company: zod.string().optional(),
-    phone: zod.string().optional(), // TODO: Add validation
+    phone: zod.string().optional(),
   }),
 })
 
@@ -49,24 +49,30 @@ export const CreateLocationForm = () => {
   const { mutateAsync, isPending } = useCreateStockLocation()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    try {
-      await mutateAsync({
+    await mutateAsync(
+      {
         name: values.name,
         address: values.address,
-      })
+      },
+      {
+        onSuccess: ({ stock_location }) => {
+          toast.success(t("general.success"), {
+            description: t("locations.toast.create"),
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
 
-      handleSuccess("/settings/locations")
-
-      toast.success(t("general.success"), {
-        description: t("locations.toast.create"),
-        dismissLabel: t("actions.close"),
-      })
-    } catch (e) {
-      toast.error(t("general.error"), {
-        description: e.message,
-        dismissLabel: t("actions.close"),
-      })
-    }
+          handleSuccess(`/settings/locations/${stock_location.id}`)
+        },
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
   })
 
   return (
@@ -92,10 +98,10 @@ export const CreateLocationForm = () => {
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
                 <Heading className="capitalize">
-                  {t("location.createLocation")}
+                  {t("stockLocations.create.header")}
                 </Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t("location.createLocationDetailsHint")}
+                  {t("stockLocations.create.hint")}
                 </Text>
               </div>
               <div className="grid grid-cols-2 gap-4">

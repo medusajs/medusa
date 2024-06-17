@@ -1,28 +1,33 @@
-import { Button, Container, Heading, Text } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { Link, Outlet, useLoaderData } from "react-router-dom"
+import { Outlet, useLoaderData } from "react-router-dom"
 
 import { useStockLocations } from "../../../hooks/api/stock-locations"
-import Location from "./components/location/location"
-import { locationListFields } from "./const"
+import LocationListItem from "./components/location-list-item/location-list-item"
+import { LOCATION_LIST_FIELDS } from "./constants"
 import { shippingListLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/location/list/after"
 import before from "virtual:medusa/widgets/location/list/before"
+import { LocationListHeader } from "./components/location-list-header"
 
 export function LocationList() {
-  const { t } = useTranslation()
-
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof shippingListLoader>
   >
 
-  const { stock_locations: stockLocations = [], isPending } = useStockLocations(
+  const {
+    stock_locations: stockLocations = [],
+    isError,
+    error,
+  } = useStockLocations(
     {
-      fields: locationListFields,
+      fields: LOCATION_LIST_FIELDS,
     },
     { initialData }
   )
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -33,20 +38,10 @@ export function LocationList() {
           </div>
         )
       })}
-      <Container className="flex h-fit items-center justify-between p-8">
-        <div>
-          <Heading className="mb-2">{t("location.title")}</Heading>
-          <Text className="text-ui-fg-subtle txt-small">
-            {t("location.description")}
-          </Text>
-        </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("location.createLocation")}</Link>
-        </Button>
-      </Container>
+      <LocationListHeader />
       <div className="flex flex-col gap-3 lg:col-span-2">
         {stockLocations.map((location) => (
-          <Location key={location.id} location={location} />
+          <LocationListItem key={location.id} location={location} />
         ))}
       </div>
       {after.widgets.map((w, i) => {
