@@ -6,6 +6,7 @@ import {
   OneToOne,
   ManyToMany,
   ManyToOne,
+  Filter,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
 import { camelToSnakeCase, pluralize } from "../../common"
@@ -20,6 +21,7 @@ import type {
   EntityConstructor,
   RelationshipMetadata,
 } from "../types"
+import { DALUtils } from "../../bundles"
 import { HasOne } from "../relations/has-one"
 import { HasMany } from "../relations/has-many"
 import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
@@ -427,6 +429,8 @@ export function createMikrORMEntity() {
     /**
      * Converting class to a MikroORM entity
      */
-    return Entity({ tableName })(MikroORMEntity) as Infer<T>
+    return Entity({ tableName })(
+      Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
+    ) as Infer<T>
   }
 }
