@@ -15,10 +15,6 @@ import { queryClient } from "../../../../../lib/query-client"
 import { CategoryTree } from "../../../common/components/category-tree"
 import { CategoryTreeItem } from "../../../common/types"
 
-type OrganizeCategoryFormProps = {
-  categoryId?: string
-}
-
 const QUERY = {
   fields: "id,name,parent_category_id,rank,*category_children",
   parent_category_id: "null",
@@ -26,10 +22,7 @@ const QUERY = {
   limit: 9999,
 }
 
-// TODO: Add some focus/highlight state if we enter this form from a specific category. Awaiting design.
-export const OrganizeCategoryForm = ({
-  categoryId,
-}: OrganizeCategoryFormProps) => {
+export const OrganizeCategoryForm = () => {
   const {
     product_categories,
     isPending,
@@ -37,11 +30,7 @@ export const OrganizeCategoryForm = ({
     error: fetchError,
   } = useProductCategories(QUERY)
 
-  const {
-    mutateAsync,
-    isPending: isMutating,
-    isError: isMutateError,
-  } = useMutation({
+  const { mutateAsync, isPending: isMutating } = useMutation({
     mutationFn: async ({
       value,
     }: {
