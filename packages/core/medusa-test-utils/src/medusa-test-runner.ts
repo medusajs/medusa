@@ -65,7 +65,9 @@ export interface MedusaSuiteOptions<TService = unknown> {
   getContainer: () => MedusaContainer
   api: any
   dbUtils: {
+    create: (dbName: string) => Promise<void>
     teardown: (options: { schema?: string }) => Promise<void>
+    shutdown: (dbName: string) => Promise<void>
   }
   dbConfig: {
     dbName: string
