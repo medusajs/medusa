@@ -17,10 +17,29 @@ import type {
 import { NullableModifier } from "./properties/nullable"
 
 /**
+ * The implicit properties added by EntityBuilder in every schema
+ */
+const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
+
+/**
  * Entity builder exposes the API to create an entity and define its
  * schema using the shorthand methods.
  */
 export class EntityBuilder {
+  #disallowImplicitProperties(schema: Record<string, any>) {
+    const implicitProperties = Object.keys(schema).filter((fieldName) =>
+      IMPLICIT_PROPERTIES.includes(fieldName)
+    )
+
+    if (implicitProperties.length) {
+      throw new Error(
+        `Cannot define field(s) "${implicitProperties.join(
+          ","
+        )}" as they are implicitly defined on every model`
+      )
+    }
+  }
+
   /**
    * Define an entity or a model. The name should be unique across
    * all the entities.
@@ -28,12 +47,18 @@ export class EntityBuilder {
   define<
     Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
   >(name: string, schema: Schema) {
+    this.#disallowImplicitProperties(schema)
+
     return new DmlEntity<
       Schema & {
+        created_at: DateTimeProperty
+        updated_at: DateTimeProperty
         deleted_at: NullableModifier<Date, DateTimeProperty>
       }
     >(name, {
       ...schema,
+      created_at: new DateTimeProperty(),
+      updated_at: new DateTimeProperty(),
       deleted_at: new DateTimeProperty().nullable(),
     })
   }
