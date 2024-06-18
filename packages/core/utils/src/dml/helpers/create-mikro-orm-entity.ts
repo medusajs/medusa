@@ -9,14 +9,18 @@ import {
   Filter,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
-import { camelToSnakeCase, pluralize } from "../../common"
+import {
+  pluralize,
+  camelToSnakeCase,
+  createPsqlIndexStatementHelper,
+} from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
   Infer,
-  SchemaType,
+  PropertyType,
   EntityCascades,
   KnownDataTypes,
-  SchemaMetadata,
+  PropertyMetadata,
   RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
@@ -86,7 +90,7 @@ export function createMikrORMEntity() {
    */
   function defineProperty(
     MikroORMEntity: EntityConstructor<any>,
-    field: SchemaMetadata
+    field: PropertyMetadata
   ) {
     /**
      * Defining an enum property
@@ -115,13 +119,37 @@ export function createMikrORMEntity() {
   }
 
   /**
+   * Prepares indexes for a given field
+   */
+  function applyIndexes(
+    MikroORMEntity: EntityConstructor<any>,
+    tableName: string,
+    field: PropertyMetadata
+  ) {
+    field.indexes.forEach((index) => {
+      const name =
+        index.name || `IDX_${tableName}_${camelToSnakeCase(field.fieldName)}`
+
+      const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
+        name,
+        tableName,
+        columns: [field.fieldName],
+        unique: index.type === "unique",
+        where: "deleted_at IS NULL",
+      })
+
+      providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
+    })
+  }
+
+  /**
    * Defines has one relationship on the Mikro ORM entity.
    */
   function defineHasOneRelationship(
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
@@ -145,7 +173,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
@@ -175,7 +203,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >
   ) {
     const mappedBy =
@@ -252,7 +280,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
@@ -421,6 +449,7 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
+        applyIndexes(MikroORMEntity, tableName, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }
