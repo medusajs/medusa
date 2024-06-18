@@ -42,8 +42,8 @@ export type SchemaMetadata = MaybeFieldMetadata & {
     options?: Record<string, any>
   }
   indexes: {
-    name: string
-    type: string
+    name?: string
+    type: "index" | "unique"
   }[]
   relationships: RelationshipMetadata[]
 }

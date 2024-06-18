@@ -5,9 +5,7 @@ import { updateFulfillmentStep } from "../steps"
 export const updateFulfillmentWorkflowId = "update-fulfillment-workflow"
 export const updateFulfillmentWorkflow = createWorkflow(
   updateFulfillmentWorkflowId,
-  (
-    input: WorkflowData<FulfillmentWorkflow.UpdateFulfillmentWorkflowInput>
-  ): WorkflowData<void> => {
-    updateFulfillmentStep(input)
+  (input: WorkflowData<FulfillmentWorkflow.UpdateFulfillmentWorkflowInput>) => {
+    return updateFulfillmentStep(input)
   }
 )

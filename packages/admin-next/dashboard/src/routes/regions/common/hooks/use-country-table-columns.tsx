@@ -1,10 +1,10 @@
-import { RegionCountryDTO } from "@medusajs/types"
-
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-const columnHelper = createColumnHelper<RegionCountryDTO>()
+import { StaticCountry } from "../../../../lib/countries"
+
+const columnHelper = createColumnHelper<StaticCountry>()
 
 export const useCountryTableColumns = () => {
   const { t } = useTranslation()

@@ -1,5 +1,5 @@
 import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { FulfillmentEvents, Modules } from "@medusajs/utils"
 import {
   WorkflowData,
   createStep,
@@ -7,7 +7,7 @@ import {
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { createShipmentWorkflow } from "../../fulfillment"
 import { registerOrderShipmentStep } from "../steps"
 import {
@@ -101,11 +101,16 @@ export const createOrderShipmentWorkflow = createWorkflow(
       prepareRegisterShipmentData
     )
 
-    parallelize(
+    const [shipment] = parallelize(
       createShipmentWorkflow.runAsStep({
         input: fulfillmentData,
       }),
       registerOrderShipmentStep(shipmentData)
     )
+
+    emitEventStep({
+      eventName: FulfillmentEvents.SHIPMENT_CREATED,
+      data: { id: shipment.id },
+    })
   }
 )
