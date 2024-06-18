@@ -10,9 +10,7 @@ import { updateFulfillmentWorkflow } from "./update-fulfillment"
 export const createShipmentWorkflowId = "create-shipment-workflow"
 export const createShipmentWorkflow = createWorkflow(
   createShipmentWorkflowId,
-  (
-    input: WorkflowData<FulfillmentWorkflow.CreateShipmentWorkflowInput>
-  ): WorkflowData<void> => {
+  (input: WorkflowData<FulfillmentWorkflow.CreateShipmentWorkflowInput>) => {
     validateShipmentStep(input.id)
 
     const update = transform({ input }, (data) => ({
@@ -20,7 +18,7 @@ export const createShipmentWorkflow = createWorkflow(
       shipped_at: new Date(),
     }))
 
-    updateFulfillmentWorkflow.runAsStep({
+    return updateFulfillmentWorkflow.runAsStep({
       input: update,
     })
   }

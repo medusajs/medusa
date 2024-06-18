@@ -91,11 +91,18 @@ export interface RemoteNestedExpands {
   }
 }
 
+export type InternalJoinerServiceConfig = Omit<
+  JoinerServiceConfig,
+  "relationships"
+> & {
+  relationships?: Map<string, JoinerRelationship>
+}
+
 export interface RemoteExpandProperty {
   property: string
   parent: string
-  parentConfig?: JoinerServiceConfig
-  serviceConfig: JoinerServiceConfig
+  parentConfig?: InternalJoinerServiceConfig
+  serviceConfig: InternalJoinerServiceConfig
   fields?: string[]
   args?: JoinerArgument[]
   expands?: RemoteNestedExpands

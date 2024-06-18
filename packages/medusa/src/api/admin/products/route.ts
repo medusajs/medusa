@@ -4,11 +4,11 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { remapKeysForProduct, remapProductResponse } from "./helpers"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
+import { remapKeysForProduct, remapProductResponse } from "./helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductParams>,
+  req: AuthenticatedMedusaRequest<HttpTypes.AdminProductListParams>,
   res: MedusaResponse<HttpTypes.AdminProductListResponse>
 ) => {
   const selectFields = remapKeysForProduct(req.remoteQueryConfig.fields ?? [])

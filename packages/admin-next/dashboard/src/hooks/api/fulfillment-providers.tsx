@@ -1,21 +1,28 @@
+import { FetchError } from "@medusajs/js-sdk"
+import { HttpTypes } from "@medusajs/types"
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { client } from "../../lib/client"
+import { sdk } from "../../lib/client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 
-const FULFILLMENT_PROVIDERS_QUERY_KEY = "f_providers" as const
+const FULFILLMENT_PROVIDERS_QUERY_KEY = "fulfillment_providers" as const
 export const fulfillmentProvidersQueryKeys = queryKeysFactory(
   FULFILLMENT_PROVIDERS_QUERY_KEY
 )
 
 export const useFulfillmentProviders = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminFulfillmentProviderListParams,
   options?: Omit<
-    UseQueryOptions<any, Error, any, QueryKey>,
+    UseQueryOptions<
+      HttpTypes.AdminFulfillmentProviderListResponse,
+      FetchError,
+      HttpTypes.AdminFulfillmentProviderListResponse,
+      QueryKey
+    >,
     "queryFn" | "queryKey"
   >
 ) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => client.fulfillmentProviders.list(query),
+    queryFn: () => sdk.admin.fulfillmentProvider.list(query),
     queryKey: fulfillmentProvidersQueryKeys.list(query),
     ...options,
   })

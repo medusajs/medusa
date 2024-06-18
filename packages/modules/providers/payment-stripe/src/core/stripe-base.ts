@@ -3,6 +3,7 @@ import { EOL } from "os"
 import Stripe from "stripe"
 
 import {
+  CreatePaymentProviderSession,
   MedusaContainer,
   PaymentProviderError,
   PaymentProviderSessionResponse,
@@ -12,15 +13,12 @@ import {
 } from "@medusajs/types"
 import {
   AbstractPaymentProvider,
-  BigNumber,
   MedusaError,
   PaymentActions,
   PaymentSessionStatus,
   isDefined,
   isPaymentProviderError,
 } from "@medusajs/utils"
-
-import { CreatePaymentProviderSession } from "@medusajs/types"
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -28,6 +26,10 @@ import {
   StripeCredentials,
   StripeOptions,
 } from "../types"
+import {
+  getAmountFromSmallestUnit,
+  getSmallestUnit,
+} from "../utils/get-smallest-unit"
 
 abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   protected readonly options_: StripeOptions
@@ -116,7 +118,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
-      amount: Math.round(new BigNumber(amount).numeric),
+      amount: getSmallestUnit(amount, currency_code),
       currency: currency_code,
       metadata: { resource_id: resource_id ?? "Medusa Payment" },
       capture_method: this.options_.capture ? "automatic" : "manual",
@@ -232,8 +234,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const id = paymentSessionData.id as string
 
     try {
+      const { currency } = paymentSessionData
       await this.stripe_.refunds.create({
-        amount: Math.round(refundAmount),
+        amount: getSmallestUnit(refundAmount, currency as string),
         payment_intent: id as string,
       })
     } catch (e) {
@@ -249,6 +252,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     try {
       const id = paymentSessionData.id as string
       const intent = await this.stripe_.paymentIntents.retrieve(id)
+
+      intent.amount = getAmountFromSmallestUnit(intent.amount, intent.currency)
+
       return intent as unknown as PaymentProviderSessionResponse["data"]
     } catch (e) {
       return this.buildError("An error occurred in retrievePayment", e)
@@ -258,9 +264,9 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   async updatePayment(
     input: UpdatePaymentProviderSession
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
-    const { context, data, amount } = input
+    const { context, data, currency_code, amount } = input
 
-    const amountNumeric = Math.round(new BigNumber(amount).numeric)
+    const amountNumeric = getSmallestUnit(amount, currency_code)
 
     const stripeId = context.customer?.metadata?.stripe_id
 
@@ -317,13 +323,17 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
     const event = this.constructWebhookEvent(webhookData)
     const intent = event.data.object as Stripe.PaymentIntent
 
+    const { currency } = intent
     switch (event.type) {
       case "payment_intent.amount_capturable_updated":
         return {
           action: PaymentActions.AUTHORIZED,
           data: {
             resource_id: intent.metadata.resource_id,
-            amount: intent.amount_capturable, // NOTE: revisit when implementing multicapture
+            amount: getAmountFromSmallestUnit(
+              intent.amount_capturable,
+              currency
+            ), // NOTE: revisit when implementing multicapture
           },
         }
       case "payment_intent.succeeded":
@@ -331,7 +341,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
           action: PaymentActions.SUCCESSFUL,
           data: {
             resource_id: intent.metadata.resource_id,
-            amount: intent.amount_received,
+            amount: getAmountFromSmallestUnit(intent.amount_received, currency),
           },
         }
       case "payment_intent.payment_failed":
@@ -339,7 +349,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
           action: PaymentActions.FAILED,
           data: {
             resource_id: intent.metadata.resource_id,
-            amount: intent.amount,
+            amount: getAmountFromSmallestUnit(intent.amount, currency),
           },
         }
       default:

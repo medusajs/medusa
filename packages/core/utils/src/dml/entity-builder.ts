@@ -10,6 +10,7 @@ import { BelongsTo } from "./relations/belongs-to"
 import { DateTimeSchema } from "./schema/date-time"
 import { ManyToMany } from "./relations/many-to-many"
 import type { RelationshipOptions, RelationshipType, SchemaType } from "./types"
+import { NullableModifier } from "./schema/nullable"
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -23,7 +24,14 @@ export class EntityBuilder {
   define<
     Schema extends Record<string, SchemaType<any> | RelationshipType<any>>
   >(name: string, schema: Schema) {
-    return new DmlEntity(name, schema)
+    return new DmlEntity<
+      Schema & {
+        deleted_at: NullableModifier<Date, DateTimeSchema>
+      }
+    >(name, {
+      ...schema,
+      deleted_at: new DateTimeSchema().nullable(),
+    })
   }
 
   /**
