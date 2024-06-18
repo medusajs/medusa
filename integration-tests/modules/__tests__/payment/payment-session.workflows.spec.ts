@@ -27,18 +27,23 @@ medusaIntegrationTestRunner({
       })
 
       describe("createPaymentSessionWorkflow", () => {
-        it("should create payment sessions", async () => {
-          const region = await regionModule.createRegions({
+        let region
+        let paymentCollection
+
+        beforeEach(async () => {
+          region = await regionModule.createRegions({
             currency_code: "usd",
             name: "US",
           })
 
-          let paymentCollection = await paymentModule.createPaymentCollections({
+          paymentCollection = await paymentModule.createPaymentCollections({
             currency_code: "usd",
             amount: 1000,
             region_id: region.id,
           })
+        })
 
+        it("should create payment sessions", async () => {
           await createPaymentSessionsWorkflow(appContainer).run({
             input: {
               payment_collection_id: paymentCollection.id,
@@ -68,6 +73,47 @@ medusaIntegrationTestRunner({
                   provider_id: "pp_system_default",
                 }),
               ]),
+            })
+          )
+        })
+
+        it("should delete existing sessions when create payment sessions", async () => {
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          await createPaymentSessionsWorkflow(appContainer).run({
+            input: {
+              payment_collection_id: paymentCollection.id,
+              provider_id: "pp_system_default",
+              context: {},
+              data: {},
+            },
+          })
+
+          paymentCollection = await paymentModule.retrievePaymentCollection(
+            paymentCollection.id,
+            { relations: ["payment_sessions"] }
+          )
+
+          expect(paymentCollection).toEqual(
+            expect.objectContaining({
+              id: paymentCollection.id,
+              currency_code: "usd",
+              amount: 1000,
+              region_id: region.id,
+              payment_sessions: [
+                expect.objectContaining({
+                  amount: 1000,
+                  currency_code: "usd",
+                  provider_id: "pp_system_default",
+                }),
+              ],
             })
           )
         })

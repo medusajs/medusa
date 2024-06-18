@@ -3,6 +3,7 @@ import {
   BigNumber,
   MathBN,
   isDefined,
+  isPresent,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
 import {
@@ -183,9 +184,14 @@ export class OrderChangeProcessing {
     action: InternalOrderChangeEvent,
     isReplay = false
   ): BigNumberInput | void {
+    const definedType = OrderChangeProcessing.typeDefinition[action.action]
+    if (!isPresent(definedType)) {
+      throw new Error(`Action type ${action.action} is not defined`)
+    }
+
     const type = {
       ...OrderChangeProcessing.defaultConfig,
-      ...OrderChangeProcessing.typeDefinition[action.action],
+      ...definedType,
     }
 
     this.actionsProcessed[action.action] ??= []

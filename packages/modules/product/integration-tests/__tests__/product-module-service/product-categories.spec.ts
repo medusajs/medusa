@@ -575,7 +575,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           }
 
           expect(error.message).toEqual(
-            `ProductCategory not found ({ id: 'does-not-exist' })`
+            `ProductCategory with id: does-not-exist was not found`
           )
         })
 

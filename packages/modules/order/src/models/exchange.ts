@@ -18,8 +18,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { ExchangeItem, Transaction } from "@models"
 import Order from "./order"
-import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
 
@@ -99,14 +99,6 @@ export default class OrderExchange {
   @MikroOrmBigNumberProperty({
     nullable: true,
   })
-  refund_amount: BigNumber | number
-
-  @Property({ columnType: "jsonb", nullable: true })
-  raw_refund_amount: BigNumberRawValue
-
-  @MikroOrmBigNumberProperty({
-    nullable: true,
-  })
   difference_due: BigNumber | number
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -115,10 +107,10 @@ export default class OrderExchange {
   @Property({ columnType: "boolean", default: false })
   allow_backorder: boolean = false
 
-  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.exchange, {
+  @OneToMany(() => ExchangeItem, (item) => item.exchange, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  additional_items = new Collection<ExchangeItem>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
@@ -128,6 +120,11 @@ export default class OrderExchange {
     }
   )
   shipping_methods = new Collection<OrderShippingMethod>(this)
+
+  @OneToMany(() => Transaction, (transaction) => transaction.exchange, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Transaction>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -156,11 +153,11 @@ export default class OrderExchange {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordexchange")
+    this.id = generateEntityId(this.id, "oexc")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordexchange")
+    this.id = generateEntityId(this.id, "oexc")
   }
 }

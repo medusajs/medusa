@@ -1,3 +1,4 @@
+import { isDefined } from "./is-defined"
 import { isObject } from "./is-object"
 
 export function pickValueFromObject(
@@ -5,32 +6,28 @@ export function pickValueFromObject(
   object: Record<any, any>
 ): any {
   const segments = path.split(".")
-  let result: any = undefined
+  let result: any = object
 
-  for (const segment of segments) {
-    const segmentsLeft = [...segments].splice(1, segments.length - 1)
-    const segmentOutput = object[segment]
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i]
+    result = result[segment]
 
-    if (segmentsLeft.length === 0) {
-      result = segmentOutput
-      break
+    if (!isDefined(result)) {
+      return
     }
 
-    if (isObject(segmentOutput)) {
-      result = pickValueFromObject(segmentsLeft.join("."), segmentOutput)
-      break
+    if (i === segments.length - 1) {
+      return result
     }
 
-    if (Array.isArray(segmentOutput)) {
-      result = segmentOutput
-        .map((segmentOutput_) =>
-          pickValueFromObject(segmentsLeft.join("."), segmentOutput_)
-        )
-        .flat()
-      break
+    if (Array.isArray(result)) {
+      const subPath = segments.slice(i + 1).join(".")
+      return result.map((item) => pickValueFromObject(subPath, item)).flat()
     }
 
-    result = segmentOutput
+    if (!isObject(result)) {
+      return result
+    }
   }
 
   return result

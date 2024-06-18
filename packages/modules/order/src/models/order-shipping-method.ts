@@ -170,6 +170,7 @@ export default class OrderShippingMethod {
     this.id = generateEntityId(this.id, "ordspmv")
     this.order_id ??= this.order?.id
     this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
     this.exchange_id ??= this.exchange?.id
     this.shipping_method_id ??= this.shipping_method?.id
     this.version ??= this.order?.version
@@ -180,6 +181,7 @@ export default class OrderShippingMethod {
     this.id = generateEntityId(this.id, "ordspmv")
     this.order_id ??= this.order?.id
     this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
     this.exchange_id ??= this.exchange?.id
     this.shipping_method_id ??= this.shipping_method?.id
     this.version ??= this.order?.version

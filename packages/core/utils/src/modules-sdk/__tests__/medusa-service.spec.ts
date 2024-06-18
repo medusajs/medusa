@@ -9,7 +9,7 @@ const baseRepoMock = {
 const defaultContext = { __type: "MedusaContext", manager: baseRepoMock }
 const defaultTransactionContext = {
   __type: "MedusaContext",
-  transactionManager: "transactionManager",
+  manager: baseRepoMock,
 }
 
 describe("Abstract Module Service Factory", () => {
