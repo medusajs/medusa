@@ -55,6 +55,13 @@ const PRODUCT_CATEGORY_INJECTION_ZONES = [
   "product_category.list.after",
 ] as const
 
+const PRODUCT_TYPE_INJECTION_ZONES = [
+  "product_type.details.before",
+  "product_type.details.after",
+  "product_type.list.before",
+  "product_type.list.after",
+] as const
+
 const PRICE_LIST_INJECTION_ZONES = [
   "price_list.details.before",
   "price_list.details.after",
@@ -198,4 +205,5 @@ export const INJECTION_ZONES = [
   ...WORKFLOW_INJECTION_ZONES,
   ...CAMPAIGN_INJECTION_ZONES,
   ...TAX_INJECTION_ZONES,
+  ...PRODUCT_TYPE_INJECTION_ZONES,
 ] as const

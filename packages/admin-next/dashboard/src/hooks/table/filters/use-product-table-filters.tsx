@@ -7,6 +7,7 @@ const excludeableFields = [
   "sales_channel_id",
   "collections",
   "categories",
+  "product_types",
 ] as const
 
 export const useProductTableFilters = (
@@ -14,10 +15,17 @@ export const useProductTableFilters = (
 ) => {
   const { t } = useTranslation()
 
-  const { product_types } = useProductTypes({
-    limit: 1000,
-    offset: 0,
-  })
+  const isProductTypeExcluded = exclude?.includes("product_types")
+
+  const { product_types } = useProductTypes(
+    {
+      limit: 1000,
+      offset: 0,
+    },
+    {
+      enabled: !isProductTypeExcluded,
+    }
+  )
 
   // const { product_tags } = useAdminProductTags({
   //   limit: 1000,
@@ -61,7 +69,7 @@ export const useProductTableFilters = (
 
   let filters: Filter[] = []
 
-  if (product_types) {
+  if (product_types && !isProductTypeExcluded) {
     const typeFilter: Filter = {
       key: "type_id",
       label: t("fields.type"),

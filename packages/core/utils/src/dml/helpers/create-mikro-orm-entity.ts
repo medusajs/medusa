@@ -9,7 +9,11 @@ import {
   Filter,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
-import { camelToSnakeCase, pluralize } from "../../common"
+import {
+  pluralize,
+  camelToSnakeCase,
+  createPsqlIndexStatementHelper,
+} from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
   Infer,
@@ -112,6 +116,30 @@ export function createMikrORMEntity() {
       nullable: field.nullable,
       default: field.defaultValue,
     })(MikroORMEntity.prototype, field.fieldName)
+  }
+
+  /**
+   * Prepares indexes for a given field
+   */
+  function applyIndexes(
+    MikroORMEntity: EntityConstructor<any>,
+    tableName: string,
+    field: SchemaMetadata
+  ) {
+    field.indexes.forEach((index) => {
+      const name =
+        index.name || `IDX_${tableName}_${camelToSnakeCase(field.fieldName)}`
+
+      const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
+        name,
+        tableName,
+        columns: [field.fieldName],
+        unique: index.type === "unique",
+        where: "deleted_at IS NULL",
+      })
+
+      providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
+    })
   }
 
   /**
@@ -421,6 +449,7 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
+        applyIndexes(MikroORMEntity, tableName, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }
