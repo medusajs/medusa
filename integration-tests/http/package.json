@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest  --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage -- __tests__/product/admin/product.spec.ts",
+    "test:integration": "jest  --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
     "test:integration:chunk": "jest --silent --no-cache --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "tsc ./src/* --allowJs --outDir ./dist"
   },
