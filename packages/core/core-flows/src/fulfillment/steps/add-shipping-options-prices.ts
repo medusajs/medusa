@@ -96,7 +96,7 @@ export const createShippingOptionsPriceSetsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    const priceSets = await pricingService.create(priceSetsData)
+    const priceSets = await pricingService.createPriceSets(priceSetsData)
 
     const shippingOptionPriceSetLinData = data.map((input, index) => {
       return {
@@ -119,6 +119,6 @@ export const createShippingOptionsPriceSetsStep = createStep(
       ModuleRegistrationName.PRICING
     )
 
-    await pricingService.delete(priceSetIds)
+    await pricingService.deletePriceSets(priceSetIds)
   }
 )
