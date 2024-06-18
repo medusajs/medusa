@@ -15,5 +15,5 @@ export interface CreateFileDTO {
   /**
    * The file content as a binary-encoded string
    */
-  content: string | Buffer
+  content: string
 }
