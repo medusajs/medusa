@@ -1,6 +1,7 @@
 import { Trash } from "@medusajs/icons"
 import { AdminTaxRegionResponse } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { t } from "i18next"
 import { useMemo } from "react"
@@ -24,10 +25,15 @@ export const TaxRegionListTable = () => {
   const { searchParams, raw } = useTaxRegionTableQuery({
     pageSize: PAGE_SIZE,
   })
-  const { tax_regions, count, isLoading, isError, error } = useTaxRegions({
-    ...searchParams,
-    parent_id: "null",
-  })
+  const { tax_regions, count, isLoading, isError, error } = useTaxRegions(
+    {
+      ...searchParams,
+      parent_id: "null",
+    },
+    {
+      placeholderData: keepPreviousData,
+    }
+  )
 
   const columns = useColumns()
 
@@ -60,6 +66,8 @@ export const TaxRegionListTable = () => {
         isLoading={isLoading}
         navigateTo={(row) => `${row.original.id}`}
         pagination
+        search
+        orderBy={["country_code"]}
         queryObject={raw}
       />
     </Container>
@@ -126,6 +134,6 @@ const useColumns = () => {
         },
       }),
     ],
-    [t]
+    []
   )
 }
