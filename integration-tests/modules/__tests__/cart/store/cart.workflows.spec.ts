@@ -181,7 +181,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const cart = await cartModuleService.retrieve(result.id, {
+          const cart = await cartModuleService.retrieveCart(result.id, {
             relations: ["items"],
           })
 
@@ -554,7 +554,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
@@ -619,7 +619,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id", "region_id", "currency_code", "sales_channel_id"],
           })
 
@@ -635,7 +635,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["items"],
           })
 
@@ -663,7 +663,7 @@ medusaIntegrationTestRunner({
             name: "Warehouse",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
@@ -738,7 +738,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if variant does not exist", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
           })
 
@@ -838,7 +838,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             items: [
@@ -851,7 +851,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id", "region_id", "currency_code"],
             relations: ["items", "items.variant_id", "items.metadata"],
           })
@@ -965,7 +965,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            let cart = await cartModuleService.create({
+            let cart = await cartModuleService.createCarts({
               currency_code: "usd",
               items: [
                 {
@@ -977,7 +977,7 @@ medusaIntegrationTestRunner({
               ],
             })
 
-            cart = await cartModuleService.retrieve(cart.id, {
+            cart = await cartModuleService.retrieveCart(cart.id, {
               select: ["id", "region_id", "currency_code"],
               relations: ["items", "items.variant_id", "items.metadata"],
             })
@@ -1027,7 +1027,7 @@ medusaIntegrationTestRunner({
 
       describe("deleteLineItems", () => {
         it("should delete items in cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             items: [
               {
@@ -1068,7 +1068,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const cart = await cartModuleService.create({
+            const cart = await cartModuleService.createCarts({
               currency_code: "usd",
               items: [
                 {
@@ -1111,7 +1111,7 @@ medusaIntegrationTestRunner({
 
       describe("createPaymentCollectionForCart", () => {
         it("should create a payment collection and link it to cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "dkk",
             region_id: defaultRegion.id,
             items: [
@@ -1182,7 +1182,7 @@ medusaIntegrationTestRunner({
               currency_code: "usd",
             })
 
-            const cart = await cartModuleService.create({
+            const cart = await cartModuleService.createCarts({
               currency_code: "usd",
               region_id: region.id,
               items: [
@@ -1249,7 +1249,7 @@ medusaIntegrationTestRunner({
 
       describe("refreshPaymentCollectionForCart", () => {
         it("should refresh a payment collection for a cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "dkk",
             region_id: defaultRegion.id,
             items: [
@@ -1321,7 +1321,7 @@ medusaIntegrationTestRunner({
               currency_code: "usd",
             })
 
-            const testCart = await cartModuleService.create({
+            const testCart = await cartModuleService.createCarts({
               currency_code: "usd",
               region_id: region.id,
               items: [
@@ -1427,7 +1427,7 @@ medusaIntegrationTestRunner({
         let priceSet
 
         beforeEach(async () => {
-          cart = await cartModuleService.create({
+          cart = await cartModuleService.createCarts({
             currency_code: "usd",
             shipping_address: {
               country_code: "us",
@@ -1496,7 +1496,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["shipping_methods"],
           })
 
@@ -1596,7 +1596,7 @@ medusaIntegrationTestRunner({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1612,7 +1612,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1677,7 +1677,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })
@@ -1715,7 +1715,7 @@ medusaIntegrationTestRunner({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1731,7 +1731,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1788,7 +1788,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })
@@ -1820,7 +1820,7 @@ medusaIntegrationTestRunner({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1836,7 +1836,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1884,7 +1884,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })
