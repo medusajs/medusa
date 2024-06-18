@@ -65,6 +65,39 @@ const PROPERTY_TYPES: {
 }
 
 /**
+ * Properties that needs special treatment based upon their name.
+ * We can safely rely on these names because they are never
+ * provided by the end-user. Instead we output them
+ * implicitly via the DML.
+ */
+const SPECIAL_PROPERTIES: {
+  [propertyName: string]: (
+    MikroORMEntity: EntityConstructor<any>,
+    field: PropertyMetadata
+  ) => void
+} = {
+  created_at: (MikroORMEntity, field) => {
+    Property({
+      columnType: "timestamptz",
+      type: "date",
+      nullable: false,
+      defaultRaw: "now()",
+      onCreate: () => new Date(),
+    })(MikroORMEntity.prototype, field.fieldName)
+  },
+  updated_at: (MikroORMEntity, field) => {
+    Property({
+      columnType: "timestamptz",
+      type: "date",
+      nullable: false,
+      defaultRaw: "now()",
+      onCreate: () => new Date(),
+      onUpdate: () => new Date(),
+    })(MikroORMEntity.prototype, field.fieldName)
+  },
+}
+
+/**
  * Factory function to create the mikro orm entity builder. The return
  * value is a function that can be used to convert DML entities
  * to Mikro ORM entities.
@@ -92,6 +125,11 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     field: PropertyMetadata
   ) {
+    if (SPECIAL_PROPERTIES[field.fieldName]) {
+      SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)
+      return
+    }
+
     /**
      * Defining an enum property
      */
