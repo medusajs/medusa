@@ -44,17 +44,17 @@ export const RulesFormField = ({
     keyName: scope,
   })
 
-  const promotionType: string =
-    useWatch({
-      control: form.control,
-      name: "type",
-    }) || promotion?.type
+  const promotionType = useWatch({
+    control: form.control,
+    name: "type",
+    defaultValue: promotion?.type,
+  })
 
-  const applicationMethodType =
-    useWatch({
-      control: form.control,
-      name: "application_method.type",
-    }) || promotion?.application_method?.type
+  const applicationMethodType = useWatch({
+    control: form.control,
+    name: "application_method.type",
+    defaultValue: promotion?.application_method?.type,
+  })
 
   const query: Record<string, string> = promotionType
     ? {

@@ -92,7 +92,7 @@ export const EditRulesWrapper = ({
 
       rulesToRemove?.length &&
         (await removePromotionRules({
-          rule_ids: rulesToRemove.filter((r) => !!r.id).map((r) => r.id!),
+          rule_ids: rulesToRemove.map((r) => r.id).filter(Boolean),
         }))
 
       rulesToUpdate.length &&

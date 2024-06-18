@@ -227,6 +227,14 @@ export const CreatePromotionForm = () => {
   })
 
   const isTypeStandard = watchType === "standard"
+
+  const targetType = useWatch({
+    control: form.control,
+    name: "application_method.target_type",
+  })
+
+  const isTargetTypeOrder = targetType === "order"
+
   const formData = form.getValues()
   let campaignQuery: object = {}
 
@@ -758,13 +766,16 @@ export const CreatePromotionForm = () => {
                 </>
               )}
 
-              <Divider />
-
-              <RulesFormField
-                form={form}
-                ruleType={"target-rules"}
-                scope="application_method.target_rules"
-              />
+              {!isTargetTypeOrder && (
+                <>
+                  <Divider />
+                  <RulesFormField
+                    form={form}
+                    ruleType={"target-rules"}
+                    scope="application_method.target_rules"
+                  />
+                </>
+              )}
             </ProgressTabs.Content>
 
             <ProgressTabs.Content

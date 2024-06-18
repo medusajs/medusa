@@ -64,7 +64,7 @@ export const templates = [
       type: "standard",
       application_method: {
         allocation: "across",
-        target_type: "items",
+        target_type: "order",
         type: "percentage",
       },
     },
