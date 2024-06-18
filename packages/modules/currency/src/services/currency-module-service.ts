@@ -50,7 +50,7 @@ export default class CurrencyModuleService
     sharedContext?: Context
   ): Promise<CurrencyTypes.CurrencyDTO> {
     return await super.retrieveCurrency(
-      code.toLowerCase(),
+      CurrencyModuleService.normalizeFilters({ code: [code] })!.code![0],
       config,
       sharedContext
     )

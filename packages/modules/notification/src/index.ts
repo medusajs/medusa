@@ -6,3 +6,5 @@ export const moduleDefinition: ModuleExports = {
   service: NotificationModuleService,
   loaders: [loadProviders],
 }
+
+export default moduleDefinition

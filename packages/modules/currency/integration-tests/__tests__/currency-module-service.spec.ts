@@ -62,7 +62,7 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
       describe("listAndCountCurrenciesCurrencies", () => {
         it("should return currencies and count", async () => {
           const [currenciesResult, count] =
-            await service.listAndCountCurrenciesCurrencies({}, { take: null })
+            await service.listAndCountCurrencies({}, { take: null })
 
           expect(count).toEqual(120)
           expect(currenciesResult).toEqual(

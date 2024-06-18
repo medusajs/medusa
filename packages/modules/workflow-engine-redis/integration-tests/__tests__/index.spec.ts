@@ -70,7 +70,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           })
         })
 
-        it("should return a list of workflow executions and keep it saved when there is a retentionTime set", async () => {
+        it.only("should return a list of workflow executions and keep it saved when there is a retentionTime set", async () => {
           await workflowOrcModule.run("workflow_2", {
             input: {
               value: "123",

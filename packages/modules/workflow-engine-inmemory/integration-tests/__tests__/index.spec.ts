@@ -244,6 +244,8 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
         it("should execute a scheduled workflow", async () => {
           const spy = createScheduled("standard")
 
+          jest.clearAllMocks()
+
           await jest.runOnlyPendingTimersAsync()
           expect(setTimeout).toHaveBeenCalledTimes(2)
           expect(spy).toHaveBeenCalledTimes(1)
