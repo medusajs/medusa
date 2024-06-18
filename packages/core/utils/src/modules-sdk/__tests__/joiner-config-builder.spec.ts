@@ -1,5 +1,5 @@
 import { defineJoinerConfig } from "../joiner-config-builder"
-import { Modules } from "@medusajs/modules-sdk"
+import { Modules } from "../definition"
 
 const FulfillmentSet = {
   name: "FulfillmentSet",
