@@ -75,6 +75,7 @@
     "viewDetails": "View details",
     "back": "Back",
     "close": "Close",
+    "showMore": "Show more",
     "continue": "Continue",
     "reset": "Reset",
     "confirm": "Confirm",
@@ -324,6 +325,7 @@
       "create": {
         "header": "Create Variant"
       },
+      "pricesPagination": "1 - {{current}} of {{total}} prices",
       "tableItemAvailable": "{{availableCount}} available",
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
