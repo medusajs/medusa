@@ -617,6 +617,35 @@ describe("Entity builder", () => {
         "guest",
       ])
     })
+
+    test("disallow defining created_at and updated_at timestamps", () => {
+      const model = new EntityBuilder()
+      expect(() =>
+        model.define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.text(),
+          created_at: model.dateTime(),
+          updated_at: model.dateTime(),
+        })
+      ).toThrow(
+        'Cannot define field(s) "created_at,updated_at" as they are implicitly defined on every model'
+      )
+    })
+
+    test("disallow defining deleted_at timestamp", () => {
+      const model = new EntityBuilder()
+      expect(() =>
+        model.define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.text(),
+          deleted_at: model.dateTime(),
+        })
+      ).toThrow(
+        'Cannot define field(s) "deleted_at" as they are implicitly defined on every model'
+      )
+    })
   })
 
   describe("Entity builder | indexes", () => {
