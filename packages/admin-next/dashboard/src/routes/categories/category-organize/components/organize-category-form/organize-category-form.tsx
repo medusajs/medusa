@@ -1,8 +1,10 @@
-import { keepPreviousData } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 
 import { Spinner } from "@medusajs/icons"
 import { FetchError } from "@medusajs/js-sdk"
-import { useState } from "react"
+import { HttpTypes } from "@medusajs/types"
+import { toast } from "@medusajs/ui"
+import { t } from "i18next"
 import { RouteFocusModal } from "../../../../../components/route-modal"
 import {
   categoriesQueryKeys,
@@ -10,66 +12,89 @@ import {
 } from "../../../../../hooks/api/categories"
 import { sdk } from "../../../../../lib/client"
 import { queryClient } from "../../../../../lib/query-client"
-import {
-  CategoryTree,
-  CategoryTreeItem,
-} from "../../../common/components/category-tree"
+import { CategoryTree } from "../../../common/components/category-tree"
+import { CategoryTreeItem } from "../../../common/types"
 
-type OrganizeCategoryFormProps = {
-  categoryId?: string
+const QUERY = {
+  fields: "id,name,parent_category_id,rank,*category_children",
+  parent_category_id: "null",
+  include_descendants_tree: true,
+  limit: 9999,
 }
 
-// TODO: Add some focus/highlight state if we enter this form from a specific category. Awaiting design.
-export const OrganizeCategoryForm = ({
-  categoryId,
-}: OrganizeCategoryFormProps) => {
-  const [isLoading, setIsLoading] = useState(false)
-  // TODO: Display error message to the user, might be in a toast or in the header. Awaiting design.
-  const [error, setError] = useState<FetchError | null>(null)
-
+export const OrganizeCategoryForm = () => {
   const {
     product_categories,
     isPending,
     isError,
     error: fetchError,
-  } = useProductCategories(
-    {
-      fields: "id,name,parent_category_id,rank,*category_children",
-      parent_category_id: "null",
-      include_descendants_tree: true,
-      limit: 9999,
-    },
-    {
-      placeholderData: keepPreviousData,
-    }
-  )
+  } = useProductCategories(QUERY)
 
-  const handleRankChange = async (value: CategoryTreeItem) => {
-    setIsLoading(true)
-    setError(null)
-
-    await sdk.admin.productCategory
-      .update(value.id, {
+  const { mutateAsync, isPending: isMutating } = useMutation({
+    mutationFn: async ({
+      value,
+    }: {
+      value: CategoryTreeItem
+      arr: CategoryTreeItem[]
+    }) => {
+      await sdk.admin.productCategory.update(value.id, {
         rank: value.rank ?? 0,
         parent_category_id: value.parent_category_id,
       })
-      .then(async () => {
-        await queryClient.invalidateQueries({
-          queryKey: categoriesQueryKeys.lists(),
-        })
-        await queryClient.invalidateQueries({
-          queryKey: categoriesQueryKeys.detail(value.id),
-        })
+    },
+    onMutate: async (update) => {
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: categoriesQueryKeys.list(QUERY),
       })
-      .catch((error) => {
-        setError(error)
+
+      // Snapshot the previous value
+      const previousValue:
+        | HttpTypes.AdminProductCategoryListResponse
+        | undefined = queryClient.getQueryData(categoriesQueryKeys.list(QUERY))
+
+      const nextValue = {
+        ...previousValue,
+        product_categories: update.arr,
+      }
+
+      queryClient.setQueryData(categoriesQueryKeys.list(QUERY), nextValue)
+
+      return {
+        previousValue,
+      }
+    },
+    onError: (error: FetchError, _newValue, context) => {
+      // Roll back to the previous value
+      queryClient.setQueryData(
+        categoriesQueryKeys.list(QUERY),
+        context?.previousValue
+      )
+
+      toast.error(t("general.error"), {
+        description: error.message,
+        dismissLabel: t("general.close"),
+        dismissable: true,
       })
-      .finally(() => {
-        setIsLoading(false)
+    },
+    onSettled: async (_data, _error, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: categoriesQueryKeys.lists(),
       })
+      await queryClient.invalidateQueries({
+        queryKey: categoriesQueryKeys.detail(variables.value.id),
+      })
+    },
+  })
+
+  const handleRankChange = async (
+    value: CategoryTreeItem,
+    arr: CategoryTreeItem[]
+  ) => {
+    await mutateAsync({ value, arr })
   }
 
-  const loading = isPending || isLoading
+  const loading = isPending || isMutating
 
   if (isError) {
     throw fetchError

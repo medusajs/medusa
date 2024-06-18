@@ -14,8 +14,8 @@ import Nestable from "react-nestable"
 
 import { useTranslation } from "react-i18next"
 import "react-nestable/dist/styles/index.css"
+import { CategoryTreeItem } from "../../types"
 import "./styles.css"
-import { CategoryTreeItem } from "./types"
 
 type CategoryTreeProps = {
   value: CategoryTreeItem[]
@@ -119,7 +119,6 @@ export const CategoryTree = ({
             />
           )
         }}
-        handler={<DragHandle />}
         renderCollapseIcon={({ isCollapsed }) => {
           return <CollapseHandler isCollapsed={isCollapsed} />
         }}
@@ -155,7 +154,7 @@ type CategoryBranchProps = {
   isEnabled: boolean
   isNew?: boolean
   collapseIcon: ReactNode
-  handler: ReactNode
+  handler?: ReactNode
 }
 
 export const CategoryBranch = ({
@@ -164,7 +163,6 @@ export const CategoryBranch = ({
   isEnabled,
   isNew = false,
   collapseIcon,
-  handler,
 }: CategoryBranchProps) => {
   const { t } = useTranslation()
 
@@ -172,15 +170,19 @@ export const CategoryBranch = ({
 
   const Component = (
     <div
+      onDrag={() => console.log("dragging")}
       data-disabled={!isEnabled}
       className={clx(
-        "bg-ui-bg-base hover:bg-ui-bg-base-hover transition-fg group group flex h-12 items-center gap-x-3 border-b px-6 py-2.5",
+        "bg-ui-bg-base hover:bg-ui-bg-base-hover transition-fg group group flex h-12 cursor-grab items-center gap-x-3 border-b px-6 py-2.5 active:cursor-grabbing",
         {
-          "bg-ui-bg-subtle hover:bg-ui-bg-subtle": !isEnabled,
+          "bg-ui-bg-subtle hover:bg-ui-bg-subtle cursor-not-allowed":
+            !isEnabled,
         }
       )}
     >
-      <div>{handler}</div>
+      <div className="flex h-7 w-7 items-center justify-center">
+        <DotsSix className="text-ui-fg-subtle" />
+      </div>
       {Array.from({ length: depth }).map((_, i) => (
         <div key={`offset_${i}`} role="presentation" className="h-7 w-7" />
       ))}
@@ -198,7 +200,6 @@ export const CategoryBranch = ({
         <Text size="small" leading="compact">
           {item.name}
         </Text>
-        <Text>{item.rank}</Text>
         {isNew && (
           <Badge size="2xsmall" color="blue">
             {t("categories.fields.new.label")}
@@ -209,14 +210,6 @@ export const CategoryBranch = ({
   )
 
   return Component
-}
-
-const DragHandle = () => {
-  return (
-    <div className="flex h-7 w-7 cursor-grab items-center justify-center active:cursor-grabbing group-data-[disabled=true]:cursor-not-allowed">
-      <DotsSix className="text-ui-fg-subtle" />
-    </div>
-  )
 }
 
 const CategoryLeafPlaceholder = () => {
