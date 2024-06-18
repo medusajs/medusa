@@ -1,11 +1,11 @@
 import { expectTypeOf } from "expect-type"
-import { TextSchema } from "../schema/text"
+import { TextProperty } from "../properties/text"
 import { HasMany } from "../relations/has-many"
 
 describe("HasMany relationship", () => {
   test("define hasMany relationship", () => {
     const user = {
-      username: new TextSchema(),
+      username: new TextProperty(),
     }
 
     const entityRef = () => user

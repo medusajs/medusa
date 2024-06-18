@@ -379,6 +379,7 @@ interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
   internal_note?: string
+  note?: string
   metadata?: Record<string, unknown> | null
 }
 interface BaseOrderBundledActionsDTO {
@@ -406,11 +407,52 @@ export interface CancelOrderFulfillmentDTO extends BaseOrderBundledActionsDTO {
 
 export interface RegisterOrderShipmentDTO extends BaseOrderBundledActionsDTO {
   items: BaseOrderBundledItemActionsDTO[]
+  no_notification?: boolean
 }
 
 export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
-  items: BaseOrderBundledItemActionsDTO[]
-  shipping_method: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  items: {
+    id: string
+    quantity: BigNumberInput
+    internal_note?: string
+    note?: string
+    reason_id?: string
+    metadata?: Record<string, any>
+  }[]
+  shipping_method?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  refund_amount?: BigNumberInput
+  no_notification?: boolean
+}
+
+export type OrderClaimType = "refund" | "replace"
+export type ClaimReason =
+  | "missing_item"
+  | "wrong_item"
+  | "production_failure"
+  | "other"
+export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
+  type: OrderClaimType
+  claim_items: (BaseOrderBundledItemActionsDTO & {
+    reason: ClaimReason
+    images?: {
+      url: string
+      metadata?: Record<string, any>
+    }[]
+  })[]
+  additional_items?: BaseOrderBundledItemActionsDTO[]
+  shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
+  return_shipping?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  refund_amount?: BigNumberInput
+  no_notification?: boolean
+}
+
+export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
+  additional_items?: BaseOrderBundledItemActionsDTO[]
+  shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
+  return_shipping: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  difference_due?: BigNumberInput
+  allow_backorder?: boolean
+  no_notification?: boolean
 }
 
 export interface CancelOrderReturnDTO {

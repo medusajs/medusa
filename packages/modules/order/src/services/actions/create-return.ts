@@ -7,67 +7,25 @@ import {
   ReturnStatus,
   getShippingMethodsTotals,
   isString,
+  promiseAll,
 } from "@medusajs/utils"
+import { Return, ReturnItem } from "@models"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
 
-export async function createReturn(
-  this: any,
-  data: OrderTypes.CreateOrderReturnDTO,
-  sharedContext?: Context
-) {
-  const order = await this.orderService_.retrieve(
-    data.order_id,
-    {
-      relations: ["items"],
-    },
-    sharedContext
-  )
+function createReturnReference(em, data, order) {
+  return em.create(Return, {
+    order_id: data.order_id,
+    order_version: order.version,
+    status: ReturnStatus.REQUESTED,
+    no_notification: data.no_notification,
+    refund_amount: (data.refund_amount as unknown) ?? null,
+  })
+}
 
-  const [returnRef] = await this.createReturns(
-    [
-      {
-        order_id: data.order_id,
-        order_version: order.version,
-        status: ReturnStatus.REQUESTED,
-        // TODO: add refund amount / calculate?
-        // refund_amount: data.refund_amount ?? null,
-      },
-    ],
-    sharedContext
-  )
-
-  let shippingMethodId
-
-  if (!isString(data.shipping_method)) {
-    const methods = await this.createShippingMethods(
-      [
-        {
-          order_id: data.order_id,
-          ...data.shipping_method,
-        },
-      ],
-      sharedContext
-    )
-    shippingMethodId = methods[0].id
-  } else {
-    shippingMethodId = data.shipping_method
-  }
-
-  const method = await this.retrieveShippingMethod(
-    shippingMethodId,
-    {
-      relations: ["tax_lines", "adjustments"],
-    },
-    sharedContext
-  )
-
-  const calculatedAmount = getShippingMethodsTotals([method as any], {})[
-    method.id
-  ]
-
-  const actions: CreateOrderChangeActionDTO[] = data.items.map((item) => {
-    return {
+function createReturnItems(em, data, returnRef, actions) {
+  return data.items.map((item) => {
+    actions.push({
       action: ChangeActionType.RETURN_ITEM,
       return_id: returnRef.id,
       internal_note: item.internal_note,
@@ -79,8 +37,53 @@ export async function createReturn(
         quantity: item.quantity,
         metadata: item.metadata,
       },
-    }
+    })
+
+    return em.create(ReturnItem, {
+      reason_id: item.reason_id,
+      return_id: returnRef.id,
+      item_id: item.id,
+      quantity: item.quantity,
+      note: item.note,
+      metadata: item.metadata,
+    })
   })
+}
+
+async function processShippingMethod(
+  service,
+  data,
+  returnRef,
+  actions,
+  sharedContext
+) {
+  let shippingMethodId
+
+  if (!isString(data.shipping_method)) {
+    const methods = await service.createShippingMethods(
+      [
+        {
+          order_id: data.order_id,
+          return_id: returnRef.id,
+          ...data.shipping_method,
+        },
+      ],
+      sharedContext
+    )
+    shippingMethodId = methods[0].id
+  } else {
+    shippingMethodId = data.shipping_method
+  }
+
+  const method = await service.retrieveShippingMethod(
+    shippingMethodId,
+    { relations: ["tax_lines", "adjustments"] },
+    sharedContext
+  )
+
+  const calculatedAmount = getShippingMethodsTotals([method as any], {})[
+    method.id
+  ]
 
   if (shippingMethodId) {
     actions.push({
@@ -91,8 +94,16 @@ export async function createReturn(
       amount: calculatedAmount.total,
     })
   }
+}
 
-  const change = await this.createOrderChange_(
+async function createOrderChange(
+  service,
+  data,
+  returnRef,
+  actions,
+  sharedContext
+) {
+  return await service.createOrderChange_(
     {
       order_id: data.order_id,
       return_id: returnRef.id,
@@ -107,8 +118,36 @@ export async function createReturn(
     },
     sharedContext
   )
+}
 
-  await this.confirmOrderChange(change[0].id, sharedContext)
+export async function createReturn(
+  this: any,
+  data: OrderTypes.CreateOrderReturnDTO,
+  sharedContext?: Context
+) {
+  const order = await this.orderService_.retrieve(
+    data.order_id,
+    { relations: ["items"] },
+    sharedContext
+  )
+
+  const em = sharedContext!.transactionManager as any
+  const returnRef = createReturnReference(em, data, order)
+  const actions: CreateOrderChangeActionDTO[] = []
+  returnRef.items = createReturnItems(em, data, returnRef, actions)
+  await processShippingMethod(this, data, returnRef, actions, sharedContext)
+  const change = await createOrderChange(
+    this,
+    data,
+    returnRef,
+    actions,
+    sharedContext
+  )
+
+  await promiseAll([
+    this.createReturns([returnRef], sharedContext),
+    this.confirmOrderChange(change[0].id, sharedContext),
+  ])
 
   return returnRef
 }
