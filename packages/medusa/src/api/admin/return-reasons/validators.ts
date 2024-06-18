@@ -14,7 +14,7 @@ export const AdminGetReturnReasonsReturnReasonParams =
       description: z.union([z.string(), z.array(z.string())]).optional(),
       parent_return_reason_id: z
         .union([z.string(), z.array(z.string())])
-        .optional(),
+        .nullish(),
       created_at: createOperatorMap().optional(),
       updated_at: createOperatorMap().optional(),
       deleted_at: createOperatorMap().optional(),
@@ -39,7 +39,7 @@ export const AdminGetReturnReasonsParams = createFindParams({
     description: z.union([z.string(), z.array(z.string())]).optional(),
     parent_return_reason_id: z
       .union([z.string(), z.array(z.string())])
-      .optional(),
+      .nullish(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -52,8 +52,8 @@ export type AdminGetReturnReasonsParamsType = z.infer<
 export const AdminCreateReturnReason = z.object({
   value: z.string(),
   label: z.string(),
-  descripton: z.string().optional(),
-  parent_return_reason_id: z.string().optional(),
+  descripton: z.string().nullish(),
+  parent_return_reason_id: z.string().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })
 export type AdminCreateReturnReasonType = z.infer<
@@ -63,7 +63,7 @@ export type AdminCreateReturnReasonType = z.infer<
 export const AdminUpdateReturnReason = z.object({
   value: z.string(),
   label: z.string(),
-  descripton: z.string().optional(),
+  descripton: z.string().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })
 export type AdminUpdateReturnReasonType = z.infer<

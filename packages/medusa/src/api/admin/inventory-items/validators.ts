@@ -28,15 +28,15 @@ export const AdminGetInventoryItemsParams = createFindParams({
       hs_code: z.union([z.string(), z.array(z.string())]).optional(),
       material: z.union([z.string(), z.array(z.string())]).optional(),
       requires_shipping: OptionalBooleanValidator,
-      weight: createOperatorMap(z.number(), parseFloat).optional(),
-      length: createOperatorMap(z.number(), parseFloat).optional(),
-      height: createOperatorMap(z.number(), parseFloat).optional(),
-      width: createOperatorMap(z.number(), parseFloat).optional(),
+      weight: createOperatorMap(z.number(), parseFloat).nullish(),
+      length: createOperatorMap(z.number(), parseFloat).nullish(),
+      height: createOperatorMap(z.number(), parseFloat).nullish(),
+      width: createOperatorMap(z.number(), parseFloat).nullish(),
       location_levels: z
         .object({
           location_id: z.union([z.string(), z.array(z.string())]).optional(),
         })
-        .optional(),
+        .nullish(),
       $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
       $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
     })
@@ -70,8 +70,8 @@ export type AdminCreateInventoryLocationLevelType = z.infer<
 export const AdminCreateInventoryLocationLevel = z
   .object({
     location_id: z.string(),
-    stocked_quantity: z.number().min(0).optional(),
-    incoming_quantity: z.number().min(0).optional(),
+    stocked_quantity: z.number().min(0).nullish(),
+    incoming_quantity: z.number().min(0).nullish(),
   })
   .strict()
 
@@ -80,8 +80,8 @@ export type AdminUpdateInventoryLocationLevelType = z.infer<
 >
 export const AdminUpdateInventoryLocationLevel = z
   .object({
-    stocked_quantity: z.number().min(0).optional(),
-    incoming_quantity: z.number().min(0).optional(),
+    stocked_quantity: z.number().min(0).nullish(),
+    incoming_quantity: z.number().min(0).nullish(),
   })
   .strict()
 
@@ -90,21 +90,21 @@ export type AdminCreateInventoryItemType = z.infer<
 >
 export const AdminCreateInventoryItem = z
   .object({
-    sku: z.string().optional(),
-    hs_code: z.string().optional(),
-    weight: z.number().optional(),
-    length: z.number().optional(),
-    height: z.number().optional(),
-    width: z.number().optional(),
-    origin_country: z.string().optional(),
-    mid_code: z.string().optional(),
-    material: z.string().optional(),
-    title: z.string().optional(),
-    description: z.string().optional(),
-    requires_shipping: z.boolean().optional(),
-    thumbnail: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
-    location_levels: z.array(AdminCreateInventoryLocationLevel).optional(),
+    sku: z.string().nullish(),
+    hs_code: z.string().nullish(),
+    weight: z.number().nullish(),
+    length: z.number().nullish(),
+    height: z.number().nullish(),
+    width: z.number().nullish(),
+    origin_country: z.string().nullish(),
+    mid_code: z.string().nullish(),
+    material: z.string().nullish(),
+    title: z.string().nullish(),
+    description: z.string().nullish(),
+    requires_shipping: z.boolean().nullish(),
+    thumbnail: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
+    location_levels: z.array(AdminCreateInventoryLocationLevel).nullish(),
   })
   .strict()
 
@@ -113,19 +113,19 @@ export type AdminUpdateInventoryItemType = z.infer<
 >
 export const AdminUpdateInventoryItem = z
   .object({
-    sku: z.string().optional(),
-    hs_code: z.string().optional(),
-    weight: z.number().optional(),
-    length: z.number().optional(),
-    height: z.number().optional(),
-    width: z.number().optional(),
-    origin_country: z.string().optional(),
-    mid_code: z.string().optional(),
-    material: z.string().optional(),
-    title: z.string().optional(),
-    description: z.string().optional(),
-    requires_shipping: z.boolean().optional(),
-    thumbnail: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    sku: z.string().nullish(),
+    hs_code: z.string().nullish(),
+    weight: z.number().nullish(),
+    length: z.number().nullish(),
+    height: z.number().nullish(),
+    width: z.number().nullish(),
+    origin_country: z.string().nullish(),
+    mid_code: z.string().nullish(),
+    material: z.string().nullish(),
+    title: z.string().nullish(),
+    description: z.string().nullish(),
+    requires_shipping: z.boolean().nullish(),
+    thumbnail: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

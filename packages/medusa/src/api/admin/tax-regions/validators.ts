@@ -22,13 +22,13 @@ export const AdminGetTaxRegionsParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     country_code: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
-      .optional(),
+      .nullish(),
     province_code: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
-      .optional(),
+      .nullish(),
     parent_id: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
-      .optional(),
+      .nullish(),
     created_by: z.union([z.string(), z.array(z.string())]).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
@@ -41,18 +41,16 @@ export const AdminGetTaxRegionsParams = createFindParams({
 export type AdminCreateTaxRegionType = z.infer<typeof AdminCreateTaxRegion>
 export const AdminCreateTaxRegion = z.object({
   country_code: z.string(),
-  province_code: z.string().optional(),
-  parent_id: z.string().optional(),
+  province_code: z.string().nullish(),
+  parent_id: z.string().nullish(),
   default_tax_rate: z
     .object({
-      rate: z.number().optional(),
-      code: z.string().optional(),
+      rate: z.number().nullish(),
+      code: z.string().nullish(),
       name: z.string(),
-      is_combinable: z
-        .union([z.literal("true"), z.literal("false")])
-        .optional(),
+      is_combinable: z.union([z.literal("true"), z.literal("false")]).nullish(),
       metadata: z.record(z.unknown()).optional(),
     })
-    .optional(),
+    .nullish(),
   metadata: z.record(z.unknown()).optional(),
 })

@@ -17,8 +17,8 @@ export const AdminGetTaxRatesParams = createFindParams({
     q: z.string().optional(),
     tax_region_id: z
       .union([z.string(), z.array(z.string()), createOperatorMap()])
-      .optional(),
-    is_default: z.union([z.literal("true"), z.literal("false")]).optional(),
+      .nullish(),
+    is_default: z.union([z.literal("true"), z.literal("false")]).nullish(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -35,23 +35,23 @@ export const AdminCreateTaxRateRule = z.object({
 
 export type AdminCreateTaxRateType = z.infer<typeof AdminCreateTaxRate>
 export const AdminCreateTaxRate = z.object({
-  rate: z.number().optional(),
-  code: z.string().optional(),
-  rules: z.array(AdminCreateTaxRateRule).optional(),
+  rate: z.number().nullish(),
+  code: z.string().nullish(),
+  rules: z.array(AdminCreateTaxRateRule).nullish(),
   name: z.string(),
-  is_default: z.boolean().optional(),
-  is_combinable: z.boolean().optional(),
+  is_default: z.boolean().nullish(),
+  is_combinable: z.boolean().nullish(),
   tax_region_id: z.string(),
   metadata: z.record(z.unknown()).optional(),
 })
 
 export type AdminUpdateTaxRateType = z.infer<typeof AdminUpdateTaxRate>
 export const AdminUpdateTaxRate = z.object({
-  rate: z.number().optional(),
-  code: z.string().optional(),
-  rules: z.array(AdminCreateTaxRateRule).optional(),
-  name: z.string().optional(),
-  is_default: z.boolean().optional(),
-  is_combinable: z.boolean().optional(),
+  rate: z.number().nullish(),
+  code: z.string().nullish(),
+  rules: z.array(AdminCreateTaxRateRule).nullish(),
+  name: z.string().nullish(),
+  is_default: z.boolean().nullish(),
+  is_combinable: z.boolean().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })

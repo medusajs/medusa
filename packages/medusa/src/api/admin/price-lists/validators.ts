@@ -16,8 +16,8 @@ export const AdminGetPriceListsParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     starts_at: createOperatorMap().optional(),
     ends_at: createOperatorMap().optional(),
-    status: z.array(z.nativeEnum(PriceListStatus)).optional(),
-    rules_count: z.array(z.number()).optional(),
+    status: z.array(z.nativeEnum(PriceListStatus)).nullish(),
+    rules_count: z.array(z.number()).nullish(),
     $and: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
     $or: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
   })
@@ -29,9 +29,9 @@ export const AdminCreatePriceListPrice = z.object({
   currency_code: z.string(),
   amount: z.number(),
   variant_id: z.string(),
-  min_quantity: z.number().optional(),
-  max_quantity: z.number().optional(),
-  rules: z.record(z.string(), z.string()).optional(),
+  min_quantity: z.number().nullish(),
+  max_quantity: z.number().nullish(),
+  rules: z.record(z.string(), z.string()).nullish(),
 })
 
 export type AdminCreatePriceListPriceType = z.infer<
@@ -40,12 +40,12 @@ export type AdminCreatePriceListPriceType = z.infer<
 
 export const AdminUpdatePriceListPrice = z.object({
   id: z.string(),
-  currency_code: z.string().optional(),
-  amount: z.number().optional(),
+  currency_code: z.string().nullish(),
+  amount: z.number().nullish(),
   variant_id: z.string(),
-  min_quantity: z.number().optional(),
-  max_quantity: z.number().optional(),
-  rules: z.record(z.string(), z.string()).optional(),
+  min_quantity: z.number().nullish(),
+  max_quantity: z.number().nullish(),
+  rules: z.record(z.string(), z.string()).nullish(),
 })
 
 export type AdminUpdatePriceListPriceType = z.infer<
@@ -55,24 +55,24 @@ export type AdminUpdatePriceListPriceType = z.infer<
 export const AdminCreatePriceList = z.object({
   title: z.string(),
   description: z.string(),
-  starts_at: z.union([z.string(), z.null()]).optional(),
-  ends_at: z.union([z.string(), z.null()]).optional(),
-  status: z.nativeEnum(PriceListStatus).optional(),
-  type: z.nativeEnum(PriceListType).optional(),
-  rules: z.record(z.string(), z.array(z.string())).optional(),
-  prices: z.array(AdminCreatePriceListPrice).optional(),
+  starts_at: z.union([z.string(), z.null()]).nullish(),
+  ends_at: z.union([z.string(), z.null()]).nullish(),
+  status: z.nativeEnum(PriceListStatus).nullish(),
+  type: z.nativeEnum(PriceListType).nullish(),
+  rules: z.record(z.string(), z.array(z.string())).nullish(),
+  prices: z.array(AdminCreatePriceListPrice).nullish(),
 })
 
 export type AdminCreatePriceListType = z.infer<typeof AdminCreatePriceList>
 
 export const AdminUpdatePriceList = z.object({
-  title: z.string().optional(),
-  description: z.string().optional(),
-  starts_at: z.string().optional().nullable(),
-  ends_at: z.string().optional().nullable(),
-  status: z.nativeEnum(PriceListStatus).optional(),
-  type: z.nativeEnum(PriceListType).optional(),
-  rules: z.record(z.string(), z.array(z.string())).optional(),
+  title: z.string().nullish(),
+  description: z.string().nullish(),
+  starts_at: z.string().nullish(),
+  ends_at: z.string().nullish(),
+  status: z.nativeEnum(PriceListStatus).nullish(),
+  type: z.nativeEnum(PriceListType).nullish(),
+  rules: z.record(z.string(), z.array(z.string())).nullish(),
 })
 
 export type AdminUpdatePriceListType = z.infer<typeof AdminUpdatePriceList>

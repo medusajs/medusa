@@ -8,20 +8,20 @@ export const StoreGetCartsCart = createSelectParams()
 const ItemSchema = z.object({
   variant_id: z.string(),
   quantity: z.number(),
-  metadata: z.record(z.unknown()).optional().nullable(),
+  metadata: z.record(z.unknown()).optional(),
 })
 
 export type StoreCreateCartType = z.infer<typeof StoreCreateCart>
 export const StoreCreateCart = z
   .object({
-    region_id: z.string().optional().nullable(),
-    shipping_address: z.union([AddressPayload, z.string()]).optional(),
-    billing_address: z.union([AddressPayload, z.string()]).optional(),
-    email: z.string().email().optional().nullable(),
-    currency_code: z.string().optional(),
-    items: z.array(ItemSchema).optional(),
-    sales_channel_id: z.string().optional().nullable(),
-    metadata: z.record(z.unknown()).optional().nullable(),
+    region_id: z.string().nullish(),
+    shipping_address: z.union([AddressPayload, z.string()]).nullish(),
+    billing_address: z.union([AddressPayload, z.string()]).nullish(),
+    email: z.string().email().nullish(),
+    currency_code: z.string().nullish(),
+    items: z.array(ItemSchema).nullish(),
+    sales_channel_id: z.string().nullish(),
+    metadata: z.record(z.unknown()).optional(),
   })
   .strict()
 
@@ -44,13 +44,13 @@ export const StoreRemoveCartPromotions = z
 export type StoreUpdateCartType = z.infer<typeof StoreUpdateCart>
 export const StoreUpdateCart = z
   .object({
-    region_id: z.string().optional().nullable(),
-    email: z.string().email().optional().nullable(),
-    billing_address: z.union([AddressPayload, z.string()]).optional(),
-    shipping_address: z.union([AddressPayload, z.string()]).optional(),
-    sales_channel_id: z.string().optional().nullable(),
-    metadata: z.record(z.unknown()).optional().nullable(),
-    promo_codes: z.array(z.string()).optional(),
+    region_id: z.string().nullish(),
+    email: z.string().email().nullish(),
+    billing_address: z.union([AddressPayload, z.string()]).nullish(),
+    shipping_address: z.union([AddressPayload, z.string()]).nullish(),
+    sales_channel_id: z.string().nullish(),
+    metadata: z.record(z.unknown()).optional(),
+    promo_codes: z.array(z.string()).nullish(),
   })
   .strict()
 
@@ -63,7 +63,7 @@ export type StoreAddCartLineItemType = z.infer<typeof StoreAddCartLineItem>
 export const StoreAddCartLineItem = z.object({
   variant_id: z.string(),
   quantity: z.number(),
-  metadata: z.record(z.unknown()).optional().nullable(),
+  metadata: z.record(z.unknown()).optional(),
 })
 
 export type StoreUpdateCartLineItemType = z.infer<
@@ -80,13 +80,13 @@ export type StoreAddCartShippingMethodsType = z.infer<
 export const StoreAddCartShippingMethods = z
   .object({
     option_id: z.string(),
-    data: z.record(z.unknown()).optional(),
+    data: z.record(z.unknown()).nullish(),
   })
   .strict()
 
 export const StoreCompleteCart = z
   .object({
-    idempotency_key: z.string().optional(),
+    idempotency_key: z.string().nullish(),
   })
   .strict()
 export type StoreCompleteCartType = z.infer<typeof StoreCompleteCart>

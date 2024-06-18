@@ -1,6 +1,6 @@
 import { TransactionHandlerType } from "@medusajs/utils"
-import { createFindParams, createSelectParams } from "../../utils/validators"
 import { z } from "zod"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export type AdminGetWorkflowExecutionDetailsParamsType = z.infer<
   typeof AdminGetWorkflowExecutionDetailsParams
@@ -25,8 +25,8 @@ export type AdminCreateWorkflowsRunType = z.infer<
   typeof AdminCreateWorkflowsRun
 >
 export const AdminCreateWorkflowsRun = z.object({
-  input: z.any().optional(),
-  transaction_id: z.string().optional(),
+  input: z.any().nullish(),
+  transaction_id: z.string().nullish(),
 })
 
 export type AdminCreateWorkflowsAsyncResponseType = z.infer<
@@ -35,12 +35,12 @@ export type AdminCreateWorkflowsAsyncResponseType = z.infer<
 export const AdminCreateWorkflowsAsyncResponse = z.object({
   transaction_id: z.string(),
   step_id: z.string(),
-  response: z.any().optional(),
-  compensate_input: z.any().optional(),
+  response: z.any().nullish(),
+  compensate_input: z.any().nullish(),
   action: z
     .preprocess(
       (val: any) => (val + "").toLowerCase(),
-      z.nativeEnum(TransactionHandlerType).optional()
+      z.nativeEnum(TransactionHandlerType).nullish()
     )
-    .optional(),
+    .nullish(),
 })

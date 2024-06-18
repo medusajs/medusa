@@ -31,21 +31,21 @@ export const AdminCreateRegion = z
   .object({
     name: z.string(),
     currency_code: z.string(),
-    countries: z.array(z.string()).optional(),
-    automatic_taxes: z.boolean().optional(),
-    payment_providers: z.array(z.string()).optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    countries: z.array(z.string()).nullish(),
+    automatic_taxes: z.boolean().nullish(),
+    payment_providers: z.array(z.string()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
 export type AdminUpdateRegionType = z.infer<typeof AdminUpdateRegion>
 export const AdminUpdateRegion = z
   .object({
-    name: z.string().optional(),
-    currency_code: z.string().optional(),
-    countries: z.array(z.string()).optional(),
-    automatic_taxes: z.boolean().optional(),
-    payment_providers: z.array(z.string()).optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    name: z.string().nullish(),
+    currency_code: z.string().nullish(),
+    countries: z.array(z.string()).nullish(),
+    automatic_taxes: z.boolean().nullish(),
+    payment_providers: z.array(z.string()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

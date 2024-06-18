@@ -29,7 +29,7 @@ export const AdminGetShippingOptionsParams = createFindParams({
     provider_id: z.union([z.string(), z.array(z.string())]).optional(),
     shipping_option_type_id: z
       .union([z.string(), z.array(z.string())])
-      .optional(),
+      .nullish(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -96,17 +96,17 @@ export const AdminCreateShippingOptionPriceWithRegion = z
 
 export const AdminUpdateShippingOptionPriceWithCurrency = z
   .object({
-    id: z.string().optional(),
-    currency_code: z.string().optional(),
-    amount: z.number().optional(),
+    id: z.string().nullish(),
+    currency_code: z.string().nullish(),
+    amount: z.number().nullish(),
   })
   .strict()
 
 export const AdminUpdateShippingOptionPriceWithRegion = z
   .object({
-    id: z.string().optional(),
-    region_id: z.string().optional(),
-    amount: z.number().optional(),
+    id: z.string().nullish(),
+    region_id: z.string().nullish(),
+    amount: z.number().nullish(),
   })
   .strict()
 
@@ -118,14 +118,14 @@ export const AdminCreateShippingOption = z
     name: z.string(),
     service_zone_id: z.string(),
     shipping_profile_id: z.string(),
-    data: z.record(z.unknown()).optional(),
+    data: z.record(z.unknown()).nullish(),
     price_type: z.nativeEnum(ShippingOptionPriceTypeEnum),
     provider_id: z.string(),
     type: AdminCreateShippingOptionTypeObject,
     prices: AdminCreateShippingOptionPriceWithCurrency.or(
       AdminCreateShippingOptionPriceWithRegion
     ).array(),
-    rules: AdminCreateShippingOptionRule.array().optional(),
+    rules: AdminCreateShippingOptionRule.array().nullish(),
   })
   .strict()
 
@@ -134,19 +134,19 @@ export type AdminUpdateShippingOptionType = z.infer<
 >
 export const AdminUpdateShippingOption = z
   .object({
-    name: z.string().optional(),
-    data: z.record(z.unknown()).optional(),
-    price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).optional(),
-    provider_id: z.string().optional(),
-    shipping_profile_id: z.string().optional(),
-    type: AdminCreateShippingOptionTypeObject.optional(),
+    name: z.string().nullish(),
+    data: z.record(z.unknown()).nullish(),
+    price_type: z.nativeEnum(ShippingOptionPriceTypeEnum).nullish(),
+    provider_id: z.string().nullish(),
+    shipping_profile_id: z.string().nullish(),
+    type: AdminCreateShippingOptionTypeObject.nullish(),
     prices: AdminUpdateShippingOptionPriceWithCurrency.or(
       AdminUpdateShippingOptionPriceWithRegion
     )
       .array()
-      .optional(),
+      .nullish(),
     rules: AdminUpdateShippingOptionRule.or(AdminCreateShippingOptionRule)
       .array()
-      .optional(),
+      .nullish(),
   })
   .strict()

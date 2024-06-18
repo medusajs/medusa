@@ -6,22 +6,22 @@ export const createBatchBody = (
   deleteValidator: z.ZodType = z.string()
 ) => {
   return z.object({
-    create: z.array(createValidator).optional(),
-    update: z.array(updateValidator).optional(),
-    delete: z.array(deleteValidator).optional(),
+    create: z.array(createValidator).nullish(),
+    update: z.array(updateValidator).nullish(),
+    delete: z.array(deleteValidator).nullish(),
   })
 }
 
 export const createLinkBody = () => {
   return z.object({
-    add: z.array(z.string()).optional(),
-    remove: z.array(z.string()).optional(),
+    add: z.array(z.string()).nullish(),
+    remove: z.array(z.string()).nullish(),
   })
 }
 
 export const createSelectParams = () => {
   return z.object({
-    fields: z.string().optional(),
+    fields: z.string().nullish(),
   })
 }
 
@@ -47,7 +47,7 @@ export const createFindParams = ({
         },
         z
           .number()
-          .optional()
+          .nullish()
           .default(offset ?? 0)
       ),
       limit: z.preprocess(
@@ -59,12 +59,10 @@ export const createFindParams = ({
         },
         z
           .number()
-          .optional()
+          .nullish()
           .default(limit ?? 20)
       ),
-      order: order
-        ? z.string().optional().default(order)
-        : z.string().optional(),
+      order: order ? z.string().nullish().default(order) : z.string().nullish(),
     })
   )
 }
@@ -77,16 +75,16 @@ export const createOperatorMap = (
     type = z.string()
   }
 
-  let unionType: any = z.union([type, z.array(type)]).optional()
-  let arrayType: any = z.array(type).optional()
-  let simpleType: any = type.optional()
+  let unionType: any = z.union([type, z.array(type)]).nullish()
+  let arrayType: any = z.array(type).nullish()
+  let simpleType: any = type.nullish()
 
   if (valueParser) {
     unionType = z
       .preprocess(valueParser, z.union([type, z.array(type)]))
-      .optional()
-    arrayType = z.preprocess(valueParser, z.array(type)).optional()
-    simpleType = z.preprocess(valueParser, type).optional()
+      .nullish()
+    arrayType = z.preprocess(valueParser, z.array(type)).nullish()
+    simpleType = z.preprocess(valueParser, type).nullish()
   }
 
   return z.object({

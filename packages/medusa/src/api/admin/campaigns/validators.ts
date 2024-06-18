@@ -29,8 +29,8 @@ export const AdminGetCampaignsParams = createFindParams({
 export const CreateCampaignBudget = z
   .object({
     type: z.nativeEnum(CampaignBudgetType),
-    limit: z.number().optional().nullable(),
-    currency_code: z.string().optional().nullable(),
+    limit: z.number().optional(),
+    currency_code: z.string().nullish(),
   })
   .strict()
   .refine(
@@ -52,7 +52,7 @@ export const CreateCampaignBudget = z
 
 export const UpdateCampaignBudget = z
   .object({
-    limit: z.number().optional().nullable(),
+    limit: z.number().optional(),
   })
   .strict()
 
@@ -61,10 +61,10 @@ export const AdminCreateCampaign = z
   .object({
     name: z.string(),
     campaign_identifier: z.string(),
-    description: z.string().optional(),
+    description: z.string().nullish(),
     budget: CreateCampaignBudget.optional(),
-    starts_at: z.coerce.date().optional(),
-    ends_at: z.coerce.date().optional(),
+    starts_at: z.coerce.date().nullish(),
+    ends_at: z.coerce.date().nullish(),
     promotions: z.array(z.object({ id: z.string() })).optional(),
   })
   .strict()
@@ -73,9 +73,9 @@ export type AdminUpdateCampaignType = z.infer<typeof AdminUpdateCampaign>
 export const AdminUpdateCampaign = z.object({
   name: z.string().optional(),
   campaign_identifier: z.string().optional(),
-  description: z.string().optional(),
+  description: z.string().nullish(),
   budget: UpdateCampaignBudget.optional(),
-  starts_at: z.coerce.date().optional(),
-  ends_at: z.coerce.date().optional(),
+  starts_at: z.coerce.date().nullish(),
+  ends_at: z.coerce.date().nullish(),
   promotions: z.array(z.object({ id: z.string() })).optional(),
 })

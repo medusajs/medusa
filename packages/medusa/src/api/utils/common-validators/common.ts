@@ -2,17 +2,17 @@ import { z } from "zod"
 
 export const AddressPayload = z
   .object({
-    first_name: z.string().optional(),
-    last_name: z.string().optional(),
-    phone: z.string().optional(),
-    company: z.string().optional(),
-    address_1: z.string().optional(),
-    address_2: z.string().optional(),
-    city: z.string().optional(),
-    country_code: z.string().optional(),
-    province: z.string().optional(),
-    postal_code: z.string().optional(),
-    metadata: z.record(z.string()).optional().nullable(),
+    first_name: z.string().nullish(),
+    last_name: z.string().nullish(),
+    phone: z.string().nullish(),
+    company: z.string().nullish(),
+    address_1: z.string().nullish(),
+    address_2: z.string().nullish(),
+    city: z.string().nullish(),
+    country_code: z.string().nullish(),
+    province: z.string().nullish(),
+    postal_code: z.string().nullish(),
+    metadata: z.record(z.string()).nullish(),
   })
   .strict()
 
@@ -34,5 +34,5 @@ const optionalBooleanMapper = new Map([
 
 export const OptionalBooleanValidator = z.preprocess(
   (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-  z.boolean().optional()
+  z.boolean().nullish()
 )

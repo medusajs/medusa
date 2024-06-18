@@ -44,13 +44,13 @@ export const AdminProductCategoriesParams = createFindParams({
 export const AdminCreateProductCategory = z
   .object({
     name: z.string(),
-    description: z.string().optional(),
-    handle: z.string().optional(),
-    is_internal: z.boolean().optional(),
-    is_active: z.boolean().optional(),
-    parent_category_id: z.string().optional(),
+    description: z.string().nullish(),
+    handle: z.string().nullish(),
+    is_internal: z.boolean().nullish(),
+    is_active: z.boolean().nullish(),
+    parent_category_id: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
-    rank: z.number().nonnegative().optional(),
+    rank: z.number().nonnegative().nullish(),
   })
   .strict()
 
@@ -60,14 +60,14 @@ export type AdminCreateProductCategoryType = z.infer<
 
 export const AdminUpdateProductCategory = z
   .object({
-    name: z.string().optional(),
-    description: z.string().optional(),
-    handle: z.string().optional(),
-    is_internal: z.boolean().optional(),
-    is_active: z.boolean().optional(),
-    parent_category_id: z.string().nullable().optional(),
+    name: z.string().nullish(),
+    description: z.string().nullish(),
+    handle: z.string().nullish(),
+    is_internal: z.boolean().nullish(),
+    is_active: z.boolean().nullish(),
+    parent_category_id: z.string().nullable().nullish(),
     metadata: z.record(z.unknown()).optional(),
-    rank: z.number().nonnegative().optional(),
+    rank: z.number().nonnegative().nullish(),
   })
   .strict()
 

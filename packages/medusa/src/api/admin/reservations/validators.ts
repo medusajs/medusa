@@ -1,9 +1,9 @@
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { z } from "zod"
 
 export type AdminGetReservationParamsType = z.infer<
   typeof AdminGetReservationParams
@@ -22,8 +22,8 @@ export const AdminGetReservationsParams = createFindParams({
     inventory_item_id: z.union([z.string(), z.array(z.string())]).optional(),
     line_item_id: z.union([z.string(), z.array(z.string())]).optional(),
     created_by: z.union([z.string(), z.array(z.string())]).optional(),
-    description: z.union([z.string(), createOperatorMap()]).optional(),
-    quantity: createOperatorMap(z.number(), parseFloat).optional(),
+    description: z.union([z.string(), createOperatorMap()]).nullish(),
+    quantity: createOperatorMap(z.number(), parseFloat).nullish(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -33,21 +33,21 @@ export const AdminGetReservationsParams = createFindParams({
 export type AdminCreateReservationType = z.infer<typeof AdminCreateReservation>
 export const AdminCreateReservation = z
   .object({
-    line_item_id: z.string().optional(),
+    line_item_id: z.string().nullish(),
     location_id: z.string(),
     inventory_item_id: z.string(),
     quantity: z.number(),
-    description: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    description: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()
 
 export type AdminUpdateReservationType = z.infer<typeof AdminUpdateReservation>
 export const AdminUpdateReservation = z
   .object({
-    location_id: z.string().optional(),
-    quantity: z.number().optional(),
-    description: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    location_id: z.string().nullish(),
+    quantity: z.number().nullish(),
+    description: z.string().nullish(),
+    metadata: z.record(z.string(), z.unknown()).nullish(),
   })
   .strict()

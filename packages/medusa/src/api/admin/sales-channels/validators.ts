@@ -22,7 +22,7 @@ export const AdminGetSalesChannelsParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
-    description: z.string().optional(),
+    description: z.string().nullish(),
     is_disabled: OptionalBooleanValidator,
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
@@ -39,17 +39,17 @@ export type AdminCreateSalesChannelType = z.infer<
 >
 export const AdminCreateSalesChannel = z.object({
   name: z.string(),
-  description: z.string().optional(),
-  is_disabled: z.boolean().optional(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+  description: z.string().nullish(),
+  is_disabled: z.boolean().nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })
 
 export type AdminUpdateSalesChannelType = z.infer<
   typeof AdminUpdateSalesChannel
 >
 export const AdminUpdateSalesChannel = z.object({
-  name: z.string().optional(),
-  description: z.string().nullable().optional(),
-  is_disabled: z.boolean().optional(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+  name: z.string().nullish(),
+  description: z.string().nullable().nullish(),
+  is_disabled: z.boolean().nullish(),
+  metadata: z.record(z.string(), z.unknown()).nullish(),
 })

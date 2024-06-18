@@ -1,9 +1,9 @@
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { z } from "zod"
 
 export const AdminGetCollectionParams = createSelectParams()
 

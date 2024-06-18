@@ -1,5 +1,5 @@
-import { createFindParams, createSelectParams } from "../../utils/validators"
 import { z } from "zod"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export type AdminGetPricingRuleTypeParamsType = z.infer<
   typeof AdminGetPricingRuleTypeParams
@@ -36,8 +36,8 @@ export type AdminUpdatePricingRuleTypeType = z.infer<
 >
 export const AdminUpdatePricingRuleType = z
   .object({
-    name: z.string().optional(),
-    rule_attribute: z.string().optional(),
-    default_priority: z.number().optional(),
+    name: z.string().nullish(),
+    rule_attribute: z.string().nullish(),
+    default_priority: z.number().nullish(),
   })
   .strict()
