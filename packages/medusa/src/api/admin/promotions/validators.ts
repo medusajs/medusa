@@ -34,7 +34,7 @@ export const AdminGetPromotionsParams = createFindParams({
         .object({
           currency_code: z.union([z.string(), z.array(z.string())]).optional(),
         })
-        .nullish(),
+        .optional(),
       created_at: createOperatorMap().optional(),
       updated_at: createOperatorMap().optional(),
       deleted_at: createOperatorMap().optional(),
@@ -160,7 +160,7 @@ export const AdminCreatePromotion = z
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType),
     campaign_id: z.string().nullish(),
-    campaign: AdminCreateCampaign.nullish(),
+    campaign: AdminCreateCampaign.optional(),
     application_method: AdminCreateApplicationMethod,
     rules: z.array(AdminCreatePromotionRule).optional(),
   })
@@ -174,12 +174,12 @@ export const AdminCreatePromotion = z
 export type AdminUpdatePromotionType = z.infer<typeof AdminUpdatePromotion>
 export const AdminUpdatePromotion = z
   .object({
-    code: z.string().nullish(),
+    code: z.string().optional(),
     is_automatic: z.boolean().optional(),
-    type: z.nativeEnum(PromotionType).nullish(),
+    type: z.nativeEnum(PromotionType).optional(),
     campaign_id: z.string().nullish(),
-    campaign: AdminCreateCampaign.nullish(),
-    application_method: AdminUpdateApplicationMethod.nullish(),
+    campaign: AdminCreateCampaign.optional(),
+    application_method: AdminUpdateApplicationMethod.optional(),
     rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()

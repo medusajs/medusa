@@ -25,8 +25,8 @@ export type AdminCreateWorkflowsRunType = z.infer<
   typeof AdminCreateWorkflowsRun
 >
 export const AdminCreateWorkflowsRun = z.object({
-  input: z.any().nullish(),
-  transaction_id: z.string().nullish(),
+  input: z.any().optional(),
+  transaction_id: z.string().optional(),
 })
 
 export type AdminCreateWorkflowsAsyncResponseType = z.infer<
@@ -35,12 +35,12 @@ export type AdminCreateWorkflowsAsyncResponseType = z.infer<
 export const AdminCreateWorkflowsAsyncResponse = z.object({
   transaction_id: z.string(),
   step_id: z.string(),
-  response: z.any().nullish(),
-  compensate_input: z.any().nullish(),
+  response: z.any().optional(),
+  compensate_input: z.any().optional(),
   action: z
     .preprocess(
       (val: any) => (val + "").toLowerCase(),
-      z.nativeEnum(TransactionHandlerType).nullish()
+      z.nativeEnum(TransactionHandlerType).optional()
     )
-    .nullish(),
+    .optional(),
 })

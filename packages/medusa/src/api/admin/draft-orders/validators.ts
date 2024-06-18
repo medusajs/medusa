@@ -52,13 +52,13 @@ const Item = z
 export type AdminCreateDraftOrderType = z.infer<typeof AdminCreateDraftOrder>
 export const AdminCreateDraftOrder = z
   .object({
-    status: z.nativeEnum(Status).nullish(),
+    status: z.nativeEnum(Status).optional(),
     sales_channel_id: z.string().nullish(),
     email: z.string().nullish(),
     customer_id: z.string().nullish(),
-    billing_address: AddressPayload.nullish(),
-    shipping_address: AddressPayload.nullish(),
-    items: z.array(Item).nullish(),
+    billing_address: AddressPayload.optional(),
+    shipping_address: AddressPayload.optional(),
+    items: z.array(Item).optional(),
     region_id: z.string(),
     promo_codes: z.array(z.string()).optional(),
     currency_code: z.string().nullish(),

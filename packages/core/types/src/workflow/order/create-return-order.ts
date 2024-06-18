@@ -5,7 +5,7 @@ interface CreateReturnItem {
   quantity: BigNumberInput
   internal_note?: string | null
   reason_id?: string | null
-  note?: string
+  note?: string | null
   metadata?: Record<string, any>
 }
 

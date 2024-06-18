@@ -29,7 +29,7 @@ export const AdminCustomersParams = createFindParams({
         z.string(),
         z.array(z.string()),
       ])
-      .nullish(),
+      .optional(),
     company_name: z.union([z.string(), z.array(z.string())]).optional(),
     first_name: z.union([z.string(), z.array(z.string())]).optional(),
     last_name: z.union([z.string(), z.array(z.string())]).optional(),

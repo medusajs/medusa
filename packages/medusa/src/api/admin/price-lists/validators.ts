@@ -16,8 +16,8 @@ export const AdminGetPriceListsParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     starts_at: createOperatorMap().optional(),
     ends_at: createOperatorMap().optional(),
-    status: z.array(z.nativeEnum(PriceListStatus)).nullish(),
-    rules_count: z.array(z.number()).nullish(),
+    status: z.array(z.nativeEnum(PriceListStatus)).optional(),
+    rules_count: z.array(z.number()).optional(),
     $and: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
     $or: z.lazy(() => AdminGetPriceListsParams.array()).optional(),
   })

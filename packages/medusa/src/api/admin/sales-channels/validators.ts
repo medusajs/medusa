@@ -22,7 +22,7 @@ export const AdminGetSalesChannelsParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     name: z.union([z.string(), z.array(z.string())]).optional(),
-    description: z.string().nullish(),
+    description: z.string().optional(),
     is_disabled: OptionalBooleanValidator,
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),

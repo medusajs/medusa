@@ -105,7 +105,7 @@ export const AdminUpdateShippingOptionPriceWithCurrency = z
 export const AdminUpdateShippingOptionPriceWithRegion = z
   .object({
     id: z.string().optional(),
-    region_id: z.string().nullish(),
+    region_id: z.string().optional(),
     amount: z.number().optional(),
   })
   .strict()

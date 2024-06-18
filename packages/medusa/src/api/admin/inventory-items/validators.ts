@@ -28,15 +28,15 @@ export const AdminGetInventoryItemsParams = createFindParams({
       hs_code: z.union([z.string(), z.array(z.string())]).optional(),
       material: z.union([z.string(), z.array(z.string())]).optional(),
       requires_shipping: OptionalBooleanValidator,
-      weight: createOperatorMap(z.number(), parseFloat).nullish(),
-      length: createOperatorMap(z.number(), parseFloat).nullish(),
-      height: createOperatorMap(z.number(), parseFloat).nullish(),
-      width: createOperatorMap(z.number(), parseFloat).nullish(),
+      weight: createOperatorMap(z.number(), parseFloat).optional(),
+      length: createOperatorMap(z.number(), parseFloat).optional(),
+      height: createOperatorMap(z.number(), parseFloat).optional(),
+      width: createOperatorMap(z.number(), parseFloat).optional(),
       location_levels: z
         .object({
           location_id: z.union([z.string(), z.array(z.string())]).optional(),
         })
-        .nullish(),
+        .optional(),
       $and: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
       $or: z.lazy(() => AdminGetInventoryItemsParams.array()).optional(),
     })

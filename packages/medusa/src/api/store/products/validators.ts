@@ -21,7 +21,7 @@ export const StoreGetProductVariantsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    status: ProductStatusEnum.array().nullish(),
+    status: ProductStatusEnum.array().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -37,9 +37,9 @@ export const StoreGetProductsParams = createFindParams({
 }).merge(
   z
     .object({
-      region_id: z.string().nullish(),
-      currency_code: z.string().nullish(),
-      variants: StoreGetProductVariantsParams.nullish(),
+      region_id: z.string().optional(),
+      currency_code: z.string().optional(),
+      variants: StoreGetProductVariantsParams.optional(),
       $and: z.lazy(() => StoreGetProductsParams.array()).optional(),
       $or: z.lazy(() => StoreGetProductsParams.array()).optional(),
     })

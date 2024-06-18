@@ -92,8 +92,8 @@ export type AdminUpdateProductOptionType = z.infer<
   typeof AdminUpdateProductOption
 >
 export const AdminUpdateProductOption = z.object({
-  id: z.string().nullish(),
-  title: z.string().nullish(),
+  id: z.string().optional(),
+  title: z.string().optional(),
   values: z.array(z.string()).optional(),
 })
 
@@ -113,9 +113,9 @@ export type AdminUpdateVariantPriceType = z.infer<
   typeof AdminUpdateVariantPrice
 >
 export const AdminUpdateVariantPrice = z.object({
-  id: z.string().nullish(),
-  currency_code: z.string().nullish(),
-  amount: z.number().nullish(),
+  id: z.string().optional(),
+  currency_code: z.string().optional(),
+  amount: z.number().optional(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
 })
@@ -139,7 +139,7 @@ export const AdminCreateProductVariant = z
     mid_code: z.string().nullish(),
     allow_backorder: z.boolean().optional().default(false),
     manage_inventory: z.boolean().optional().default(true),
-    variant_rank: z.number().nullish(),
+    variant_rank: z.number().optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
     height: z.number().nullish(),
@@ -148,7 +148,7 @@ export const AdminCreateProductVariant = z
     material: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
     prices: z.array(AdminCreateVariantPrice),
-    options: z.record(z.string()).nullish(),
+    options: z.record(z.string()).optional(),
     inventory_items: z
       .array(
         z.object({
@@ -156,7 +156,7 @@ export const AdminCreateProductVariant = z
           required_quantity: z.number(),
         })
       )
-      .nullish(),
+      .optional(),
   })
   .strict()
 
@@ -165,9 +165,9 @@ export type AdminUpdateProductVariantType = z.infer<
 >
 export const AdminUpdateProductVariant = z
   .object({
-    id: z.string().nullish(),
-    title: z.string().nullish(),
-    prices: z.array(AdminUpdateVariantPrice).nullish(),
+    id: z.string().optional(),
+    title: z.string().optional(),
+    prices: z.array(AdminUpdateVariantPrice).optional(),
     sku: z.string().nullish(),
     ean: z.string().nullish(),
     upc: z.string().nullish(),
@@ -176,7 +176,7 @@ export const AdminUpdateProductVariant = z
     mid_code: z.string().nullish(),
     allow_backorder: z.boolean().optional(),
     manage_inventory: z.boolean().optional(),
-    variant_rank: z.number().nullish(),
+    variant_rank: z.number().optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
     height: z.number().nullish(),
@@ -184,7 +184,7 @@ export const AdminUpdateProductVariant = z
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
-    options: z.record(z.string()).nullish(),
+    options: z.record(z.string()).optional(),
   })
   .strict()
 
@@ -233,7 +233,7 @@ export const AdminCreateProduct = z
 export type AdminUpdateProductType = z.infer<typeof AdminUpdateProduct>
 export const AdminUpdateProduct = z
   .object({
-    title: z.string().nullish(),
+    title: z.string().optional(),
     discountable: z.boolean().optional(),
     is_giftcard: z.boolean().optional(),
     options: z.array(AdminUpdateProductOption).optional(),

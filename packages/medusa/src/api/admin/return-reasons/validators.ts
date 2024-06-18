@@ -14,7 +14,7 @@ export const AdminGetReturnReasonsReturnReasonParams =
       description: z.union([z.string(), z.array(z.string())]).optional(),
       parent_return_reason_id: z
         .union([z.string(), z.array(z.string())])
-        .nullish(),
+        .optional(),
       created_at: createOperatorMap().optional(),
       updated_at: createOperatorMap().optional(),
       deleted_at: createOperatorMap().optional(),
@@ -39,7 +39,7 @@ export const AdminGetReturnReasonsParams = createFindParams({
     description: z.union([z.string(), z.array(z.string())]).optional(),
     parent_return_reason_id: z
       .union([z.string(), z.array(z.string())])
-      .nullish(),
+      .optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),

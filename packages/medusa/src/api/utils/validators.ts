@@ -6,9 +6,9 @@ export const createBatchBody = (
   deleteValidator: z.ZodType = z.string()
 ) => {
   return z.object({
-    create: z.array(createValidator).nullish(),
-    update: z.array(updateValidator).nullish(),
-    delete: z.array(deleteValidator).nullish(),
+    create: z.array(createValidator).optional(),
+    update: z.array(updateValidator).optional(),
+    delete: z.array(deleteValidator).optional(),
   })
 }
 
@@ -21,7 +21,7 @@ export const createLinkBody = () => {
 
 export const createSelectParams = () => {
   return z.object({
-    fields: z.string().nullish(),
+    fields: z.string().optional(),
   })
 }
 
@@ -47,7 +47,7 @@ export const createFindParams = ({
         },
         z
           .number()
-          .nullish()
+          .optional()
           .default(offset ?? 0)
       ),
       limit: z.preprocess(
@@ -59,10 +59,12 @@ export const createFindParams = ({
         },
         z
           .number()
-          .nullish()
+          .optional()
           .default(limit ?? 20)
       ),
-      order: order ? z.string().nullish().default(order) : z.string().nullish(),
+      order: order
+        ? z.string().optional().default(order)
+        : z.string().optional(),
     })
   )
 }
@@ -75,16 +77,16 @@ export const createOperatorMap = (
     type = z.string()
   }
 
-  let unionType: any = z.union([type, z.array(type)]).nullish()
-  let arrayType: any = z.array(type).nullish()
-  let simpleType: any = type.nullish()
+  let unionType: any = z.union([type, z.array(type)]).optional()
+  let arrayType: any = z.array(type).optional()
+  let simpleType: any = type.optional()
 
   if (valueParser) {
     unionType = z
       .preprocess(valueParser, z.union([type, z.array(type)]))
-      .nullish()
-    arrayType = z.preprocess(valueParser, z.array(type)).nullish()
-    simpleType = z.preprocess(valueParser, type).nullish()
+      .optional()
+    arrayType = z.preprocess(valueParser, z.array(type)).optional()
+    simpleType = z.preprocess(valueParser, type).optional()
   }
 
   return z.object({

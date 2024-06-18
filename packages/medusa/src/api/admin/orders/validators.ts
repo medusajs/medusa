@@ -71,7 +71,7 @@ const Label = z.object({
 
 export const AdminOrderCreateShipment = z.object({
   items: z.array(Item),
-  labels: z.array(Label).nullish(),
+  labels: z.array(Label).optional(),
   no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).optional(),
 })

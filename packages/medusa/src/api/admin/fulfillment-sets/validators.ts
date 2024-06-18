@@ -34,10 +34,10 @@ export const AdminUpdateFulfillmentSetServiceZonesSchema = z
     geo_zones: z
       .array(
         z.union([
-          geoZoneCountrySchema.merge(z.object({ id: z.string().nullish() })),
-          geoZoneProvinceSchema.merge(z.object({ id: z.string().nullish() })),
-          geoZoneCitySchema.merge(z.object({ id: z.string().nullish() })),
-          geoZoneZipSchema.merge(z.object({ id: z.string().nullish() })),
+          geoZoneCountrySchema.merge(z.object({ id: z.string().optional() })),
+          geoZoneProvinceSchema.merge(z.object({ id: z.string().optional() })),
+          geoZoneCitySchema.merge(z.object({ id: z.string().optional() })),
+          geoZoneZipSchema.merge(z.object({ id: z.string().optional() })),
         ])
       )
       .optional(),

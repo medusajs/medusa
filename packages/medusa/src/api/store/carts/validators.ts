@@ -15,11 +15,11 @@ export type StoreCreateCartType = z.infer<typeof StoreCreateCart>
 export const StoreCreateCart = z
   .object({
     region_id: z.string().nullish(),
-    shipping_address: z.union([AddressPayload, z.string()]).nullish(),
-    billing_address: z.union([AddressPayload, z.string()]).nullish(),
+    shipping_address: z.union([AddressPayload, z.string()]).optional(),
+    billing_address: z.union([AddressPayload, z.string()]).optional(),
     email: z.string().email().nullish(),
     currency_code: z.string().nullish(),
-    items: z.array(ItemSchema).nullish(),
+    items: z.array(ItemSchema).optional(),
     sales_channel_id: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
   })
@@ -46,8 +46,8 @@ export const StoreUpdateCart = z
   .object({
     region_id: z.string().nullish(),
     email: z.string().email().nullish(),
-    billing_address: z.union([AddressPayload, z.string()]).nullish(),
-    shipping_address: z.union([AddressPayload, z.string()]).nullish(),
+    billing_address: z.union([AddressPayload, z.string()]).optional(),
+    shipping_address: z.union([AddressPayload, z.string()]).optional(),
     sales_channel_id: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
     promo_codes: z.array(z.string()).optional(),
@@ -86,7 +86,7 @@ export const StoreAddCartShippingMethods = z
 
 export const StoreCompleteCart = z
   .object({
-    idempotency_key: z.string().nullish(),
+    idempotency_key: z.string().optional(),
   })
   .strict()
 export type StoreCompleteCartType = z.infer<typeof StoreCompleteCart>
