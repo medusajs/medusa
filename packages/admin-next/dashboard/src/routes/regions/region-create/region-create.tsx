@@ -1,8 +1,8 @@
 import { RouteFocusModal } from "../../../components/route-modal/route-focus-modal"
-import { CreateRegionForm } from "./components/create-region-form"
-import { currencies } from "../../../lib/currencies"
 import { usePaymentProviders } from "../../../hooks/api/payments"
 import { useStore } from "../../../hooks/api/store"
+import { currencies } from "../../../lib/data/currencies"
+import { CreateRegionForm } from "./components/create-region-form"
 
 export const RegionCreate = () => {
   const { store, isPending: isLoading, isError, error } = useStore()

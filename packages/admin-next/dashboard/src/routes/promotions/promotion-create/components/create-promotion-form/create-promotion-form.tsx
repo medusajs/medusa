@@ -25,7 +25,7 @@ import {
 } from "../../../../../components/route-modal"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 import { defaultCampaignValues } from "../../../../campaigns/campaign-create/components/create-campaign-form"
 import { RulesFormField } from "../../../common/edit-rules/components/rules-form-field"
 import { AddCampaignPromotionFields } from "../../../promotion-add-campaign/components/add-campaign-promotion-form"

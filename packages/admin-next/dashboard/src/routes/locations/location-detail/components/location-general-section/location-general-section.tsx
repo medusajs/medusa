@@ -41,7 +41,7 @@ import { getFormattedAddress } from "../../../../../lib/addresses"
 import {
   StaticCountry,
   countries as staticCountries,
-} from "../../../../../lib/countries"
+} from "../../../../../lib/data/countries"
 import { formatProvider } from "../../../../../lib/format-provider"
 import {
   isOptionEnabledInStore,

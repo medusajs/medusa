@@ -19,7 +19,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
 type EditPromotionFormProps = {
   promotion: PromotionDTO

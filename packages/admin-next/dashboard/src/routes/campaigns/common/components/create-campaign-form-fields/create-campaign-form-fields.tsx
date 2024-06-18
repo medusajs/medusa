@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../components/common/form"
 import { useStore } from "../../../../../hooks/api/store"
-import { currencies, getCurrencySymbol } from "../../../../../lib/currencies"
+import { currencies, getCurrencySymbol } from "../../../../../lib/data/currencies"
 
 export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
   const { t } = useTranslation()

@@ -3,10 +3,10 @@ import { Outlet, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRateList } from "./components/tax-rate-list"
-import { TaxRegionGeneralDetail } from "./components/tax-region-general-detail"
 
 import after from "virtual:medusa/widgets/tax/details/after"
 import before from "virtual:medusa/widgets/tax/details/before"
+import { TaxRegionDetailSection } from "./components/tax-region-detail-section"
 
 export const TaxRegionDetail = () => {
   const { id } = useParams()
@@ -30,7 +30,7 @@ export const TaxRegionDetail = () => {
             </div>
           )
         })}
-        <TaxRegionGeneralDetail taxRegion={taxRegion} />
+        <TaxRegionDetailSection taxRegion={taxRegion} />
         <TaxRateList taxRegion={taxRegion} isDefault={true} />
         <TaxRateList taxRegion={taxRegion} isDefault={false} />
         {after.widgets.map((w, i) => {

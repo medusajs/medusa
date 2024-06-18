@@ -10,7 +10,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
-import { getCurrencySymbol } from "../../../../../lib/currencies"
+import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
 type EditCampaignBudgetFormProps = {
   campaign: CampaignResponse

@@ -12,7 +12,7 @@ import {
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
-import { countries } from "../../../../../lib/countries"
+import { countries } from "../../../../../lib/data/countries"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
 
 const EditeServiceZoneSchema = z.object({

@@ -7,19 +7,19 @@ import { t } from "i18next"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
+
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { DataTable } from "../../../../../components/table/data-table"
 import {
   useDeleteTaxRegion,
   useTaxRegions,
 } from "../../../../../hooks/api/tax-regions"
 import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
-import { useDataTable } from "../../../../../hooks/use-data-table"
-import { getCountryByIso2 } from "../../../../../lib/countries"
+import { getCountryByIso2 } from "../../../../../lib/data/countries"
+import { TaxRegionCard } from "../../../common/components/tax-region-card"
 
 const PAGE_SIZE = 20
 
-export const TaxRegionListTable = () => {
+export const TaxRegionListView = () => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useTaxRegionTableQuery({
@@ -35,42 +35,26 @@ export const TaxRegionListTable = () => {
     }
   )
 
-  const columns = useColumns()
-
-  const { table } = useDataTable({
-    data: tax_regions ?? [],
-    columns,
-    count,
-    enablePagination: true,
-    getRowId: (row) => row.id,
-    pageSize: PAGE_SIZE,
-  })
-
   if (isError) {
     throw error
   }
 
   return (
-    <Container className="divide-y p-0">
-      <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("taxes.domain")}</Heading>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="/settings/taxes/create">{t("actions.create")}</Link>
-        </Button>
-      </div>
-      <DataTable
-        table={table}
-        columns={columns}
-        count={count}
-        pageSize={PAGE_SIZE}
-        isLoading={isLoading}
-        navigateTo={(row) => `${row.original.id}`}
-        pagination
-        search
-        orderBy={["country_code"]}
-        queryObject={raw}
-      />
-    </Container>
+    <div className="flex flex-col gap-y-3">
+      <Container className="divide-y p-0">
+        <div className="flex items-center justify-between px-6 py-4">
+          <Heading>{t("taxes.domain")}</Heading>
+          <Button size="small" variant="secondary" asChild>
+            <Link to="/settings/taxes/create">{t("actions.create")}</Link>
+          </Button>
+        </div>
+      </Container>
+      <Container className="divide-y p-0">
+        {tax_regions?.map((taxRegion) => (
+          <TaxRegionCard key={taxRegion.id} taxRegion={taxRegion} />
+        ))}
+      </Container>
+    </div>
   )
 }
 

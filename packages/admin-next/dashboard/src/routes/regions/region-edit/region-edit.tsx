@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
 import { RouteDrawer } from "../../../components/route-modal"
-import { EditRegionForm } from "./components/edit-region-form"
-import { currencies } from "../../../lib/currencies"
-import { useRegion } from "../../../hooks/api/regions"
 import { usePaymentProviders } from "../../../hooks/api/payments"
+import { useRegion } from "../../../hooks/api/regions"
 import { useStore } from "../../../hooks/api/store"
+import { currencies } from "../../../lib/data/currencies"
+import { EditRegionForm } from "./components/edit-region-form"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()

@@ -8,11 +8,11 @@ import { TaxRegionResponse } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-    RouteFocusModal,
-    useRouteModal,
+  RouteFocusModal,
+  useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
-import { countries } from "../../../../../lib/countries"
+import { countries } from "../../../../../lib/data/countries"
 
 export const TaxRegionCreateForm = ({
   taxRegion,

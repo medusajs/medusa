@@ -1,9 +1,9 @@
-import { useTranslation } from "react-i18next"
 import { RegionCountryDTO } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
 
-import { PlaceholderCell } from "../../common/placeholder-cell"
+import { countries as COUNTRIES } from "../../../../../lib/data/countries"
 import { ListSummary } from "../../../../common/list-summary"
-import { countries as COUNTRIES } from "../../../../../lib/countries"
+import { PlaceholderCell } from "../../common/placeholder-cell"
 
 type CountriesCellProps = {
   countries?: RegionCountryDTO[] | null

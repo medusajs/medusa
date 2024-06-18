@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatDate } from "../../../../../components/common/date"
 import { useDeleteCampaign } from "../../../../../hooks/api/campaigns"
-import { currencies } from "../../../../../lib/currencies"
+import { currencies } from "../../../../../lib/data/currencies"
 import {
   campaignStatus,
   statusColor,

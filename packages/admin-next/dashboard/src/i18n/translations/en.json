@@ -1016,25 +1016,21 @@
   },
   "taxRegions": {
     "domain": "Tax Regions",
-    "description": "Manage your region's tax structure",
     "create": {
-      "title": "Create Tax Region",
-      "description": "Creates a tax region with default tax rate"
+      "header": "Create Tax Region",
+      "hint": "Create a new tax region to define tax rates for a specific country."
     },
-    "create-child": {
-      "title": "Create Default Rate for Province",
-      "description": "Creates a tax region for a province with default tax rate"
-    },
-    "removeWarning": "You are about to remove {{tax_region_name}}. This action cannot be undone.",
     "fields": {
-      "rate": {
-        "name": "Rate",
-        "hint": "Tax rate to apply for a region or province"
+      "isCombinable": {
+        "label": "Combine with parent",
+        "hint": "If enabled, this tax rate will be combined with its parent tax rate.",
+        "true": "Combinable",
+        "false": "Not combinable"
       },
-      "is_combinable": {
-        "name": "Is combinable",
-        "hint": "If this tax rate can be combined with the default rate from province or parent"
-      }
+      "taxRatesCount_one": "{{count}} tax rate",
+      "taxRatesCount_other": "{{count}} tax rates",
+      "taxOverridesCount_one": "{{count}} tax override",
+      "taxOverridesCount_other": "{{count}} tax overrides"
     }
   },
   "promotions": {

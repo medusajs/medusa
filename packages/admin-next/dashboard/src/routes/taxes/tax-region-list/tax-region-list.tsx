@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom"
-import { TaxRegionListTable } from "./components/region-list-table"
+import { TaxRegionListView } from "./components/tax-region-list-view"
 
 import after from "virtual:medusa/widgets/tax/list/after"
 import before from "virtual:medusa/widgets/tax/list/before"
@@ -14,7 +14,7 @@ export const TaxRegionsList = () => {
           </div>
         )
       })}
-      <TaxRegionListTable />
+      <TaxRegionListView />
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>

@@ -9,6 +9,7 @@ import {
   CogSixTooth,
   MagnifyingGlass,
   SidebarLeft,
+  TriangleRightMini,
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
@@ -76,18 +77,17 @@ const Breadcrumbs = () => {
     })
 
   return (
-    <ol className={clx("text-ui-fg-muted flex select-none items-center")}>
+    <ol
+      className={clx(
+        "text-ui-fg-muted txt-compact-small-plus flex select-none items-center"
+      )}
+    >
       {crumbs.map((crumb, index) => {
         const isLast = index === crumbs.length - 1
         const isSingle = crumbs.length === 1
 
         return (
-          <li
-            key={index}
-            className={clx("txt-compact-small-plus flex items-center", {
-              "text-ui-fg-subtle": isLast,
-            })}
-          >
+          <li key={index} className={clx("flex items-center")}>
             {!isLast ? (
               <Link
                 className="transition-fg hover:text-ui-fg-subtle"
@@ -108,7 +108,11 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {!isLast && <span className="mx-2 -mt-0.5">›</span>}
+            {!isLast && (
+              <span className="mx-2">
+                <TriangleRightMini />
+              </span>
+            )}
           </li>
         )
       })}

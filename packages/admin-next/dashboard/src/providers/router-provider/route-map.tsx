@@ -15,6 +15,7 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { PriceListRes } from "../../types/api-responses"
 
+import { getCountryByIso2 } from "../../lib/data/countries"
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
 
@@ -1051,10 +1052,18 @@ export const RouteMap: RouteObject[] = [
                 lazy: () => import("../../routes/taxes/tax-region-detail"),
                 handle: {
                   crumb: (data: AdminTaxRegionResponse) => {
-                    return data.tax_region.country_code
+                    return (
+                      getCountryByIso2(data.tax_region.country_code)
+                        ?.display_name ||
+                      data.tax_region.country_code?.toUpperCase()
+                    )
                   },
                 },
                 children: [
+                  {
+                    path: "edit",
+                    lazy: () => import("../../routes/taxes/tax-region-edit"),
+                  },
                   {
                     path: "create-default",
                     lazy: () =>
