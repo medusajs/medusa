@@ -189,11 +189,17 @@ export default class Transaction {
   onCreate() {
     this.id = generateEntityId(this.id, "ordtrx")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ordtrx")
     this.order_id ??= this.order?.id
+    this.return_id ??= this.return?.id
+    this.claim_id ??= this.claim?.id
+    this.exchange_id ??= this.exchange?.id
   }
 }

@@ -2,7 +2,7 @@ import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 import { FulfillmentDTO } from "../fulfillment"
 import { PaymentCollectionDTO } from "../payment"
-import { BigNumberRawValue, BigNumberValue } from "../totals"
+import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type ChangeActionType =
   | "CANCEL"
@@ -1113,6 +1113,25 @@ type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"
 
 export interface ReturnDTO extends Omit<OrderDTO, "status" | "version"> {
   status: ReturnStatus
+  refund_amount?: BigNumberValue
+}
+
+export interface OrderClaimDTO
+  extends Omit<OrderDTO, "status" | "version" | "items"> {
+  claim_items: any[]
+  additional_items: any[]
+  return?: ReturnDTO
+  no_notification?: boolean
+  refund_amount?: BigNumberValue
+}
+
+export interface OrderExchangeDTO
+  extends Omit<OrderDTO, "status" | "version" | "items"> {
+  return_items: any[]
+  additional_items: any[]
+  no_notification?: boolean
+  difference_due?: BigNumberValue
+  return?: ReturnDTO
 }
 
 export type PaymentStatus =
@@ -1530,4 +1549,19 @@ export interface FilterableOrderReturnReasonProps {
   value?: string | string[]
   label?: string
   description?: string
+}
+
+export interface OrderChangeReturn {
+  items: {
+    item_id: string
+    order_id: string
+    fulfilled_quantity: BigNumberInput
+    shipped_quantity: BigNumberInput
+    return_requested_quantity: BigNumberInput
+    return_received_quantity: BigNumberInput
+    return_dismissed_quantity: BigNumberInput
+    written_off_quantity: BigNumberInput
+    [key: string]: any
+  }[]
+  shippingMethods: any[]
 }
