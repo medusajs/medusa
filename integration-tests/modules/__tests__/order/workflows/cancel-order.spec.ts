@@ -211,7 +211,7 @@ async function createOrderFixture({ container, product, location }) {
   const orderService: IOrderModuleService = container.resolve(
     ModuleRegistrationName.ORDER
   )
-  let order = await orderService.create({
+  let order = await orderService.createOrders({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
     items: [
