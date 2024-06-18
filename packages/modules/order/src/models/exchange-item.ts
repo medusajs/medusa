@@ -1,37 +1,31 @@
 import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
-  ClaimReason,
   MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
-  Collection,
   Entity,
-  Enum,
   ManyToOne,
   OnInit,
-  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import Claim from "./claim"
-import ClaimItemImage from "./claim-item-image"
+import Exchange from "./exchange"
 import LineItem from "./line-item"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 
-const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
-  columns: "claim_id",
+const ExchangeIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_exchange_item",
+  columns: "exchange_id",
   where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_claim_item",
+  tableName: "order_exchange_item",
   columns: "item_id",
   where: "deleted_at IS NOT NULL",
 })
@@ -42,20 +36,12 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-@Entity({ tableName: "order_claim_item" })
-export default class OrderClaimItem {
+@Entity({ tableName: "order_exchange_item" })
+export default class OrderExchangeItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
-
-  @OneToMany(() => ClaimItemImage, (ci) => ci.item, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE],
-  })
-  images = new Collection<ClaimItemImage>(this)
-
-  @Enum({ items: () => ClaimReason, nullable: true })
-  reason: ClaimReason | null = null
 
   @MikroOrmBigNumberProperty()
   quantity: Number | number
@@ -63,19 +49,19 @@ export default class OrderClaimItem {
   @Property({ columnType: "jsonb" })
   raw_quantity: BigNumberRawValue
 
-  @ManyToOne(() => Claim, {
+  @ManyToOne(() => Exchange, {
     columnType: "text",
-    fieldName: "claim_id",
+    fieldName: "exchange_id",
     mapToPk: true,
     onDelete: "cascade",
   })
-  @ClaimIdIndex.MikroORMIndex()
-  claim_id: string
+  @ExchangeIdIndex.MikroORMIndex()
+  exchange_id: string
 
-  @ManyToOne(() => Claim, {
+  @ManyToOne(() => Exchange, {
     persist: false,
   })
-  claim: Claim
+  exchange: Exchange
 
   @ManyToOne({
     entity: () => LineItem,
@@ -90,9 +76,6 @@ export default class OrderClaimItem {
     persist: false,
   })
   item: LineItem
-
-  @Property({ columnType: "boolean", default: false })
-  is_additional_item: boolean = false
 
   @Property({ columnType: "text", nullable: true })
   note: string
@@ -121,13 +104,13 @@ export default class OrderClaimItem {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "claitem")
-    this.claim_id = this.claim?.id
+    this.id = generateEntityId(this.id, "oexcitem")
+    this.exchange_id = this.exchange?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "claitem")
-    this.claim_id = this.claim?.id
+    this.id = generateEntityId(this.id, "oexcitem")
+    this.exchange_id = this.exchange?.id
   }
 }

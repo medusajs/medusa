@@ -3,10 +3,10 @@ import {
   FreeTextSearchFilterKey,
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
 } from "@medusajs/utils"
 import { ProductCategory } from "@models"
 import { ProductCategoryRepository } from "@repositories"
@@ -169,6 +169,7 @@ export default class ProductCategoryService<
     await this.productCategoryRepository_.delete(ids, sharedContext)
   }
 
+  @InjectTransactionManager("productCategoryRepository_")
   async softDelete(
     ids: string[],
     @MedusaContext() sharedContext?: Context
@@ -178,6 +179,7 @@ export default class ProductCategoryService<
     ).softDelete(ids, sharedContext)) as any
   }
 
+  @InjectTransactionManager("productCategoryRepository_")
   async restore(
     ids: string[],
     @MedusaContext() sharedContext?: Context
