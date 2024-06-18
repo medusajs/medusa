@@ -5293,7 +5293,6 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.2.5
     rimraf: ^5.0.1
-    typeorm: ^0.3.16
     typescript: ^5.1.6
     vite: ^5.2.11
     winston: ^3.8.2
@@ -25939,7 +25938,6 @@ __metadata:
     ts-jest: ^29.1.1
     ts-node: ^10.9.1
     turbo: ^1.6.3
-    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 

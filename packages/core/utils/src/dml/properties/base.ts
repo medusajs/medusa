@@ -1,20 +1,27 @@
-import { SchemaMetadata, SchemaType } from "../types"
+import { PropertyMetadata, PropertyType } from "../types"
 import { NullableModifier } from "./nullable"
 
 /**
- * The base schema class offers shared affordances to define
- * schema classes
+ * The BaseProperty class offers shared affordances to define
+ * property classes
  */
-export abstract class BaseSchema<T> implements SchemaType<T> {
-  #indexes: SchemaMetadata["indexes"] = []
-  #relationships: SchemaMetadata["relationships"] = []
+export abstract class BaseProperty<T> implements PropertyType<T> {
+  /**
+   * Defined indexes and relationships
+   */
+  #indexes: PropertyMetadata["indexes"] = []
+  #relationships: PropertyMetadata["relationships"] = []
+
+  /**
+   * Default value for the property
+   */
   #defaultValue?: T
 
   /**
    * The runtime dataType for the schema. It is not the same as
    * the "$dataType".
    */
-  protected abstract dataType: SchemaMetadata["dataType"]
+  protected abstract dataType: PropertyMetadata["dataType"]
 
   /**
    * A type-only property to infer the JavScript data-type
@@ -56,7 +63,7 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
   /**
    * Returns the serialized metadata
    */
-  parse(fieldName: string): SchemaMetadata {
+  parse(fieldName: string): PropertyMetadata {
     return {
       fieldName,
       dataType: this.dataType,

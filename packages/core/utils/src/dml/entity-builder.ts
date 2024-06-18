@@ -1,16 +1,20 @@
 import { DmlEntity } from "./entity"
-import { TextSchema } from "./schema/text"
-import { EnumSchema } from "./schema/enum"
-import { JSONSchema } from "./schema/json"
+import { TextProperty } from "./properties/text"
+import { EnumProperty } from "./properties/enum"
+import { JSONProperty } from "./properties/json"
 import { HasOne } from "./relations/has-one"
 import { HasMany } from "./relations/has-many"
-import { NumberSchema } from "./schema/number"
-import { BooleanSchema } from "./schema/boolean"
+import { NumberProperty } from "./properties/number"
+import { BooleanProperty } from "./properties/boolean"
 import { BelongsTo } from "./relations/belongs-to"
-import { DateTimeSchema } from "./schema/date-time"
+import { DateTimeProperty } from "./properties/date-time"
 import { ManyToMany } from "./relations/many-to-many"
-import type { RelationshipOptions, RelationshipType, SchemaType } from "./types"
-import { NullableModifier } from "./schema/nullable"
+import type {
+  RelationshipOptions,
+  RelationshipType,
+  PropertyType,
+} from "./types"
+import { NullableModifier } from "./properties/nullable"
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -22,15 +26,15 @@ export class EntityBuilder {
    * all the entities.
    */
   define<
-    Schema extends Record<string, SchemaType<any> | RelationshipType<any>>
+    Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
   >(name: string, schema: Schema) {
     return new DmlEntity<
       Schema & {
-        deleted_at: NullableModifier<Date, DateTimeSchema>
+        deleted_at: NullableModifier<Date, DateTimeProperty>
       }
     >(name, {
       ...schema,
-      deleted_at: new DateTimeSchema().nullable(),
+      deleted_at: new DateTimeProperty().nullable(),
     })
   }
 
@@ -38,28 +42,28 @@ export class EntityBuilder {
    * Define a text/string based column
    */
   text() {
-    return new TextSchema()
+    return new TextProperty()
   }
 
   /**
    * Define a boolean column
    */
   boolean() {
-    return new BooleanSchema()
+    return new BooleanProperty()
   }
 
   /**
    * Define a numeric/integer column
    */
   number() {
-    return new NumberSchema()
+    return new NumberProperty()
   }
 
   /**
    * Define a timestampz column
    */
   dateTime() {
-    return new DateTimeSchema()
+    return new DateTimeProperty()
   }
 
   /**
@@ -67,7 +71,7 @@ export class EntityBuilder {
    * JSON string
    */
   json() {
-    return new JSONSchema()
+    return new JSONProperty()
   }
 
   /**
@@ -75,7 +79,7 @@ export class EntityBuilder {
    * of values are allowed.
    */
   enum<const Values extends unknown>(values: Values[]) {
-    return new EnumSchema<Values>(values)
+    return new EnumProperty<Values>(values)
   }
 
   /**

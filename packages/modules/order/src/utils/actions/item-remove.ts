@@ -8,7 +8,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
   isDeduction: true,
   operation({ action, currentOrder }) {
     const existingIndex = currentOrder.items.findIndex(
-      (item) => item.id === action.reference_id
+      (item) => item.id === action.details.reference_id
     )
 
     const existing = currentOrder.items[existingIndex]
@@ -31,7 +31,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
   },
   revert({ action, currentOrder }) {
     const existing = currentOrder.items.find(
-      (item) => item.id === action.reference_id
+      (item) => item.id === action.details.reference_id
     )
 
     if (existing) {
@@ -42,14 +42,14 @@ OrderChangeProcessing.registerActionType(ChangeActionType.ITEM_REMOVE, {
       )
     } else {
       currentOrder.items.push({
-        id: action.reference_id!,
+        id: action.details.reference_id!,
         unit_price: action.details.unit_price,
         quantity: action.details.quantity,
       } as VirtualOrder["items"][0])
     }
   },
   validate({ action, currentOrder }) {
-    const refId = action.reference_id
+    const refId = action.details?.reference_id
     if (!isDefined(refId)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,

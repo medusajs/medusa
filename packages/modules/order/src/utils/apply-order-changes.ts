@@ -31,24 +31,23 @@ export function applyChangesToOrder(
     const version = actionsMap[order.id][0].version ?? 1
 
     for (const item of calculated.order.items) {
-      const orderItem = item.detail as any
+      const orderItem = (item.detail as any) ?? item
+      const itemId = item.detail ? orderItem.item_id : item.id
+
       itemsToUpsert.push({
         id: orderItem.version === version ? orderItem.id : undefined,
-        item_id: item.id,
+        item_id: itemId,
         order_id: order.id,
         version,
-        return_id: item.detail.return_id,
-        claim_id: item.detail.claim_id,
-        exchange_id: item.detail.exchange_id,
-        quantity: item.detail.quantity,
-        fulfilled_quantity: item.detail.fulfilled_quantity,
-        shipped_quantity: item.detail.shipped_quantity,
-        return_requested_quantity: item.detail.return_requested_quantity,
-        return_received_quantity: item.detail.return_received_quantity,
-        return_dismissed_quantity: item.detail.return_dismissed_quantity,
-        written_off_quantity: item.detail.written_off_quantity,
-        metadata: item.detail.metadata,
-      } as any)
+        quantity: orderItem.quantity,
+        fulfilled_quantity: orderItem.fulfilled_quantity,
+        shipped_quantity: orderItem.shipped_quantity,
+        return_requested_quantity: orderItem.return_requested_quantity,
+        return_received_quantity: orderItem.return_received_quantity,
+        return_dismissed_quantity: orderItem.return_dismissed_quantity,
+        written_off_quantity: orderItem.written_off_quantity,
+        metadata: orderItem.metadata,
+      } as OrderItem)
     }
 
     const orderSummary = order.summary as any
@@ -61,6 +60,10 @@ export function applyChangesToOrder(
 
     if (version > order.version) {
       for (const shippingMethod of calculated.order.shipping_methods ?? []) {
+        if (!shippingMethod) {
+          continue
+        }
+
         const sm = {
           ...((shippingMethod as any).detail ?? shippingMethod),
           version,

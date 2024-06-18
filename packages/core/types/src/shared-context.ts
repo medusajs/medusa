@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import { EventBusTypes } from "./bundles"
 import { Message } from "./event-bus"
 
@@ -12,11 +11,11 @@ export type SharedContext = {
   /**
    * An instance of a transaction manager.
    */
-  transactionManager?: EntityManager
+  transactionManager?: any
   /**
    * An instance of an entity manager.
    */
-  manager?: EntityManager
+  manager?: any
 }
 
 export interface MessageAggregatorFormat {

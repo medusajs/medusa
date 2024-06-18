@@ -17,10 +17,10 @@ import {
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
   Infer,
-  SchemaType,
+  PropertyType,
   EntityCascades,
   KnownDataTypes,
-  SchemaMetadata,
+  PropertyMetadata,
   RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
@@ -90,7 +90,7 @@ export function createMikrORMEntity() {
    */
   function defineProperty(
     MikroORMEntity: EntityConstructor<any>,
-    field: SchemaMetadata
+    field: PropertyMetadata
   ) {
     /**
      * Defining an enum property
@@ -124,7 +124,7 @@ export function createMikrORMEntity() {
   function applyIndexes(
     MikroORMEntity: EntityConstructor<any>,
     tableName: string,
-    field: SchemaMetadata
+    field: PropertyMetadata
   ) {
     field.indexes.forEach((index) => {
       const name =
@@ -149,7 +149,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
@@ -173,7 +173,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
@@ -203,7 +203,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >
   ) {
     const mappedBy =
@@ -280,7 +280,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
     cascades: EntityCascades<string[]>
   ) {
