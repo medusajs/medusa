@@ -1,4 +1,3 @@
-import { IPricingModuleService } from "@medusajs/types"
 import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
@@ -31,11 +30,9 @@ medusaIntegrationTestRunner({
       let product
       let variant
       let priceSetId
-      let pricingModuleService: IPricingModuleService
 
       beforeAll(async () => {
         appContainer = getContainer()
-        pricingModuleService = appContainer.resolve("pricingModuleService")
       })
 
       beforeEach(async () => {

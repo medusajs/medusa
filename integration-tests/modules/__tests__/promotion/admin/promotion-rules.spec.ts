@@ -47,7 +47,7 @@ medusaIntegrationTestRunner({
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
 
-        standardPromotion = await promotionModule.create({
+        standardPromotion = await promotionModule.createPromotions({
           code: "TEST_ACROSS",
           type: PromotionType.STANDARD,
           application_method: {
@@ -322,7 +322,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should add buy rules to a buyget promotion successfully", async () => {
-          const buyGetPromotion = await promotionModule.create({
+          const buyGetPromotion = await promotionModule.createPromotions({
             code: "TEST_BUYGET",
             type: PromotionType.BUYGET,
             application_method: {
@@ -414,7 +414,7 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrieve(
+          const promotion = await promotionModule.retrievePromotion(
             standardPromotion.id,
             { relations: ["rules"] }
           )
@@ -455,7 +455,7 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrieve(
+          const promotion = await promotionModule.retrievePromotion(
             standardPromotion.id,
             { relations: ["application_method.target_rules"] }
           )
@@ -482,7 +482,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should remove buy rules from a promotion successfully", async () => {
-          const buyGetPromotion = await promotionModule.create({
+          const buyGetPromotion = await promotionModule.createPromotions({
             code: "TEST_BUYGET",
             type: PromotionType.BUYGET,
             application_method: {
@@ -513,9 +513,12 @@ medusaIntegrationTestRunner({
             deleted: true,
           })
 
-          const promotion = await promotionModule.retrieve(buyGetPromotion.id, {
-            relations: ["application_method.buy_rules"],
-          })
+          const promotion = await promotionModule.retrievePromotion(
+            buyGetPromotion.id,
+            {
+              relations: ["application_method.buy_rules"],
+            }
+          )
 
           expect(promotion.application_method!.buy_rules!.length).toEqual(0)
         })

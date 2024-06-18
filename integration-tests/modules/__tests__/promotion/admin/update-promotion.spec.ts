@@ -45,7 +45,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw an error when both campaign and campaign_id params are passed", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "TEST",
           type: PromotionType.STANDARD,
           is_automatic: true,
@@ -79,7 +79,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a promotion successfully", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "TEST",
           type: PromotionType.STANDARD,
           is_automatic: true,
@@ -117,7 +117,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a buyget promotion successfully", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "PROMOTION_TEST",
           type: PromotionType.BUYGET,
           application_method: {

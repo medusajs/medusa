@@ -52,7 +52,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const [priceSet1, priceSet2] = await pricingModule.create([
+        const [priceSet1, priceSet2] = await pricingModule.createPriceSets([
           {
             rules: [{ rule_attribute: "customer_group_id" }],
             prices: [
