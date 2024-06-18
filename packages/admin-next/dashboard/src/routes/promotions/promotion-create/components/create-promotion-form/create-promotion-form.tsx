@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Alert,
+  Badge,
   Button,
   clx,
   CurrencyInput,
@@ -405,9 +406,22 @@ export const CreatePromotionForm = () => {
 
             <ProgressTabs.Content
               value={Tab.PROMOTION}
-              className="flex flex-1 flex-col gap-10"
+              className="flex flex-1 flex-col gap-8"
             >
-              <Heading level="h2">{t(`promotions.sections.details`)}</Heading>
+              <Heading level="h1" className="text-fg-base">
+                {t(`promotions.sections.details`)}
+
+                {currentTemplate?.title && (
+                  <Badge
+                    className="ml-2 align-middle"
+                    color="grey"
+                    size="2xsmall"
+                    rounded="full"
+                  >
+                    {currentTemplate?.title}
+                  </Badge>
+                )}
+              </Heading>
 
               {form.formState.errors.root && (
                 <Alert
