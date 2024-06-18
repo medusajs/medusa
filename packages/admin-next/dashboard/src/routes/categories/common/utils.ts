@@ -1,6 +1,8 @@
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import { TFunction } from "i18next"
 
+import { CategoryTreeItem } from "./types"
+
 export function getIsActiveProps(
   isActive: boolean,
   t: TFunction
@@ -68,4 +70,88 @@ export function getCategoryChildren(
     id: child.id,
     name: child.name,
   }))
+}
+
+export const insertCategoryTreeItem = (
+  categories: CategoryTreeItem[],
+  newItem: CategoryTreeItem
+): CategoryTreeItem[] => {
+  const seen = new Set<string>()
+
+  const remove = (
+    items: CategoryTreeItem[],
+    id: string
+  ): CategoryTreeItem[] => {
+    const stack = [...items]
+    const result: CategoryTreeItem[] = []
+
+    while (stack.length > 0) {
+      const item = stack.pop()!
+      if (item.id !== id) {
+        if (item.category_children) {
+          item.category_children = remove(item.category_children, id)
+        }
+        result.push(item)
+      }
+    }
+
+    return result
+  }
+
+  const insert = (items: CategoryTreeItem[]): CategoryTreeItem[] => {
+    const stack = [...items]
+
+    while (stack.length > 0) {
+      const item = stack.pop()!
+      if (seen.has(item.id)) {
+        continue // Prevent revisiting the same node
+      }
+      seen.add(item.id)
+
+      if (item.id === newItem.parent_category_id) {
+        if (!item.category_children) {
+          item.category_children = []
+        }
+
+        if (newItem.rank === null) {
+          item.category_children.push(newItem)
+        } else {
+          item.category_children.splice(newItem.rank, 0, newItem)
+        }
+
+        item.category_children.forEach((child, index) => {
+          child.rank = index
+        })
+
+        item.category_children.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
+        return categories
+      }
+      if (item.category_children) {
+        stack.push(...item.category_children)
+      }
+    }
+    return items
+  }
+
+  categories = remove(categories, newItem.id)
+
+  if (newItem.parent_category_id === null && newItem.rank === null) {
+    categories.unshift(newItem)
+
+    categories.forEach((child, index) => {
+      child.rank = index
+    })
+  } else if (newItem.parent_category_id === null && newItem.rank !== null) {
+    categories.splice(newItem.rank, 0, newItem)
+
+    categories.forEach((child, index) => {
+      child.rank = index
+    })
+  } else {
+    categories = insert(categories)
+  }
+
+  categories.sort((a, b) => (a.rank ?? 0) - (b.rank ?? 0))
+
+  return categories
 }
