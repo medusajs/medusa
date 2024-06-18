@@ -30,10 +30,14 @@ export class EntityBuilder {
   >(name: string, schema: Schema) {
     return new DmlEntity<
       Schema & {
+        created_at: DateTimeProperty
+        updated_at: DateTimeProperty
         deleted_at: NullableModifier<Date, DateTimeProperty>
       }
     >(name, {
       ...schema,
+      created_at: new DateTimeProperty(),
+      updated_at: new DateTimeProperty(),
       deleted_at: new DateTimeProperty().nullable(),
     })
   }
