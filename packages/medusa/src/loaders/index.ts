@@ -15,6 +15,7 @@ import apiLoader from "./api"
 import loadConfig from "./config"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
+import { registerJobs } from "./helpers/register-jobs"
 import { registerWorkflows } from "./helpers/register-workflows"
 import { getResolvedPlugins } from "./helpers/resolve-plugins"
 import { resolvePluginsLinks } from "./helpers/resolve-plugins-links"
@@ -22,7 +23,6 @@ import { SubscriberLoader } from "./helpers/subscribers"
 import Logger from "./logger"
 import loadMedusaApp from "./medusa-app"
 import registerPgConnection from "./pg-connection"
-import { registerJobs } from "./helpers/register-jobs"
 
 type Options = {
   directory: string
@@ -31,6 +31,13 @@ type Options = {
 
 const isWorkerMode = (configModule) => {
   return configModule.projectConfig.workerMode === "worker"
+}
+
+const shouldLoadBackgroundProcessors = (configModule) => {
+  return (
+    configModule.projectConfig.workerMode === "worker" ||
+    configModule.projectConfig.workerMode === "shared"
+  )
 }
 
 async function subscribersLoader(
@@ -76,6 +83,11 @@ async function loadEntrypoints(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
 
+  if (shouldLoadBackgroundProcessors(configModule)) {
+    await subscribersLoader(plugins, container)
+    await jobsLoader(plugins)
+  }
+
   if (isWorkerMode(configModule)) {
     return async () => {}
   }
@@ -97,8 +109,6 @@ async function loadEntrypoints(
   })
 
   await adminLoader({ app: expressApp, configModule, rootDirectory })
-  await subscribersLoader(plugins, container)
-  await jobsLoader(plugins)
   await apiLoader({
     container,
     plugins,
