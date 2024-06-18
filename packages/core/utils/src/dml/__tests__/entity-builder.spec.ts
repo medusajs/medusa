@@ -24,11 +24,24 @@ describe("Entity builder", () => {
         id: number
         username: string
         email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -57,6 +70,38 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -74,11 +119,22 @@ describe("Entity builder", () => {
         id: number
         username: string
         email: string
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -108,6 +164,38 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -125,11 +213,22 @@ describe("Entity builder", () => {
         id: number
         username: string | null
         email: string
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -158,6 +257,38 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -177,12 +308,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest"
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -218,7 +360,40 @@ describe("Entity builder", () => {
           nullable: false,
           name: "role",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
+
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
         "admin",
@@ -242,12 +417,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest"
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -284,6 +470,38 @@ describe("Entity builder", () => {
           nullable: false,
           name: "role",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
@@ -308,12 +526,23 @@ describe("Entity builder", () => {
         username: string
         email: string
         role: "moderator" | "admin" | "guest" | null
+        deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
       expect(metaData.properties).toEqual({
         id: {
           reference: "scalar",
@@ -349,12 +578,181 @@ describe("Entity builder", () => {
           nullable: true,
           name: "role",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
       expect(metaData.properties["role"].items()).toEqual([
         "moderator",
         "admin",
         "guest",
       ])
+    })
+
+    test("disallow defining created_at and updated_at timestamps", () => {
+      const model = new EntityBuilder()
+      expect(() =>
+        model.define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.text(),
+          created_at: model.dateTime(),
+          updated_at: model.dateTime(),
+        })
+      ).toThrow(
+        'Cannot define field(s) "created_at,updated_at" as they are implicitly defined on every model'
+      )
+    })
+
+    test("disallow defining deleted_at timestamp", () => {
+      const model = new EntityBuilder()
+      expect(() =>
+        model.define("user", {
+          id: model.number(),
+          username: model.text(),
+          email: model.text(),
+          deleted_at: model.dateTime(),
+        })
+      ).toThrow(
+        'Cannot define field(s) "deleted_at" as they are implicitly defined on every model'
+      )
+    })
+  })
+
+  describe("Entity builder | indexes", () => {
+    test("define index on a field", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.number().index(),
+        username: model.text(),
+        email: model.text().unique(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: string
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.indexes).toEqual([
+        {
+          name: "IDX_users_id",
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_users_id" ON "users" (id) WHERE deleted_at IS NULL',
+        },
+        {
+          name: "IDX_users_email",
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_users_email" ON "users" (email) WHERE deleted_at IS NULL',
+        },
+      ])
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
     })
   })
 
@@ -377,7 +775,12 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{ email: string; isVerified: boolean }>
+        deleted_at: Date | null
+        email: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+        }>
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -409,6 +812,38 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -431,7 +866,12 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }> | null
+        deleted_at: Date | null
+        emails: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+        }> | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -462,6 +902,38 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: true,
           mappedBy: "user",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -515,6 +987,38 @@ describe("Entity builder", () => {
           entity: "Email",
           nullable: false,
           mappedBy: "owner",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -574,6 +1078,38 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const Email = entityBuilder(email)
@@ -596,6 +1132,38 @@ describe("Entity builder", () => {
           columnType: "boolean",
           name: "isVerified",
           nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
           getter: false,
           setter: false,
         },
@@ -665,6 +1233,38 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const Email = entityBuilder(email)
@@ -698,6 +1298,38 @@ describe("Entity builder", () => {
           onDelete: "cascade",
           owner: true,
           reference: "1:1",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -754,6 +1386,38 @@ describe("Entity builder", () => {
           orphanRemoval: true,
           mappedBy: "user",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
 
@@ -809,6 +1473,38 @@ describe("Entity builder", () => {
           entity: "Email",
           mappedBy: "the_user",
           orphanRemoval: true,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -867,6 +1563,38 @@ describe("Entity builder", () => {
           orphanRemoval: true,
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -928,6 +1656,38 @@ describe("Entity builder", () => {
           mappedBy: "user",
           cascade: ["perist", "soft-remove"],
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -968,6 +1728,38 @@ describe("Entity builder", () => {
           reference: "m:1",
           onDelete: "cascade",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
     })
   })
@@ -995,12 +1787,15 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
+        deleted_at: Date | null
         email: EntityConstructor<{
           email: string
           isVerified: boolean
+          deleted_at: Date | null
           user: EntityConstructor<{
             id: number
             username: string
+            deleted_at: Date | null
           }>
         }>
       }>()
@@ -1008,12 +1803,15 @@ describe("Entity builder", () => {
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
+        deleted_at: Date | null
         user: EntityConstructor<{
           id: number
           username: string
+          deleted_at: Date | null
           email: EntityConstructor<{
             email: string
             isVerified: boolean
+            deleted_at: Date | null
           }>
         }>
       }>()
@@ -1047,6 +1845,38 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1078,6 +1908,38 @@ describe("Entity builder", () => {
           nullable: false,
           owner: true,
           mappedBy: "email",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1156,6 +2018,38 @@ describe("Entity builder", () => {
           nullable: false,
           mappedBy: "user",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1187,6 +2081,38 @@ describe("Entity builder", () => {
           nullable: true,
           owner: true,
           mappedBy: "email",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1265,6 +2191,38 @@ describe("Entity builder", () => {
           mappedBy: "user",
           orphanRemoval: true,
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1303,6 +2261,38 @@ describe("Entity builder", () => {
           name: "user_id",
           nullable: false,
           reference: "m:1",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1381,6 +2371,38 @@ describe("Entity builder", () => {
           mappedBy: "user",
           orphanRemoval: true,
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
@@ -1419,6 +2441,38 @@ describe("Entity builder", () => {
           name: "user_id",
           nullable: true,
           reference: "m:1",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1563,6 +2617,38 @@ describe("Entity builder", () => {
           entity: "Team",
           pivotTable: "team_users",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1592,6 +2678,38 @@ describe("Entity builder", () => {
           name: "users",
           entity: "User",
           pivotTable: "team_users",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1669,6 +2787,38 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           mappedBy: "users",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1698,6 +2848,38 @@ describe("Entity builder", () => {
           name: "users",
           entity: "User",
           pivotTable: "team_users",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1814,6 +2996,38 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           mappedBy: "users",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1848,6 +3062,38 @@ describe("Entity builder", () => {
            * to work. Both sides cannot have mappedBy.
            */
           inversedBy: "teams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -1929,6 +3175,38 @@ describe("Entity builder", () => {
            */
           inversedBy: "users",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -1959,6 +3237,38 @@ describe("Entity builder", () => {
           entity: "User",
           pivotTable: "team_users",
           mappedBy: "teams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })
@@ -2065,6 +3375,38 @@ describe("Entity builder", () => {
           pivotTable: "team_users",
           inversedBy: "activeTeamsUsers",
         },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
       })
 
       const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
@@ -2102,6 +3444,38 @@ describe("Entity builder", () => {
           entity: "User",
           pivotTable: "team_users",
           mappedBy: "activeTeams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
         },
       })
     })

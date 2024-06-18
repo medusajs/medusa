@@ -2,7 +2,7 @@ import { ExtendedReservationItem } from "@medusajs/medusa"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { InlineLink } from "../../../../../components/common/inline-link"
+import { LinkButton } from "../../../../../components/common/link-button"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { ReservationActions } from "./reservation-actions"
@@ -41,11 +41,11 @@ export const useReservationTableColumns = () => {
 
           return (
             <div className="flex size-full items-center overflow-hidden">
-              <InlineLink to={`/orders/${inventoryItem.order.id}`}>
+              <LinkButton to={`/orders/${inventoryItem.order.id}`}>
                 <span className="truncate">
                   #{inventoryItem.order.display_id}
                 </span>
-              </InlineLink>
+              </LinkButton>
             </div>
           )
         },

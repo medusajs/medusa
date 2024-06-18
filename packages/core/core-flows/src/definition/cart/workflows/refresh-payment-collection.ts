@@ -7,10 +7,8 @@ import {
   transform,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
-import {
-  deletePaymentSessionStep,
-  updatePaymentCollectionStep,
-} from "../../payment-collection"
+import { updatePaymentCollectionStep } from "../../../payment-collection"
+import { deletePaymentSessionsWorkflow } from "../../../payment-collection/workflows/delete-payment-sessions"
 
 type WorklowInput = {
   cart_id: string
@@ -55,10 +53,19 @@ export const refreshPaymentCollectionForCartWorkflow = createWorkflow(
     })
 
     const cart = transform({ carts }, (data) => data.carts[0])
+    const deletePaymentSessionInput = transform(
+      { paymentCollection: cart.payment_collection },
+      (data) => {
+        return {
+          ids:
+            data.paymentCollection?.payment_sessions?.map((ps) => ps.id) || [],
+        }
+      }
+    )
 
     parallelize(
-      deletePaymentSessionStep({
-        payment_session_id: cart.payment_collection.payment_sessions?.[0].id,
+      deletePaymentSessionsWorkflow.runAsStep({
+        input: deletePaymentSessionInput,
       }),
       updatePaymentCollectionStep({
         selector: { id: cart.payment_collection.id },

@@ -30,6 +30,7 @@ export const CreateCategoryForm = ({
 
   const [activeTab, setActiveTab] = useState<Tab>(Tab.DETAILS)
   const [validDetails, setValidDetails] = useState(false)
+  const [shouldFreeze, setShouldFreeze] = useState(false)
 
   const form = useForm<CreateCategorySchema>({
     defaultValues: {
@@ -79,6 +80,8 @@ export const CreateCategoryForm = ({
   const handleSubmit = form.handleSubmit((data) => {
     const { visibility, status, parent_category_id, rank, ...rest } = data
 
+    setShouldFreeze(true)
+
     mutateAsync(
       {
         ...rest,
@@ -105,6 +108,8 @@ export const CreateCategoryForm = ({
             dismissable: true,
             dismissLabel: t("actions.close"),
           })
+
+          setShouldFreeze(false)
         },
       }
     )
@@ -181,7 +186,7 @@ export const CreateCategoryForm = ({
               <CreateCategoryDetails form={form} />
             </ProgressTabs.Content>
             <ProgressTabs.Content value={Tab.ORGANIZE}>
-              <CreateCategoryNesting form={form} />
+              <CreateCategoryNesting form={form} shouldFreeze={shouldFreeze} />
             </ProgressTabs.Content>
           </RouteFocusModal.Body>
         </form>

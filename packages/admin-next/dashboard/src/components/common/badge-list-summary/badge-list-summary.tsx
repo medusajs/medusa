@@ -16,7 +16,10 @@ type BadgeListSummaryProps = {
    * Determines whether the center text is truncated if there is no space in the container
    */
   inline?: boolean
-
+  /**
+   * Whether the badges should be rounded
+   */
+  rounded?: boolean
   className?: string
 }
 
@@ -24,6 +27,7 @@ export const BadgeListSummary = ({
   list,
   className,
   inline,
+  rounded = false,
   n = 2,
 }: BadgeListSummaryProps) => {
   const { t } = useTranslation()
@@ -35,7 +39,7 @@ export const BadgeListSummary = ({
   return (
     <div
       className={clx(
-        "ml-2 text-ui-fg-subtle txt-compact-small gap-x-2 overflow-hidden",
+        "text-ui-fg-subtle txt-compact-small gap-x-2 overflow-hidden",
         {
           "inline-flex": inline,
           flex: !inline,
@@ -45,7 +49,7 @@ export const BadgeListSummary = ({
     >
       {list.slice(0, n).map((item) => {
         return (
-          <Badge key={item} size="2xsmall">
+          <Badge rounded={rounded ? "full" : "base"} key={item} size="2xsmall">
             {item}
           </Badge>
         )
@@ -62,7 +66,11 @@ export const BadgeListSummary = ({
               </ul>
             }
           >
-            <Badge size="2xsmall" className="cursor-default whitespace-nowrap">
+            <Badge
+              rounded={rounded ? "full" : "base"}
+              size="2xsmall"
+              className="cursor-default whitespace-nowrap"
+            >
               {title}
             </Badge>
           </Tooltip>
