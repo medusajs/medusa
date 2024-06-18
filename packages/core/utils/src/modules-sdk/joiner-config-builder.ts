@@ -21,10 +21,12 @@ import { readdirSync, statSync } from "fs"
 export function defineJoinerConfig(
   moduleName: string,
   {
+    schema,
     entityQueryingConfig,
     linkableKeys,
     primaryKeys,
   }: {
+    schema?: string
     entityQueryingConfig?: { name: string }[]
     linkableKeys?: Record<string, string>
     primaryKeys?: string[]
@@ -52,6 +54,7 @@ export function defineJoinerConfig(
   return {
     serviceName: moduleName,
     primaryKeys: primaryKeys ?? ["id"],
+    schema,
     linkableKeys:
       linkableKeys ??
       models.reduce((acc, entity) => {
