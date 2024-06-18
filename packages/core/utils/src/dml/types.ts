@@ -21,41 +21,31 @@ export type RelationshipTypes =
   | "manyToMany"
 
 /**
- * Any field that contains "nullable" and "optional" properties
- * in their metadata are qualified as maybe fields.
- *
- * This allows us to wrap them inside "NullableModifier" and
- * "OptionalModifier" classes.
+ * The meta-data returned by the property parse method
  */
-export type MaybeFieldMetadata = {
-  nullable: boolean
-}
-
-/**
- * The meta-data returned by the schema parse method
- */
-export type SchemaMetadata = MaybeFieldMetadata & {
+export type PropertyMetadata = {
   fieldName: string
   defaultValue?: any
+  nullable: boolean
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>
   }
   indexes: {
-    name: string
-    type: string
+    name?: string
+    type: "index" | "unique"
   }[]
   relationships: RelationshipMetadata[]
 }
 
 /**
- * Definition of a schema type. It should have a parse
+ * Definition of a property type. It should have a parse
  * method to get the metadata and a type-only property
  * to get its static type
  */
-export type SchemaType<T> = {
+export type PropertyType<T> = {
   $dataType: T
-  parse(fieldName: string): SchemaMetadata
+  parse(fieldName: string): PropertyMetadata
 }
 
 /**
@@ -69,10 +59,11 @@ export type RelationshipOptions = {
  * The meta-data returned by the relationship parse
  * method
  */
-export type RelationshipMetadata = MaybeFieldMetadata & {
+export type RelationshipMetadata = {
   name: string
   type: RelationshipTypes
   entity: unknown
+  nullable: boolean
   mappedBy?: string
 }
 

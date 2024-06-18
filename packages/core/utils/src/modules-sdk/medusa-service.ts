@@ -20,11 +20,7 @@ import {
   pluralize,
   upperCaseFirst,
 } from "../common"
-import {
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-} from "./decorators"
+import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
 
 type BaseMethods =
@@ -384,11 +380,7 @@ export function MedusaService<
 
       MedusaContext()(klassPrototype, methodName, contextIndex)
 
-      const ManagerDecorator = readMethods.includes(method as BaseMethods)
-        ? InjectManager
-        : InjectTransactionManager
-
-      ManagerDecorator("baseRepository_")(
+      InjectManager("baseRepository_")(
         klassPrototype,
         methodName,
         descriptorMockRef
@@ -413,9 +405,7 @@ export function MedusaService<
             serviceRegistrationName
           ].retrieve(id, config, sharedContext)
 
-          return await this.baseRepository_.serialize<T>(entities, {
-            populate: true,
-          })
+          return await this.baseRepository_.serialize<T>(entities)
         }
 
         applyMethod(methodImplementation, 2)
@@ -432,9 +422,7 @@ export function MedusaService<
           const entities = await service.create(serviceData, sharedContext)
           const response = Array.isArray(data) ? entities : entities[0]
 
-          return await this.baseRepository_.serialize<T | T[]>(response, {
-            populate: true,
-          })
+          return await this.baseRepository_.serialize<T | T[]>(response)
         }
 
         applyMethod(methodImplementation, 1)
@@ -451,9 +439,7 @@ export function MedusaService<
           const entities = await service.update(serviceData, sharedContext)
           const response = Array.isArray(data) ? entities : entities[0]
 
-          return await this.baseRepository_.serialize<T | T[]>(response, {
-            populate: true,
-          })
+          return await this.baseRepository_.serialize<T | T[]>(response)
         }
 
         applyMethod(methodImplementation, 1)
@@ -469,9 +455,7 @@ export function MedusaService<
           const service = this.__container__[serviceRegistrationName]
           const entities = await service.list(filters, config, sharedContext)
 
-          return await this.baseRepository_.serialize<T[]>(entities, {
-            populate: true,
-          })
+          return await this.baseRepository_.serialize<T[]>(entities)
         }
 
         applyMethod(methodImplementation, 2)
@@ -488,12 +472,7 @@ export function MedusaService<
             serviceRegistrationName
           ].listAndCount(filters, config, sharedContext)
 
-          return [
-            await this.baseRepository_.serialize<T[]>(entities, {
-              populate: true,
-            }),
-            count,
-          ]
+          return [await this.baseRepository_.serialize<T[]>(entities), count]
         }
 
         applyMethod(methodImplementation, 2)
@@ -542,10 +521,7 @@ export function MedusaService<
           ].softDelete(primaryKeyValues_, sharedContext)
 
           const softDeletedEntities = await this.baseRepository_.serialize<T[]>(
-            entities,
-            {
-              populate: true,
-            }
+            entities
           )
 
           await this.eventBusModuleService_?.emit(

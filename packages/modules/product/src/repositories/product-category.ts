@@ -274,9 +274,17 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     const categories = await Promise.all(
       ids.map(async (id) => {
-        const productCategory = await manager.findOneOrFail(ProductCategory, {
+        const productCategory = await manager.findOne(ProductCategory, {
           id,
         })
+
+        if (!productCategory) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `ProductCategory with id: ${id} was not found`
+          )
+        }
+
         manager.assign(productCategory, { deleted_at: new Date() })
         return productCategory
       })
@@ -310,13 +318,20 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     await Promise.all(
       ids.map(async (id) => {
-        const productCategory = await manager.findOneOrFail(
+        const productCategory = await manager.findOne(
           ProductCategory,
           { id },
           {
             populate: ["category_children"],
           }
         )
+
+        if (!productCategory) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `ProductCategory with id: ${id} was not found`
+          )
+        }
 
         if (productCategory.category_children.length > 0) {
           throw new MedusaError(
@@ -389,9 +404,16 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     const categories = await Promise.all(
       data.map(async (entry, i) => {
         const categoryData: Partial<ProductCategory> = { ...entry }
-        const productCategory = await manager.findOneOrFail(ProductCategory, {
+        const productCategory = await manager.findOne(ProductCategory, {
           id: categoryData.id,
         })
+
+        if (!productCategory) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `ProductCategory with id: ${categoryData.id} was not found`
+          )
+        }
 
         // If the parent or rank are not changed, no need to reorder anything.
         if (

@@ -10,6 +10,7 @@ import { PriceList } from "./price-list"
 import { Product } from "./product"
 import { ProductCategory } from "./product-category"
 import { ProductCollection } from "./product-collection"
+import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
@@ -26,6 +27,7 @@ export class Admin {
   public productCategory: ProductCategory
   public priceList: PriceList
   public product: Product
+  public productType: ProductType
   public upload: Upload
   public region: Region
   public stockLocation: StockLocation
@@ -47,6 +49,7 @@ export class Admin {
     this.productCategory = new ProductCategory(client)
     this.priceList = new PriceList(client)
     this.product = new Product(client)
+    this.productType = new ProductType(client)
     this.upload = new Upload(client)
     this.region = new Region(client)
     this.stockLocation = new StockLocation(client)

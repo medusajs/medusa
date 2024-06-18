@@ -1,6 +1,6 @@
 import { BelongsTo } from "./relations/belongs-to"
 import {
-  SchemaType,
+  PropertyType,
   EntityCascades,
   RelationshipType,
   ExtractEntityRelations,
@@ -11,7 +11,7 @@ import {
  * name, its schema and relationships.
  */
 export class DmlEntity<
-  Schema extends Record<string, SchemaType<any> | RelationshipType<any>>
+  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
 > {
   #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}
@@ -21,12 +21,14 @@ export class DmlEntity<
    */
   parse(): {
     name: string
-    schema: SchemaType<any> | RelationshipType<any>
+    schema: PropertyType<any> | RelationshipType<any>
     cascades: EntityCascades<string[]>
   } {
     return {
       name: this.name,
-      schema: this.schema as unknown as SchemaType<any> | RelationshipType<any>,
+      schema: this.schema as unknown as
+        | PropertyType<any>
+        | RelationshipType<any>,
       cascades: this.#cascades,
     }
   }
