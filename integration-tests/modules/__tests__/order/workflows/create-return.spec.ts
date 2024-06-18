@@ -222,7 +222,7 @@ async function createOrderFixture({ container, product }) {
   const orderService: IOrderModuleService = container.resolve(
     ModuleRegistrationName.ORDER
   )
-  let order = await orderService.create({
+  let order = await orderService.createOrders({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
     items: [
@@ -332,7 +332,7 @@ async function createOrderFixture({ container, product }) {
 
   await orderService.applyPendingOrderActions(order.id)
 
-  order = await orderService.retrieve(order.id, {
+  order = await orderService.retrieveOrder(order.id, {
     relations: ["items"],
   })
 

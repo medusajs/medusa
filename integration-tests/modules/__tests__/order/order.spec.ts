@@ -4,12 +4,9 @@ import {
   IFulfillmentModuleService,
   IInventoryServiceNext,
   IOrderModuleService,
-<<<<<<< HEAD
   IPaymentModuleService,
-  IProductModuleService,
-=======
   IPricingModuleService,
->>>>>>> chore/rm-main-entity-concept
+  IProductModuleService,
   IRegionModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
@@ -19,7 +16,6 @@ import {
   adminHeaders,
   createAdminUser,
 } from "../../../helpers/create-admin-user"
-import {IInventoryService} from "@medusajs/types";
 
 jest.setTimeout(50000)
 
@@ -31,15 +27,11 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
-<<<<<<< HEAD
     let productModule: IProductModuleService
     let paymentModule: IPaymentModuleService
-    let inventoryModule: IInventoryService
-=======
     let pricingModule: IPricingModuleService
     let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationServiceNext
->>>>>>> chore/rm-main-entity-concept
     let fulfillmentModule: IFulfillmentModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery
@@ -65,7 +57,7 @@ medusaIntegrationTestRunner({
 
     describe("Orders - Admin", () => {
       it("should get an order", async () => {
-        const created = await orderModule.create({
+        const created = await orderModule.createOrders({
           region_id: "test_region_idclear",
           email: "foo@bar.com",
           items: [
