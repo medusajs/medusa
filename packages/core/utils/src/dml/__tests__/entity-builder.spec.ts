@@ -479,6 +479,91 @@ describe("Entity builder", () => {
     })
   })
 
+  describe("Entity builder | indexes", () => {
+    test("define index on a field", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.number().index(),
+        username: model.text(),
+        email: model.text().unique(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: string
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.indexes).toEqual([
+        {
+          name: "IDX_users_id",
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_users_id" ON "users" (id) WHERE deleted_at IS NULL',
+        },
+        {
+          name: "IDX_users_email",
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_users_email" ON "users" (email) WHERE deleted_at IS NULL',
+        },
+      ])
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+  })
+
   describe("Entity builder | hasOne", () => {
     test("define hasOne relationship", () => {
       const model = new EntityBuilder()
