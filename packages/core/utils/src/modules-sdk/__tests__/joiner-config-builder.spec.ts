@@ -44,6 +44,7 @@ describe("defineJoiner", () => {
     expect(joinerConfig).toEqual({
       serviceName: Modules.FULFILLMENT,
       primaryKeys: ["id"],
+      schema: undefined,
       linkableKeys: {
         fulfillment_set_id: FulfillmentSet.name,
         shipping_option_id: ShippingOption.name,
@@ -59,6 +60,7 @@ describe("defineJoiner", () => {
           name: ["fulfillment_set", "fulfillment_sets"],
           args: {
             entity: FulfillmentSet.name,
+            methodSuffix: "FulfillmentSets",
           },
         },
         {

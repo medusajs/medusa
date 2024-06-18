@@ -5,7 +5,7 @@ import {
   MapToConfig,
 } from "@medusajs/utils"
 
-export const joinerConfig = defineJoinerConfig(Modules.STOCK_LOCATION)
+export const joinerConfig = defineJoinerConfig(Modules.STORE)
 
 export const entityNameToLinkableKeysMap: MapToConfig =
   buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)
