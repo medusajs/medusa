@@ -4976,8 +4976,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-order-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
