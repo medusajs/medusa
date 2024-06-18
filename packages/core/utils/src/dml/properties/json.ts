@@ -1,4 +1,3 @@
-import { PropertyMetadata } from "../types"
 import { BaseProperty } from "./base"
 
 /**
