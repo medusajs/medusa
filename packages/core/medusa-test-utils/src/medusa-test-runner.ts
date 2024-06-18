@@ -64,6 +64,9 @@ export interface MedusaSuiteOptions<TService = unknown> {
   dbConnection: any // knex instance
   getContainer: () => MedusaContainer
   api: any
+  dbUtils: {
+    teardown: (options: { schema?: string }) => Promise<void>
+  }
   dbConfig: {
     dbName: string
     schema: string
@@ -148,6 +151,7 @@ export function medusaIntegrationTestRunner({
       schema,
       clientUrl: dbConfig.clientUrl,
     },
+    dbUtils,
   } as MedusaSuiteOptions
 
   let isFirstTime = true
