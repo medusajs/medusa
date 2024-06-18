@@ -20,6 +20,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { ReturnItem, Transaction } from "@models"
 import Claim from "./claim"
 import Exchange from "./exchange"
 import Order from "./order"
@@ -126,7 +127,7 @@ export default class Return {
   @Property({ columnType: "jsonb", nullable: true })
   raw_refund_amount: BigNumberRawValue
 
-  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.return, {
+  @OneToMany(() => ReturnItem, (itemDetail) => itemDetail.return, {
     cascade: [Cascade.PERSIST],
   })
   items = new Collection<OrderItem>(this)
@@ -139,6 +140,11 @@ export default class Return {
     }
   )
   shipping_methods = new Collection<OrderShippingMethod>(this)
+
+  @OneToMany(() => Transaction, (transaction) => transaction.return, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Transaction>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

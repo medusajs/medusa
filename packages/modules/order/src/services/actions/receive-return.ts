@@ -1,7 +1,77 @@
 import { Context, OrderTypes } from "@medusajs/types"
-import { MathBN, ReturnStatus } from "@medusajs/utils"
+import { MathBN, ReturnStatus, promiseAll } from "@medusajs/utils"
 import { OrderChangeType } from "@types"
 import { ChangeActionType } from "../../utils"
+
+function createReturnItems(data) {
+  return data.items.map((item) => ({
+    action: ChangeActionType.RECEIVE_RETURN_ITEM,
+    internal_note: item.internal_note,
+    reference: data.reference,
+    reference_id: data.reference_id,
+    details: {
+      reference_id: item.id,
+      quantity: item.quantity,
+      metadata: item.metadata,
+    },
+  }))
+}
+
+async function createOrderChange(
+  service,
+  data,
+  returnEntry,
+  items,
+  sharedContext
+) {
+  return await service.createOrderChange_(
+    {
+      order_id: returnEntry.order_id,
+      return_id: returnEntry.id,
+      reference: "return",
+      reference_id: returnEntry.id,
+      change_type: OrderChangeType.RETURN,
+      description: data.description,
+      internal_note: data.internal_note,
+      created_by: data.created_by,
+      metadata: data.metadata,
+      actions: items,
+    },
+    sharedContext
+  )
+}
+
+function updateReturnItems(returnEntry, items) {
+  return returnEntry.items
+    .map((item) => {
+      const data = items.find((i) => i.details.reference_id === item.item_id)
+      if (!data) return
+
+      const receivedQuantity = MathBN.add(
+        item.received_quantity || 0,
+        data.details.quantity
+      )
+      item.received_quantity = receivedQuantity
+
+      return {
+        id: item.id,
+        received_quantity: receivedQuantity,
+      }
+    })
+    .filter(Boolean)
+}
+
+function checkAllItemsReceived(returnEntry) {
+  return returnEntry.items.every((item) =>
+    MathBN.eq(item.received_quantity, item.quantity)
+  )
+}
+
+function getReturnUpdateData(hasReceivedAllItems) {
+  return hasReceivedAllItems
+    ? { status: ReturnStatus.RECEIVED, received_at: new Date() }
+    : { status: ReturnStatus.PARTIALLY_RECEIVED }
+}
 
 export async function receiveReturn(
   this: any,
@@ -17,59 +87,28 @@ export async function receiveReturn(
     sharedContext
   )
 
-  const items = data.items.map((item) => {
-    return {
-      action: ChangeActionType.RECEIVE_RETURN_ITEM,
-      internal_note: item.internal_note,
-      reference: data.reference,
-      reference_id: data.reference_id,
-      details: {
-        reference_id: item.id,
-        quantity: item.quantity,
-        metadata: item.metadata,
-      },
-    }
-  })
-
-  const change = await this.createOrderChange_(
-    {
-      order_id: returnEntry.order_id,
-      reference: "return",
-      reference_id: returnEntry.id,
-      change_type: OrderChangeType.RETURN,
-      description: data.description,
-      internal_note: data.internal_note,
-      created_by: data.created_by,
-      metadata: data.metadata,
-      actions: items,
-    },
+  const items = createReturnItems(data)
+  const change = await createOrderChange(
+    this,
+    data,
+    returnEntry,
+    items,
     sharedContext
   )
 
   await this.confirmOrderChange(change[0].id, sharedContext)
 
-  const hasReceivedAllItems = returnEntry.items.every((item) => {
-    const retItem = items.find((dtItem) => {
-      return item.detail.item_id === dtItem.details.reference_id
-    })
-    const quantity = retItem ? retItem.details.quantity : 0
-    return MathBN.eq(
-      MathBN.sub(item.detail.return_requested_quantity, quantity),
-      0
-    )
-  })
+  const retItemsToUpdate = updateReturnItems(returnEntry, items)
+  const hasReceivedAllItems = checkAllItemsReceived(returnEntry)
+  const retData = getReturnUpdateData(hasReceivedAllItems)
 
-  const retData = hasReceivedAllItems
-    ? { status: ReturnStatus.RECEIVED, received_at: new Date() }
-    : { status: ReturnStatus.PARTIALLY_RECEIVED }
-
-  const returnRef = await this.updateReturns(
-    {
-      selector: { id: returnEntry.id },
-      data: retData,
-    },
-    sharedContext
-  )
+  const [returnRef] = await promiseAll([
+    this.updateReturns(
+      { selector: { id: returnEntry.id }, data: retData },
+      sharedContext
+    ),
+    this.updateReturnItems(retItemsToUpdate, sharedContext),
+  ])
 
   return returnRef
 }
