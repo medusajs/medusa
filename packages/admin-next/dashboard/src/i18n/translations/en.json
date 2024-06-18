@@ -1646,6 +1646,10 @@
     "enabled": "Enabled",
     "disabled": "Disabled"
   },
+  "labels": {
+    "productVariant": "Product Variant",
+    "prices": "Prices"
+  },
   "fields": {
     "amount": "Amount",
     "refundAmount": "Refund amount",
@@ -1657,6 +1661,8 @@
     "customTitle": "Custom title",
     "manageInventory": "Manage inventory",
     "inventoryKit": "Inventory kit",
+    "inventoryItems": "Inventory items",
+    "requiredQuantity": "Required quantity",
     "description": "Description",
     "email": "Email",
     "password": "Password",
