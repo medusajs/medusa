@@ -1,4 +1,9 @@
-import { PromotionType } from "@medusajs/utils"
+import {
+  ApplicationMethodType,
+  PromotionType,
+  RuleOperator,
+} from "@medusajs/utils"
+import { operatorsMap } from "./operators-map"
 
 export enum DisguisedRule {
   APPLY_TO_QUANTITY = "apply_to_quantity",
@@ -8,20 +13,12 @@ export enum DisguisedRule {
 
 const ruleAttributes = [
   {
-    id: DisguisedRule.CURRENCY_CODE,
-    value: DisguisedRule.CURRENCY_CODE,
-    label: "Currency Code",
-    field_type: "select",
-    required: true,
-    disguised: true,
-    hydrate: true,
-  },
-  {
     id: "customer_group",
     value: "customer.groups.id",
     label: "Customer Group",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "region",
@@ -29,6 +26,7 @@ const ruleAttributes = [
     label: "Region",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "country",
@@ -36,6 +34,7 @@ const ruleAttributes = [
     label: "Country",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "sales_channel",
@@ -43,6 +42,7 @@ const ruleAttributes = [
     label: "Sales Channel",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
 ]
 
@@ -53,6 +53,7 @@ const commonAttributes = [
     label: "Product",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "product_category",
@@ -60,6 +61,7 @@ const commonAttributes = [
     label: "Product Category",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "product_collection",
@@ -67,6 +69,7 @@ const commonAttributes = [
     label: "Product Collection",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "product_type",
@@ -74,6 +77,7 @@ const commonAttributes = [
     label: "Product Type",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
   {
     id: "product_tag",
@@ -81,8 +85,20 @@ const commonAttributes = [
     label: "Product Tag",
     required: false,
     field_type: "multiselect",
+    operators: Object.values(operatorsMap),
   },
 ]
+
+const currencyRule = {
+  id: DisguisedRule.CURRENCY_CODE,
+  value: DisguisedRule.CURRENCY_CODE,
+  label: "Currency Code",
+  field_type: "select",
+  required: true,
+  disguised: true,
+  hydrate: true,
+  operators: [operatorsMap[RuleOperator.EQ]],
+}
 
 const buyGetBuyRules = [
   {
@@ -92,6 +108,7 @@ const buyGetBuyRules = [
     field_type: "number",
     required: true,
     disguised: true,
+    operators: [operatorsMap[RuleOperator.EQ]],
   },
 ]
 
@@ -103,14 +120,27 @@ const buyGetTargetRules = [
     field_type: "number",
     required: true,
     disguised: true,
+    operators: [operatorsMap[RuleOperator.EQ]],
   },
 ]
 
-export const getRuleAttributesMap = (promotionType?: string) => {
+export const getRuleAttributesMap = ({
+  promotionType,
+  applicationMethodType,
+}: {
+  promotionType?: string
+  applicationMethodType?: string
+}) => {
   const map = {
     rules: [...ruleAttributes],
     "target-rules": [...commonAttributes],
     "buy-rules": [...commonAttributes],
+  }
+
+  if (applicationMethodType === ApplicationMethodType.FIXED) {
+    map["rules"].push({ ...currencyRule })
+  } else {
+    map["rules"].push({ ...currencyRule, required: false })
   }
 
   if (promotionType === PromotionType.BUYGET) {

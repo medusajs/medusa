@@ -13,7 +13,7 @@ export interface CreateApplicationMethodDTO {
   target_type: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: BigNumberInput
-  currency_code: string
+  currency_code?: string | null
   promotion: Promotion | string | PromotionDTO
   max_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
@@ -26,7 +26,7 @@ export interface UpdateApplicationMethodDTO {
   target_type?: ApplicationMethodTargetTypeValues
   allocation?: ApplicationMethodAllocationValues
   value?: BigNumberInput
-  currency_code?: string
+  currency_code?: string | null
   promotion?: Promotion | string | PromotionDTO
   max_quantity?: BigNumberInput | null
   buy_rules_min_quantity?: BigNumberInput | null
