@@ -72,14 +72,14 @@ const validateOrder = createStep(
 
     throwErrorIf(order_.fulfillments, notCanceled, "fulfillments")
     /*
-    TODO: relationship between order and returns, swaps, claims
+    TODO: relationship between order and returns, exchanges, claims
 
     throwErrorIf(
       order_.returns,
       (ret) => ret.status !== "canceled",
       "returns"
     )
-    throwErrorIf(order_.swaps, notCanceled, "swaps")
+    throwErrorIf(order_.exchanges, notCanceled, "exchanges")
     throwErrorIf(order_.claims, notCanceled, "claims")
     */
   }

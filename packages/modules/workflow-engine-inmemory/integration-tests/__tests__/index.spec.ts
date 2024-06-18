@@ -3,9 +3,16 @@ import { WorkflowManager } from "@medusajs/orchestration"
 import {
   Context,
   IWorkflowEngineService,
+  Logger,
+  MedusaContainer,
   RemoteJoinerQuery,
 } from "@medusajs/types"
-import { TransactionHandlerType } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  TransactionHandlerType,
+  createMedusaContainer,
+} from "@medusajs/utils"
+import { asValue } from "awilix"
 import { knex } from "knex"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
@@ -35,6 +42,7 @@ jest.setTimeout(100000)
 
 describe("Workflow Orchestrator module", function () {
   let workflowOrcModule: IWorkflowEngineService
+  let sharedContainer_: MedusaContainer
   let query: (
     query: string | RemoteJoinerQuery | object,
     variables?: Record<string, unknown>
@@ -43,11 +51,16 @@ describe("Workflow Orchestrator module", function () {
   afterEach(afterEach_)
 
   beforeAll(async () => {
+    const container = createMedusaContainer()
+    container.register(ContainerRegistrationKeys.LOGGER, asValue(console))
+
     const {
       runMigrations,
       query: remoteQuery,
       modules,
+      sharedContainer,
     } = await MedusaApp({
+      sharedContainer: container,
       sharedResourcesConfig: {
         database: {
           connection: sharedPgConnection,
@@ -61,6 +74,7 @@ describe("Workflow Orchestrator module", function () {
     })
 
     query = remoteQuery
+    sharedContainer_ = sharedContainer!
 
     await runMigrations()
 
@@ -311,10 +325,14 @@ describe("Workflow Orchestrator module", function () {
     })
 
     it("should remove scheduled workflow if workflow no longer exists", async () => {
+      const logger = sharedContainer_.resolve<Logger>(
+        ContainerRegistrationKeys.LOGGER
+      )
+
       const spy = await createScheduled("remove-scheduled", {
         cron: "* * * * * *",
       })
-      const logSpy = jest.spyOn(console, "warn")
+      const logSpy = jest.spyOn(logger, "warn")
 
       await jest.runOnlyPendingTimersAsync()
       expect(spy).toHaveBeenCalledTimes(1)
@@ -326,6 +344,46 @@ describe("Workflow Orchestrator module", function () {
       expect(logSpy).toHaveBeenCalledWith(
         "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
       )
+    })
+
+    it("should fetch an idempotent workflow after its completion", async () => {
+      const { transaction: firstRun } = await workflowOrcModule.run(
+        "workflow_idempotent",
+        {
+          input: {
+            value: "123",
+          },
+          throwOnError: true,
+          transactionId: "transaction_1",
+        }
+      )
+
+      let executionsList = await query({
+        workflow_executions: {
+          fields: ["id"],
+        },
+      })
+
+      const { transaction: secondRun } = await workflowOrcModule.run(
+        "workflow_idempotent",
+        {
+          input: {
+            value: "123",
+          },
+          throwOnError: true,
+          transactionId: "transaction_1",
+        }
+      )
+
+      const executionsListAfter = await query({
+        workflow_executions: {
+          fields: ["id"],
+        },
+      })
+
+      expect(secondRun.flow.startedAt).toEqual(firstRun.flow.startedAt)
+      expect(executionsList).toHaveLength(1)
+      expect(executionsListAfter).toHaveLength(1)
     })
   })
 })

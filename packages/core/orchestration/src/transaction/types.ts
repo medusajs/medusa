@@ -119,6 +119,11 @@ export type TransactionModelOptions = {
   storeExecution?: boolean
 
   /**
+   * If true, the workflow will be executed only once with the same transaction id.
+   */
+  idempotent?: boolean
+
+  /**
    * Defines the workflow as a scheduled workflow that executes based on the cron configuration passed.
    * The value can either by a cron expression string, or an object that also allows to define the concurrency behavior.
    */
@@ -207,3 +212,11 @@ export type DistributedTransactionEvents = {
     transaction: DistributedTransaction
   }) => void
 }
+
+export type StepFeatures = {
+  hasAsyncSteps: boolean
+  hasStepTimeouts: boolean
+  hasRetriesTimeout: boolean
+}
+
+export type TransactionOptions = TransactionModelOptions & StepFeatures
