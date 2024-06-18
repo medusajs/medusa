@@ -6,15 +6,15 @@ import {
   IOrderModuleService,
 } from "@medusajs/types"
 import { BigNumber } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ChangeActionType } from "../../src/utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   debug: false,
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order Module Service - Order Edits", () => {
       const input = {
         email: "foo@bar.com",
@@ -128,7 +128,7 @@ moduleIntegrationTestRunner({
       } as CreateOrderDTO
 
       it("should change an order by adding actions to it", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         await service.addOrderAction([
           {
@@ -208,7 +208,7 @@ moduleIntegrationTestRunner({
 
         await service.applyPendingOrderActions(createdOrder.id)
 
-        const finalOrder = await service.retrieve(createdOrder.id, {
+        const finalOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -335,7 +335,7 @@ moduleIntegrationTestRunner({
       })
 
       it("should create an order change, add actions to it, confirm the changes, revert all the changes and restore the changes again.", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         const orderChange = await service.createOrderChange({
           order_id: createdOrder.id,
@@ -416,7 +416,7 @@ moduleIntegrationTestRunner({
           `Order Change cannot be modified: ${orderChange.id}`
         )
 
-        const modified = await service.retrieve(createdOrder.id, {
+        const modified = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -481,7 +481,7 @@ moduleIntegrationTestRunner({
 
         // Revert Last Changes
         await service.revertLastVersion(createdOrder.id)
-        const revertedOrder = await service.retrieve(createdOrder.id, {
+        const revertedOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -547,7 +547,7 @@ moduleIntegrationTestRunner({
       })
 
       it("should create order changes, cancel and reject them.", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         const orderChange = await service.createOrderChange({
           order_id: createdOrder.id,
@@ -595,7 +595,7 @@ moduleIntegrationTestRunner({
           service.declineOrderChange(orderChange2.id)
         ).rejects.toThrowError("Order Change cannot be modified")
 
-        const [change1, change2] = await service.listOrderChanges(
+        const [change1, change2] = await (service as any).listOrderChanges(
           {
             id: [orderChange.id, orderChange2.id],
           },

@@ -64,6 +64,7 @@ import {
   UpsertOrderLineItemAdjustmentDTO,
 } from "./mutations"
 
+// TODO: missing listOrderShippingMethods and listOrderChanges, fix module integration to remove any cast
 /**
  * {summary}
  */
@@ -79,11 +80,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const result = await orderModuleService.retrieve("orderId123");
+   * const result = await orderModuleService.retrieveOrder("orderId123");
    * ```
    *
    */
-  retrieve(
+  retrieveOrder(
     orderId: string,
     config?: FindConfig<OrderDTO>,
     sharedContext?: Context
@@ -100,11 +101,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const orderDTOs = await orderModuleService.list();
+   * const orderDTOs = await orderModuleService.listOrders();
    * ```
    *
    */
-  list(
+  listOrders(
     filters?: FilterableOrderProps,
     config?: FindConfig<OrderDTO>,
     sharedContext?: Context
@@ -121,11 +122,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.listAndCount();
+   * await orderModuleService.listAndCountOrders();
    * ```
    *
    */
-  listAndCount(
+  listAndCountOrders(
     filters?: FilterableOrderProps,
     config?: FindConfig<OrderDTO>,
     sharedContext?: Context
@@ -171,11 +172,14 @@ export interface IOrderModuleService extends IModuleService {
    *     }
    * ];
    *
-   * const result = await orderModuleService.create(orderData);
+   * const result = await orderModuleService.createOrders(orderData);
    * ```
    *
    */
-  create(data: CreateOrderDTO[], sharedContext?: Context): Promise<OrderDTO[]>
+  createOrders(
+    data: CreateOrderDTO[],
+    sharedContext?: Context
+  ): Promise<OrderDTO[]>
 
   /**
    * This method creates {return type}(s)
@@ -191,11 +195,11 @@ export interface IOrderModuleService extends IModuleService {
    *     currency_code: "USD"
    * };
    *
-   * const createdOrder = await orderModuleService.create(orderData);
+   * const createdOrder = await orderModuleService.createOrders(orderData);
    * ```
    *
    */
-  create(data: CreateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
+  createOrders(data: CreateOrderDTO, sharedContext?: Context): Promise<OrderDTO>
 
   /**
    * This method updates existing {return type}(s).
@@ -205,7 +209,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * const updatedOrders = await orderModuleService.update([
+   * const updatedOrders = await orderModuleService.updateOrders([
    *     {
    *         id: "order_id_1",
    *         status: "shipped"
@@ -218,7 +222,7 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  update(data: UpdateOrderDTO[]): Promise<OrderDTO[]>
+  updateOrders(data: UpdateOrderDTO[]): Promise<OrderDTO[]>
 
   /**
    * This method updates existing {return type}(s).
@@ -230,13 +234,13 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.update("orderId123", {
+   * await orderModuleService.updateOrders("orderId123", {
    *   status: "shipped"
    * });
    * ```
    *
    */
-  update(
+  updateOrders(
     orderId: string,
     data: UpdateOrderDTO,
     sharedContext?: Context
@@ -252,14 +256,14 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.update(
+   * await orderModuleService.updateOrders(
    *   { id: "order-123" },
    *   { status: "completed" }
    * );
    * ```
    *
    */
-  update(
+  updateOrders(
     selector: Partial<FilterableOrderProps>,
     data: UpdateOrderDTO,
     sharedContext?: Context
@@ -274,11 +278,11 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.delete(["12345abc", "67890def"]);
+   * await orderModuleService.deleteOrders(["12345abc", "67890def"]);
    * ```
    *
    */
-  delete(orderIds: string[], sharedContext?: Context): Promise<void>
+  deleteOrders(orderIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes {return type} by its ID.
@@ -289,19 +293,19 @@ export interface IOrderModuleService extends IModuleService {
    *
    * @example
    * ```typescript
-   * await orderModuleService.delete("orderId");
+   * await orderModuleService.deleteOrders("orderId");
    * ```
    *
    */
-  delete(orderId: string, sharedContext?: Context): Promise<void>
+  deleteOrders(orderId: string, sharedContext?: Context): Promise<void>
 
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteOrders<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreOrders<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
