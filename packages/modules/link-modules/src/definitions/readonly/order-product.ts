@@ -25,7 +25,7 @@ export const OrderProduct: ModuleJoinerConfig = {
         foreignKey: "items.variant_id",
         alias: "variant",
         args: {
-          methodSuffix: "Variants",
+          methodSuffix: "ProductVariants",
         },
       },
     },

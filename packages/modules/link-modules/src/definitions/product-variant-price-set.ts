@@ -25,7 +25,7 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
       foreignKey: "variant_id",
       alias: "variant",
       args: {
-        methodSuffix: "Variants",
+        methodSuffix: "ProductVariants",
       },
     },
     {

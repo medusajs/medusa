@@ -14,6 +14,7 @@ import { readdirSync, statSync } from "fs"
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
  * we move to at least es2022 to have access to top-leve await
  * @param moduleName
+ * @param schema
  * @param entityQueryingConfig
  * @param linkableKeys
  * @param primaryKeys
@@ -21,11 +22,13 @@ import { readdirSync, statSync } from "fs"
 export function defineJoinerConfig(
   moduleName: string,
   {
+    alias,
     schema,
     entityQueryingConfig,
     linkableKeys,
     primaryKeys,
   }: {
+    alias?: ModuleJoinerConfig["alias"]
     schema?: string
     entityQueryingConfig?: { name: string }[]
     linkableKeys?: Record<string, string>
@@ -61,16 +64,18 @@ export function defineJoinerConfig(
         acc[`${camelToSnakeCase(entity.name).toLowerCase()}_id`] = entity.name
         return acc
       }, {} as Record<string, string>),
-    alias: models.map((entity, i) => ({
-      name: [
-        `${camelToSnakeCase(entity.name).toLowerCase()}`,
-        `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
-      ],
-      args: {
-        entity: entity.name,
-        methodSuffix: pluralize(upperCaseFirst(entity.name)),
-      },
-    })),
+    alias:
+      alias ??
+      models.map((entity, i) => ({
+        name: [
+          `${camelToSnakeCase(entity.name).toLowerCase()}`,
+          `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
+        ],
+        args: {
+          entity: entity.name,
+          methodSuffix: pluralize(upperCaseFirst(entity.name)),
+        },
+      })),
   }
 }
 
