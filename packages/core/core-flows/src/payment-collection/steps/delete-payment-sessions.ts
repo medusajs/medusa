@@ -11,7 +11,7 @@ interface StepInput {
   ids: string[]
 }
 
-// Note: This workflow should not be used alone as it doesn't consider a revert
+// Note: This step should not be used alone as it doesn't consider a revert
 // Use deletePaymentSessionsWorkflow instead that uses this step
 export const deletePaymentSessionsStepId = "delete-payment-sessions"
 export const deletePaymentSessionsStep = createStep(
