@@ -30,7 +30,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all promotions and its count", async () => {
-        await promotionModuleService.create([
+        await promotionModuleService.createPromotions([
           {
             code: "TEST",
             type: PromotionType.STANDARD,
@@ -69,7 +69,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support search of promotions", async () => {
-        await promotionModuleService.create([
+        await promotionModuleService.createPromotions([
           {
             code: "first",
             type: PromotionType.STANDARD,
@@ -103,7 +103,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all promotions and its count filtered", async () => {
-        await promotionModuleService.create([
+        await promotionModuleService.createPromotions([
           {
             code: "TEST",
             type: PromotionType.STANDARD,
