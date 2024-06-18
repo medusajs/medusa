@@ -64,7 +64,7 @@ export type ProviderUploadFileDTO = {
   /**
    * The file content as a binary-encoded string
    */
-  content: string | Buffer
+  content: string
 }
 
 export interface IFileProvider {

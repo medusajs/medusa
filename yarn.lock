@@ -4357,8 +4357,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-cart-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5026,8 +5024,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-payment-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5053,8 +5049,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-pricing-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5083,8 +5077,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-product-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5110,8 +5102,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-promotion-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5237,8 +5227,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-tax-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
