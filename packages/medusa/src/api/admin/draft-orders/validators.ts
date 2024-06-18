@@ -27,7 +27,7 @@ const ShippingMethod = z.object({
   order_id: z.string().nullish(),
   name: z.string(),
   option_id: z.string(),
-  data: z.record(z.string(), z.unknown()).nullish(),
+  data: z.record(z.string(), z.unknown()).optional(),
   amount: BigNumberInput,
 })
 
@@ -39,7 +39,7 @@ const Item = z
     variant_id: z.string().nullish(),
     unit_price: BigNumberInput.nullish(),
     quantity: z.number(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .refine((data) => {
     if (!data.variant_id) {
@@ -60,11 +60,11 @@ export const AdminCreateDraftOrder = z
     shipping_address: AddressPayload.nullish(),
     items: z.array(Item).nullish(),
     region_id: z.string(),
-    promo_codes: z.array(z.string()).nullish(),
+    promo_codes: z.array(z.string()).optional(),
     currency_code: z.string().nullish(),
-    no_notification_order: z.boolean().nullish(),
+    no_notification_order: z.boolean().optional(),
     shipping_methods: z.array(ShippingMethod),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
   .refine(

@@ -16,7 +16,7 @@ export const ReturnsParams = createFindParams().merge(
 
 const ReturnShippingSchema = z.object({
   option_id: z.string(),
-  price: z.number().nullish(),
+  price: z.number().optional(),
 })
 
 const ItemSchema = z.object({
@@ -31,7 +31,7 @@ export const StorePostReturnsReqSchema = z.object({
   items: z.array(ItemSchema),
   return_shipping: ReturnShippingSchema,
   note: z.string().nullish(),
-  receive_now: z.boolean().nullish(),
+  receive_now: z.boolean().optional(),
   location_id: z.string().nullish(),
 })
 export type StorePostReturnsReqSchemaType = z.infer<

@@ -5,8 +5,8 @@ export interface CreatePriceListPriceWorkflowDTO {
   amount: number
   currency_code: string
   variant_id: string
-  max_quantity?: number
-  min_quantity?: number
+  max_quantity?: number | null
+  min_quantity?: number | null
   rules?: Record<string, string>
 }
 
@@ -15,8 +15,8 @@ export interface UpdatePriceListPriceWorkflowDTO {
   variant_id: string
   amount?: number
   currency_code?: string
-  max_quantity?: number
-  min_quantity?: number
+  max_quantity?: number | null
+  min_quantity?: number | null
   rules?: Record<string, string>
 }
 
@@ -33,7 +33,7 @@ export interface CreatePriceListWorkflowInputDTO {
 export interface UpdatePriceListWorkflowInputDTO {
   id: string
   title?: string
-  description?: string
+  description?: string | null
   starts_at?: string | null
   ends_at?: string | null
   status?: PriceListStatus

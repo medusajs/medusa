@@ -91,9 +91,9 @@ export type AdminUpdatePromotionRuleType = z.infer<
 export const AdminUpdatePromotionRule = z
   .object({
     id: z.string(),
-    operator: z.nativeEnum(PromotionRuleOperator).nullish(),
+    operator: z.nativeEnum(PromotionRuleOperator).optional(),
     description: z.string().nullish(),
-    attribute: z.string().nullish(),
+    attribute: z.string().optional(),
     values: z.union([z.string(), z.array(z.string())]),
   })
   .strict()
@@ -109,9 +109,9 @@ export const AdminCreateApplicationMethod = z
     max_quantity: z.number().nullish(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
-    allocation: z.nativeEnum(ApplicationMethodAllocation).nullish(),
-    target_rules: z.array(AdminCreatePromotionRule).nullish(),
-    buy_rules: z.array(AdminCreatePromotionRule).nullish(),
+    allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
+    target_rules: z.array(AdminCreatePromotionRule).optional(),
+    buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().nullish(),
     buy_rules_min_quantity: z.number().nullish(),
   })
@@ -123,14 +123,14 @@ export type AdminUpdateApplicationMethodType = z.infer<
 export const AdminUpdateApplicationMethod = z
   .object({
     description: z.string().nullish(),
-    value: z.number().nullish(),
+    value: z.number().optional(),
     max_quantity: z.number().nullish(),
     currency_code: z.string().nullish(),
     type: z.nativeEnum(ApplicationMethodType).nullish(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).nullish(),
     allocation: z.nativeEnum(ApplicationMethodAllocation).nullish(),
-    target_rules: z.array(AdminCreatePromotionRule).nullish(),
-    buy_rules: z.array(AdminCreatePromotionRule).nullish(),
+    target_rules: z.array(AdminCreatePromotionRule).optional(),
+    buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().nullish(),
     buy_rules_min_quantity: z.number().nullish(),
   })
@@ -157,12 +157,12 @@ export type AdminCreatePromotionType = z.infer<typeof AdminCreatePromotion>
 export const AdminCreatePromotion = z
   .object({
     code: z.string(),
-    is_automatic: z.boolean().nullish(),
+    is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType),
     campaign_id: z.string().nullish(),
     campaign: AdminCreateCampaign.nullish(),
     application_method: AdminCreateApplicationMethod,
-    rules: z.array(AdminCreatePromotionRule).nullish(),
+    rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()
   // In the case of a buyget promotion, we require at least one buy rule and quantities
@@ -175,12 +175,12 @@ export type AdminUpdatePromotionType = z.infer<typeof AdminUpdatePromotion>
 export const AdminUpdatePromotion = z
   .object({
     code: z.string().nullish(),
-    is_automatic: z.boolean().nullish(),
+    is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType).nullish(),
     campaign_id: z.string().nullish(),
     campaign: AdminCreateCampaign.nullish(),
     application_method: AdminUpdateApplicationMethod.nullish(),
-    rules: z.array(AdminCreatePromotionRule).nullish(),
+    rules: z.array(AdminCreatePromotionRule).optional(),
   })
   .strict()
   // In the case of a buyget promotion, we require at least one buy rule and quantities

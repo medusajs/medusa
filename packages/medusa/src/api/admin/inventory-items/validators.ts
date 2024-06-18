@@ -70,8 +70,8 @@ export type AdminCreateInventoryLocationLevelType = z.infer<
 export const AdminCreateInventoryLocationLevel = z
   .object({
     location_id: z.string(),
-    stocked_quantity: z.number().min(0).nullish(),
-    incoming_quantity: z.number().min(0).nullish(),
+    stocked_quantity: z.number().min(0).optional(),
+    incoming_quantity: z.number().min(0).optional(),
   })
   .strict()
 
@@ -80,8 +80,8 @@ export type AdminUpdateInventoryLocationLevelType = z.infer<
 >
 export const AdminUpdateInventoryLocationLevel = z
   .object({
-    stocked_quantity: z.number().min(0).nullish(),
-    incoming_quantity: z.number().min(0).nullish(),
+    stocked_quantity: z.number().min(0).optional(),
+    incoming_quantity: z.number().min(0).optional(),
   })
   .strict()
 
@@ -101,10 +101,10 @@ export const AdminCreateInventoryItem = z
     material: z.string().nullish(),
     title: z.string().nullish(),
     description: z.string().nullish(),
-    requires_shipping: z.boolean().nullish(),
+    requires_shipping: z.boolean().optional(),
     thumbnail: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
-    location_levels: z.array(AdminCreateInventoryLocationLevel).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+    location_levels: z.array(AdminCreateInventoryLocationLevel).optional(),
   })
   .strict()
 
@@ -124,8 +124,8 @@ export const AdminUpdateInventoryItem = z
     material: z.string().nullish(),
     title: z.string().nullish(),
     description: z.string().nullish(),
-    requires_shipping: z.boolean().nullish(),
+    requires_shipping: z.boolean().optional(),
     thumbnail: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()

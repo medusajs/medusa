@@ -36,8 +36,8 @@ export type AdminUpdatePricingRuleTypeType = z.infer<
 >
 export const AdminUpdatePricingRuleType = z
   .object({
-    name: z.string().nullish(),
-    rule_attribute: z.string().nullish(),
-    default_priority: z.number().nullish(),
+    name: z.string().optional(),
+    rule_attribute: z.string().optional(),
+    default_priority: z.number().optional(),
   })
   .strict()

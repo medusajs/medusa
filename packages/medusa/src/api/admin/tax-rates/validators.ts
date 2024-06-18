@@ -37,10 +37,10 @@ export type AdminCreateTaxRateType = z.infer<typeof AdminCreateTaxRate>
 export const AdminCreateTaxRate = z.object({
   rate: z.number().nullish(),
   code: z.string().nullish(),
-  rules: z.array(AdminCreateTaxRateRule).nullish(),
+  rules: z.array(AdminCreateTaxRateRule).optional(),
   name: z.string(),
-  is_default: z.boolean().nullish(),
-  is_combinable: z.boolean().nullish(),
+  is_default: z.boolean().optional(),
+  is_combinable: z.boolean().optional(),
   tax_region_id: z.string(),
   metadata: z.record(z.unknown()).optional(),
 })
@@ -49,9 +49,9 @@ export type AdminUpdateTaxRateType = z.infer<typeof AdminUpdateTaxRate>
 export const AdminUpdateTaxRate = z.object({
   rate: z.number().nullish(),
   code: z.string().nullish(),
-  rules: z.array(AdminCreateTaxRateRule).nullish(),
-  name: z.string().nullish(),
-  is_default: z.boolean().nullish(),
-  is_combinable: z.boolean().nullish(),
+  rules: z.array(AdminCreateTaxRateRule).optional(),
+  name: z.string().optional(),
+  is_default: z.boolean().optional(),
+  is_combinable: z.boolean().optional(),
   metadata: z.record(z.unknown()).optional(),
 })

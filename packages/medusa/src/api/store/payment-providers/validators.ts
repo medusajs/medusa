@@ -11,7 +11,7 @@ export const StoreGetPaymentProvidersParams = createFindParams({
   z.object({
     region_id: z.string(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    is_enabled: z.boolean().nullish(),
+    is_enabled: z.boolean().optional(),
     $and: z.lazy(() => StoreGetPaymentProvidersParams.array()).optional(),
     $or: z.lazy(() => StoreGetPaymentProvidersParams.array()).optional(),
   })

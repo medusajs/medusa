@@ -40,16 +40,16 @@ export type AdminCreateSalesChannelType = z.infer<
 export const AdminCreateSalesChannel = z.object({
   name: z.string(),
   description: z.string().nullish(),
-  is_disabled: z.boolean().nullish(),
-  metadata: z.record(z.string(), z.unknown()).nullish(),
+  is_disabled: z.boolean().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
 export type AdminUpdateSalesChannelType = z.infer<
   typeof AdminUpdateSalesChannel
 >
 export const AdminUpdateSalesChannel = z.object({
-  name: z.string().nullish(),
-  description: z.string().nullable().nullish(),
-  is_disabled: z.boolean().nullish(),
-  metadata: z.record(z.string(), z.unknown()).nullish(),
+  name: z.string().optional(),
+  description: z.string().nullish(),
+  is_disabled: z.boolean().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
 })

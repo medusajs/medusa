@@ -50,7 +50,7 @@ export const StoreUpdateCart = z
     shipping_address: z.union([AddressPayload, z.string()]).nullish(),
     sales_channel_id: z.string().nullish(),
     metadata: z.record(z.unknown()).optional(),
-    promo_codes: z.array(z.string()).nullish(),
+    promo_codes: z.array(z.string()).optional(),
   })
   .strict()
 
@@ -80,7 +80,7 @@ export type StoreAddCartShippingMethodsType = z.infer<
 export const StoreAddCartShippingMethods = z
   .object({
     option_id: z.string(),
-    data: z.record(z.unknown()).nullish(),
+    data: z.record(z.unknown()).optional(),
   })
   .strict()
 

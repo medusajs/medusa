@@ -34,7 +34,7 @@ export const AdminGetPaymentProvidersParams = createFindParams({
 }).merge(
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    is_enabled: z.boolean().nullish(),
+    is_enabled: z.boolean().optional(),
     $and: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
     $or: z.lazy(() => AdminGetPaymentProvidersParams.array()).optional(),
   })
@@ -45,7 +45,7 @@ export type AdminCreatePaymentCaptureType = z.infer<
 >
 export const AdminCreatePaymentCapture = z
   .object({
-    amount: z.number().nullish(),
+    amount: z.number().optional(),
   })
   .strict()
 
@@ -54,6 +54,6 @@ export type AdminCreatePaymentRefundType = z.infer<
 >
 export const AdminCreatePaymentRefund = z
   .object({
-    amount: z.number().nullish(),
+    amount: z.number().optional(),
   })
   .strict()

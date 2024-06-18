@@ -55,7 +55,7 @@ const Item = z.object({
 export const AdminOrderCreateFulfillment = z.object({
   items: z.array(Item),
   location_id: z.string().nullish(),
-  no_notification: z.boolean().nullish(),
+  no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).optional(),
 })
 
@@ -72,7 +72,7 @@ const Label = z.object({
 export const AdminOrderCreateShipment = z.object({
   items: z.array(Item),
   labels: z.array(Label).nullish(),
-  no_notification: z.boolean().nullish(),
+  no_notification: z.boolean().optional(),
   metadata: z.record(z.unknown()).optional(),
 })
 
@@ -81,7 +81,7 @@ export type AdminOrderCreateShipmentType = z.infer<
 >
 
 export const AdminOrderCancelFulfillment = z.object({
-  no_notification: z.boolean().nullish(),
+  no_notification: z.boolean().optional(),
 })
 
 export type AdminOrderCancelFulfillmentType = z.infer<

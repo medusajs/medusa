@@ -14,8 +14,8 @@ export const createBatchBody = (
 
 export const createLinkBody = () => {
   return z.object({
-    add: z.array(z.string()).nullish(),
-    remove: z.array(z.string()).nullish(),
+    add: z.array(z.string()).optional(),
+    remove: z.array(z.string()).optional(),
   })
 }
 

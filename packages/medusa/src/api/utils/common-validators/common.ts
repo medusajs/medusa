@@ -12,7 +12,7 @@ export const AddressPayload = z
     country_code: z.string().nullish(),
     province: z.string().nullish(),
     postal_code: z.string().nullish(),
-    metadata: z.record(z.string()).nullish(),
+    metadata: z.record(z.string()).optional(),
   })
   .strict()
 

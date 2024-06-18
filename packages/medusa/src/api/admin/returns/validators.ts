@@ -39,7 +39,7 @@ export type AdminGetOrdersParamsType = z.infer<typeof AdminGetOrdersParams>
 
 const ReturnShippingSchema = z.object({
   option_id: z.string(),
-  price: z.number().nullish(),
+  price: z.number().optional(),
 })
 
 const ItemSchema = z.object({
@@ -54,8 +54,8 @@ export const AdminPostReturnsReqSchema = z.object({
   items: z.array(ItemSchema),
   return_shipping: ReturnShippingSchema,
   note: z.string().nullish(),
-  receive_now: z.boolean().nullish(),
-  refund_amount: z.number().nullish(),
+  receive_now: z.boolean().optional(),
+  refund_amount: z.number().optional(),
   location_id: z.string().nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<

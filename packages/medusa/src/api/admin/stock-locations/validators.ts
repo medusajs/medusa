@@ -50,7 +50,7 @@ export type AdminCreateStockLocationType = z.infer<
 >
 export const AdminCreateStockLocation = z.object({
   name: z.preprocess((val: any) => val.trim(), z.string()),
-  address: AdminUpsertStockLocationAddress.nullish(),
+  address: AdminUpsertStockLocationAddress.optional(),
   address_id: z.string().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })
@@ -59,8 +59,10 @@ export type AdminUpdateStockLocationType = z.infer<
   typeof AdminUpdateStockLocation
 >
 export const AdminUpdateStockLocation = z.object({
-  name: z.preprocess((val: any) => val.trim(), z.string().nullish()).nullish(),
-  address: AdminUpsertStockLocationAddress.nullish(),
+  name: z
+    .preprocess((val: any) => val.trim(), z.string().optional())
+    .optional(),
+  address: AdminUpsertStockLocationAddress.optional(),
   address_id: z.string().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })

@@ -38,16 +38,16 @@ export const AdminCreateReservation = z
     inventory_item_id: z.string(),
     quantity: z.number(),
     description: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
 
 export type AdminUpdateReservationType = z.infer<typeof AdminUpdateReservation>
 export const AdminUpdateReservation = z
   .object({
-    location_id: z.string().nullish(),
-    quantity: z.number().nullish(),
+    location_id: z.string().optional(),
+    quantity: z.number().optional(),
     description: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()

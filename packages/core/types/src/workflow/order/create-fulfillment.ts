@@ -10,6 +10,6 @@ export interface CreateOrderFulfillmentWorkflowInput {
   created_by?: string // The id of the authenticated user
   items: CreateOrderFulfillmentItem[]
   no_notification?: boolean
-  location_id?: string
-  metadata?: Record<string, any>
+  location_id?: string | null
+  metadata?: Record<string, any> | null
 }

@@ -31,7 +31,7 @@ export const AdminCreatePriceListPrice = z.object({
   variant_id: z.string(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
-  rules: z.record(z.string(), z.string()).nullish(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminCreatePriceListPriceType = z.infer<
@@ -40,12 +40,12 @@ export type AdminCreatePriceListPriceType = z.infer<
 
 export const AdminUpdatePriceListPrice = z.object({
   id: z.string(),
-  currency_code: z.string().nullish(),
-  amount: z.number().nullish(),
+  currency_code: z.string().optional(),
+  amount: z.number().optional(),
   variant_id: z.string(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
-  rules: z.record(z.string(), z.string()).nullish(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminUpdatePriceListPriceType = z.infer<
@@ -57,22 +57,22 @@ export const AdminCreatePriceList = z.object({
   description: z.string(),
   starts_at: z.union([z.string(), z.null()]).nullish(),
   ends_at: z.union([z.string(), z.null()]).nullish(),
-  status: z.nativeEnum(PriceListStatus).nullish(),
-  type: z.nativeEnum(PriceListType).nullish(),
-  rules: z.record(z.string(), z.array(z.string())).nullish(),
-  prices: z.array(AdminCreatePriceListPrice).nullish(),
+  status: z.nativeEnum(PriceListStatus).optional(),
+  type: z.nativeEnum(PriceListType).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
+  prices: z.array(AdminCreatePriceListPrice).optional(),
 })
 
 export type AdminCreatePriceListType = z.infer<typeof AdminCreatePriceList>
 
 export const AdminUpdatePriceList = z.object({
-  title: z.string().nullish(),
+  title: z.string().optional(),
   description: z.string().nullish(),
   starts_at: z.string().nullish(),
   ends_at: z.string().nullish(),
-  status: z.nativeEnum(PriceListStatus).nullish(),
-  type: z.nativeEnum(PriceListType).nullish(),
-  rules: z.record(z.string(), z.array(z.string())).nullish(),
+  status: z.nativeEnum(PriceListStatus).optional(),
+  type: z.nativeEnum(PriceListType).optional(),
+  rules: z.record(z.string(), z.array(z.string())).optional(),
 })
 
 export type AdminUpdatePriceListType = z.infer<typeof AdminUpdatePriceList>

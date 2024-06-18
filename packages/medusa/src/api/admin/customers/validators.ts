@@ -52,18 +52,18 @@ export const AdminCreateCustomer = z.object({
 })
 
 export const AdminUpdateCustomer = z.object({
-  email: z.string().email().nullable().nullish(),
-  company_name: z.string().nullable().nullish(),
-  first_name: z.string().nullable().nullish(),
-  last_name: z.string().nullable().nullish(),
-  phone: z.string().nullable().nullish(),
+  email: z.string().email().nullish(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
   metadata: z.record(z.unknown()).optional(),
 })
 
 export const AdminCreateCustomerAddress = z.object({
   address_name: z.string().nullish(),
-  is_default_shipping: z.boolean().nullish(),
-  is_default_billing: z.boolean().nullish(),
+  is_default_shipping: z.boolean().optional(),
+  is_default_billing: z.boolean().optional(),
   company: z.string().nullish(),
   first_name: z.string().nullish(),
   last_name: z.string().nullish(),

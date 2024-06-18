@@ -382,7 +382,7 @@ export type CreateStockLocationInput = {
   /**
    * The associated address's ID.
    */
-  address_id?: string
+  address_id?: string | null
 
   /**
    * The associated address.
@@ -426,7 +426,7 @@ export type UpdateStockLocationInput = {
   /**
    * The associated address's ID.
    */
-  address_id?: string
+  address_id?: string | null
 
   /**
    * The associated address's details.

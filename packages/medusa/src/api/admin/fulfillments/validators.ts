@@ -33,7 +33,7 @@ export const AdminCreateFulfillment = z.object({
   order: z.object({}),
   order_id: z.string(),
   shipping_option_id: z.string().nullish(),
-  data: z.record(z.unknown()).nullish(),
+  data: z.record(z.unknown()).optional(),
   packed_at: z.coerce.date().nullish(),
   shipped_at: z.coerce.date().nullish(),
   delivered_at: z.coerce.date().nullish(),

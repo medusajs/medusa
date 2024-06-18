@@ -13,10 +13,10 @@ export const StoreCreateCustomer = z.object({
 })
 
 export const StoreUpdateCustomer = z.object({
-  company_name: z.string().nullable().nullish(),
-  first_name: z.string().nullable().nullish(),
-  last_name: z.string().nullable().nullish(),
-  phone: z.string().nullable().nullish(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
 })
 
 export const StoreGetCustomerAddressParams = createSelectParams()
@@ -24,8 +24,8 @@ export const StoreGetCustomerAddressParams = createSelectParams()
 export const StoreCreateCustomerAddress = AddressPayload.merge(
   z.object({
     address_name: z.string().nullish(),
-    is_default_shipping: z.boolean().nullish(),
-    is_default_billing: z.boolean().nullish(),
+    is_default_shipping: z.boolean().optional(),
+    is_default_billing: z.boolean().optional(),
   })
 )
 

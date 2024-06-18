@@ -24,7 +24,7 @@ export const AdminCreateFulfillmentSetServiceZonesSchema = z
           geoZoneZipSchema,
         ])
       )
-      .nullish(),
+      .optional(),
   })
   .strict()
 
@@ -40,7 +40,7 @@ export const AdminUpdateFulfillmentSetServiceZonesSchema = z
           geoZoneZipSchema.merge(z.object({ id: z.string().nullish() })),
         ])
       )
-      .nullish(),
+      .optional(),
   })
   .strict()
 

@@ -20,8 +20,8 @@ export const AdminGetShippingProfilesParams = createFindParams({
   z.object({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     q: z.string().optional(),
-    type: z.string().nullish(),
-    name: z.string().nullish(),
+    type: z.string().optional(),
+    name: z.string().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -37,7 +37,7 @@ export const AdminCreateShippingProfile = z
   .object({
     name: z.string(),
     type: z.string(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
 
@@ -46,8 +46,8 @@ export type AdminUpdateShippingProfileType = z.infer<
 >
 export const AdminUpdateShippingProfile = z
   .object({
-    name: z.string().nullish(),
-    type: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    name: z.string().optional(),
+    type: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()

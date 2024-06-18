@@ -33,14 +33,14 @@ export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
 export const AdminCreateProductTag = z
   .object({
     value: z.string(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
 
 export type AdminUpdateProductTagType = z.infer<typeof AdminUpdateProductTag>
 export const AdminUpdateProductTag = z
   .object({
-    value: z.string().nullish(),
-    metadata: z.record(z.string(), z.unknown()).nullish(),
+    value: z.string().optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
   })
   .strict()
