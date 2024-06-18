@@ -30,6 +30,22 @@ export abstract class BaseSchema<T> implements SchemaType<T> {
   }
 
   /**
+   * Define an index on the property
+   */
+  index(name?: string) {
+    this.#indexes.push({ name, type: "index" })
+    return this
+  }
+
+  /**
+   * Define a unique index on the property
+   */
+  unique(name?: string) {
+    this.#indexes.push({ name, type: "unique" })
+    return this
+  }
+
+  /**
    * Define default value for the property
    */
   default(value: T) {
