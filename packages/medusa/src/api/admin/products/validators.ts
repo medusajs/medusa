@@ -41,9 +41,9 @@ export const AdminGetProductsParams = createFindParams({
 }).merge(
   z
     .object({
-      variants: AdminGetProductVariantsParams.nullish(),
-      price_list_id: z.string().array().nullish(),
-      status: statusEnum.array().nullish(),
+      variants: AdminGetProductVariantsParams.optional(),
+      price_list_id: z.string().array().optional(),
+      status: statusEnum.array().optional(),
       $and: z.lazy(() => AdminGetProductsParams.array()).optional(),
       $or: z.lazy(() => AdminGetProductsParams.array()).optional(),
     })
@@ -60,7 +60,7 @@ export const AdminGetProductOptionsParams = createFindParams({
   z.object({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
-    title: z.string().nullish(),
+    title: z.string().optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -71,13 +71,13 @@ export const AdminGetProductOptionsParams = createFindParams({
 
 export type AdminCreateProductTagType = z.infer<typeof AdminCreateProductTag>
 export const AdminCreateProductTag = z.object({
-  value: z.string().nullish(),
+  value: z.string(),
 })
 
 export type AdminUpdateProductTagType = z.infer<typeof AdminUpdateProductTag>
 export const AdminUpdateProductTag = z.object({
-  id: z.string().nullish(),
-  value: z.string().nullish(),
+  id: z.string().optional(),
+  value: z.string().optional(),
 })
 
 export type AdminCreateProductOptionType = z.infer<
@@ -137,8 +137,8 @@ export const AdminCreateProductVariant = z
     barcode: z.string().nullish(),
     hs_code: z.string().nullish(),
     mid_code: z.string().nullish(),
-    allow_backorder: z.boolean().nullish().default(false),
-    manage_inventory: z.boolean().nullish().default(true),
+    allow_backorder: z.boolean().optional().default(false),
+    manage_inventory: z.boolean().optional().default(true),
     variant_rank: z.number().nullish(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
@@ -205,19 +205,19 @@ export const AdminCreateProduct = z
     title: z.string(),
     subtitle: z.string().nullish(),
     description: z.string().nullish(),
-    is_giftcard: z.boolean().nullish().default(false),
-    discountable: z.boolean().nullish().default(true),
-    images: z.array(z.object({ url: z.string() })).nullish(),
+    is_giftcard: z.boolean().optional().default(false),
+    discountable: z.boolean().optional().default(true),
+    images: z.array(z.object({ url: z.string() })).optional(),
     thumbnail: z.string().nullish(),
-    handle: z.string().nullish(),
+    handle: z.string().optional(),
     status: statusEnum.nullish().default(ProductStatus.DRAFT),
     type_id: z.string().nullish(),
     collection_id: z.string().nullish(),
-    categories: z.array(AdminCreateProductProductCategory).nullish(),
-    tags: z.array(AdminUpdateProductTag).nullish(),
-    options: z.array(AdminCreateProductOption).nullish(),
-    variants: z.array(AdminCreateProductVariant).nullish(),
-    sales_channels: z.array(z.object({ id: z.string() })).nullish(),
+    categories: z.array(AdminCreateProductProductCategory).optional(),
+    tags: z.array(AdminUpdateProductTag).optional(),
+    options: z.array(AdminCreateProductOption).optional(),
+    variants: z.array(AdminCreateProductVariant).optional(),
+    sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
     height: z.number().nullish(),
@@ -236,19 +236,19 @@ export const AdminUpdateProduct = z
     title: z.string().nullish(),
     discountable: z.boolean().optional(),
     is_giftcard: z.boolean().optional(),
-    options: z.array(AdminUpdateProductOption).nullish(),
-    variants: z.array(AdminUpdateProductVariant).nullish(),
-    status: statusEnum.nullish(),
+    options: z.array(AdminUpdateProductOption).optional(),
+    variants: z.array(AdminUpdateProductVariant).optional(),
+    status: statusEnum.optional(),
     subtitle: z.string().nullish(),
     description: z.string().nullish(),
-    images: z.array(z.object({ url: z.string() })).nullish(),
+    images: z.array(z.object({ url: z.string() })).optional(),
     thumbnail: z.string().nullish(),
     handle: z.string().nullish(),
     type_id: z.string().nullish(),
     collection_id: z.string().nullish(),
-    categories: z.array(AdminCreateProductProductCategory).nullish(),
-    tags: z.array(AdminUpdateProductTag).nullish(),
-    sales_channels: z.array(z.object({ id: z.string() })).nullish(),
+    categories: z.array(AdminCreateProductProductCategory).optional(),
+    tags: z.array(AdminUpdateProductTag).optional(),
+    sales_channels: z.array(z.object({ id: z.string() })).optional(),
     weight: z.number().nullish(),
     length: z.number().nullish(),
     height: z.number().nullish(),

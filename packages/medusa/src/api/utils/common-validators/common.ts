@@ -34,5 +34,5 @@ const optionalBooleanMapper = new Map([
 
 export const OptionalBooleanValidator = z.preprocess(
   (val: any) => optionalBooleanMapper.get(val?.toLowerCase()),
-  z.boolean().nullish()
+  z.boolean().optional()
 )
