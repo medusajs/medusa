@@ -293,7 +293,7 @@ async function createOrderFixture({ container, product, location }) {
     },
   ])
 
-  order = await orderService.retrieve(order.id, {
+  order = await orderService.retrieveOrder(order.id, {
     relations: ["items"],
   })
 

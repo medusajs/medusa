@@ -535,10 +535,10 @@ medusaIntegrationTestRunner({
         const [store] = await service.listStores()
 
         if (store) {
-          await service.delete(store.id)
+          await service.deleteStores(store.id)
         }
 
-        await service.create({
+        await service.createStores({
           supported_currency_codes: ["usd", "dkk"],
           default_currency_code: "usd",
           default_sales_channel_id: defaultSalesChannel.id,
@@ -972,10 +972,10 @@ medusaIntegrationTestRunner({
         const [store] = await service.listStores()
 
         if (store) {
-          await service.delete(store.id)
+          await service.deleteStores(store.id)
         }
 
-        await service.create({
+        await service.createStores({
           supported_currency_codes: ["usd", "dkk"],
           default_currency_code: "usd",
           default_sales_channel_id: defaultSalesChannel.id,

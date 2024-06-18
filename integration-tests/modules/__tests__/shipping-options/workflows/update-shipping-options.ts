@@ -46,7 +46,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })

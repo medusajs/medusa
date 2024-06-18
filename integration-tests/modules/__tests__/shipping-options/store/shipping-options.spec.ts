@@ -103,7 +103,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await fulfillmentModule.create({
+        fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test",
           type: "test-type",
           service_zones: [

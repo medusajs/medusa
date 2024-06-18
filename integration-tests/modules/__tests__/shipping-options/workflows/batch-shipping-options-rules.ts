@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {ModuleRegistrationName} from "@medusajs/modules-sdk"
 import {
   BatchWorkflowInput,
   CreateShippingOptionRuleDTO,
@@ -10,7 +10,7 @@ import {
   ShippingProfileDTO,
   UpdateShippingOptionRuleDTO,
 } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import {medusaIntegrationTestRunner} from "medusa-test-utils/dist"
 import {
   batchShippingOptionRulesWorkflow,
   createShippingOptionsWorkflow,
@@ -136,7 +136,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })

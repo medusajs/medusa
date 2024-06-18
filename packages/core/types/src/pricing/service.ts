@@ -154,7 +154,7 @@ export interface IPricingModuleService extends IModuleService {
    * To retrieve a list of price sets using their IDs:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list({
+   * const priceSets = await pricingModuleService.listPriceSets({
    *   id: ["pset_123", "pset_321"],
    * })
    * ```
@@ -162,7 +162,7 @@ export interface IPricingModuleService extends IModuleService {
    * To specify relations that should be retrieved within the price sets:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list(
+   * const priceSets = await pricingModuleService.listPriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },

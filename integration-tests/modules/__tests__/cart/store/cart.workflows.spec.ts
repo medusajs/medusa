@@ -310,7 +310,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw when no regions exist", async () => {
-          await regionModuleService.delete(defaultRegion.id)
+          await regionModuleService.deleteRegions(defaultRegion.id)
 
           const { errors } = await createCartWorkflow(appContainer).run({
             input: {

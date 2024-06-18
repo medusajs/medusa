@@ -55,7 +55,7 @@ export const POST = async (
   )
 
   // ensure fulfillment set exists and that the service zone is part of it
-  const fulfillmentSet = await fulfillmentModuleService.retrieve(
+  const fulfillmentSet = await fulfillmentModuleService.retrieveFulfillmentSet(
     req.params.id,
     { relations: ["service_zones"] }
   )

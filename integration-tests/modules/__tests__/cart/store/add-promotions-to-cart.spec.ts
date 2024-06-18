@@ -83,7 +83,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             items: [
               // Adjustment to add
@@ -223,7 +223,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "eur",
             customer_id: "cus_test",
             items: [

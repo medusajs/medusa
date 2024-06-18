@@ -68,7 +68,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO[]>} The created customers.
    *
    * @example
-   * const customers = await customerModuleService.create([Customers
+   * const customers = await customerModuleService.createCustomers([Customers
    *   {
    *     email: "john@smith.com",
    *     first_name: "John",
@@ -89,7 +89,7 @@ export interface ICustomerModuleService extends IModuleService {
    * @returns {Promise<CustomerDTO>} The created customer.
    *
    * @example
-   * const customer = await customerModuleService.create({Customers
+   * const customer = await customerModuleService.createCustomers({Customers
    *   email: "john@smith.com",
    *   first_name: "John",
    *   last_name: "Smith",

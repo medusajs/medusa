@@ -54,7 +54,7 @@ medusaIntegrationTestRunner({
           name: "Webshop",
         })
 
-        const cart = await cartModuleService.create({
+        const cart = await cartModuleService.createCarts({
           email: "tony@stark.com",
           currency_code: "usd",
           region_id: region.id,

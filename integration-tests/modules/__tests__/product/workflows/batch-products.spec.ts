@@ -57,7 +57,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const products = await service.list()
+            const products = await service.listProducts()
 
             expect(products).toHaveLength(2)
             expect(products).toEqual([
@@ -135,7 +135,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const product = await service.retrieve(product1.id, {
+            const product = await service.retrieveProduct(product1.id, {
               relations: ["variants"],
             })
 
