@@ -379,7 +379,7 @@ interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
   internal_note?: string | null
-  note?: string
+  note?: string | null
   metadata?: Record<string, unknown> | null
 }
 interface BaseOrderBundledActionsDTO {
@@ -414,9 +414,9 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   items: {
     id: string
     quantity: BigNumberInput
-    internal_note?: string
-    note?: string
-    reason_id?: string
+    internal_note?: string | null
+    note?: string | null
+    reason_id?: string | null
     metadata?: Record<string, any>
   }[]
   shipping_method?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
