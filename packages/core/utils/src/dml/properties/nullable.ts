@@ -1,12 +1,9 @@
-import { RelationshipType, SchemaType } from "../types"
+import { RelationshipType, PropertyType } from "../types"
 
 /**
  * Nullable modifier marks a schema node as nullable
  */
-export class NullableModifier<
-  T,
-  Schema extends SchemaType<T> | RelationshipType<T>
-> {
+export class NullableModifier<T, Schema extends PropertyType<T>> {
   /**
    * A type-only property to infer the JavScript data-type
    * of the schema property
@@ -26,9 +23,9 @@ export class NullableModifier<
   /**
    * Returns the serialized metadata
    */
-  parse(fieldName: string): ReturnType<Schema["parse"]> {
+  parse(fieldName: string) {
     const schema = this.#schema.parse(fieldName)
     schema.nullable = true
-    return schema as ReturnType<Schema["parse"]>
+    return schema
   }
 }
