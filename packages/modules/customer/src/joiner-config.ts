@@ -4,11 +4,8 @@ import {
   defineJoinerConfig,
   MapToConfig,
 } from "@medusajs/utils"
-import { AuthIdentity } from "@medusajs/auth/dist/models"
 
-export const joinerConfig = defineJoinerConfig(Modules.CUSTOMER, {
-  entityQueryingConfig: [AuthIdentity],
-})
+export const joinerConfig = defineJoinerConfig(Modules.CUSTOMER)
 
 export const entityNameToLinkableKeysMap: MapToConfig =
   buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)
