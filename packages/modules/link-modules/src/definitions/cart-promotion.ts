@@ -24,12 +24,18 @@ export const CartPromotion: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
     {
       serviceName: Modules.PROMOTION,
       primaryKey: "id",
       foreignKey: "promotion_id",
       alias: "promotions",
+      args: {
+        methodSuffix: "Promotions",
+      },
     },
   ],
   extends: [

@@ -12,6 +12,9 @@ export const OrderProduct: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "items.product_id",
         alias: "product",
+        args: {
+          methodSuffix: "Products",
+        },
       },
     },
     {

@@ -12,6 +12,9 @@ export const LineItemAdjustmentPromotion: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "promotion_id",
         alias: "promotion",
+        args: {
+          methodSuffix: "Promotions",
+        },
       },
     },
   ],
