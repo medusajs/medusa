@@ -13,6 +13,7 @@ import {
   pluralize,
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
+  toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
@@ -110,7 +111,7 @@ export function createMikrORMEntity() {
    * any user land APIs to explicitly define an owner.
    *
    * The object contains values as follows.
-   * - [entityname.relationship]: true // true means, it is already marked as owner
+   * - [modelName.relationship]: true // true means, it is already marked as owner
    *
    * Example:
    * - [user.teams]: true // the teams relationship on user is an owner
@@ -161,7 +162,10 @@ export function createMikrORMEntity() {
    */
   function applyIndexes(
     MikroORMEntity: EntityConstructor<any>,
-    tableName: string,
+    {
+      tableName,
+      pgSchema,
+    }: { tableName: string; pgSchema: undefined | string },
     field: PropertyMetadata
   ) {
     field.indexes.forEach((index) => {
@@ -170,7 +174,7 @@ export function createMikrORMEntity() {
 
       const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
         name,
-        tableName,
+        tableName: pgSchema ? `${pgSchema}"."${tableName}` : tableName,
         columns: [field.fieldName],
         unique: index.type === "unique",
         where: "deleted_at IS NULL",
@@ -466,9 +470,26 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
     const { name, schema, cascades } = entity.parse()
+    const [pgSchema, ...rest] = name.split(".")
 
-    const className = upperCaseFirst(name)
-    const tableName = pluralize(camelToSnakeCase(className))
+    /**
+     * Entity name is computed by splitting the pgSchema
+     * from the original name and converting everything
+     * to camelCase
+     */
+    const entityName = rest.length
+      ? toCamelCase(rest.join("_"))
+      : toCamelCase(pgSchema)
+
+    /**
+     * Table name is the snake case version of entityName
+     */
+    const tableName = pluralize(camelToSnakeCase(entityName))
+
+    /**
+     * Table name is the Pascal case version of entityName
+     */
+    const modelName = upperCaseFirst(entityName)
 
     /**
      * Assigning name to the class constructor, so that it matches
@@ -476,7 +497,7 @@ export function createMikrORMEntity() {
      */
     Object.defineProperty(MikroORMEntity, "name", {
       get: function () {
-        return className
+        return modelName
       },
     })
 
@@ -487,7 +508,11 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
-        applyIndexes(MikroORMEntity, tableName, field)
+        applyIndexes(
+          MikroORMEntity,
+          { tableName, pgSchema: rest.length ? pgSchema : undefined },
+          field
+        )
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }
