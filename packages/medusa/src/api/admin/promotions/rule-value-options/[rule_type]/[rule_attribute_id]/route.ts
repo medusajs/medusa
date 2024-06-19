@@ -13,6 +13,13 @@ import {
 } from "../../../utils"
 import { AdminGetPromotionRuleParamsType } from "../../../validators"
 
+/*
+  This endpoint returns all the potential values for rules (promotion rules, target rules and buy rules)
+  given an attribute of a rule. The response for different rule_attributes are returned uniformly
+  as an array of labels and values.
+  Eg. If the rule_attribute requested is "currency_code" for "rules" rule type, we return currencies
+  from the currency module.
+*/
 export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetPromotionRuleParamsType>,
   res: MedusaResponse
@@ -21,6 +28,7 @@ export const GET = async (
     rule_type: ruleType,
     rule_attribute_id: ruleAttributeId,
     promotion_type: promotionType,
+    application_method_type: applicationMethodType,
   } = req.params
   const queryConfig = ruleQueryConfigurations[ruleAttributeId]
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
@@ -33,7 +41,12 @@ export const GET = async (
   }
 
   validateRuleType(ruleType)
-  validateRuleAttribute(promotionType, ruleType, ruleAttributeId)
+  validateRuleAttribute({
+    promotionType,
+    ruleType,
+    ruleAttributeId,
+    applicationMethodType,
+  })
 
   const { rows } = await remoteQuery(
     remoteQueryObjectFromString({
