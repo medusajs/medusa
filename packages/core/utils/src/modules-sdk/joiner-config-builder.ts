@@ -12,8 +12,13 @@ import { readdirSync, statSync } from "fs"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
- * we move to at least es2022 to have access to top-leve await
+ * we move to at least es2022 to have access to top-leve await.
+ *
+ * The aliases will be built from the entityQueryingConfig and custom aliases if provided, in case of aliases provided if the methodSuffix is not provided
+ * then it will be inferred from the entity name of the alias args.
+ *
  * @param moduleName
+ * @param alias
  * @param schema
  * @param entityQueryingConfig
  * @param linkableKeys
