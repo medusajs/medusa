@@ -105,6 +105,33 @@ const SPECIAL_PROPERTIES: {
  */
 export function createMikrORMEntity() {
   /**
+   * Parses entity name and returns model and table name from
+   * it
+   */
+  function parseEntityName(entityName: string) {
+    /**
+     * Table name is going to be the snake case version of the entity name.
+     * Here we should preserve PG schema (if defined).
+     *
+     * For example: "platform.user" should stay as "platform.user"
+     */
+    const tableName = camelToSnakeCase(entityName)
+
+    /**
+     * Entity name is going to be the camelCase version of the
+     * name defined by the user
+     */
+    const [pgSchema, ...rest] = tableName.split(".")
+    return {
+      tableName,
+      modelName: upperCaseFirst(
+        toCamelCase(rest.length ? rest.join("_") : pgSchema)
+      ),
+      pgSchema: rest.length ? pgSchema : undefined,
+    }
+  }
+
+  /**
    * The following property is used to track many to many relationship
    * between two entities. It is needed because we have to mark one
    * of them as the owner of the relationship without exposing
@@ -183,12 +210,9 @@ export function createMikrORMEntity() {
   function defineHasOneRelationship(
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
-    relatedEntity: DmlEntity<
-      Record<string, PropertyType<any> | RelationshipType<any>>
-    >,
+    { relatedModelName }: { relatedModelName: string },
     cascades: EntityCascades<string[]>
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
     OneToOne({
@@ -207,12 +231,9 @@ export function createMikrORMEntity() {
   function defineHasManyRelationship(
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
-    relatedEntity: DmlEntity<
-      Record<string, PropertyType<any> | RelationshipType<any>>
-    >,
+    { relatedModelName }: { relatedModelName: string },
     cascades: EntityCascades<string[]>
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
     OneToMany({
@@ -239,7 +260,8 @@ export function createMikrORMEntity() {
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
       Record<string, PropertyType<any> | RelationshipType<any>>
-    >
+    >,
+    { relatedModelName }: { relatedModelName: string }
   ) {
     const mappedBy =
       relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
@@ -247,7 +269,6 @@ export function createMikrORMEntity() {
       relatedEntity.parse()
 
     const otherSideRelation = relationSchema[mappedBy]
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
 
     /**
      * In DML the relationships are cascaded from parent to child. A belongsTo
@@ -262,7 +283,7 @@ export function createMikrORMEntity() {
      */
     if (!otherSideRelation) {
       throw new Error(
-        `Missing property "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define it as a relationship`
+        `Missing property "${mappedBy}" on "${relatedModelName}" entity. Make sure to define it as a relationship`
       )
     }
 
@@ -304,7 +325,7 @@ export function createMikrORMEntity() {
      * Other side is some unsupported data-type
      */
     throw new Error(
-      `Invalid relationship reference for "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define a hasOne or hasMany relationship`
+      `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a hasOne or hasMany relationship`
     )
   }
 
@@ -317,9 +338,11 @@ export function createMikrORMEntity() {
     relatedEntity: DmlEntity<
       Record<string, PropertyType<any> | RelationshipType<any>>
     >,
-    cascades: EntityCascades<string[]>
+    {
+      relatedModelName,
+      pgSchema,
+    }: { relatedModelName: string; pgSchema: string | undefined }
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     let mappedBy = relationship.mappedBy
     let inversedBy: undefined | string
 
@@ -333,7 +356,7 @@ export function createMikrORMEntity() {
      */
     const pivotTableName = [
       MikroORMEntity.name.toLowerCase(),
-      relatedEntity.name.toLowerCase(),
+      relatedModelName.toLowerCase(),
     ]
       .sort()
       .map((token, index) => {
@@ -348,13 +371,13 @@ export function createMikrORMEntity() {
       const otherSideRelation = relatedEntity.parse().schema[mappedBy]
       if (!otherSideRelation) {
         throw new Error(
-          `Missing property "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define it as a relationship`
+          `Missing property "${mappedBy}" on "${relatedModelName}" entity. Make sure to define it as a relationship`
         )
       }
 
       if (otherSideRelation instanceof DmlManyToMany === false) {
         throw new Error(
-          `Invalid relationship reference for "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define a manyToMany relationship`
+          `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a manyToMany relationship`
         )
       }
 
@@ -380,7 +403,7 @@ export function createMikrORMEntity() {
 
     ManyToMany({
       entity: relatedModelName,
-      pivotTable: pivotTableName,
+      pivotTable: pgSchema ? `${pgSchema}.${pivotTableName}` : pivotTableName,
       ...(mappedBy ? { mappedBy: mappedBy as any } : {}),
       ...(inversedBy ? { inversedBy: inversedBy as any } : {}),
     })(MikroORMEntity.prototype, relationship.name)
@@ -422,6 +445,15 @@ export function createMikrORMEntity() {
       )
     }
 
+    const { modelName, tableName, pgSchema } = parseEntityName(
+      relatedEntity.parse().name
+    )
+    const relatedEntityInfo = {
+      relatedModelName: modelName,
+      relatedTableName: tableName,
+      pgSchema,
+    }
+
     /**
      * Defining relationships
      */
@@ -430,7 +462,7 @@ export function createMikrORMEntity() {
         defineHasOneRelationship(
           MikroORMEntity,
           relationship,
-          relatedEntity,
+          relatedEntityInfo,
           cascades
         )
         break
@@ -438,19 +470,24 @@ export function createMikrORMEntity() {
         defineHasManyRelationship(
           MikroORMEntity,
           relationship,
-          relatedEntity,
+          relatedEntityInfo,
           cascades
         )
         break
       case "belongsTo":
-        defineBelongsToRelationship(MikroORMEntity, relationship, relatedEntity)
+        defineBelongsToRelationship(
+          MikroORMEntity,
+          relationship,
+          relatedEntity,
+          relatedEntityInfo
+        )
         break
       case "manyToMany":
         defineManyToManyRelationship(
           MikroORMEntity,
           relationship,
           relatedEntity,
-          cascades
+          relatedEntityInfo
         )
         break
     }
@@ -463,23 +500,7 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
     const { name, schema, cascades } = entity.parse()
-
-    /**
-     * Table name is going to be the snake case version of
-     * the entity name
-     */
-    const tableName = camelToSnakeCase(name)
-
-    /**
-     * Entity name is going to be the camelCase version of the
-     * name defined by the user
-     */
-    const entityName = toCamelCase(name.replace(/\./g, "_"))
-
-    /**
-     * Table name is the Pascal case version of entityName
-     */
-    const modelName = upperCaseFirst(entityName)
+    const { modelName, tableName } = parseEntityName(name)
 
     /**
      * Assigning name to the class constructor, so that it matches
