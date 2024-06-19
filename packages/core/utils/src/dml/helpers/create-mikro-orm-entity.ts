@@ -196,7 +196,7 @@ export function createMikrORMEntity() {
        * Hook to generate entity within the code
        */
       MikroORMEntity.prototype.generateId = function () {
-        this.id = generateEntityId(this.id, "acc")
+        this.id = generateEntityId(this.id, field.dataType.options?.prefix)
       }
 
       /**

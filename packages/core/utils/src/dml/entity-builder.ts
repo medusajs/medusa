@@ -68,7 +68,7 @@ export class EntityBuilder {
    * Define an id property. Id properties are marked
    * primary by default
    */
-  id(options?: { primaryKey: boolean }) {
+  id(options: ConstructorParameters<typeof IdProperty>[0]) {
     return new IdProperty(options)
   }
 

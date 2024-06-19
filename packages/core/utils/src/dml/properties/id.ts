@@ -9,10 +9,11 @@ export class IdProperty extends BaseProperty<string> {
     name: "id"
     options: {
       primaryKey: boolean
+      prefix?: string
     }
   }
 
-  constructor(options?: { primaryKey?: boolean }) {
+  constructor(options?: { primaryKey?: boolean; prefix?: string }) {
     super()
     this.dataType = { name: "id", options: { primaryKey: true, ...options } }
   }

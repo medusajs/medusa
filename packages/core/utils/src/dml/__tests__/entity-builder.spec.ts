@@ -864,6 +864,9 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
 
@@ -942,6 +945,113 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
+
+      expect(userInstance.id).toBeDefined()
+    })
+
+    test("define prefix for the id", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.id({ primaryKey: false, prefix: "us" }),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        username: string
+        email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      expect(userInstance.id.startsWith("us_")).toBeTruthy()
     })
   })
 
