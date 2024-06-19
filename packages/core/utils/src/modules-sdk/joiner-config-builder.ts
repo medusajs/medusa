@@ -64,9 +64,17 @@ export function defineJoinerConfig(
         acc[`${camelToSnakeCase(entity.name).toLowerCase()}_id`] = entity.name
         return acc
       }, {} as Record<string, string>),
-    alias:
-      alias ??
-      models.map((entity, i) => ({
+    alias: [
+      ...[...(alias ?? ([] as any))].map((alias) => ({
+        name: alias.name,
+        args: {
+          entity: alias.args.entity,
+          methodSuffix:
+            alias.args.methodSuffix ??
+            pluralize(upperCaseFirst(alias.args.entity)),
+        },
+      })),
+      ...models.map((entity, i) => ({
         name: [
           `${camelToSnakeCase(entity.name).toLowerCase()}`,
           `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
@@ -76,6 +84,7 @@ export function defineJoinerConfig(
           methodSuffix: pluralize(upperCaseFirst(entity.name)),
         },
       })),
+    ],
   }
 }
 
@@ -101,7 +110,10 @@ export function buildEntitiesNameToLinkableKeysMap(
 function loadModels(basePath: string) {
   const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
 
-  const modelsFiles = readdirSync(basePath)
+  let modelsFiles: any[] = []
+  try {
+    modelsFiles = readdirSync(basePath)
+  } catch (e) {}
 
   return modelsFiles
     .flatMap((file) => {
@@ -116,10 +128,12 @@ function loadModels(basePath: string) {
       const stats = statSync(filePath)
 
       if (stats.isFile()) {
-        const required = require(filePath)
-        return Object.values(required).filter(
-          (resource) => typeof resource === "function" && !!resource.name
-        )
+        try {
+          const required = require(filePath)
+          return Object.values(required).filter(
+            (resource) => typeof resource === "function" && !!resource.name
+          )
+        } catch (e) {}
       }
 
       return
