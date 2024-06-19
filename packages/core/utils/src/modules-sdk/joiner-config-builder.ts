@@ -12,8 +12,13 @@ import { readdirSync, statSync } from "fs"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
- * we move to at least es2022 to have access to top-leve await
+ * we move to at least es2022 to have access to top-leve await.
+ *
+ * The aliases will be built from the entityQueryingConfig and custom aliases if provided, in case of aliases provided if the methodSuffix is not provided
+ * then it will be inferred from the entity name of the alias args.
+ *
  * @param moduleName
+ * @param alias
  * @param schema
  * @param entityQueryingConfig
  * @param linkableKeys
@@ -64,9 +69,17 @@ export function defineJoinerConfig(
         acc[`${camelToSnakeCase(entity.name).toLowerCase()}_id`] = entity.name
         return acc
       }, {} as Record<string, string>),
-    alias:
-      alias ??
-      models.map((entity, i) => ({
+    alias: [
+      ...[...(alias ?? ([] as any))].map((alias) => ({
+        name: alias.name,
+        args: {
+          entity: alias.args.entity,
+          methodSuffix:
+            alias.args.methodSuffix ??
+            pluralize(upperCaseFirst(alias.args.entity)),
+        },
+      })),
+      ...models.map((entity, i) => ({
         name: [
           `${camelToSnakeCase(entity.name).toLowerCase()}`,
           `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
@@ -76,6 +89,7 @@ export function defineJoinerConfig(
           methodSuffix: pluralize(upperCaseFirst(entity.name)),
         },
       })),
+    ],
   }
 }
 
@@ -101,7 +115,10 @@ export function buildEntitiesNameToLinkableKeysMap(
 function loadModels(basePath: string) {
   const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
 
-  const modelsFiles = readdirSync(basePath)
+  let modelsFiles: any[] = []
+  try {
+    modelsFiles = readdirSync(basePath)
+  } catch (e) {}
 
   return modelsFiles
     .flatMap((file) => {
@@ -116,10 +133,12 @@ function loadModels(basePath: string) {
       const stats = statSync(filePath)
 
       if (stats.isFile()) {
-        const required = require(filePath)
-        return Object.values(required).filter(
-          (resource) => typeof resource === "function" && !!resource.name
-        )
+        try {
+          const required = require(filePath)
+          return Object.values(required).filter(
+            (resource) => typeof resource === "function" && !!resource.name
+          )
+        } catch (e) {}
       }
 
       return

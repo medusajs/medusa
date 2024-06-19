@@ -1,7 +1,7 @@
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
-  IStockLocationService
+  IStockLocationService,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
