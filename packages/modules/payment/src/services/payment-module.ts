@@ -8,7 +8,6 @@ import {
   CreateRefundDTO,
   DAL,
   FilterablePaymentCollectionProps,
-  FilterablePaymentProps,
   FilterablePaymentProviderProps,
   FilterablePaymentSessionProps,
   FindConfig,
@@ -64,6 +63,8 @@ type InjectedDependencies = {
 
 const generateMethodForModels = {
   PaymentCollection,
+  PaymentSession,
+  Payment,
   Capture,
   Refund,
 }
@@ -71,6 +72,8 @@ const generateMethodForModels = {
 export default class PaymentModuleService
   extends ModulesSdkUtils.MedusaService<{
     PaymentCollection: { dto: PaymentCollectionDTO }
+    PaymentSession: { dto: PaymentSessionDTO }
+    Payment: { dto: PaymentDTO }
     Capture: { dto: CaptureDTO }
     Refund: { dto: RefundDTO }
   }>(generateMethodForModels, entityNameToLinkableKeysMap)
@@ -517,6 +520,7 @@ export default class PaymentModuleService
   }
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async retrievePaymentSession(
     id: string,
     config: FindConfig<PaymentSessionDTO> = {},
@@ -532,6 +536,7 @@ export default class PaymentModuleService
   }
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
   async listPaymentSessions(
     filters?: FilterablePaymentSessionProps,
     config?: FindConfig<PaymentSessionDTO>,
@@ -544,36 +549,6 @@ export default class PaymentModuleService
     )
 
     return await this.baseRepository_.serialize<PaymentSessionDTO[]>(sessions)
-  }
-
-  @InjectManager("baseRepository_")
-  async retrievePayment(
-    id: string,
-    config?: FindConfig<PaymentDTO>,
-    sharedContext?: Context
-  ): Promise<PaymentDTO> {
-    const payment = await this.paymentService_.retrieve(
-      id,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PaymentDTO>(payment)
-  }
-
-  @InjectManager("baseRepository_")
-  async listPayments(
-    filters?: FilterablePaymentProps,
-    config?: FindConfig<PaymentDTO>,
-    sharedContext?: Context
-  ): Promise<PaymentDTO[]> {
-    const payments = await this.paymentService_.list(
-      filters,
-      config,
-      sharedContext
-    )
-
-    return await this.baseRepository_.serialize<PaymentDTO[]>(payments)
   }
 
   @InjectManager("baseRepository_")
