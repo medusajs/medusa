@@ -587,7 +587,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             email: "tony@stark.com",
             region_id: region.id,
@@ -692,7 +692,7 @@ medusaIntegrationTestRunner({
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             email: "tony@stark.com",
             shipping_address: {
@@ -732,7 +732,7 @@ medusaIntegrationTestRunner({
             })
           )
 
-          await cartModule.update(cart.id, {
+          await cartModule.updateCarts(cart.id, {
             region_id: region.id,
           })
 
@@ -767,7 +767,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "eur",
             email: "tony@stark.com",
             shipping_address: {
@@ -795,7 +795,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -972,7 +972,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             region_id: region.id,
             currency_code: "eur",
             email: "tony@stark.com",
@@ -992,7 +992,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1160,7 +1160,7 @@ medusaIntegrationTestRunner({
             name: "Webshop",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             items: [
               {
@@ -1283,7 +1283,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             customer_id: customer.id,
             sales_channel_id: salesChannel.id,
@@ -1526,7 +1526,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1553,7 +1553,7 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1586,12 +1586,12 @@ medusaIntegrationTestRunner({
             currency_code: "usd",
           })
 
-          const firstCart = await cartModule.create({
+          const firstCart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
 
-          const secondCart = await cartModule.create({
+          const secondCart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1629,7 +1629,7 @@ medusaIntegrationTestRunner({
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
             shipping_address: {
@@ -1686,7 +1686,7 @@ medusaIntegrationTestRunner({
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
             items: [
@@ -1714,7 +1714,7 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts/:id/shipping-methods", () => {
         it("should add a shipping methods to a cart", async () => {
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             shipping_address: { country_code: "us" },
             items: [],
@@ -1726,7 +1726,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1862,7 +1862,7 @@ medusaIntegrationTestRunner({
             type: "default",
           })
 
-          fulfillmentSet = await fulfillmentModule.create({
+          fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [

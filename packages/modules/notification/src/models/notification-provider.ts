@@ -9,7 +9,7 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import NotificationModel from "./notification"
+import Notification from "./notification"
 
 @Entity()
 export default class NotificationProvider {
@@ -29,10 +29,10 @@ export default class NotificationProvider {
   channels: string[]
 
   @OneToMany({
-    entity: () => NotificationModel,
+    entity: () => Notification,
     mappedBy: (notification) => notification.provider_id,
   })
-  notifications = new Collection<NotificationModel>(this)
+  notifications = new Collection<Notification>(this)
 
   @BeforeCreate()
   onCreate() {

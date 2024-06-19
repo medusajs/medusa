@@ -19,14 +19,14 @@ import {
   MedusaContext,
   MedusaService,
 } from "@medusajs/utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { EntityManager } from "@mikro-orm/core"
 import {
   Address,
   Customer,
   CustomerGroup,
   CustomerGroupCustomer,
 } from "@models"
-import { EntityManager } from "@mikro-orm/core"
+import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService

@@ -15,30 +15,30 @@ import {
   MedusaService,
   promiseAll,
 } from "@medusajs/utils"
+import { Notification } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import NotificationProviderService from "./notification-provider"
-import { NotificationModel, NotificationProvider } from "@models"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  notificationModelService: ModulesSdkTypes.IMedusaInternalService<any>
+  notificationService: ModulesSdkTypes.IMedusaInternalService<any>
   notificationProviderService: NotificationProviderService
 }
 
 export default class NotificationModuleService
   extends MedusaService<{
     Notification: { dto: NotificationTypes.NotificationDTO }
-  }>({ Notification: NotificationModel }, entityNameToLinkableKeysMap)
+  }>({ Notification }, entityNameToLinkableKeysMap)
   implements INotificationModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<NotificationModel>
+  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<Notification>
   protected readonly notificationProviderService_: NotificationProviderService
 
   constructor(
     {
       baseRepository,
-      notificationModelService,
+      notificationService,
       notificationProviderService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
@@ -46,7 +46,7 @@ export default class NotificationModuleService
     // @ts-ignore
     super(...arguments)
     this.baseRepository_ = baseRepository
-    this.notificationService_ = notificationModelService
+    this.notificationService_ = notificationService
     this.notificationProviderService_ = notificationProviderService
   }
 
@@ -91,7 +91,7 @@ export default class NotificationModuleService
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<NotificationModel[]> {
+  ): Promise<Notification[]> {
     if (!data.length) {
       return []
     }
