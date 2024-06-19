@@ -484,7 +484,7 @@ export function createMikrORMEntity() {
     /**
      * Table name is the snake case version of entityName
      */
-    const tableName = pluralize(camelToSnakeCase(entityName))
+    const tableName = camelToSnakeCase(entityName)
 
     /**
      * Table name is the Pascal case version of entityName
