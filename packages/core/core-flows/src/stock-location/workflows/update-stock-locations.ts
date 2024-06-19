@@ -1,12 +1,10 @@
 import {
-  InventoryNext,
   StockLocationDTO,
-  UpdateStockLocationNextInput,
+  UpdateStockLocationInput,
+  FilterableStockLocationProps,
 } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 
-import { FilterableStockLocationProps } from "@medusajs/types"
-import { UpdateStockLocationInput } from "@medusajs/types"
 import { updateStockLocationsStep } from "../steps"
 
 interface WorkflowInput {

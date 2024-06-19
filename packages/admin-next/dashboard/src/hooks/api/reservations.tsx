@@ -15,7 +15,7 @@ import {
   ReservationItemRes,
 } from "../../types/api-responses"
 
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
@@ -68,7 +68,7 @@ export const useUpdateReservationItem = (
   options?: UseMutationOptions<ReservationItemRes, Error, UpdateReservationReq>
 ) => {
   return useMutation({
-    mutationFn: (payload: InventoryNext.UpdateReservationItemInput) =>
+    mutationFn: (payload: InventoryTypes.UpdateReservationItemInput) =>
       client.reservations.update(id, payload),
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({

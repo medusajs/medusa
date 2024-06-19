@@ -27,7 +27,7 @@ import {
   isString,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
 } from "@medusajs/utils"
 
@@ -38,17 +38,14 @@ type InjectedDependencies = {
   apiKeyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
-  extends ModulesSdkUtils.MedusaService<
-    ApiKeyTypes.ApiKeyDTO,
-    {
-      ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
-    }
-  >(ApiKey, {}, entityNameToLinkableKeysMap)
+export default class ApiKeyModuleService
+  extends MedusaService<{
+    ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
+  }>({ ApiKey }, entityNameToLinkableKeysMap)
   implements IApiKeyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly apiKeyService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly apiKeyService_: ModulesSdkTypes.IMedusaInternalService<ApiKey>
 
   constructor(
     { baseRepository, apiKeyService }: InjectedDependencies,
@@ -63,22 +60,22 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
-
-  create(
+  //@ts-expect-error
+  createApiKeys(
     data: ApiKeyTypes.CreateApiKeyDTO[],
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
-  create(
+  createApiKeys(
     data: ApiKeyTypes.CreateApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
 
   @InjectManager("baseRepository_")
-  async create(
+  async createApiKeys(
     data: ApiKeyTypes.CreateApiKeyDTO | ApiKeyTypes.CreateApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO | ApiKeyTypes.ApiKeyDTO[]> {
-    const [createdApiKeys, generatedTokens] = await this.create_(
+    const [createdApiKeys, generatedTokens] = await this.createApiKeys_(
       Array.isArray(data) ? data : [data],
       sharedContext
     )
@@ -102,10 +99,10 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async create_(
+  protected async createApiKeys_(
     data: ApiKeyTypes.CreateApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], TokenDTO[]]> {
+  ): Promise<[ApiKey[], TokenDTO[]]> {
     await this.validateCreateApiKeys_(data, sharedContext)
 
     const normalizedInput: CreateApiKeyDTO[] = []
@@ -135,17 +132,17 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return [createdApiKeys, generatedTokens]
   }
 
-  async upsert(
+  async upsertApiKeys(
     data: ApiKeyTypes.UpsertApiKeyDTO[],
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
-  async upsert(
+  async upsertApiKeys(
     data: ApiKeyTypes.UpsertApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
 
   @InjectManager("baseRepository_")
-  async upsert(
+  async upsertApiKeys(
     data: ApiKeyTypes.UpsertApiKeyDTO | ApiKeyTypes.UpsertApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ApiKeyTypes.ApiKeyDTO | ApiKeyTypes.ApiKeyDTO[]> {
@@ -161,7 +158,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 
     if (forCreate.length) {
       const op = async () => {
-        const [createdApiKeys, generatedTokens] = await this.create_(
+        const [createdApiKeys, generatedTokens] = await this.createApiKeys_(
           forCreate,
           sharedContext
         )
@@ -188,7 +185,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
 
     if (forUpdate.length) {
       const op = async () => {
-        const updateResp = await this.update_(forUpdate, sharedContext)
+        const updateResp = await this.updateApiKeys_(forUpdate, sharedContext)
         return await this.baseRepository_.serialize<ApiKeyTypes.ApiKeyDTO[]>(
           updateResp
         )
@@ -201,19 +198,20 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
     return Array.isArray(data) ? result : result[0]
   }
 
-  async update(
+  //@ts-expect-error
+  async updateApiKeys(
     id: string,
     data: ApiKeyTypes.UpdateApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO>
-  async update(
+  async updateApiKeys(
     selector: FilterableApiKeyProps,
     data: ApiKeyTypes.UpdateApiKeyDTO,
     sharedContext?: Context
   ): Promise<ApiKeyTypes.ApiKeyDTO[]>
 
   @InjectManager("baseRepository_")
-  async update(
+  async updateApiKeys(
     idOrSelector: string | FilterableApiKeyProps,
     data: ApiKeyTypes.UpdateApiKeyDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -224,7 +222,10 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
       sharedContext
     )
 
-    const updatedApiKeys = await this.update_(normalizedInput, sharedContext)
+    const updatedApiKeys = await this.updateApiKeys_(
+      normalizedInput,
+      sharedContext
+    )
 
     const serializedResponse = await this.baseRepository_.serialize<
       ApiKeyTypes.ApiKeyDTO[]
@@ -236,10 +237,10 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   @InjectTransactionManager("baseRepository_")
-  protected async update_(
+  protected async updateApiKeys_(
     normalizedInput: UpdateApiKeyInput[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<ApiKey[]> {
     const updateRequest = normalizedInput.map((k) => ({
       id: k.id,
       title: k.title,
@@ -253,7 +254,8 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   @InjectManager("baseRepository_")
-  async retrieve(
+  // @ts-expect-error
+  async retrieveApiKey(
     id: string,
     config?: FindConfig<ApiKeyTypes.ApiKeyDTO>,
     sharedContext?: Context
@@ -269,7 +271,8 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   @InjectManager("baseRepository_")
-  async list(
+  //@ts-expect-error
+  async listApiKeys(
     filters?: ApiKeyTypes.FilterableApiKeyProps,
     config?: FindConfig<ApiKeyTypes.ApiKeyDTO>,
     sharedContext?: Context
@@ -289,7 +292,8 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   }
 
   @InjectManager("baseRepository_")
-  async listAndCount(
+  //@ts-expect-error
+  async listAndCountApiKeys(
     filters?: ApiKeyTypes.FilterableApiKeyProps,
     config?: FindConfig<ApiKeyTypes.ApiKeyDTO>,
     sharedContext?: Context
@@ -347,7 +351,7 @@ export default class ApiKeyModuleService<TEntity extends ApiKey = ApiKey>
   async revoke_(
     normalizedInput: RevokeApiKeyInput[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<ApiKey[]> {
     await this.validateRevokeApiKeys_(normalizedInput)
 
     const updateRequest = normalizedInput.map((k) => {

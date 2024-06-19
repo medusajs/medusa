@@ -29,10 +29,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should batch add customers to a group", async () => {
-        const group = await customerModuleService.createCustomerGroup({
+        const group = await customerModuleService.createCustomerGroups({
           name: "VIP",
         })
-        const customers = await customerModuleService.create([
+        const customers = await customerModuleService.createCustomers([
           {
             first_name: "Test",
             last_name: "Test",

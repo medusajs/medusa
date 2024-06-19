@@ -25,7 +25,7 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
     )
 
     const { actions = [] } = data
-    const promotions = await promotionModuleService.list(
+    const promotions = await promotionModuleService.listPromotions(
       { code: actions.map((a) => a.code) },
       { select: ["id", "code"] }
     )

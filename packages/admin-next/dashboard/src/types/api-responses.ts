@@ -8,7 +8,7 @@ import {
   CustomerGroupDTO,
   FulfillmentDTO,
   FulfillmentProviderDTO,
-  InventoryNext,
+  InventoryTypes,
   InviteDTO,
   OrderDTO,
   PaymentProviderDTO,
@@ -70,9 +70,9 @@ export type FulfillmentListRes = { fulfillments: FulfillmentDTO[] } & ListRes
 export type FulfillmentDeleteRes = DeleteRes
 
 // Reservations
-export type ReservationRes = { reservation: InventoryNext.ReservationItemDTO }
+export type ReservationRes = { reservation: InventoryTypes.ReservationItemDTO }
 export type ReservationListRes = {
-  reservations: InventoryNext.ReservationItemDTO[]
+  reservations: InventoryTypes.ReservationItemDTO[]
 } & ListRes
 export type ReservationDeleteRes = DeleteRes
 
@@ -152,11 +152,11 @@ export type TaxRateDeleteRes = DeleteRes
 export type ReservationItemDeleteRes = DeleteRes
 
 export type ReservationItemListRes = {
-  reservations: InventoryNext.ReservationItemDTO[]
+  reservations: InventoryTypes.ReservationItemDTO[]
 } & ListRes
 
 export type ReservationItemRes = {
-  reservation: InventoryNext.ReservationItemDTO
+  reservation: InventoryTypes.ReservationItemDTO
 }
 // Price Lists
 export type PriceListRes = { price_list: PriceListDTO }

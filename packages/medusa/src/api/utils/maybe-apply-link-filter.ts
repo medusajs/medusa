@@ -1,7 +1,7 @@
 import {
+  arrayIntersection,
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
-  arrayIntersection,
 } from "@medusajs/utils"
 import { NextFunction } from "express"
 import { MedusaRequest } from "../../types/routing"
@@ -33,7 +33,7 @@ export function maybeApplyLinkFilter({
     const queryObject = remoteQueryObjectFromString({
       entryPoint,
       fields: [resourceId],
-      variables: { [filterableField]: idsToFilterBy },
+      variables: { filters: { [filterableField]: idsToFilterBy } },
     })
 
     const resources = await remoteQuery(queryObject)

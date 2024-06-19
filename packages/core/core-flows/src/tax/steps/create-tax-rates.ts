@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateTaxRateDTO, ITaxModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createTaxRatesStepId = "create-tax-rates"
 export const createTaxRatesStep = createStep(
@@ -10,7 +10,7 @@ export const createTaxRatesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    const created = await service.create(data)
+    const created = await service.createTaxRates(data)
 
     return new StepResponse(
       created,
@@ -26,6 +26,6 @@ export const createTaxRatesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.delete(createdIds)
+    await service.deleteTaxRates(createdIds)
   }
 )

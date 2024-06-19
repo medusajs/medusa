@@ -10,7 +10,7 @@ export const deleteUsersStep = createStep(
       ModuleRegistrationName.USER
     )
 
-    await service.softDelete(input)
+    await service.softDeleteUsers(input)
 
     return new StepResponse(void 0, input)
   },
@@ -23,6 +23,6 @@ export const deleteUsersStep = createStep(
       ModuleRegistrationName.USER
     )
 
-    await service.restore(prevUserIds)
+    await service.restoreUsers(prevUserIds)
   }
 )

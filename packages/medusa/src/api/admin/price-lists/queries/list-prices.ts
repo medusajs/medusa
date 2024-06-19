@@ -4,7 +4,7 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-export const listPrices = (
+export const listPrices = async (
   ids: string[],
   scope: MedusaContainer,
   fields: string[]
@@ -18,5 +18,5 @@ export const listPrices = (
     fields,
   })
 
-  return remoteQuery(queryObject)
+  return await remoteQuery(queryObject)
 }

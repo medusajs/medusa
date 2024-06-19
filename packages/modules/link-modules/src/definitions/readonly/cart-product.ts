@@ -12,6 +12,9 @@ export const CartProduct: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "items.product_id",
         alias: "product",
+        args: {
+          methodSuffix: "Products",
+        },
       },
     },
     {
@@ -22,7 +25,7 @@ export const CartProduct: ModuleJoinerConfig = {
         foreignKey: "items.variant_id",
         alias: "variant",
         args: {
-          methodSuffix: "Variants",
+          methodSuffix: "ProductVariants",
         },
       },
     },

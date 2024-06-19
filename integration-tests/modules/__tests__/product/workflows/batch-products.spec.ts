@@ -35,8 +35,8 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const product1 = await service.create({ title: "test1" })
-            const product2 = await service.create({ title: "test2" })
+            const product1 = await service.createProducts({ title: "test1" })
+            const product2 = await service.createProducts({ title: "test2" })
 
             const { errors } = await workflow.run({
               input: {
@@ -57,7 +57,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const products = await service.list()
+            const products = await service.listProducts()
 
             expect(products).toHaveLength(2)
             expect(products).toEqual([
@@ -135,7 +135,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const product = await service.retrieve(product1.id, {
+            const product = await service.retrieveProduct(product1.id, {
               relations: ["variants"],
             })
 

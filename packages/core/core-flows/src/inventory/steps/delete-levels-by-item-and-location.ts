@@ -5,7 +5,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { IInventoryServiceNext } from "@medusajs/types"
+import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 
 export const deleteInventoryLevelsFromItemAndLocationsStepId =
@@ -20,7 +20,7 @@ export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
       return new StepResponse(void 0, [])
     }
 
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 
@@ -48,7 +48,7 @@ export const deleteInventoryLevelsFromItemAndLocationsStep = createStep(
       return
     }
 
-    const service = container.resolve<IInventoryServiceNext>(
+    const service = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 

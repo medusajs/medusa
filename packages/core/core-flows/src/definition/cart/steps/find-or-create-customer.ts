@@ -46,7 +46,7 @@ export const findOrCreateCustomerStep = createStep(
     let customerWasCreated = false
 
     if (data.customerId) {
-      const customer = await service.retrieve(data.customerId)
+      const customer = await service.retrieveCustomer(data.customerId)
       customerData.customer = customer
       customerData.email = customer.email
 
@@ -58,13 +58,13 @@ export const findOrCreateCustomerStep = createStep(
     if (data.email) {
       const validatedEmail = validateEmail(data.email)
 
-      let [customer] = await service.list({
+      let [customer] = await service.listCustomers({
         email: validatedEmail,
         has_account: false,
       })
 
       if (!customer) {
-        customer = await service.create({ email: validatedEmail })
+        customer = await service.createCustomers({ email: validatedEmail })
         customerWasCreated = true
       }
 
@@ -88,6 +88,6 @@ export const findOrCreateCustomerStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.delete(customer.id)
+    await service.deleteCustomers(customer.id)
   }
 )

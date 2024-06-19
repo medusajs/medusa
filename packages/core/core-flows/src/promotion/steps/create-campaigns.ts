@@ -26,6 +26,6 @@ export const createCampaignsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    await promotionModule.delete(createdCampaignIds)
+    await promotionModule.deleteCampaigns(createdCampaignIds)
   }
 )

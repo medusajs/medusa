@@ -321,7 +321,7 @@ function wrapAsyncHandler(
  *     const productService = context.container.resolve(
  *       "productService"
  *     )
- *     const product = await productService.create(input)
+ *     const product = await productService.createProducts(input)
  *     return new StepResponse({
  *       product
  *     }, {
@@ -335,7 +335,7 @@ function wrapAsyncHandler(
  *     const productService = context.container.resolve(
  *       "productService"
  *     )
- *     await productService.delete(input.product_id)
+ *     await productService.deleteProducts(input.product_id)
  *   }
  * )
  */

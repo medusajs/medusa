@@ -1,18 +1,15 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { CampaignBudgetType } from "../../../../../../core/utils/src/promotion/index"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createPromotions } from "../../../__fixtures__/promotion"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPromotionModuleService>({
   moduleName: Modules.PROMOTION,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPromotionModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("Promotion Module Service: Campaigns", () => {
       describe("listAndCountCampaigns", () => {
         beforeEach(async () => {

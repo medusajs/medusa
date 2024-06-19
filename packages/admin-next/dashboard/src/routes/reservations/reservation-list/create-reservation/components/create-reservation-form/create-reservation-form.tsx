@@ -7,7 +7,7 @@ import {
 } from "../../../../../../components/route-modal"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -81,7 +81,7 @@ export const CreateReservationForm = () => {
     {
       id:
         selectedInventoryItem?.location_levels?.map(
-          (level: InventoryNext.InventoryLevelDTO) => level.location_id
+          (level: InventoryTypes.InventoryLevelDTO) => level.location_id
         ) ?? [],
     },
     {

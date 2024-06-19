@@ -35,7 +35,7 @@ const NotificationReceiverIdIndex = createPsqlIndexStatementHelper({
 @NotificationReceiverIdIndex.MikroORMIndex()
 @Entity({ tableName: "notification" })
 // Since there is a native `Notification` type, we have to call this something else here and in a couple of other places.
-export default class NotificationModel {
+export default class Notification {
   @PrimaryKey({ columnType: "text" })
   id: string
 

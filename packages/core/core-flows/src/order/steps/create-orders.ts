@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type CreateOrdersStepInput = CreateOrderDTO[]
 
@@ -12,7 +12,7 @@ export const createOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    const created = await service.create(data)
+    const created = await service.createOrders(data)
     return new StepResponse(
       created,
       created.map((store) => store.id)
@@ -27,6 +27,6 @@ export const createOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.delete(createdIds)
+    await service.deleteOrders(createdIds)
   }
 )

@@ -12,6 +12,9 @@ export const InventoryLevelStockLocation: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "location_id",
         alias: "stock_locations",
+        args: {
+          methodSuffix: "StockLocations",
+        },
         isList: true,
       },
     },

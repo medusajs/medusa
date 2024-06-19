@@ -48,7 +48,7 @@ export async function createDefaultPromotion(
 ): Promise<PromotionDTO> {
   const { application_method = {}, campaign = {}, ...promotion } = data
 
-  return await service.create({
+  return await service.createPromotions({
     code: "PROMOTION_TEST",
     type: "standard",
     campaign_id: "campaign-id-1",

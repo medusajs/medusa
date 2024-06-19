@@ -24,12 +24,18 @@ export const ProductSalesChannel: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "product_id",
       alias: "product",
+      args: {
+        methodSuffix: "Products",
+      },
     },
     {
       serviceName: Modules.SALES_CHANNEL,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
+      args: {
+        methodSuffix: "SalesChannels",
+      },
     },
   ],
   extends: [

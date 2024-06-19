@@ -15,12 +15,12 @@ export const updatePromotionsStep = createStep(
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
-    const dataBeforeUpdate = await promotionModule.list(
+    const dataBeforeUpdate = await promotionModule.listPromotions(
       { id: data.map((d) => d.id) },
       { relations, select: selects }
     )
 
-    const updatedPromotions = await promotionModule.update(data)
+    const updatedPromotions = await promotionModule.updatePromotions(data)
 
     return new StepResponse(updatedPromotions, {
       dataBeforeUpdate,
@@ -39,7 +39,7 @@ export const updatePromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    await promotionModule.update(
+    await promotionModule.updatePromotions(
       dataBeforeUpdate.map((data) =>
         convertItemResponseToUpdateRequest(data, selects, relations)
       )
