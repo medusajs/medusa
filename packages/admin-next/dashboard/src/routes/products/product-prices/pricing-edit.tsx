@@ -3,11 +3,12 @@ import { Button } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { HttpTypes } from "@medusajs/types"
+
 import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
 import { VariantPricingForm } from "../common/variant-pricing-form"
 import { castNumber } from "../../../lib/cast-number"
-import { HttpTypes } from "@medusajs/types"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -25,14 +26,21 @@ export type UpdateVariantPricesSchemaType = zod.infer<
 
 export const PricingEdit = ({
   product,
+  variantId,
 }: {
   product: HttpTypes.AdminProduct
+  variantId?: string
 }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const variants = variantId
+    ? product.variants.filter((v) => v.id === variantId)
+    : product.variants
+
   const form = useForm<UpdateVariantPricesSchemaType>({
     defaultValues: {
-      variants: product.variants.map((variant: any) => ({
+      variants: variants.map((variant: any) => ({
         title: variant.title,
         prices: variant.prices.reduce((acc: any, price: any) => {
           acc[price.currency_code] = price.amount
@@ -49,10 +57,10 @@ export const PricingEdit = ({
   const handleSubmit = form.handleSubmit(
     async (values) => {
       const reqData = values.variants.map((variant, ind) => ({
-        id: product.variants[ind].id,
+        id: variants[ind].id,
         prices: Object.entries(variant.prices || {}).map(
           ([currency_code, value]: any) => {
-            const id = product.variants[ind].prices.find(
+            const id = variants[ind].prices.find(
               (p) => p.currency_code === currency_code
             )?.id
 
@@ -66,7 +74,7 @@ export const PricingEdit = ({
       }))
       await mutateAsync(reqData, {
         onSuccess: () => {
-          handleSuccess(`/products/${product.id}`)
+          handleSuccess("..")
         },
       })
     },

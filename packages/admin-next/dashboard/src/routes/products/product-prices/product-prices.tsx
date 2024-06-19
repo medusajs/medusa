@@ -5,7 +5,7 @@ import { PricingEdit } from "./pricing-edit"
 import { RouteFocusModal } from "../../../components/route-modal"
 
 export const ProductPrices = () => {
-  const { id } = useParams()
+  const { id, variant_id } = useParams()
 
   const { product, isLoading, isError, error } = useProduct(id!)
 
@@ -15,7 +15,9 @@ export const ProductPrices = () => {
 
   return (
     <RouteFocusModal>
-      {!isLoading && product && <PricingEdit product={product} />}
+      {!isLoading && product && (
+        <PricingEdit product={product} variantId={variant_id} />
+      )}
     </RouteFocusModal>
   )
 }
