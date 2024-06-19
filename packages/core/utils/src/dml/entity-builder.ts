@@ -15,6 +15,7 @@ import type {
   PropertyType,
 } from "./types"
 import { NullableModifier } from "./properties/nullable"
+import { IdProperty } from "./properties/id"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -61,6 +62,14 @@ export class EntityBuilder {
       updated_at: new DateTimeProperty(),
       deleted_at: new DateTimeProperty().nullable(),
     })
+  }
+
+  /**
+   * Define an id property. Id properties are marked
+   * primary by default
+   */
+  id(options?: { primaryKey: boolean }) {
+    return new IdProperty(options)
   }
 
   /**

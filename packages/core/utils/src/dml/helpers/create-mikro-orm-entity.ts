@@ -7,6 +7,9 @@ import {
   ManyToMany,
   ManyToOne,
   Filter,
+  PrimaryKey,
+  BeforeCreate,
+  OnInit,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
 import {
@@ -14,6 +17,7 @@ import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
   toCamelCase,
+  generateEntityId,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
@@ -39,7 +43,7 @@ import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
  * mikro orm decorator for that
  */
 const COLUMN_TYPES: {
-  [K in Exclude<KnownDataTypes, "enum">]: string
+  [K in Exclude<KnownDataTypes, "enum" | "id">]: string
 } = {
   boolean: "boolean",
   dateTime: "timestamptz",
@@ -56,7 +60,7 @@ const COLUMN_TYPES: {
  * mikro orm decorator for that
  */
 const PROPERTY_TYPES: {
-  [K in Exclude<KnownDataTypes, "enum">]: string
+  [K in Exclude<KnownDataTypes, "enum" | "id">]: string
 } = {
   boolean: "boolean",
   dateTime: "date",
@@ -167,6 +171,39 @@ export function createMikrORMEntity() {
         nullable: field.nullable,
         default: field.defaultValue,
       })(MikroORMEntity.prototype, field.fieldName)
+      return
+    }
+
+    /**
+     * Defining an id property
+     */
+    if (field.dataType.name === "id") {
+      const IdDecorator = field.dataType.options?.primaryKey
+        ? PrimaryKey({
+            columnType: "text",
+            type: "string",
+            nullable: field.nullable,
+          })
+        : Property({
+            columnType: "text",
+            type: "string",
+            nullable: field.nullable,
+          })
+
+      IdDecorator(MikroORMEntity.prototype, field.fieldName)
+
+      /**
+       * Hook to generate entity within the code
+       */
+      MikroORMEntity.prototype.generateId = function () {
+        this.id = generateEntityId(this.id, "acc")
+      }
+
+      /**
+       * Execute hook via lifecycle decorators
+       */
+      BeforeCreate()(MikroORMEntity.prototype, "generateId")
+      OnInit()(MikroORMEntity.prototype, "generateId")
       return
     }
 
