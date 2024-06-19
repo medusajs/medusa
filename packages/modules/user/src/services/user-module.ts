@@ -8,6 +8,7 @@ import {
   UserTypes,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   CommonEvents,
   EmitEvents,
   InjectManager,
@@ -16,10 +17,10 @@ import {
   MedusaError,
   MedusaService,
   UserEvents,
-  arrayDifference,
 } from "@medusajs/utils"
-import jwt, { Jwt, JwtPayload } from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import crypto from "node:crypto"
 
 import { Invite, User } from "@models"
 
