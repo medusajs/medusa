@@ -126,6 +126,10 @@ export const RouteMap: RouteObject[] = [
                         "../../routes/product-variants/product-variant-edit"
                       ),
                   },
+                  {
+                    path: "prices",
+                    lazy: () => import("../../routes/products/product-prices"),
+                  },
                 ],
               },
             ],

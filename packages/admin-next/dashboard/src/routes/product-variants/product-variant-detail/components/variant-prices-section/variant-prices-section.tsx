@@ -40,7 +40,7 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
               actions: [
                 {
                   label: t("actions.edit"),
-                  to: `/products/${variant.product_id}/prices`,
+                  to: `/products/${variant.product_id}/variants/${variant.id}/prices`,
                   icon: <CurrencyDollar />,
                 },
               ],
