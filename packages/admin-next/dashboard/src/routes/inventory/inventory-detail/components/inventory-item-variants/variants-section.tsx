@@ -48,7 +48,11 @@ export const InventoryItemVariantsSection = ({
                 size="2xsmall"
                 variant="transparent"
                 type="button"
-                onClick={() => navigate(`/products/${variant.product.id}`)} // TODO: navigate to variant details when implemented
+                onClick={() =>
+                  navigate(
+                    `/products/${variant.product.id}/variants/${variant.id}`
+                  )
+                }
               >
                 <ArrowUpRightOnBox className="text-ui-fg-muted" />
               </IconButton>
