@@ -7,7 +7,7 @@ import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 import { editProductVariantLoader } from "./loader"
 import { HttpTypes } from "@medusajs/types"
 
-export const ProductEditVariant = () => {
+export const ProductVariantEdit = () => {
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof editProductVariantLoader>
   >
