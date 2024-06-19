@@ -162,19 +162,12 @@ export function createMikrORMEntity() {
    */
   function applyIndexes(
     MikroORMEntity: EntityConstructor<any>,
-    {
-      tableName,
-      pgSchema,
-    }: { tableName: string; pgSchema: undefined | string },
+    tableName: string,
     field: PropertyMetadata
   ) {
     field.indexes.forEach((index) => {
-      const name =
-        index.name || `IDX_${tableName}_${camelToSnakeCase(field.fieldName)}`
-
       const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
-        name,
-        tableName: pgSchema ? `${pgSchema}"."${tableName}` : tableName,
+        tableName,
         columns: [field.fieldName],
         unique: index.type === "unique",
         where: "deleted_at IS NULL",
@@ -470,21 +463,18 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
     const { name, schema, cascades } = entity.parse()
-    const [pgSchema, ...rest] = name.split(".")
 
     /**
-     * Entity name is computed by splitting the pgSchema
-     * from the original name and converting everything
-     * to camelCase
+     * Table name is going to be the snake case version of
+     * the entity name
      */
-    const entityName = rest.length
-      ? toCamelCase(rest.join("_"))
-      : toCamelCase(pgSchema)
+    const tableName = camelToSnakeCase(name)
 
     /**
-     * Table name is the snake case version of entityName
+     * Entity name is going to be the camelCase version of the
+     * name defined by the user
      */
-    const tableName = camelToSnakeCase(entityName)
+    const entityName = toCamelCase(name.replace(/\./g, "_"))
 
     /**
      * Table name is the Pascal case version of entityName
@@ -508,11 +498,7 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
-        applyIndexes(
-          MikroORMEntity,
-          { tableName, pgSchema: rest.length ? pgSchema : undefined },
-          field
-        )
+        applyIndexes(MikroORMEntity, tableName, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }

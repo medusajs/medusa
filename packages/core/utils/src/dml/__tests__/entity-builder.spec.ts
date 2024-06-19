@@ -667,8 +667,8 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
-      expect(metaData.className).toEqual("User")
-      expect(metaData.path).toEqual("User")
+      expect(metaData.className).toEqual("PublicUser")
+      expect(metaData.path).toEqual("PublicUser")
 
       expect(metaData.filters).toEqual({
         softDeletable: {
@@ -772,9 +772,9 @@ describe("Entity builder", () => {
             'CREATE INDEX IF NOT EXISTS "IDX_user_id" ON "user" (id) WHERE deleted_at IS NULL',
         },
         {
-          name: "IDX_user_email",
+          name: "IDX_user_email_unique",
           expression:
-            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email" ON "user" (email) WHERE deleted_at IS NULL',
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_unique" ON "user" (email) WHERE deleted_at IS NULL',
         },
       ])
 
@@ -868,8 +868,8 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
-      expect(metaData.className).toEqual("User")
-      expect(metaData.path).toEqual("User")
+      expect(metaData.className).toEqual("PlatformUser")
+      expect(metaData.path).toEqual("PlatformUser")
 
       expect(metaData.indexes).toEqual([
         {
@@ -878,9 +878,9 @@ describe("Entity builder", () => {
             'CREATE INDEX IF NOT EXISTS "IDX_user_id" ON "platform"."user" (id) WHERE deleted_at IS NULL',
         },
         {
-          name: "IDX_user_email",
+          name: "IDX_user_email_unique",
           expression:
-            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email" ON "platform"."user" (email) WHERE deleted_at IS NULL',
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_unique" ON "platform"."user" (email) WHERE deleted_at IS NULL',
         },
       ])
 
