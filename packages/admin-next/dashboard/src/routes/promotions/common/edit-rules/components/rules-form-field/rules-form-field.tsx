@@ -1,5 +1,5 @@
 import { XMarkMini } from "@medusajs/icons"
-import { PromotionRuleResponse } from "@medusajs/types"
+import { PromotionDTO } from "@medusajs/types"
 import { Badge, Button, Heading, Select, Text } from "@medusajs/ui"
 import { Fragment, useEffect } from "react"
 import { useFieldArray, UseFormReturn, useWatch } from "react-hook-form"
@@ -7,15 +7,15 @@ import { useTranslation } from "react-i18next"
 import { Form } from "../../../../../../components/common/form"
 import {
   usePromotionRuleAttributes,
-  usePromotionRuleOperators,
   usePromotionRules,
 } from "../../../../../../hooks/api/promotions"
 import { CreatePromotionSchemaType } from "../../../../promotion-create/components/create-promotion-form/form-schema"
+import { generateRuleAttributes } from "../edit-rules-form/utils"
 import { RuleValueFormField } from "../rule-value-form-field"
 import { requiredProductRule } from "./constants"
 
 type RulesFormFieldType = {
-  promotionId?: string
+  promotion?: PromotionDTO
   form: UseFormReturn<CreatePromotionSchemaType>
   ruleType: "rules" | "target-rules" | "buy-rules"
   setRulesToRemove?: any
@@ -26,32 +26,17 @@ type RulesFormFieldType = {
     | "application_method.target_rules"
 }
 
-const generateRuleAttributes = (rules?: PromotionRuleResponse[]) =>
-  (rules || []).map((rule) => ({
-    id: rule.id,
-    required: rule.required,
-    field_type: rule.field_type,
-    disguised: rule.disguised,
-    attribute: rule.attribute!,
-    operator: rule.operator!,
-    values:
-      rule.field_type === "number"
-        ? rule.values
-        : rule?.values?.map((v: { value: string }) => v.value!),
-  }))
-
 export const RulesFormField = ({
   form,
   ruleType,
   setRulesToRemove,
   rulesToRemove,
   scope = "rules",
-  promotionId,
+  promotion,
 }: RulesFormFieldType) => {
   const { t } = useTranslation()
   const formData = form.getValues()
   const { attributes } = usePromotionRuleAttributes(ruleType, formData.type)
-  const { operators } = usePromotionRuleOperators()
 
   const { fields, append, remove, update, replace } = useFieldArray({
     control: form.control,
@@ -59,21 +44,31 @@ export const RulesFormField = ({
     keyName: scope,
   })
 
-  const promotionType: string = useWatch({
+  const promotionType = useWatch({
     control: form.control,
     name: "type",
+    defaultValue: promotion?.type,
+  })
+
+  const applicationMethodType = useWatch({
+    control: form.control,
+    name: "application_method.type",
+    defaultValue: promotion?.application_method?.type,
   })
 
   const query: Record<string, string> = promotionType
-    ? { promotion_type: promotionType }
+    ? {
+        promotion_type: promotionType,
+        application_method_type: applicationMethodType,
+      }
     : {}
 
   const { rules, isLoading } = usePromotionRules(
-    promotionId || null,
+    promotion?.id || null,
     ruleType,
     query,
     {
-      enabled: !!promotionType,
+      enabled: !!promotion?.id || (!!promotionType && !!applicationMethodType),
     }
   )
 
@@ -104,12 +99,18 @@ export const RulesFormField = ({
       promotionType === "buyget"
     ) {
       form.resetField(scope)
-      const rulesToAppend = promotionId
+      const rulesToAppend = promotion?.id
         ? rules
         : [...rules, requiredProductRule]
 
       replace(generateRuleAttributes(rulesToAppend) as any)
+
+      return
     }
+
+    form.resetField(scope)
+
+    replace(generateRuleAttributes(rules) as any)
   }, [promotionType, isLoading])
 
   return (
@@ -165,10 +166,18 @@ export const RulesFormField = ({
                           <Select
                             {...field}
                             onValueChange={(e) => {
-                              update(index, { ...fieldRule, values: [] })
+                              const currentAttributeOption =
+                                attributeOptions.find((ao) => ao.id === e)
+
+                              update(index, {
+                                ...fieldRule,
+                                values: [],
+                                disguised:
+                                  currentAttributeOption?.disguised || false,
+                              })
                               onChange(e)
                             }}
-                            disabled={fieldRule.disguised}
+                            disabled={fieldRule.required}
                           >
                             <Select.Trigger
                               ref={attributeRef}
@@ -206,14 +215,14 @@ export const RulesFormField = ({
                     key={`${identifier}.${scope}.${operatorsField.name}`}
                     {...operatorsField}
                     render={({ field: { onChange, ref, ...field } }) => {
+                      const currentAttributeOption = attributes.find(
+                        (attr) => attr.value === fieldRule.attribute
+                      )
+
                       return (
                         <Form.Item className="basis-1/2">
                           <Form.Control>
-                            <Select
-                              {...field}
-                              onValueChange={onChange}
-                              disabled={fieldRule.disguised}
-                            >
+                            <Select {...field} onValueChange={onChange}>
                               <Select.Trigger
                                 ref={operatorRef}
                                 className="bg-ui-bg-base"
@@ -222,16 +231,18 @@ export const RulesFormField = ({
                               </Select.Trigger>
 
                               <Select.Content>
-                                {operators?.map((c, i) => (
-                                  <Select.Item
-                                    key={`${identifier}-operator-option-${i}`}
-                                    value={c.value}
-                                  >
-                                    <span className="text-ui-fg-subtle">
-                                      {c.label}
-                                    </span>
-                                  </Select.Item>
-                                ))}
+                                {currentAttributeOption?.operators?.map(
+                                  (c, i) => (
+                                    <Select.Item
+                                      key={`${identifier}-operator-option-${i}`}
+                                      value={c.value}
+                                    >
+                                      <span className="text-ui-fg-subtle">
+                                        {c.label}
+                                      </span>
+                                    </Select.Item>
+                                  )
+                                )}
                               </Select.Content>
                             </Select>
                           </Form.Control>
@@ -262,8 +273,7 @@ export const RulesFormField = ({
                   }`}
                   onClick={() => {
                     if (!fieldRule.required) {
-                      fieldRule.id &&
-                        setRulesToRemove &&
+                      setRulesToRemove &&
                         setRulesToRemove([...rulesToRemove, fieldRule])
 
                       remove(index)
