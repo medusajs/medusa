@@ -89,4 +89,42 @@ describe("createPsqlIndexStatementHelper", function () {
       }" (${options.columns.join(", ")}) WHERE ${options.where}`
     )
   })
+
+  it("should generate index on an explicit pg schema", function () {
+    const options = {
+      name: "index_name",
+      tableName: "public.table_name",
+      columns: "column_name",
+    }
+
+    const indexStatement = createPsqlIndexStatementHelper(options)
+    expect(indexStatement + "").toEqual(
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "public"."table_name" (${options.columns})`
+    )
+  })
+
+  it("generate index name from table name when using explicit pg schema", function () {
+    const options = {
+      tableName: "public.table_name",
+      columns: "column_name",
+    }
+
+    const indexStatement = createPsqlIndexStatementHelper(options)
+    expect(indexStatement + "").toEqual(
+      `CREATE INDEX IF NOT EXISTS "IDX_table_name_column_name" ON "public"."table_name" (${options.columns})`
+    )
+  })
+
+  it("should generate index when table name was previously formatted to allow pg schema name", function () {
+    const options = {
+      name: "index_name",
+      tableName: 'public"."table_name',
+      columns: "column_name",
+    }
+
+    const indexStatement = createPsqlIndexStatementHelper(options)
+    expect(indexStatement + "").toEqual(
+      `CREATE INDEX IF NOT EXISTS "${options.name}" ON "public"."table_name" (${options.columns})`
+    )
+  })
 })
