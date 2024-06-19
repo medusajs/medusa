@@ -37,7 +37,7 @@ export function VariantGeneralSection({ variant }: VariantGeneralSectionProps) {
 
     await mutateAsync(undefined, {
       onSuccess: () => {
-        navigate("..")
+        navigate("..", { replace: true })
       },
     })
   }
