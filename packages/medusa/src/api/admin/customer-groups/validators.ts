@@ -58,7 +58,7 @@ export type AdminCreateCustomerGroupType = z.infer<
 >
 export const AdminCreateCustomerGroup = z.object({
   name: z.string(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export type AdminUpdateCustomerGroupType = z.infer<
@@ -66,5 +66,5 @@ export type AdminUpdateCustomerGroupType = z.infer<
 >
 export const AdminUpdateCustomerGroup = z.object({
   name: z.string(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })

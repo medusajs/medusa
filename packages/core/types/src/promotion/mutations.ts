@@ -67,7 +67,7 @@ export interface CreateCampaignDTO {
   /**
    * The description of the campaign.
    */
-  description?: string
+  description?: string | null
 
   /**
    * The campaign identifier of the campaign.
@@ -77,12 +77,12 @@ export interface CreateCampaignDTO {
   /**
    * The start date of the campaign.
    */
-  starts_at?: Date
+  starts_at?: Date | null
 
   /**
    * The end date of the campaign.
    */
-  ends_at?: Date
+  ends_at?: Date | null
 
   /**
    * The associated campaign budget.
@@ -107,7 +107,7 @@ export interface UpdateCampaignDTO {
   /**
    * The description of the campaign.
    */
-  description?: string
+  description?: string | null
 
   /**
    * The campaign identifier of the campaign.
@@ -117,12 +117,12 @@ export interface UpdateCampaignDTO {
   /**
    * The start date of the campaign.
    */
-  starts_at?: Date
+  starts_at?: Date | null
 
   /**
    * The end date of the campaign.
    */
-  ends_at?: Date
+  ends_at?: Date | null
 
   /**
    * The budget of the campaign.

@@ -81,7 +81,7 @@ export type AdminCreatePromotionRuleType = z.infer<
 export const AdminCreatePromotionRule = z
   .object({
     operator: z.nativeEnum(PromotionRuleOperator),
-    description: z.string().optional(),
+    description: z.string().nullish(),
     attribute: z.string(),
     values: z.union([z.string(), z.array(z.string())]),
   })
@@ -94,7 +94,7 @@ export const AdminUpdatePromotionRule = z
   .object({
     id: z.string(),
     operator: z.nativeEnum(PromotionRuleOperator).optional(),
-    description: z.string().optional(),
+    description: z.string().nullish(),
     attribute: z.string().optional(),
     values: z.union([z.string(), z.array(z.string())]),
   })
@@ -105,17 +105,17 @@ export type AdminCreateApplicationMethodType = z.infer<
 >
 export const AdminCreateApplicationMethod = z
   .object({
-    description: z.string().optional(),
+    description: z.string().nullish(),
     value: z.number(),
-    currency_code: z.string().optional().nullable(),
-    max_quantity: z.number().optional().nullable(),
+    currency_code: z.string().nullish(),
+    max_quantity: z.number().nullish(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     target_rules: z.array(AdminCreatePromotionRule).optional(),
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
-    apply_to_quantity: z.number().optional(),
-    buy_rules_min_quantity: z.number().optional(),
+    apply_to_quantity: z.number().nullish(),
+    buy_rules_min_quantity: z.number().nullish(),
   })
   .strict()
 
@@ -124,17 +124,17 @@ export type AdminUpdateApplicationMethodType = z.infer<
 >
 export const AdminUpdateApplicationMethod = z
   .object({
-    description: z.string().optional(),
+    description: z.string().nullish(),
     value: z.number().optional(),
-    max_quantity: z.number().optional().nullable(),
-    currency_code: z.string().optional().nullable(),
+    max_quantity: z.number().nullish(),
+    currency_code: z.string().nullish(),
     type: z.nativeEnum(ApplicationMethodType).optional(),
     target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     target_rules: z.array(AdminCreatePromotionRule).optional(),
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
-    apply_to_quantity: z.number().optional(),
-    buy_rules_min_quantity: z.number().optional(),
+    apply_to_quantity: z.number().nullish(),
+    buy_rules_min_quantity: z.number().nullish(),
   })
   .strict()
 
@@ -161,7 +161,7 @@ export const AdminCreatePromotion = z
     code: z.string(),
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType),
-    campaign_id: z.string().optional().nullable(),
+    campaign_id: z.string().nullish(),
     campaign: AdminCreateCampaign.optional(),
     application_method: AdminCreateApplicationMethod,
     rules: z.array(AdminCreatePromotionRule).optional(),
@@ -179,7 +179,7 @@ export const AdminUpdatePromotion = z
     code: z.string().optional(),
     is_automatic: z.boolean().optional(),
     type: z.nativeEnum(PromotionType).optional(),
-    campaign_id: z.string().optional().nullable(),
+    campaign_id: z.string().nullish(),
     campaign: AdminCreateCampaign.optional(),
     application_method: AdminUpdateApplicationMethod.optional(),
     rules: z.array(AdminCreatePromotionRule).optional(),

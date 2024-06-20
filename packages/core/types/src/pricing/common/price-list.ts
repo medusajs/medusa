@@ -203,7 +203,7 @@ export interface UpdatePriceListDTO {
   /**
    * The price list's description.
    */
-  description?: string
+  description?: string | null
   /**
    * The price list is enabled starting from this date.
    */
