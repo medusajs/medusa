@@ -36,15 +36,25 @@ export const useShortcuts = ({
     []
   )
 
-  useEffect(() => {
-    if (keys.length > 0 && shortcuts.length > 0) {
-      const shortcut = findShortcut(shortcuts, keys)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const invokeShortcut = useCallback(
+    debounceFn((shortcut: Shortcut | null) => {
       if (shortcut && shortcut.callback) {
         shortcut.callback()
         setKeys([])
       }
+    }, debounce / 2),
+    []
+  )
+
+  useEffect(() => {
+    if (keys.length > 0 && shortcuts.length > 0) {
+      const shortcut = findShortcut(shortcuts, keys)
+      invokeShortcut(shortcut)
     }
-  }, [keys, shortcuts])
+
+    return () => invokeShortcut.cancel()
+  }, [keys, shortcuts, invokeShortcut])
 
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
@@ -93,7 +103,7 @@ export const useGlobalShortcuts = () => {
     // Pages
     {
       keys: {
-        Mac: ["G", "O", "O"],
+        Mac: ["G", "O"],
       },
       label: t("app.keyboardShortcuts.goToOrders"),
       type: "pageShortcut",
@@ -101,7 +111,7 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
-        Mac: ["G", "P", "P"],
+        Mac: ["G", "P"],
       },
       label: t("app.keyboardShortcuts.goToProducts"),
       type: "pageShortcut",
@@ -125,7 +135,7 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
-        Mac: ["G", "C", "C"],
+        Mac: ["G", "C"],
       },
       label: t("app.keyboardShortcuts.goToCustomers"),
       type: "pageShortcut",
@@ -141,7 +151,7 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
-        Mac: ["G", "I", "I"],
+        Mac: ["G", "I"],
       },
       label: t("app.keyboardShortcuts.goToInventory"),
       type: "pageShortcut",
@@ -165,7 +175,7 @@ export const useGlobalShortcuts = () => {
     },
     {
       keys: {
-        Mac: ["G", "R", "P"],
+        Mac: ["G", "R"],
       },
       label: t("app.keyboardShortcuts.goToPromotions"),
       type: "pageShortcut",
