@@ -804,6 +804,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
       })
 
       describe("list", function () {
+        let productOneData
+        let productTwoData
         beforeEach(async () => {
           const collections = await createCollections(
             MikroOrmWrapper.forkManager(),
@@ -813,16 +815,20 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productCollectionOne = collections[0]
           productCollectionTwo = collections[1]
 
-          const productOneData = buildProductAndRelationsData({
-            collection_id: productCollectionOne.id,
-          })
+          const resp = await service.createProducts([
+            buildProductAndRelationsData({
+              collection_id: productCollectionOne.id,
+              options: [{ title: "size", values: ["large", "small"] }],
+              variants: [{ title: "variant 1", options: { size: "small" } }],
+            }),
+            buildProductAndRelationsData({
+              collection_id: productCollectionTwo.id,
+              tags: [],
+            }),
+          ])
 
-          const productTwoData = buildProductAndRelationsData({
-            collection_id: productCollectionTwo.id,
-            tags: [],
-          })
-
-          await service.createProducts([productOneData, productTwoData])
+          productOneData = resp[0]
+          productTwoData = resp[1]
         })
 
         it("should return a list of products scoped by collection id", async () => {
@@ -840,6 +846,29 @@ moduleIntegrationTestRunner<IProductModuleService>({
               collection: expect.objectContaining({
                 id: productCollectionOne.id,
               }),
+            }),
+          ])
+        })
+
+        it("should return a list of products scoped by variant options", async () => {
+          const productsWithVariants = await service.listProducts(
+            {
+              variants: {
+                options: {
+                  option_id: productOneData.options[0].id,
+                  value: "small",
+                },
+              },
+            },
+            {
+              relations: ["variants", "variants.options"],
+            }
+          )
+
+          expect(productsWithVariants).toHaveLength(1)
+          expect(productsWithVariants).toEqual([
+            expect.objectContaining({
+              id: productOneData.id,
             }),
           ])
         })

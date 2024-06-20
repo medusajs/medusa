@@ -9,18 +9,41 @@ import {
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
 import { zodValidator } from "./zod-helper"
+import { MedusaError } from "@medusajs/utils"
 
 /**
  * Normalize an input query, especially from array like query params to an array type
  * e.g: /admin/orders/?fields[]=id,status,cart_id becomes { fields: ["id", "status", "cart_id"] }
+ *
+ * We only support up to 2 levels of depth for query params in order to have a somewhat readable query param, and limit possible performance issues
  */
 const normalizeQuery = (req: MedusaRequest) => {
   return Object.entries(req.query).reduce((acc, [key, val]) => {
-    if (Array.isArray(val) && val.length === 1) {
-      acc[key] = (val as string[])[0].split(",")
-    } else {
-      acc[key] = val
+    let normalizedValue = val
+    if (Array.isArray(val) && val.length === 1 && typeof val[0] === "string") {
+      normalizedValue = val[0].split(",")
     }
+
+    if (key.includes(".")) {
+      const [parent, child, ...others] = key.split(".")
+      if (others.length > 0) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_ARGUMENT,
+          `Key accessor more than 2 levels deep: ${key}`
+        )
+      }
+
+      if (!acc[parent]) {
+        acc[parent] = {}
+      }
+      acc[parent] = {
+        ...acc[parent],
+        [child]: normalizedValue,
+      }
+    } else {
+      acc[key] = normalizedValue
+    }
+
     return acc
   }, {})
 }
