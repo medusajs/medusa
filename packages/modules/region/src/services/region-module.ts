@@ -9,6 +9,7 @@ import {
   ModulesSdkTypes,
   RegionCountryDTO,
   RegionDTO,
+  SoftDeleteReturn,
   UpdateRegionDTO,
   UpsertRegionDTO,
 } from "@medusajs/types"
@@ -125,6 +126,25 @@ export default class RegionModuleService
         sharedContext
       )
     }
+
+    return result
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-ignore
+  async softDeleteRegions(
+    ids: string | object | string[] | object[],
+    config?: SoftDeleteReturn<string>,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<Record<string, string[]> | void> {
+    const result = await super.softDeleteRegions(ids, config, sharedContext)
+    await super.updateCountries(
+      {
+        selector: { region_id: ids },
+        data: { region_id: null },
+      },
+      sharedContext
+    )
 
     return result
   }
