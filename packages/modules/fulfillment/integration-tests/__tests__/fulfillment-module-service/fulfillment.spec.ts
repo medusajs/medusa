@@ -56,7 +56,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             name: "test",
             type: "default",
           })
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -104,7 +104,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -191,7 +191,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -280,7 +280,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -332,7 +332,6 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             )!
 
             const updateData: UpdateFulfillmentDTO = {
-              id: fulfillment.id,
               labels: [
                 { id: label1.id },
                 { ...label2, label_url: "updated-test-label-url-2" },
@@ -417,7 +416,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })

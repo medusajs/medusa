@@ -12,6 +12,9 @@ export const StoreDefaultCurrency: ModuleJoinerConfig = {
         primaryKey: "code",
         foreignKey: "default_currency_code",
         alias: "default_currency",
+        args: {
+          methodSuffix: "Currencies",
+        },
       },
     },
   ],

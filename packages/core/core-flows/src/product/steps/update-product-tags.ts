@@ -20,12 +20,15 @@ export const updateProductTagsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listTags(data.selector, {
+    const prevData = await service.listProductTags(data.selector, {
       select: selects,
       relations,
     })
 
-    const productTags = await service.updateTags(data.selector, data.update)
+    const productTags = await service.updateProductTags(
+      data.selector,
+      data.update
+    )
     return new StepResponse(productTags, prevData)
   },
   async (prevData, { container }) => {
@@ -37,6 +40,6 @@ export const updateProductTagsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertTags(prevData)
+    await service.upsertProductTags(prevData)
   }
 )

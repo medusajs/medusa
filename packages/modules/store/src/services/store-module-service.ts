@@ -13,7 +13,7 @@ import {
   isString,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  MedusaService,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
@@ -22,24 +22,19 @@ import { Store } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
-const generateMethodForModels = {}
-
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   storeService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-export default class StoreModuleService<TEntity extends Store = Store>
-  extends ModulesSdkUtils.MedusaService<
-    StoreTypes.StoreDTO,
-    {
-      Store: { dto: StoreTypes.StoreDTO }
-    }
-  >(Store, generateMethodForModels, entityNameToLinkableKeysMap)
+export default class StoreModuleService
+  extends MedusaService<{
+    Store: { dto: StoreTypes.StoreDTO }
+  }>({ Store }, entityNameToLinkableKeysMap)
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<TEntity>
+  protected readonly storeService_: ModulesSdkTypes.IMedusaInternalService<Store>
 
   constructor(
     { baseRepository, storeService }: InjectedDependencies,
@@ -55,16 +50,17 @@ export default class StoreModuleService<TEntity extends Store = Store>
     return joinerConfig
   }
 
-  async create(
+  // @ts-expect-error
+  async createStores(
     data: StoreTypes.CreateStoreDTO[],
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO[]>
-  async create(
+  async createStores(
     data: StoreTypes.CreateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
   @InjectManager("baseRepository_")
-  async create(
+  async createStores(
     data: StoreTypes.CreateStoreDTO | StoreTypes.CreateStoreDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<StoreTypes.StoreDTO | StoreTypes.StoreDTO[]> {
@@ -88,16 +84,16 @@ export default class StoreModuleService<TEntity extends Store = Store>
     return await this.storeService_.create(normalizedInput, sharedContext)
   }
 
-  async upsert(
+  async upsertStores(
     data: StoreTypes.UpsertStoreDTO[],
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO[]>
-  async upsert(
+  async upsertStores(
     data: StoreTypes.UpsertStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
   @InjectTransactionManager("baseRepository_")
-  async upsert(
+  async upsertStores(
     data: StoreTypes.UpsertStoreDTO | StoreTypes.UpsertStoreDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<StoreTypes.StoreDTO | StoreTypes.StoreDTO[]> {
@@ -124,18 +120,19 @@ export default class StoreModuleService<TEntity extends Store = Store>
     >(Array.isArray(data) ? result : result[0])
   }
 
-  async update(
+  // @ts-expect-error
+  async updateStores(
     id: string,
     data: StoreTypes.UpdateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO>
-  async update(
+  async updateStores(
     selector: StoreTypes.FilterableStoreProps,
     data: StoreTypes.UpdateStoreDTO,
     sharedContext?: Context
   ): Promise<StoreTypes.StoreDTO[]>
   @InjectManager("baseRepository_")
-  async update(
+  async updateStores(
     idOrSelector: string | StoreTypes.FilterableStoreProps,
     data: StoreTypes.UpdateStoreDTO,
     @MedusaContext() sharedContext: Context = {}

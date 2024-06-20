@@ -47,10 +47,10 @@ medusaIntegrationTestRunner({
           })
         )
 
-        const customerWithAddresses = await customerModuleService.retrieve(
-          customer.id,
-          { relations: ["addresses"] }
-        )
+        const customerWithAddresses =
+          await customerModuleService.retrieveCustomer(customer.id, {
+            relations: ["addresses"],
+          })
 
         expect(customerWithAddresses.addresses?.length).toEqual(1)
       })

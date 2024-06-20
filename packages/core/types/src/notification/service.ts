@@ -16,7 +16,7 @@ export interface INotificationModuleService extends IModuleService {
    * @returns {Promise<NotificationDTO[]>} The list of sent notifications.
    *
    * @example
-   * const notifications = await notificationModuleService.create([
+   * const notifications = await notificationModuleService.createNotifications([
    *   {
    *     to: "john@doe.me",
    *     template: "order-confirmation",
@@ -29,7 +29,7 @@ export interface INotificationModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createNotifications(
     data: CreateNotificationDTO[],
     sharedContext?: Context
   ): Promise<NotificationDTO[]>
@@ -42,13 +42,13 @@ export interface INotificationModuleService extends IModuleService {
    * @returns {Promise<NotificationDTO>} The sent notification.
    *
    * @example
-   * const notification = await notificationModuleService.create({
+   * const notification = await notificationModuleService.createNotifications({
    *   to: "john@doe.me",
    *   template: "order-confirmation",
    *   channel: "email",
    * })
    */
-  create(
+  createNotifications(
     data: CreateNotificationDTO,
     sharedContext?: Context
   ): Promise<NotificationDTO>
@@ -68,13 +68,13 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const notification =
-   *   await notificationModuleService.retrieve("noti_123")
+   *   await notificationModuleService.retrieveNotification("noti_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const notification = await notificationModuleService.retrieve(
+   * const notification = await notificationModuleService.retrieveNotification(
    *   "noti_123",
    *   {
    *     relations: ["provider"],
@@ -82,7 +82,7 @@ export interface INotificationModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrieveNotification(
     notificationId: string,
     config?: FindConfig<NotificationDTO>,
     sharedContext?: Context
@@ -102,7 +102,7 @@ export interface INotificationModuleService extends IModuleService {
    * To retrieve a list of notifications using their IDs:
    *
    * ```ts
-   * const notifications = await notificationModuleService.list({
+   * const notifications = await notificationModuleService.listNotifications({
    *   id: ["noti_123", "noti_321"],
    * })
    * ```
@@ -110,7 +110,7 @@ export interface INotificationModuleService extends IModuleService {
    * To specify relations that should be retrieved within the notifications:
    *
    * ```ts
-   * const notifications = await notificationModuleService.list(
+   * const notifications = await notificationModuleService.listNotifications(
    *   {
    *     id: ["noti_123", "noti_321"],
    *   },
@@ -123,7 +123,7 @@ export interface INotificationModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const notifications = await notificationModuleService.list(
+   * const notifications = await notificationModuleService.listNotifications(
    *   {
    *     id: ["noti_123", "noti_321"],
    *   },
@@ -135,7 +135,7 @@ export interface INotificationModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listNotifications(
     filters?: FilterableNotificationProps,
     config?: FindConfig<NotificationDTO>,
     sharedContext?: Context
@@ -156,7 +156,7 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const [notifications, count] =
-   *   await notificationModuleService.listAndCount({
+   *   await notificationModuleService.listAndCountNotifications({
    *     id: ["noti_123", "noti_321"],
    *   })
    * ```
@@ -165,7 +165,7 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const [notifications, count] =
-   *   await notificationModuleService.listAndCount(
+   *   await notificationModuleService.listAndCountNotifications(
    *     {
    *       id: ["noti_123", "noti_321"],
    *     },
@@ -179,7 +179,7 @@ export interface INotificationModuleService extends IModuleService {
    *
    * ```ts
    * const [notifications, count] =
-   *   await notificationModuleService.listAndCount(
+   *   await notificationModuleService.listAndCountNotifications(
    *     {
    *       id: ["noti_123", "noti_321"],
    *     },
@@ -191,7 +191,7 @@ export interface INotificationModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountNotifications(
     filters?: FilterableNotificationProps,
     config?: FindConfig<NotificationDTO>,
     sharedContext?: Context

@@ -66,7 +66,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listCollections", () => {
         it("should return collections queried by ID", async () => {
-          const results = await service.listCollections({
+          const results = await service.listProductCollections({
             id: productCollectionOne.id,
           })
 
@@ -78,7 +78,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return collections based on the options and filter parameter", async () => {
-          let results = await service.listCollections(
+          let results = await service.listProductCollections(
             {
               id: productCollectionOne.id,
             },
@@ -93,7 +93,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          results = await service.listCollections({}, { take: 1, skip: 1 })
+          results = await service.listProductCollections(
+            {},
+            { take: 1, skip: 1 }
+          )
 
           expect(results).toEqual([
             expect.objectContaining({
@@ -103,7 +106,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for collections", async () => {
-          const results = await service.listCollections(
+          const results = await service.listProductCollections(
             {
               id: productCollectionOne.id,
             },
@@ -130,7 +133,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountCollections", () => {
         it("should return collections and count queried by ID", async () => {
-          const results = await service.listAndCountCollections({
+          const results = await service.listAndCountProductCollections({
             id: productCollectionOne.id,
           })
 
@@ -143,7 +146,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return collections and count based on the options and filter parameter", async () => {
-          let results = await service.listAndCountCollections(
+          let results = await service.listAndCountProductCollections(
             {
               id: productCollectionOne.id,
             },
@@ -159,11 +162,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          results = await service.listAndCountCollections({}, { take: 1 })
+          results = await service.listAndCountProductCollections(
+            {},
+            { take: 1 }
+          )
 
           expect(results[1]).toEqual(2)
 
-          results = await service.listAndCountCollections(
+          results = await service.listAndCountProductCollections(
             {},
             { take: 1, skip: 1 }
           )
@@ -177,7 +183,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for collections", async () => {
-          const results = await service.listAndCountCollections(
+          const results = await service.listAndCountProductCollections(
             {
               id: productCollectionOne.id,
             },
@@ -205,7 +211,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveCollection", () => {
         it("should return the requested collection", async () => {
-          const result = await service.retrieveCollection(
+          const result = await service.retrieveProductCollection(
             productCollectionOne.id
           )
 
@@ -218,7 +224,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const result = await service.retrieveCollection(
+          const result = await service.retrieveProductCollection(
             productCollectionOne.id,
             {
               select: ["id", "title", "products.title"],
@@ -244,7 +250,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveCollection("does-not-exist")
+            await service.retrieveProductCollection("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -259,9 +265,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const collectionId = "test-1"
 
         it("should delete the product collection given an ID successfully", async () => {
-          await service.deleteCollections([collectionId])
+          await service.deleteProductCollections([collectionId])
 
-          const collections = await service.listCollections({
+          const collections = await service.listProductCollections({
             id: collectionId,
           })
 
@@ -270,7 +276,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
-          await service.deleteCollections([collectionId])
+          await service.deleteProductCollections([collectionId])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
@@ -288,7 +294,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               title: "New Collection",
@@ -305,14 +311,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should update the value of the collection successfully", async () => {
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               title: "New Collection",
             },
           ])
 
-          const productCollection = await service.retrieveCollection(
+          const productCollection = await service.retrieveProductCollection(
             collectionId
           )
 
@@ -320,14 +326,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should add products to a collection successfully", async () => {
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               product_ids: [productOne.id, productTwo.id],
             },
           ])
 
-          const productCollection = await service.retrieveCollection(
+          const productCollection = await service.retrieveProductCollection(
             collectionId,
             {
               select: ["products.id"],
@@ -354,7 +360,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateCollections("does-not-exist", {
+            await service.updateProductCollections("does-not-exist", {
               title: "New Collection",
             })
           } catch (e) {
@@ -367,7 +373,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should dissociate existing products when new products are synced", async () => {
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               product_ids: [productOne.id, productTwo.id],
@@ -377,14 +383,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
           /**
            * Another upsert should remove the first productOne
            */
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               product_ids: [productTwo.id],
             },
           ])
 
-          const productCollection = await service.retrieveCollection(
+          const productCollection = await service.retrieveProductCollection(
             collectionId,
             {
               select: ["products.id"],
@@ -405,7 +411,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should dissociate all existing products", async () => {
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               product_ids: [productOne.id, productTwo.id],
@@ -415,14 +421,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
           /**
            * Another upsert should remove the first productOne
            */
-          await service.upsertCollections([
+          await service.upsertProductCollections([
             {
               id: collectionId,
               product_ids: [],
             },
           ])
 
-          const productCollection = await service.retrieveCollection(
+          const productCollection = await service.retrieveProductCollection(
             collectionId,
             {
               select: ["products.id"],
@@ -436,13 +442,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createCollections", () => {
         it("should create a collection successfully", async () => {
-          const res = await service.createCollections([
+          const res = await service.createProductCollections([
             {
               title: "New Collection",
             },
           ])
 
-          const [productCollection] = await service.listCollections({
+          const [productCollection] = await service.listProductCollections({
             title: "New Collection",
           })
 
@@ -450,7 +456,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should create collection with products successfully", async () => {
-          await service.createCollections([
+          await service.createProductCollections([
             {
               title: "New Collection with products",
               handle: "new-collection-with-products",
@@ -458,7 +464,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             },
           ])
 
-          const [productCollection] = await service.listCollections(
+          const [productCollection] = await service.listProductCollections(
             {
               handle: "new-collection-with-products",
             },
@@ -487,7 +493,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         it("should emit events through event bus", async () => {
           const eventBusSpy = jest.spyOn(MockEventBusService.prototype, "emit")
 
-          const collections = await service.createCollections([
+          const collections = await service.createProductCollections([
             { title: "New Collection" },
           ])
 

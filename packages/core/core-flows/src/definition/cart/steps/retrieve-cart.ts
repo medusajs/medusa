@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CartDTO, FindConfig, ICartModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   id: string
@@ -15,7 +15,7 @@ export const retrieveCartStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    const cart = await cartModuleService.retrieve(data.id, data.config)
+    const cart = await cartModuleService.retrieveCart(data.id, data.config)
 
     // TODO: remove this when cart handles totals calculation
     cart.items = cart.items?.map((item) => {

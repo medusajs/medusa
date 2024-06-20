@@ -1,7 +1,7 @@
 import { FindConfig } from "../common"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
-import { FilterableCurrencyProps, CurrencyDTO } from "./common"
+import { CurrencyDTO, FilterableCurrencyProps } from "./common"
 
 /**
  * The main service interface for the Currency Module.
@@ -18,9 +18,9 @@ export interface ICurrencyModuleService extends IModuleService {
    * @returns {Promise<CurrencyDTO>} The retrieved currency.
    *
    * @example
-   * const currency = await currencyModuleService.retrieve("usd")
+   * const currency = await currencyModuleService.retrieveCurrency("usd")
    */
-  retrieve(
+  retrieveCurrency(
     code: string,
     config?: FindConfig<CurrencyDTO>,
     sharedContext?: Context
@@ -41,7 +41,7 @@ export interface ICurrencyModuleService extends IModuleService {
    * To retrieve a list of currencies using their codes:
    *
    * ```ts
-   * const currencies = await currencyModuleService.list({
+   * const currencies = await currencyModuleService.listCurrencies({
    *   code: ["usd", "eur"],
    * })
    * ```
@@ -49,7 +49,7 @@ export interface ICurrencyModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const currencies = await currencyModuleService.list(
+   * const currencies = await currencyModuleService.listCurrencies(
    *   {
    *     code: ["usd", "eur"],
    *   },
@@ -60,7 +60,7 @@ export interface ICurrencyModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listCurrencies(
     filters?: FilterableCurrencyProps,
     config?: FindConfig<CurrencyDTO>,
     sharedContext?: Context
@@ -82,7 +82,7 @@ export interface ICurrencyModuleService extends IModuleService {
    *
    * ```ts
    * const [currencies, count] =
-   *   await currencyModuleService.listAndCount({
+   *   await currencyModuleService.listAndCountCurrencies({
    *     code: ["usd", "eur"],
    *   })
    * ```
@@ -91,7 +91,7 @@ export interface ICurrencyModuleService extends IModuleService {
    *
    * ```ts
    * const [currencies, count] =
-   *   await currencyModuleService.listAndCount(
+   *   await currencyModuleService.listAndCountCurrencies(
    *     {
    *       code: ["usd", "eur"],
    *     },
@@ -102,7 +102,7 @@ export interface ICurrencyModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountCurrencies(
     filters?: FilterableCurrencyProps,
     config?: FindConfig<CurrencyDTO>,
     sharedContext?: Context

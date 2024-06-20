@@ -24,12 +24,18 @@ export const LocationFulfillmentSet: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "stock_location_id",
       alias: "location",
+      args: {
+        methodSuffix: "StockLocations",
+      },
     },
     {
       serviceName: Modules.FULFILLMENT,
       primaryKey: "id",
       foreignKey: "fulfillment_set_id",
       alias: "fulfillment_set",
+      args: {
+        methodSuffix: "FulfillmentSets",
+      },
       deleteCascade: true,
     },
   ],

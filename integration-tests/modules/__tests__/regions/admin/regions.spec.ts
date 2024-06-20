@@ -87,9 +87,12 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
-        const deletedRegion = await service.retrieve(updated.data.region.id, {
-          withDeleted: true,
-        })
+        const deletedRegion = await service.retrieveRegion(
+          updated.data.region.id,
+          {
+            withDeleted: true,
+          }
+        )
 
         // @ts-ignore
         expect(deletedRegion.deleted_at).toBeTruthy()
@@ -294,7 +297,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw on unknown properties in update", async () => {
-        const created = await service.create({
+        const created = await service.createRegions({
           name: "Test Region",
           currency_code: "usd",
         })
@@ -318,7 +321,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get all regions and count", async () => {
-        await service.create([
+        await service.createRegions([
           {
             name: "Test",
             currency_code: "usd",
@@ -344,7 +347,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should support searching of regions", async () => {
-        await service.create([
+        await service.createRegions([
           {
             name: "APAC",
             currency_code: "usd",
@@ -369,7 +372,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get a region", async () => {
-        const [region] = await service.create([
+        const [region] = await service.createRegions([
           {
             name: "Test",
             currency_code: "usd",

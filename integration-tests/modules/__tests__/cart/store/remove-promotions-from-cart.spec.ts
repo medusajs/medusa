@@ -40,49 +40,51 @@ medusaIntegrationTestRunner({
 
       describe("DELETE /store/carts/:id/promotions", () => {
         it("should remove line item adjustments from a cart based on promotions", async () => {
-          const appliedPromotion = await promotionModuleService.create({
-            code: "PROMOTION_APPLIED",
-            type: PromotionType.STANDARD,
-            application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "each",
-              value: "300",
-              apply_to_quantity: 1,
-              currency_code: "usd",
-              max_quantity: 1,
-              target_rules: [
-                {
-                  attribute: "product_id",
-                  operator: "eq",
-                  values: "prod_tshirt",
-                },
-              ],
-            },
-          })
+          const appliedPromotion =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_APPLIED",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: "300",
+                apply_to_quantity: 1,
+                currency_code: "usd",
+                max_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "product_id",
+                    operator: "eq",
+                    values: "prod_tshirt",
+                  },
+                ],
+              },
+            })
 
-          const appliedPromotionToRemove = await promotionModuleService.create({
-            code: "PROMOTION_APPLIED_TO_REMOVE",
-            type: PromotionType.STANDARD,
-            application_method: {
-              type: "fixed",
-              target_type: "items",
-              allocation: "each",
-              value: "300",
-              apply_to_quantity: 1,
-              currency_code: "usd",
-              max_quantity: 1,
-              target_rules: [
-                {
-                  attribute: "product_id",
-                  operator: "eq",
-                  values: "prod_tshirt",
-                },
-              ],
-            },
-          })
+          const appliedPromotionToRemove =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_APPLIED_TO_REMOVE",
+              type: PromotionType.STANDARD,
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "each",
+                value: "300",
+                apply_to_quantity: 1,
+                currency_code: "usd",
+                max_quantity: 1,
+                target_rules: [
+                  {
+                    attribute: "product_id",
+                    operator: "eq",
+                    values: "prod_tshirt",
+                  },
+                ],
+              },
+            })
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             items: [
               {
@@ -170,71 +172,73 @@ medusaIntegrationTestRunner({
         })
 
         it("should add shipping method adjustments to a cart based on promotions", async () => {
-          const appliedPromotion = await promotionModuleService.create({
-            code: "PROMOTION_APPLIED",
-            type: PromotionType.STANDARD,
-            rules: [
-              {
-                attribute: "customer_id",
-                operator: "in",
-                values: ["cus_test"],
-              },
-              {
-                attribute: "currency_code",
-                operator: "in",
-                values: ["eur"],
-              },
-            ],
-            application_method: {
-              type: "fixed",
-              target_type: "shipping_methods",
-              allocation: "each",
-              value: "100",
-              max_quantity: 1,
-              currency_code: "usd",
-              target_rules: [
+          const appliedPromotion =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_APPLIED",
+              type: PromotionType.STANDARD,
+              rules: [
                 {
-                  attribute: "name",
+                  attribute: "customer_id",
                   operator: "in",
-                  values: ["express"],
+                  values: ["cus_test"],
+                },
+                {
+                  attribute: "currency_code",
+                  operator: "in",
+                  values: ["eur"],
                 },
               ],
-            },
-          })
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: "100",
+                max_quantity: 1,
+                currency_code: "usd",
+                target_rules: [
+                  {
+                    attribute: "name",
+                    operator: "in",
+                    values: ["express"],
+                  },
+                ],
+              },
+            })
 
-          const appliedPromotionToRemove = await promotionModuleService.create({
-            code: "PROMOTION_APPLIED_TO_REMOVE",
-            type: PromotionType.STANDARD,
-            rules: [
-              {
-                attribute: "customer_id",
-                operator: "in",
-                values: ["cus_test"],
-              },
-              {
-                attribute: "currency_code",
-                operator: "in",
-                values: ["eur"],
-              },
-            ],
-            application_method: {
-              type: "fixed",
-              target_type: "shipping_methods",
-              allocation: "each",
-              value: "100",
-              max_quantity: 1,
-              currency_code: "usd",
-              target_rules: [
+          const appliedPromotionToRemove =
+            await promotionModuleService.createPromotions({
+              code: "PROMOTION_APPLIED_TO_REMOVE",
+              type: PromotionType.STANDARD,
+              rules: [
                 {
-                  attribute: "name",
+                  attribute: "customer_id",
                   operator: "in",
-                  values: ["express"],
+                  values: ["cus_test"],
+                },
+                {
+                  attribute: "currency_code",
+                  operator: "in",
+                  values: ["eur"],
                 },
               ],
-            },
-          })
+              application_method: {
+                type: "fixed",
+                target_type: "shipping_methods",
+                allocation: "each",
+                value: "100",
+                max_quantity: 1,
+                currency_code: "usd",
+                target_rules: [
+                  {
+                    attribute: "name",
+                    operator: "in",
+                    values: ["express"],
+                  },
+                ],
+              },
+            })
 
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "eur",
             customer_id: "cus_test",
             items: [

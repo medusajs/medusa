@@ -17,7 +17,7 @@ export const uploadFilesStep = createStep(
     const service = container.resolve<IFileModuleService>(
       ModuleRegistrationName.FILE
     )
-    const created = await service.create(data.files)
+    const created = await service.createFiles(data.files)
     return new StepResponse(
       created,
       created.map((file) => file.id)
@@ -32,6 +32,6 @@ export const uploadFilesStep = createStep(
       ModuleRegistrationName.FILE
     )
 
-    await service.delete(createdIds)
+    await service.deleteFiles(createdIds)
   }
 )

@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { ClaimType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import {Modules} from "@medusajs/modules-sdk"
+import {CreateOrderDTO, IOrderModuleService} from "@medusajs/types"
+import {ClaimType} from "@medusajs/utils"
+import {moduleIntegrationTestRunner, SuiteOptions} from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -104,7 +104,7 @@ moduleIntegrationTestRunner({
       } as CreateOrderDTO
 
       it("should claim an item and add two new items to the order", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         // Fullfilment
         await service.registerFulfillment({

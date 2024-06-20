@@ -5,7 +5,7 @@ import {
   UpdateTaxRateDTO,
 } from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type UpdateTaxRatesStepInput = {
   selector: FilterableTaxRateProps
@@ -24,12 +24,12 @@ export const updateTaxRatesStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listTaxRates(data.selector, {
       select: selects,
       relations,
     })
 
-    const taxRates = await service.update(data.selector, data.update)
+    const taxRates = await service.updateTaxRates(data.selector, data.update)
 
     return new StepResponse(taxRates, prevData)
   },
@@ -42,6 +42,6 @@ export const updateTaxRatesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.upsert(prevData)
+    await service.upsertTaxRates(prevData)
   }
 )

@@ -1,5 +1,5 @@
 import { DataTable } from "../../../../../components/table/data-table"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { useReservationItems } from "../../../../../hooks/api/reservations"
 import { useReservationTableColumn } from "./use-reservation-list-table-columns"
@@ -10,7 +10,7 @@ const PAGE_SIZE = 20
 export const ReservationItemTable = ({
   inventoryItem,
 }: {
-  inventoryItem: InventoryNext.InventoryItemDTO
+  inventoryItem: InventoryTypes.InventoryItemDTO
 }) => {
   const { searchParams, raw } = useReservationsTableQuery({
     pageSize: PAGE_SIZE,
@@ -29,7 +29,7 @@ export const ReservationItemTable = ({
     columns,
     count,
     enablePagination: true,
-    getRowId: (row: InventoryNext.ReservationItemDTO) => row.id,
+    getRowId: (row: InventoryTypes.ReservationItemDTO) => row.id,
     pageSize: PAGE_SIZE,
   })
 

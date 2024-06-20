@@ -16,13 +16,16 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<FileDTO[]>} The created files.
    *
    * @example
-   * const [file] = await fileModuleService.create([{
+   * const [file] = await fileModuleService.createFiles([{
    *   filename: "product.png",
    *   mimeType: "image/png",
    *   content: "somecontent"
    * }])
    */
-  create(data: CreateFileDTO[], sharedContext?: Context): Promise<FileDTO[]>
+  createFiles(
+    data: CreateFileDTO[],
+    sharedContext?: Context
+  ): Promise<FileDTO[]>
 
   /**
    * This method uploads a file to the designated file storage system.
@@ -32,14 +35,14 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<FileDTO>} The created file.
    *
    * @example
-   * const file = await fileModuleService.create({
+   * const file = await fileModuleService.createFiles({
    *   filename: "product.png",
    *   mimeType: "image/png",
    *   content: "somecontent"
    * })
    */
 
-  create(data: CreateFileDTO, sharedContext?: Context): Promise<FileDTO>
+  createFiles(data: CreateFileDTO, sharedContext?: Context): Promise<FileDTO>
 
   /**
    * This method deletes files by their IDs.
@@ -49,9 +52,9 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the files are deleted successfully.
    *
    * @example
-   * await fileModuleService.delete(["file_123"])
+   * await fileModuleService.deleteFiles(["file_123"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteFiles(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a file by its ID.
@@ -61,9 +64,9 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the file is deleted successfully.
    *
    * @example
-   * await fileModuleService.delete("file_123")
+   * await fileModuleService.deleteFiles("file_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteFiles(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a file with a downloadable URL by its ID.
@@ -75,9 +78,9 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<FileDTO>} The retrieved file.
    *
    * @example
-   * const file = await fileModuleService.retrieve("file_123")
+   * const file = await fileModuleService.retrieveFile("file_123")
    */
-  retrieve(
+  retrieveFile(
     id: string,
     config?: FindConfig<FileDTO>,
     sharedContext?: Context
@@ -94,7 +97,7 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<FileDTO[]>} The list of files. In this particular case, it will either be at most one file.
    *
    */
-  list(
+  listFiles(
     filters?: FilterableFileProps,
     config?: FindConfig<FileDTO>,
     sharedContext?: Context
@@ -111,7 +114,7 @@ export interface IFileModuleService extends IModuleService {
    * @returns {Promise<[FileDTO[], number]>} The list of files and their count. In this particular case, it will either be at most one file.
    *
    */
-  listAndCount(
+  listAndCountFiles(
     filters?: FilterableFileProps,
     config?: FindConfig<FileDTO>,
     sharedContext?: Context

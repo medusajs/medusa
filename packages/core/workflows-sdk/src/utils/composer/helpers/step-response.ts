@@ -66,7 +66,7 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    *     )
    *
    *     try {
-   *       const product = await productService.create(input)
+   *       const product = await productService.createProducts(input)
    *       return new StepResponse({
    *         product
    *       }, {

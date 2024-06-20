@@ -24,12 +24,12 @@ export const updateProductCategoriesStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listCategories(data.selector, {
+    const prevData = await service.listProductCategories(data.selector, {
       select: selects,
       relations,
     })
 
-    const productCategories = await service.updateCategories(
+    const productCategories = await service.updateProductCategories(
       data.selector,
       data.update
     )
@@ -44,6 +44,6 @@ export const updateProductCategoriesStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertCategories(prevData)
+    await service.upsertProductCategories(prevData)
   }
 )

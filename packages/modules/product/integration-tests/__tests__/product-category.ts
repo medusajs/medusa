@@ -17,7 +17,7 @@ type Service = IProductModuleService & {
 
 moduleIntegrationTestRunner<Service>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({ MikroOrmWrapper, service: moduleService }) => {
+  testSuite: ({ service: moduleService }) => {
     describe("Product category Service", () => {
       let service: ProductCategoryService
 

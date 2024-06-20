@@ -10,6 +10,7 @@ export type KnownDataTypes =
   | "number"
   | "dateTime"
   | "json"
+  | "id"
 
 /**
  * List of available relationships at DML level
@@ -53,7 +54,7 @@ export type PropertyType<T> = {
  */
 export type RelationshipOptions = {
   mappedBy?: string
-}
+} & Record<string, any>
 
 /**
  * The meta-data returned by the relationship parse
@@ -65,6 +66,7 @@ export type RelationshipMetadata = {
   entity: unknown
   nullable: boolean
   mappedBy?: string
+  options: Record<string, any>
 }
 
 /**

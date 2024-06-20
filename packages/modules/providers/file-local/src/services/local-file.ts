@@ -39,7 +39,7 @@ export class LocalFileService extends AbstractFileProviderService {
     const filePath = this.getUploadFilePath(fileKey)
     const fileUrl = this.getUploadFileUrl(fileKey)
 
-    const content = Buffer.from(file.content, "binary")
+    const content = Buffer.from(file.content as string, "binary")
     await fs.writeFile(filePath, content)
 
     return {

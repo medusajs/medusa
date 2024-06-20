@@ -10,7 +10,7 @@ export const createRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    const created = await service.create(data)
+    const created = await service.createRegions(data)
 
     return new StepResponse(
       created,
@@ -26,6 +26,6 @@ export const createRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await service.delete(createdIds)
+    await service.deleteRegions(createdIds)
   }
 )

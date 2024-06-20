@@ -14,7 +14,7 @@ export const createStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    const created = await service.create(data.stores)
+    const created = await service.createStores(data.stores)
     return new StepResponse(
       created,
       created.map((store) => store.id)
@@ -29,6 +29,6 @@ export const createStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    await service.delete(createdIds)
+    await service.deleteStores(createdIds)
   }
 )
