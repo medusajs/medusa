@@ -32,5 +32,5 @@ export async function createAuthIdentities(
     },
   ]
 ): Promise<AuthIdentity[]> {
-  return await service.create(userData)
+  return await service.createAuthIdentities(userData)
 }

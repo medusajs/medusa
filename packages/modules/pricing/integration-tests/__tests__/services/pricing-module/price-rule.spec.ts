@@ -1,8 +1,8 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Price } from "../../../../src"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Price } from "../../../../src/models"
 import { createPrices } from "../../../__fixtures__/price"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
@@ -10,12 +10,9 @@ import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("PricingModule Service - PriceRule", () => {
       let testManager: SqlEntityManager
       beforeEach(async () => {
@@ -279,7 +276,7 @@ moduleIntegrationTestRunner({
               price_set_id: "price-set-1",
               title: "test",
               rules_count: 0,
-            })
+            } as Price)
 
             await testManager.persist(price).flush()
 

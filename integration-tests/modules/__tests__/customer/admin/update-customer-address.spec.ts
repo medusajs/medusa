@@ -29,12 +29,12 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a customer address", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
 
-        const address = await customerModuleService.addAddresses({
+        const address = await customerModuleService.createAddresses({
           customer_id: customer.id,
           first_name: "John",
           last_name: "Doe",
@@ -62,11 +62,11 @@ medusaIntegrationTestRunner({
       })
 
       it("updates a new address to be default and unsets old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
-        const [, address] = await customerModuleService.addAddresses([
+        const [, address] = await customerModuleService.createAddresses([
           {
             customer_id: customer.id,
             first_name: "John",
@@ -104,11 +104,11 @@ medusaIntegrationTestRunner({
 
       // do the same as above but for billing address
       it("updates a new address to be default and unsets old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
-        const [, address] = await customerModuleService.addAddresses([
+        const [, address] = await customerModuleService.createAddresses([
           {
             customer_id: customer.id,
             first_name: "John",

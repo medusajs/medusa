@@ -1,6 +1,6 @@
-import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
-import { OrchestrationUtils, deepCopy } from "@medusajs/utils"
-import { resolveValue } from "./helpers"
+import {WorkflowStepHandlerArguments} from "@medusajs/orchestration"
+import {deepCopy, OrchestrationUtils} from "@medusajs/utils"
+import {resolveValue} from "./helpers"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -68,7 +68,7 @@ import {
  *   async (product, context: StepExecutionContext) => {
  *     const productService: ProductService = context.container.resolve("productService")
  *
- *     const updatedProduct = await productService.update(product.id, {
+ *     const updatedProduct = await productService.updateProducts(product.id, {
  *       description: "a cool shirt"
  *     })
  *

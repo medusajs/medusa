@@ -20,18 +20,22 @@ export const createAdminUser = async (
   const authModule: IAuthModuleService = appContainer.resolve(
     ModuleRegistrationName.AUTH
   )
-  const user = await userModule.create({
+  const user = await userModule.createUsers({
     first_name: "Admin",
     last_name: "User",
     email: "admin@medusa.js",
   })
 
-  const authIdentity = await authModule.create({
-    provider: "emailpass",
-    entity_id: "admin@medusa.js",
-    provider_metadata: {
-      password: "somepassword",
-    },
+  const authIdentity = await authModule.createAuthIdentities({
+    provider_identities: [
+      {
+        provider: "emailpass",
+        entity_id: "admin@medusa.js",
+        provider_metadata: {
+          password: "somepassword",
+        },
+      },
+    ],
     app_metadata: {
       user_id: user.id,
     },

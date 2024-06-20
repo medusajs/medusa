@@ -10,7 +10,7 @@ export const deleteRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await service.softDelete(ids)
+    await service.softDeleteRegions(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -23,6 +23,6 @@ export const deleteRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await service.restore(prevIds)
+    await service.restoreRegions(prevIds)
   }
 )

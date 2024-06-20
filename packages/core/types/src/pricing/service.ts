@@ -119,13 +119,13 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const priceSet =
-   *   await pricingModuleService.retrieve("pset_123")
+   *   await pricingModuleService.retrievePriceSet("pset_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.retrieve(
+   * const priceSet = await pricingModuleService.retrievePriceSet(
    *   "pset_123",
    *   {
    *     relations: ["prices"],
@@ -133,7 +133,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrievePriceSet(
     id: string,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -154,7 +154,7 @@ export interface IPricingModuleService extends IModuleService {
    * To retrieve a list of price sets using their IDs:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list({
+   * const priceSets = await pricingModuleService.listPriceSets({
    *   id: ["pset_123", "pset_321"],
    * })
    * ```
@@ -162,7 +162,7 @@ export interface IPricingModuleService extends IModuleService {
    * To specify relations that should be retrieved within the price sets:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list(
+   * const priceSets = await pricingModuleService.listPriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
@@ -175,7 +175,7 @@ export interface IPricingModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const priceSets = await pricingModuleService.list(
+   * const priceSets = await pricingModuleService.listPriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
@@ -187,7 +187,7 @@ export interface IPricingModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listPriceSets(
     filters?: FilterablePriceSetProps,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -209,7 +209,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount({
+   *   await pricingModuleService.listAndCountPriceSets({
    *     id: ["pset_123", "pset_321"],
    *   })
    * ```
@@ -218,7 +218,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount(
+   *   await pricingModuleService.listAndCountPriceSets(
    *     {
    *       id: ["pset_123", "pset_321"],
    *     },
@@ -232,7 +232,7 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const [priceSets, count] =
-   *   await pricingModuleService.listAndCount(
+   *   await pricingModuleService.listAndCountPriceSets(
    *     {
    *       id: ["pset_123", "pset_321"],
    *     },
@@ -244,7 +244,7 @@ export interface IPricingModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountPriceSets(
     filters?: FilterablePriceSetProps,
     config?: FindConfig<PriceSetDTO>,
     sharedContext?: Context
@@ -261,7 +261,7 @@ export interface IPricingModuleService extends IModuleService {
    * To create a default price set, don't pass any rules. For example:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.create({
+   * const priceSet = await pricingModuleService.createPriceSets({
    *   rules: [],
    *   prices: [
    *     {
@@ -285,7 +285,7 @@ export interface IPricingModuleService extends IModuleService {
    * To create a price set and associate it with rule types:
    *
    * ```ts
-   * const priceSet = await pricingModuleService.create({
+   * const priceSet = await pricingModuleService.createPriceSets({
    *   rules: [
    *     { rule_attribute: "region_id" },
    *     { rule_attribute: "city" },
@@ -317,7 +317,10 @@ export interface IPricingModuleService extends IModuleService {
    * })
    * ```
    */
-  create(data: CreatePriceSetDTO, sharedContext?: Context): Promise<PriceSetDTO>
+  createPriceSets(
+    data: CreatePriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
 
   /**
    * This method is used to create multiple price sets.
@@ -327,7 +330,7 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The list of created price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.create([
+   * const priceSets = await pricingModuleService.createPriceSets([
    *   // default price set
    *   {
    *     rules: [],
@@ -381,7 +384,7 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createPriceSets(
     data: CreatePriceSetDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
@@ -394,7 +397,7 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The updated and created price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.upsert([
+   * const priceSets = await pricingModuleService.upsertPriceSets([
    *   {
    *     prices: [
    *       {
@@ -409,7 +412,7 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(
+  upsertPriceSets(
     data: UpsertPriceSetDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
@@ -422,12 +425,15 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO>} The updated or created price set.
    *
    * @example
-   * const priceSet = await pricingModuleService.upsert({
+   * const priceSet = await pricingModuleService.upsertPriceSets({
    *   id: "pset_123",
    *   rules: [{ rule_attribute: "region_id" }],
    * })
    */
-  upsert(data: UpsertPriceSetDTO, sharedContext?: Context): Promise<PriceSetDTO>
+  upsertPriceSets(
+    data: UpsertPriceSetDTO,
+    sharedContext?: Context
+  ): Promise<PriceSetDTO>
 
   /**
    * This method is used to update a price set.
@@ -438,14 +444,14 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO>} The updated price set.
    *
    * @example
-   * const priceSet = await pricingModuleService.update(
+   * const priceSet = await pricingModuleService.updatePriceSets(
    *   "pset_123",
    *   {
    *     rules: [{ rule_attribute: "region_id" }],
    *   }
    * )
    */
-  update(
+  updatePriceSets(
     id: string,
     data: UpdatePriceSetDTO,
     sharedContext?: Context
@@ -460,7 +466,7 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<PriceSetDTO[]>} The updated price sets.
    *
    * @example
-   * const priceSets = await pricingModuleService.update(
+   * const priceSets = await pricingModuleService.updatePriceSets(
    *   {
    *     id: ["pset_123", "pset_321"],
    *   },
@@ -469,7 +475,7 @@ export interface IPricingModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updatePriceSets(
     selector: FilterablePriceSetProps,
     data: UpdatePriceSetDTO,
     sharedContext?: Context
@@ -503,9 +509,9 @@ export interface IPricingModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the price sets are successfully deleted.
    *
    * @example
-   * await pricingModuleService.delete(["pset_123", "pset_321"])
+   * await pricingModuleService.deletePriceSets(["pset_123", "pset_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deletePriceSets(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method adds prices to a price set.

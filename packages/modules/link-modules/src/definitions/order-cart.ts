@@ -24,12 +24,18 @@ export const OrderCart: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "order_id",
       alias: "order",
+      args: {
+        methodSuffix: "Orders",
+      },
     },
     {
       serviceName: Modules.CART,
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
   ],
   extends: [

@@ -7,7 +7,7 @@ import {
 } from "../../../../../../components/route-modal"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -16,7 +16,7 @@ import { CountrySelect } from "../../../../../../components/inputs/country-selec
 import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 
 type EditInventoryItemAttributeFormProps = {
-  item: InventoryNext.InventoryItemDTO
+  item: InventoryTypes.InventoryItemDTO
 }
 
 const EditInventoryItemAttributesSchema = z.object({
@@ -29,7 +29,7 @@ const EditInventoryItemAttributesSchema = z.object({
   origin_country: z.string().optional(),
 })
 
-const getDefaultValues = (item: InventoryNext.InventoryItemDTO) => {
+const getDefaultValues = (item: InventoryTypes.InventoryItemDTO) => {
   return {
     height: item.height ?? undefined,
     width: item.width ?? undefined,

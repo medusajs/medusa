@@ -5,7 +5,7 @@ export const createDefaultRuleTypes = async (container) => {
     "pricingModuleService"
   )
 
-  return pricingModuleService.createRuleTypes([
+  return await pricingModuleService.createRuleTypes([
     {
       name: "region_id",
       rule_attribute: "region_id",

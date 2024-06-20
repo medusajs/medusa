@@ -6,8 +6,8 @@ import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
 import {
-    RouteFocusModal,
-    useRouteModal,
+  RouteFocusModal,
+  useRouteModal,
 } from "../../../../../components/route-modal"
 import { useCreateShippingProfile } from "../../../../../hooks/api/shipping-profiles"
 
@@ -45,7 +45,9 @@ export function CreateShippingProfileForm() {
             dismissLabel: t("actions.close"),
           })
 
-          handleSuccess(`/settings/shipping-profiles/${shipping_profile.id}`)
+          handleSuccess(
+            `/settings/locations/shipping-profiles/${shipping_profile.id}`
+          )
         },
         onError: (error) => {
           toast.error(t("general.error"), {

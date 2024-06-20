@@ -10,7 +10,7 @@ export const deleteStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    await storeModule.softDelete(ids)
+    await storeModule.softDeleteStores(ids)
     return new StepResponse(void 0, ids)
   },
   async (idsToRestore, { container }) => {
@@ -22,6 +22,6 @@ export const deleteStoresStep = createStep(
       ModuleRegistrationName.STORE
     )
 
-    await storeModule.restore(idsToRestore)
+    await storeModule.restoreStores(idsToRestore)
   }
 )

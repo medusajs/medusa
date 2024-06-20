@@ -35,11 +35,11 @@ export const updateProductsStep = createStep(
         return new StepResponse([], [])
       }
 
-      const prevData = await service.list({
+      const prevData = await service.listProducts({
         id: data.products.map((p) => p.id) as string[],
       })
 
-      const products = await service.upsert(data.products)
+      const products = await service.upsertProducts(data.products)
       return new StepResponse(products, prevData)
     }
 
@@ -47,12 +47,12 @@ export const updateProductsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listProducts(data.selector, {
       select: selects,
       relations,
     })
 
-    const products = await service.update(data.selector, data.update)
+    const products = await service.updateProducts(data.selector, data.update)
     return new StepResponse(products, prevData)
   },
   async (prevData, { container }) => {
@@ -64,7 +64,7 @@ export const updateProductsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsert(
+    await service.upsertProducts(
       prevData.map((r) => ({
         ...(r as unknown as ProductTypes.UpdateProductDTO),
       }))

@@ -10,7 +10,7 @@ export const deleteFilesStep = createStep(
       ModuleRegistrationName.FILE
     )
 
-    await service.delete(ids)
+    await service.deleteFiles(ids)
     return new StepResponse(void 0)
   },
   async () => {}

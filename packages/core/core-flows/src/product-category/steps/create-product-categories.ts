@@ -17,7 +17,9 @@ export const createProductCategoriesStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    const created = await service.createCategories(data.product_categories)
+    const created = await service.createProductCategories(
+      data.product_categories
+    )
 
     return new StepResponse(
       created,
@@ -33,6 +35,6 @@ export const createProductCategoriesStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.deleteCategories(createdIds)
+    await service.deleteProductCategories(createdIds)
   }
 )

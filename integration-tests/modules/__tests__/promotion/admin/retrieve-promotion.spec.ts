@@ -41,7 +41,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get the requested promotion by id or codde", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "TEST",
           type: PromotionType.STANDARD,
           application_method: {
@@ -78,7 +78,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should get the requested promotion with filtered fields and relations", async () => {
-        const createdPromotion = await promotionModuleService.create({
+        const createdPromotion = await promotionModuleService.createPromotions({
           code: "TEST",
           type: PromotionType.STANDARD,
           application_method: {

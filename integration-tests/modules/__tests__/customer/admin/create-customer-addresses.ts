@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
       it("should create a customer address", async () => {
         // Create a customer
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
         })
@@ -56,16 +56,16 @@ medusaIntegrationTestRunner({
           ])
         )
 
-        const customerWithAddresses = await customerModuleService.retrieve(
-          customer.id,
-          { relations: ["addresses"] }
-        )
+        const customerWithAddresses =
+          await customerModuleService.retrieveCustomer(customer.id, {
+            relations: ["addresses"],
+          })
 
         expect(customerWithAddresses.addresses?.length).toEqual(1)
       })
 
       it("sets new shipping address as default and unsets the old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
           addresses: [
@@ -100,7 +100,7 @@ medusaIntegrationTestRunner({
       })
 
       it("sets new billing address as default and unsets the old one", async () => {
-        const customer = await customerModuleService.create({
+        const customer = await customerModuleService.createCustomers({
           first_name: "John",
           last_name: "Doe",
           addresses: [

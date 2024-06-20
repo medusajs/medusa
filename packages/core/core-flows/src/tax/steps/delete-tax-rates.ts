@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ITaxModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const deleteTaxRatesStepId = "delete-tax-rates"
 export const deleteTaxRatesStep = createStep(
@@ -10,7 +10,7 @@ export const deleteTaxRatesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.softDelete(ids)
+    await service.softDeleteTaxRates(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -23,6 +23,6 @@ export const deleteTaxRatesStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    await service.restore(prevIds)
+    await service.restoreTaxRates(prevIds)
   }
 )

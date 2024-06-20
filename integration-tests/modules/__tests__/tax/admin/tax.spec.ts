@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
         const region = await service.createTaxRegions({
           country_code: "us",
         })
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           code: "test",
           rate: 2.5,
@@ -69,14 +69,14 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           code: "low",
           rate: 2.5,
           name: "low rate",
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           code: "high",
           rate: 5,
@@ -384,7 +384,7 @@ medusaIntegrationTestRunner({
           deleted: true,
         })
 
-        const rates = await service.list(
+        const rates = await service.listTaxRates(
           { id: rateRes.data.tax_rate.id },
           { withDeleted: true }
         )
@@ -397,7 +397,7 @@ medusaIntegrationTestRunner({
           country_code: "us",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           code: "test",
           rate: 2.5,

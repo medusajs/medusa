@@ -33,7 +33,7 @@
     "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "^29.1.1",
-    "typescript": "^4.4.4"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "watch": "tsc --build --watch",

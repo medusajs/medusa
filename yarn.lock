@@ -4244,8 +4244,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-api-key-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4258,7 +4256,7 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -4304,8 +4302,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-auth-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4361,8 +4357,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-cart-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4407,8 +4401,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-currency-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4434,8 +4426,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-customer-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4538,7 +4528,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -4553,7 +4543,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
     ulid: ^2.3.0
   languageName: unknown
   linkType: soft
@@ -4596,7 +4586,7 @@ __metadata:
     express: ^4.17.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -4623,8 +4613,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-fulfillment-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -4768,7 +4756,7 @@ __metadata:
     rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
-    typescript: ^4.9.5
+    typescript: ^5.3.3
     ulid: ^2.3.0
     winston: ^3.8.2
     yargs: ^15.3.1
@@ -4862,7 +4850,7 @@ __metadata:
     rimraf: ^5.0.1
     supertest: ^4.0.2
     ts-jest: ^29.1.1
-    typescript: ^4.4.4
+    typescript: ^5.3.3
     uuid: ^9.0.0
     zod: 3.22.4
   languageName: unknown
@@ -4898,7 +4886,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -4913,7 +4901,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -4989,8 +4977,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-order-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5008,7 +4994,7 @@ __metadata:
     jest: ^29.7.0
     rimraf: ^5.0.1
     stripe: latest
-    typescript: ^4.9.5
+    typescript: ^5.3.3
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
   languageName: unknown
@@ -5037,8 +5023,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-payment-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5064,8 +5048,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-pricing-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5094,8 +5076,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-product-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5121,8 +5101,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-promotion-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5148,8 +5126,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-region-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5175,8 +5151,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-sales-channel-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5227,8 +5201,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-store-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5254,8 +5226,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-tax-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -5415,8 +5385,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
-  bin:
-    medusa-user-seed: dist/scripts/bin/run-seed.js
   languageName: unknown
   linkType: soft
 
@@ -18418,7 +18386,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     pg: ^8.11.0
     typeorm: ^0.3.16
-    typescript: ^4.1.3
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -18454,7 +18422,7 @@ __metadata:
     jest-environment-node: ^29.7.0
     medusa-test-utils: "workspace:*"
     pg: ^8.11.0
-    typescript: ^4.1.3
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -18491,7 +18459,7 @@ __metadata:
     medusa-test-utils: "workspace:*"
     pg: ^8.11.0
     typeorm: ^0.3.16
-    typescript: ^4.1.3
+    typescript: ^5.3.3
   languageName: unknown
   linkType: soft
 
@@ -21309,7 +21277,7 @@ __metadata:
     jest: ^29.7.0
     lodash: ^4.17.21
     signal-exit: ^3.0.7
-    typescript: ^4.4.4
+    typescript: ^5.3.3
     verdaccio: ^4.10.0
     yargs: ^15.4.1
   bin:
@@ -28631,7 +28599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.9.5, typescript@npm:^4.1.3, typescript@npm:^4.4.4, typescript@npm:^4.9.5":
+"typescript@npm:4.9.5, typescript@npm:^4.1.3":
   version: 4.9.5
   resolution: "typescript@npm:4.9.5"
   bin:
@@ -28681,7 +28649,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.1.3#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
   bin:

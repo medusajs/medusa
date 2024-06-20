@@ -1,16 +1,13 @@
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("PricingModuleService ruleType", () => {
       beforeEach(async () => {
         const testManager = MikroOrmWrapper.forkManager()
