@@ -1,39 +1,40 @@
 import {
-  Enum,
+  BeforeCreate,
   Entity,
-  OneToMany,
-  Property,
-  OneToOne,
+  Enum,
+  Filter,
   ManyToMany,
   ManyToOne,
-  Filter,
-  PrimaryKey,
-  BeforeCreate,
+  OneToMany,
+  OneToOne,
   OnInit,
+  PrimaryKey,
+  Property,
 } from "@mikro-orm/core"
-import { DmlEntity } from "../entity"
+import { DALUtils } from "../../bundles"
 import {
-  pluralize,
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
-  toCamelCase,
   generateEntityId,
+  isDefined,
+  pluralize,
+  toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
+import { DmlEntity } from "../entity"
+import { HasMany } from "../relations/has-many"
+import { HasOne } from "../relations/has-one"
+import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
 import type {
-  Infer,
-  PropertyType,
   EntityCascades,
+  EntityConstructor,
+  Infer,
   KnownDataTypes,
   PropertyMetadata,
-  RelationshipType,
-  EntityConstructor,
+  PropertyType,
   RelationshipMetadata,
+  RelationshipType,
 } from "../types"
-import { DALUtils } from "../../bundles"
-import { HasOne } from "../relations/has-one"
-import { HasMany } from "../relations/has-many"
-import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -169,7 +170,12 @@ export function createMikrORMEntity() {
       Enum({
         items: () => field.dataType.options!.choices,
         nullable: field.nullable,
-        default: field.defaultValue,
+        /**
+         * MikroORM does not ignore undefined values for default when generating
+         * the database schema SQL. Conditionally add it here to prevent undefined
+         * from being set as default value in SQL.
+         */
+        ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
       })(MikroORMEntity.prototype, field.fieldName)
       return
     }
@@ -217,7 +223,12 @@ export function createMikrORMEntity() {
       columnType,
       type: propertyType,
       nullable: field.nullable,
-      default: field.defaultValue,
+      /**
+       * MikroORM does not ignore undefined values for default when generating
+       * the database schema SQL. Conditionally add it here to prevent undefined
+       * from being set as default value in SQL.
+       */
+      ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
     })(MikroORMEntity.prototype, field.fieldName)
   }
 
