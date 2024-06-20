@@ -1,3 +1,4 @@
+import { DALUtils, isDefined } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -7,12 +8,14 @@ import {
   OnLoad,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import { DALUtils, isDefined } from "@medusajs/utils"
 
+import {
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import { InventoryItem } from "./inventory-item"
-import { createPsqlIndexStatementHelper } from "@medusajs/utils"
-import { generateEntityId } from "@medusajs/utils"
 
 const InventoryLevelDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "inventory_level",
@@ -90,7 +93,7 @@ export class InventoryLevel {
   @ManyToOne(() => InventoryItem, {
     persist: false,
   })
-  inventory_item: InventoryItem
+  inventory_item: Rel<InventoryItem>
 
   available_quantity: number | null = null
 

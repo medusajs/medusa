@@ -16,6 +16,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
@@ -55,7 +56,7 @@ export default class ShippingProfile {
     () => ShippingOption,
     (shippingOption) => shippingOption.shipping_profile
   )
-  shipping_options = new Collection<ShippingOption>(this)
+  shipping_options = new Collection<Rel<ShippingOption>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

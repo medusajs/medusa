@@ -39,7 +39,7 @@ export class RemoteQuery {
       )
     }
 
-    for (const mod of modulesLoaded) {
+    for (const mod of modulesLoaded || []) {
       if (!mod.__definition.isQueryable) {
         continue
       }

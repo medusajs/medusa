@@ -2,7 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
-import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
+import { BeforeCreate, Entity, ManyToOne, OnInit, Rel } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
 
@@ -16,7 +16,7 @@ export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne(() => ShippingMethod, {
     persist: false,
   })
-  shipping_method: ShippingMethod
+  shipping_method: Rel<ShippingMethod>
 
   @ManyToOne({
     entity: () => ShippingMethod,

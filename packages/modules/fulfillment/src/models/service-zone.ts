@@ -18,6 +18,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import FulfillmentSet from "./fulfillment-set"
 import GeoZone from "./geo-zone"
@@ -71,13 +72,13 @@ export default class ServiceZone {
   fulfillment_set_id: string
 
   @ManyToOne(() => FulfillmentSet, { persist: false })
-  fulfillment_set: FulfillmentSet
+  fulfillment_set: Rel<FulfillmentSet>
 
   @OneToMany(() => GeoZone, "service_zone", {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  geo_zones = new Collection<GeoZone>(this)
+  geo_zones = new Collection<Rel<GeoZone>>(this)
 
   @OneToMany(
     () => ShippingOption,
@@ -87,7 +88,7 @@ export default class ServiceZone {
       orphanRemoval: true,
     }
   )
-  shipping_options = new Collection<ShippingOption>(this)
+  shipping_options = new Collection<Rel<ShippingOption>>(this)
 
   @Property({
     onCreate: () => new Date(),

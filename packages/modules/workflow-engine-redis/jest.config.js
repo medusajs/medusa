@@ -5,11 +5,13 @@ module.exports = {
     "^@repositories": "<rootDir>/src/repositories",
   },
   transform: {
-    "^.+\\.[jt]s?$": [
-      "ts-jest",
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
       {
-        tsconfig: "tsconfig.spec.json",
-        isolatedModules: true,
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
       },
     ],
   },

@@ -16,6 +16,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ServiceZone from "./service-zone"
 
@@ -56,7 +57,7 @@ export default class FulfillmentSet {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  service_zones = new Collection<ServiceZone>(this)
+  service_zones = new Collection<Rel<ServiceZone>>(this)
 
   @Property({
     onCreate: () => new Date(),

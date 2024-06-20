@@ -16,6 +16,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ServiceZone from "./service-zone"
 
@@ -92,7 +93,7 @@ export default class GeoZone {
   @ManyToOne(() => ServiceZone, {
     persist: false,
   })
-  service_zone: ServiceZone
+  service_zone: Rel<ServiceZone>
 
   @Property({
     onCreate: () => new Date(),

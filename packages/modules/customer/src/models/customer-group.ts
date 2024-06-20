@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 import CustomerGroupCustomer from "./customer-group-customer"
@@ -45,7 +46,7 @@ export default class CustomerGroup {
     entity: () => Customer,
     pivotEntity: () => CustomerGroupCustomer,
   })
-  customers = new Collection<Customer>(this)
+  customers = new Collection<Rel<Customer>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

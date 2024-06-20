@@ -62,7 +62,7 @@ export class RemoteLink {
       )
     }
 
-    for (const mod of modulesLoaded) {
+    for (const mod of modulesLoaded || []) {
       this.addModule(mod)
     }
   }

@@ -11,6 +11,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
   Unique,
 } from "@mikro-orm/core"
 import CampaignBudget from "./campaign-budget"
@@ -64,10 +65,10 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-  budget: CampaignBudget | null = null
+  budget: Rel<CampaignBudget> | null = null
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign)
-  promotions = new Collection<Promotion>(this)
+  promotions = new Collection<Rel<Promotion>>(this)
 
   @Property({
     onCreate: () => new Date(),
