@@ -1,9 +1,9 @@
 import { BelongsTo } from "./relations/belongs-to"
 import {
-  PropertyType,
   EntityCascades,
-  RelationshipType,
   ExtractEntityRelations,
+  PropertyType,
+  RelationshipType,
 } from "./types"
 
 /**
@@ -13,8 +13,24 @@ import {
 export class DmlEntity<
   Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
 > {
+  static __dmlEntitySymbol__ = Symbol("DmlEntity")
+
   #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}
+
+  /**
+   * A static method to check if an entity is an instance of DmlEntity.
+   * It allows us to identify a specific object as being an instance of
+   * DmlEntity.
+   *
+   * @param entity
+   */
+  static isDmlEntity(entity: any): entity is DmlEntity<any> {
+    return (
+      entity instanceof DmlEntity ||
+      entity.__dmlEntitySymbol__ === this.__dmlEntitySymbol__
+    )
+  }
 
   /**
    * Parse entity to get its underlying information

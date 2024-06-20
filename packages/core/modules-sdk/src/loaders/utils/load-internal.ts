@@ -10,15 +10,17 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
-  createMedusaContainer,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
 import { readdir } from "fs/promises"
 import { join, resolve } from "path"
 import { MODULE_RESOURCE_TYPE } from "../../types"
+import { createMikrORMEntity } from "@medusajs/utils/src"
 
 type ModuleResource = {
   services: Function[]
@@ -267,12 +269,21 @@ async function loadResources(
       ),
     ])
 
+    const entityBuilder = createMikrORMEntity()
     const cleanupResources = (resources) => {
-      return Object.values(resources).filter(
-        (resource): resource is Function => {
-          return typeof resource === "function"
-        }
-      )
+      return Object.values(resources)
+        .map((resource) => {
+          if (DmlEntity.isDmlEntity(resource)) {
+            return entityBuilder(resource as DmlEntity<any>)
+          }
+
+          if (typeof resource === "function") {
+            return resource
+          }
+
+          return null
+        })
+        .filter((v): v is Function => !!v)
     }
 
     const potentialServices = [...new Set(cleanupResources(services))]

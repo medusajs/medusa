@@ -10,9 +10,9 @@ import { BelongsTo } from "./relations/belongs-to"
 import { DateTimeProperty } from "./properties/date-time"
 import { ManyToMany } from "./relations/many-to-many"
 import type {
+  PropertyType,
   RelationshipOptions,
   RelationshipType,
-  PropertyType,
 } from "./types"
 import { NullableModifier } from "./properties/nullable"
 import { IdProperty } from "./properties/id"
