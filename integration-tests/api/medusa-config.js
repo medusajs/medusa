@@ -1,4 +1,4 @@
-const { Modules } = require("@medusajs/modules-sdk")
+const { Modules } = require("@medusajs/utils")
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME

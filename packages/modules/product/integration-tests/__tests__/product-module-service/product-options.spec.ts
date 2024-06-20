@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ProductStatus } from "@medusajs/utils"
+import { Modules, ProductStatus } from "@medusajs/utils"
 import { Product, ProductOption } from "@models"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 

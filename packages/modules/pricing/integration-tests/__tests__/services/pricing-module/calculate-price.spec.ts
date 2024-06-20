@@ -1,11 +1,10 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
   IPricingModuleService,
   PricingTypes,
 } from "@medusajs/types"
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { Modules, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 

@@ -618,3 +618,5 @@ export function createMikrORMEntity() {
     ) as Infer<T>
   }
 }
+
+export const toMikroORMEntity = createMikrORMEntity()

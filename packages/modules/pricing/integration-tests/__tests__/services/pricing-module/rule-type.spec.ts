@@ -1,7 +1,7 @@
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 

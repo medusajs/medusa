@@ -1,5 +1,4 @@
 import { resolve } from "path"
-import { Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   UpdateFulfillmentDTO,
@@ -13,7 +12,7 @@ import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
-import { FulfillmentEvents } from "@medusajs/utils"
+import { FulfillmentEvents, Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 

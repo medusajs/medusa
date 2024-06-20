@@ -1,8 +1,8 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import {
   CommonEvents,
   composeMessage,
+  Modules,
   ProductEvents,
   ProductStatus,
 } from "@medusajs/utils"

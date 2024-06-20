@@ -3,6 +3,7 @@ import { MetadataStorage } from "@mikro-orm/core"
 import { EntityConstructor } from "../types"
 import { EntityBuilder } from "../entity-builder"
 import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
+import { DmlEntity } from "../entity"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -10,6 +11,21 @@ describe("Entity builder", () => {
   })
 
   describe("Entity builder | properties", () => {
+    test("should identify a DML entity correctly", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      expect(DmlEntity.isDmlEntity(user)).toBe(true)
+
+      const nonDmlEntity = new Object()
+
+      expect(DmlEntity.isDmlEntity(nonDmlEntity)).toBe(false)
+    })
+
     test("define an entity", () => {
       const model = new EntityBuilder()
       const user = model.define("user", {

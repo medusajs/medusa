@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import {
   MockEventBusService,
@@ -6,7 +5,12 @@ import {
 } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  Modules,
+  PricingEvents,
+} from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
