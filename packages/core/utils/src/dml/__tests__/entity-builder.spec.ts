@@ -4532,7 +4532,9 @@ describe("Entity builder", () => {
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
-        users: model.manyToMany(() => user, { pivotTable: "users_teams" }),
+        users: model.manyToMany(() => user, {
+          pivotTable: "users_teams",
+        }),
       })
 
       const user = model.define("user", {
@@ -4701,7 +4703,9 @@ describe("Entity builder", () => {
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
-        users: model.manyToMany(() => user, { pivotEntity: () => squad }),
+        users: model.manyToMany(() => user, {
+          pivotEntity: () => squad,
+        }),
       })
 
       const squad = model.define("teamUsers", {
@@ -4855,7 +4859,6 @@ describe("Entity builder", () => {
           name: "teams",
           entity: "Team",
           pivotEntity: "TeamUsers",
-          pivotTable: "team_users",
         },
         created_at: {
           reference: "scalar",
@@ -4918,7 +4921,6 @@ describe("Entity builder", () => {
           name: "users",
           entity: "User",
           pivotEntity: "TeamUsers",
-          pivotTable: "team_users",
         },
         created_at: {
           reference: "scalar",

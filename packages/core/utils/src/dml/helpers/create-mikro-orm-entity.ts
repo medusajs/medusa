@@ -386,26 +386,7 @@ export function createMikrORMEntity() {
     let mappedBy = relationship.mappedBy
     let inversedBy: undefined | string
     let pivotEntityName: undefined | string
-
-    /**
-     * Pivot table name is created as follows (when not explicitly provided)
-     *
-     * - Combining both the entity's names.
-     * - Sorting them by alphabetical order
-     * - Converting them from camelCase to snake_case.
-     * - And finally pluralizing the second entity name.
-     */
-    const pivotTableName =
-      relationship.options.pivotTable ??
-      [MikroORMEntity.name.toLowerCase(), relatedModelName.toLowerCase()]
-        .sort()
-        .map((token, index) => {
-          if (index === 1) {
-            return pluralize(camelToSnakeCase(token))
-          }
-          return camelToSnakeCase(token)
-        })
-        .join("_")
+    let pivotTableName: undefined | string
 
     /**
      * Validating other side of relationship when mapped by is defined
@@ -465,9 +446,37 @@ export function createMikrORMEntity() {
       pivotEntityName = parseEntityName(pivotEntity.parse().name).modelName
     }
 
+    if (!pivotEntityName) {
+      /**
+       * Pivot table name is created as follows (when not explicitly provided)
+       *
+       * - Combining both the entity's names.
+       * - Sorting them by alphabetical order
+       * - Converting them from camelCase to snake_case.
+       * - And finally pluralizing the second entity name.
+       */
+      pivotTableName =
+        relationship.options.pivotTable ??
+        [MikroORMEntity.name.toLowerCase(), relatedModelName.toLowerCase()]
+          .sort()
+          .map((token, index) => {
+            if (index === 1) {
+              return pluralize(camelToSnakeCase(token))
+            }
+            return camelToSnakeCase(token)
+          })
+          .join("_")
+    }
+
     ManyToMany({
       entity: relatedModelName,
-      pivotTable: pgSchema ? `${pgSchema}.${pivotTableName}` : pivotTableName,
+      ...(pivotTableName
+        ? {
+            pivotTable: pgSchema
+              ? `${pgSchema}.${pivotTableName}`
+              : pivotTableName,
+          }
+        : {}),
       ...(pivotEntityName ? { pivotEntity: pivotEntityName } : {}),
       ...(mappedBy ? { mappedBy: mappedBy as any } : {}),
       ...(inversedBy ? { inversedBy: inversedBy as any } : {}),
