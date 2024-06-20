@@ -1,4 +1,4 @@
-import { AbstractFulfillmentProviderService } from "@medusajs/utils/src"
+import { AbstractFulfillmentProviderService } from "@medusajs/utils"
 
 export class FulfillmentProviderServiceFixtures extends AbstractFulfillmentProviderService {
   static identifier = "fixtures-fulfillment-provider"

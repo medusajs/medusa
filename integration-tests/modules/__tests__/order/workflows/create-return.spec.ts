@@ -17,11 +17,11 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
   RuleOperator,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
-import { Modules } from "@medusajs/utils/src"
 
 jest.setTimeout(500000)
 

@@ -3,7 +3,7 @@ import {
   createOrderShipmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
@@ -17,6 +17,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
   RuleOperator,
 } from "@medusajs/utils"
