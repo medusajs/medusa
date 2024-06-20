@@ -779,6 +779,15 @@ export const RouteMap: RouteObject[] = [
                       import(
                         "../../routes/shipping-profiles/shipping-profile-detail"
                       ),
+                    children: [
+                      {
+                        path: "connect-products",
+                        lazy: () =>
+                          import(
+                            "../../routes/shipping-profiles/shipping-profiles-connect-products"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },

@@ -910,6 +910,7 @@
   },
   "shippingProfile": {
     "domain": "Shipping Profiles",
+    "connectProducts": "Connect Products",
     "create": {
       "header": "Create Shipping Profile",
       "hint": "Create a new shipping profile to group products with similar shipping requirements.",

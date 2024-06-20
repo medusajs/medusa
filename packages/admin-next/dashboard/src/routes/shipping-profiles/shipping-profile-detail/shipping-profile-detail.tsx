@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { Outlet, useParams } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
 import {
@@ -10,6 +10,7 @@ import { ShippingProfileGeneralSection } from "./components/shipping-profile-gen
 
 import after from "virtual:medusa/widgets/shipping_profile/details/after"
 import before from "virtual:medusa/widgets/shipping_profile/details/before"
+import { ShippingProfileProductsSection } from "./components/shipping-profile-products-section"
 
 export const ShippingProfileDetail = () => {
   const { id } = useParams()
@@ -41,6 +42,7 @@ export const ShippingProfileDetail = () => {
         )
       })}
       <ShippingProfileGeneralSection profile={shipping_profile} />
+      <ShippingProfileProductsSection profile={shipping_profile} />
       {after.widgets.map((w, i) => {
         return (
           <div key={i}>
@@ -49,6 +51,7 @@ export const ShippingProfileDetail = () => {
         )
       })}
       <JsonViewSection data={shipping_profile} />
+      <Outlet />
     </div>
   )
 }
