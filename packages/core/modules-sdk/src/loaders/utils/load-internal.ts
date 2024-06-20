@@ -81,9 +81,9 @@ export async function loadInternalModule(
 
   if (resolution.resolutionPath) {
     moduleResources = await loadResources(
-      loadedModule?.loaders ?? [],
       resolution,
-      logger
+      logger,
+      loadedModule?.loaders ?? []
     )
   }
 
@@ -183,9 +183,9 @@ export async function loadModuleMigrations(
     // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
       const moduleResources = await loadResources(
-        loadedModule?.loaders ?? [],
         resolution,
-        console as unknown as Logger
+        console as unknown as Logger,
+        loadedModule?.loaders ?? []
       )
 
       const migrationScriptOptions = {
@@ -243,10 +243,10 @@ async function importAllFromDir(path: string) {
   })
 }
 
-async function loadResources(
-  loadedModuleLoaders: ModuleLoaderFunction[],
+export async function loadResources(
   moduleResolution: ModuleResolution,
-  logger: Logger
+  logger: Logger = console as unknown as Logger,
+  loadedModuleLoaders?: ModuleLoaderFunction[]
 ): Promise<ModuleResource> {
   let modulePath = moduleResolution.resolutionPath as string
   let normalizedPath = modulePath
@@ -360,7 +360,7 @@ async function runLoaders(
 }
 
 function prepareLoaders({
-  loadedModuleLoaders,
+  loadedModuleLoaders = [] as ModuleLoaderFunction[],
   models,
   repositories,
   services,
@@ -432,14 +432,14 @@ function generateJoinerConfigIfNecessary({
   models,
 }: {
   moduleResolution: ModuleResolution
-  service: IModuleService
+  service: Constructor<IModuleService>
   models: Function[]
 }) {
-  if (service.__joinerConfig) {
+  if (service.prototype.__joinerConfig) {
     return
   }
 
-  service.__joinerConfig = function () {
+  service.prototype.__joinerConfig = function () {
     return defineJoinerConfig(moduleResolution.definition.key, {
       entityQueryingConfig: models,
     })
