@@ -1,5 +1,4 @@
 const { Modules } = require("@medusajs/modules-sdk")
-const { FulfillmentModuleOptions } = require("@medusajs/fulfillment")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -41,6 +40,20 @@ module.exports = {
     http: {
       jwtSecret: "test",
       cookieSecret: "test",
+    },
+    notifications: {
+      events: [
+        {
+          event: "order.created",
+          template: "order-created-template",
+          channel: "email",
+          to: "order.email",
+          resource_id: "order.id",
+          data: {
+            order_id: "order.id",
+          },
+        },
+      ],
     },
   },
   featureFlags: {
