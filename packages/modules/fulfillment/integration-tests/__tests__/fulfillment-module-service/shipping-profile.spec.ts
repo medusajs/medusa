@@ -47,7 +47,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_profile_created,
+                eventName: FulfillmentEvents.SHIPPING_PROFILE_CREATED,
                 action: "created",
                 object: "shipping_profile",
                 data: { id: createdShippingProfile.id },
@@ -85,7 +85,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.shipping_profile_created,
+                    eventName: FulfillmentEvents.SHIPPING_PROFILE_CREATED,
                     action: "created",
                     object: "shipping_profile",
                     data: { id: createdShippingProfiles[i].id },

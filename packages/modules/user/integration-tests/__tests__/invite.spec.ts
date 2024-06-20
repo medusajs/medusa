@@ -175,7 +175,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_updated,
+              eventName: UserEvents.INVITE_UPDATED,
             }),
           ])
         })
@@ -192,7 +192,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
           ])
         })
@@ -221,19 +221,19 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_created,
+              eventName: UserEvents.INVITE_CREATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.invite_created,
+              eventName: UserEvents.INVITE_CREATED,
             }),
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
           ])
         })

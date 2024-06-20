@@ -507,7 +507,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const events = eventBusEmitSpy.mock.calls[0][0]
           expect(events).toHaveLength(4)
           expect(events[0]).toEqual(
-            composeMessage(PricingEvents.price_list_created, {
+            composeMessage(PricingEvents.PRICE_LIST_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list",
@@ -515,7 +515,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
           expect(events[1]).toEqual(
-            composeMessage(PricingEvents.price_list_rule_created, {
+            composeMessage(PricingEvents.PRICE_LIST_RULE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list_rule",
@@ -523,7 +523,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
           expect(events[2]).toEqual(
-            composeMessage(PricingEvents.price_list_rule_created, {
+            composeMessage(PricingEvents.PRICE_LIST_RULE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_list_rule",
@@ -531,7 +531,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
           expect(events[3]).toEqual(
-            composeMessage(PricingEvents.price_created, {
+            composeMessage(PricingEvents.PRICE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
@@ -866,7 +866,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
           expect(events).toHaveLength(2)
           expect(events[0]).toEqual(
-            composeMessage(PricingEvents.price_created, {
+            composeMessage(PricingEvents.PRICE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
@@ -874,7 +874,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
           expect(events[1]).toEqual(
-            composeMessage(PricingEvents.price_rule_created, {
+            composeMessage(PricingEvents.PRICE_RULE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
