@@ -1,7 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
-  ICustomerModuleService,
   IFulfillmentModuleService,
   IInventoryServiceNext,
   IOrderModuleService,
@@ -9,9 +8,7 @@ import {
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
-  ISalesChannelModuleService,
   IStockLocationServiceNext,
-  ITaxModuleService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -30,16 +27,12 @@ medusaIntegrationTestRunner({
     let appContainer
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
-    let scModuleService: ISalesChannelModuleService
-    let customerModule: ICustomerModuleService
     let productModule: IProductModuleService
-    let pricingModule: IPricingModuleService
     let paymentModule: IPaymentModuleService
+    let pricingModule: IPricingModuleService
     let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
-    let locationModule: IStockLocationServiceNext
-    let taxModule: ITaxModuleService
     let orderModule: IOrderModuleService
     let remoteLink, remoteQuery
 
@@ -47,24 +40,12 @@ medusaIntegrationTestRunner({
       appContainer = getContainer()
       cartModuleService = appContainer.resolve(ModuleRegistrationName.CART)
       regionModuleService = appContainer.resolve(ModuleRegistrationName.REGION)
-      scModuleService = appContainer.resolve(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
-      customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
-      pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
       paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
-      stockLocationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
       fulfillmentModule = appContainer.resolve(
         ModuleRegistrationName.FULFILLMENT
       )
-      locationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
-      )
-      taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
       remoteQuery = appContainer.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
       orderModule = appContainer.resolve(ModuleRegistrationName.ORDER)
@@ -76,7 +57,7 @@ medusaIntegrationTestRunner({
 
     describe("Orders - Admin", () => {
       it("should get an order", async () => {
-        const created = await orderModule.create({
+        const created = await orderModule.createOrders({
           region_id: "test_region_idclear",
           email: "foo@bar.com",
           items: [

@@ -443,19 +443,12 @@ export type UpdateStockLocationInput = {
 /**
  * @interface
  *
- * The attributes to update in a stock location.
- */
-export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
-  /**
-   * The ID of the stock location.
-   */
-  id: string
-}
-
-/**
- * @interface
- *
  * A stock location to create or update. If the `id` property isn't provided,
  * the stock location is created. In that case, the `name` property is required.
  */
-export type UpsertStockLocationInput = Partial<UpdateStockLocationNextInput>
+export type UpsertStockLocationInput = Partial<UpdateStockLocationInput> & {
+  /**
+   * The ID of the stock location, if updating.
+   */
+  id?: string
+}

@@ -1,8 +1,7 @@
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
-  ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -20,8 +19,7 @@ medusaIntegrationTestRunner({
     describe("FulfillmentSet and Location", () => {
       let appContainer
       let fulfillmentModule: IFulfillmentModuleService
-      let locationModule: IStockLocationServiceNext
-      let scService: ISalesChannelModuleService
+      let locationModule: IStockLocationService
       let remoteQuery
       let remoteLink
 
@@ -33,7 +31,6 @@ medusaIntegrationTestRunner({
         locationModule = appContainer.resolve(
           ModuleRegistrationName.STOCK_LOCATION
         )
-        scService = appContainer.resolve(ModuleRegistrationName.SALES_CHANNEL)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -41,12 +38,12 @@ medusaIntegrationTestRunner({
       })
 
       it("should query fulfillment set and location link with remote query", async () => {
-        const fulfillmentSet = await fulfillmentModule.create({
+        const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "delivery",
         })
 
-        const euWarehouse = await locationModule.create({
+        const euWarehouse = await locationModule.createStockLocations({
           name: "EU Warehouse",
         })
 

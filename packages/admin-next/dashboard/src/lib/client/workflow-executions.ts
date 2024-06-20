@@ -14,7 +14,7 @@ async function retrieveWorkflowExecution(
   )
 }
 
-async function listWorkflowExecutions(query?: Record<string, any>) {
+async function listWorkflowExecutionss(query?: Record<string, any>) {
   return getRequest<WorkflowExecutionListRes>(
     `/admin/workflows-executions`,
     query
@@ -23,5 +23,5 @@ async function listWorkflowExecutions(query?: Record<string, any>) {
 
 export const workflowExecutions = {
   retrieve: retrieveWorkflowExecution,
-  list: listWorkflowExecutions,
+  list: listWorkflowExecutionss,
 }

@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should list users", async () => {
-        await userModuleService.create([
+        await userModuleService.createUsers([
           {
             email: "member@test.com",
           },

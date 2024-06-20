@@ -76,6 +76,7 @@
     "viewDetails": "View details",
     "back": "Back",
     "close": "Close",
+    "showMore": "Show more",
     "continue": "Continue",
     "reset": "Reset",
     "confirm": "Confirm",
@@ -325,6 +326,7 @@
       "create": {
         "header": "Create Variant"
       },
+      "pricesPagination": "1 - {{current}} of {{total}} prices",
       "tableItemAvailable": "{{availableCount}} available",
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
@@ -802,6 +804,14 @@
         "shipping": "Shipping was successfully enabled."
       }
     },
+    "sidebar": {
+      "shippingConfiguration": "Shipping configuration",
+      "shippingProfiles": "Shipping profiles",
+      "shippingProfilesDesc": "Shipping rules for different types of products",
+      "shippingOptionTypes": "Shipping Option Types",
+      "shippingOptionTypesDesc": "Group options based on characteristic"
+
+    },
     "salesChannels": {
       "header": "Sales Channels",
       "label": "Connected sales channels",
@@ -1151,15 +1161,15 @@
         "description": "The code your customers will enter during checkout."
       },
       "value": {
-        "title": "Value"
+        "title": "Promotion Value"
       },
       "value_type": {
         "fixed": {
-          "title": "Fixed amount",
+          "title": "Promotion Value",
           "description": "eg. 100"
         },
         "percentage": {
-          "title": "Percentage",
+          "title": "Promotion Value",
           "description": "eg. 8%"
         }
       }
@@ -1677,6 +1687,10 @@
     "enabled": "Enabled",
     "disabled": "Disabled"
   },
+  "labels": {
+    "productVariant": "Product Variant",
+    "prices": "Prices"
+  },
   "fields": {
     "amount": "Amount",
     "refundAmount": "Refund amount",
@@ -1688,6 +1702,8 @@
     "customTitle": "Custom title",
     "manageInventory": "Manage inventory",
     "inventoryKit": "Inventory kit",
+    "inventoryItems": "Inventory items",
+    "requiredQuantity": "Required quantity",
     "description": "Description",
     "email": "Email",
     "password": "Password",

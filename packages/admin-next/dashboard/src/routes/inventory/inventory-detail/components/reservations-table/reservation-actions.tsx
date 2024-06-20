@@ -2,14 +2,14 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { toast, usePrompt } from "@medusajs/ui"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { useDeleteReservationItem } from "../../../../../hooks/api/reservations"
 import { useTranslation } from "react-i18next"
 
 export const ReservationActions = ({
   reservation,
 }: {
-  reservation: InventoryNext.ReservationItemDTO
+  reservation: InventoryTypes.ReservationItemDTO
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()

@@ -17,7 +17,9 @@ export const createSalesChannelsStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    const salesChannels = await salesChannelService.create(input.data)
+    const salesChannels = await salesChannelService.createSalesChannels(
+      input.data
+    )
 
     return new StepResponse(
       salesChannels,
@@ -33,6 +35,6 @@ export const createSalesChannelsStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    await service.delete(createdIds)
+    await service.deleteSalesChannels(createdIds)
   }
 )

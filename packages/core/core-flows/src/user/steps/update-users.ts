@@ -14,11 +14,11 @@ export const updateUsersStep = createStep(
       return new StepResponse([], [])
     }
 
-    const originalUsers = await service.list({
+    const originalUsers = await service.listUsers({
       id: input.map((u) => u.id),
     })
 
-    const users = await service.update(input)
+    const users = await service.updateUsers(input)
     return new StepResponse(users, originalUsers)
   },
   async (originalUsers, { container }) => {
@@ -28,7 +28,7 @@ export const updateUsersStep = createStep(
 
     const service = container.resolve(ModuleRegistrationName.USER)
 
-    await service.update(
+    await service.updateUsers(
       originalUsers.map((u) => ({
         id: u.id,
         first_name: u.first_name,

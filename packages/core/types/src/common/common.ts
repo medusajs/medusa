@@ -332,7 +332,9 @@ export interface NumericalComparisonOperator {
 /**
  * @ignore
  */
-export type Pluralize<Singular extends string> = Singular extends `${infer R}y`
+export type Pluralize<Singular extends string> = Singular extends `${infer R}ey`
+  ? `${R}eys`
+  : Singular extends `${infer R}y`
   ? `${R}ies`
   : Singular extends `${infer R}es`
   ? `${Singular}`

@@ -10,6 +10,7 @@ export type KnownDataTypes =
   | "number"
   | "dateTime"
   | "json"
+  | "id"
 
 /**
  * List of available relationships at DML level

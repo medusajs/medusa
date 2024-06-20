@@ -46,7 +46,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })
@@ -68,7 +68,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",
@@ -233,7 +233,7 @@ medusaIntegrationTestRunner({
           ModuleRegistrationName.REGION
         ) as IRegionModuleService
 
-        const [region] = await regionService.create([
+        const [region] = await regionService.createRegions([
           {
             name: "Test region",
             currency_code: "eur",

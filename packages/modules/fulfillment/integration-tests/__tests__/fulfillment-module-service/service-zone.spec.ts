@@ -30,7 +30,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -85,7 +85,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
       describe("mutations", () => {
         describe("on create", () => {
           it("should create a new service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -119,7 +119,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should create a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -181,7 +181,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -205,7 +205,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on creating a service zone and new geo zones that are not valid", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -277,7 +277,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on update", () => {
           it("should update an existing service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -396,7 +396,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -449,7 +449,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on upsert", () => {
           it("should upsert a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })

@@ -14,7 +14,10 @@ export const GET = async (
   validateRuleType(ruleType)
 
   const attributes =
-    getRuleAttributesMap(req.query.promotion_type as string)[ruleType] || []
+    getRuleAttributesMap({
+      promotionType: req.query.promotion_type as string,
+      applicationMethodType: req.query.application_method_type as string,
+    })[ruleType] || []
 
   res.json({
     attributes,

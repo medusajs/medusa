@@ -12,6 +12,9 @@ export const OrderCustomer: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "customer_id",
         alias: "customer",
+        args: {
+          methodSuffix: "Customers",
+        },
       },
     },
     {
@@ -21,6 +24,9 @@ export const OrderCustomer: ModuleJoinerConfig = {
         primaryKey: "customer_id",
         foreignKey: "id",
         alias: "orders",
+        args: {
+          methodSuffix: "Orders",
+        },
         isList: true,
       },
     },

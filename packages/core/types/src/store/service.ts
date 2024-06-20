@@ -17,7 +17,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The created stores.
    *
    * @example
-   * const stores = await storeModuleService.create([
+   * const stores = await storeModuleService.createStores([
    *   {
    *     name: "Acme",
    *     supported_currency_codes: ["usd", "eur"],
@@ -30,7 +30,10 @@ export interface IStoreModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(data: CreateStoreDTO[], sharedContext?: Context): Promise<StoreDTO[]>
+  createStores(
+    data: CreateStoreDTO[],
+    sharedContext?: Context
+  ): Promise<StoreDTO[]>
 
   /**
    * This method creates a store.
@@ -40,13 +43,13 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The created store.
    *
    * @example
-   * const store = await storeModuleService.create({
+   * const store = await storeModuleService.createStores({
    *   name: "Acme",
    *   supported_currency_codes: ["usd", "eur"],
    *   default_currency_code: "usd",
    * })
    */
-  create(data: CreateStoreDTO, sharedContext?: Context): Promise<StoreDTO>
+  createStores(data: CreateStoreDTO, sharedContext?: Context): Promise<StoreDTO>
 
   /**
    * This method updates or creates stores if they don't exist.
@@ -56,7 +59,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The created or updated stores.
    *
    * @example
-   * const stores = await storeModuleService.upsert([
+   * const stores = await storeModuleService.upsertStores([
    *   {
    *     id: "store_123",
    *     name: "Acme",
@@ -68,7 +71,10 @@ export interface IStoreModuleService extends IModuleService {
    *   },
    * ])
    */
-  upsert(data: UpsertStoreDTO[], sharedContext?: Context): Promise<StoreDTO[]>
+  upsertStores(
+    data: UpsertStoreDTO[],
+    sharedContext?: Context
+  ): Promise<StoreDTO[]>
 
   /**
    * This method updates or creates a store if it doesn't exist.
@@ -78,12 +84,12 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The created or updated store.
    *
    * @example
-   * const store = await storeModuleService.upsert({
+   * const store = await storeModuleService.upsertStores({
    *   id: "store_123",
    *   name: "Acme",
    * })
    */
-  upsert(data: UpsertStoreDTO, sharedContext?: Context): Promise<StoreDTO>
+  upsertStores(data: UpsertStoreDTO, sharedContext?: Context): Promise<StoreDTO>
 
   /**
    * This method updates an existing store.
@@ -94,11 +100,11 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The updated store.
    *
    * @example
-   * const store = await storeModuleService.update("store_123", {
+   * const store = await storeModuleService.updateStores("store_123", {
    *   name: "Acme",
    * })
    */
-  update(
+  updateStores(
     id: string,
     data: UpdateStoreDTO,
     sharedContext?: Context
@@ -113,7 +119,7 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO[]>} The updated stores.
    *
    * @example
-   * const store = await storeModuleService.update(
+   * const store = await storeModuleService.updateStores(
    *   {
    *     name: ["Acme"],
    *   },
@@ -122,7 +128,7 @@ export interface IStoreModuleService extends IModuleService {
    *   }
    * )
    */
-  update(
+  updateStores(
     selector: FilterableStoreProps,
     data: UpdateStoreDTO,
     sharedContext?: Context
@@ -136,9 +142,9 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the stores are deleted successfully.
    *
    * @example
-   * await storeModuleService.delete(["store_123", "store_321"])
+   * await storeModuleService.deleteStores(["store_123", "store_321"])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteStores(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a store by its ID.
@@ -148,9 +154,9 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the store is deleted successfully.
    *
    * @example
-   * await storeModuleService.delete("store_123")
+   * await storeModuleService.deleteStores("store_123")
    */
-  delete(id: string, sharedContext?: Context): Promise<void>
+  deleteStores(id: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method retrieves a store by its ID.
@@ -162,9 +168,9 @@ export interface IStoreModuleService extends IModuleService {
    * @returns {Promise<StoreDTO>} The retrieved store.
    *
    * @example
-   * const store = await storeModuleService.retrieve("store_123")
+   * const store = await storeModuleService.retrieveStore("store_123")
    */
-  retrieve(
+  retrieveStore(
     id: string,
     config?: FindConfig<StoreDTO>,
     sharedContext?: Context
@@ -183,7 +189,7 @@ export interface IStoreModuleService extends IModuleService {
    * To retrieve a list of stores using their IDs:
    *
    * ```ts
-   * const stores = await storeModuleService.list({
+   * const stores = await storeModuleService.listStores({
    *   id: ["store_123", "store_321"],
    * })
    * ```
@@ -191,7 +197,7 @@ export interface IStoreModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const stores = await storeModuleService.list(
+   * const stores = await storeModuleService.listStores(
    *   {
    *     id: ["store_123", "store_321"],
    *   },
@@ -202,7 +208,7 @@ export interface IStoreModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listStores(
     filters?: FilterableStoreProps,
     config?: FindConfig<StoreDTO>,
     sharedContext?: Context
@@ -221,7 +227,7 @@ export interface IStoreModuleService extends IModuleService {
    * To retrieve a list of stores using their IDs:
    *
    * ```ts
-   * const [stores, count] = await storeModuleService.listAndCount(
+   * const [stores, count] = await storeModuleService.listAndCountStores(
    *   {
    *     id: ["store_123", "store_321"],
    *   }
@@ -231,7 +237,7 @@ export interface IStoreModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [stores, count] = await storeModuleService.listAndCount(
+   * const [stores, count] = await storeModuleService.listAndCountStores(
    *   {
    *     id: ["store_123", "store_321"],
    *   },
@@ -242,7 +248,7 @@ export interface IStoreModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountStores(
     filters?: FilterableStoreProps,
     config?: FindConfig<StoreDTO>,
     sharedContext?: Context
@@ -258,12 +264,12 @@ export interface IStoreModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await storeModuleService.softDelete([
+   * await storeModuleService.softDeleteStores([
    *   "store_123",
    *   "store_321",
    * ])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteStores<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -280,9 +286,9 @@ export interface IStoreModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await storeModuleService.restore(["store_123", "store_321"])
+   * await storeModuleService.restoreStores(["store_123", "store_321"])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreStores<TReturnableLinkableKeys extends string = string>(
     storeIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

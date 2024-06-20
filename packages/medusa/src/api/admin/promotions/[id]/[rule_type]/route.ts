@@ -33,9 +33,11 @@ export const GET = async (
   })
 
   const [promotion] = await remoteQuery(queryObject)
-  const ruleAttributes = getRuleAttributesMap(
-    promotion?.type || req.query.promotion_type
-  )[ruleType]
+  const ruleAttributes = getRuleAttributesMap({
+    promotionType: promotion?.type || req.query.promotion_type,
+    applicationMethodType:
+      promotion?.application_method?.type || req.query.application_method_type,
+  })[ruleType]
   const promotionRules: any[] = []
 
   if (dasherizedRuleType === RuleType.RULES) {
@@ -48,7 +50,6 @@ export const GET = async (
 
   const transformedRules: AdminGetPromotionRulesRes = []
   const disguisedRules = ruleAttributes.filter((attr) => !!attr.disguised)
-  const requiredRules = ruleAttributes.filter((attr) => !!attr.required)
 
   for (const disguisedRule of disguisedRules) {
     const getValues = () => {
@@ -65,18 +66,22 @@ export const GET = async (
       return []
     }
 
-    transformedRules.push({
-      id: undefined,
-      attribute: disguisedRule.id,
-      attribute_label: disguisedRule.label,
-      field_type: disguisedRule.field_type,
-      hydrate: disguisedRule.hydrate || false,
-      operator: RuleOperator.EQ,
-      operator_label: operatorsMap[RuleOperator.EQ].label,
-      values: getValues(),
-      disguised: true,
-      required: true,
-    })
+    const required = disguisedRule.required ?? true
+    const applicationMethod = promotion?.application_method
+    const recordValue = applicationMethod?.[disguisedRule.id]
+
+    if (required || recordValue) {
+      transformedRules.push({
+        ...disguisedRule,
+        id: undefined,
+        attribute: disguisedRule.id,
+        attribute_label: disguisedRule.label,
+        operator: RuleOperator.EQ,
+        operator_label: operatorsMap[RuleOperator.EQ].label,
+        value: undefined,
+        values: getValues(),
+      })
+    }
 
     continue
   }
@@ -125,33 +130,12 @@ export const GET = async (
 
     if (!currentRuleAttribute.hydrate) {
       transformedRules.push({
+        ...currentRuleAttribute,
         ...promotionRule,
         attribute_label: currentRuleAttribute.label,
-        field_type: currentRuleAttribute.field_type,
         operator_label:
           operatorsMap[promotionRule.operator]?.label || promotionRule.operator,
-        disguised: false,
-        required: currentRuleAttribute.required || false,
       })
-    }
-  }
-
-  if (requiredRules.length && !transformedRules.length) {
-    for (const requiredRule of requiredRules) {
-      transformedRules.push({
-        id: undefined,
-        attribute: requiredRule.value,
-        attribute_label: requiredRule.label,
-        operator: RuleOperator.EQ,
-        field_type: requiredRule.field_type,
-        operator_label: operatorsMap[RuleOperator.EQ].label,
-        values: [],
-        disguised: true,
-        required: true,
-        hydrate: false,
-      })
-
-      continue
     }
   }
 

@@ -48,7 +48,8 @@ export type AdminGetPromotionRuleParamsType = z.infer<
   typeof AdminGetPromotionRuleParams
 >
 export const AdminGetPromotionRuleParams = z.object({
-  promotion_type: z.string().nullish(),
+  promotion_type: z.string().optional(),
+  application_method_type: z.string().optional(),
 })
 
 export type AdminGetPromotionRuleTypeParamsType = z.infer<
@@ -56,7 +57,8 @@ export type AdminGetPromotionRuleTypeParamsType = z.infer<
 >
 export const AdminGetPromotionRuleTypeParams = createSelectParams().merge(
   z.object({
-    promotion_type: z.string().nullish(),
+    promotion_type: z.string().optional(),
+    application_method_type: z.string().optional(),
   })
 )
 
@@ -105,7 +107,7 @@ export const AdminCreateApplicationMethod = z
   .object({
     description: z.string().nullish(),
     value: z.number(),
-    currency_code: z.string(),
+    currency_code: z.string().nullish(),
     max_quantity: z.number().nullish(),
     type: z.nativeEnum(ApplicationMethodType),
     target_type: z.nativeEnum(ApplicationMethodTargetType),
@@ -126,9 +128,9 @@ export const AdminUpdateApplicationMethod = z
     value: z.number().optional(),
     max_quantity: z.number().nullish(),
     currency_code: z.string().nullish(),
-    type: z.nativeEnum(ApplicationMethodType).nullish(),
-    target_type: z.nativeEnum(ApplicationMethodTargetType).nullish(),
-    allocation: z.nativeEnum(ApplicationMethodAllocation).nullish(),
+    type: z.nativeEnum(ApplicationMethodType).optional(),
+    target_type: z.nativeEnum(ApplicationMethodTargetType).optional(),
+    allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     target_rules: z.array(AdminCreatePromotionRule).optional(),
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().nullish(),

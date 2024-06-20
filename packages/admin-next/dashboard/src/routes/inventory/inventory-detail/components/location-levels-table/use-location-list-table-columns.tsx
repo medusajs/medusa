@@ -1,4 +1,4 @@
-import { InventoryNext, StockLocationDTO } from "@medusajs/types"
+import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
 
 import { LocationActions } from "./location-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 /**
  * Adds missing properties to the InventoryLevelDTO type.
  */
-interface ExtendedLocationLevel extends InventoryNext.InventoryLevelDTO {
+interface ExtendedLocationLevel extends InventoryTypes.InventoryLevelDTO {
   stock_locations: StockLocationDTO[]
   reserved_quantity: number
   stocked_quantity: number

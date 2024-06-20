@@ -8,10 +8,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
-  },
-  "bin": {
-    "medusa-pricing-seed": "dist/scripts/bin/run-seed.js"
+    "node": ">=20"
   },
   "repository": {
     "type": "git",

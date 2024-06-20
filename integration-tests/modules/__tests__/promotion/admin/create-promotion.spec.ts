@@ -16,13 +16,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("POST /admin/promotions", () => {
       let appContainer
-      let promotionModuleService: IPromotionModuleService
-
       beforeAll(async () => {
         appContainer = getContainer()
-        promotionModuleService = appContainer.resolve(
-          ModuleRegistrationName.PROMOTION
-        )
       })
 
       beforeEach(async () => {

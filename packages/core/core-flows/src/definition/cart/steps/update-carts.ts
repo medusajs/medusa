@@ -5,7 +5,7 @@ import {
   UpdateCartWorkflowInputDTO,
 } from "@medusajs/types"
 import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const updateCartsStepId = "update-carts"
 export const updateCartsStep = createStep(
@@ -16,12 +16,12 @@ export const updateCartsStep = createStep(
     )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
-    const cartsBeforeUpdate = await cartModule.list(
+    const cartsBeforeUpdate = await cartModule.listCarts(
       { id: data.map((d) => d.id) },
       { select: selects, relations }
     )
 
-    const updatedCart = await cartModule.update(data)
+    const updatedCart = await cartModule.updateCarts(data)
 
     return new StepResponse(updatedCart, cartsBeforeUpdate)
   },
@@ -48,6 +48,6 @@ export const updateCartsStep = createStep(
       })
     }
 
-    return await cartModule.update(dataToUpdate)
+    return await cartModule.updateCarts(dataToUpdate)
   }
 )

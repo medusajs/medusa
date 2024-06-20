@@ -9,7 +9,7 @@ export const createProductVariantsStep = createStep(
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )
-    const created = await service.createVariants(data)
+    const created = await service.createProductVariants(data)
     return new StepResponse(
       created,
       created.map((productVariant) => productVariant.id)
@@ -24,6 +24,6 @@ export const createProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.deleteVariants(createdIds)
+    await service.deleteProductVariants(createdIds)
   }
 )

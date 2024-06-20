@@ -12,6 +12,9 @@ export const CartRegion: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "region_id",
         alias: "region",
+        args: {
+          methodSuffix: "Regions",
+        },
       },
     },
     {
@@ -21,6 +24,9 @@ export const CartRegion: ModuleJoinerConfig = {
         primaryKey: "region_id",
         foreignKey: "id",
         alias: "carts",
+        args: {
+          methodSuffix: "Carts",
+        },
         isList: true,
       },
     },

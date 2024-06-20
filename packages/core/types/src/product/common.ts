@@ -1358,6 +1358,10 @@ export interface UpdateProductVariantDTO {
  */
 export interface CreateProductDTO {
   /**
+   * Optionally pass an ID when creating a product.
+   */
+  id?: string
+  /**
    * The title of the product.
    */
   title: string

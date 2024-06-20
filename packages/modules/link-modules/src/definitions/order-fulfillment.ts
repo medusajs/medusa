@@ -24,6 +24,9 @@ export const OrderFulfillment: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "order_id",
       alias: "order",
+      args: {
+        methodSuffix: "Orders",
+      },
     },
     {
       serviceName: Modules.FULFILLMENT,
