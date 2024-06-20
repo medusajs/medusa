@@ -6,6 +6,8 @@ import {
   RelationshipType,
 } from "./types"
 
+const IsDmlEntity = Symbol("isDmlEntity")
+
 /**
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
@@ -13,7 +15,7 @@ import {
 export class DmlEntity<
   Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
 > {
-  static __dmlEntitySymbol__ = Symbol("DmlEntity")
+  [IsDmlEntity] = true
 
   #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}
@@ -25,10 +27,11 @@ export class DmlEntity<
    *
    * @param entity
    */
-  static isDmlEntity(entity: any): entity is DmlEntity<any> {
+  static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
     return (
-      entity instanceof DmlEntity ||
-      entity.constructor?.__dmlEntitySymbol__ === this.__dmlEntitySymbol__
+      !!entity &&
+      (entity instanceof DmlEntity ||
+        (typeof entity === "object" && entity[IsDmlEntity] === true))
     )
   }
 
