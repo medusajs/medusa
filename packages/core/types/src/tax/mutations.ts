@@ -1,3 +1,5 @@
+import { MetadataType } from "../common"
+
 /**
  * The tax rate to be created.
  */
@@ -44,7 +46,7 @@ export interface CreateTaxRateDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -89,7 +91,7 @@ export interface UpsertTaxRateDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -142,7 +144,7 @@ export interface UpdateTaxRateDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -167,7 +169,7 @@ export interface CreateTaxRegionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 
   /**
    * Who created the tax region. For example, the ID of
@@ -200,7 +202,7 @@ export interface CreateTaxRegionDTO {
     /**
      * Holds custom data in key-value pairs.
      */
-    metadata?: Record<string, unknown>
+    metadata?: MetadataType
   }
 }
 
@@ -232,7 +234,7 @@ export interface CreateTaxRateRuleDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 
   /**
    * Who created the tax rate rule. For example, the ID of the

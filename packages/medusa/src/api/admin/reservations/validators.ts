@@ -1,9 +1,9 @@
+import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { z } from "zod"
 
 export type AdminGetReservationParamsType = z.infer<
   typeof AdminGetReservationParams
@@ -33,12 +33,12 @@ export const AdminGetReservationsParams = createFindParams({
 export type AdminCreateReservationType = z.infer<typeof AdminCreateReservation>
 export const AdminCreateReservation = z
   .object({
-    line_item_id: z.string().optional(),
+    line_item_id: z.string().nullish(),
     location_id: z.string(),
     inventory_item_id: z.string(),
     quantity: z.number(),
-    description: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    description: z.string().nullish(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
 
@@ -47,7 +47,7 @@ export const AdminUpdateReservation = z
   .object({
     location_id: z.string().optional(),
     quantity: z.number().optional(),
-    description: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    description: z.string().nullish(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()

@@ -36,13 +36,13 @@ export type AdminUpsertStockLocationAddressType = z.infer<
 >
 export const AdminUpsertStockLocationAddress = z.object({
   address_1: z.string(),
-  address_2: z.string().optional(),
-  company: z.string().optional(),
-  city: z.string().optional(),
+  address_2: z.string().nullish(),
+  company: z.string().nullish(),
+  city: z.string().nullish(),
   country_code: z.string(),
-  phone: z.string().optional(),
-  postal_code: z.string().optional(),
-  province: z.string().optional(),
+  phone: z.string().nullish(),
+  postal_code: z.string().nullish(),
+  province: z.string().nullish(),
 })
 
 export type AdminCreateStockLocationType = z.infer<
@@ -51,8 +51,8 @@ export type AdminCreateStockLocationType = z.infer<
 export const AdminCreateStockLocation = z.object({
   name: z.preprocess((val: any) => val.trim(), z.string()),
   address: AdminUpsertStockLocationAddress.optional(),
-  address_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  address_id: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export type AdminUpdateStockLocationType = z.infer<
@@ -63,8 +63,8 @@ export const AdminUpdateStockLocation = z.object({
     .preprocess((val: any) => val.trim(), z.string().optional())
     .optional(),
   address: AdminUpsertStockLocationAddress.optional(),
-  address_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  address_id: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export type AdminCreateStockLocationFulfillmentSetType = z.infer<

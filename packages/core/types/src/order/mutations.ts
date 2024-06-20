@@ -253,7 +253,7 @@ export interface CreateOrderChangeDTO {
   claim_id?: string
   exchange_id?: string
   description?: string
-  internal_note?: string
+  internal_note?: string | null
   requested_by?: string
   requested_at?: Date
   created_by?: string
@@ -265,7 +265,7 @@ export interface UpdateOrderChangeDTO {
   id: string
   status?: string
   description?: string
-  internal_note?: string
+  internal_note?: string | null
   requested_by?: string
   requested_at?: Date
   confirmed_by?: string
@@ -309,14 +309,14 @@ export interface CreateOrderChangeActionDTO {
   reference?: string
   reference_id?: string
   action: ChangeActionType
-  internal_note?: string
+  internal_note?: string | null
   amount?: BigNumberInput
   details?: Record<string, unknown>
 }
 
 export interface UpdateOrderChangeActionDTO {
   id: string
-  internal_note?: string
+  internal_note?: string | null
 }
 
 /** ORDER TRANSACTION START */
@@ -326,7 +326,7 @@ export interface CreateOrderTransactionDTO {
   description?: string
   reference?: string
   reference_id?: string
-  internal_note?: string
+  internal_note?: string | null
   created_by?: string
   amount: BigNumberInput
   currency_code: string
@@ -338,7 +338,7 @@ export interface UpdateOrderTransactionDTO {
   amount?: BigNumberInput
   currency_code?: string
   description?: string
-  internal_note?: string
+  internal_note?: string | null
   reference?: string
   reference_id?: string
   metadata?: Record<string, unknown> | null
@@ -378,8 +378,8 @@ export interface UpdateOrderItemWithSelectorDTO {
 interface BaseOrderBundledItemActionsDTO {
   id: string
   quantity: BigNumberInput
-  internal_note?: string
-  note?: string
+  internal_note?: string | null
+  note?: string | null
   metadata?: Record<string, unknown> | null
 }
 interface BaseOrderBundledActionsDTO {
@@ -389,10 +389,10 @@ interface BaseOrderBundledActionsDTO {
   exchange_id?: string
 
   description?: string
-  internal_note?: string
+  internal_note?: string | null
   reference?: string
   reference_id?: string
-  created_by?: string
+  created_by?: string | null
   metadata?: Record<string, unknown> | null
 }
 
@@ -414,9 +414,9 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   items: {
     id: string
     quantity: BigNumberInput
-    internal_note?: string
-    note?: string
-    reason_id?: string
+    internal_note?: string | null
+    note?: string | null
+    reason_id?: string | null
     metadata?: Record<string, any>
   }[]
   shipping_method?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string

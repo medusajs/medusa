@@ -1,29 +1,29 @@
-import { createFindParams, createSelectParams } from "../../utils/validators"
 import { z } from "zod"
 import { AddressPayload } from "../../utils/common-validators"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export const StoreGetCustomerParams = createSelectParams()
 
 export const StoreCreateCustomer = z.object({
-  email: z.string().email().optional(),
-  company_name: z.string().optional(),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  phone: z.string().optional(),
+  email: z.string().email().nullish(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
 })
 
 export const StoreUpdateCustomer = z.object({
-  company_name: z.string().nullable().optional(),
-  first_name: z.string().nullable().optional(),
-  last_name: z.string().nullable().optional(),
-  phone: z.string().nullable().optional(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
 })
 
 export const StoreGetCustomerAddressParams = createSelectParams()
 
 export const StoreCreateCustomerAddress = AddressPayload.merge(
   z.object({
-    address_name: z.string().optional(),
+    address_name: z.string().nullish(),
     is_default_shipping: z.boolean().optional(),
     is_default_billing: z.boolean().optional(),
   })

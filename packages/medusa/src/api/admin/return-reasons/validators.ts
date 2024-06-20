@@ -52,9 +52,9 @@ export type AdminGetReturnReasonsParamsType = z.infer<
 export const AdminCreateReturnReason = z.object({
   value: z.string(),
   label: z.string(),
-  descripton: z.string().optional(),
-  parent_return_reason_id: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  descripton: z.string().nullish(),
+  parent_return_reason_id: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminCreateReturnReasonType = z.infer<
   typeof AdminCreateReturnReason
@@ -63,8 +63,8 @@ export type AdminCreateReturnReasonType = z.infer<
 export const AdminUpdateReturnReason = z.object({
   value: z.string(),
   label: z.string(),
-  descripton: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  descripton: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminUpdateReturnReasonType = z.infer<
   typeof AdminUpdateReturnReason
