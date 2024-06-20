@@ -31,7 +31,7 @@ export default class SalesChannel {
   description: string | null = null
 
   @Property({ columnType: "boolean", default: false })
-  is_disabled = false
+  is_disabled: boolean = false
 
   @Property({
     onCreate: () => new Date(),

@@ -17,6 +17,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import TaxRateRule from "./tax-rate-rule"
 import TaxRegion from "./tax-region"
@@ -63,10 +64,10 @@ export default class TaxRate {
   name: string
 
   @Property({ columnType: "bool", default: false })
-  is_default = false
+  is_default: boolean = false
 
   @Property({ columnType: "bool", default: false })
-  is_combinable = false
+  is_combinable: boolean = false
 
   @ManyToOne(() => TaxRegion, {
     columnType: "text",
@@ -78,12 +79,12 @@ export default class TaxRate {
   tax_region_id: string
 
   @ManyToOne({ entity: () => TaxRegion, persist: false })
-  tax_region: TaxRegion
+  tax_region: Rel<TaxRegion>
 
   @OneToMany(() => TaxRateRule, (rule) => rule.tax_rate, {
     cascade: ["soft-remove" as Cascade],
   })
-  rules = new Collection<TaxRateRule>(this)
+  rules = new Collection<Rel<TaxRateRule>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

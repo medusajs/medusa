@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import { OrderChangeStatus, OrderChangeType } from "@types"
 import OrderClaim from "./claim"
@@ -94,7 +95,7 @@ export default class OrderChange {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @ManyToOne({
     entity: () => Return,
@@ -109,7 +110,7 @@ export default class OrderChange {
   @ManyToOne(() => Return, {
     persist: false,
   })
-  return: Return
+  return: Rel<Return>
 
   @ManyToOne({
     entity: () => OrderClaim,
@@ -152,7 +153,7 @@ export default class OrderChange {
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
     cascade: [Cascade.PERSIST, "sotf-remove" as Cascade],
   })
-  actions = new Collection<OrderChangeAction>(this)
+  actions = new Collection<Rel<OrderChangeAction>>(this)
 
   @Property({
     columnType: "text",

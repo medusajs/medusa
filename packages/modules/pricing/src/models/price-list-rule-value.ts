@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import PriceListRule from "./price-list-rule"
 
@@ -49,7 +50,7 @@ export default class PriceListRuleValue {
   price_list_rule_id: string
 
   @ManyToOne(() => PriceListRule, { persist: false })
-  price_list_rule: PriceListRule
+  price_list_rule: Rel<PriceListRule>
 
   @Property({ columnType: "text" })
   value: string

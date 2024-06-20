@@ -19,6 +19,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import { ReturnItem, Transaction } from "@models"
 import Claim from "./claim"
@@ -78,7 +79,7 @@ export default class Return {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @OneToOne({
     entity: () => Exchange,
@@ -86,7 +87,7 @@ export default class Return {
     fieldName: "exchange_id",
     nullable: true,
   })
-  exchange: Exchange
+  exchange: Rel<Exchange>
 
   @Property({ columnType: "text", nullable: true })
   @ExchangeIdIndex.MikroORMIndex()
@@ -98,7 +99,7 @@ export default class Return {
     fieldName: "claim_id",
     nullable: true,
   })
-  claim: Claim
+  claim: Rel<Claim>
 
   @Property({ columnType: "text", nullable: true })
   @ClaimIdIndex.MikroORMIndex()
@@ -130,7 +131,7 @@ export default class Return {
   @OneToMany(() => ReturnItem, (itemDetail) => itemDetail.return, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  items = new Collection<Rel<OrderItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,

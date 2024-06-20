@@ -16,6 +16,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Address from "./address"
 import OrderItem from "./order-item"
@@ -127,7 +128,7 @@ export default class Order {
     columnType: "boolean",
   })
   @IsDraftOrderIndex.MikroORMIndex()
-  is_draft_order = false
+  is_draft_order: boolean = false
 
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
@@ -146,7 +147,7 @@ export default class Order {
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  shipping_address?: Address | null
+  shipping_address?: Rel<Address> | null
 
   @Property({ columnType: "text", nullable: true })
   @BillingAddressIdIndex.MikroORMIndex()
@@ -158,7 +159,7 @@ export default class Order {
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  billing_address?: Address | null
+  billing_address?: Rel<Address> | null
 
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
@@ -166,7 +167,7 @@ export default class Order {
   @OneToMany(() => OrderSummary, (summary) => summary.order, {
     cascade: [Cascade.PERSIST],
   })
-  summary = new Collection<OrderSummary>(this)
+  summary = new Collection<Rel<OrderSummary>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -174,7 +175,7 @@ export default class Order {
   @OneToMany(() => OrderItem, (itemDetail) => itemDetail.order, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<OrderItem>(this)
+  items = new Collection<Rel<OrderItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
@@ -183,12 +184,12 @@ export default class Order {
       cascade: [Cascade.PERSIST],
     }
   )
-  shipping_methods = new Collection<OrderShippingMethod>(this)
+  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.order, {
     cascade: [Cascade.PERSIST],
   })
-  transactions = new Collection<Transaction>(this)
+  transactions = new Collection<Rel<Transaction>>(this)
 
   @Property({
     onCreate: () => new Date(),

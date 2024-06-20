@@ -2,7 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
-import { BeforeCreate, Entity, ManyToOne, OnInit } from "@mikro-orm/core"
+import { BeforeCreate, Entity, ManyToOne, OnInit, Rel } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
 
@@ -16,7 +16,7 @@ export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne(() => LineItem, {
     persist: false,
   })
-  item: LineItem
+  item: Rel<LineItem>
 
   @ManyToOne({
     entity: () => LineItem,

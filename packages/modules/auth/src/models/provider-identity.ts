@@ -5,6 +5,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 
 import {
@@ -52,7 +53,7 @@ export default class ProviderIdentity {
   @ManyToOne(() => AuthIdentity, {
     persist: false,
   })
-  auth_identity: AuthIdentity
+  auth_identity: Rel<AuthIdentity>
 
   @Property({ columnType: "jsonb", nullable: true })
   user_metadata: Record<string, unknown> | null

@@ -11,6 +11,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 
@@ -47,7 +48,7 @@ export default class ClaimItemImage {
   @ManyToOne(() => ClaimItem, {
     persist: false,
   })
-  item: ClaimItem
+  item: Rel<ClaimItem>
 
   @Property({ columnType: "text" })
   url: string

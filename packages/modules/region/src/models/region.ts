@@ -33,7 +33,7 @@ export default class Region {
   currency_code: string
 
   @Property({ columnType: "boolean" })
-  automatic_taxes = true
+  automatic_taxes: boolean = true
 
   @OneToMany(() => Country, (country) => country.region)
   countries = new Collection<Country>(this)
