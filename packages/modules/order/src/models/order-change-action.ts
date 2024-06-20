@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import OrderClaim from "./claim"
 import OrderExchange from "./exchange"
@@ -90,7 +91,7 @@ export default class OrderChangeAction {
     persist: false,
     nullable: true,
   })
-  order: Order | null = null
+  order: Rel<Order> | null = null
 
   @ManyToOne({
     entity: () => Return,
@@ -155,7 +156,7 @@ export default class OrderChangeAction {
     persist: false,
     nullable: true,
   })
-  order_change: OrderChange | null = null
+  order_change: Rel<OrderChange> | null = null
 
   @Property({
     columnType: "text",

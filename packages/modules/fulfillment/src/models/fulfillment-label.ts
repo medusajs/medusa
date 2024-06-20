@@ -14,6 +14,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
 
@@ -58,7 +59,7 @@ export default class FulfillmentLabel {
   fulfillment_id: string
 
   @ManyToOne(() => Fulfillment, { persist: false })
-  fulfillment: Fulfillment
+  fulfillment: Rel<Fulfillment>
 
   @Property({
     onCreate: () => new Date(),

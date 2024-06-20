@@ -22,17 +22,17 @@ const ReturnShippingSchema = z.object({
 const ItemSchema = z.object({
   id: z.string(),
   quantity: z.number().min(1),
-  reason_id: z.string().optional(),
-  note: z.string().optional(),
+  reason_id: z.string().nullish(),
+  note: z.string().nullish(),
 })
 
 export const StorePostReturnsReqSchema = z.object({
   order_id: z.string(),
   items: z.array(ItemSchema),
   return_shipping: ReturnShippingSchema,
-  note: z.string().optional(),
+  note: z.string().nullish(),
   receive_now: z.boolean().optional(),
-  location_id: z.string().optional(),
+  location_id: z.string().nullish(),
 })
 export type StorePostReturnsReqSchemaType = z.infer<
   typeof StorePostReturnsReqSchema

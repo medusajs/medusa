@@ -11,6 +11,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Payment from "./payment"
 
@@ -30,7 +31,7 @@ export default class Refund {
     index: "IDX_refund_payment_id",
     fieldName: "payment_id",
   })
-  payment!: Payment
+  payment!: Rel<Payment>
 
   @Property({
     onCreate: () => new Date(),

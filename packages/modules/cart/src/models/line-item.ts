@@ -18,6 +18,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Cart from "./cart"
 import LineItemAdjustment from "./line-item-adjustment"
@@ -76,7 +77,7 @@ export default class LineItem {
   cart_id: string
 
   @ManyToOne({ entity: () => Cart, persist: false })
-  cart: Cart
+  cart: Rel<Cart>
 
   @Property({ columnType: "text" })
   title: string
@@ -129,13 +130,13 @@ export default class LineItem {
   variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
-  requires_shipping = true
+  requires_shipping: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_discountable = true
+  is_discountable: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
 
   @MikroOrmBigNumberProperty({ nullable: true })
   compare_at_unit_price?: BigNumber | number | null = null
@@ -152,12 +153,12 @@ export default class LineItem {
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  tax_lines = new Collection<LineItemTaxLine>(this)
+  tax_lines = new Collection<Rel<LineItemTaxLine>>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  adjustments = new Collection<LineItemAdjustment>(this)
+  adjustments = new Collection<Rel<LineItemAdjustment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

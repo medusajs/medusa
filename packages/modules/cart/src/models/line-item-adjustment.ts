@@ -11,6 +11,7 @@ import {
   ManyToOne,
   OnInit,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import LineItem from "./line-item"
@@ -42,7 +43,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItemAdjustment extends AdjustmentLine {
   @ManyToOne({ entity: () => LineItem, persist: false })
-  item: LineItem
+  item: Rel<LineItem>
 
   @LineItemIdIndex()
   @ManyToOne({

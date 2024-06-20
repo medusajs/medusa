@@ -1,14 +1,15 @@
 import { DAL } from "@medusajs/types"
 import { generateEntityId } from "@medusajs/utils"
 import {
-  Cascade,
   BeforeCreate,
-  ManyToOne,
+  Cascade,
   Entity,
+  ManyToOne,
   OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Customer from "./customer"
 import CustomerGroup from "./customer-group"
@@ -34,7 +35,7 @@ export default class CustomerGroupCustomer {
     index: "IDX_customer_group_customer_customer_id",
     cascade: [Cascade.REMOVE],
   })
-  customer: Customer
+  customer: Rel<Customer>
 
   @ManyToOne({
     entity: () => CustomerGroup,
@@ -42,7 +43,7 @@ export default class CustomerGroupCustomer {
     index: "IDX_customer_group_customer_group_id",
     cascade: [Cascade.REMOVE],
   })
-  customer_group: CustomerGroup
+  customer_group: Rel<CustomerGroup>
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

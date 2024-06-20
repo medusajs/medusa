@@ -1,5 +1,5 @@
-import { createFindParams, createSelectParams } from "../../utils/validators"
 import { z } from "zod"
+import { createFindParams, createSelectParams } from "../../utils/validators"
 
 export type AdminGetPricingRuleTypeParamsType = z.infer<
   typeof AdminGetPricingRuleTypeParams

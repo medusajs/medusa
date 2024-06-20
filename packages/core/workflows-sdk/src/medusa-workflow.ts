@@ -2,7 +2,7 @@ import { LocalWorkflow } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
 import { ExportedWorkflow } from "./helper"
 
-export class MedusaWorkflow {
+class MedusaWorkflow {
   static workflows: Record<
     string,
     (
@@ -28,4 +28,6 @@ export class MedusaWorkflow {
 }
 
 global.MedusaWorkflow ??= MedusaWorkflow
-exports.MedusaWorkflow = global.MedusaWorkflow
+const GlobalMedusaWorkflow = global.MedusaWorkflow
+
+export { GlobalMedusaWorkflow as MedusaWorkflow }

@@ -44,8 +44,8 @@ export const AdminCreateInvite = z
 export type AdminInviteAcceptType = z.infer<typeof AdminInviteAccept>
 export const AdminInviteAccept = z
   .object({
-    email: z.string().optional(),
-    first_name: z.string().optional(),
-    last_name: z.string().optional(),
+    email: z.string().nullish(),
+    first_name: z.string().nullish(),
+    last_name: z.string().nullish(),
   })
   .strict()

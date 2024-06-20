@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
@@ -62,14 +63,14 @@ export default class ReturnReason {
     nullable: true,
     cascade: [Cascade.PERSIST],
   })
-  parent_return_reason?: ReturnReason | null
+  parent_return_reason?: Rel<ReturnReason> | null
 
   @OneToMany(
     () => ReturnReason,
     (return_reason) => return_reason.parent_return_reason,
     { cascade: [Cascade.PERSIST] }
   )
-  return_reason_children: ReturnReason[]
+  return_reason_children: Rel<ReturnReason>[]
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

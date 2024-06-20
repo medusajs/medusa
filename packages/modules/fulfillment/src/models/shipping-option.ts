@@ -21,6 +21,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Fulfillment from "./fulfillment"
 import FulfillmentProvider from "./fulfillment-provider"
@@ -118,17 +119,17 @@ export default class ShippingOption {
   metadata: Record<string, unknown> | null = null
 
   @ManyToOne(() => ServiceZone, { persist: false })
-  service_zone: ServiceZone
+  service_zone: Rel<ServiceZone>
 
   @ManyToOne(() => ShippingProfile, {
     persist: false,
   })
-  shipping_profile: ShippingProfile | null
+  shipping_profile: Rel<ShippingProfile> | null
 
   @ManyToOne(() => FulfillmentProvider, {
     persist: false,
   })
-  provider: FulfillmentProvider | null
+  provider: Rel<FulfillmentProvider> | null
 
   @OneToOne(() => ShippingOptionType, (so) => so.shipping_option, {
     owner: true,
@@ -137,16 +138,16 @@ export default class ShippingOption {
     fieldName: "shipping_option_type_id",
     onDelete: "cascade",
   })
-  type: ShippingOptionType
+  type: Rel<ShippingOptionType>
 
   @OneToMany(() => ShippingOptionRule, "shipping_option", {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  rules = new Collection<ShippingOptionRule>(this)
+  rules = new Collection<Rel<ShippingOptionRule>>(this)
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.shipping_option)
-  fulfillments = new Collection<Fulfillment>(this)
+  fulfillments = new Collection<Rel<Fulfillment>>(this)
 
   @Property({
     onCreate: () => new Date(),

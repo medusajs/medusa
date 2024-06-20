@@ -1,4 +1,10 @@
 import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  Searchable,
+} from "@medusajs/utils"
+import {
   BeforeCreate,
   Collection,
   Entity,
@@ -9,13 +15,8 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
-import {
-  createPsqlIndexStatementHelper,
-  DALUtils,
-  generateEntityId,
-  Searchable,
-} from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
 import { InventoryLevel } from "./inventory-level"
@@ -117,7 +118,7 @@ export class InventoryItem {
       cascade: ["soft-remove" as any],
     }
   )
-  location_levels = new Collection<InventoryLevel>(this)
+  location_levels = new Collection<Rel<InventoryLevel>>(this)
 
   @OneToMany(
     () => ReservationItem,
@@ -126,7 +127,7 @@ export class InventoryItem {
       cascade: ["soft-remove" as any],
     }
   )
-  reservation_items = new Collection<ReservationItem>(this)
+  reservation_items = new Collection<Rel<ReservationItem>>(this)
 
   @Formula(
     (item) =>

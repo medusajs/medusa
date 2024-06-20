@@ -19,6 +19,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 import Order from "./order"
@@ -71,7 +72,7 @@ export default class OrderClaim {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @OneToOne({
     entity: () => Return,
@@ -81,7 +82,7 @@ export default class OrderClaim {
     nullable: true,
     owner: true,
   })
-  return: Return
+  return: Rel<Return>
 
   @Property({ columnType: "text", nullable: true })
   @ReturnIdIndex.MikroORMIndex()
@@ -97,7 +98,7 @@ export default class OrderClaim {
   display_id: number
 
   @Enum({ items: () => ClaimType })
-  type: ClaimType
+  type: Rel<ClaimType>
 
   @Property({ columnType: "boolean", nullable: true })
   no_notification: boolean | null = null
@@ -113,12 +114,12 @@ export default class OrderClaim {
   @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
-  additional_items = new Collection<ClaimItem>(this)
+  additional_items = new Collection<Rel<ClaimItem>>(this)
 
   @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
-  claim_items = new Collection<ClaimItem>(this)
+  claim_items = new Collection<Rel<ClaimItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,
@@ -127,7 +128,7 @@ export default class OrderClaim {
       cascade: [Cascade.PERSIST],
     }
   )
-  shipping_methods = new Collection<OrderShippingMethod>(this)
+  shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.claim, {
     cascade: [Cascade.PERSIST],

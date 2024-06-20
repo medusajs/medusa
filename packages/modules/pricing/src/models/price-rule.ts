@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Price from "./price"
 import PriceSet from "./price-set"
@@ -64,7 +65,7 @@ export default class PriceRule {
   price_set_id: string
 
   @ManyToOne(() => PriceSet, { persist: false })
-  price_set: PriceSet
+  price_set: Rel<PriceSet>
 
   @PriceRuleRuleTypeIdIndex.MikroORMIndex()
   @ManyToOne(() => RuleType, {
@@ -75,7 +76,7 @@ export default class PriceRule {
   rule_type_id: string
 
   @ManyToOne(() => RuleType, { persist: false })
-  rule_type: RuleType
+  rule_type: Rel<RuleType>
 
   @Property({ columnType: "text" })
   value: string
@@ -93,7 +94,7 @@ export default class PriceRule {
   price_id: string
 
   @ManyToOne(() => Price, { persist: false })
-  price: Price
+  price: Rel<Price>
 
   @Property({
     onCreate: () => new Date(),

@@ -14,6 +14,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ShippingMethodAdjustment from "./shipping-method-adjustment"
 import ShippingMethodTaxLine from "./shipping-method-tax-line"
@@ -41,7 +42,7 @@ export default class ShippingMethod {
   raw_amount: BigNumberRawValue
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
 
   @Property({
     columnType: "text",
@@ -63,7 +64,7 @@ export default class ShippingMethod {
       cascade: [Cascade.PERSIST],
     }
   )
-  tax_lines = new Collection<ShippingMethodTaxLine>(this)
+  tax_lines = new Collection<Rel<ShippingMethodTaxLine>>(this)
 
   @OneToMany(
     () => ShippingMethodAdjustment,
@@ -72,7 +73,7 @@ export default class ShippingMethod {
       cascade: [Cascade.PERSIST],
     }
   )
-  adjustments = new Collection<ShippingMethodAdjustment>(this)
+  adjustments = new Collection<Rel<ShippingMethodAdjustment>>(this)
 
   @Property({
     onCreate: () => new Date(),
