@@ -784,10 +784,22 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: "shipping-option-types",
-                element: <Outlet />,
                 handle: {
                   crumb: () => "Shipping Option Types",
                 },
+                lazy: () =>
+                  import(
+                    "../../routes/shipping-option-types/shipping-option-type-list"
+                  ),
+                children: [
+                  {
+                    path: "create",
+                    lazy: () =>
+                      import(
+                        "../../routes/shipping-option-types/shipping-option-type-create"
+                      ),
+                  },
+                ],
               },
               {
                 path: ":location_id",

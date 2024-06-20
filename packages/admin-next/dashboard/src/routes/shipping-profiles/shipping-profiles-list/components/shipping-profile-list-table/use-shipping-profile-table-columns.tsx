@@ -3,7 +3,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
-import { ShippingOptionsRowActions } from "./shipping-options-row-actions"
+import { ShippingProfileRowActions } from "./shipping-profile-row-actions"
 
 const columnHelper =
   createColumnHelper<AdminShippingProfileResponse["shipping_profile"]>()
@@ -23,7 +23,7 @@ export const useShippingProfileTableColumns = () => {
       }),
       columnHelper.display({
         id: "actions",
-        cell: ({ row }) => <ShippingOptionsRowActions profile={row.original} />,
+        cell: ({ row }) => <ShippingProfileRowActions profile={row.original} />,
       }),
     ],
     [t]

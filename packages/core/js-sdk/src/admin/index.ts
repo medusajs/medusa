@@ -19,6 +19,7 @@ import { StockLocation } from "./stock-location"
 import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
+import { ShippingOptionType } from "./shipping-option-type"
 
 export class Admin {
   public invite: Invite
@@ -36,6 +37,7 @@ export class Admin {
   public fulfillment: Fulfillment
   public fulfillmentProvider: FulfillmentProvider
   public shippingOption: ShippingOption
+  public shippingOptionType: ShippingOptionType
   public shippingProfile: ShippingProfile
   public inventoryItem: InventoryItem
   public order: Order
@@ -58,6 +60,7 @@ export class Admin {
     this.fulfillment = new Fulfillment(client)
     this.fulfillmentProvider = new FulfillmentProvider(client)
     this.shippingOption = new ShippingOption(client)
+    this.shippingOptionType = new ShippingOptionType(client)
     this.shippingProfile = new ShippingProfile(client)
     this.inventoryItem = new InventoryItem(client)
     this.order = new Order(client)

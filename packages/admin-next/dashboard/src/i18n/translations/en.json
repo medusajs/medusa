@@ -806,7 +806,7 @@
     },
     "sidebar": {
       "shippingConfiguration": "Shipping configuration",
-      "shippingProfiles": "Shipping profiles",
+      "shippingProfiles": "Shipping Profiles",
       "shippingProfilesDesc": "Shipping rules for different types of products",
       "shippingOptionTypes": "Shipping Option Types",
       "shippingOptionTypesDesc": "Group options based on characteristic"
@@ -922,6 +922,19 @@
     },
     "tooltip": {
       "type": "Enter shipping profile type, for example: Express, Freight, etc."
+    }
+  },
+  "shippingOptionType": {
+    "domain": "Shipping Option Type",
+    "create": {
+      "header": "Create Shipping Option Type",
+      "hint": "Create a new type to group shipping options with similar requirements.",
+      "successToast": "Shipping option type: {{name}} was successfully created."
+    },
+    "delete": {
+      "title": "Delete Shipping Option Type",
+      "description": "You are about to delete the shipping option type: {{name}}. This action cannot be undone.",
+      "successToast": "Shipping option type: {{name}} was successfully deleted."
     }
   },
   "discounts": {

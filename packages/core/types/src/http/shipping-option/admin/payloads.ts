@@ -1,16 +1,11 @@
 import { RuleOperatorType } from "../../../common"
 import { ShippingOptionPriceType } from "../../../fulfillment"
+import { AdminCreateShippingOptionType } from "../../shipping-option-type"
 
 export interface AdminCreateShippingOptionRule {
   operator: RuleOperatorType
   attribute: string
   value: string | string[]
-}
-
-export interface AdminCreateShippingOptionType {
-  label: string
-  description: string
-  code: string
 }
 
 export interface AdminCreateShippingOptionPriceWithCurrency {

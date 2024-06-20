@@ -1,28 +1,28 @@
 import { Trash } from "@medusajs/icons"
-import { AdminShippingProfileResponse } from "@medusajs/types"
+import { AdminShippingOptionTypeResponse } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeleteShippingProfile } from "../../../../../hooks/api/shipping-profiles"
+import { useDeleteShippingOptionType } from "../../../../../hooks/api/shipping-option-types"
 
 export const ShippingOptionsRowActions = ({
-  profile,
+  optionType,
 }: {
-  profile: AdminShippingProfileResponse["shipping_profile"]
+  optionType: AdminShippingOptionTypeResponse["shipping_option_type"]
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { mutateAsync } = useDeleteShippingProfile(profile.id)
+  const { mutateAsync } = useDeleteShippingOptionType(optionType.id)
 
   const handleDelete = async () => {
     const res = await prompt({
       title: t("shippingProfile.delete.title"),
       description: t("shippingProfile.delete.description", {
-        name: profile.name,
+        name: optionType.label,
       }),
-      verificationText: profile.name,
+      verificationText: optionType.label,
       verificationInstruction: t("general.typeToConfirm"),
       confirmText: t("actions.delete"),
       cancelText: t("actions.cancel"),
@@ -36,7 +36,7 @@ export const ShippingOptionsRowActions = ({
       onSuccess: () => {
         toast.success(t("general.success"), {
           description: t("shippingProfile.delete.successToast", {
-            name: profile.name,
+            name: optionType.label,
           }),
           dismissLabel: t("actions.close"),
         })
