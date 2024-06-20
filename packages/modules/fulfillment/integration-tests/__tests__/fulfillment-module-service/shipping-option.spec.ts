@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateShippingOptionDTO,
   IFulfillmentModuleService,
@@ -14,7 +13,7 @@ import {
 import { resolve } from "path"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
 import { UpdateShippingOptionDTO } from "@medusajs/types/src"
 
 jest.setTimeout(100000)

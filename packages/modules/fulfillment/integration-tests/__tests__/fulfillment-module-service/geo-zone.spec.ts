@@ -1,10 +1,9 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateGeoZoneDTO,
   IFulfillmentModuleService,
   UpdateGeoZoneDTO,
 } from "@medusajs/types"
-import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,

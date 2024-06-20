@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const OrderRegion: ModuleJoinerConfig = {
   isLink: true,

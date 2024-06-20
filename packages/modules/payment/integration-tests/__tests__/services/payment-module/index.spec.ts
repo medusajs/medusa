@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
+import { Modules, promiseAll } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils/dist"
 import {
   createPaymentCollections,

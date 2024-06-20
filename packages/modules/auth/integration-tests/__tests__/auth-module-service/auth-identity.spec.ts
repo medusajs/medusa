@@ -1,7 +1,7 @@
 import { IAuthModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
 import { createAuthIdentities } from "../../__fixtures__/auth-identity"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 

@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateShippingProfileDTO,
   IFulfillmentModuleService,
@@ -8,7 +7,7 @@ import {
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
 import { buildExpectedEventMessageShape } from "../../__fixtures__"
-import { FulfillmentEvents } from "@medusajs/utils"
+import { FulfillmentEvents, Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 

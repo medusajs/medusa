@@ -179,3 +179,5 @@ export class EntityBuilder {
     return new ManyToMany<T>(entityBuilder, options || {})
   }
 }
+
+export const model = new EntityBuilder()

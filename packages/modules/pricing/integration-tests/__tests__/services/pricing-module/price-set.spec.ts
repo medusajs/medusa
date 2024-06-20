@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   CreatePriceSetRuleTypeDTO,
@@ -11,7 +10,12 @@ import {
 } from "medusa-test-utils"
 import { PriceSetRuleType } from "../../../../src/models"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
-import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  Modules,
+  PricingEvents,
+} from "@medusajs/utils"
 
 jest.setTimeout(30000)
 

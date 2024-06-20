@@ -1,8 +1,8 @@
 import { resolve } from "path"
-import { Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Entity, PrimaryKey } from "@mikro-orm/core"
 import { IFileModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 

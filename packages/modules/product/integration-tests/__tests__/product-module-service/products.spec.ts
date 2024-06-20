@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductCategoryDTO } from "@medusajs/types"
-import { kebabCase, ProductStatus } from "@medusajs/utils"
+import { kebabCase, Modules, ProductStatus } from "@medusajs/utils"
 import {
   Product,
   ProductCategory,

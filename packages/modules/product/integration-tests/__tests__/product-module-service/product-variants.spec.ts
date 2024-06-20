@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateProductDTO,
   CreateProductVariantDTO,
@@ -9,6 +8,7 @@ import {
 import {
   CommonEvents,
   composeMessage,
+  Modules,
   ProductEvents,
   ProductStatus,
 } from "@medusajs/utils"

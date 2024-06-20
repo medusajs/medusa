@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types/dist/user"
-import { UserEvents } from "@medusajs/utils"
+import { Modules, UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,

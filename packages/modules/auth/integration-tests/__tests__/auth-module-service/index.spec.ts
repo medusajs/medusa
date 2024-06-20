@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IAuthModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { resolve } from "path"
+import { Modules } from "@medusajs/utils"
 
 let moduleOptions = {
   providers: [

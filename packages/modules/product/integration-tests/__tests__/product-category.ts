@@ -1,6 +1,5 @@
 import { ProductCategoryService } from "@services"
 
-import { Modules } from "@medusajs/modules-sdk"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   eletronicsCategoriesData,
@@ -8,6 +7,7 @@ import {
   productCategoriesRankData,
 } from "../__fixtures__/product-category/data"
 import { IProductModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 

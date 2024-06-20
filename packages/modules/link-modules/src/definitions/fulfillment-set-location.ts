@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const LocationFulfillmentSet: ModuleJoinerConfig = {
   serviceName: LINKS.LocationFulfillmentSet,
