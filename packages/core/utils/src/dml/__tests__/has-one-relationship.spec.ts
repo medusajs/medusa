@@ -16,6 +16,7 @@ describe("HasOne relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
+      options: {},
       entity: entityRef,
     })
   })
@@ -35,6 +36,7 @@ describe("HasOne relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: true,
+      options: {},
       entity: entityRef,
     })
   })

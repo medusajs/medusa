@@ -68,7 +68,7 @@ export class EntityBuilder {
    * Define an id property. Id properties are marked
    * primary by default
    */
-  id(options: ConstructorParameters<typeof IdProperty>[0]) {
+  id(options?: ConstructorParameters<typeof IdProperty>[0]) {
     return new IdProperty(options)
   }
 
@@ -162,7 +162,20 @@ export class EntityBuilder {
    *   relationship requires a pivot table to establish a many to many
    *   relationship between two entities
    */
-  manyToMany<T>(entityBuilder: T, options?: RelationshipOptions) {
+  manyToMany<T>(
+    entityBuilder: T,
+    options?: RelationshipOptions &
+      (
+        | {
+            pivotTable?: string
+            pivotEntity?: never
+          }
+        | {
+            pivotTable?: never
+            pivotEntity?: () => DmlEntity<any>
+          }
+      )
+  ) {
     return new ManyToMany<T>(entityBuilder, options || {})
   }
 }
