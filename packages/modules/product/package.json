@@ -7,11 +7,8 @@
   "files": [
     "dist"
   ],
-  "bin": {
-    "medusa-product-seed": "dist/scripts/bin/run-seed.js"
-  },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "repository": {
     "type": "git",

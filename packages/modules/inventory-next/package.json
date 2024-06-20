@@ -15,7 +15,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "author": "Medusa",
   "license": "MIT",

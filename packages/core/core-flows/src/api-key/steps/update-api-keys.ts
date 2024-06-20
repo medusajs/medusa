@@ -24,12 +24,12 @@ export const updateApiKeysStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listApiKeys(data.selector, {
       select: selects,
       relations,
     })
 
-    const apiKeys = await service.update(data.selector, data.update)
+    const apiKeys = await service.updateApiKeys(data.selector, data.update)
     return new StepResponse(apiKeys, prevData)
   },
   async (prevData, { container }) => {
@@ -41,7 +41,7 @@ export const updateApiKeysStep = createStep(
       ModuleRegistrationName.API_KEY
     )
 
-    await service.upsert(
+    await service.upsertApiKeys(
       prevData.map((r) => ({
         id: r.id,
         title: r.title,

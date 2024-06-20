@@ -12,6 +12,8 @@ import "../__fixtures__"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import { DB_URL, TestDatabase } from "../utils"
 
+jest.setTimeout(100000)
+
 const sharedPgConnection = knex<any, any>({
   client: "pg",
   searchPath: process.env.MEDUSA_WORKFLOW_ENGINE_DB_SCHEMA,

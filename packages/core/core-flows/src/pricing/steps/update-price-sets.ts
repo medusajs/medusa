@@ -1,10 +1,10 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService, PricingTypes } from "@medusajs/types"
 import {
-  MedusaError,
   getSelectsAndRelationsFromObjectArray,
+  MedusaError,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type UpdatePriceSetsStepInput =
   | {
@@ -31,11 +31,11 @@ export const updatePriceSetsStep = createStep(
         )
       }
 
-      const prevData = await pricingModule.list({
+      const prevData = await pricingModule.listPriceSets({
         id: data.price_sets.map((p) => p.id) as string[],
       })
 
-      const priceSets = await pricingModule.upsert(data.price_sets)
+      const priceSets = await pricingModule.upsertPriceSets(data.price_sets)
       return new StepResponse(priceSets, prevData)
     }
 
@@ -47,12 +47,12 @@ export const updatePriceSetsStep = createStep(
       data.update,
     ])
 
-    const dataBeforeUpdate = await pricingModule.list(data.selector, {
+    const dataBeforeUpdate = await pricingModule.listPriceSets(data.selector, {
       select: selects,
       relations,
     })
 
-    const updatedPriceSets = await pricingModule.update(
+    const updatedPriceSets = await pricingModule.updatePriceSets(
       data.selector,
       data.update
     )
@@ -68,6 +68,8 @@ export const updatePriceSetsStep = createStep(
       return
     }
 
-    await pricingModule.upsert(revertInput as PricingTypes.UpsertPriceSetDTO[])
+    await pricingModule.upsertPriceSets(
+      revertInput as PricingTypes.UpsertPriceSetDTO[]
+    )
   }
 )

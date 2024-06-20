@@ -1,10 +1,7 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/types"
 import { promiseAll } from "@medusajs/utils"
-import {
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
+import { moduleIntegrationTestRunner } from "medusa-test-utils/dist"
 import {
   createPaymentCollections,
   createPayments,
@@ -13,12 +10,9 @@ import {
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPaymentModuleService>({
   moduleName: Modules.PAYMENT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPaymentModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("Payment Module Service", () => {
       describe("Payment Flow", () => {
         it("complete payment flow successfully", async () => {

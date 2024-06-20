@@ -12,7 +12,7 @@ export const deleteSalesChannelsStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    await service.softDelete(ids)
+    await service.softDeleteSalesChannels(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -25,6 +25,6 @@ export const deleteSalesChannelsStep = createStep(
       ModuleRegistrationName.SALES_CHANNEL
     )
 
-    await service.restore(prevSalesChannelIds)
+    await service.restoreSalesChannels(prevSalesChannelIds)
   }
 )

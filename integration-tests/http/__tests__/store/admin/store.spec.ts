@@ -25,10 +25,10 @@ medusaIntegrationTestRunner({
         const defaultId = (await api.get("/admin/stores", adminHeaders)).data
           .stores?.[0]?.id
         if (defaultId) {
-          storeModule.delete(defaultId)
+          await storeModule.deleteStores(defaultId)
         }
 
-        store = await storeModule.create({
+        store = await storeModule.createStores({
           name: "New store",
           supported_currency_codes: ["usd", "dkk"],
           default_currency_code: "usd",

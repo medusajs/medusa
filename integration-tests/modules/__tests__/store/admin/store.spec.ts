@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should correctly implement the entire lifecycle of a store", async () => {
-        const createdStore = await service.create({
+        const createdStore = await service.createStores({
           name: "Test store",
           supported_currency_codes: ["usd"],
         })
@@ -56,8 +56,11 @@ medusaIntegrationTestRunner({
           })
         )
 
-        await service.delete(createdStore.id)
-        const listedStores = await api.get(`/admin/stores?id=${createdStore.id}`, adminHeaders)
+        await service.deleteStores(createdStore.id)
+        const listedStores = await api.get(
+          `/admin/stores?id=${createdStore.id}`,
+          adminHeaders
+        )
         expect(listedStores.data.stores).toHaveLength(0)
       })
     })

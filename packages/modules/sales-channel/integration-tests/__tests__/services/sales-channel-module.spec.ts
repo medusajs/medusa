@@ -1,46 +1,48 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { ISalesChannelModuleService } from "@medusajs/types"
-
-import { createSalesChannels } from "../../__fixtures__"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+const salesChannelData = [
+  {
+    id: "channel-1",
+    name: "Channel 1",
+    description: "Channel description 1",
+    is_disabled: false,
+  },
+  {
+    id: "channel-2",
+    name: "Channel 2",
+    description: "Channel description 2",
+    is_disabled: false,
+  },
+  {
+    id: "channel-3",
+    name: "Channel 3",
+    description: "Channel description 3",
+    is_disabled: true,
+  },
+]
+
+moduleIntegrationTestRunner<ISalesChannelModuleService>({
   moduleName: Modules.SALES_CHANNEL,
-  testSuite: ({
-    MikroOrmWrapper,
-    medusaApp,
-  }: SuiteOptions<ISalesChannelModuleService>) => {
-    let service: ISalesChannelModuleService
-
-    beforeEach(() => {
-      service = medusaApp.modules[Modules.SALES_CHANNEL]
-    })
-
+  testSuite: ({ service }) => {
     describe("Sales Channel Service", () => {
-      let testManager: SqlEntityManager
-      let repositoryManager: SqlEntityManager
-
       beforeEach(async () => {
-        repositoryManager = await MikroOrmWrapper.forkManager()
-        testManager = await MikroOrmWrapper.forkManager()
-
-        await createSalesChannels(testManager)
+        await service.createSalesChannels(salesChannelData)
       })
 
       describe("create", () => {
         it("should create a SalesChannel successfully", async () => {
-          const [created] = await service.create([
+          const [created] = await service.createSalesChannels([
             {
               name: "test",
               description: "test",
             },
           ])
 
-          const [channel] = await service.list({
+          const [channel] = await service.listSalesChannels({
             name: [created.name],
           })
 
@@ -53,7 +55,7 @@ moduleIntegrationTestRunner({
         const id = "channel-1"
 
         it("should return SalesChannel for the given id", async () => {
-          const result = await service.retrieve(id)
+          const result = await service.retrieveSalesChannel(id)
 
           expect(result).toEqual(
             expect.objectContaining({
@@ -66,7 +68,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve("does-not-exist")
+            await service.retrieveSalesChannel("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -81,12 +83,12 @@ moduleIntegrationTestRunner({
         const id = "channel-2"
 
         it("should update the name of the SalesChannel successfully", async () => {
-          await service.update(id, {
+          await service.updateSalesChannels(id, {
             name: "Update name 2",
             is_disabled: true,
           })
 
-          const channel = await service.retrieve(id)
+          const channel = await service.retrieveSalesChannel(id)
 
           expect(channel.name).toEqual("Update name 2")
           expect(channel.is_disabled).toEqual(true)
@@ -96,7 +98,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.update("does-not-exist", {
+            await service.updateSalesChannels("does-not-exist", {
               name: "does-not-exist",
             })
           } catch (e) {
@@ -111,7 +113,7 @@ moduleIntegrationTestRunner({
 
       describe("list", () => {
         it("should return a list of SalesChannels", async () => {
-          const result = await service.list()
+          const result = await service.listSalesChannels()
 
           expect(result).toEqual([
             expect.objectContaining({
@@ -127,7 +129,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list SalesChannels by name", async () => {
-          const result = await service.list({
+          const result = await service.listSalesChannels({
             name: ["Channel 2", "Channel 3"],
           })
 
@@ -144,7 +146,7 @@ moduleIntegrationTestRunner({
 
       describe("listAndCount", () => {
         it("should return sales channels and count", async () => {
-          const [result, count] = await service.listAndCount()
+          const [result, count] = await service.listAndCountSalesChannels()
 
           expect(count).toEqual(3)
           expect(result).toEqual([
@@ -161,7 +163,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return sales channels and count when filtered", async () => {
-          const [result, count] = await service.listAndCount({
+          const [result, count] = await service.listAndCountSalesChannels({
             id: ["channel-2"],
           })
 
@@ -174,7 +176,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return sales channels and count when using skip and take", async () => {
-          const [results, count] = await service.listAndCount(
+          const [results, count] = await service.listAndCountSalesChannels(
             {},
             { skip: 1, take: 1 }
           )
@@ -188,7 +190,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return requested fields", async () => {
-          const [result, count] = await service.listAndCount(
+          const [result, count] = await service.listAndCountSalesChannels(
             {},
             {
               take: 1,
@@ -208,7 +210,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should filter disabled channels", async () => {
-          const [result, count] = await service.listAndCount(
+          const [result, count] = await service.listAndCountSalesChannels(
             { is_disabled: true },
             { select: ["id"] }
           )
@@ -228,9 +230,9 @@ moduleIntegrationTestRunner({
         const id = "channel-2"
 
         it("should delete the SalesChannel given an id successfully", async () => {
-          await service.delete([id])
+          await service.deleteSalesChannels([id])
 
-          const result = await service.list({
+          const result = await service.listSalesChannels({
             id: [id],
           })
 

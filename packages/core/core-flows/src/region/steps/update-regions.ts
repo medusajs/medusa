@@ -24,7 +24,7 @@ export const updateRegionsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.list(data.selector, {
+    const prevData = await service.listRegions(data.selector, {
       select: selects,
       relations,
     })
@@ -33,7 +33,7 @@ export const updateRegionsStep = createStep(
       return new StepResponse(prevData, [])
     }
 
-    const regions = await service.update(data.selector, data.update)
+    const regions = await service.updateRegions(data.selector, data.update)
 
     return new StepResponse(regions, prevData)
   },
@@ -46,7 +46,7 @@ export const updateRegionsStep = createStep(
       ModuleRegistrationName.REGION
     )
 
-    await service.upsert(
+    await service.upsertRegions(
       prevData.map((r) => ({
         id: r.id,
         name: r.name,

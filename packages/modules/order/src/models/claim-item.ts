@@ -1,6 +1,7 @@
-import { DAL } from "@medusajs/types"
+import { BigNumberRawValue, DAL } from "@medusajs/types"
 import {
   ClaimReason,
+  MikroOrmBigNumberProperty,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -27,11 +28,19 @@ type OptionalLineItemProps = DAL.EntityDateColumns
 const ClaimIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim_item",
   columns: "claim_id",
+  where: "deleted_at IS NOT NULL",
 })
 
 const ItemIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim_item",
   columns: "item_id",
+  where: "deleted_at IS NOT NULL",
+})
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "order_claim_item_image",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
 })
 
 @Entity({ tableName: "order_claim_item" })
@@ -46,8 +55,14 @@ export default class OrderClaimItem {
   })
   images = new Collection<Rel<ClaimItemImage>>(this)
 
-  @Enum({ items: () => ClaimReason })
-  reason: Rel<ClaimReason>
+  @Enum({ items: () => ClaimReason, nullable: true })
+  reason: Rel<ClaimReason> | null = null
+
+  @MikroOrmBigNumberProperty()
+  quantity: Number | number
+
+  @Property({ columnType: "jsonb" })
+  raw_quantity: BigNumberRawValue
 
   @ManyToOne(() => Claim, {
     columnType: "text",
@@ -77,6 +92,9 @@ export default class OrderClaimItem {
   })
   item: Rel<LineItem>
 
+  @Property({ columnType: "boolean", default: false })
+  is_additional_item: boolean = false
+
   @Property({ columnType: "text", nullable: true })
   note: string
 
@@ -98,13 +116,19 @@ export default class OrderClaimItem {
   })
   updated_at: Date
 
+  @Property({ columnType: "timestamptz", nullable: true })
+  @DeletedAtIndex.MikroORMIndex()
+  deleted_at: Date | null = null
+
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
+    this.id = generateEntityId(this.id, "claitem")
+    this.claim_id = this.claim?.id
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordclaimitem")
+    this.id = generateEntityId(this.id, "claitem")
+    this.claim_id = this.claim?.id
   }
 }

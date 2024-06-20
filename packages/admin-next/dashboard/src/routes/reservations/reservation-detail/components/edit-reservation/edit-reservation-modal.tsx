@@ -1,6 +1,6 @@
 import { EditReservationForm } from "./components/edit-reservation-form"
 import { Heading } from "@medusajs/ui"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { RouteDrawer } from "../../../../../components/route-modal"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useParams } from "react-router-dom"
@@ -23,7 +23,7 @@ export const ReservationEdit = () => {
   const { stock_locations } = useStockLocations(
     {
       id: inventoryItem?.location_levels?.map(
-        (l: InventoryNext.InventoryLevelDTO) => l.location_id
+        (l: InventoryTypes.InventoryLevelDTO) => l.location_id
       ),
     },
     {

@@ -5,8 +5,8 @@ import {
   IPricingModuleService,
   PricingTypes,
 } from "@medusajs/types"
-import { PriceListType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
 
 jest.setTimeout(30000)
@@ -41,6 +41,7 @@ const createPriceLists = async (
       title: "Test Price List",
       description: "test description",
       type: PriceListType.SALE,
+      status: PriceListStatus.ACTIVE,
       rules,
       prices,
       ...priceListOverride,
@@ -48,12 +49,9 @@ const createPriceLists = async (
   ])
 }
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("PricingModule Service - Calculate Price", () => {
       describe("calculatePrices", () => {
         beforeEach(async () => {

@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {ModuleRegistrationName} from "@medusajs/modules-sdk"
 import {
   BatchWorkflowInput,
   CreateShippingOptionRuleDTO,
@@ -10,7 +10,7 @@ import {
   ShippingProfileDTO,
   UpdateShippingOptionRuleDTO,
 } from "@medusajs/types"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import {medusaIntegrationTestRunner} from "medusa-test-utils/dist"
 import {
   batchShippingOptionRulesWorkflow,
   createShippingOptionsWorkflow,
@@ -35,7 +35,7 @@ async function createShippingOptionFixture({
     ModuleRegistrationName.REGION
   ) as IRegionModuleService
 
-  const [region] = await regionService.create([
+  const [region] = await regionService.createRegions([
     {
       name: "Test region",
       currency_code: "eur",
@@ -136,7 +136,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await service.create({
+        fulfillmentSet = await service.createFulfillmentSets({
           name: "Test fulfillment set",
           type: "manual_test",
         })

@@ -15,11 +15,8 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
-import Claim from "./claim"
-import Exchange from "./exchange"
 import LineItem from "./line-item"
 import Order from "./order"
-import Return from "./return"
 
 type OptionalLineItemProps = DAL.EntityDateColumns
 
@@ -27,24 +24,6 @@ const OrderIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_item",
   columns: ["order_id"],
   where: "deleted_at IS NOT NULL",
-})
-
-const ReturnIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
-  columns: "return_id",
-  where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
-})
-
-const ExchangeIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
-  columns: ["exchange_id"],
-  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
-})
-
-const ClaimIdIndex = createPsqlIndexStatementHelper({
-  tableName: "order_item",
-  columns: ["claim_id"],
-  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const OrderVersionIndex = createPsqlIndexStatementHelper({
@@ -85,51 +64,6 @@ export default class OrderItem {
     persist: false,
   })
   order: Rel<Order>
-
-  @ManyToOne({
-    entity: () => Return,
-    mapToPk: true,
-    fieldName: "return_id",
-    columnType: "text",
-    nullable: true,
-  })
-  @ReturnIdIndex.MikroORMIndex()
-  return_id: string | null = null
-
-  @ManyToOne(() => Return, {
-    persist: false,
-  })
-  return: Rel<Return>
-
-  @ManyToOne({
-    entity: () => Exchange,
-    mapToPk: true,
-    fieldName: "exchange_id",
-    columnType: "text",
-    nullable: true,
-  })
-  @ExchangeIdIndex.MikroORMIndex()
-  exchange_id: string | null
-
-  @ManyToOne(() => Exchange, {
-    persist: false,
-  })
-  exchange: Rel<Exchange>
-
-  @ManyToOne({
-    entity: () => Claim,
-    mapToPk: true,
-    fieldName: "claim_id",
-    columnType: "text",
-    nullable: true,
-  })
-  @ClaimIdIndex.MikroORMIndex()
-  claim_id: string | null
-
-  @ManyToOne(() => Claim, {
-    persist: false,
-  })
-  claim: Rel<Claim>
 
   @Property({ columnType: "integer" })
   @OrderVersionIndex.MikroORMIndex()
@@ -217,9 +151,6 @@ export default class OrderItem {
   onCreate() {
     this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
-    this.return_id ??= this.return?.id
-    this.exchange_id ??= this.exchange?.id
-    this.claim_id ??= this.claim?.id
     this.item_id ??= this.item?.id
     this.version ??= this.order?.version
   }
@@ -228,9 +159,6 @@ export default class OrderItem {
   onInit() {
     this.id = generateEntityId(this.id, "orditem")
     this.order_id ??= this.order?.id
-    this.return_id ??= this.return?.id
-    this.exchange_id ??= this.exchange?.id
-    this.claim_id ??= this.claim?.id
     this.item_id ??= this.item?.id
     this.version ??= this.order?.version
   }

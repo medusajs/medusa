@@ -15,6 +15,8 @@ import {
   Property,
   Rel,
 } from "@mikro-orm/core"
+import OrderClaim from "./claim"
+import OrderExchange from "./exchange"
 import Order from "./order"
 import OrderChange from "./order-change"
 import Return from "./return"
@@ -37,6 +39,18 @@ const ReturnIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_change_action",
   columns: "return_id",
   where: "return_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const OrderClaimIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "claim_id",
+  where: "claim_id IS NOT NULL AND deleted_at IS NOT NULL",
+})
+
+const OrderExchangeIdIndex = createPsqlIndexStatementHelper({
+  tableName: "order_change_action",
+  columns: "exchange_id",
+  where: "exchange_id IS NOT NULL AND deleted_at IS NOT NULL",
 })
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
@@ -93,6 +107,36 @@ export default class OrderChangeAction {
     persist: false,
   })
   return: Return
+
+  @ManyToOne({
+    entity: () => OrderClaim,
+    mapToPk: true,
+    fieldName: "claim_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @OrderClaimIdIndex.MikroORMIndex()
+  claim_id: string | null = null
+
+  @ManyToOne(() => OrderClaim, {
+    persist: false,
+  })
+  claim: OrderClaim
+
+  @ManyToOne({
+    entity: () => OrderExchange,
+    mapToPk: true,
+    fieldName: "exchange_id",
+    columnType: "text",
+    nullable: true,
+  })
+  @OrderExchangeIdIndex.MikroORMIndex()
+  exchange_id: string | null = null
+
+  @ManyToOne(() => OrderExchange, {
+    persist: false,
+  })
+  exchange: OrderExchange
 
   @Property({ columnType: "integer", nullable: true })
   version: number | null = null
@@ -173,6 +217,10 @@ export default class OrderChangeAction {
   onCreate() {
     this.id = generateEntityId(this.id, "ordchact")
     this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
+    this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
+    this.claim_id ??= this.claim?.id ?? this.order_change?.claim_id ?? null
+    this.exchange_id ??=
+      this.exchange?.id ?? this.order_change?.exchange_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
     this.version ??= this.order_change?.version ?? null
   }
@@ -181,6 +229,10 @@ export default class OrderChangeAction {
   onInit() {
     this.id = generateEntityId(this.id, "ordchact")
     this.order_id ??= this.order?.id ?? this.order_change?.order_id ?? null
+    this.return_id ??= this.return?.id ?? this.order_change?.return_id ?? null
+    this.claim_id ??= this.claim?.id ?? this.order_change?.claim_id ?? null
+    this.exchange_id ??=
+      this.exchange?.id ?? this.order_change?.exchange_id ?? null
     this.order_change_id ??= this.order_change?.id ?? null
     this.version ??= this.order_change?.version ?? null
   }

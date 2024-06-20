@@ -7,16 +7,25 @@ import {
   ManyToMany,
   ManyToOne,
   Filter,
+  PrimaryKey,
+  BeforeCreate,
+  OnInit,
 } from "@mikro-orm/core"
 import { DmlEntity } from "../entity"
-import { camelToSnakeCase, pluralize } from "../../common"
+import {
+  pluralize,
+  camelToSnakeCase,
+  createPsqlIndexStatementHelper,
+  toCamelCase,
+  generateEntityId,
+} from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
 import type {
   Infer,
-  SchemaType,
+  PropertyType,
   EntityCascades,
   KnownDataTypes,
-  SchemaMetadata,
+  PropertyMetadata,
   RelationshipType,
   EntityConstructor,
   RelationshipMetadata,
@@ -34,7 +43,7 @@ import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
  * mikro orm decorator for that
  */
 const COLUMN_TYPES: {
-  [K in Exclude<KnownDataTypes, "enum">]: string
+  [K in Exclude<KnownDataTypes, "enum" | "id">]: string
 } = {
   boolean: "boolean",
   dateTime: "timestamptz",
@@ -51,7 +60,7 @@ const COLUMN_TYPES: {
  * mikro orm decorator for that
  */
 const PROPERTY_TYPES: {
-  [K in Exclude<KnownDataTypes, "enum">]: string
+  [K in Exclude<KnownDataTypes, "enum" | "id">]: string
 } = {
   boolean: "boolean",
   dateTime: "date",
@@ -61,11 +70,71 @@ const PROPERTY_TYPES: {
 }
 
 /**
+ * Properties that needs special treatment based upon their name.
+ * We can safely rely on these names because they are never
+ * provided by the end-user. Instead we output them
+ * implicitly via the DML.
+ */
+const SPECIAL_PROPERTIES: {
+  [propertyName: string]: (
+    MikroORMEntity: EntityConstructor<any>,
+    field: PropertyMetadata
+  ) => void
+} = {
+  created_at: (MikroORMEntity, field) => {
+    Property({
+      columnType: "timestamptz",
+      type: "date",
+      nullable: false,
+      defaultRaw: "now()",
+      onCreate: () => new Date(),
+    })(MikroORMEntity.prototype, field.fieldName)
+  },
+  updated_at: (MikroORMEntity, field) => {
+    Property({
+      columnType: "timestamptz",
+      type: "date",
+      nullable: false,
+      defaultRaw: "now()",
+      onCreate: () => new Date(),
+      onUpdate: () => new Date(),
+    })(MikroORMEntity.prototype, field.fieldName)
+  },
+}
+
+/**
  * Factory function to create the mikro orm entity builder. The return
  * value is a function that can be used to convert DML entities
  * to Mikro ORM entities.
  */
 export function createMikrORMEntity() {
+  /**
+   * Parses entity name and returns model and table name from
+   * it
+   */
+  function parseEntityName(entityName: string) {
+    /**
+     * Table name is going to be the snake case version of the entity name.
+     * Here we should preserve PG schema (if defined).
+     *
+     * For example: "platform.user" should stay as "platform.user"
+     */
+    const tableName = camelToSnakeCase(entityName)
+
+    /**
+     * Entity name is going to be the camelCase version of the
+     * name defined by the user
+     */
+    const [pgSchema, ...rest] = tableName.split(".")
+    return {
+      tableName,
+      modelName: upperCaseFirst(
+        toCamelCase(rest.length ? rest.join("_") : pgSchema)
+      ),
+      pgSchema: rest.length ? pgSchema : undefined,
+    }
+  }
+
   /**
    * The following property is used to track many to many relationship
    * between two entities. It is needed because we have to mark one
@@ -73,7 +142,7 @@ export function createMikrORMEntity() {
    * any user land APIs to explicitly define an owner.
    *
    * The object contains values as follows.
-   * - [entityname.relationship]: true // true means, it is already marked as owner
+   * - [modelName.relationship]: true // true means, it is already marked as owner
    *
    * Example:
    * - [user.teams]: true // the teams relationship on user is an owner
@@ -86,8 +155,13 @@ export function createMikrORMEntity() {
    */
   function defineProperty(
     MikroORMEntity: EntityConstructor<any>,
-    field: SchemaMetadata
+    field: PropertyMetadata
   ) {
+    if (SPECIAL_PROPERTIES[field.fieldName]) {
+      SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)
+      return
+    }
+
     /**
      * Defining an enum property
      */
@@ -97,6 +171,39 @@ export function createMikrORMEntity() {
         nullable: field.nullable,
         default: field.defaultValue,
       })(MikroORMEntity.prototype, field.fieldName)
+      return
+    }
+
+    /**
+     * Defining an id property
+     */
+    if (field.dataType.name === "id") {
+      const IdDecorator = field.dataType.options?.primaryKey
+        ? PrimaryKey({
+            columnType: "text",
+            type: "string",
+            nullable: field.nullable,
+          })
+        : Property({
+            columnType: "text",
+            type: "string",
+            nullable: field.nullable,
+          })
+
+      IdDecorator(MikroORMEntity.prototype, field.fieldName)
+
+      /**
+       * Hook to generate entity within the code
+       */
+      MikroORMEntity.prototype.generateId = function () {
+        this.id = generateEntityId(this.id, field.dataType.options?.prefix)
+      }
+
+      /**
+       * Execute hook via lifecycle decorators
+       */
+      BeforeCreate()(MikroORMEntity.prototype, "generateId")
+      OnInit()(MikroORMEntity.prototype, "generateId")
       return
     }
 
@@ -115,17 +222,34 @@ export function createMikrORMEntity() {
   }
 
   /**
+   * Prepares indexes for a given field
+   */
+  function applyIndexes(
+    MikroORMEntity: EntityConstructor<any>,
+    tableName: string,
+    field: PropertyMetadata
+  ) {
+    field.indexes.forEach((index) => {
+      const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
+        tableName,
+        columns: [field.fieldName],
+        unique: index.type === "unique",
+        where: "deleted_at IS NULL",
+      })
+
+      providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
+    })
+  }
+
+  /**
    * Defines has one relationship on the Mikro ORM entity.
    */
   function defineHasOneRelationship(
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
-    relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
-    >,
+    { relatedModelName }: { relatedModelName: string },
     cascades: EntityCascades<string[]>
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
     OneToOne({
@@ -144,12 +268,9 @@ export function createMikrORMEntity() {
   function defineHasManyRelationship(
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
-    relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
-    >,
+    { relatedModelName }: { relatedModelName: string },
     cascades: EntityCascades<string[]>
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     const shouldRemoveRelated = !!cascades.delete?.includes(relationship.name)
 
     OneToMany({
@@ -175,8 +296,9 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
-    >
+      Record<string, PropertyType<any> | RelationshipType<any>>
+    >,
+    { relatedModelName }: { relatedModelName: string }
   ) {
     const mappedBy =
       relationship.mappedBy || camelToSnakeCase(MikroORMEntity.name)
@@ -184,7 +306,6 @@ export function createMikrORMEntity() {
       relatedEntity.parse()
 
     const otherSideRelation = relationSchema[mappedBy]
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
 
     /**
      * In DML the relationships are cascaded from parent to child. A belongsTo
@@ -199,7 +320,7 @@ export function createMikrORMEntity() {
      */
     if (!otherSideRelation) {
       throw new Error(
-        `Missing property "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define it as a relationship`
+        `Missing property "${mappedBy}" on "${relatedModelName}" entity. Make sure to define it as a relationship`
       )
     }
 
@@ -241,7 +362,7 @@ export function createMikrORMEntity() {
      * Other side is some unsupported data-type
      */
     throw new Error(
-      `Invalid relationship reference for "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define a hasOne or hasMany relationship`
+      `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a hasOne or hasMany relationship`
     )
   }
 
@@ -252,11 +373,13 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     relationship: RelationshipMetadata,
     relatedEntity: DmlEntity<
-      Record<string, SchemaType<any> | RelationshipType<any>>
+      Record<string, PropertyType<any> | RelationshipType<any>>
     >,
-    cascades: EntityCascades<string[]>
+    {
+      relatedModelName,
+      pgSchema,
+    }: { relatedModelName: string; pgSchema: string | undefined }
   ) {
-    const relatedModelName = upperCaseFirst(relatedEntity.name)
     let mappedBy = relationship.mappedBy
     let inversedBy: undefined | string
 
@@ -270,7 +393,7 @@ export function createMikrORMEntity() {
      */
     const pivotTableName = [
       MikroORMEntity.name.toLowerCase(),
-      relatedEntity.name.toLowerCase(),
+      relatedModelName.toLowerCase(),
     ]
       .sort()
       .map((token, index) => {
@@ -285,13 +408,13 @@ export function createMikrORMEntity() {
       const otherSideRelation = relatedEntity.parse().schema[mappedBy]
       if (!otherSideRelation) {
         throw new Error(
-          `Missing property "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define it as a relationship`
+          `Missing property "${mappedBy}" on "${relatedModelName}" entity. Make sure to define it as a relationship`
         )
       }
 
       if (otherSideRelation instanceof DmlManyToMany === false) {
         throw new Error(
-          `Invalid relationship reference for "${mappedBy}" on "${relatedEntity.name}" entity. Make sure to define a manyToMany relationship`
+          `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a manyToMany relationship`
         )
       }
 
@@ -317,7 +440,7 @@ export function createMikrORMEntity() {
 
     ManyToMany({
       entity: relatedModelName,
-      pivotTable: pivotTableName,
+      pivotTable: pgSchema ? `${pgSchema}.${pivotTableName}` : pivotTableName,
       ...(mappedBy ? { mappedBy: mappedBy as any } : {}),
       ...(inversedBy ? { inversedBy: inversedBy as any } : {}),
     })(MikroORMEntity.prototype, relationship.name)
@@ -359,6 +482,15 @@ export function createMikrORMEntity() {
       )
     }
 
+    const { modelName, tableName, pgSchema } = parseEntityName(
+      relatedEntity.parse().name
+    )
+    const relatedEntityInfo = {
+      relatedModelName: modelName,
+      relatedTableName: tableName,
+      pgSchema,
+    }
+
     /**
      * Defining relationships
      */
@@ -367,7 +499,7 @@ export function createMikrORMEntity() {
         defineHasOneRelationship(
           MikroORMEntity,
           relationship,
-          relatedEntity,
+          relatedEntityInfo,
           cascades
         )
         break
@@ -375,19 +507,24 @@ export function createMikrORMEntity() {
         defineHasManyRelationship(
           MikroORMEntity,
           relationship,
-          relatedEntity,
+          relatedEntityInfo,
           cascades
         )
         break
       case "belongsTo":
-        defineBelongsToRelationship(MikroORMEntity, relationship, relatedEntity)
+        defineBelongsToRelationship(
+          MikroORMEntity,
+          relationship,
+          relatedEntity,
+          relatedEntityInfo
+        )
         break
       case "manyToMany":
         defineManyToManyRelationship(
           MikroORMEntity,
           relationship,
           relatedEntity,
-          cascades
+          relatedEntityInfo
         )
         break
     }
@@ -400,9 +537,7 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
     const { name, schema, cascades } = entity.parse()
-
-    const className = upperCaseFirst(name)
-    const tableName = pluralize(camelToSnakeCase(className))
+    const { modelName, tableName } = parseEntityName(name)
 
     /**
      * Assigning name to the class constructor, so that it matches
@@ -410,7 +545,7 @@ export function createMikrORMEntity() {
      */
     Object.defineProperty(MikroORMEntity, "name", {
       get: function () {
-        return className
+        return modelName
       },
     })
 
@@ -421,6 +556,7 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
+        applyIndexes(MikroORMEntity, tableName, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }

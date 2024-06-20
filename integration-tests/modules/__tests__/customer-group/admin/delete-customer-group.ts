@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete a group", async () => {
-        const group = await customerModuleService.createCustomerGroup({
+        const group = await customerModuleService.createCustomerGroups({
           name: "VIP",
         })
 

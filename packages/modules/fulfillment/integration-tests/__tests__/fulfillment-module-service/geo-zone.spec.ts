@@ -29,7 +29,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list geo zones with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -80,7 +80,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
       describe("mutations", () => {
         describe("on create", () => {
           it("should create a new geo zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -119,7 +119,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should create a collection of geo zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -174,7 +174,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail to create new geo zones that are not valid", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -230,7 +230,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on update", () => {
           it("should update an existing geo zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -277,7 +277,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should update a collection of geo zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })

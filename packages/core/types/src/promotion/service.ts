@@ -102,7 +102,7 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<PromotionDTO[]>} The created promotions.
    *
    * @example
-   * const promotions = await promotionModuleService.create([
+   * const promotions = await promotionModuleService.createPromotions([
    *   {
    *     code: "50OFF",
    *     type: "standard",
@@ -140,7 +140,7 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * ])
    */
-  create(
+  createPromotions(
     data: CreatePromotionDTO[],
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
@@ -153,7 +153,7 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<PromotionDTO>} The created promotion.
    *
    * @example
-   * const promotionA = await promotionModuleService.create({
+   * const promotionA = await promotionModuleService.createPromotions({
    *   code: "50OFF",
    *   type: "standard",
    *   application_method: {
@@ -163,7 +163,7 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * })
    *
-   * const promotionB = await promotionModuleService.create({
+   * const promotionB = await promotionModuleService.createPromotions({
    *   code: "FREESHIPPING",
    *   type: "standard",
    *   application_method: {
@@ -173,7 +173,7 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * })
    *
-   * const promotionC = await promotionModuleService.create({
+   * const promotionC = await promotionModuleService.createPromotions({
    *   code: "BUY2GET1",
    *   type: "buyget",
    *   application_method: {
@@ -191,7 +191,7 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * })
    */
-  create(
+  createPromotions(
     data: CreatePromotionDTO,
     sharedContext?: Context
   ): Promise<PromotionDTO>
@@ -204,14 +204,14 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<PromotionDTO[]>} The updated promotions.
    *
    * @example
-   * const promotions = await promotionModuleService.update([
+   * const promotions = await promotionModuleService.updatePromotions([
    *   {
    *     id: "promo_123",
    *     is_automatic: true,
    *   },
    * ])
    */
-  update(
+  updatePromotions(
     data: UpdatePromotionDTO[],
     sharedContext?: Context
   ): Promise<PromotionDTO[]>
@@ -224,12 +224,12 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<PromotionDTO>} The updated promotion.
    *
    * @example
-   * const promotion = await promotionModuleService.update({
+   * const promotion = await promotionModuleService.updatePromotions({
    *   id: "promo_123",
    *   is_automatic: true,
    * })
    */
-  update(
+  updatePromotions(
     data: UpdatePromotionDTO,
     sharedContext?: Context
   ): Promise<PromotionDTO>
@@ -247,7 +247,7 @@ export interface IPromotionModuleService extends IModuleService {
    * To retrieve a list of promotions using their IDs:
    *
    * ```ts
-   * const promotions = await promotionModuleService.list({
+   * const promotions = await promotionModuleService.listPromotions({
    *   id: ["promo_123", "promo_321"],
    * })
    * ```
@@ -255,7 +255,7 @@ export interface IPromotionModuleService extends IModuleService {
    * To specify relations that should be retrieved within the promotions:
    *
    * ```ts
-   * const promotions = await promotionModuleService.list(
+   * const promotions = await promotionModuleService.listPromotions(
    *   {
    *     id: ["promo_123", "promo_321"],
    *   },
@@ -268,7 +268,7 @@ export interface IPromotionModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const promotions = await promotionModuleService.list(
+   * const promotions = await promotionModuleService.listPromotions(
    *   {
    *     id: ["promo_123", "promo_321"],
    *   },
@@ -280,7 +280,7 @@ export interface IPromotionModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listPromotions(
     filters?: FilterablePromotionProps,
     config?: FindConfig<PromotionDTO>,
     sharedContext?: Context
@@ -300,7 +300,7 @@ export interface IPromotionModuleService extends IModuleService {
    *
    * ```ts
    * const [promotions, count] =
-   *   await promotionModuleService.listAndCount({
+   *   await promotionModuleService.listAndCountPromotions({
    *     id: ["promo_123", "promo_321"],
    *   })
    * ```
@@ -309,7 +309,7 @@ export interface IPromotionModuleService extends IModuleService {
    *
    * ```ts
    * const [promotions, count] =
-   *   await promotionModuleService.listAndCount(
+   *   await promotionModuleService.listAndCountPromotions(
    *     {
    *       id: ["promo_123", "promo_321"],
    *     },
@@ -323,7 +323,7 @@ export interface IPromotionModuleService extends IModuleService {
    *
    * ```ts
    * const [promotions, count] =
-   *   await promotionModuleService.listAndCount(
+   *   await promotionModuleService.listAndCountPromotions(
    *     {
    *       id: ["promo_123", "promo_321"],
    *     },
@@ -335,7 +335,7 @@ export interface IPromotionModuleService extends IModuleService {
    *   )
    * ```
    */
-  listAndCount(
+  listAndCountPromotions(
     filters?: FilterablePromotionProps,
     config?: FindConfig<PromotionDTO>,
     sharedContext?: Context
@@ -355,13 +355,13 @@ export interface IPromotionModuleService extends IModuleService {
    *
    * ```ts
    * const promotion =
-   *   await promotionModuleService.retrieve("promo_123")
+   *   await promotionModuleService.retrievePromotion("promo_123")
    * ```
    *
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * const promotion = await promotionModuleService.retrieve(
+   * const promotion = await promotionModuleService.retrievePromotion(
    *   "promo_123",
    *   {
    *     relations: ["application_method"],
@@ -369,7 +369,7 @@ export interface IPromotionModuleService extends IModuleService {
    * )
    * ```
    */
-  retrieve(
+  retrievePromotion(
     id: string,
     config?: FindConfig<PromotionDTO>,
     sharedContext?: Context
@@ -383,12 +383,12 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the promotions are deleted.
    *
    * @example
-   * await promotionModuleService.delete([
+   * await promotionModuleService.deletePromotions([
    *   "promo_123",
    *   "promo_321",
    * ])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deletePromotions(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method deletes a promotion by its ID.
@@ -398,9 +398,9 @@ export interface IPromotionModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the promotion is deleted.
    *
    * @example
-   * await promotionModuleService.delete("promo_123")
+   * await promotionModuleService.deletePromotions("promo_123")
    */
-  delete(ids: string, sharedContext?: Context): Promise<void>
+  deletePromotions(ids: string, sharedContext?: Context): Promise<void>
 
   /**
    * This method soft deletes a promotion by its IDs.
@@ -415,9 +415,9 @@ export interface IPromotionModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await promotionModuleService.softDelete("promo_123")
+   * await promotionModuleService.softDeletePromotions("promo_123")
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeletePromotions<TReturnableLinkableKeys extends string = string>(
     promotionIds: string | string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -438,9 +438,9 @@ export interface IPromotionModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await promotionModuleService.restore("promo_123")
+   * await promotionModuleService.restorePromotions("promo_123")
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restorePromotions<TReturnableLinkableKeys extends string = string>(
     promotionIds: string | string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

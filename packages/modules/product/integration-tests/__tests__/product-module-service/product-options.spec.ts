@@ -46,7 +46,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listOptions", () => {
         it("should return options and count queried by ID", async () => {
-          const options = await service.listOptions({
+          const options = await service.listProductOptions({
             id: optionOne.id,
           })
 
@@ -58,7 +58,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return options and count based on the options and filter parameter", async () => {
-          let options = await service.listOptions(
+          let options = await service.listProductOptions(
             {
               id: optionOne.id,
             },
@@ -73,7 +73,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          options = await service.listOptions({}, { take: 1, skip: 1 })
+          options = await service.listProductOptions({}, { take: 1, skip: 1 })
 
           expect(options).toEqual([
             expect.objectContaining({
@@ -83,7 +83,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for options", async () => {
-          const options = await service.listOptions(
+          const options = await service.listProductOptions(
             {
               id: optionOne.id,
             },
@@ -111,7 +111,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountOptions", () => {
         it("should return options and count queried by ID", async () => {
-          const [options, count] = await service.listAndCountOptions({
+          const [options, count] = await service.listAndCountProductOptions({
             id: optionOne.id,
           })
 
@@ -124,7 +124,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return options and count based on the options and filter parameter", async () => {
-          let [options, count] = await service.listAndCountOptions(
+          let [options, count] = await service.listAndCountProductOptions(
             {
               id: optionOne.id,
             },
@@ -139,10 +139,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
               id: optionOne.id,
             }),
           ])
-          ;[options, count] = await service.listAndCountOptions({}, { take: 1 })
+          ;[options, count] = await service.listAndCountProductOptions(
+            {},
+            { take: 1 }
+          )
 
           expect(count).toEqual(2)
-          ;[options, count] = await service.listAndCountOptions(
+          ;[options, count] = await service.listAndCountProductOptions(
             {},
             { take: 1, skip: 1 }
           )
@@ -156,7 +159,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for options", async () => {
-          const [options, count] = await service.listAndCountOptions(
+          const [options, count] = await service.listAndCountProductOptions(
             {
               id: optionOne.id,
             },
@@ -185,7 +188,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveOption", () => {
         it("should return the requested option", async () => {
-          const option = await service.retrieveOption(optionOne.id)
+          const option = await service.retrieveProductOption(optionOne.id)
 
           expect(option).toEqual(
             expect.objectContaining({
@@ -195,7 +198,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const option = await service.retrieveOption(optionOne.id, {
+          const option = await service.retrieveProductOption(optionOne.id, {
             select: ["id", "product.title"],
             relations: ["product"],
           })
@@ -219,7 +222,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveOption("does-not-exist")
+            await service.retrieveProductOption("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -234,9 +237,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const optionId = "option-1"
 
         it("should delete the product option given an ID successfully", async () => {
-          await service.deleteOptions([optionId])
+          await service.deleteProductOptions([optionId])
 
-          const options = await service.listOptions({
+          const options = await service.listProductOptions({
             id: optionId,
           })
 
@@ -248,14 +251,14 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const optionId = "option-1"
 
         it("should update the title of the option successfully", async () => {
-          await service.upsertOptions([
+          await service.upsertProductOptions([
             {
               id: optionId,
               title: "new test",
             },
           ])
 
-          const productOption = await service.retrieveOption(optionId)
+          const productOption = await service.retrieveProductOption(optionId)
 
           expect(productOption.title).toEqual("new test")
         })
@@ -264,7 +267,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateOptions("does-not-exist", {})
+            await service.updateProductOptions("does-not-exist", {})
           } catch (e) {
             error = e
           }
@@ -277,7 +280,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createOptions", () => {
         it("should create a option successfully", async () => {
-          const res = await service.createOptions([
+          const res = await service.createProductOptions([
             {
               title: "test",
               values: [],
@@ -285,7 +288,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             },
           ])
 
-          const [productOption] = await service.listOptions(
+          const [productOption] = await service.listProductOptions(
             {
               title: "test",
             },

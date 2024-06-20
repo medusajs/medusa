@@ -2,8 +2,8 @@ import {
   Context,
   DAL,
   FindConfig,
-  IWorkflowEngineService,
   InternalModuleDeclaration,
+  IWorkflowEngineService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   WorkflowsSdkTypes,
@@ -11,9 +11,9 @@ import {
 import {
   InjectManager,
   InjectSharedContext,
+  isString,
   MedusaContext,
   MedusaError,
-  isString,
 } from "@medusajs/utils"
 import type {
   ReturnWorkflow,
@@ -107,7 +107,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
   }
 
   @InjectManager("baseRepository_")
-  async listWorkflowExecution(
+  async listWorkflowExecutions(
     filters: WorkflowsSdkTypes.FilterableWorkflowExecutionProps = {},
     config: FindConfig<WorkflowsSdkTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
@@ -142,7 +142,7 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
   }
 
   @InjectManager("baseRepository_")
-  async listAndCountWorkflowExecution(
+  async listAndCountWorkflowExecutions(
     filters: WorkflowsSdkTypes.FilterableWorkflowExecutionProps = {},
     config: FindConfig<WorkflowsSdkTypes.WorkflowExecutionDTO> = {},
     @MedusaContext() sharedContext: Context = {}

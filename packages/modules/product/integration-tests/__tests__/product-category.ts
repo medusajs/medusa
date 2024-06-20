@@ -17,7 +17,7 @@ type Service = IProductModuleService & {
 
 moduleIntegrationTestRunner<Service>({
   moduleName: Modules.PRODUCT,
-  testSuite: ({ MikroOrmWrapper, service: moduleService }) => {
+  testSuite: ({ service: moduleService }) => {
     describe("Product category Service", () => {
       let service: ProductCategoryService
 
@@ -1015,7 +1015,7 @@ moduleIntegrationTestRunner<Service>({
           }
 
           expect(error.message).toEqual(
-            `ProductCategory not found ({ id: 'does-not-exist' })`
+            `ProductCategory with id: does-not-exist was not found`
           )
         })
 
@@ -1162,7 +1162,7 @@ moduleIntegrationTestRunner<Service>({
           }
 
           expect(error.message).toEqual(
-            `ProductCategory not found ({ id: 'does-not-exist' })`
+            `ProductCategory with id: does-not-exist was not found`
           )
         })
 

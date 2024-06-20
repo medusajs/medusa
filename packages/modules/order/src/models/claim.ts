@@ -23,9 +23,9 @@ import {
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 import Order from "./order"
-import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
+import Transaction from "./transaction"
 
 type OptionalOrderClaimProps = DAL.EntityDateColumns
 
@@ -111,12 +111,12 @@ export default class OrderClaim {
   @Property({ columnType: "jsonb", nullable: true })
   raw_refund_amount: BigNumberRawValue
 
-  @OneToMany(() => OrderItem, (itemDetail) => itemDetail.claim, {
+  @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<Rel<OrderItem>>(this)
+  additional_items = new Collection<Rel<ClaimItem>>(this)
 
-  @OneToMany(() => ClaimItem, (itemDetail) => itemDetail.claim, {
+  @OneToMany(() => ClaimItem, (item) => item.claim, {
     cascade: [Cascade.PERSIST],
   })
   claim_items = new Collection<Rel<ClaimItem>>(this)
@@ -129,6 +129,11 @@ export default class OrderClaim {
     }
   )
   shipping_methods = new Collection<Rel<OrderShippingMethod>>(this)
+
+  @OneToMany(() => Transaction, (transaction) => transaction.claim, {
+    cascade: [Cascade.PERSIST],
+  })
+  transactions = new Collection<Transaction>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null
@@ -157,11 +162,11 @@ export default class OrderClaim {
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ordclaim")
+    this.id = generateEntityId(this.id, "claim")
   }
 
   @OnInit()
   onInit() {
-    this.id = generateEntityId(this.id, "ordclaim")
+    this.id = generateEntityId(this.id, "claim")
   }
 }

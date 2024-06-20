@@ -18,13 +18,13 @@ import {
   ICartModuleService,
   ICustomerModuleService,
   IFulfillmentModuleService,
-  IInventoryServiceNext,
+  IInventoryService,
   IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
   ISalesChannelModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
 } from "@medusajs/types"
 import { ContainerRegistrationKeys, RuleOperator } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -50,10 +50,9 @@ medusaIntegrationTestRunner({
       let productModule: IProductModuleService
       let pricingModule: IPricingModuleService
       let paymentModule: IPaymentModuleService
-      let inventoryModule: IInventoryServiceNext
-      let stockLocationModule: IStockLocationServiceNext
+      let stockLocationModule: IStockLocationService
+      let inventoryModule: IInventoryService
       let fulfillmentModule: IFulfillmentModuleService
-      let locationModule: IStockLocationServiceNext
       let remoteLink, remoteQuery
 
       let defaultRegion
@@ -78,9 +77,6 @@ medusaIntegrationTestRunner({
         fulfillmentModule = appContainer.resolve(
           ModuleRegistrationName.FULFILLMENT
         )
-        locationModule = appContainer.resolve(
-          ModuleRegistrationName.STOCK_LOCATION
-        )
         remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
@@ -97,20 +93,20 @@ medusaIntegrationTestRunner({
 
       describe("CreateCartWorkflow", () => {
         it("should create a cart", async () => {
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -121,7 +117,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -134,7 +130,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -185,7 +181,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const cart = await cartModuleService.retrieve(result.id, {
+          const cart = await cartModuleService.retrieveCart(result.id, {
             relations: ["items"],
           })
 
@@ -207,20 +203,20 @@ medusaIntegrationTestRunner({
         })
 
         it("should revert if the cart creation fails", async () => {
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -231,7 +227,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -244,7 +240,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -314,7 +310,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw when no regions exist", async () => {
-          await regionModuleService.delete(defaultRegion.id)
+          await regionModuleService.deleteRegions(defaultRegion.id)
 
           const { errors } = await createCartWorkflow(appContainer).run({
             input: {
@@ -332,15 +328,15 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if variants are out of stock", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -379,12 +375,12 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
 
-          const region = await regionModuleService.create({
+          const region = await regionModuleService.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -448,7 +444,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if sales channel is disabled", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
             is_disabled: true,
           })
@@ -500,7 +496,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const customers = await customerModule.list({
+            const customers = await customerModule.listCustomers({
               email: "tony@stark-industries.com",
             })
 
@@ -517,7 +513,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const customer = await customerModule.create({
+            const customer = await customerModule.createCustomers({
               email: "tony@stark-industries.com",
             })
 
@@ -539,7 +535,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const customers = await customerModule.list({
+            const customers = await customerModule.listCustomers({
               email: "tony@stark-industries.com",
             })
 
@@ -550,20 +546,20 @@ medusaIntegrationTestRunner({
 
       describe("AddToCartWorkflow", () => {
         it("should add item to cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -574,7 +570,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -587,7 +583,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -623,7 +619,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id", "region_id", "currency_code", "sales_channel_id"],
           })
 
@@ -639,7 +635,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["items"],
           })
 
@@ -659,20 +655,20 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if no price sets for variant exist", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -683,7 +679,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -742,7 +738,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw if variant does not exist", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
           })
 
@@ -774,15 +770,15 @@ medusaIntegrationTestRunner({
 
       describe("updateLineItemInCartWorkflow", () => {
         it("should update item in cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await stockLocationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Warehouse",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -793,7 +789,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const inventoryItem = await inventoryModule.create({
+          const inventoryItem = await inventoryModule.createInventoryItems({
             sku: "inv-1234",
           })
 
@@ -806,7 +802,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -842,7 +838,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             items: [
@@ -855,7 +851,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id", "region_id", "currency_code"],
             relations: ["items", "items.variant_id", "items.metadata"],
           })
@@ -901,15 +897,15 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const salesChannel = await scModuleService.create({
+            const salesChannel = await scModuleService.createSalesChannels({
               name: "Webshop",
             })
 
-            const location = await stockLocationModule.create({
+            const location = await stockLocationModule.createStockLocations({
               name: "Warehouse",
             })
 
-            const [product] = await productModule.create([
+            const [product] = await productModule.createProducts([
               {
                 title: "Test product",
                 variants: [
@@ -920,7 +916,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const inventoryItem = await inventoryModule.create({
+            const inventoryItem = await inventoryModule.createInventoryItems({
               sku: "inv-1234",
             })
 
@@ -933,7 +929,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            const priceSet = await pricingModule.create({
+            const priceSet = await pricingModule.createPriceSets({
               prices: [
                 {
                   amount: 3000,
@@ -969,7 +965,7 @@ medusaIntegrationTestRunner({
               },
             ])
 
-            let cart = await cartModuleService.create({
+            let cart = await cartModuleService.createCarts({
               currency_code: "usd",
               items: [
                 {
@@ -981,7 +977,7 @@ medusaIntegrationTestRunner({
               ],
             })
 
-            cart = await cartModuleService.retrieve(cart.id, {
+            cart = await cartModuleService.retrieveCart(cart.id, {
               select: ["id", "region_id", "currency_code"],
               relations: ["items", "items.variant_id", "items.metadata"],
             })
@@ -1031,7 +1027,7 @@ medusaIntegrationTestRunner({
 
       describe("deleteLineItems", () => {
         it("should delete items in cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "usd",
             items: [
               {
@@ -1072,7 +1068,7 @@ medusaIntegrationTestRunner({
               },
             })
 
-            const cart = await cartModuleService.create({
+            const cart = await cartModuleService.createCarts({
               currency_code: "usd",
               items: [
                 {
@@ -1115,7 +1111,7 @@ medusaIntegrationTestRunner({
 
       describe("createPaymentCollectionForCart", () => {
         it("should create a payment collection and link it to cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "dkk",
             region_id: defaultRegion.id,
             items: [
@@ -1181,12 +1177,12 @@ medusaIntegrationTestRunner({
               }
             )
 
-            const region = await regionModuleService.create({
+            const region = await regionModuleService.createRegions({
               name: "US",
               currency_code: "usd",
             })
 
-            const cart = await cartModuleService.create({
+            const cart = await cartModuleService.createCarts({
               currency_code: "usd",
               region_id: region.id,
               items: [
@@ -1253,7 +1249,7 @@ medusaIntegrationTestRunner({
 
       describe("refreshPaymentCollectionForCart", () => {
         it("should refresh a payment collection for a cart", async () => {
-          const cart = await cartModuleService.create({
+          const cart = await cartModuleService.createCarts({
             currency_code: "dkk",
             region_id: defaultRegion.id,
             items: [
@@ -1320,12 +1316,12 @@ medusaIntegrationTestRunner({
 
         describe("compensation", () => {
           it("should revert payment collection amount and create a new payment session", async () => {
-            const region = await regionModuleService.create({
+            const region = await regionModuleService.createRegions({
               name: "US",
               currency_code: "usd",
             })
 
-            const testCart = await cartModuleService.create({
+            const testCart = await cartModuleService.createCarts({
               currency_code: "usd",
               region_id: region.id,
               items: [
@@ -1431,7 +1427,7 @@ medusaIntegrationTestRunner({
         let priceSet
 
         beforeEach(async () => {
-          cart = await cartModuleService.create({
+          cart = await cartModuleService.createCarts({
             currency_code: "usd",
             shipping_address: {
               country_code: "us",
@@ -1444,7 +1440,7 @@ medusaIntegrationTestRunner({
             type: "default",
           })
 
-          fulfillmentSet = await fulfillmentModule.create({
+          fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1455,7 +1451,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          priceSet = await pricingModule.create({
+          priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
         })
@@ -1500,7 +1496,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             relations: ["shipping_methods"],
           })
 
@@ -1592,15 +1588,15 @@ medusaIntegrationTestRunner({
 
       describe("listShippingOptionsForCartWorkflow", () => {
         it("should list shipping options for cart", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1616,7 +1612,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1645,7 +1641,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -1681,7 +1677,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })
@@ -1711,15 +1707,15 @@ medusaIntegrationTestRunner({
         })
 
         it("should list no shipping options for cart, if sales channel is not associated with location", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1735,7 +1731,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1764,7 +1760,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [
               {
                 amount: 3000,
@@ -1792,7 +1788,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })
@@ -1816,15 +1812,15 @@ medusaIntegrationTestRunner({
         })
 
         it("should throw when shipping options are missing prices", async () => {
-          const salesChannel = await scModuleService.create({
+          const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
           })
 
-          const location = await locationModule.create({
+          const location = await stockLocationModule.createStockLocations({
             name: "Europe",
           })
 
-          let cart = await cartModuleService.create({
+          let cart = await cartModuleService.createCarts({
             currency_code: "usd",
             sales_channel_id: salesChannel.id,
             shipping_address: {
@@ -1840,7 +1836,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1888,7 +1884,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          cart = await cartModuleService.retrieve(cart.id, {
+          cart = await cartModuleService.retrieveCart(cart.id, {
             select: ["id"],
             relations: ["shipping_address"],
           })

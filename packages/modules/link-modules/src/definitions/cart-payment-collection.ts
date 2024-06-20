@@ -24,12 +24,18 @@ export const CartPaymentCollection: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
     {
       serviceName: Modules.PAYMENT,
       primaryKey: "id",
       foreignKey: "payment_collection_id",
       alias: "payment_collection",
+      args: {
+        methodSuffix: "PaymentCollections",
+      },
     },
   ],
   extends: [

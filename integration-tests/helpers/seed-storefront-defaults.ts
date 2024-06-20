@@ -20,14 +20,14 @@ export const seedStorefrontDefaults = async (
   // Creates the stores & default sales channel
   await createDefaultsWorkflow(container).run()
 
-  const region = await regionModule.create({
+  const region = await regionModule.createRegions({
     name: "Default Region",
     currency_code: defaultCurrency,
   })
 
-  let [store] = await storeModule.list({})
+  let [store] = await storeModule.listStores({})
 
-  store = await storeModule.update(store.id, {
+  store = await storeModule.updateStores(store.id, {
     default_region_id: region.id,
     supported_currency_codes: [region.currency_code],
     default_currency_code: region.currency_code,

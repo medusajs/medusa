@@ -13,6 +13,9 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "sales_channel_id",
         alias: "sales_channel",
+        args: {
+          methodSuffix: "SalesChannels",
+        },
       },
     },
     {
@@ -22,6 +25,9 @@ export const OrderSalesChannel: ModuleJoinerConfig = {
         primaryKey: "sales_channel_id",
         foreignKey: "id",
         alias: "orders",
+        args: {
+          methodSuffix: "Orders",
+        },
         isList: true,
       },
     },

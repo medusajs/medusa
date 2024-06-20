@@ -1,4 +1,4 @@
-import { RelationshipType, SchemaType } from "../types"
+import { RelationshipType, PropertyType } from "../types"
 
 /**
  * Nullable modifier marks a schema node as nullable

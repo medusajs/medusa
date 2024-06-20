@@ -1,10 +1,8 @@
 import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
-  ICustomerModuleService,
   IFulfillmentModuleService,
   IInventoryServiceNext,
-  IPaymentModuleService,
   IPricingModuleService,
   IProductModuleService,
   IRegionModuleService,
@@ -31,14 +29,11 @@ medusaIntegrationTestRunner({
     let cartModuleService: ICartModuleService
     let regionModuleService: IRegionModuleService
     let scModuleService: ISalesChannelModuleService
-    let customerModule: ICustomerModuleService
     let productModule: IProductModuleService
     let pricingModule: IPricingModuleService
-    let paymentModule: IPaymentModuleService
     let inventoryModule: IInventoryServiceNext
     let stockLocationModule: IStockLocationServiceNext
     let fulfillmentModule: IFulfillmentModuleService
-    let locationModule: IStockLocationServiceNext
     let taxModule: ITaxModuleService
     let remoteLink, remoteQuery
 
@@ -49,19 +44,14 @@ medusaIntegrationTestRunner({
       scModuleService = appContainer.resolve(
         ModuleRegistrationName.SALES_CHANNEL
       )
-      customerModule = appContainer.resolve(ModuleRegistrationName.CUSTOMER)
       productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
       pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
-      paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
       inventoryModule = appContainer.resolve(ModuleRegistrationName.INVENTORY)
       stockLocationModule = appContainer.resolve(
         ModuleRegistrationName.STOCK_LOCATION
       )
       fulfillmentModule = appContainer.resolve(
         ModuleRegistrationName.FULFILLMENT
-      )
-      locationModule = appContainer.resolve(
-        ModuleRegistrationName.STOCK_LOCATION
       )
       taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
       remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
@@ -74,20 +64,20 @@ medusaIntegrationTestRunner({
 
     describe("Draft Orders - Admin", () => {
       it("should create a draft order", async () => {
-        const region = await regionModuleService.create({
+        const region = await regionModuleService.createRegions({
           name: "US",
           currency_code: "usd",
         })
 
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 
-        const location = await stockLocationModule.create({
+        const location = await stockLocationModule.createStockLocations({
           name: "Warehouse",
         })
 
-        const [product, product_2] = await productModule.create([
+        const [product, product_2] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [
@@ -107,7 +97,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const inventoryItem = await inventoryModule.create({
+        const inventoryItem = await inventoryModule.createInventoryItems({
           sku: "inv-1234",
         })
 
@@ -120,7 +110,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const [priceSet, priceSet_2] = await pricingModule.create([
+        const [priceSet, priceSet_2] = await pricingModule.createPriceSets([
           {
             prices: [
               {

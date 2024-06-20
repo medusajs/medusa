@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -173,6 +174,7 @@ export const useUpdateProductVariantsBatch = (
       }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.details() })
       queryClient.invalidateQueries({
         queryKey: productsQueryKeys.detail(productId),
       })
@@ -223,11 +225,11 @@ export const useProduct = (
 }
 
 export const useProducts = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminProductListParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminProductListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminProductListResponse,
       QueryKey
     >,
