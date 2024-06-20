@@ -16,6 +16,7 @@ import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  isDefined,
   pluralize,
   toCamelCase,
 } from "../../common"
@@ -174,7 +175,7 @@ export function createMikrORMEntity() {
          * the database schema SQL. Conditionally add it here to prevent undefined
          * from being set as default value in SQL.
          */
-        ...(field.defaultValue && { default: field.defaultValue }),
+        ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
       })(MikroORMEntity.prototype, field.fieldName)
       return
     }
@@ -227,7 +228,7 @@ export function createMikrORMEntity() {
        * the database schema SQL. Conditionally add it here to prevent undefined
        * from being set as default value in SQL.
        */
-      ...(field.defaultValue && { default: field.defaultValue }),
+      ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
     })(MikroORMEntity.prototype, field.fieldName)
   }
 
