@@ -804,6 +804,14 @@
         "shipping": "Shipping was successfully enabled."
       }
     },
+    "sidebar": {
+      "shippingConfiguration": "Shipping configuration",
+      "shippingProfiles": "Shipping profiles",
+      "shippingProfilesDesc": "Shipping rules for different types of products",
+      "shippingOptionTypes": "Shipping Option Types",
+      "shippingOptionTypesDesc": "Group options based on characteristic"
+
+    },
     "salesChannels": {
       "header": "Sales Channels",
       "label": "Connected sales channels",

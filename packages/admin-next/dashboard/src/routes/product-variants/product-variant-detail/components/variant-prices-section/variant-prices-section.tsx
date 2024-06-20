@@ -51,7 +51,10 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
       {!hasPrices && <NoRecords className="h-60" />}
       {displayPrices.map((price) => {
         return (
-          <div className="txt-small text-ui-fg-subtle flex justify-between px-6 py-4">
+          <div
+            key={price.id}
+            className="txt-small text-ui-fg-subtle flex justify-between px-6 py-4"
+          >
             <span className="font-medium">
               {price.currency_code.toUpperCase()}
             </span>
