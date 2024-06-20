@@ -162,7 +162,13 @@ export class EntityBuilder {
    *   relationship requires a pivot table to establish a many to many
    *   relationship between two entities
    */
-  manyToMany<T>(entityBuilder: T, options?: RelationshipOptions) {
+  manyToMany<T>(
+    entityBuilder: T,
+    options?: RelationshipOptions & {
+      pivotTable?: string
+      pivotEntity?: () => DmlEntity<any>
+    }
+  ) {
     return new ManyToMany<T>(entityBuilder, options || {})
   }
 }

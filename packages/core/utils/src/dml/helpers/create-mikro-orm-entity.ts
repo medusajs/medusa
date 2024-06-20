@@ -327,7 +327,10 @@ export function createMikrORMEntity() {
     /**
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
-    if (otherSideRelation instanceof HasMany) {
+    if (
+      otherSideRelation instanceof HasMany ||
+      otherSideRelation instanceof DmlManyToMany
+    ) {
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
@@ -382,28 +385,31 @@ export function createMikrORMEntity() {
   ) {
     let mappedBy = relationship.mappedBy
     let inversedBy: undefined | string
+    let pivotEntityName: undefined | string
 
     /**
-     * A consistent pivot table name is created by:
+     * Pivot table name is created as follows (when not explicitly provided)
      *
      * - Combining both the entity's names.
      * - Sorting them by alphabetical order
      * - Converting them from camelCase to snake_case.
      * - And finally pluralizing the second entity name.
      */
-    const pivotTableName = [
-      MikroORMEntity.name.toLowerCase(),
-      relatedModelName.toLowerCase(),
-    ]
-      .sort()
-      .map((token, index) => {
-        if (index === 1) {
-          return pluralize(camelToSnakeCase(token))
-        }
-        return camelToSnakeCase(token)
-      })
-      .join("_")
+    const pivotTableName =
+      relationship.options.pivotTable ??
+      [MikroORMEntity.name.toLowerCase(), relatedModelName.toLowerCase()]
+        .sort()
+        .map((token, index) => {
+          if (index === 1) {
+            return pluralize(camelToSnakeCase(token))
+          }
+          return camelToSnakeCase(token)
+        })
+        .join("_")
 
+    /**
+     * Validating other side of relationship when mapped by is defined
+     */
     if (mappedBy) {
       const otherSideRelation = relatedEntity.parse().schema[mappedBy]
       if (!otherSideRelation) {
@@ -438,9 +444,31 @@ export function createMikrORMEntity() {
       }
     }
 
+    /**
+     * Validating pivot entity when it is defined and computing
+     * its name
+     */
+    if (relationship.options.pivotEntity) {
+      if (typeof relationship.options.pivotEntity !== "function") {
+        throw new Error(
+          `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to define the pivotEntity using a factory function`
+        )
+      }
+
+      const pivotEntity = relationship.options.pivotEntity()
+      if (!(pivotEntity instanceof DmlEntity)) {
+        throw new Error(
+          `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the pivotEntity callback`
+        )
+      }
+
+      pivotEntityName = parseEntityName(pivotEntity.parse().name).modelName
+    }
+
     ManyToMany({
       entity: relatedModelName,
       pivotTable: pgSchema ? `${pgSchema}.${pivotTableName}` : pivotTableName,
+      ...(pivotEntityName ? { pivotEntity: pivotEntityName } : {}),
       ...(mappedBy ? { mappedBy: mappedBy as any } : {}),
       ...(inversedBy ? { inversedBy: inversedBy as any } : {}),
     })(MikroORMEntity.prototype, relationship.name)
