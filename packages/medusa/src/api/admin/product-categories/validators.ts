@@ -49,7 +49,7 @@ export const AdminCreateProductCategory = z
     is_internal: z.boolean().optional(),
     is_active: z.boolean().optional(),
     parent_category_id: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
     rank: z.number().nonnegative().optional(),
   })
   .strict()
@@ -66,7 +66,7 @@ export const AdminUpdateProductCategory = z
     is_internal: z.boolean().optional(),
     is_active: z.boolean().optional(),
     parent_category_id: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
     rank: z.number().nonnegative().optional(),
   })
   .strict()

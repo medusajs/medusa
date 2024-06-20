@@ -48,7 +48,7 @@ export const AdminCreateCustomer = z.object({
   first_name: z.string().nullish(),
   last_name: z.string().nullish(),
   phone: z.string().nullish(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminUpdateCustomer = z.object({
@@ -57,7 +57,7 @@ export const AdminUpdateCustomer = z.object({
   first_name: z.string().nullish(),
   last_name: z.string().nullish(),
   phone: z.string().nullish(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminCreateCustomerAddress = z.object({
@@ -74,7 +74,7 @@ export const AdminCreateCustomerAddress = z.object({
   province: z.string().nullish(),
   postal_code: z.string().nullish(),
   phone: z.string().nullish(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress

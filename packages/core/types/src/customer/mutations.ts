@@ -1,3 +1,5 @@
+import { MetadataType } from "../common"
+
 /**
  * The customer address to be created.
  */
@@ -75,7 +77,7 @@ export interface CreateCustomerAddressDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -160,7 +162,7 @@ export interface UpdateCustomerAddressDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -205,7 +207,7 @@ export interface CreateCustomerDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -245,7 +247,7 @@ export interface UpdateCustomerDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -280,7 +282,7 @@ export interface CustomerUpdatableFields {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -295,7 +297,7 @@ export interface CustomerGroupUpdatableFields {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -320,7 +322,7 @@ export interface UpdateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -335,7 +337,7 @@ export interface CreateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 
   /**
    * Who created the customer group. For example,
@@ -361,5 +363,5 @@ export interface UpdateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }

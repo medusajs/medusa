@@ -359,3 +359,5 @@ export type KebabCase<S extends string> =
       ? `${Lowercase<T>}-${KebabCase<`${Lowercase<U>}${V}`>}`
       : `${T}${KebabCase<`${U}${V}`>}`
     : S
+
+export type MetadataType = Record<string, unknown> | null

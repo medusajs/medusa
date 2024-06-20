@@ -54,7 +54,7 @@ export const AdminCreateReturnReason = z.object({
   label: z.string(),
   descripton: z.string().nullish(),
   parent_return_reason_id: z.string().nullish(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminCreateReturnReasonType = z.infer<
   typeof AdminCreateReturnReason
@@ -64,7 +64,7 @@ export const AdminUpdateReturnReason = z.object({
   value: z.string(),
   label: z.string(),
   descripton: z.string().nullish(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 export type AdminUpdateReturnReasonType = z.infer<
   typeof AdminUpdateReturnReason

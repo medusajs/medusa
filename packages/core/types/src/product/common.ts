@@ -1,3 +1,4 @@
+import { MetadataType } from "../common"
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
 
@@ -150,7 +151,7 @@ export interface ProductDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -298,7 +299,7 @@ export interface ProductCategoryDTO {
   /**
    * The ranking of the product category among sibling categories.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * The associated parent category.
    *
@@ -368,7 +369,7 @@ export interface CreateProductCategoryDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 export interface UpsertProductCategoryDTO extends UpdateProductCategoryDTO {
@@ -415,7 +416,7 @@ export interface UpdateProductCategoryDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -435,7 +436,7 @@ export interface ProductTagDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * The associated products.
    *
@@ -465,7 +466,7 @@ export interface ProductCollectionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * When the product collection was created.
    */
@@ -503,7 +504,7 @@ export interface ProductTypeDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * When the product type was created.
    */
@@ -552,7 +553,7 @@ export interface ProductOptionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * When the product option was created.
    */
@@ -589,7 +590,7 @@ export interface ProductImageDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * When the product image was created.
    */
@@ -638,7 +639,7 @@ export interface ProductOptionValueDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
   /**
    * When the product option value was created.
    */
@@ -950,7 +951,7 @@ export interface CreateProductCollectionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -992,7 +993,7 @@ export interface UpdateProductCollectionDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1008,7 +1009,7 @@ export interface CreateProductTypeDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1038,7 +1039,7 @@ export interface UpdateProductTypeDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -1054,7 +1055,7 @@ export interface CreateProductImageDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1083,7 +1084,7 @@ export interface UpdateProductImageDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1255,7 +1256,7 @@ export interface CreateProductVariantDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1347,7 +1348,7 @@ export interface UpdateProductVariantDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -1452,7 +1453,7 @@ export interface CreateProductDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -1569,5 +1570,5 @@ export interface UpdateProductDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }

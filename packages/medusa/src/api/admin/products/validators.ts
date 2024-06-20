@@ -146,7 +146,7 @@ export const AdminCreateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
     prices: z.array(AdminCreateVariantPrice),
     options: z.record(z.string()).optional(),
     inventory_items: z
@@ -183,7 +183,7 @@ export const AdminUpdateProductVariant = z
     width: z.number().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
     options: z.record(z.string()).optional(),
   })
   .strict()
@@ -226,7 +226,7 @@ export const AdminCreateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
 
@@ -257,7 +257,7 @@ export const AdminUpdateProduct = z
     mid_code: z.string().nullish(),
     origin_country: z.string().nullish(),
     material: z.string().nullish(),
-    metadata: z.record(z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
 

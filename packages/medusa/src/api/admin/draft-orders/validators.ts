@@ -39,7 +39,7 @@ const Item = z
     variant_id: z.string().nullish(),
     unit_price: BigNumberInput.nullish(),
     quantity: z.number(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .refine((data) => {
     if (!data.variant_id) {
@@ -64,7 +64,7 @@ export const AdminCreateDraftOrder = z
     currency_code: z.string().nullish(),
     no_notification_order: z.boolean().optional(),
     shipping_methods: z.array(ShippingMethod),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
   .refine(

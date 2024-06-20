@@ -1,3 +1,4 @@
+import { MetadataType } from "../common"
 import { BaseFilterable, OperatorMap } from "../dal"
 import { FulfillmentSetDTO } from "../fulfillment"
 
@@ -114,7 +115,7 @@ export type StockLocationAddressDTO = {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 
   /**
    * The creation date of the stock location address.
@@ -346,7 +347,7 @@ export type StockLocationAddressInput = {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -392,7 +393,7 @@ export type CreateStockLocationInput = {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -436,7 +437,7 @@ export type UpdateStockLocationInput = {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**

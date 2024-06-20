@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const geoZoneBaseSchema = z.object({
   country_code: z.string(),
-  metadata: z.record(z.unknown()).optional(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const geoZoneCountrySchema = geoZoneBaseSchema.merge(

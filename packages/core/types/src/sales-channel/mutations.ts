@@ -1,3 +1,5 @@
+import { MetadataType } from "../common"
+
 /**
  * The sales channel to be created.
  */
@@ -39,7 +41,7 @@ export interface UpdateSalesChannelDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -69,5 +71,5 @@ export interface UpsertSalesChannelDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
