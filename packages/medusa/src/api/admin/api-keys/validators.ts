@@ -1,10 +1,10 @@
+import { ApiKeyType } from "@medusajs/utils"
 import { z } from "zod"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { ApiKeyType } from "@medusajs/utils"
 
 export const AdminGetApiKeyParams = createSelectParams()
 

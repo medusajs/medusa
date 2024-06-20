@@ -43,38 +43,38 @@ export const AdminCustomersParams = createFindParams({
 )
 
 export const AdminCreateCustomer = z.object({
-  email: z.string().email().optional(),
-  company_name: z.string().optional(),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  phone: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  email: z.string().email().nullish(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminUpdateCustomer = z.object({
-  email: z.string().email().nullable().optional(),
-  company_name: z.string().nullable().optional(),
-  first_name: z.string().nullable().optional(),
-  last_name: z.string().nullable().optional(),
-  phone: z.string().nullable().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  email: z.string().email().nullish(),
+  company_name: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  phone: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminCreateCustomerAddress = z.object({
-  address_name: z.string().optional(),
+  address_name: z.string().nullish(),
   is_default_shipping: z.boolean().optional(),
   is_default_billing: z.boolean().optional(),
-  company: z.string().optional(),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  address_1: z.string().optional(),
-  address_2: z.string().optional(),
-  city: z.string().optional(),
-  country_code: z.string().optional(),
-  province: z.string().optional(),
-  postal_code: z.string().optional(),
-  phone: z.string().optional(),
-  metadata: z.record(z.unknown()).optional(),
+  company: z.string().nullish(),
+  first_name: z.string().nullish(),
+  last_name: z.string().nullish(),
+  address_1: z.string().nullish(),
+  address_2: z.string().nullish(),
+  city: z.string().nullish(),
+  country_code: z.string().nullish(),
+  province: z.string().nullish(),
+  postal_code: z.string().nullish(),
+  phone: z.string().nullish(),
+  metadata: z.record(z.unknown()).nullish(),
 })
 
 export const AdminUpdateCustomerAddress = AdminCreateCustomerAddress

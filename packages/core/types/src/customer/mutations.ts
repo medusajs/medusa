@@ -1,3 +1,5 @@
+import { MetadataType } from "../common"
+
 /**
  * The customer address to be created.
  */
@@ -5,7 +7,7 @@ export interface CreateCustomerAddressDTO {
   /**
    * The address's name.
    */
-  address_name?: string
+  address_name?: string | null
 
   /**
    * Whether the address is default shipping.
@@ -25,57 +27,57 @@ export interface CreateCustomerAddressDTO {
   /**
    * The company.
    */
-  company?: string
+  company?: string | null
 
   /**
    * The first name.
    */
-  first_name?: string
+  first_name?: string | null
 
   /**
    * The last name.
    */
-  last_name?: string
+  last_name?: string | null
 
   /**
    * The address 1.
    */
-  address_1?: string
+  address_1?: string | null
 
   /**
    * The address 2.
    */
-  address_2?: string
+  address_2?: string | null
 
   /**
    * The city.
    */
-  city?: string
+  city?: string | null
 
   /**
    * The country code.
    */
-  country_code?: string
+  country_code?: string | null
 
   /**
    * The province.
    */
-  province?: string
+  province?: string | null
 
   /**
    * The postal code.
    */
-  postal_code?: string
+  postal_code?: string | null
 
   /**
    * The phone.
    */
-  phone?: string
+  phone?: string | null
 
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -160,7 +162,7 @@ export interface UpdateCustomerAddressDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -170,32 +172,32 @@ export interface CreateCustomerDTO {
   /**
    * The company name of the customer.
    */
-  company_name?: string
+  company_name?: string | null
 
   /**
    * The first name of the customer.
    */
-  first_name?: string
+  first_name?: string | null
 
   /**
    * The last name of the customer.
    */
-  last_name?: string
+  last_name?: string | null
 
   /**
    * The email of the customer.
    */
-  email?: string
+  email?: string | null
 
   /**
    * The phone of the customer.
    */
-  phone?: string
+  phone?: string | null
 
   /**
    * Who created the customer.
    */
-  created_by?: string
+  created_by?: string | null
 
   /**
    * The addresses of the customer.
@@ -205,7 +207,7 @@ export interface CreateCustomerDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown>
+  metadata?: MetadataType
 }
 
 /**
@@ -245,7 +247,7 @@ export interface UpdateCustomerDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -280,7 +282,7 @@ export interface CustomerUpdatableFields {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -295,7 +297,7 @@ export interface CustomerGroupUpdatableFields {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -320,7 +322,7 @@ export interface UpdateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }
 
 /**
@@ -335,7 +337,7 @@ export interface CreateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 
   /**
    * Who created the customer group. For example,
@@ -361,5 +363,5 @@ export interface UpdateCustomerGroupDTO {
   /**
    * Holds custom data in key-value pairs.
    */
-  metadata?: Record<string, unknown> | null
+  metadata?: MetadataType
 }

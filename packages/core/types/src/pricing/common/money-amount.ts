@@ -90,11 +90,11 @@ export interface UpdateMoneyAmountDTO {
   /**
    * The minimum quantity required to be purchased for this money amount to be applied.
    */
-  min_quantity?: BigNumberInput
+  min_quantity?: BigNumberInput | null
   /**
    * The maximum quantity required to be purchased for this money amount to be applied.
    */
-  max_quantity?: BigNumberInput
+  max_quantity?: BigNumberInput | null
 }
 
 /**

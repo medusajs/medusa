@@ -1,10 +1,10 @@
 import { z } from "zod"
+import { OptionalBooleanValidator } from "../../utils/common-validators"
 import {
   createFindParams,
   createOperatorMap,
   createSelectParams,
 } from "../../utils/validators"
-import { OptionalBooleanValidator } from "../../utils/common-validators"
 
 export type StoreProductCategoryParamsType = z.infer<
   typeof StoreProductCategoryParams

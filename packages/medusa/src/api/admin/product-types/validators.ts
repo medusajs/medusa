@@ -22,7 +22,7 @@ export const AdminGetProductTypesParams = createFindParams({
     id: z.union([z.string(), z.array(z.string())]).optional(),
     value: z.union([z.string(), z.array(z.string())]).optional(),
     // TODO: To be added in next iteration
-    // discount_condition_id: z.string().optional(),
+    // discount_condition_id: z.string().nullish(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -35,7 +35,7 @@ export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>
 export const AdminCreateProductType = z
   .object({
     value: z.string(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
 
@@ -43,6 +43,6 @@ export type AdminUpdateProductTypeType = z.infer<typeof AdminUpdateProductType>
 export const AdminUpdateProductType = z
   .object({
     value: z.string().optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
