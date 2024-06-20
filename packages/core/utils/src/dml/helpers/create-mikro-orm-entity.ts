@@ -1,39 +1,40 @@
 import {
-  Enum,
+  BeforeCreate,
   Entity,
-  OneToMany,
-  Property,
-  OneToOne,
+  Enum,
+  Filter,
   ManyToMany,
   ManyToOne,
-  Filter,
-  PrimaryKey,
-  BeforeCreate,
+  OneToMany,
+  OneToOne,
   OnInit,
+  PrimaryKey,
+  Property,
 } from "@mikro-orm/core"
-import { DmlEntity } from "../entity"
+import { DALUtils } from "../../bundles"
 import {
-  pluralize,
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
-  toCamelCase,
   generateEntityId,
+  isDefined,
+  pluralize,
+  toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
+import { DmlEntity } from "../entity"
+import { HasMany } from "../relations/has-many"
+import { HasOne } from "../relations/has-one"
+import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
 import type {
-  Infer,
-  PropertyType,
   EntityCascades,
+  EntityConstructor,
+  Infer,
   KnownDataTypes,
   PropertyMetadata,
-  RelationshipType,
-  EntityConstructor,
+  PropertyType,
   RelationshipMetadata,
+  RelationshipType,
 } from "../types"
-import { DALUtils } from "../../bundles"
-import { HasOne } from "../relations/has-one"
-import { HasMany } from "../relations/has-many"
-import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -169,7 +170,12 @@ export function createMikrORMEntity() {
       Enum({
         items: () => field.dataType.options!.choices,
         nullable: field.nullable,
-        default: field.defaultValue,
+        /**
+         * MikroORM does not ignore undefined values for default when generating
+         * the database schema SQL. Conditionally add it here to prevent undefined
+         * from being set as default value in SQL.
+         */
+        ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
       })(MikroORMEntity.prototype, field.fieldName)
       return
     }
@@ -217,7 +223,12 @@ export function createMikrORMEntity() {
       columnType,
       type: propertyType,
       nullable: field.nullable,
-      default: field.defaultValue,
+      /**
+       * MikroORM does not ignore undefined values for default when generating
+       * the database schema SQL. Conditionally add it here to prevent undefined
+       * from being set as default value in SQL.
+       */
+      ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
     })(MikroORMEntity.prototype, field.fieldName)
   }
 
@@ -327,7 +338,10 @@ export function createMikrORMEntity() {
     /**
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
-    if (otherSideRelation instanceof HasMany) {
+    if (
+      otherSideRelation instanceof HasMany ||
+      otherSideRelation instanceof DmlManyToMany
+    ) {
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
@@ -382,28 +396,12 @@ export function createMikrORMEntity() {
   ) {
     let mappedBy = relationship.mappedBy
     let inversedBy: undefined | string
+    let pivotEntityName: undefined | string
+    let pivotTableName: undefined | string
 
     /**
-     * A consistent pivot table name is created by:
-     *
-     * - Combining both the entity's names.
-     * - Sorting them by alphabetical order
-     * - Converting them from camelCase to snake_case.
-     * - And finally pluralizing the second entity name.
+     * Validating other side of relationship when mapped by is defined
      */
-    const pivotTableName = [
-      MikroORMEntity.name.toLowerCase(),
-      relatedModelName.toLowerCase(),
-    ]
-      .sort()
-      .map((token, index) => {
-        if (index === 1) {
-          return pluralize(camelToSnakeCase(token))
-        }
-        return camelToSnakeCase(token)
-      })
-      .join("_")
-
     if (mappedBy) {
       const otherSideRelation = relatedEntity.parse().schema[mappedBy]
       if (!otherSideRelation) {
@@ -438,9 +436,59 @@ export function createMikrORMEntity() {
       }
     }
 
+    /**
+     * Validating pivot entity when it is defined and computing
+     * its name
+     */
+    if (relationship.options.pivotEntity) {
+      if (typeof relationship.options.pivotEntity !== "function") {
+        throw new Error(
+          `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to define the pivotEntity using a factory function`
+        )
+      }
+
+      const pivotEntity = relationship.options.pivotEntity()
+      if (!(pivotEntity instanceof DmlEntity)) {
+        throw new Error(
+          `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the pivotEntity callback`
+        )
+      }
+
+      pivotEntityName = parseEntityName(pivotEntity.parse().name).modelName
+    }
+
+    if (!pivotEntityName) {
+      /**
+       * Pivot table name is created as follows (when not explicitly provided)
+       *
+       * - Combining both the entity's names.
+       * - Sorting them by alphabetical order
+       * - Converting them from camelCase to snake_case.
+       * - And finally pluralizing the second entity name.
+       */
+      pivotTableName =
+        relationship.options.pivotTable ??
+        [MikroORMEntity.name.toLowerCase(), relatedModelName.toLowerCase()]
+          .sort()
+          .map((token, index) => {
+            if (index === 1) {
+              return pluralize(camelToSnakeCase(token))
+            }
+            return camelToSnakeCase(token)
+          })
+          .join("_")
+    }
+
     ManyToMany({
       entity: relatedModelName,
-      pivotTable: pgSchema ? `${pgSchema}.${pivotTableName}` : pivotTableName,
+      ...(pivotTableName
+        ? {
+            pivotTable: pgSchema
+              ? `${pgSchema}.${pivotTableName}`
+              : pivotTableName,
+          }
+        : {}),
+      ...(pivotEntityName ? { pivotEntity: pivotEntityName } : {}),
       ...(mappedBy ? { mappedBy: mappedBy as any } : {}),
       ...(inversedBy ? { inversedBy: inversedBy as any } : {}),
     })(MikroORMEntity.prototype, relationship.name)

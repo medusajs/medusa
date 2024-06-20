@@ -22,6 +22,7 @@ describe("Base relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
+      options: { mappedBy: "user_id" },
       mappedBy: "user_id",
       entity: entityRef,
     })
