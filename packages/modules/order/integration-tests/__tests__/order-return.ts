@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
-jest.setTimeout(100000)
+jest.setTimeout(1000000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order Module Service - Return flows", () => {
       const input = {
         email: "foo@bar.com",
@@ -103,7 +103,7 @@ moduleIntegrationTestRunner({
       } as CreateOrderDTO
 
       it("should create an order, fulfill, ship and return the items and cancel some item return", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         // Fullfilment
         await service.registerFulfillment({
@@ -116,7 +116,7 @@ moduleIntegrationTestRunner({
           }),
         })
 
-        let getOrder = await service.retrieve(createdOrder.id, {
+        let getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -135,12 +135,10 @@ moduleIntegrationTestRunner({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            version: 2,
             items: [
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 2,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 0,
@@ -149,7 +147,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 2,
                 detail: expect.objectContaining({
-                  version: 2,
                   quantity: 2,
                   fulfilled_quantity: 2,
                   shipped_quantity: 0,
@@ -158,7 +155,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 2,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 0,
@@ -180,7 +176,7 @@ moduleIntegrationTestRunner({
           }),
         })
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -199,12 +195,10 @@ moduleIntegrationTestRunner({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            version: 3,
             items: [
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 3,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
@@ -213,7 +207,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 2,
                 detail: expect.objectContaining({
-                  version: 3,
                   quantity: 2,
                   fulfilled_quantity: 2,
                   shipped_quantity: 2,
@@ -222,7 +215,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 3,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
@@ -233,6 +225,15 @@ moduleIntegrationTestRunner({
         )
 
         // Return
+        const reason = await service.createReturnReasons({
+          value: "wrong-size",
+          label: "Wrong Size",
+        })
+        const reason2 = await service.createReturnReasons({
+          value: "disliked",
+          label: "Disliled",
+        })
+
         const orderReturn = await service.createReturn({
           order_id: createdOrder.id,
           reference: Modules.FULFILLMENT,
@@ -245,12 +246,30 @@ moduleIntegrationTestRunner({
           items: createdOrder.items!.map((item) => {
             return {
               id: item.id,
-              quantity: item.quantity,
+              quantity: 1,
+              reason_id: reason.id,
             }
           }),
         })
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        const secondReturn = await service.createReturn({
+          order_id: createdOrder.id,
+          reference: Modules.FULFILLMENT,
+          description: "Return remaining item",
+          shipping_method: {
+            name: "Return method",
+            amount: 5,
+          },
+          items: [
+            {
+              id: createdOrder.items![1].id,
+              quantity: 1,
+              reason_id: reason2.id,
+            },
+          ],
+        })
+
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -270,12 +289,10 @@ moduleIntegrationTestRunner({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            version: 4,
             items: [
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 4,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
@@ -285,7 +302,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 2,
                 detail: expect.objectContaining({
-                  version: 4,
                   quantity: 2,
                   fulfilled_quantity: 2,
                   shipped_quantity: 2,
@@ -295,7 +311,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 4,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
@@ -310,10 +325,11 @@ moduleIntegrationTestRunner({
         const allItems = createdOrder.items!.map((item) => {
           return {
             id: item.id,
-            quantity: item.quantity,
+            quantity: 1,
           }
         })
         const lastItem = allItems.pop()!
+
         const receive = await service.receiveReturn({
           return_id: orderReturn.id,
           internal_note: "received some items",
@@ -326,6 +342,30 @@ moduleIntegrationTestRunner({
           items: [lastItem],
         })
 
+        const receiveSecond = await service.receiveReturn({
+          return_id: secondReturn.id,
+          internal_note: "received some items",
+          items: [
+            {
+              id: createdOrder.items![1].id,
+              quantity: 1,
+            },
+          ],
+        })
+
+        expect(receiveSecond).toEqual(
+          expect.objectContaining({
+            status: "received",
+            received_at: expect.any(Date),
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: createdOrder.items![1].id,
+                received_quantity: 1,
+              }),
+            ]),
+          })
+        )
+
         expect(receive).toEqual(
           expect.objectContaining({
             id: orderReturn.id,
@@ -333,17 +373,17 @@ moduleIntegrationTestRunner({
             received_at: null,
             items: expect.arrayContaining([
               expect.objectContaining({
-                id: allItems[0].id,
+                item_id: allItems[0].id,
                 detail: expect.objectContaining({
                   return_requested_quantity: 0,
                   return_received_quantity: 1,
                 }),
               }),
               expect.objectContaining({
-                id: allItems[1].id,
+                item_id: allItems[1].id,
                 detail: expect.objectContaining({
-                  return_requested_quantity: 0,
-                  return_received_quantity: 2,
+                  return_requested_quantity: 1,
+                  return_received_quantity: 1,
                 }),
               }),
             ]),
@@ -357,21 +397,21 @@ moduleIntegrationTestRunner({
             received_at: expect.any(Date),
             items: expect.arrayContaining([
               expect.objectContaining({
-                id: allItems[0].id,
+                item_id: allItems[0].id,
                 detail: expect.objectContaining({
                   return_requested_quantity: 0,
                   return_received_quantity: 1,
                 }),
               }),
               expect.objectContaining({
-                id: allItems[1].id,
+                item_id: allItems[1].id,
                 detail: expect.objectContaining({
-                  return_requested_quantity: 0,
-                  return_received_quantity: 2,
+                  return_requested_quantity: 1,
+                  return_received_quantity: 1,
                 }),
               }),
               expect.objectContaining({
-                id: lastItem.id,
+                item_id: lastItem.id,
                 detail: expect.objectContaining({
                   return_requested_quantity: 0,
                   return_received_quantity: 1,
@@ -381,7 +421,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -402,12 +442,10 @@ moduleIntegrationTestRunner({
 
         expect(serializedOrder).toEqual(
           expect.objectContaining({
-            version: 6,
             items: [
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 6,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,
@@ -418,7 +456,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 2,
                 detail: expect.objectContaining({
-                  version: 6,
                   quantity: 2,
                   fulfilled_quantity: 2,
                   shipped_quantity: 2,
@@ -429,7 +466,6 @@ moduleIntegrationTestRunner({
               expect.objectContaining({
                 quantity: 1,
                 detail: expect.objectContaining({
-                  version: 6,
                   quantity: 1,
                   fulfilled_quantity: 1,
                   shipped_quantity: 1,

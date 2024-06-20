@@ -1,11 +1,11 @@
 import { expectTypeOf } from "expect-type"
-import { TextSchema } from "../schema/text"
+import { TextProperty } from "../properties/text"
 import { HasOne } from "../relations/has-one"
 
 describe("HasOne relationship", () => {
   test("define hasOne relationship", () => {
     const user = {
-      username: new TextSchema(),
+      username: new TextProperty(),
     }
 
     const entityRef = () => user
@@ -16,13 +16,14 @@ describe("HasOne relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
+      options: {},
       entity: entityRef,
     })
   })
 
   test("mark relationship as nullable", () => {
     const user = {
-      username: new TextSchema(),
+      username: new TextProperty(),
     }
 
     const entityRef = () => user
@@ -35,6 +36,7 @@ describe("HasOne relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: true,
+      options: {},
       entity: entityRef,
     })
   })

@@ -12,6 +12,9 @@ export const OrderRegion: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "region_id",
         alias: "region",
+        args: {
+          methodSuffix: "Regions",
+        },
       },
     },
     {
@@ -21,6 +24,9 @@ export const OrderRegion: ModuleJoinerConfig = {
         primaryKey: "region_id",
         foreignKey: "id",
         alias: "orders",
+        args: {
+          methodSuffix: "Orders",
+        },
         isList: true,
       },
     },

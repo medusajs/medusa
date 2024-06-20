@@ -24,6 +24,9 @@ export const RegionPaymentProvider: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "region_id",
       alias: "region",
+      args: {
+        methodSuffix: "Regions",
+      },
     },
     {
       serviceName: Modules.PAYMENT,

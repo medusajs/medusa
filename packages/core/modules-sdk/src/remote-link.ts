@@ -168,7 +168,7 @@ export class RemoteLink {
 
   private async executeCascade(
     removedServices: DeleteEntityInput,
-    method: "softDelete" | "restore"
+    executionMethod: "softDelete" | "restore"
   ): Promise<[CascadeError[] | null, RemovedIds]> {
     const removedIds: RemovedIds = {}
     const returnIdsList: RemovedIds = {}
@@ -191,6 +191,8 @@ export class RemoteLink {
       services: { serviceName: string; deleteKeys: DeleteEntities }[],
       isCascading: boolean = false
     ): Promise<RemovedIds> => {
+      let method = executionMethod
+
       if (errors.length) {
         return returnIdsList
       }

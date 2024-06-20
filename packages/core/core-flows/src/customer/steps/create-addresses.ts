@@ -13,7 +13,7 @@ export const createCustomerAddressesStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const addresses = await service.addAddresses(data)
+    const addresses = await service.createAddresses(data)
 
     return new StepResponse(
       addresses,

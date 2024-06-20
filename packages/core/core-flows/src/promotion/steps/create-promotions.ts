@@ -10,7 +10,7 @@ export const createPromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    const createdPromotions = await promotionModule.create(data)
+    const createdPromotions = await promotionModule.createPromotions(data)
 
     return new StepResponse(
       createdPromotions,
@@ -26,6 +26,6 @@ export const createPromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    await promotionModule.delete(createdPromotionIds)
+    await promotionModule.deletePromotions(createdPromotionIds)
   }
 )

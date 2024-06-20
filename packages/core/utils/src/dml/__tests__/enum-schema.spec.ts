@@ -1,14 +1,14 @@
 import { expectTypeOf } from "expect-type"
-import { EnumSchema } from "../schema/enum"
+import { EnumProperty } from "../properties/enum"
 
-describe("Enum schema", () => {
-  test("create enum schema type", () => {
-    const schema = new EnumSchema(["admin", "moderator", "editor"])
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<
+describe("Enum property", () => {
+  test("create enum property type", () => {
+    const property = new EnumProperty(["admin", "moderator", "editor"])
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<
       "admin" | "moderator" | "editor"
     >()
 
-    expect(schema.parse("role")).toEqual({
+    expect(property.parse("role")).toEqual({
       fieldName: "role",
       dataType: {
         name: "enum",
@@ -23,13 +23,17 @@ describe("Enum schema", () => {
   })
 
   test("apply nullable modifier", () => {
-    const schema = new EnumSchema(["admin", "moderator", "editor"]).nullable()
+    const property = new EnumProperty([
+      "admin",
+      "moderator",
+      "editor",
+    ]).nullable()
 
-    expectTypeOf(schema["$dataType"]).toEqualTypeOf<
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<
       "admin" | "moderator" | "editor" | null
     >()
 
-    expect(schema.parse("role")).toEqual({
+    expect(property.parse("role")).toEqual({
       fieldName: "role",
       dataType: {
         name: "enum",

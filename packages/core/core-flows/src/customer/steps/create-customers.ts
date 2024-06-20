@@ -10,7 +10,7 @@ export const createCustomersStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    const createdCustomers = await service.create(data)
+    const createdCustomers = await service.createCustomers(data)
 
     return new StepResponse(
       createdCustomers,
@@ -26,6 +26,6 @@ export const createCustomersStep = createStep(
       ModuleRegistrationName.CUSTOMER
     )
 
-    await service.delete(createdCustomerIds)
+    await service.deleteCustomers(createdCustomerIds)
   }
 )

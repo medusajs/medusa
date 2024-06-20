@@ -1,12 +1,12 @@
+import { OrderEdit } from "@medusajs/medusa"
 import { DataSource } from "typeorm"
 import { OrderFactoryData, simpleOrderFactory } from "./simple-order-factory"
-import { OrderEdit } from "@medusajs/medusa"
 
 export type OrderEditFactoryData = {
   id?: string
   order?: OrderFactoryData
   order_id?: string
-  internal_note?: string
+  internal_note?: string | null
   declined_reason?: string
   payment_collection_id?: string
   confirmed_at?: Date | string

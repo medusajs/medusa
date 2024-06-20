@@ -1,6 +1,6 @@
 import { AdjustInventoryForm } from "./components/adjust-inventory-form"
 import { Heading } from "@medusajs/ui"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 import { RouteDrawer } from "../../../../../components/route-modal"
 import { useInventoryItem } from "../../../../../hooks/api/inventory"
 import { useParams } from "react-router-dom"
@@ -19,7 +19,7 @@ export const AdjustInventoryDrawer = () => {
   } = useInventoryItem(id!)
 
   const inventoryLevel = inventoryItem?.location_levels!.find(
-    (level: InventoryNext.InventoryLevelDTO) =>
+    (level: InventoryTypes.InventoryLevelDTO) =>
       level.location_id === location_id
   )
 

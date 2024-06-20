@@ -46,7 +46,7 @@ export interface UpdateServiceZoneDTO {
   /**
    * The name of the service zone.
    */
-  name?: string
+  name?: string | null
 
   /**
    * The geo zones associated with the service zone.

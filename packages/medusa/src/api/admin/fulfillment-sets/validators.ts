@@ -30,7 +30,7 @@ export const AdminCreateFulfillmentSetServiceZonesSchema = z
 
 export const AdminUpdateFulfillmentSetServiceZonesSchema = z
   .object({
-    name: z.string().optional(),
+    name: z.string().nullish(),
     geo_zones: z
       .array(
         z.union([

@@ -27,7 +27,7 @@ moduleIntegrationTestRunner({
   testSuite: ({ service }: SuiteOptions<IAuthModuleService>) =>
     describe("Auth Module Service", () => {
       beforeEach(async () => {
-        await service.create({
+        await service.createAuthIdentities({
           provider_identities: [
             {
               entity_id: "test@admin.com",
@@ -103,7 +103,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        const dbAuthIdentity = await service.retrieve(
+        const dbAuthIdentity = await service.retrieveAuthIdentity(
           result.authIdentity?.id!,
           { relations: ["provider_identities"] }
         )

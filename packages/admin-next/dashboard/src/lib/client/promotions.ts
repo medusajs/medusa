@@ -15,7 +15,6 @@ import {
   PromotionListRes,
   PromotionRes,
   PromotionRuleAttributesListRes,
-  PromotionRuleOperatorsListRes,
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
@@ -112,12 +111,6 @@ async function listPromotionRuleValues(
   )
 }
 
-async function listPromotionRuleOperators() {
-  return getRequest<PromotionRuleOperatorsListRes>(
-    `/admin/promotions/rule-operator-options`
-  )
-}
-
 export const promotions = {
   retrieve: retrievePromotion,
   list: listPromotions,
@@ -129,6 +122,5 @@ export const promotions = {
   updateRules: updatePromotionRules,
   listRules: listPromotionRules,
   listRuleAttributes: listPromotionRuleAttributes,
-  listRuleOperators: listPromotionRuleOperators,
   listRuleValues: listPromotionRuleValues,
 }

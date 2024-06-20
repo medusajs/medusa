@@ -87,6 +87,9 @@ export const ProductVariantSection = ({
         pageSize={PAGE_SIZE}
         isLoading={isLoading}
         orderBy={["title", "created_at", "updated_at"]}
+        navigateTo={(row) =>
+          `/products/${row.original.product_id}/variants/${row.id}`
+        }
         pagination
         search
         queryObject={raw}

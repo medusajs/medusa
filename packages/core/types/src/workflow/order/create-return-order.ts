@@ -1,26 +1,27 @@
 import { BigNumberInput } from "../../totals"
 
-interface CreateOrderReturnItem {
+interface CreateReturnItem {
   id: string
   quantity: BigNumberInput
-  internal_note?: string
-  reason_id?: string
+  internal_note?: string | null
+  reason_id?: string | null
+  note?: string | null
   metadata?: Record<string, any>
 }
 
 export interface CreateOrderReturnWorkflowInput {
   order_id: string
-  created_by?: string // The id of the authenticated user
-  items: CreateOrderReturnItem[]
+  created_by?: string | null // The id of the authenticated user
+  items: CreateReturnItem[]
   return_shipping: {
     option_id: string
     price?: number
   }
-  note?: string
+  note?: string | null
   receive_now?: boolean
   refund_amount?: number
   /**
    * Default fallback to the shipping option location id
    */
-  location_id?: string
+  location_id?: string | null
 }

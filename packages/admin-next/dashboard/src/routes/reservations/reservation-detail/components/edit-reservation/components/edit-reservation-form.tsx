@@ -1,7 +1,7 @@
 import * as zod from "zod"
 
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
-import { InventoryNext, StockLocationDTO } from "@medusajs/types"
+import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
 import {
   RouteDrawer,
   useRouteModal,
@@ -16,7 +16,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 type EditReservationFormProps = {
-  reservation: InventoryNext.ReservationItemDTO
+  reservation: InventoryTypes.ReservationItemDTO
   locations: StockLocationDTO[]
   item: InventoryItemRes["inventory_item"]
 }
@@ -46,7 +46,7 @@ const AttributeGridRow = ({
   )
 }
 
-const getDefaultValues = (reservation: InventoryNext.ReservationItemDTO) => {
+const getDefaultValues = (reservation: InventoryTypes.ReservationItemDTO) => {
   return {
     quantity: reservation.quantity,
     location_id: reservation.location_id,
@@ -85,7 +85,8 @@ export const EditReservationForm = ({
   const locationId = form.watch("location_id")
 
   const level = item.location_levels!.find(
-    (level: InventoryNext.InventoryLevelDTO) => level.location_id === locationId
+    (level: InventoryTypes.InventoryLevelDTO) =>
+      level.location_id === locationId
   )
 
   return (

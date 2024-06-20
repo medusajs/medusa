@@ -45,7 +45,7 @@ export const ShippingProfileGeneralSection = ({
           dismissLabel: t("actions.close"),
         })
 
-        navigate("/settings/shipping-profiles", { replace: true })
+        navigate("/settings/locations/shipping-profiles", { replace: true })
       },
       onError: (error) => {
         toast.error(t("general.error"), {

@@ -1,3 +1,4 @@
+import { MetadataType } from "../../common"
 import { BigNumberInput } from "../../totals"
 import { CreateFulfillmentLabelWorkflowDTO } from "../fulfillment"
 
@@ -13,5 +14,5 @@ export interface CreateOrderShipmentWorkflowInput {
   items: CreateOrderShipmentItem[]
   labels: CreateFulfillmentLabelWorkflowDTO[]
   no_notification?: boolean
-  metadata?: Record<string, any>
+  metadata?: MetadataType
 }

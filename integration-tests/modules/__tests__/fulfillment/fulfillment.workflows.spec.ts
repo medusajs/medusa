@@ -48,7 +48,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -111,7 +111,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -190,7 +190,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })

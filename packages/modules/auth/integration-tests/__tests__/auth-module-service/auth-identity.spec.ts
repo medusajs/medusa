@@ -5,12 +5,9 @@ import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IAuthModuleService>({
   moduleName: Modules.AUTH,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IAuthModuleService>) => {
+  testSuite: ({ service }) => {
     describe("AuthModuleService - AuthIdentity", () => {
       beforeEach(async () => {
         await createAuthIdentities(service)
@@ -18,7 +15,7 @@ moduleIntegrationTestRunner({
 
       describe("listAuthIdentities", () => {
         it("should list authIdentities", async () => {
-          const authIdentities = await service.list(
+          const authIdentities = await service.listAuthIdentities(
             {},
             { relations: ["provider_identities"] }
           )
@@ -43,7 +40,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list authIdentities by id", async () => {
-          const authIdentities = await service.list({
+          const authIdentities = await service.listAuthIdentities({
             id: ["test-id"],
           })
 
@@ -55,7 +52,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should list authIdentities by provider", async () => {
-          const authIdentities = await service.list({
+          const authIdentities = await service.listAuthIdentities({
             provider_identities: {
               provider: "manual",
             },
@@ -74,10 +71,11 @@ moduleIntegrationTestRunner({
 
       describe("listAndCountAuthIdentities", () => {
         it("should list and count authIdentities", async () => {
-          const [authIdentities, count] = await service.listAndCount(
-            {},
-            { relations: ["provider_identities"] }
-          )
+          const [authIdentities, count] =
+            await service.listAndCountAuthIdentities(
+              {},
+              { relations: ["provider_identities"] }
+            )
 
           expect(count).toEqual(3)
           expect(authIdentities).toEqual([
@@ -100,9 +98,10 @@ moduleIntegrationTestRunner({
         })
 
         it("should listAndCount authIdentities by provider_id", async () => {
-          const [authIdentities, count] = await service.listAndCount({
-            provider_identities: { provider: "manual" },
-          })
+          const [authIdentities, count] =
+            await service.listAndCountAuthIdentities({
+              provider_identities: { provider: "manual" },
+            })
 
           expect(count).toEqual(2)
           expect(authIdentities).toEqual([
@@ -120,7 +119,7 @@ moduleIntegrationTestRunner({
         const id = "test-id"
 
         it("should return an authIdentity for the given id", async () => {
-          const authIdentity = await service.retrieve(id)
+          const authIdentity = await service.retrieveAuthIdentity(id)
 
           expect(authIdentity).toEqual(
             expect.objectContaining({
@@ -133,7 +132,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve("does-not-exist")
+            await service.retrieveAuthIdentity("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -144,7 +143,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should not return an authIdentity with password hash", async () => {
-          const authIdentity = await service.retrieve("test-id-1")
+          const authIdentity = await service.retrieveAuthIdentity("test-id-1")
 
           expect(authIdentity).toEqual(
             expect.objectContaining({
@@ -162,7 +161,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve(undefined as unknown as string)
+            await service.retrieveAuthIdentity(undefined as unknown as string)
           } catch (e) {
             error = e
           }
@@ -171,7 +170,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return authIdentity based on config select param", async () => {
-          const authIdentity = await service.retrieve(id, {
+          const authIdentity = await service.retrieveAuthIdentity(id, {
             select: ["id"],
           })
 
@@ -185,9 +184,9 @@ moduleIntegrationTestRunner({
         const id = "test-id"
 
         it("should delete the authIdentities given an id successfully", async () => {
-          await service.delete([id])
+          await service.deleteAuthIdentities([id])
 
-          const authIdentities = await service.list({
+          const authIdentities = await service.listAuthIdentities({
             id: [id],
           })
 
@@ -202,7 +201,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.update([
+            await service.updateAuthIdentites([
               {
                 id: "does-not-exist",
               },
@@ -217,14 +216,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should update authIdentity", async () => {
-          await service.update([
+          await service.updateAuthIdentites([
             {
               id,
               app_metadata: { email: "test@email.com" },
             },
           ])
 
-          const [authIdentity] = await service.list({ id: [id] })
+          const [authIdentity] = await service.listAuthIdentities({ id: [id] })
           expect(authIdentity).toEqual(
             expect.objectContaining({
               app_metadata: { email: "test@email.com" },
@@ -235,7 +234,7 @@ moduleIntegrationTestRunner({
 
       describe("createAuthIdentity", () => {
         it("should create a authIdentity successfully", async () => {
-          await service.create([
+          await service.createAuthIdentities([
             {
               id: "test",
               provider_identities: [
@@ -247,9 +246,10 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [authIdentity, count] = await service.listAndCount({
-            id: ["test"],
-          })
+          const [authIdentity, count] =
+            await service.listAndCountAuthIdentities({
+              id: ["test"],
+            })
 
           expect(count).toEqual(1)
           expect(authIdentity[0]).toEqual(

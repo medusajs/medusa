@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IOrderModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type ArchiveOrdersStepInput = {
   orderIds: string[]
@@ -34,6 +34,6 @@ export const archiveOrdersStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.update(archived)
+    await service.updateOrders(archived)
   }
 )

@@ -34,7 +34,7 @@ export const AdminCreateRegion = z
     countries: z.array(z.string()).optional(),
     automatic_taxes: z.boolean().optional(),
     payment_providers: z.array(z.string()).optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()
 
@@ -46,6 +46,6 @@ export const AdminUpdateRegion = z
     countries: z.array(z.string()).optional(),
     automatic_taxes: z.boolean().optional(),
     payment_providers: z.array(z.string()).optional(),
-    metadata: z.record(z.string(), z.unknown()).optional(),
+    metadata: z.record(z.unknown()).nullish(),
   })
   .strict()

@@ -1,19 +1,16 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPricingModuleService>({
   moduleName: Modules.PRICING,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPricingModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("PriceListRule Service", () => {
       let testManager: SqlEntityManager
       beforeEach(async () => {

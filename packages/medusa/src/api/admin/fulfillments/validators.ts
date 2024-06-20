@@ -9,8 +9,8 @@ const AdminCreateFulfillmentItem = z.object({
   sku: z.string(),
   quantity: z.number(),
   barcode: z.string(),
-  line_item_id: z.string().optional(),
-  inventory_item_id: z.string().optional(),
+  line_item_id: z.string().nullish(),
+  inventory_item_id: z.string().nullish(),
 })
 
 const AdminCreateFulfillmentLabel = z.object({
@@ -32,13 +32,13 @@ export const AdminCreateFulfillment = z.object({
   labels: z.array(AdminCreateFulfillmentLabel),
   order: z.object({}),
   order_id: z.string(),
-  shipping_option_id: z.string().optional(),
-  data: z.record(z.unknown()).optional().nullable(),
-  packed_at: z.coerce.date().optional().nullable(),
-  shipped_at: z.coerce.date().optional().nullable(),
-  delivered_at: z.coerce.date().optional().nullable(),
-  canceled_at: z.coerce.date().optional().nullable(),
-  metadata: z.record(z.unknown()).optional().nullable(),
+  shipping_option_id: z.string().nullish(),
+  data: z.record(z.unknown()).nullable(),
+  packed_at: z.coerce.date().nullish(),
+  shipped_at: z.coerce.date().nullish(),
+  delivered_at: z.coerce.date().nullish(),
+  canceled_at: z.coerce.date().nullish(),
+  metadata: z.record(z.unknown()).nullable(),
 })
 
 export type AdminCreateShipmentType = z.infer<typeof AdminCreateShipment>

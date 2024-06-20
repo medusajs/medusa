@@ -1,6 +1,6 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreateCartDTO, ICartModuleService } from "@medusajs/types"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const createCartsStepId = "create-carts"
 export const createCartsStep = createStep(
@@ -10,7 +10,7 @@ export const createCartsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    const createdCarts = await service.create(data)
+    const createdCarts = await service.createCarts(data)
 
     return new StepResponse(
       createdCarts,
@@ -26,6 +26,6 @@ export const createCartsStep = createStep(
       ModuleRegistrationName.CART
     )
 
-    await service.delete(createdCartsIds)
+    await service.deleteCarts(createdCartsIds)
   }
 )

@@ -42,7 +42,7 @@ export default async function ({
       Invite token: ${invite.token}
       Open the invite in Medusa Admin at: [your-admin-url]/invite?token=${invite.token}`)
     } else {
-      const user = await userService.create({ email })
+      const user = await userService.createUsers({ email })
 
       const { authIdentity, error } = await authService.authenticate(provider, {
         body: {
@@ -57,7 +57,7 @@ export default async function ({
       }
 
       // We know the authIdentity is not undefined
-      await authService.update({
+      await authService.updateAuthIdentites({
         id: authIdentity!.id,
         app_metadata: {
           user_id: user.id,

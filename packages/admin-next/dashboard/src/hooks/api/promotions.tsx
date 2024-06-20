@@ -2,7 +2,6 @@ import { AdminGetPromotionsParams } from "@medusajs/medusa"
 import {
   AdminPromotionRuleListResponse,
   AdminRuleAttributeOptionsListResponse,
-  AdminRuleOperatorOptionsListResponse,
   AdminRuleValueOptionsListResponse,
 } from "@medusajs/types"
 import {
@@ -49,7 +48,6 @@ export const promotionsQueryKeys = {
     ruleValue,
     query,
   ],
-  listRuleOperators: () => [PROMOTIONS_QUERY_KEY],
 }
 
 export const usePromotion = (
@@ -101,26 +99,6 @@ export const usePromotions = (
   const { data, ...rest } = useQuery({
     queryKey: promotionsQueryKeys.list(query),
     queryFn: async () => client.promotions.list(query),
-    ...options,
-  })
-
-  return { ...data, ...rest }
-}
-
-export const usePromotionRuleOperators = (
-  options?: Omit<
-    UseQueryOptions<
-      AdminRuleOperatorOptionsListResponse,
-      Error,
-      AdminRuleOperatorOptionsListResponse,
-      QueryKey
-    >,
-    "queryFn" | "queryKey"
-  >
-) => {
-  const { data, ...rest } = useQuery({
-    queryKey: promotionsQueryKeys.listRuleOperators(),
-    queryFn: async () => client.promotions.listRuleOperators(),
     ...options,
   })
 

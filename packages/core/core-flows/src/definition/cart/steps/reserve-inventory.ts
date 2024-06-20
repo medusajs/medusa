@@ -1,5 +1,5 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryServiceNext } from "@medusajs/types"
+import { IInventoryService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
@@ -17,7 +17,7 @@ export const reserveInventoryStepId = "reserve-inventory-step"
 export const reserveInventoryStep = createStep(
   reserveInventoryStepId,
   async (data: StepInput, { container }) => {
-    const inventoryService = container.resolve<IInventoryServiceNext>(
+    const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 
@@ -40,7 +40,7 @@ export const reserveInventoryStep = createStep(
       return
     }
 
-    const inventoryService = container.resolve<IInventoryServiceNext>(
+    const inventoryService = container.resolve<IInventoryService>(
       ModuleRegistrationName.INVENTORY
     )
 

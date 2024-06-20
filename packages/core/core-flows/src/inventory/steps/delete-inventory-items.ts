@@ -8,7 +8,7 @@ export const deleteInventoryItemStep = createStep(
   async (ids: string[], { container }) => {
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
-    await inventoryService.softDelete(ids)
+    await inventoryService.softDeleteInventoryItems(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -19,6 +19,6 @@ export const deleteInventoryItemStep = createStep(
 
     const inventoryService = container.resolve(ModuleRegistrationName.INVENTORY)
 
-    await inventoryService.restore(prevInventoryItemIds)
+    await inventoryService.restoreInventoryItems(prevInventoryItemIds)
   }
 )

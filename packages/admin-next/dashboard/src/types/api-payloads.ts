@@ -15,7 +15,7 @@ import {
   CreateShippingOptionDTO,
   CreateShippingProfileDTO,
   CreateStockLocationInput,
-  InventoryNext,
+  InventoryTypes,
   UpdateApiKeyDTO,
   UpdateCampaignDTO,
   UpdatePriceListDTO,
@@ -112,7 +112,7 @@ export type UpdateCampaignReq = UpdateCampaignDTO
 
 // Reservations
 export type UpdateReservationReq = Omit<
-  InventoryNext.UpdateReservationItemInput,
+  InventoryTypes.UpdateReservationItemInput,
   "id"
 >
-export type CreateReservationReq = InventoryNext.CreateReservationItemInput
+export type CreateReservationReq = InventoryTypes.CreateReservationItemInput

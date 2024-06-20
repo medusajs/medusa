@@ -1,5 +1,5 @@
 import { expectTypeOf } from "expect-type"
-import { TextSchema } from "../schema/text"
+import { TextProperty } from "../properties/text"
 import { BaseRelationship } from "../relations/base"
 
 describe("Base relationship", () => {
@@ -9,7 +9,7 @@ describe("Base relationship", () => {
     }
 
     const user = {
-      username: new TextSchema(),
+      username: new TextProperty(),
     }
 
     const entityRef = () => user
@@ -22,6 +22,7 @@ describe("Base relationship", () => {
       name: "user",
       type: "hasOne",
       nullable: false,
+      options: { mappedBy: "user_id" },
       mappedBy: "user_id",
       entity: entityRef,
     })

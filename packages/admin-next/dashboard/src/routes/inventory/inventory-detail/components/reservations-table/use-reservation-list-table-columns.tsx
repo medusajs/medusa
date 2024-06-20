@@ -1,4 +1,4 @@
-import { InventoryNext, StockLocationDTO } from "@medusajs/types"
+import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
 
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { ReservationActions } from "./reservation-actions"
@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next"
 /**
  * Adds missing properties to the InventoryItemDTO type.
  */
-interface ExtendedReservationItem extends InventoryNext.ReservationItemDTO {
+interface ExtendedReservationItem extends InventoryTypes.ReservationItemDTO {
   line_item: { order_id: string }
   location: StockLocationDTO
 }

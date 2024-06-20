@@ -41,6 +41,7 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
       name: relationshipName,
       nullable: false,
       mappedBy: this.options.mappedBy,
+      options: this.options,
       entity: this.#referencedEntity,
       type: this.type,
     }

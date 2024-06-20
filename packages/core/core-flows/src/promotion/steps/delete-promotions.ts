@@ -10,7 +10,7 @@ export const deletePromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    await promotionModule.softDelete(ids)
+    await promotionModule.softDeletePromotions(ids)
 
     return new StepResponse(void 0, ids)
   },
@@ -23,6 +23,6 @@ export const deletePromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    await promotionModule.restore(idsToRestore)
+    await promotionModule.restorePromotions(idsToRestore)
   }
 )

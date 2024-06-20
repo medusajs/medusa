@@ -10,7 +10,7 @@ export const deleteApiKeysStep = createStep(
       ModuleRegistrationName.API_KEY
     )
 
-    await service.delete(ids)
+    await service.deleteApiKeys(ids)
     return new StepResponse(void 0)
   },
   async () => {}

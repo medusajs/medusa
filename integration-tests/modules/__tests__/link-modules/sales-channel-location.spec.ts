@@ -30,23 +30,23 @@ medusaIntegrationTestRunner({
       })
 
       it("should query carts, sales channels, customers, regions with remote query", async () => {
-        const scWebshop = await scService.create({
+        const scWebshop = await scService.createSalesChannels({
           name: "Webshop",
         })
 
-        const scCphStore = await scService.create({
+        const scCphStore = await scService.createSalesChannels({
           name: "CPH store",
         })
 
-        const scNycStore = await scService.create({
+        const scNycStore = await scService.createSalesChannels({
           name: "NYC store",
         })
 
-        const euWarehouse = await locationService.create({
+        const euWarehouse = await locationService.createStockLocations({
           name: "EU Warehouse",
         })
 
-        const usWarehouse = await locationService.create({
+        const usWarehouse = await locationService.createStockLocations({
           name: "US Warehouse",
         })
 
