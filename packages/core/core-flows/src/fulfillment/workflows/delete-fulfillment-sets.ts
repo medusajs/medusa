@@ -1,7 +1,7 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
 import { deleteFulfillmentSetsStep } from "../steps"
 import { removeRemoteLinkStep } from "../../common"
-import { Modules } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/utils"
 
 export const deleteFulfillmentSetsWorkflowId =
   "delete-fulfillment-sets-workflow"

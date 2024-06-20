@@ -1,8 +1,7 @@
 import { updateProductsStep } from "../steps/update-products"
 
-import { Modules } from "@medusajs/modules-sdk"
 import { ProductTypes } from "@medusajs/types"
-import { arrayDifference } from "@medusajs/utils"
+import { arrayDifference, Modules } from "@medusajs/utils"
 import {
   createWorkflow,
   transform,
