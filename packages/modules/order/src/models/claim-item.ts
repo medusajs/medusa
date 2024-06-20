@@ -17,6 +17,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Claim from "./claim"
 import ClaimItemImage from "./claim-item-image"
@@ -52,10 +53,10 @@ export default class OrderClaimItem {
   @OneToMany(() => ClaimItemImage, (ci) => ci.item, {
     cascade: [Cascade.PERSIST, Cascade.REMOVE],
   })
-  images = new Collection<ClaimItemImage>(this)
+  images = new Collection<Rel<ClaimItemImage>>(this)
 
   @Enum({ items: () => ClaimReason, nullable: true })
-  reason: ClaimReason | null = null
+  reason: Rel<ClaimReason> | null = null
 
   @MikroOrmBigNumberProperty()
   quantity: Number | number
@@ -75,7 +76,7 @@ export default class OrderClaimItem {
   @ManyToOne(() => Claim, {
     persist: false,
   })
-  claim: Claim
+  claim: Rel<Claim>
 
   @ManyToOne({
     entity: () => LineItem,
@@ -89,7 +90,7 @@ export default class OrderClaimItem {
   @ManyToOne(() => LineItem, {
     persist: false,
   })
-  item: LineItem
+  item: Rel<LineItem>
 
   @Property({ columnType: "boolean", default: false })
   is_additional_item: boolean = false

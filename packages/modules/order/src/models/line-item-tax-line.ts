@@ -8,6 +8,7 @@ import {
   Entity,
   ManyToOne,
   OnInit,
+  Rel,
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
@@ -23,7 +24,7 @@ export default class LineItemTaxLine extends TaxLine {
     fieldName: "item_id",
     persist: false,
   })
-  item: LineItem
+  item: Rel<LineItem>
 
   @ManyToOne({
     entity: () => LineItem,

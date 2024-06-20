@@ -19,6 +19,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Capture from "./capture"
 import PaymentCollection from "./payment-collection"
@@ -102,18 +103,18 @@ export default class Payment {
   @OneToMany(() => Refund, (refund) => refund.payment, {
     cascade: [Cascade.REMOVE],
   })
-  refunds = new Collection<Refund>(this)
+  refunds = new Collection<Rel<Refund>>(this)
 
   @OneToMany(() => Capture, (capture) => capture.payment, {
     cascade: [Cascade.REMOVE],
   })
-  captures = new Collection<Capture>(this)
+  captures = new Collection<Rel<Capture>>(this)
 
   @ManyToOne({
     entity: () => PaymentCollection,
     persist: false,
   })
-  payment_collection: PaymentCollection
+  payment_collection: Rel<PaymentCollection>
 
   @ManyToOne({
     entity: () => PaymentCollection,
@@ -125,11 +126,12 @@ export default class Payment {
   payment_collection_id: string
 
   @OneToOne({
+    entity: () => PaymentSession,
     owner: true,
     fieldName: "payment_session_id",
     index: "IDX_payment_payment_session_id",
   })
-  payment_session: PaymentSession
+  payment_session: Rel<PaymentSession>
 
   @BeforeCreate()
   onCreate() {

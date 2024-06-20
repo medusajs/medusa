@@ -17,6 +17,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Address from "./address"
 import CustomerGroup from "./customer-group"
@@ -74,12 +75,12 @@ export default class Customer {
     entity: () => CustomerGroup,
     pivotEntity: () => CustomerGroupCustomer,
   })
-  groups = new Collection<CustomerGroup>(this)
+  groups = new Collection<Rel<CustomerGroup>>(this)
 
   @OneToMany(() => Address, (address) => address.customer, {
     cascade: [Cascade.REMOVE],
   })
-  addresses = new Collection<Address>(this)
+  addresses = new Collection<Rel<Address>>(this)
 
   @Property({
     onCreate: () => new Date(),

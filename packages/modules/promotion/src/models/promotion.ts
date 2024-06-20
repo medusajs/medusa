@@ -19,6 +19,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
   Unique,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
@@ -55,7 +56,7 @@ export default class Promotion {
   campaign_id: string | null = null
 
   @ManyToOne(() => Campaign, { persist: false })
-  campaign: Campaign | null
+  campaign: Rel<Campaign> | null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false
@@ -69,14 +70,14 @@ export default class Promotion {
     mappedBy: (am) => am.promotion,
     cascade: ["soft-remove"] as any,
   })
-  application_method: ApplicationMethod
+  application_method: Rel<ApplicationMethod>
 
   @ManyToMany(() => PromotionRule, "promotions", {
     owner: true,
     pivotTable: "promotion_promotion_rule",
     cascade: ["soft-remove"] as any,
   })
-  rules = new Collection<PromotionRule>(this)
+  rules = new Collection<Rel<PromotionRule>>(this)
 
   @Property({
     onCreate: () => new Date(),

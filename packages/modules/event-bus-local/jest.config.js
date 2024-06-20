@@ -1,12 +1,6 @@
 module.exports = {
   transform: {
-    "^.+\\.[jt]s?$": [
-      "ts-jest",
-      {
-        tsconfig: "tsconfig.json",
-        isolatedModules: true,
-      },
-    ],
+    "^.+\\.[jt]s$": ["@swc/jest"],
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],

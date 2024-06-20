@@ -4240,7 +4240,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4298,8 +4297,6 @@ __metadata:
     rimraf: ^3.0.2
     scrypt-kdf: ^2.0.1
     simple-oauth2: ^5.0.0
-    ts-jest: ^29.1.1
-    ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
   languageName: unknown
@@ -4314,7 +4311,6 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -4330,7 +4326,6 @@ __metadata:
     ioredis: ^5.3.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -4353,7 +4348,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4422,7 +4416,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4494,7 +4487,6 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
     ulid: ^2.3.0
   languageName: unknown
@@ -4514,7 +4506,6 @@ __metadata:
     jest: ^29.7.0
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -4568,7 +4559,6 @@ __metadata:
     medusa-test-utils: ^1.1.43
     pg-god: ^1.0.12
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4608,7 +4598,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4667,7 +4656,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.43
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4714,7 +4702,6 @@ __metadata:
     jest: ^29.7.0
     pg-god: ^1.0.12
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4848,7 +4835,6 @@ __metadata:
     request-ip: ^3.3.0
     rimraf: ^5.0.1
     supertest: ^4.0.2
-    ts-jest: ^29.1.1
     typescript: ^5.3.3
     uuid: ^9.0.0
     zod: 3.22.4
@@ -4872,7 +4858,6 @@ __metadata:
     pg: ^8.11.2
     resolve-cwd: ^3.0.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -4922,7 +4907,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -4949,7 +4933,6 @@ __metadata:
     graphql: ^16.6.0
     jest: ^29.7.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
   languageName: unknown
   linkType: soft
@@ -4972,7 +4955,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5071,7 +5053,6 @@ __metadata:
     medusa-test-utils: ^1.1.44
     pg-god: ^1.0.12
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5121,7 +5102,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5146,7 +5126,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5171,7 +5150,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5196,7 +5174,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5221,7 +5198,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5380,7 +5356,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.43
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5432,7 +5407,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5460,7 +5434,6 @@ __metadata:
     knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
-    ts-jest: ^29.1.1
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^5.1.6
@@ -5479,7 +5452,6 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^29.7.0
     rimraf: ^5.0.1
-    ts-jest: ^29.1.1
     typescript: ^5.1.6
     ulid: ^2.3.0
   languageName: unknown

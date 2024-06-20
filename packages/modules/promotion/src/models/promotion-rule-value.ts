@@ -7,6 +7,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import PromotionRule from "./promotion-rule"
 
@@ -21,7 +22,7 @@ export default class PromotionRuleValue {
     fieldName: "promotion_rule_id",
     index: "IDX_promotion_rule_promotion_rule_value_id",
   })
-  promotion_rule: PromotionRule
+  promotion_rule: Rel<PromotionRule>
 
   @Property({ columnType: "text" })
   value: string

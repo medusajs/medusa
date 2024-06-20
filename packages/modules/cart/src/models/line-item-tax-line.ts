@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OnInit,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import TaxLine from "./tax-line"
@@ -38,7 +39,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItemTaxLine extends TaxLine {
   @ManyToOne({ entity: () => LineItem, persist: false })
-  item: LineItem
+  item: Rel<LineItem>
 
   @LineItemIdIndex()
   @ManyToOne({

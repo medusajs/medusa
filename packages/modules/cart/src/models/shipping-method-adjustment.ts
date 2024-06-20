@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OnInit,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import AdjustmentLine from "./adjustment-line"
 import ShippingMethod from "./shipping-method"
@@ -38,7 +39,7 @@ const DeletedAtIndex = createPsqlIndexStatementHelper({
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class ShippingMethodAdjustment extends AdjustmentLine {
   @ManyToOne({ entity: () => ShippingMethod, persist: false })
-  shipping_method: ShippingMethod
+  shipping_method: Rel<ShippingMethod>
 
   @ShippingMethodIdIndex()
   @ManyToOne({
