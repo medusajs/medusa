@@ -28,7 +28,7 @@ export class DmlEntity<
   static isDmlEntity(entity: any): entity is DmlEntity<any> {
     return (
       entity instanceof DmlEntity ||
-      entity.__dmlEntitySymbol__ === this.__dmlEntitySymbol__
+      entity.constructor?.__dmlEntitySymbol__ === this.__dmlEntitySymbol__
     )
   }
 

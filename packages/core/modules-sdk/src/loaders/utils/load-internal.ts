@@ -11,6 +11,8 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  createMikrORMEntity,
+  defineJoinerConfig,
   DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
@@ -20,7 +22,6 @@ import { statSync } from "fs"
 import { readdir } from "fs/promises"
 import { join, resolve } from "path"
 import { MODULE_RESOURCE_TYPE } from "../../types"
-import { createMikrORMEntity } from "@medusajs/utils/src"
 
 type ModuleResource = {
   services: Function[]
@@ -299,6 +300,12 @@ async function loadResources(
       migrationPath: normalizedPath + "/migrations",
     })
 
+    generateJoinerConfigIfNecessary({
+      moduleResolution,
+      service: moduleService,
+      models: potentialModels,
+    })
+
     return {
       services: potentialServices,
       models: potentialModels,
@@ -417,4 +424,24 @@ function prepareLoaders({
   )
 
   return finalLoaders
+}
+
+function generateJoinerConfigIfNecessary({
+  moduleResolution,
+  service,
+  models,
+}: {
+  moduleResolution: ModuleResolution
+  service: IModuleService
+  models: Function[]
+}) {
+  if (service.__joinerConfig) {
+    return
+  }
+
+  service.__joinerConfig = function () {
+    return defineJoinerConfig(moduleResolution.definition.key, {
+      entityQueryingConfig: models,
+    })
+  }
 }
