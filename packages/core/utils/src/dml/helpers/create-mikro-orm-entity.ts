@@ -11,7 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils } from "../../bundles"
 import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
@@ -35,6 +34,7 @@ import type {
   RelationshipMetadata,
   RelationshipType,
 } from "@medusajs/types"
+import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -627,7 +627,7 @@ export function createMikrORMEntity() {
      * Converting class to a MikroORM entity
      */
     return Entity({ tableName })(
-      Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
+      Filter(mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
     ) as Infer<T>
   }
 }
