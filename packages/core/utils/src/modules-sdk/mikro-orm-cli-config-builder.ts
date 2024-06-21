@@ -40,14 +40,18 @@ export function defineMikroOrmCliConfig(options: Options): ReturnedOptions {
     )
   }
 
-  const databaseName = options.databaseName
-  delete options.databaseName
+  let databaseName
+  if (options.databaseName) {
+    databaseName = options.databaseName
+    // @ts-ignore
+    delete options.databaseName
+  }
 
   return {
-    entities,
     clientUrl: `postgres://postgres@localhost/${databaseName}`,
     type: "postgresql",
     ...options,
+    entities,
     migrations: {
       generator: TSMigrationGenerator,
       ...options.migrations,
