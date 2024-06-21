@@ -30,7 +30,7 @@ import { IInventoryService } from "@medusajs/types/dist/inventory"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   inventoryItemService: ModulesSdkTypes.IMedusaInternalService<any>
-  inventoryLevelService: InventoryLevelService<any>
+  inventoryLevelService: InventoryLevelService
   reservationItemService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
@@ -59,7 +59,7 @@ export default class InventoryModuleService
 
   protected readonly inventoryItemService_: ModulesSdkTypes.IMedusaInternalService<InventoryItem>
   protected readonly reservationItemService_: ModulesSdkTypes.IMedusaInternalService<ReservationItem>
-  protected readonly inventoryLevelService_: InventoryLevelService<InventoryLevel>
+  protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor(
     {

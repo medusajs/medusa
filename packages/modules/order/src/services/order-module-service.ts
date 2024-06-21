@@ -78,7 +78,7 @@ import OrderService from "./order-service"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  orderService: OrderService<any>
+  orderService: OrderService
   addressService: ModulesSdkTypes.IMedusaInternalService<any>
   lineItemService: ModulesSdkTypes.IMedusaInternalService<any>
   shippingMethodAdjustmentService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -87,7 +87,7 @@ type InjectedDependencies = {
   lineItemTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
   shippingMethodTaxLineService: ModulesSdkTypes.IMedusaInternalService<any>
   transactionService: ModulesSdkTypes.IMedusaInternalService<any>
-  orderChangeService: OrderChangeService<any>
+  orderChangeService: OrderChangeService
   orderChangeActionService: ModulesSdkTypes.IMedusaInternalService<any>
   orderItemService: ModulesSdkTypes.IMedusaInternalService<any>
   orderSummaryService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -169,7 +169,7 @@ export default class OrderModuleService<
   implements IOrderModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected orderService_: OrderService<TOrder>
+  protected orderService_: OrderService
   protected addressService_: ModulesSdkTypes.IMedusaInternalService<TAddress>
   protected lineItemService_: ModulesSdkTypes.IMedusaInternalService<TLineItem>
   protected shippingMethodAdjustmentService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodAdjustment>
@@ -178,7 +178,7 @@ export default class OrderModuleService<
   protected lineItemTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TLineItemTaxLine>
   protected shippingMethodTaxLineService_: ModulesSdkTypes.IMedusaInternalService<TShippingMethodTaxLine>
   protected transactionService_: ModulesSdkTypes.IMedusaInternalService<TTransaction>
-  protected orderChangeService_: OrderChangeService<TOrderChange>
+  protected orderChangeService_: OrderChangeService
   protected orderChangeActionService_: ModulesSdkTypes.IMedusaInternalService<TOrderChangeAction>
   protected orderItemService_: ModulesSdkTypes.IMedusaInternalService<TOrderItem>
   protected orderSummaryService_: ModulesSdkTypes.IMedusaInternalService<TOrderSummary>
