@@ -1,4 +1,4 @@
-import { PropertyMetadata, PropertyType } from "../types"
+import { PropertyMetadata, PropertyType } from "@medusajs/types"
 import { NullableModifier } from "./nullable"
 
 /**

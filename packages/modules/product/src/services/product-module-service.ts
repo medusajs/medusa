@@ -55,10 +55,10 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  productService: ProductService<any>
+  productService: ProductService
   productVariantService: ModulesSdkTypes.IMedusaInternalService<any, any>
   productTagService: ModulesSdkTypes.IMedusaInternalService<any>
-  productCategoryService: ProductCategoryService<any>
+  productCategoryService: ProductCategoryService
   productCollectionService: ModulesSdkTypes.IMedusaInternalService<any>
   productImageService: ModulesSdkTypes.IMedusaInternalService<any>
   productTypeService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -105,9 +105,9 @@ export default class ProductModuleService
   implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly productService_: ProductService<Product>
+  protected readonly productService_: ProductService
   protected readonly productVariantService_: ModulesSdkTypes.IMedusaInternalService<ProductVariant>
-  protected readonly productCategoryService_: ProductCategoryService<ProductCategory>
+  protected readonly productCategoryService_: ProductCategoryService
   protected readonly productTagService_: ModulesSdkTypes.IMedusaInternalService<ProductTag>
   protected readonly productCollectionService_: ModulesSdkTypes.IMedusaInternalService<ProductCollection>
   protected readonly productImageService_: ModulesSdkTypes.IMedusaInternalService<ProductImage>
