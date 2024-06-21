@@ -14,10 +14,12 @@ const PAGE_SIZE = 20
 
 type VariantInventorySectionProps = {
   inventoryItems: InventoryItemDTO[]
+  manageInventory?: boolean
 }
 
 export function VariantInventorySection({
   inventoryItems,
+  manageInventory,
 }: VariantInventorySectionProps) {
   const { t } = useTranslation()
 
@@ -39,19 +41,21 @@ export function VariantInventorySection({
           <Heading level="h2">{t("fields.inventoryItems")}</Heading>
         </div>
         <div className="flex items-center gap-x-4">
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("products.variant.inventory.manageItems"),
-                    to: "manage-items",
-                    icon: <Component />,
-                  },
-                ],
-              },
-            ]}
-          />
+          {manageInventory && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t("products.variant.inventory.manageItems"),
+                      to: "manage-items",
+                      icon: <Component />,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
 
