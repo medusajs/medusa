@@ -18,6 +18,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
           name: "Europe",
           currency_code: "EUR",
           automatic_taxes: false,
+          is_tax_inclusive: false,
         })
 
         expect(createdRegion).toEqual(
@@ -27,6 +28,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
             currency_code: "eur",
             countries: [],
             automatic_taxes: false,
+            is_tax_inclusive: false,
           })
         )
 

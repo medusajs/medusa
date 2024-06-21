@@ -6,6 +6,7 @@ export interface BaseRegion {
   name: string
   currency_code: string
   automatic_taxes?: boolean
+  is_tax_inclusive?: boolean
   countries?: BaseRegionCountry[]
   payment_providers?: AdminPaymentProvider[]
   metadata?: Record<string, any> | null

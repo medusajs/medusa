@@ -17,6 +17,10 @@ export interface CreateRegionDTO {
    */
   automatic_taxes?: boolean
   /**
+   * Setting to indicate whether the prices specified for products and shipping are tax inclusive.
+   */
+  is_tax_inclusive?: boolean
+  /**
    * The region's countries.
    */
   countries?: string[]
@@ -53,6 +57,10 @@ export interface UpsertRegionDTO {
    */
   automatic_taxes?: boolean
   /**
+   * Setting to indicate whether the prices specified for products and shipping are tax inclusive.
+   */
+  is_tax_inclusive?: boolean
+  /**
    * The region's countries.
    */
   countries?: string[]
@@ -78,6 +86,10 @@ export interface UpdateRegionDTO {
    * Setting to indicate whether taxes need to be applied automatically
    */
   automatic_taxes?: boolean
+  /**
+   * Setting to indicate whether the prices specified for products and shipping are tax inclusive.
+   */
+  is_tax_inclusive?: boolean
   /**
    * The region's countries.
    */

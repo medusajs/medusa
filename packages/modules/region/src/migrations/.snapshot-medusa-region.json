@@ -33,6 +33,26 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "automatic_taxes": {
+          "name": "automatic_taxes",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
+        "is_tax_inclusive": {
+          "name": "is_tax_inclusive",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        },
         "metadata": {
           "name": "metadata",
           "type": "jsonb",
@@ -102,15 +122,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "iso_2": {
           "name": "iso_2",
           "type": "text",
@@ -172,7 +183,7 @@
         {
           "keyName": "region_country_pkey",
           "columnNames": [
-            "id"
+            "iso_2"
           ],
           "composite": false,
           "primary": true,
