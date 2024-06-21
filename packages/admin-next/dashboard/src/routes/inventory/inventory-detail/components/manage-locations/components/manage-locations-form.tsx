@@ -1,6 +1,10 @@
 import * as zod from "zod"
 
 import { Button, Text, toast } from "@medusajs/ui"
+import { AdminInventoryItem, AdminStockLocation } from "@medusajs/types"
+import { useTranslation } from "react-i18next"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   RouteDrawer,
   useRouteModal,
@@ -8,16 +12,11 @@ import {
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
 import { useFieldArray, useForm } from "react-hook-form"
 
-import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { LocationItem } from "./location-item"
-import { StockLocationDTO } from "@medusajs/types"
-import { useTranslation } from "react-i18next"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
 
 type EditInventoryItemAttributeFormProps = {
-  item: InventoryItemRes["inventory_item"]
-  locations: StockLocationDTO[]
+  item: AdminInventoryItem
+  locations: AdminStockLocation[]
 }
 
 const EditInventoryItemAttributesSchema = z.object({
@@ -31,7 +30,7 @@ const EditInventoryItemAttributesSchema = z.object({
 })
 
 const getDefaultValues = (
-  allLocations: StockLocationDTO[],
+  allLocations: AdminStockLocation[],
   existingLevels: Set<string>
 ) => {
   return {
