@@ -11,12 +11,10 @@ type InjectedDependencies = {
   ruleTypeRepository: DAL.RepositoryService
 }
 
-export default class RuleTypeService<
-  TEntity extends RuleType = RuleType
-> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+export default class RuleTypeService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   RuleType
-)<TEntity> {
-  protected readonly ruleTypeRepository_: DAL.RepositoryService<TEntity>
+)<RuleType> {
+  protected readonly ruleTypeRepository_: DAL.RepositoryService<RuleType>
 
   constructor({ ruleTypeRepository }: InjectedDependencies) {
     // @ts-ignore
@@ -27,17 +25,17 @@ export default class RuleTypeService<
   create(
     data: PricingTypes.CreateRuleTypeDTO,
     sharedContext: Context
-  ): Promise<TEntity>
+  ): Promise<RuleType>
   create(
     data: PricingTypes.CreateRuleTypeDTO[],
     sharedContext: Context
-  ): Promise<TEntity[]>
+  ): Promise<RuleType[]>
 
   @InjectTransactionManager("ruleTypeRepository_")
   async create(
     data: PricingTypes.CreateRuleTypeDTO | PricingTypes.CreateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity | TEntity[]> {
+  ): Promise<RuleType | RuleType[]> {
     const data_ = Array.isArray(data) ? data : [data]
     validateRuleAttributes(data_.map((d) => d.rule_attribute))
     return await super.create(data, sharedContext)
@@ -47,12 +45,12 @@ export default class RuleTypeService<
   update(
     data: PricingTypes.UpdateRuleTypeDTO[],
     sharedContext: Context
-  ): Promise<TEntity[]>
+  ): Promise<RuleType[]>
   // @ts-ignore
   update(
     data: PricingTypes.UpdateRuleTypeDTO,
     sharedContext: Context
-  ): Promise<TEntity>
+  ): Promise<RuleType>
 
   @InjectTransactionManager("ruleTypeRepository_")
   // TODO: add support for selector? and then rm ts ignore
@@ -60,7 +58,7 @@ export default class RuleTypeService<
   async update(
     data: PricingTypes.UpdateRuleTypeDTO | PricingTypes.UpdateRuleTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity | TEntity[]> {
+  ): Promise<RuleType | RuleType[]> {
     const data_ = Array.isArray(data) ? data : [data]
     validateRuleAttributes(data_.map((d) => d.rule_attribute))
     return await super.update(data, sharedContext)

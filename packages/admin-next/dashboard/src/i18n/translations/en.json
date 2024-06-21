@@ -516,6 +516,9 @@
       "successToast": "Reservation was successfully created.",
       "updateSuccessToast": "Reservation was successfully updated.",
       "deleteSuccessToast": "Reservation was successfully deleted."
+    },
+    "toast": {
+      "updateLocations": "Locations updated successfully."
     }
   },
   "giftCards": {

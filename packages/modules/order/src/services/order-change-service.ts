@@ -20,12 +20,10 @@ type InjectedDependencies = {
   orderChangeRepository: DAL.RepositoryService
 }
 
-export default class OrderChangeService<
-  TEntity extends OrderChange = OrderChange
-> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+export default class OrderChangeService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   OrderChange
-)<TEntity> {
-  protected readonly orderChangeRepository_: RepositoryService<TEntity>
+)<OrderChange> {
+  protected readonly orderChangeRepository_: RepositoryService<OrderChange>
 
   constructor(container: InjectedDependencies) {
     // @ts-ignore
@@ -38,7 +36,7 @@ export default class OrderChangeService<
     orderId: string | string[],
     config: FindConfig<TEntityMethod> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<OrderChange[]> {
     const allChanges = await super.list(
       { order_id: orderId },
       config ?? {
@@ -67,7 +65,7 @@ export default class OrderChangeService<
       }
     }
 
-    let orderChange!: TEntity
+    let orderChange!: OrderChange
     if (allChanges?.length > 0) {
       if (this.isActive(allChanges[0])) {
         orderChange = allChanges[0]
@@ -81,7 +79,7 @@ export default class OrderChangeService<
     const relations = deduplicate([...(config.relations ?? []), "actions"])
     config.relations = relations
 
-    const queryConfig = ModulesSdkUtils.buildQuery<TEntity>(
+    const queryConfig = ModulesSdkUtils.buildQuery<OrderChange>(
       {
         id: lastChanges,
         order: {
@@ -104,20 +102,20 @@ export default class OrderChangeService<
   }
 
   async create(
-    data: Partial<TEntity>[],
+    data: Partial<OrderChange>[],
     sharedContext?: Context
-  ): Promise<TEntity[]>
+  ): Promise<OrderChange[]>
 
   async create(
-    data: Partial<TEntity>,
+    data: Partial<OrderChange>,
     sharedContext?: Context
-  ): Promise<TEntity>
+  ): Promise<OrderChange>
 
   @InjectTransactionManager("orderChangeRepository_")
   async create(
-    data: Partial<TEntity>[] | Partial<TEntity>,
+    data: Partial<OrderChange>[] | Partial<OrderChange>,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[] | TEntity> {
+  ): Promise<OrderChange[] | OrderChange> {
     const dataArr = Array.isArray(data) ? data : [data]
     const activeOrderEdit = await this.listCurrentOrderChange(
       dataArr.map((d) => d.order_id!),
