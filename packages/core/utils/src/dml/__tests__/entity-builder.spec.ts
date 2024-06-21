@@ -238,6 +238,8 @@ describe("Entity builder", () => {
 
       const u = new User()
       expect(u.username).toEqual(null)
+      u.username = "john"
+      expect(u.username).toEqual("john")
 
       expect(metaData.filters).toEqual({
         softDeletable: {
@@ -552,6 +554,9 @@ describe("Entity builder", () => {
 
       const u = new User()
       expect(u.role).toEqual(null)
+
+      u.role = "admin"
+      expect(u.role).toEqual("admin")
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")

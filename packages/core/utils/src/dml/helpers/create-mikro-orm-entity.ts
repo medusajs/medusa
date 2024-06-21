@@ -137,19 +137,6 @@ export function createMikrORMEntity() {
   }
 
   /**
-   * Initializes the property with a null value on the
-   * prototype.
-   */
-  function initPropertyWithNullValue(
-    MikroORMEntity: EntityConstructor<any>,
-    field: PropertyMetadata
-  ) {
-    Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
-      value: null,
-    })
-  }
-
-  /**
    * The following property is used to track many to many relationship
    * between two entities. It is needed because we have to mark one
    * of them as the owner of the relationship without exposing
@@ -175,7 +162,12 @@ export function createMikrORMEntity() {
      * Here we initialize nullable properties with a null value
      */
     if (field.nullable) {
-      initPropertyWithNullValue(MikroORMEntity, field)
+      Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
+        value: null,
+        configurable: true,
+        enumerable: true,
+        writable: true,
+      })
     }
 
     if (SPECIAL_PROPERTIES[field.fieldName]) {
