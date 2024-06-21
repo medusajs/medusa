@@ -18,7 +18,6 @@ import { keepPreviousData } from "@tanstack/react-query"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProducts } from "../../../../../hooks/api/products"
-import { useSalesChannelRemoveProducts } from "../../../../../hooks/api/sales-channels"
 import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
@@ -68,7 +67,7 @@ export const ShippingProfileProductsSection = ({
       updater: setRowSelection,
     },
     meta: {
-      salesChannelId: profile.id,
+      profileId: profile.id,
     },
   })
 
@@ -195,14 +194,14 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { salesChannelId } = table.options.meta as {
-            salesChannelId: string
+          const { profileId } = table.options.meta as {
+            profileId: string
           }
 
           return (
             <ProductListCellActions
               productId={row.original.id}
-              salesChannelId={salesChannelId}
+              profileId={profileId}
             />
           )
         },
@@ -213,15 +212,15 @@ const useColumns = () => {
 }
 
 const ProductListCellActions = ({
-  salesChannelId,
+  profileId,
   productId,
 }: {
   productId: string
-  salesChannelId: string
+  profileId: string
 }) => {
   const { t } = useTranslation()
 
-  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
+  const { mutateAsync } = {} // useShippingProfileRemoveProducts(profileId)
 
   const onRemove = async () => {
     try {
