@@ -236,6 +236,9 @@ describe("Entity builder", () => {
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
 
+      const u = new User()
+      expect(u.username).toEqual(null)
+
       expect(metaData.filters).toEqual({
         softDeletable: {
           name: "softDeletable",
@@ -546,6 +549,9 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      const u = new User()
+      expect(u.role).toEqual(null)
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
