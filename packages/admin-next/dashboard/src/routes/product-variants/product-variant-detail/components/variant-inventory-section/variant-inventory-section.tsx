@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 
+import { Component } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { InventoryItemDTO } from "@medusajs/types"
 
@@ -38,20 +39,19 @@ export function VariantInventorySection({
           <Heading level="h2">{t("fields.inventoryItems")}</Heading>
         </div>
         <div className="flex items-center gap-x-4">
-          {/*TODO: add inventory management*/}
-          {/*<ActionMenu*/}
-          {/*  groups={[*/}
-          {/*    {*/}
-          {/*      actions: [*/}
-          {/*        {*/}
-          {/*          label: t("actions.manageInventoryItems"),*/}
-          {/*          to: "edit",*/}
-          {/*          icon: <Component />,*/}
-          {/*        },*/}
-          {/*      ],*/}
-          {/*    },*/}
-          {/*  ]}*/}
-          {/*/>*/}
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("products.variant.inventory.manageItems"),
+                    to: "manage-items",
+                    icon: <Component />,
+                  },
+                ],
+              },
+            ]}
+          />
         </div>
       </div>
 

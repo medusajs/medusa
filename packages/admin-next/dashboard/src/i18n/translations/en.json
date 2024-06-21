@@ -332,9 +332,14 @@
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
       "inventory": {
         "notManaged": "Not managed",
+        "manageItems": "Manage inventory items",
         "actions": {
           "inventoryItems": "Go to inventory item",
           "inventoryKit": "Show inventory items"
+        },
+        "validation": {
+          "itemId": "Please select inventory item.",
+          "quantity": "Quantity is required. Plese input a positiv number."
         },
         "header": "Stock & Inventory",
         "editItemDetails": "Edit item details",
@@ -344,8 +349,9 @@
         "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero.",
         "toast": {
           "levelsBatch": "Inventory levels updated.",
-          "update": "Inventory item updated successfully",
-          "updateLevel": "Inventory level updated successfully"
+          "update": "Inventory item updated successfully.",
+          "updateLevel": "Inventory level updated successfully.",
+          "itemsManageSuccess": "Inventory items sucessfully updated."
         }
       }
     },
