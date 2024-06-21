@@ -17,7 +17,7 @@ import { TaxRegionResponse } from "@medusajs/types"
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
@@ -308,7 +308,7 @@ export const TaxRateCreateForm = ({
                           <Form.Label>{t("fields.rate")}</Form.Label>
 
                           <Form.Control>
-                            <PercentageInput
+                            <DeprecatedPercentageInput
                               {...field}
                               value={field.value}
                               onChange={(e) => {

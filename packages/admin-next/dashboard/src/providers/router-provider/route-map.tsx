@@ -774,7 +774,8 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: ":id",
                     handle: {
-                      crumb: (data) => data.shipping_profile.name,
+                      crumb: (data: HttpTypes.AdminShippingProfileResponse) =>
+                        data.shipping_profile.name,
                     },
                     lazy: () =>
                       import(
@@ -1069,7 +1070,6 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: "create",
                     lazy: () => import("../../routes/taxes/tax-region-create"),
-                    children: [],
                   },
                 ],
               },
@@ -1087,19 +1087,13 @@ export const RouteMap: RouteObject[] = [
                 },
                 children: [
                   {
-                    path: "edit",
-                    lazy: () => import("../../routes/taxes/tax-region-edit"),
-                  },
-                  {
-                    path: "create-default",
+                    path: "provinces/create",
                     lazy: () =>
                       import("../../routes/taxes/tax-province-create"),
-                    children: [],
                   },
                   {
-                    path: "create-override",
+                    path: "overrides/create",
                     lazy: () => import("../../routes/taxes/tax-rate-create"),
-                    children: [],
                   },
                   {
                     path: "tax-rates",
@@ -1122,6 +1116,19 @@ export const RouteMap: RouteObject[] = [
                     ],
                   },
                 ],
+              },
+              {
+                path: ":id/provinces/:provinceId",
+                lazy: () => import("../../routes/taxes/tax-region-detail"),
+                handle: {
+                  crumb: (data: AdminTaxRegionResponse) => {
+                    return (
+                      getCountryByIso2(data.tax_region.country_code)
+                        ?.display_name ||
+                      data.tax_region.country_code?.toUpperCase()
+                    )
+                  },
+                },
               },
             ],
           },

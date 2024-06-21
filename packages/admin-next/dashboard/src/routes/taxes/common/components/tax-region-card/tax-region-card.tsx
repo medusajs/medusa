@@ -1,14 +1,14 @@
 import { HttpTypes } from "@medusajs/types"
-import { Badge, Heading, Text, clx } from "@medusajs/ui"
+import { Heading, Text, clx } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 
-import { PencilSquare, Trash } from "@medusajs/icons"
+import { Map, Trash } from "@medusajs/icons"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { IconAvatar } from "../../../../../components/common/icon-avatar"
 import { getCountryByIso2 } from "../../../../../lib/data/countries"
-import { formatPercentage } from "../../../../../lib/percentage-helpers"
+import { useDeleteTaxRegionAction } from "../../hooks"
 
 type TaxRegionCardProps = {
   taxRegion: HttpTypes.AdminTaxRegion
@@ -21,13 +21,14 @@ export const TaxRegionCard = ({
   type = "list",
   asLink = true,
 }: TaxRegionCardProps) => {
-  const { t } = useTranslation()
-  const { id, country_code, name, rate, tax_rates } = taxRegion
+  const { id, country_code, province_code } = taxRegion
 
   const country = getCountryByIso2(country_code)
-
-  const defaultTaxRates = tax_rates.filter((tr) => tr.is_default)
-  const overrideTaxRates = tax_rates.filter((tr) => !tr.is_default)
+  const name =
+    country?.display_name ||
+    country_code?.toUpperCase() ||
+    province_code?.toUpperCase() ||
+    "N/A"
 
   const Component = (
     <div className="flex flex-col justify-between gap-y-4 px-6 py-4 md:flex-row md:items-center md:gap-y-0">
@@ -54,7 +55,9 @@ export const TaxRegionCard = ({
                   aria-label={country?.display_name}
                 />
               </div>
-            ) : null}
+            ) : (
+              <Map className="text-ui-fg-subtle" />
+            )}
           </IconAvatar>
           <div>
             {type === "list" ? (
@@ -64,35 +67,15 @@ export const TaxRegionCard = ({
             ) : (
               <Heading>{country?.display_name}</Heading>
             )}
-            <div className="text-ui-fg-subtle flex items-center gap-x-2">
-              <Text size="small">{country_code?.toUpperCase()}</Text>
-              <Text size="small">·</Text>
-              <Text size="small">
-                {t("taxRegions.fields.taxRatesCount", {
-                  count: defaultTaxRates.length,
-                })}
-              </Text>
-              <Text size="small">·</Text>
-              <Text size="small">
-                {t("taxRegions.fields.taxOverridesCount", {
-                  count: overrideTaxRates.length,
-                })}
-              </Text>
-            </div>
           </div>
         </div>
         <div className="block size-fit md:hidden">
-          <TaxRegionCardActions taxRegion={taxRegion} />
+          <TaxRegionCardActions taxRegion={taxRegion} name={name} />
         </div>
       </div>
-      <div className="flex items-center gap-x-4">
-        <div className="flex items-center gap-x-1.5">
-          {name && <Badge size="2xsmall">{name}</Badge>}
-          <Badge size="2xsmall">{formatPercentage(rate)}</Badge>
-        </div>
-        <div className="hidden size-fit md:block">
-          <TaxRegionCardActions taxRegion={taxRegion} />
-        </div>
+
+      <div className="hidden size-fit md:block">
+        <TaxRegionCardActions taxRegion={taxRegion} name={name} />
       </div>
     </div>
   )
@@ -108,23 +91,19 @@ export const TaxRegionCard = ({
   return Component
 }
 
-const TaxRegionCardActions = ({ taxRegion }: TaxRegionCardProps) => {
+const TaxRegionCardActions = ({
+  taxRegion,
+}: TaxRegionCardProps & { name: string }) => {
   const { t } = useTranslation()
 
-  const handleDelete = () => {}
+  const to = taxRegion.parent_id
+    ? `/settings/taxes/${taxRegion.parent_id}`
+    : undefined
+  const handleDelete = useDeleteTaxRegionAction({ taxRegion, to })
 
   return (
     <ActionMenu
       groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/settings/taxes/${taxRegion.id}/edit`,
-            },
-          ],
-        },
         {
           actions: [
             {
@@ -138,5 +117,3 @@ const TaxRegionCardActions = ({ taxRegion }: TaxRegionCardProps) => {
     />
   )
 }
-
-const TaxRegionCardSkeleton = () => {}

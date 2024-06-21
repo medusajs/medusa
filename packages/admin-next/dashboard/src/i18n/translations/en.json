@@ -810,7 +810,6 @@
       "shippingProfilesDesc": "Shipping rules for different types of products",
       "shippingOptionTypes": "Shipping Option Types",
       "shippingOptionTypesDesc": "Group options based on characteristic"
-
     },
     "salesChannels": {
       "header": "Sales Channels",
@@ -1026,21 +1025,56 @@
   },
   "taxRegions": {
     "domain": "Tax Regions",
+    "list": {
+      "hint": "Manage what taxes you charge your customers when they shop from different countries and regions."
+    },
+    "delete": {
+      "confirmation": "You are about to delete the tax region {{name}}. This action cannot be undone.",
+      "successToast": "Tax region {{name}} was successfully deleted."
+    },
     "create": {
-      "header": "Create Tax Region",
-      "hint": "Create a new tax region to define tax rates for a specific country."
+      "country": {
+        "header": "Create Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific country."
+      },
+      "province": {
+        "header": "Create Province Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific province."
+      },
+      "state": {
+        "header": "Create State Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific state."
+      },
+      "errors": {
+        "rateIsRequired": "Tax rate is required when creating a default tax rate.",
+        "nameIsRequired": "Name is required when creating a default tax rate.",
+        "regionIsRequired": "You must pick an area that the tax region applies to."
+      },
+      "successToast": "The tax region was successfully created."
+    },
+    "taxOverrides": {
+      "header": "Tax Overrides",
+      "create": {
+        "header": "Create Tax Override"
+      }
     },
     "fields": {
       "isCombinable": {
-        "label": "Combine with parent",
-        "hint": "If enabled, this tax rate will be combined with its parent tax rate.",
+        "label": "Combine with parents",
+        "hint": "If enabled, this tax rate will be combined with parent tax rates.",
         "true": "Combinable",
         "false": "Not combinable"
       },
       "taxRatesCount_one": "{{count}} tax rate",
       "taxRatesCount_other": "{{count}} tax rates",
       "taxOverridesCount_one": "{{count}} tax override",
-      "taxOverridesCount_other": "{{count}} tax overrides"
+      "taxOverridesCount_other": "{{count}} tax overrides",
+      "defaultTaxRate": {
+        "label": "Default tax rate",
+        "tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country."
+      },
+      "taxRate": "Tax rate",
+      "taxCode": "Tax code"
     }
   },
   "promotions": {
@@ -1750,8 +1784,6 @@
     "optional": "Optional",
     "note": "Note",
     "taxInclusivePricing": "Tax inclusive pricing",
-    "taxRate": "Tax Rate",
-    "taxCode": "Tax Code",
     "currency": "Currency",
     "address": "Address",
     "address2": "Apartment, suite, etc.",

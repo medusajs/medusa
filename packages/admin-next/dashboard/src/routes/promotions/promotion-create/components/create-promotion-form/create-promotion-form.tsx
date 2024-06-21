@@ -25,7 +25,7 @@ import {
 } from "@medusajs/types"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -599,7 +599,7 @@ export const CreatePromotionForm = () => {
                 />
               )}
 
-              <div className="flex gap-y-4 gap-x-2">
+              <div className="flex gap-x-2 gap-y-4">
                 {!currentTemplate?.hiddenFields?.includes(
                   "application_method.value"
                 ) && (
@@ -640,7 +640,7 @@ export const CreatePromotionForm = () => {
                                 disabled={!currencyCode}
                               />
                             ) : (
-                              <PercentageInput
+                              <DeprecatedPercentageInput
                                 key="amount"
                                 className="text-right"
                                 min={0}

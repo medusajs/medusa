@@ -1,21 +1,10 @@
-import * as zod from "zod"
 import { RouteFocusModal } from "../../../components/route-modal"
-import { TaxRegionCreateForm } from "../common/components/tax-region-create-form"
-
-const CreateTaxRegionForm = zod.object({
-  province_code: zod.string().optional(),
-  country_code: zod.string(),
-  parent_id: zod.string().optional(),
-  name: zod.string(),
-  code: zod.string().optional(),
-  rate: zod.number(),
-  is_combinable: zod.boolean().default(false),
-})
+import { TaxRegionCreateForm } from "./components/tax-region-create-form"
 
 export const TaxRegionCreate = () => {
   return (
     <RouteFocusModal>
-      <TaxRegionCreateForm formSchema={CreateTaxRegionForm} />
+      <TaxRegionCreateForm />
     </RouteFocusModal>
   )
 }

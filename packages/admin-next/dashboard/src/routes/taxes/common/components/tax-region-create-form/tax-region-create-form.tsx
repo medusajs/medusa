@@ -6,7 +6,7 @@ import * as zod from "zod"
 
 import { TaxRegionResponse } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -87,7 +87,7 @@ export const TaxRegionCreateForm = ({
         </RouteFocusModal.Header>
 
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center overflow-hidden p-16">
-          <div className="flex flex-col gap-y-8 w-full max-w-[720px]">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8">
             <div>
               <Heading className="text-left">
                 {taxRegion
@@ -180,7 +180,7 @@ export const TaxRegionCreateForm = ({
                     <Form.Label>{t("fields.rate")}</Form.Label>
 
                     <Form.Control>
-                      <PercentageInput
+                      <DeprecatedPercentageInput
                         {...field}
                         value={field.value}
                         onChange={(e) => {

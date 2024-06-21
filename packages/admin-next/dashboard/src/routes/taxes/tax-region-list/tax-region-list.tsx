@@ -6,7 +6,7 @@ import before from "virtual:medusa/widgets/tax/list/before"
 
 export const TaxRegionsList = () => {
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-3">
       {before.widgets.map((w, i) => {
         return (
           <div key={i}>

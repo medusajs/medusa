@@ -22,7 +22,7 @@ export const TaxRegionDetail = () => {
 
   return (
     taxRegion && (
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-3">
         {before.widgets.map((w, i) => {
           return (
             <div key={i}>
@@ -30,16 +30,23 @@ export const TaxRegionDetail = () => {
             </div>
           )
         })}
-        <TaxRegionDetailSection taxRegion={taxRegion} />
-        <TaxRateList taxRegion={taxRegion} isDefault={true} />
-        <TaxRateList taxRegion={taxRegion} isDefault={false} />
-        {after.widgets.map((w, i) => {
-          return (
-            <div key={i}>
-              <w.Component data={taxRegion} />
+        <div className="flex flex-col gap-x-4 gap-y-3 xl:flex-row xl:items-start">
+          <div className="flex w-full flex-col gap-y-3">
+            <TaxRegionDetailSection taxRegion={taxRegion} />
+            <TaxRateList taxRegion={taxRegion} isDefault={true} />
+            <TaxRateList taxRegion={taxRegion} isDefault={false} />
+            {after.widgets.map((w, i) => {
+              return (
+                <div key={i}>
+                  <w.Component data={taxRegion} />
+                </div>
+              )
+            })}
+            <div className="hidden xl:block">
+              <JsonViewSection data={taxRegion} />
             </div>
-          )
-        })}
+          </div>
+        </div>
         <JsonViewSection data={taxRegion} />
         <Outlet />
       </div>

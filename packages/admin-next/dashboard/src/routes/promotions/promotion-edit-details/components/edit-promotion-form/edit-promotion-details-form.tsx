@@ -13,7 +13,7 @@ import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { Form } from "../../../../../components/common/form"
-import { PercentageInput } from "../../../../../components/inputs/percentage-input"
+import { DeprecatedPercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteDrawer,
   useRouteModal,
@@ -99,7 +99,7 @@ export const EditPromotionDetailsForm = ({
                       >
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "false" === field.value,
                           })}
                           value={"false"}
@@ -110,7 +110,7 @@ export const EditPromotionDetailsForm = ({
                         />
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "true" === field.value,
                           })}
                           value={"true"}
@@ -172,7 +172,7 @@ export const EditPromotionDetailsForm = ({
                       >
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "fixed" === field.value,
                           })}
                           value={"fixed"}
@@ -184,7 +184,7 @@ export const EditPromotionDetailsForm = ({
 
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "percentage" === field.value,
                           })}
                           value={"percentage"}
@@ -227,7 +227,7 @@ export const EditPromotionDetailsForm = ({
                           value={field.value}
                         />
                       ) : (
-                        <PercentageInput
+                        <DeprecatedPercentageInput
                           key="amount"
                           min={0}
                           max={100}
@@ -264,7 +264,7 @@ export const EditPromotionDetailsForm = ({
                       >
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "each" === field.value,
                           })}
                           value={"each"}
@@ -276,7 +276,7 @@ export const EditPromotionDetailsForm = ({
 
                         <RadioGroup.ChoiceBox
                           className={clx("basis-1/2", {
-                            "border-2 border-ui-border-interactive":
+                            "border-ui-border-interactive border-2":
                               "across" === field.value,
                           })}
                           value={"across"}
