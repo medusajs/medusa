@@ -1,9 +1,5 @@
-import {
-  DeleteEntityInput,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/modules-sdk"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"

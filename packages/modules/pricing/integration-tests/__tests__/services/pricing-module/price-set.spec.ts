@@ -1,10 +1,14 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   CreatePriceSetRuleTypeDTO,
   IPricingModuleService,
 } from "@medusajs/types"
-import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
+import {
+  CommonEvents,
+  composeMessage,
+  Modules,
+  PricingEvents,
+} from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   MockEventBusService,
@@ -402,7 +406,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const events = eventBusEmitSpy.mock.calls[0][0]
           expect(events).toHaveLength(3)
           expect(events[0]).toEqual(
-            composeMessage(PricingEvents.price_set_created, {
+            composeMessage(PricingEvents.PRICE_SET_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_set",
@@ -411,7 +415,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(events[1]).toEqual(
-            composeMessage(PricingEvents.price_created, {
+            composeMessage(PricingEvents.PRICE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
@@ -420,7 +424,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(events[2]).toEqual(
-            composeMessage(PricingEvents.price_rule_created, {
+            composeMessage(PricingEvents.PRICE_RULE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",
@@ -520,7 +524,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const events = eventBusEmitSpy.mock.calls[0][0]
           expect(events).toHaveLength(2)
           expect(events[0]).toEqual(
-            composeMessage(PricingEvents.price_created, {
+            composeMessage(PricingEvents.PRICE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price",
@@ -528,7 +532,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             })
           )
           expect(events[1]).toEqual(
-            composeMessage(PricingEvents.price_rule_created, {
+            composeMessage(PricingEvents.PRICE_RULE_CREATED, {
               source: Modules.PRICING,
               action: CommonEvents.CREATED,
               object: "price_rule",

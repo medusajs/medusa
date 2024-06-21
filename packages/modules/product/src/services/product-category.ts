@@ -15,9 +15,7 @@ import { UpdateCategoryInput } from "@types"
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
 }
-export default class ProductCategoryService<
-  TEntity extends ProductCategory = ProductCategory
-> {
+export default class ProductCategoryService {
   protected readonly productCategoryRepository_: DAL.TreeRepositoryService
 
   constructor({ productCategoryRepository }: InjectedDependencies) {
@@ -30,7 +28,7 @@ export default class ProductCategoryService<
     productCategoryId: string,
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity> {
+  ): Promise<ProductCategory> {
     if (!isDefined(productCategoryId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -64,7 +62,7 @@ export default class ProductCategoryService<
       )
     }
 
-    return productCategories[0] as TEntity
+    return productCategories[0] as ProductCategory
   }
 
   @InjectManager("productCategoryRepository_")
@@ -72,7 +70,7 @@ export default class ProductCategoryService<
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<ProductCategory[]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
       includeAncestorsTree: filters?.include_ancestors_tree || false,
@@ -101,7 +99,7 @@ export default class ProductCategoryService<
       queryOptions,
       transformOptions,
       sharedContext
-    )) as TEntity[]
+    )) as ProductCategory[]
   }
 
   @InjectManager("productCategoryRepository_")
@@ -109,7 +107,7 @@ export default class ProductCategoryService<
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
+  ): Promise<[ProductCategory[], number]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
       includeAncestorsTree: filters?.include_ancestors_tree || false,
@@ -138,27 +136,27 @@ export default class ProductCategoryService<
       queryOptions,
       transformOptions,
       sharedContext
-    )) as [TEntity[], number]
+    )) as [ProductCategory[], number]
   }
 
   @InjectTransactionManager("productCategoryRepository_")
   async create(
     data: ProductTypes.CreateProductCategoryDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<ProductCategory[]> {
     return (await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).create(data, sharedContext)) as TEntity[]
+    ).create(data, sharedContext)) as ProductCategory[]
   }
 
   @InjectTransactionManager("productCategoryRepository_")
   async update(
     data: UpdateCategoryInput[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<ProductCategory[]> {
     return (await (
       this.productCategoryRepository_ as unknown as ProductCategoryRepository
-    ).update(data, sharedContext)) as TEntity[]
+    ).update(data, sharedContext)) as ProductCategory[]
   }
 
   @InjectTransactionManager("productCategoryRepository_")

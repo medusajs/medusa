@@ -22,6 +22,7 @@ import {
 } from "../common"
 import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
+import { DmlEntity } from "../dml"
 
 type BaseMethods =
   | "retrieve"
@@ -83,16 +84,20 @@ type ExtractSingularName<T extends Record<any, any>, K = keyof T> = Capitalize<
  * @deprecated should all notion of singular and plural be removed once all modules are aligned with the convention
  * The pluralize will move to where it should be used instead
  */
-type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
-  plural?: string
-}
-  ? T[K]["plural"] & string
-  : Pluralize<K & string>
+type ExtractPluralName<T extends Record<any, any>, K = keyof T> = Capitalize<
+  T[K] extends {
+    plural?: string
+  }
+    ? T[K]["plural"] & string
+    : Pluralize<K & string>
+>
 
 // TODO: The future expected entry will be a DML object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
 type TEntityEntries<Keys = string> = Record<
   Keys & string,
-  Constructor<any> | { name?: string; singular?: string; plural?: string }
+  | Constructor<any>
+  | DmlEntity<any>
+  | { name?: string; singular?: string; plural?: string }
 >
 
 type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {

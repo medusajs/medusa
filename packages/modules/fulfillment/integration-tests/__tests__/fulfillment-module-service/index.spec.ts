@@ -1,4 +1,4 @@
-import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import { ModulesDefinition } from "@medusajs/modules-sdk"
 import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
 import {
   initModules,
@@ -9,6 +9,7 @@ import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
 import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
+import { Modules } from "@medusajs/utils"
 
 let moduleOptions = {
   providers: [

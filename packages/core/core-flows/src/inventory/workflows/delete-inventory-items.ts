@@ -1,8 +1,8 @@
-import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
+import { createWorkflow, WorkflowData } from "@medusajs/workflows-sdk"
 
-import { Modules } from "@medusajs/modules-sdk"
 import { deleteInventoryItemStep } from "../steps"
 import { removeRemoteLinkStep } from "../../common/steps/remove-remote-links"
+import { Modules } from "@medusajs/utils"
 
 export const deleteInventoryItemWorkflowId = "delete-inventory-item-workflow"
 export const deleteInventoryItemWorkflow = createWorkflow(

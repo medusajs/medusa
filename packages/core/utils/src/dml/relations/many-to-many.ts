@@ -1,5 +1,4 @@
 import { BaseRelationship } from "./base"
-import { RelationshipTypes } from "../types"
 
 /**
  * ManyToMany relationship defines a relationship between two entities

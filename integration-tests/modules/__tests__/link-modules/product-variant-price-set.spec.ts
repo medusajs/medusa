@@ -1,7 +1,8 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"

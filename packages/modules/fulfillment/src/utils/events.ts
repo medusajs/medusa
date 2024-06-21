@@ -116,21 +116,18 @@ export const eventBuilders = {
     source: Modules.FULFILLMENT,
     action: CommonEvents.CREATED,
     object: "fulfillment_set",
-    isMainEntity: true,
     eventsEnum: FulfillmentEvents,
   }),
   updatedFulfillmentSet: eventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.UPDATED,
     object: "fulfillment_set",
-    isMainEntity: true,
     eventsEnum: FulfillmentEvents,
   }),
   deletedFulfillmentSet: eventBuilderFactory({
     source: Modules.FULFILLMENT,
     action: CommonEvents.DELETED,
     object: "fulfillment_set",
-    isMainEntity: true,
     eventsEnum: FulfillmentEvents,
   }),
   createdServiceZone: eventBuilderFactory({

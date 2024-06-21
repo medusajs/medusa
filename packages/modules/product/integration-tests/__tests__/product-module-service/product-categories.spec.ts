@@ -1,6 +1,11 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ProductStatus } from "@medusajs/utils"
+import {
+  Modules,
+  CommonEvents,
+  ProductEvents,
+  ProductStatus,
+  composeMessage,
+} from "@medusajs/utils"
 import { Product, ProductCategory } from "@models"
 import {
   MockEventBusService,
@@ -292,11 +297,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
             parent_category_id: productCategoryOne.id,
           })
 
-          expect(eventBusSpy).toHaveBeenCalledTimes(1)
+          expect(eventBusSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
-            expect.objectContaining({
+            composeMessage(ProductEvents.PRODUCT_CATEGORY_CREATED, {
               data: { id: category.id },
-              eventName: "productService.product-category.created",
+              object: "product_category",
+              source: Modules.PRODUCT,
+              action: CommonEvents.CREATED,
             }),
           ])
         })
@@ -385,11 +392,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
             name: "New Category",
           })
 
-          expect(eventBusSpy).toHaveBeenCalledTimes(1)
+          expect(eventBusSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
-            expect.objectContaining({
+            composeMessage(ProductEvents.PRODUCT_CATEGORY_UPDATED, {
               data: { id: productCategoryZero.id },
-              eventName: "productService.product-category.updated",
+              object: "product_category",
+              source: Modules.PRODUCT,
+              action: CommonEvents.UPDATED,
             }),
           ])
         })

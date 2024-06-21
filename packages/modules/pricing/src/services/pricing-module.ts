@@ -57,11 +57,11 @@ type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pricingRepository: PricingRepositoryService
   priceSetService: ModulesSdkTypes.IMedusaInternalService<any>
-  ruleTypeService: RuleTypeService<any>
+  ruleTypeService: RuleTypeService
   priceRuleService: ModulesSdkTypes.IMedusaInternalService<any>
   priceSetRuleTypeService: ModulesSdkTypes.IMedusaInternalService<any>
   priceService: ModulesSdkTypes.IMedusaInternalService<any>
-  priceListService: PriceListService<any>
+  priceListService: PriceListService
   priceListRuleService: ModulesSdkTypes.IMedusaInternalService<any>
   priceListRuleValueService: ModulesSdkTypes.IMedusaInternalService<any>
 }
@@ -97,11 +97,11 @@ export default class PricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService
-  protected readonly ruleTypeService_: RuleTypeService<RuleType>
+  protected readonly ruleTypeService_: RuleTypeService
   protected readonly priceSetService_: ModulesSdkTypes.IMedusaInternalService<PriceSet>
   protected readonly priceRuleService_: ModulesSdkTypes.IMedusaInternalService<PriceRule>
   protected readonly priceService_: ModulesSdkTypes.IMedusaInternalService<Price>
-  protected readonly priceListService_: PriceListService<PriceList>
+  protected readonly priceListService_: PriceListService
   protected readonly priceListRuleService_: ModulesSdkTypes.IMedusaInternalService<PriceListRule>
   protected readonly priceListRuleValueService_: ModulesSdkTypes.IMedusaInternalService<PriceListRuleValue>
 

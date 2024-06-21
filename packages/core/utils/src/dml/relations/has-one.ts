@@ -1,6 +1,5 @@
 import { BaseRelationship } from "./base"
 import { NullableModifier } from "./nullable"
-import { RelationshipTypes } from "../types"
 
 /**
  * HasOne relationship defines a relationship between two entities

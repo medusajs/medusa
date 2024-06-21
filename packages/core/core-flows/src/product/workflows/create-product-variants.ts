@@ -1,4 +1,4 @@
-import { LinkDefinition, Modules } from "@medusajs/modules-sdk"
+import { LinkDefinition } from "@medusajs/modules-sdk"
 import { InventoryTypes, PricingTypes, ProductTypes } from "@medusajs/types"
 import {
   WorkflowData,
@@ -11,6 +11,7 @@ import { createInventoryItemsWorkflow } from "../../inventory/workflows/create-i
 import { createPriceSetsStep } from "../../pricing"
 import { createProductVariantsStep } from "../steps/create-product-variants"
 import { createVariantPricingLinkStep } from "../steps/create-variant-pricing-link"
+import { Modules } from "@medusajs/utils"
 
 // TODO: Create separate typings for the workflow input
 type WorkflowInput = {

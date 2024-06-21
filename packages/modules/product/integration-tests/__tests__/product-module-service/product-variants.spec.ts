@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateProductDTO,
   CreateProductVariantDTO,
@@ -9,6 +8,7 @@ import {
 import {
   CommonEvents,
   composeMessage,
+  Modules,
   ProductEvents,
   ProductStatus,
 } from "@medusajs/utils"
@@ -213,7 +213,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_variant_updated, {
+            composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
               data: { id: variantOne.id },
               object: "product_variant",
               source: Modules.PRODUCT,
@@ -246,7 +246,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_variant_updated, {
+            composeMessage(ProductEvents.PRODUCT_VARIANT_UPDATED, {
               data: { id: variantOne.id },
               object: "product_variant",
               source: Modules.PRODUCT,
@@ -320,7 +320,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_variant_created, {
+            composeMessage(ProductEvents.PRODUCT_VARIANT_CREATED, {
               data: { id: variant.id },
               object: "product_variant",
               source: Modules.PRODUCT,
