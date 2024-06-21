@@ -1,4 +1,3 @@
-import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -96,10 +95,6 @@ medusaIntegrationTestRunner({
     })
 
     describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
-      beforeEach(async () => {
-        await createDefaultsWorkflow(getContainer()).run()
-      })
-
       it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
         await api.post(
           `/admin/pricing/rule-types`,

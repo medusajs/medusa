@@ -1,4 +1,3 @@
-import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -1081,10 +1080,6 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/products", () => {
-        beforeEach(async () => {
-          await createDefaultsWorkflow(getContainer()).run()
-        })
-
         it("creates a product", async () => {
           const response = await api
             .post(
