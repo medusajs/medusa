@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
+import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { CommonEvents, composeMessage, PricingEvents } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -741,41 +741,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
         })
 
-        it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
-          await service.createRuleTypes([
-            {
-              name: "twitter_handle",
-              rule_attribute: "twitter_handle",
-            },
-          ])
-
-          let error
-          try {
-            await service.addPriceListPrices([
-              {
-                price_list_id: "price-list-1",
-                prices: [
-                  {
-                    amount: 123,
-                    currency_code: "EUR",
-                    price_set_id: "price-set-1",
-                    rules: {
-                      twitter_handle: "owjuhl",
-                    },
-                  },
-                ],
-              },
-            ])
-          } catch (err) {
-            error = err
-          }
-
-          expect(error.message).toEqual(
-            "" +
-              `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set price-set-1`
-          )
-        })
-
         it("should add a price with rules to a priceList successfully", async () => {
           await service.createRuleTypes([
             {
@@ -783,15 +748,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               rule_attribute: "region_id",
             },
           ])
-
-          const r = await service.addRules([
-            {
-              priceSetId: "price-set-1",
-              rules: [{ attribute: "region_id" }],
-            },
-          ])
-
-          jest.clearAllMocks()
 
           await service.addPriceListPrices([
             {
@@ -882,14 +838,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
       describe("updatePriceListPrices", () => {
         it("should update a price to a priceList successfully", async () => {
-          const [priceSet] = await service.createPriceSets([
-            {
-              rules: [
-                { rule_attribute: "region_id" },
-                { rule_attribute: "customer_group_id" },
-              ],
-            },
-          ])
+          const [priceSet] = await service.createPriceSets([{}])
 
           await service.addPriceListPrices([
             {
@@ -903,7 +852,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                   rules: {
                     region_id: "test",
                   },
-                } as any,
+                },
               ],
             },
           ])
@@ -975,52 +924,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               ]),
               price_list_rules: [],
             })
-          )
-        })
-
-        it("should fail to add a price with non-existing rule-types in the price-set to a priceList", async () => {
-          await service.createRuleTypes([
-            { name: "twitter_handle", rule_attribute: "twitter_handle" },
-            { name: "region_id", rule_attribute: "region_id" },
-          ])
-
-          const [priceSet] = await service.createPriceSets([
-            { rules: [{ rule_attribute: "region_id" }] },
-          ])
-
-          await service.addPriceListPrices([
-            {
-              price_list_id: "price-list-1",
-              prices: [
-                {
-                  id: "test-price-id",
-                  amount: 123,
-                  currency_code: "EUR",
-                  price_set_id: priceSet.id,
-                  rules: { region_id: "test" },
-                } as any,
-              ],
-            },
-          ])
-
-          const error = await service
-            .updatePriceListPrices([
-              {
-                price_list_id: "price-list-1",
-                prices: [
-                  {
-                    id: "test-price-id",
-                    amount: 123,
-                    price_set_id: priceSet.id,
-                    rules: { twitter_handle: "owjuhl" },
-                  },
-                ],
-              },
-            ])
-            .catch((e) => e)
-
-          expect(error.message).toEqual(
-            `Invalid rule type configuration: Price set rules doesn't exist for rule_attribute "twitter_handle" in price set ${priceSet.id}`
           )
         })
       })

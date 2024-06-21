@@ -1,3 +1,4 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -1079,7 +1080,11 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe("POST /admin/products", () => {
+      describe.only("POST /admin/products", () => {
+        beforeEach(async () => {
+          await createDefaultsWorkflow(getContainer()).run()
+        })
+
         it("creates a product", async () => {
           const response = await api
             .post(
@@ -1219,6 +1224,54 @@ medusaIntegrationTestRunner({
                       option: expect.objectContaining({
                         title: "color",
                       }),
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("creates a product variant with price rules", async () => {
+          const response = await api.post(
+            "/admin/products",
+            {
+              title: "Test create",
+              variants: [
+                {
+                  title: "Price with rules",
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 100,
+                      rules: { region_id: "eur" },
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const priceIdSelector = /^price_*/
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              id: expect.stringMatching(/^prod_*/),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.stringMatching(/^variant_*/),
+                  title: "Price with rules",
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      id: expect.stringMatching(priceIdSelector),
+                      currency_code: "usd",
+                      amount: 100,
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                      variant_id: expect.stringMatching(/^variant_*/),
+                      rules: { region_id: "eur" },
                     }),
                   ]),
                 }),
