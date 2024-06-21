@@ -1,3 +1,5 @@
+import { createDefaultsWorkflow } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -1080,6 +1082,10 @@ medusaIntegrationTestRunner({
       })
 
       describe("POST /admin/products", () => {
+        beforeEach(async () => {
+          await createDefaultsWorkflow(getContainer()).run()
+        })
+
         it("creates a product", async () => {
           const response = await api
             .post(
@@ -1219,6 +1225,66 @@ medusaIntegrationTestRunner({
                       option: expect.objectContaining({
                         title: "color",
                       }),
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+
+        it("creates a product variant with price rules ", async () => {
+          const pricingModule = getContainer().resolve(
+            ModuleRegistrationName.PRICING
+          )
+
+          await pricingModule.createRuleTypes([
+            { name: "Customer Group ID", rule_attribute: "customer_group_id" },
+            { name: "Region ID", rule_attribute: "region_id" },
+          ])
+
+          const response = await api
+            .post(
+              "/admin/products",
+              {
+                ...getProductFixture({ title: "Test create" }),
+                variants: [
+                  {
+                    title: "Price with rules",
+                    prices: [
+                      {
+                        currency_code: "usd",
+                        amount: 100,
+                        rules: { region_id: "eur" },
+                      },
+                    ],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+            .catch((err) => {
+              console.log(err)
+            })
+
+          const priceIdSelector = /^price_*/
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              id: expect.stringMatching(/^prod_*/),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.stringMatching(/^variant_*/),
+                  title: "Price with rules",
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      id: expect.stringMatching(priceIdSelector),
+                      currency_code: "usd",
+                      amount: 100,
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                      variant_id: expect.stringMatching(/^variant_*/),
                     }),
                   ]),
                 }),
