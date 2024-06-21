@@ -1,7 +1,7 @@
-import { Property } from "@mikro-orm/core"
-import { isPresent, trimZeros } from "../../common"
-import { BigNumber } from "../../totals/big-number"
 import { BigNumberInput } from "@medusajs/types"
+import { Property } from "@mikro-orm/core"
+import { isDefined, isPresent, trimZeros } from "../../common"
+import { BigNumber } from "../../totals/big-number"
 
 export function MikroOrmBigNumberProperty(
   options: Parameters<typeof Property>[0] & {
@@ -21,12 +21,14 @@ export function MikroOrmBigNumberProperty(
           }).numeric
         }
 
-        return value
+        return value || null
       },
       set(value: BigNumberInput) {
+        const data: Record<string, any> = this.__helper?.__data || {}
+
         if (options?.nullable && !isPresent(value)) {
-          this.__helper.__data[columnName] = null
-          this.__helper.__data[rawColumnName]
+          data[columnName] = null
+          data[rawColumnName]
           this[rawColumnName] = null
         } else {
           let bigNumber: BigNumber
@@ -45,11 +47,17 @@ export function MikroOrmBigNumberProperty(
           const raw = bigNumber.raw!
           raw.value = trimZeros(raw.value as string)
 
-          this.__helper.__data[columnName] = bigNumber.numeric
-          this.__helper.__data[rawColumnName] = raw
+          data[columnName] = bigNumber.numeric
+          data[rawColumnName] = raw
 
           this[rawColumnName] = raw
         }
+
+        if (!isDefined(this.__helper)) {
+          return
+        }
+
+        this.__helper.__data = data
 
         // This is custom code to keep track of which fields are bignumber, as well as their data
         if (!this.__helper.__bignumberdata) {

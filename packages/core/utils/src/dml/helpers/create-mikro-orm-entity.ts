@@ -1,3 +1,13 @@
+import type {
+  EntityCascades,
+  EntityConstructor,
+  Infer,
+  KnownDataTypes,
+  PropertyMetadata,
+  PropertyType,
+  RelationshipMetadata,
+  RelationshipType,
+} from "@medusajs/types"
 import {
   BeforeCreate,
   Entity,
@@ -21,20 +31,11 @@ import {
   toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
+import { MikroOrmBigNumberProperty } from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
 import { HasOne } from "../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
-import type {
-  EntityCascades,
-  EntityConstructor,
-  Infer,
-  KnownDataTypes,
-  PropertyMetadata,
-  PropertyType,
-  RelationshipMetadata,
-  RelationshipType,
-} from "@medusajs/types"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -49,6 +50,7 @@ const COLUMN_TYPES: {
   boolean: "boolean",
   dateTime: "timestamptz",
   number: "integer",
+  bigNumber: "numeric",
   text: "text",
   json: "jsonb",
 }
@@ -66,6 +68,7 @@ const PROPERTY_TYPES: {
   boolean: "boolean",
   dateTime: "date",
   number: "number",
+  bigNumber: "number",
   text: "string",
   json: "any",
 }
@@ -162,16 +165,59 @@ export function createMikrORMEntity() {
      * Here we initialize nullable properties with a null value
      */
     if (field.nullable) {
-      Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
+      const nullableOptions = {
         value: null,
         configurable: true,
         enumerable: true,
         writable: true,
-      })
+      }
+
+      Object.defineProperty(
+        MikroORMEntity.prototype,
+        field.fieldName,
+        nullableOptions
+      )
+
+      /**
+       * If dataType is a bigNumber, the nullable clause gets passed
+       * onto the bigNumber's raw field as well
+       */
+      if (field.dataType.name === "bigNumber") {
+        Object.defineProperty(
+          MikroORMEntity.prototype,
+          `raw_${field.fieldName}`,
+          nullableOptions
+        )
+      }
     }
 
     if (SPECIAL_PROPERTIES[field.fieldName]) {
       SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)
+      return
+    }
+
+    /**
+     * Defining an big number property
+     * A big number property always comes with a raw_{{ fieldName }} column
+     * where the config of the bigNumber is set.
+     */
+    if (field.dataType.name === "bigNumber") {
+      MikroOrmBigNumberProperty({
+        nullable: field.nullable,
+        /**
+         * MikroORM does not ignore undefined values for default when generating
+         * the database schema SQL. Conditionally add it here to prevent undefined
+         * from being set as default value in SQL.
+         */
+        ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
+      })(MikroORMEntity.prototype, field.fieldName)
+
+      Property({
+        columnType: "jsonb",
+        type: "json",
+        nullable: field.nullable,
+      })(MikroORMEntity.prototype, `raw_${field.fieldName}`)
+
       return
     }
 

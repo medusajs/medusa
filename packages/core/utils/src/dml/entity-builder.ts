@@ -1,21 +1,22 @@
-import { DmlEntity } from "./entity"
-import { TextProperty } from "./properties/text"
-import { EnumProperty } from "./properties/enum"
-import { JSONProperty } from "./properties/json"
-import { HasOne } from "./relations/has-one"
-import { HasMany } from "./relations/has-many"
-import { NumberProperty } from "./properties/number"
-import { BooleanProperty } from "./properties/boolean"
-import { BelongsTo } from "./relations/belongs-to"
-import { DateTimeProperty } from "./properties/date-time"
-import { ManyToMany } from "./relations/many-to-many"
 import type {
   PropertyType,
   RelationshipOptions,
   RelationshipType,
 } from "@medusajs/types"
-import { NullableModifier } from "./properties/nullable"
+import { DmlEntity } from "./entity"
+import { BigNumberProperty } from "./properties/big-number"
+import { BooleanProperty } from "./properties/boolean"
+import { DateTimeProperty } from "./properties/date-time"
+import { EnumProperty } from "./properties/enum"
 import { IdProperty } from "./properties/id"
+import { JSONProperty } from "./properties/json"
+import { NullableModifier } from "./properties/nullable"
+import { NumberProperty } from "./properties/number"
+import { TextProperty } from "./properties/text"
+import { BelongsTo } from "./relations/belongs-to"
+import { HasMany } from "./relations/has-many"
+import { HasOne } from "./relations/has-one"
+import { ManyToMany } from "./relations/many-to-many"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -87,10 +88,19 @@ export class EntityBuilder {
   }
 
   /**
-   * Define a numeric/integer column
+   * Define an integer column
    */
   number() {
     return new NumberProperty()
+  }
+
+  /**
+   * Define a numeric column. This property produces an additional
+   * column - raw_{{ property_name }}, which stores the configuration
+   * of bignumber (https://github.com/MikeMcl/bignumber.js)
+   */
+  bigNumber() {
+    return new BigNumberProperty()
   }
 
   /**

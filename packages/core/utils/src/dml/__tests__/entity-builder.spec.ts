@@ -1,9 +1,9 @@
-import { expectTypeOf } from "expect-type"
 import { MetadataStorage } from "@mikro-orm/core"
-import { EntityConstructor } from "../types"
+import { expectTypeOf } from "expect-type"
+import { DmlEntity } from "../entity"
 import { EntityBuilder } from "../entity-builder"
 import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
-import { DmlEntity } from "../entity"
+import { EntityConstructor } from "../types"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -32,6 +32,7 @@ describe("Entity builder", () => {
         id: model.number(),
         username: model.text(),
         email: model.text(),
+        spend_limit: model.bigNumber(),
       })
 
       const entityBuilder = createMikrORMEntity()
@@ -97,6 +98,25 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "json",
+        },
         updated_at: {
           reference: "scalar",
           type: "date",
@@ -127,6 +147,7 @@ describe("Entity builder", () => {
         id: model.number(),
         username: model.text().default("foo"),
         email: model.text(),
+        spend_limit: model.bigNumber().default(500.4),
       })
 
       const entityBuilder = createMikrORMEntity()
@@ -180,6 +201,27 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          default: 500.4,
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          default: undefined,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "json",
+        },
         created_at: {
           reference: "scalar",
           type: "date",
@@ -221,26 +263,44 @@ describe("Entity builder", () => {
         id: model.number(),
         username: model.text().nullable(),
         email: model.text(),
+        spend_limit: model.bigNumber().nullable(),
       })
 
       const entityBuilder = createMikrORMEntity()
       const User = entityBuilder(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string | null
         email: string
+        spend_limit: number | null
+        // TODO: Fix this type here
+        // raw_spend_limit: json | null
         deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
 
       const userInstance = new User()
+
       expect(userInstance.username).toEqual(null)
+
+      expect((userInstance as any).spend_limit).toEqual(null)
+      expect((userInstance as any).raw_spend_limit).toEqual(null)
 
       userInstance.username = "john"
       expect(userInstance.username).toEqual("john")
+
+      userInstance.spend_limit = 150.5
+      expect(userInstance.spend_limit).toEqual(150.5)
+      // TODO: Fix this type here
+      expect(userInstance.raw_spend_limit).toEqual({
+        precision: 20,
+        value: "150.5",
+      })
 
       expect(metaData.filters).toEqual({
         softDeletable: {
@@ -278,6 +338,25 @@ describe("Entity builder", () => {
           nullable: false,
           getter: false,
           setter: false,
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: false,
+          type: "json",
+        },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
         },
         created_at: {
           reference: "scalar",
