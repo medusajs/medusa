@@ -667,7 +667,7 @@ export default class PricingModuleService
     if (invalidRuleAttributes.length > 0) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Rule types don't exist for money amounts with rule attribute: ${invalidRuleAttributes.join(
+        `Rule types don't exist for prices with rule attribute: ${invalidRuleAttributes.join(
           ", "
         )}`
       )

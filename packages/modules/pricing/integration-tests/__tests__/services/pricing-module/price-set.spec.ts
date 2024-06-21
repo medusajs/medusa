@@ -368,7 +368,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             error = e
           }
           expect(error.message).toEqual(
-            "Rule types don't exist for money amounts with rule attribute: city"
+            "Rule types don't exist for prices with rule attribute: city"
           )
         })
 
