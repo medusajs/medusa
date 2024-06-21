@@ -96,11 +96,20 @@ medusaIntegrationTestRunner({
 
     describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
       it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
+        await api.post(
+          `/admin/pricing/rule-types`,
+          { name: "Region", rule_attribute: "region_id", default_priority: 1 },
+          adminHeaders
+        )
+
         const data = {
           prices: [
             {
               currency_code: "usd",
               amount: 1500,
+              rules: {
+                region_id: "na",
+              },
             },
           ],
         }
@@ -115,6 +124,7 @@ medusaIntegrationTestRunner({
           baseProduct.variants[0].prices.find((p) => p.currency_code === "usd")
             .amount
         ).toEqual(100)
+
         expect(response.status).toEqual(200)
         expect(response.data).toEqual({
           product: expect.objectContaining({
@@ -126,6 +136,7 @@ medusaIntegrationTestRunner({
                   expect.objectContaining({
                     amount: 1500,
                     currency_code: "usd",
+                    rules: { region_id: "na" },
                   }),
                 ]),
               }),
