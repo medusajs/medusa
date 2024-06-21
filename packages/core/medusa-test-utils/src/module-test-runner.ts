@@ -1,11 +1,7 @@
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
 
-import {
-  ContainerRegistrationKeys,
-  loadModels,
-  ModulesSdkUtils,
-} from "@medusajs/utils"
+import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
 import { MockEventBusService } from "."
 import { toMikroOrmEntities } from "@medusajs/utils/src"
 
@@ -45,7 +41,7 @@ export function moduleIntegrationTestRunner<TService = any>({
 
   process.env.LOG_LEVEL = "error"
 
-  moduleModels ??= loadModels(`${process.cwd()}/src/models`)
+  moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
   moduleModels = toMikroOrmEntities(moduleModels)
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
