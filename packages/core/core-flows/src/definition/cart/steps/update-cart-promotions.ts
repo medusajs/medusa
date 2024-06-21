@@ -1,11 +1,7 @@
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/modules-sdk"
+import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { PromotionActions } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Modules, PromotionActions } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   id: string

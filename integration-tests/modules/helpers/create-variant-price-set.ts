@@ -1,9 +1,10 @@
-import { MedusaContainer, Modules } from "@medusajs/modules-sdk"
+import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
   PriceSetDTO,
 } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 const defaultPrices = [
   {

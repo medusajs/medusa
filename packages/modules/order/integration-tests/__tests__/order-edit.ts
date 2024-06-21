@@ -1,11 +1,10 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderDTO,
   IOrderModuleService,
 } from "@medusajs/types"
-import { BigNumber } from "@medusajs/utils"
+import { BigNumber, Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ChangeActionType } from "../../src/utils"
 

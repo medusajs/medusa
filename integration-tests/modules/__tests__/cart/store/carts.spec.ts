@@ -1,7 +1,6 @@
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
-  Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk"
 import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
@@ -22,6 +21,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
   ProductStatus,
   PromotionRuleOperator,
   PromotionType,

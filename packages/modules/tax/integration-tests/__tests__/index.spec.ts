@@ -1,7 +1,7 @@
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 

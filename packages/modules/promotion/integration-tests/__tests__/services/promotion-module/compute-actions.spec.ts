@@ -1,7 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { ApplicationMethodType, PromotionType } from "@medusajs/utils"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { ApplicationMethodType, Modules, PromotionType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
 import { createDefaultPromotion } from "../../../__fixtures__/promotion"
 

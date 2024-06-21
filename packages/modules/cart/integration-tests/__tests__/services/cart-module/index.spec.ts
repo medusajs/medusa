@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
-import { BigNumber } from "@medusajs/utils"
+import { BigNumber, Modules } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
@@ -8,7 +7,7 @@ jest.setTimeout(50000)
 
 moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
-  testSuite: ({ MikroOrmWrapper, service }) => {
+  testSuite: ({ service }) => {
     describe("Cart Module Service", () => {
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {

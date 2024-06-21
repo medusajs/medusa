@@ -1,11 +1,10 @@
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
-  Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
-import { PromotionType } from "@medusajs/utils"
+import { Modules, PromotionType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
