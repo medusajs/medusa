@@ -104,7 +104,7 @@ export const ManageLocationsForm = ({
       handleSuccess()
 
       toast.success(t("general.success"), {
-        description: t("inventory.toast.update"),
+        description: t("inventory.toast.updateLocations"),
         dismissLabel: t("actions.close"),
       })
     } catch (e) {
