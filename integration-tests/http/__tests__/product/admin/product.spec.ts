@@ -1080,7 +1080,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      describe.only("POST /admin/products", () => {
+      describe("POST /admin/products", () => {
         beforeEach(async () => {
           await createDefaultsWorkflow(getContainer()).run()
         })
@@ -1233,6 +1233,16 @@ medusaIntegrationTestRunner({
         })
 
         it("creates a product variant with price rules", async () => {
+          await api.post(
+            `/admin/pricing/rule-types`,
+            {
+              name: "Region",
+              rule_attribute: "region_id",
+              default_priority: 1,
+            },
+            adminHeaders
+          )
+
           const response = await api.post(
             "/admin/products",
             {

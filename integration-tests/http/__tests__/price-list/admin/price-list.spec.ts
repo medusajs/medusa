@@ -1,7 +1,7 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
-  createAdminUser,
   adminHeaders,
+  createAdminUser,
 } from "../../../../helpers/create-admin-user"
 import {
   getPricelistFixture,

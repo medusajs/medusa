@@ -101,6 +101,12 @@ medusaIntegrationTestRunner({
       })
 
       it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
+        await api.post(
+          `/admin/pricing/rule-types`,
+          { name: "Region", rule_attribute: "region_id", default_priority: 1 },
+          adminHeaders
+        )
+
         const data = {
           prices: [
             {
