@@ -1,4 +1,4 @@
-import { ExtractEntityType, FindConfig } from "../common"
+import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 import {
   BaseFilterable,
@@ -7,6 +7,7 @@ import {
   PerformedActions,
   UpsertWithReplaceConfig,
 } from "../dal"
+import { ExtractEntityType } from "../dml"
 
 export interface IMedusaInternalService<
   TEntity extends {},

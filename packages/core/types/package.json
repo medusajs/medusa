@@ -30,16 +30,6 @@
     "vite": "^5.2.11",
     "winston": "^3.8.2"
   },
-  "//": "@medusajs/utils will only be used to import types from it and gets removed at runtime so there’s no remnant of it at runtime",
-  "peerDependencies": {
-    "@medusajs/utils": "^1.11.9"
-  },
-  "// 2": "Prevent circular deps",
-  "peerDependenciesMeta": {
-    "@medusajs/utils": {
-      "optional": true
-    }
-  },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
