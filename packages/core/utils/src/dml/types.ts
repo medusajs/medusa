@@ -103,6 +103,11 @@ export type Infer<T> = T extends DmlEntity<infer Schema>
   : never
 
 /**
+ * Helper to infer the instance type of a DmlEntity once converted as an Entity
+ */
+export type InferTypeOf<T extends DmlEntity<any>> = InstanceType<Infer<T>>
+
+/**
  * Extracts names of relationships from a schema
  */
 export type ExtractEntityRelations<

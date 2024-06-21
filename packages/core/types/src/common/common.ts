@@ -9,6 +9,7 @@ import {
 
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
+import type { DmlEntity, InferTypeOf } from "@medusajs/utils"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -363,3 +364,6 @@ export type KebabCase<S extends string> =
     : S
 
 export type MetadataType = Record<string, unknown> | null
+
+// Since the DmlEntity is a util it can't be used in the types, but we can identify the DML using the symbol
+export type ExtractEntityType<T> = T extends DmlEntity<any> ? InferTypeOf<T> : T

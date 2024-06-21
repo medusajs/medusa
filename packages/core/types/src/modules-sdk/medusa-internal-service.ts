@@ -1,4 +1,4 @@
-import { FindConfig } from "../common"
+import { ExtractEntityType, FindConfig } from "../common"
 import { Context } from "../shared-context"
 import {
   BaseFilterable,
@@ -18,44 +18,56 @@ export interface IMedusaInternalService<
     idOrObject: string,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TEntity>
+  ): Promise<ExtractEntityType<TEntity>>
   retrieve(
     idOrObject: object,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TEntity>
+  ): Promise<ExtractEntityType<TEntity>>
 
   list(
     filters?: FilterQuery<any> | BaseFilterable<FilterQuery<any>>,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<TEntity[]>
+  ): Promise<ExtractEntityType<TEntity>[]>
 
   listAndCount(
     filters?: FilterQuery<any> | BaseFilterable<FilterQuery<any>>,
     config?: FindConfig<any>,
     sharedContext?: Context
-  ): Promise<[TEntity[], number]>
+  ): Promise<[ExtractEntityType<TEntity>[], number]>
 
-  create(data: any[], sharedContext?: Context): Promise<TEntity[]>
-  create(data: any, sharedContext?: Context): Promise<TEntity>
+  create(
+    data: any[],
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>[]>
+  create(
+    data: any,
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>>
 
-  update(data: any[], sharedContext?: Context): Promise<TEntity[]>
-  update(data: any, sharedContext?: Context): Promise<TEntity>
+  update(
+    data: any[],
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>[]>
+  update(
+    data: any,
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>>
   update(
     selectorAndData: {
       selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
       data: any
     },
     sharedContext?: Context
-  ): Promise<TEntity[]>
+  ): Promise<ExtractEntityType<TEntity>[]>
   update(
     selectorAndData: {
       selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
       data: any
     }[],
     sharedContext?: Context
-  ): Promise<TEntity[]>
+  ): Promise<ExtractEntityType<TEntity>[]>
 
   delete(idOrSelector: string, sharedContext?: Context): Promise<void>
   delete(idOrSelector: string[], sharedContext?: Context): Promise<void>
@@ -75,19 +87,28 @@ export interface IMedusaInternalService<
       | InternalFilterQuery
       | InternalFilterQuery[],
     sharedContext?: Context
-  ): Promise<[TEntity[], Record<string, unknown[]>]>
+  ): Promise<[ExtractEntityType<TEntity>[], Record<string, unknown[]>]>
 
   restore(
     idsOrFilter: string[] | InternalFilterQuery,
     sharedContext?: Context
-  ): Promise<[TEntity[], Record<string, unknown[]>]>
+  ): Promise<[ExtractEntityType<TEntity>[], Record<string, unknown[]>]>
 
-  upsert(data: any[], sharedContext?: Context): Promise<TEntity[]>
-  upsert(data: any, sharedContext?: Context): Promise<TEntity>
+  upsert(
+    data: any[],
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>[]>
+  upsert(
+    data: any,
+    sharedContext?: Context
+  ): Promise<ExtractEntityType<TEntity>>
 
   upsertWithReplace(
     data: any[],
-    config?: UpsertWithReplaceConfig<TEntity>,
+    config?: UpsertWithReplaceConfig<ExtractEntityType<TEntity>>,
     sharedContext?: Context
-  ): Promise<{ entities: TEntity[]; performedActions: PerformedActions }>
+  ): Promise<{
+    entities: ExtractEntityType<TEntity>[]
+    performedActions: PerformedActions
+  }>
 }

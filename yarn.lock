@@ -5237,6 +5237,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
+    "@medusajs/utils": ^1.11.9
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
