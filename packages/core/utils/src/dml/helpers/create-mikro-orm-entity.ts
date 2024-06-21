@@ -345,16 +345,10 @@ export function createMikrORMEntity() {
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
-        mapToPk: true,
         fieldName: camelToSnakeCase(`${relationship.name}Id`),
         nullable: relationship.nullable,
         onDelete: shouldCascade ? "cascade" : undefined,
-      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
-
-      ManyToOne({
-        entity: relatedModelName,
-        persist: false,
-      })(MikroORMEntity.prototype, relationship.name)
+      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}`))
       return
     }
 

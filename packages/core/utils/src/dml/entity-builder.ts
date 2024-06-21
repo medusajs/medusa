@@ -16,6 +16,7 @@ import type {
 } from "./types"
 import { NullableModifier } from "./properties/nullable"
 import { IdProperty } from "./properties/id"
+import { createMikrORMEntity } from "./helpers/create-mikro-orm-entity"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -47,21 +48,24 @@ export class EntityBuilder {
    */
   define<
     Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-  >(name: string, schema: Schema) {
+  >(
+    name: string,
+    schema: Schema
+  ): DmlEntity<
+    Schema & {
+      created_at: DateTimeProperty
+      updated_at: DateTimeProperty
+      deleted_at: NullableModifier<Date, DateTimeProperty>
+    }
+  > {
     this.#disallowImplicitProperties(schema)
 
-    return new DmlEntity<
-      Schema & {
-        created_at: DateTimeProperty
-        updated_at: DateTimeProperty
-        deleted_at: NullableModifier<Date, DateTimeProperty>
-      }
-    >(name, {
+    return new DmlEntity<any>(name, {
       ...schema,
       created_at: new DateTimeProperty(),
       updated_at: new DateTimeProperty(),
       deleted_at: new DateTimeProperty().nullable(),
-    })
+    } as any)
   }
 
   /**
@@ -181,3 +185,20 @@ export class EntityBuilder {
 }
 
 export const model = new EntityBuilder()
+
+const user = model.define("user", {
+  id: model.id(),
+  name: model.text(),
+  email: model.text(),
+  password: model.text(),
+  tests: model.hasMany(() => test),
+})
+
+const test = model.define("test", {
+  name: model.text(),
+  user: model.belongsTo(() => user),
+})
+
+const testMikro = createMikrORMEntity()(test)
+const _ = new testMikro()
+_.user_id = "1"

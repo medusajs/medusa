@@ -2,7 +2,7 @@ import * as entities from "./src/models"
 import { TSMigrationGenerator } from "@medusajs/utils"
 
 module.exports = {
-  entities: Object.values(entities),
+  entities: toMikroOrmEntities(entities),
   schema: "public",
   clientUrl: "postgres://postgres@localhost/medusa-fulfillment",
   type: "postgresql",
@@ -10,3 +10,8 @@ module.exports = {
     generator: TSMigrationGenerator,
   },
 }
+
+export default defineMikroOrmConfiguration({
+  entities: [mikro, dml],
+  databaseName: [],
+})
