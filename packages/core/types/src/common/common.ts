@@ -9,7 +9,6 @@ import {
 
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
-import { Infer } from "@medusajs/utils"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
