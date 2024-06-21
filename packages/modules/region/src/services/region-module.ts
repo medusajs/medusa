@@ -138,6 +138,7 @@ export default class RegionModuleService
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, string[]> | void> {
     const result = await super.softDeleteRegions(ids, config, sharedContext)
+    // Note: You cannot revert the state of a region by simply restoring it. The association with countries is lost.
     await super.updateCountries(
       {
         selector: { region_id: ids },
