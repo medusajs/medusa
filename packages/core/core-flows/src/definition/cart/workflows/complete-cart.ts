@@ -92,7 +92,7 @@ export const completeCartWorkflow = createWorkflow(
       },
     ])
 
-    emitEventStep({ eventName: OrderEvents.placed, data: { id: order.id } })
+    emitEventStep({ eventName: OrderEvents.PLACED, data: { id: order.id } })
 
     return order
   }

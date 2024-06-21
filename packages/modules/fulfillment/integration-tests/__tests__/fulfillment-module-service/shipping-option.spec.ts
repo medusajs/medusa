@@ -483,19 +483,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(3)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_option_created,
+                eventName: FulfillmentEvents.SHIPPING_OPTION_CREATED,
                 action: "created",
                 object: "shipping_option",
                 data: { id: createdShippingOption.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_option_type_created,
+                eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
                 action: "created",
                 object: "shipping_option_type",
                 data: { id: createdShippingOption.type.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_option_rule_created,
+                eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
                 action: "created",
                 object: "shipping_option_rule",
                 data: { id: createdShippingOption.rules[0].id },
@@ -571,19 +571,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.shipping_option_created,
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_CREATED,
                     action: "created",
                     object: "shipping_option",
                     data: { id: createdShippingOptions[i].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.shipping_option_type_created,
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
                     action: "created",
                     object: "shipping_option_type",
                     data: { id: createdShippingOptions[i].type.id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.shipping_option_rule_created,
+                    eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
                     action: "created",
                     object: "shipping_option_rule",
                     data: { id: createdShippingOptions[i].rules[0].id },
@@ -754,31 +754,31 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy).toHaveBeenCalledWith(
               expect.arrayContaining([
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.shipping_option_updated,
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_UPDATED,
                   action: "updated",
                   object: "shipping_option",
                   data: { id: updatedShippingOption.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.shipping_option_type_deleted,
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_DELETED,
                   action: "deleted",
                   object: "shipping_option_type",
                   data: { id: shippingOption.type.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.shipping_option_type_created,
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_TYPE_CREATED,
                   action: "created",
                   object: "shipping_option_type",
                   data: { id: updatedShippingOption.type.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.shipping_option_rule_created,
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
                   action: "created",
                   object: "shipping_option_rule",
                   data: { id: updatedShippingOption.rules[1].id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.shipping_option_rule_updated,
+                  eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_UPDATED,
                   action: "updated",
                   object: "shipping_option_rule",
                   data: { id: updatedShippingOption.rules[0].id },
@@ -1213,7 +1213,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_option_rule_created,
+                eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_CREATED,
                 action: "created",
                 object: "shipping_option_rule",
                 data: { id: rule.id },
@@ -1290,7 +1290,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.shipping_option_rule_updated,
+                eventName: FulfillmentEvents.SHIPPING_OPTION_RULE_UPDATED,
                 action: "updated",
                 object: "shipping_option_rule",
                 data: { id: updatedRule.id },

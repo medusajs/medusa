@@ -368,25 +368,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_deleted,
+                eventName: FulfillmentEvents.GEO_ZONE_DELETED,
                 action: "deleted",
                 object: "geo_zone",
                 data: { id: ukGeoZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.service_zone_updated,
+                eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
                 action: "updated",
                 object: "service_zone",
                 data: { id: updatedServiceZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_created,
+                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: chGeoZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_updated,
+                eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
                 action: "updated",
                 object: "geo_zone",
                 data: { id: usGeoZone.id },

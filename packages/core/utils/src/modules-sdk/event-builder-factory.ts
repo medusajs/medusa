@@ -16,20 +16,17 @@ import { Context, EventBusTypes } from "@medusajs/types"
  *   sharedContext,
  * })
  *
- * @param isMainEntity
  * @param action
  * @param object
  * @param eventsEnum
  * @param service
  */
 export function eventBuilderFactory({
-  isMainEntity,
   action,
   object,
   eventsEnum,
   source,
 }: {
-  isMainEntity?: boolean
   action: string
   object: string
   eventsEnum: Record<string, string>
@@ -55,9 +52,7 @@ export function eventBuilderFactory({
         action,
         context: sharedContext,
         data: { id: dataItem.id },
-        eventName: isMainEntity
-          ? eventsEnum[action]
-          : eventsEnum[`${object}_${action}`],
+        eventName: eventsEnum[`${object}_${action}`],
         object,
       })
     })
