@@ -5237,7 +5237,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/core/types"
   dependencies:
-    "@medusajs/utils": ^1.11.9
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
@@ -5246,6 +5245,11 @@ __metadata:
     typescript: ^5.1.6
     vite: ^5.2.11
     winston: ^3.8.2
+  peerDependencies:
+    "@medusajs/utils": ^1.11.9
+  peerDependenciesMeta:
+    "@medusajs/utils":
+      optional: true
   languageName: unknown
   linkType: soft
 
