@@ -279,7 +279,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_updated, {
+            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
               data: { id: productTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,
@@ -321,7 +321,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_created, {
+            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
               data: { id: productTag[0].id },
               object: "product_tag",
               source: Modules.PRODUCT,
@@ -375,13 +375,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_created, {
+            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
               data: { id: newTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
             }),
-            composeMessage(ProductEvents.product_tag_updated, {
+            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
               data: { id: updatedTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,

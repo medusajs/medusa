@@ -1,4 +1,11 @@
-import { DmlEntity } from "./entity"
+export const IsDmlEntity = Symbol.for("isDmlEntity")
+
+export interface IDmlEntity<
+  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
+> {
+  [IsDmlEntity]: true
+  schema: Schema
+}
 
 /**
  * The supported data types
@@ -92,7 +99,7 @@ export interface EntityConstructor<Props> extends Function {
 /**
  * Helper to infer the schema type of a DmlEntity
  */
-export type Infer<T> = T extends DmlEntity<infer Schema>
+export type Infer<T> = T extends IDmlEntity<infer Schema>
   ? EntityConstructor<{
       [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
         ? Infer<R>
@@ -123,3 +130,15 @@ export type ExtractEntityRelations<
 export type EntityCascades<Relationships> = {
   delete?: Relationships
 }
+
+/**
+ * Helper to infer the instance type of a DmlEntity once converted as an Entity
+ */
+export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
+
+/**
+ * Used in the module sdk internal service to infer propert entity typings from DML
+ */
+export type ExtractEntityType<T extends any> = T extends IDmlEntity<any>
+  ? InferTypeOf<T>
+  : T

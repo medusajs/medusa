@@ -1,5 +1,5 @@
 export const OrderEvents = {
-  placed: "order.placed",
-  canceled: "order.canceled",
-  completed: "order.completed",
+  PLACED: "order.placed",
+  CANCELED: "order.canceled",
+  COMPLETED: "order.completed",
 }
