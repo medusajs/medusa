@@ -5245,11 +5245,6 @@ __metadata:
     typescript: ^5.1.6
     vite: ^5.2.11
     winston: ^3.8.2
-  peerDependencies:
-    "@medusajs/utils": ^1.11.9
-  peerDependenciesMeta:
-    "@medusajs/utils":
-      optional: true
   languageName: unknown
   linkType: soft
 
