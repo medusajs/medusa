@@ -34,7 +34,7 @@ import type {
   PropertyType,
   RelationshipMetadata,
   RelationshipType,
-} from "../types"
+} from "@medusajs/types"
 
 /**
  * DML entity data types to PostgreSQL data types via

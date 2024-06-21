@@ -1,5 +1,4 @@
 import { BaseRelationship } from "./base"
-import { RelationshipTypes } from "../types"
 
 /**
  * HasMany relationship defines a relationship between two entities
