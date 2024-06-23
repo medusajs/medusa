@@ -1537,8 +1537,8 @@ export const countries: StaticCountry[] = [
     iso_2: "tw",
     iso_3: "twn",
     num_code: "158",
-    name: "TAIWAN, PROVINCE OF CHINA",
-    display_name: "Taiwan, Province of China",
+    name: "TAIWAN",
+    display_name: "Taiwan",
   },
   {
     iso_2: "tj",
