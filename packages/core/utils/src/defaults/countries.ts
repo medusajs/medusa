@@ -345,7 +345,7 @@ export const defaultCountries: Country[] = [
   { alpha2: "SY", name: "Syrian Arab Republic", alpha3: "SYR", numeric: "760" },
   {
     alpha2: "TW",
-    name: "Taiwan, Province of China",
+    name: "Taiwan",
     alpha3: "TWN",
     numeric: "158",
   },
