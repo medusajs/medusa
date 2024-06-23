@@ -200,6 +200,8 @@ export function createMikrORMEntity() {
      * Defining an big number property
      * A big number property always comes with a raw_{{ fieldName }} column
      * where the config of the bigNumber is set.
+     * The `raw_` field is generated during DML schema generation as a json
+     * dataType.
      */
     if (field.dataType.name === "bigNumber") {
       MikroOrmBigNumberProperty({
@@ -211,12 +213,6 @@ export function createMikrORMEntity() {
          */
         ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
       })(MikroORMEntity.prototype, field.fieldName)
-
-      Property({
-        columnType: "jsonb",
-        type: "json",
-        nullable: field.nullable,
-      })(MikroORMEntity.prototype, `raw_${field.fieldName}`)
 
       return
     }
@@ -661,6 +657,7 @@ export function createMikrORMEntity() {
      */
     Object.entries(schema).forEach(([name, property]) => {
       const field = property.parse(name)
+
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
         applyIndexes(MikroORMEntity, tableName, field)

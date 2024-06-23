@@ -21,14 +21,12 @@ export function MikroOrmBigNumberProperty(
           }).numeric
         }
 
-        return value || null
+        return value
       },
       set(value: BigNumberInput) {
-        const data: Record<string, any> = this.__helper?.__data || {}
-
         if (options?.nullable && !isPresent(value)) {
-          data[columnName] = null
-          data[rawColumnName]
+          this.__helper.__data[columnName] = null
+          this.__helper.__data[rawColumnName]
           this[rawColumnName] = null
         } else {
           let bigNumber: BigNumber
@@ -47,17 +45,21 @@ export function MikroOrmBigNumberProperty(
           const raw = bigNumber.raw!
           raw.value = trimZeros(raw.value as string)
 
-          data[columnName] = bigNumber.numeric
-          data[rawColumnName] = raw
+          // Note: this.__helper isn't present when directly working with the entity
+          // Adding this in optionally for it not to break.
+          if (isDefined(this.__helper)) {
+            this.__helper.__data[columnName] = bigNumber.numeric
+            this.__helper.__data[rawColumnName] = raw
+          }
 
           this[rawColumnName] = raw
         }
 
+        // Note: this.__helper isn't present when directly working with the entity
+        // Adding this in optionally for it not to break.
         if (!isDefined(this.__helper)) {
           return
         }
-
-        this.__helper.__data = data
 
         // This is custom code to keep track of which fields are bignumber, as well as their data
         if (!this.__helper.__bignumberdata) {

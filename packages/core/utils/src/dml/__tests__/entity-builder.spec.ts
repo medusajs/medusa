@@ -2,7 +2,10 @@ import { MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { EntityBuilder } from "../entity-builder"
-import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
+import {
+  createMikrORMEntity,
+  toMikroORMEntity,
+} from "../helpers/create-mikro-orm-entity"
 import { EntityConstructor } from "../types"
 
 describe("Entity builder", () => {
@@ -37,10 +40,13 @@ describe("Entity builder", () => {
 
       const entityBuilder = createMikrORMEntity()
       const User = entityBuilder(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
         email: string
+        spend_limit: number
+        raw_spend_limit: Record<string, unknown>
         created_at: Date
         updated_at: Date
         deleted_at: Date | null
@@ -115,7 +121,7 @@ describe("Entity builder", () => {
           nullable: false,
           reference: "scalar",
           setter: false,
-          type: "json",
+          type: "any",
         },
         updated_at: {
           reference: "scalar",
@@ -215,12 +221,11 @@ describe("Entity builder", () => {
         raw_spend_limit: {
           columnType: "jsonb",
           getter: false,
-          default: undefined,
           name: "raw_spend_limit",
           nullable: false,
           reference: "scalar",
           setter: false,
-          type: "json",
+          type: "any",
         },
         created_at: {
           reference: "scalar",
@@ -266,16 +271,16 @@ describe("Entity builder", () => {
         spend_limit: model.bigNumber().nullable(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string | null
         email: string
         spend_limit: number | null
-        // TODO: Fix this type here
-        // raw_spend_limit: json | null
+        raw_spend_limit: Record<string, unknown> | null
+        created_at: Date
+        updated_at: Date
         deleted_at: Date | null
       }>()
 
@@ -288,15 +293,14 @@ describe("Entity builder", () => {
 
       expect(userInstance.username).toEqual(null)
 
-      expect((userInstance as any).spend_limit).toEqual(null)
-      expect((userInstance as any).raw_spend_limit).toEqual(null)
+      expect(userInstance.spend_limit).toEqual(undefined)
+      expect(userInstance.raw_spend_limit).toEqual(null)
 
       userInstance.username = "john"
       expect(userInstance.username).toEqual("john")
 
       userInstance.spend_limit = 150.5
       expect(userInstance.spend_limit).toEqual(150.5)
-      // TODO: Fix this type here
       expect(userInstance.raw_spend_limit).toEqual({
         precision: 20,
         value: "150.5",
@@ -346,7 +350,7 @@ describe("Entity builder", () => {
           nullable: true,
           reference: "scalar",
           setter: false,
-          type: "json",
+          type: "any",
         },
         spend_limit: {
           columnType: "numeric",
