@@ -129,7 +129,10 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    expect(mikroOrmSerializer(team)).toEqual({
+    const serializedSquad = mikroOrmSerializer(team)
+
+    expect(serializedSquad.users).toHaveLength(2)
+    expect(serializedSquad).toEqual({
       id: team1.id,
       name: "Team 1",
       created_at: expect.any(Date),
@@ -146,6 +149,36 @@ describe("manyToMany - manyToMany", () => {
         {
           id: user2.id,
           username: "User 2",
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          deleted_at: null,
+        },
+      ]),
+    })
+
+    const user = await manager.findOne(
+      User,
+      {
+        id: user1.id,
+      },
+      {
+        populate: ["squads"],
+      }
+    )
+
+    const serializedUser = mikroOrmSerializer(user)
+
+    expect(serializedUser.squads).toHaveLength(1)
+    expect(serializedUser).toEqual({
+      id: user1.id,
+      username: "User 1",
+      created_at: expect.any(Date),
+      updated_at: expect.any(Date),
+      deleted_at: null,
+      squads: expect.arrayContaining([
+        {
+          id: team1.id,
+          name: "Team 1",
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
           deleted_at: null,
