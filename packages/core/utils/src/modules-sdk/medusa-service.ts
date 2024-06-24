@@ -68,8 +68,10 @@ type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
     create: any
     update: any
-    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : string
-    plural: T[Key] extends { plural: string } ? T[Key]["plural"] : string
+    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
+    plural: T[Key] extends { plural: string }
+      ? T[Key]["plural"]
+      : Pluralize<Key>
   }
 }
 
