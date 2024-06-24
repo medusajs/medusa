@@ -48,6 +48,21 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "options": {
+                    "config": {
+                      "local": {},
+                    },
+                  },
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -138,6 +153,21 @@ describe("defineConfig", function () {
             "resolve": "./modules/github",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "options": {
+                    "config": {
+                      "local": {},
+                    },
+                  },
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -225,6 +255,21 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "options": {
+                    "config": {
+                      "local": {},
+                    },
+                  },
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
@@ -314,6 +359,21 @@ describe("defineConfig", function () {
             "resolve": "@medusajs/fulfillment",
           },
           "inventoryService": true,
+          "notification": {
+            "options": {
+              "providers": [
+                {
+                  "options": {
+                    "config": {
+                      "local": {},
+                    },
+                  },
+                  "resolve": "@medusajs/notification-local",
+                },
+              ],
+            },
+            "resolve": "@medusajs/notification",
+          },
           "order": true,
           "payment": true,
           "pricingService": true,
