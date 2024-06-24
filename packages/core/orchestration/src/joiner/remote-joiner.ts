@@ -304,10 +304,6 @@ export class RemoteJoiner {
     serviceName?: string,
     serviceAlias?: string
   ): void {
-    if (serviceName === "currency") {
-      console.log("serviceName -- ", serviceName)
-    }
-
     if (serviceAlias) {
       const name = `alias_${serviceAlias}`
       if (!this.serviceConfigCache.has(name)) {
@@ -333,10 +329,6 @@ export class RemoteJoiner {
     const config = serviceConfigs.find(
       (config) => config.serviceName === serviceName
     )
-
-    if (serviceName === "currency") {
-      console.log("config -- ", config)
-    }
     this.serviceConfigCache.set(serviceName!, config)
   }
 

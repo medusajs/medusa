@@ -1202,7 +1202,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it.only("should get product with prices when context is present", async () => {
+      it("should get product with prices when context is present", async () => {
         const region = (
           await api.post(
             "/admin/regions",
