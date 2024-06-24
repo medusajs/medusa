@@ -13,7 +13,7 @@ import type {
   PropertyType,
   RelationshipOptions,
   RelationshipType,
-} from "./types"
+} from "@medusajs/types"
 import { NullableModifier } from "./properties/nullable"
 import { IdProperty } from "./properties/id"
 import { createMikrORMEntity } from "./helpers/create-mikro-orm-entity"

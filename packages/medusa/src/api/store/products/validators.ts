@@ -22,6 +22,7 @@ export const StoreGetProductVariantsParams = createFindParams({
     q: z.string().optional(),
     id: z.union([z.string(), z.array(z.string())]).optional(),
     status: ProductStatusEnum.array().optional(),
+    options: z.object({ value: z.string(), option_id: z.string() }).optional(),
     created_at: createOperatorMap().optional(),
     updated_at: createOperatorMap().optional(),
     deleted_at: createOperatorMap().optional(),
@@ -39,7 +40,16 @@ export const StoreGetProductsParams = createFindParams({
     .object({
       region_id: z.string().optional(),
       currency_code: z.string().optional(),
-      variants: StoreGetProductVariantsParams.optional(),
+      variants: z
+        .object({
+          status: ProductStatusEnum.array().optional(),
+          options: z
+            .object({ value: z.string(), option_id: z.string() })
+            .optional(),
+          $and: z.lazy(() => StoreGetProductsParams.array()).optional(),
+          $or: z.lazy(() => StoreGetProductsParams.array()).optional(),
+        })
+        .optional(),
       $and: z.lazy(() => StoreGetProductsParams.array()).optional(),
       $or: z.lazy(() => StoreGetProductsParams.array()).optional(),
     })

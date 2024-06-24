@@ -43,9 +43,10 @@ export const updatePriceSetsStep = createStep(
       return new StepResponse([], null)
     }
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      { objectFields: ["rules"] }
+    )
 
     const dataBeforeUpdate = await pricingModule.listPriceSets(data.selector, {
       select: selects,

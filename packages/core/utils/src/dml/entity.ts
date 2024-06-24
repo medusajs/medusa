@@ -2,11 +2,11 @@ import { BelongsTo } from "./relations/belongs-to"
 import {
   EntityCascades,
   ExtractEntityRelations,
+  IDmlEntity,
+  IsDmlEntity,
   PropertyType,
   RelationshipType,
-} from "./types"
-
-const IsDmlEntity = Symbol("isDmlEntity")
+} from "@medusajs/types"
 
 /**
  * Dml entity is a representation of a DML model with a unique
@@ -14,8 +14,9 @@ const IsDmlEntity = Symbol("isDmlEntity")
  */
 export class DmlEntity<
   Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> {
-  [IsDmlEntity] = true
+> implements IDmlEntity<Schema>
+{
+  [IsDmlEntity]: true = true
 
   #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}

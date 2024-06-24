@@ -1,20 +1,20 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../../types/routing"
-import {
   deleteProductVariantsWorkflow,
   updateProductVariantsWorkflow,
 } from "@medusajs/core-flows"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../../types/routing"
 
+import { HttpTypes } from "@medusajs/types"
+import { refetchEntity } from "../../../../../utils/refetch-entity"
 import {
   remapKeysForProduct,
   remapKeysForVariant,
   remapProductResponse,
   remapVariantResponse,
 } from "../../../helpers"
-import { HttpTypes } from "@medusajs/types"
-import { refetchEntity } from "../../../../../utils/refetch-entity"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -54,6 +54,7 @@ export const POST = async (
     req.scope,
     remapKeysForProduct(req.remoteQueryConfig.fields ?? [])
   )
+
   res.status(200).json({ product: remapProductResponse(product) })
 }
 

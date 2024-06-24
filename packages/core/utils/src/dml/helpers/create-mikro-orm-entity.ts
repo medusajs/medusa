@@ -11,7 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils } from "../../bundles"
 import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
@@ -34,7 +33,8 @@ import type {
   PropertyType,
   RelationshipMetadata,
   RelationshipType,
-} from "../types"
+} from "@medusajs/types"
+import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -158,6 +158,18 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     field: PropertyMetadata
   ) {
+    /**
+     * Here we initialize nullable properties with a null value
+     */
+    if (field.nullable) {
+      Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
+        value: null,
+        configurable: true,
+        enumerable: true,
+        writable: true,
+      })
+    }
+
     if (SPECIAL_PROPERTIES[field.fieldName]) {
       SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)
       return
@@ -188,12 +200,12 @@ export function createMikrORMEntity() {
         ? PrimaryKey({
             columnType: "text",
             type: "string",
-            nullable: field.nullable,
+            nullable: false,
           })
         : Property({
             columnType: "text",
             type: "string",
-            nullable: field.nullable,
+            nullable: false,
           })
 
       IdDecorator(MikroORMEntity.prototype, field.fieldName)
@@ -578,6 +590,7 @@ export function createMikrORMEntity() {
    */
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
+
     const { name, schema, cascades } = entity.parse()
     const { modelName, tableName } = parseEntityName(name)
 
@@ -608,7 +621,7 @@ export function createMikrORMEntity() {
      * Converting class to a MikroORM entity
      */
     return Entity({ tableName })(
-      Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
+      Filter(mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
     ) as Infer<T>
   }
 }
