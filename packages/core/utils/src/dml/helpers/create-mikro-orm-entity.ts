@@ -386,7 +386,7 @@ export function createMikrORMEntity() {
         const originalEntity = eventArgs.changeSet?.originalEntity
         const currentEntity = eventArgs.changeSet?.entity
         if (
-          currentEntity[foreignKeyName] !== originalEntity?.[foreignKeyName]
+          currentEntity?.[foreignKeyName] !== originalEntity?.[foreignKeyName]
         ) {
           this[relationship.name] ??= this[foreignKeyName]
         }
@@ -714,13 +714,13 @@ export function createMikrORMEntity() {
 export const toMikroORMEntity = <T>(
   entity: T
 ): T extends DmlEntity<infer Schema> ? EntityConstructor<Schema> : T => {
+  let mikroOrmEntity: T | EntityConstructor<any> = entity
+
   if (DmlEntity.isDmlEntity(entity)) {
-    return createMikrORMEntity()(entity) as T extends DmlEntity<infer Schema>
-      ? EntityConstructor<Schema>
-      : T
+    mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return entity as T extends DmlEntity<infer Schema>
+  return mikroOrmEntity as T extends DmlEntity<infer Schema>
     ? EntityConstructor<Schema>
     : T
 }
@@ -730,6 +730,23 @@ export const toMikroORMEntity = <T>(
  * This action is idempotent if non of the entities are DmlEntity
  * @param entities
  */
-export const toMikroOrmEntities = function <T extends []>(entities: T) {
-  return entities.map(toMikroORMEntity)
+/**
+ * Takes any DmlEntity or mikro orm entities and return mikro orm entities only.
+ * This action is idempotent if non of the entities are DmlEntity
+ * @param entities
+ */
+export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
+  const entityBuilder = createMikrORMEntity()
+
+  return entities.map((entity) => {
+    if (DmlEntity.isDmlEntity(entity)) {
+      return entityBuilder(entity)
+    }
+
+    return entity
+  }) as {
+    [K in keyof T]: T[K] extends DmlEntity<any>
+      ? EntityConstructor<Infer<T[K]>>
+      : T[K]
+  }
 }

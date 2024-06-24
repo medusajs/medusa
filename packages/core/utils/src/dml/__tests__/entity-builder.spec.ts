@@ -4,6 +4,7 @@ import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
 import {
   createMikrORMEntity,
+  toMikroOrmEntities,
   toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
 import { EntityConstructor } from "@medusajs/types"
@@ -3824,9 +3825,7 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { mappedBy: "users" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const [User, Team] = toMikroOrmEntities([user, team, {}])
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
