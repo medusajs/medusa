@@ -28,8 +28,9 @@ export const createDefaultStoreStep = createStep(
             {
               // TODO: Revisit for a more sophisticated approach
               ...data.store,
-              supported_currency_codes: ["eur"],
-              default_currency_code: "eur",
+              supported_currencies: [
+                { currency_code: "eur", is_default: true },
+              ],
             },
           ],
         },
