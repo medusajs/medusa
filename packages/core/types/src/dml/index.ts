@@ -154,11 +154,11 @@ export type EntityCascades<Relationships> = {
 /**
  * Helper to infer the instance type of a IDmlEntity once converted as an Entity
  */
-export type InferTypeOf<T extends IIDmlEntity<any>> = InstanceType<Infer<T>>
+export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
 
 /**
  * Used in the module sdk internal service to infer propert entity typings from DML
  */
-export type ExtractEntityType<T extends any> = T extends IIDmlEntity<any>
+export type ExtractEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
