@@ -165,30 +165,12 @@ export function createMikrORMEntity() {
      * Here we initialize nullable properties with a null value
      */
     if (field.nullable) {
-      const nullableOptions = {
+      Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
         value: null,
         configurable: true,
         enumerable: true,
         writable: true,
-      }
-
-      Object.defineProperty(
-        MikroORMEntity.prototype,
-        field.fieldName,
-        nullableOptions
-      )
-
-      /**
-       * If dataType is a bigNumber, the nullable clause gets passed
-       * onto the bigNumber's raw field as well
-       */
-      if (field.dataType.name === "bigNumber") {
-        Object.defineProperty(
-          MikroORMEntity.prototype,
-          `raw_${field.fieldName}`,
-          nullableOptions
-        )
-      }
+      })
     }
 
     if (SPECIAL_PROPERTIES[field.fieldName]) {
