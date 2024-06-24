@@ -43,7 +43,7 @@ const TagsOperationDescriptionSectionResponses = ({
                       />
                     </>
                   )}
-                  {code !== "200" && code !== "201" && (
+                  {!code.startsWith("20") && (
                     <Details
                       summaryElm={
                         <DetailsSummary
@@ -72,12 +72,8 @@ const TagsOperationDescriptionSectionResponses = ({
                   title={`${code} ${response.description}`}
                   subtitle={"Empty response"}
                   badge={
-                    <Badge
-                      variant={
-                        code === "200" || code === "201" ? "green" : "red"
-                      }
-                    >
-                      {code === "200" || code === "201" ? "Success" : "Error"}
+                    <Badge variant={code.startsWith("20") ? "green" : "red"}>
+                      {code.startsWith("20") ? "Success" : "Error"}
                     </Badge>
                   }
                   expandable={false}
