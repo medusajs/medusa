@@ -85,7 +85,42 @@
     "clearAll": "Clear all",
     "apply": "Apply",
     "add": "Add",
-    "select": "Select"
+    "select": "Select",
+    "logout": "Logout"
+  },
+  "app": {
+    "search": {
+      "allAreas": "All areas",
+      "navigation": "Navigation",
+      "openResult": "Open result",
+      "placeholder": "Jump to or find anything..."
+    },
+    "keyboardShortcuts": {
+      "pageShortcut": "Jump to",
+      "settingShortcut": "Settings",
+      "commandShortcut": "Commands",
+      "goToOrders": "Go to orders",
+      "goToProducts": "Go to products",
+      "goToCollections": "Go to collections",
+      "goToCategories": "Go to categories",
+      "goToCustomers": "Go to customers",
+      "goToCustomerGroups": "Go to customer groups",
+      "goToInventory": "Go to inventory",
+      "goToReservations": "Go to reservations",
+      "goToPriceLists": "Go to price lists",
+      "goToPromotions": "Go to promotions",
+      "goToCampaigns": "Go to campaigns",
+      "goToStore": "Go to store",
+      "goToUsers": "Go to users",
+      "goToRegions": "Go to regions",
+      "goToTaxRegions": "Go to tax region",
+      "goToSalesChannels": "Go to sales channels",
+      "goToProductTypes": "Go to product types",
+      "goToLocations": "Go to locations",
+      "goToPublishableApiKeys": "Go to publishable API keys",
+      "goToSecretApiKeys": "Go to secret API keys",
+      "goToWorkflows": "Go to workflows"
+    }
   },
   "filters": {
     "date": {
