@@ -363,12 +363,15 @@ export const createReturnOrderWorkflow = createWorkflow(
       createRemoteLinkStep(link)
     )
 
-    const receiveItems = prepareReceiveItems({
-      receiveNow: input.receive_now ?? false,
-      returnId: returnCreated.id,
-      items: order.items!,
-      createdBy: input.created_by!,
-    })
+    const receiveItems = transform(
+      {
+        receiveNow: input.receive_now ?? false,
+        returnId: returnCreated.id,
+        items: order.items!,
+        createdBy: input.created_by!,
+      },
+      prepareReceiveItems
+    )
     receiveReturnStep(receiveItems)
   }
 )
