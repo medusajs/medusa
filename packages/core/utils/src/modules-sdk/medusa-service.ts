@@ -71,7 +71,7 @@ type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
     singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
     plural: T[Key] extends { plural: string }
       ? T[Key]["plural"]
-      : Pluralize<Key>
+      : Pluralize<Key & string>
   }
 }
 
