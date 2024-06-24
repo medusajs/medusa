@@ -5,6 +5,7 @@ import { createDatabase, dropDatabase } from "pg-god"
 import { mikroOrmSerializer, TSMigrationGenerator } from "../../dal"
 import { FileSystem } from "../../common"
 import { join } from "path"
+import { EntityConstructor } from "@medusajs/types"
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -22,7 +23,10 @@ describe("manyToMany - manyToMany", () => {
   const dbName = "EntityBuilder-ManyToMany"
 
   let orm!: MikroORM
-  let Team, User, Squad
+
+  let Team: EntityConstructor<any>,
+    User: EntityConstructor<any>,
+    Squad: EntityConstructor<any>
 
   afterAll(() => {
     fileSystem.cleanup()
@@ -87,31 +91,31 @@ describe("manyToMany - manyToMany", () => {
   it(`should handle the relation properly`, async () => {
     let manager = orm.em.fork()
 
-    const user1 = manager.create<typeof User>("User", {
+    const user1 = manager.create(User, {
       username: "User 1",
     })
-    const user2 = manager.create<typeof User>("User", {
+    const user2 = manager.create(User, {
       username: "User 2",
     })
 
     await manager.persistAndFlush([user1, user2])
     manager = orm.em.fork()
 
-    const team1 = manager.create<typeof Team>("Team", {
+    const team1 = manager.create(Team, {
       name: "Team 1",
     })
-    const team2 = manager.create<typeof Team>("Team", {
+    const team2 = manager.create(Team, {
       name: "Team 2",
     })
 
     await manager.persistAndFlush([team1, team2])
     manager = orm.em.fork()
 
-    const squad1 = manager.create<typeof Squad>(Squad, {
+    const squad1 = manager.create(Squad, {
       user_id: user1.id,
       squad_id: team1.id,
     })
-    const squad2 = manager.create<typeof Squad>(Squad, {
+    const squad2 = manager.create(Squad, {
       user_id: user2.id,
       squad_id: team1.id,
     })
@@ -129,7 +133,7 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedSquad = mikroOrmSerializer<typeof Team>(team)
+    const serializedSquad = mikroOrmSerializer<InstanceType<typeof Team>>(team)
 
     expect(serializedSquad.users).toHaveLength(2)
     expect(serializedSquad).toEqual({
@@ -166,7 +170,7 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedUser = mikroOrmSerializer<typeof User>(user)
+    const serializedUser = mikroOrmSerializer<InstanceType<typeof User>>(user)
 
     expect(serializedUser.squads).toHaveLength(1)
     expect(serializedUser).toEqual({

@@ -744,8 +744,6 @@ export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
 
     return entity
   }) as {
-    [K in keyof T]: T[K] extends DmlEntity<any>
-      ? EntityConstructor<Infer<T[K]>>
-      : T[K]
+    [K in keyof T]: T[K] extends DmlEntity<any> ? EntityConstructor<T[K]> : T[K]
   }
 }
