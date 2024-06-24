@@ -1,3 +1,4 @@
+import { EntityConstructor } from "@medusajs/types"
 import { MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
@@ -7,7 +8,6 @@ import {
   toMikroOrmEntities,
   toMikroORMEntity,
 } from "../helpers/create-mikro-orm-entity"
-import { EntityConstructor } from "@medusajs/types"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -1147,7 +1147,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | primaryKey", () => {
     test("should create both id fields and primaryKey fields", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.id({ primaryKey: false }),
         email: model.text().primaryKey(),
