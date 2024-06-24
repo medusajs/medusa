@@ -109,7 +109,7 @@ type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
   : keyof EntitiesConfig
 
 export type AbstractModuleService<
-  TEntitiesDtoConfig extends EntitiesConfigTemplate
+  TEntitiesDtoConfig extends Record<string, any>
 > = {
   [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
     TEntitiesDtoConfig,
