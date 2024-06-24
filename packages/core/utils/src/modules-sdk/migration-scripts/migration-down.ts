@@ -4,6 +4,7 @@ import { EntitySchema } from "@mikro-orm/core"
 import { upperCaseFirst } from "../../common"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { DmlEntity, toMikroORMEntity } from "../../dml"
 
 /**
  * Utility function to build a migration script that will revert the migrations.
@@ -34,7 +35,13 @@ export function buildRevertMigrationScript({
     logger ??= console as unknown as Logger
 
     const dbData = loadDatabaseConfig(moduleName, options)!
-    const entities = Object.values(models) as unknown as EntitySchema[]
+    const entities = Object.values(models).map((model) => {
+      if (DmlEntity.isDmlEntity(model)) {
+        return toMikroORMEntity(model)
+      }
+
+      return model
+    }) as unknown as EntitySchema[]
 
     const orm = await mikroOrmCreateConnection(
       dbData,

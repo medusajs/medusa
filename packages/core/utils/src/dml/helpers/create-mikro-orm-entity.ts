@@ -21,7 +21,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils } from "../../bundles"
 import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
@@ -31,7 +30,10 @@ import {
   toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
-import { MikroOrmBigNumberProperty } from "../../dal"
+import {
+  MikroOrmBigNumberProperty,
+  mikroOrmSoftDeletableFilterOptions,
+} from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
 import { HasOne } from "../relations/has-one"
@@ -652,7 +654,7 @@ export function createMikrORMEntity() {
      * Converting class to a MikroORM entity
      */
     return Entity({ tableName })(
-      Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
+      Filter(mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
     ) as Infer<T>
   }
 }
