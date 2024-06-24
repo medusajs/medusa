@@ -26,7 +26,17 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transform: { "^.+\\.[jt]s$": ["@swc/jest"] },
+  transform: {
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
+      },
+    ],
+  },
   setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
   setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }
