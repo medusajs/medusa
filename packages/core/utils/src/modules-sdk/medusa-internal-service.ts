@@ -537,7 +537,7 @@ export function MedusaInternalService<TContainer extends object = object>(
       },
       @MedusaContext() sharedContext: Context = {}
     ): Promise<{
-      entities: ExtractEntityType<TEntity> | TEntity[]
+      entities: ExtractEntityType<TEntity> | ExtractEntityType<TEntity>[]
       performedActions: PerformedActions
     }> {
       const data_ = Array.isArray(data) ? data : [data]
