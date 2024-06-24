@@ -69,12 +69,6 @@ export class ProductCollection extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     example: summer-collection
- *   products:
- *     description: The details of the products that belong to this product collection.
- *     type: array
- *     x-expandable: "products"
- *     items:
- *       $ref: "#/components/schemas/Product"
  *   created_at:
  *     description: The date with timezone at which the resource was created.
  *     type: string
