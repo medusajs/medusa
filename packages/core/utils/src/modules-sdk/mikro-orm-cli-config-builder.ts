@@ -1,8 +1,12 @@
 import { MikroORMOptions } from "@mikro-orm/core/utils/Configuration"
 import { DmlEntity, toMikroORMEntity } from "../dml"
 import { TSMigrationGenerator } from "../dal"
-import { AnyEntity, EntityClassGroup, EntitySchema } from "@mikro-orm/core"
-import { EntityClass } from "@mikro-orm/core/typings"
+import type {
+  AnyEntity,
+  EntityClass,
+  EntityClassGroup,
+} from "@mikro-orm/core/typings"
+import type { EntitySchema } from "@mikro-orm/core/metadata/EntitySchema"
 
 type Options = Partial<MikroORMOptions> & {
   entities: (
