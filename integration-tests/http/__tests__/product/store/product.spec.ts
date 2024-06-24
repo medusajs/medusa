@@ -12,6 +12,8 @@ import {
 import { getProductFixture } from "../../../../helpers/fixtures"
 import { createDefaultRuleTypes } from "../../../../modules/helpers/create-default-rule-types"
 
+jest.setTimeout(30000)
+
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer }) => {
     let store
@@ -1202,7 +1204,7 @@ medusaIntegrationTestRunner({
         })
       })
 
-      it.only("should get product with prices when context is present", async () => {
+      it("should get product with prices when context is present", async () => {
         const region = (
           await api.post(
             "/admin/regions",

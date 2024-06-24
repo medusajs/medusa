@@ -1,7 +1,7 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
-  adminHeaders,
   createAdminUser,
+  adminHeaders,
 } from "../../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
