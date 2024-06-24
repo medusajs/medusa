@@ -22,7 +22,7 @@ const TagsOperationDescriptionSectionResponses = ({
             <Fragment key={index}>
               {response.content && (
                 <>
-                  {(code.startsWith("20")) && (
+                  {code.startsWith("20") && (
                     <>
                       <DetailsSummary
                         title={`${code} ${response.description}`}
