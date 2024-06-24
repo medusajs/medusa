@@ -11,7 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DALUtils } from "../../bundles"
 import {
   camelToSnakeCase,
   createPsqlIndexStatementHelper,
@@ -35,6 +34,7 @@ import type {
   RelationshipMetadata,
   RelationshipType,
 } from "@medusajs/types"
+import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -627,9 +627,29 @@ export function createMikrORMEntity() {
      * Converting class to a MikroORM entity
      */
     return Entity({ tableName })(
-      Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
+      Filter(mikroOrmSoftDeletableFilterOptions)(MikroORMEntity)
     ) as Infer<T>
   }
 }
 
-export const toMikroORMEntity = createMikrORMEntity()
+/**
+ * Takes a DML entity and returns a Mikro ORM entity otherwise
+ * return the input idempotently
+ * @param entity
+ */
+export const toMikroORMEntity = (entity: any) => {
+  if (DmlEntity.isDmlEntity(entity)) {
+    return createMikrORMEntity()(entity)
+  }
+
+  return entity
+}
+
+/**
+ * Takes any DmlEntity or mikro orm entities and return mikro orm entities only.
+ * This action is idempotent if non of the entities are DmlEntity
+ * @param entities
+ */
+export const toMikroOrmEntities = function (entities: any[]) {
+  return entities.map(toMikroORMEntity)
+}

@@ -106,6 +106,7 @@ export const AdminCreateVariantPrice = z.object({
   amount: z.number(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 // TODO: Add support for rules
@@ -118,6 +119,7 @@ export const AdminUpdateVariantPrice = z.object({
   amount: z.number().optional(),
   min_quantity: z.number().nullish(),
   max_quantity: z.number().nullish(),
+  rules: z.record(z.string(), z.string()).optional(),
 })
 
 export type AdminCreateProductTypeType = z.infer<typeof AdminCreateProductType>

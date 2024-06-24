@@ -5,7 +5,6 @@ import { Context } from "../shared-context"
 import {
   AddPriceListPricesDTO,
   AddPricesDTO,
-  AddRulesDTO,
   CalculatedPriceSet,
   CreatePriceListDTO,
   CreatePriceRuleDTO,
@@ -25,7 +24,6 @@ import {
   PricingContext,
   PricingFilters,
   RemovePriceListRulesDTO,
-  RemovePriceSetRulesDTO,
   RuleTypeDTO,
   SetPriceListRulesDTO,
   UpdatePriceListDTO,
@@ -482,26 +480,6 @@ export interface IPricingModuleService extends IModuleService {
   ): Promise<PriceSetDTO[]>
 
   /**
-   * This method remove rules from a price set.
-   *
-   * @param {RemovePriceSetRulesDTO[]} data - The rules to remove per price set.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when rules are successfully removed.
-   *
-   * @example
-   * await pricingModuleService.removeRules([
-   *   {
-   *     id: "pset_123",
-   *     rules: ["region_id"],
-   *   },
-   * ])
-   */
-  removeRules(
-    data: RemovePriceSetRulesDTO[],
-    sharedContext?: Context
-  ): Promise<void>
-
-  /**
    * This method deletes price sets by their IDs.
    *
    * @param {string[]} ids - The IDs of the price sets to delete.
@@ -614,54 +592,6 @@ export interface IPricingModuleService extends IModuleService {
     data: AddPricesDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
-
-  /**
-   * This method adds rules to a price set.
-   *
-   * @param {AddRulesDTO} data - The data defining the price set to add the rules to, along with the rules to add.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO>} The price set that the rules were added to.
-   *
-   * @example
-   * const priceSet = await pricingModuleService.addRules({
-   *   priceSetId: "pset_123",
-   *   rules: [
-   *     {
-   *       attribute: "region_id",
-   *     },
-   *   ],
-   * })
-   */
-  addRules(data: AddRulesDTO, sharedContext?: Context): Promise<PriceSetDTO>
-
-  /**
-   * This method adds rules to multiple price sets.
-   *
-   * @param {AddRulesDTO[]} data - The data defining the rules to add per price set.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<PriceSetDTO[]>} The list of the price sets that the rules were added to.
-   *
-   * @example
-   * const priceSets = await pricingModuleService.addRules([
-   *   {
-   *     priceSetId: "pset_123",
-   *     rules: [
-   *       {
-   *         attribute: "region_id",
-   *       },
-   *     ],
-   *   },
-   *   {
-   *     priceSetId: "pset_321",
-   *     rules: [
-   *       {
-   *         attribute: "customer_group_id",
-   *       },
-   *     ],
-   *   },
-   * ])
-   */
-  addRules(data: AddRulesDTO[], sharedContext?: Context): Promise<PriceSetDTO[]>
 
   /**
    * This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.

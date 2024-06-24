@@ -1227,6 +1227,64 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("creates a product variant with price rules", async () => {
+          await api.post(
+            `/admin/pricing/rule-types`,
+            {
+              name: "Region",
+              rule_attribute: "region_id",
+              default_priority: 1,
+            },
+            adminHeaders
+          )
+
+          const response = await api.post(
+            "/admin/products",
+            {
+              title: "Test create",
+              variants: [
+                {
+                  title: "Price with rules",
+                  prices: [
+                    {
+                      currency_code: "usd",
+                      amount: 100,
+                      rules: { region_id: "eur" },
+                    },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+
+          const priceIdSelector = /^price_*/
+
+          expect(response.status).toEqual(200)
+          expect(response.data.product).toEqual(
+            expect.objectContaining({
+              id: expect.stringMatching(/^prod_*/),
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.stringMatching(/^variant_*/),
+                  title: "Price with rules",
+                  prices: expect.arrayContaining([
+                    expect.objectContaining({
+                      id: expect.stringMatching(priceIdSelector),
+                      currency_code: "usd",
+                      amount: 100,
+                      created_at: expect.any(String),
+                      updated_at: expect.any(String),
+                      variant_id: expect.stringMatching(/^variant_*/),
+                      rules: { region_id: "eur" },
+                    }),
+                  ]),
+                }),
+              ]),
+            })
+          )
+        })
+
         it("creates a product that is not discountable", async () => {
           const payload = {
             title: "Test",
