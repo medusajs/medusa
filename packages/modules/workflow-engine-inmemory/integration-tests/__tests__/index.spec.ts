@@ -4,7 +4,8 @@ import {
   IWorkflowEngineService,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { TransactionHandlerType } from "@medusajs/utils"
+import { Modules, TransactionHandlerType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
