@@ -18,11 +18,12 @@ const TagsOperationDescriptionSectionResponses = ({
         className={clsx("[&>details:not(:first-of-type)>summary]:border-t-0")}
       >
         {Object.entries(responses).map(([code, response], index) => {
+          const successCode = code.startsWith("20")
           return (
             <Fragment key={index}>
               {response.content && (
                 <>
-                  {code.startsWith("20") && (
+                  {successCode && (
                     <>
                       <DetailsSummary
                         title={`${code} ${response.description}`}
@@ -43,7 +44,7 @@ const TagsOperationDescriptionSectionResponses = ({
                       />
                     </>
                   )}
-                  {!code.startsWith("20") && (
+                  {!successCode && (
                     <Details
                       summaryElm={
                         <DetailsSummary
@@ -72,8 +73,8 @@ const TagsOperationDescriptionSectionResponses = ({
                   title={`${code} ${response.description}`}
                   subtitle={"Empty response"}
                   badge={
-                    <Badge variant={code.startsWith("20") ? "green" : "red"}>
-                      {code.startsWith("20") ? "Success" : "Error"}
+                    <Badge variant={successCode ? "green" : "red"}>
+                      {successCode ? "Success" : "Error"}
                     </Badge>
                   }
                   expandable={false}
