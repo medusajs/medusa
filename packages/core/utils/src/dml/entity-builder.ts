@@ -64,7 +64,7 @@ export class EntityBuilder {
       created_at: new DateTimeProperty(),
       updated_at: new DateTimeProperty(),
       deleted_at: new DateTimeProperty().nullable(),
-    } as any)
+    })
   }
 
   /**
