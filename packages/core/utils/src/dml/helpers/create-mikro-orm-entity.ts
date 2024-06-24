@@ -1,7 +1,9 @@
 import {
   BeforeCreate,
+  BeforeUpdate,
   Entity,
   Enum,
+  EventArgs,
   Filter,
   ManyToMany,
   ManyToOne,
@@ -347,6 +349,36 @@ export function createMikrORMEntity() {
       )
     }
 
+    function applyForeignKeyAssignationHooks(foreignKeyName: string) {
+      /**
+       * Hook to handle foreign key assignation
+       */
+      MikroORMEntity.prototype.assignRelationFromForeignKeyValue = function (
+        eventArgs: EventArgs<any>
+      ) {
+        const originalEntity = eventArgs.changeSet?.originalEntity
+        const currentEntity = eventArgs.changeSet?.entity
+        if (
+          currentEntity[foreignKeyName] !== originalEntity?.[foreignKeyName]
+        ) {
+          this[relationship.name] ??= this[foreignKeyName]
+        }
+      }
+
+      /**
+       * Execute hook via lifecycle decorators
+       */
+      BeforeCreate()(
+        MikroORMEntity.prototype,
+        "assignRelationFromForeignKeyValue"
+      )
+      OnInit()(MikroORMEntity.prototype, "assignRelationFromForeignKeyValue")
+      BeforeUpdate()(
+        MikroORMEntity.prototype,
+        "assignRelationFromForeignKeyValue"
+      )
+    }
+
     /**
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
@@ -354,13 +386,23 @@ export function createMikrORMEntity() {
       otherSideRelation instanceof HasMany ||
       otherSideRelation instanceof DmlManyToMany
     ) {
+      const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
+
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
-        fieldName: camelToSnakeCase(`${relationship.name}Id`),
+        fieldName: foreignKeyName,
         nullable: relationship.nullable,
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}`))
+
+      Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      })
+
+      applyForeignKeyAssignationHooks(foreignKeyName)
       return
     }
 
@@ -368,6 +410,8 @@ export function createMikrORMEntity() {
      * Otherside is a has one. Hence we should defined a OneToOne
      */
     if (otherSideRelation instanceof HasOne) {
+      const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
+
       OneToOne({
         entity: relatedModelName,
         nullable: relationship.nullable,
@@ -375,6 +419,14 @@ export function createMikrORMEntity() {
         owner: true,
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, relationship.name)
+
+      Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
+        enumerable: true,
+        configurable: true,
+        writable: true,
+      })
+
+      applyForeignKeyAssignationHooks(foreignKeyName)
       return
     }
 

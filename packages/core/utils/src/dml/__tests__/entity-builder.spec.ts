@@ -2255,17 +2255,10 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "m:1",
-          name: "user",
-          entity: "User",
-          persist: false,
-        },
-        user_id: {
           columnType: "text",
           entity: "User",
           fieldName: "user_id",
-          mapToPk: true,
-          name: "user_id",
+          name: "user",
           nullable: false,
           reference: "m:1",
           onDelete: "cascade",
