@@ -29,7 +29,7 @@ export function loadModels(basePath: string) {
         try {
           const required = require(filePath)
           return Object.values(required).filter(
-            (resource) => typeof resource === "function" && !!resource.name
+            (resource: any) => !!resource.name
           )
         } catch (e) {}
       }
