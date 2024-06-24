@@ -1,4 +1,3 @@
-import { BelongsTo } from "./relations/belongs-to"
 import {
   EntityCascades,
   ExtractEntityRelations,
@@ -7,15 +6,14 @@ import {
   PropertyType,
   RelationshipType,
 } from "@medusajs/types"
+import { DMLSchema } from "./entity-builder"
+import { BelongsTo } from "./relations/belongs-to"
 
 /**
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
  */
-export class DmlEntity<
-  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> implements IDmlEntity<Schema>
-{
+export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   [IsDmlEntity]: true = true
 
   #cascades: EntityCascades<string[]> = {}
