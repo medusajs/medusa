@@ -1,4 +1,5 @@
 import {
+  BigNumberInput,
   CreateOrderShippingMethodDTO,
   FulfillmentWorkflow,
   OrderDTO,
@@ -7,25 +8,26 @@ import {
   WithCalculatedPrice,
 } from "@medusajs/types"
 import {
-  arrayDifference,
   ContainerRegistrationKeys,
-  isDefined,
   MathBN,
   MedusaError,
   Modules,
+  arrayDifference,
+  isDefined,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
+  WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
-  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createReturnFulfillmentWorkflow } from "../../fulfillment"
 import { updateOrderTaxLinesStep } from "../steps"
 import { createReturnStep } from "../steps/create-return"
+import { receiveReturnStep } from "../steps/receive-return"
 import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
@@ -136,6 +138,37 @@ function validateCustomRefundAmount({
       MedusaError.Types.INVALID_DATA,
       `Refund amount cannot be greater than order total.`
     )
+  }
+}
+
+function prepareReceiveItems({
+  receiveNow,
+  returnId,
+  items,
+  createdBy,
+}: {
+  receiveNow: boolean
+  returnId: string
+  items: {
+    id: string
+    quantity: BigNumberInput
+  }[]
+  createdBy?: string
+}) {
+  if (!receiveNow) {
+    return {
+      return_id: returnId,
+      items: [],
+    }
+  }
+
+  return {
+    return_id: returnId,
+    items: (items ?? []).map((i) => ({
+      id: i.id,
+      quantity: i.quantity,
+    })),
+    created_by: createdBy,
   }
 }
 
@@ -316,7 +349,7 @@ export const createReturnOrderWorkflow = createWorkflow(
       }
     )
 
-    parallelize(
+    const [returnCreated] = parallelize(
       createReturnStep({
         order_id: input.order_id,
         items: input.items,
@@ -329,5 +362,13 @@ export const createReturnOrderWorkflow = createWorkflow(
       }),
       createRemoteLinkStep(link)
     )
+
+    const receiveItems = prepareReceiveItems({
+      receiveNow: input.receive_now ?? false,
+      returnId: returnCreated.id,
+      items: order.items!,
+      createdBy: input.created_by!,
+    })
+    receiveReturnStep(receiveItems)
   }
 )
