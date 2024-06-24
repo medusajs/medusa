@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -35,16 +33,6 @@
         },
         "automatic_taxes": {
           "name": "automatic_taxes",
-          "type": "boolean",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "true",
-          "mappedType": "boolean"
-        },
-        "is_tax_inclusive": {
-          "name": "is_tax_inclusive",
           "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
@@ -99,9 +87,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_region_deleted_at",
           "primary": false,
@@ -109,9 +95,7 @@
         },
         {
           "keyName": "region_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -182,9 +166,7 @@
       "indexes": [
         {
           "keyName": "region_country_pkey",
-          "columnNames": [
-            "iso_2"
-          ],
+          "columnNames": ["iso_2"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -194,13 +176,9 @@
       "foreignKeys": {
         "region_country_region_id_foreign": {
           "constraintName": "region_country_region_id_foreign",
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "localTableName": "public.region_country",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.region",
           "deleteRule": "set null",
           "updateRule": "cascade"

@@ -35,9 +35,6 @@ export default class Region {
   @Property({ columnType: "boolean" })
   automatic_taxes: boolean = true
 
-  @Property({ columnType: "boolean" })
-  is_tax_inclusive: boolean = true
-
   @OneToMany(() => Country, (country) => country.region)
   countries = new Collection<Country>(this)
 

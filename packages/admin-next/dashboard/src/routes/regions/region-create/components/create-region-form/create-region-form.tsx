@@ -45,7 +45,6 @@ const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string().min(2, "Select a currency"),
   automatic_taxes: zod.boolean(),
-  includes_tax: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
   payment_providers: zod.array(zod.string()).min(1),
 })
@@ -66,7 +65,6 @@ export const CreateRegionForm = ({
       name: "",
       currency_code: "",
       automatic_taxes: true,
-      includes_tax: true,
       countries: [],
       payment_providers: [],
     },
@@ -91,7 +89,6 @@ export const CreateRegionForm = ({
         currency_code: values.currency_code,
         payment_providers: values.payment_providers,
         automatic_taxes: values.automatic_taxes,
-        is_tax_inclusive: values.includes_tax,
       },
       {
         onSuccess: ({ region }) => {
@@ -307,34 +304,6 @@ export const CreateRegionForm = ({
                     }}
                   />
 
-                  <Form.Field
-                    control={form.control}
-                    name="includes_tax"
-                    render={({ field: { value, onChange, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <div>
-                            <div className="flex items-start justify-between">
-                              <Form.Label>
-                                {t("fields.taxInclusivePricing")}
-                              </Form.Label>
-                              <Form.Control>
-                                <Switch
-                                  {...field}
-                                  checked={value}
-                                  onCheckedChange={onChange}
-                                />
-                              </Form.Control>
-                            </div>
-                            <Form.Hint>
-                              {t("regions.taxInclusiveHint")}
-                            </Form.Hint>
-                            <Form.ErrorMessage />
-                          </div>
-                        </Form.Item>
-                      )
-                    }}
-                  />
                   <div className="bg-ui-border-base h-px w-full" />
                   <div className="flex flex-col gap-y-4">
                     <div>

@@ -25,10 +25,6 @@ export interface RegionDTO {
    */
   automatic_taxes: boolean
   /**
-   * Setting to indicate whether the prices specified for products and shipping are tax inclusive.
-   */
-  is_tax_inclusive?: boolean
-  /**
    * The countries of the region.
    */
   countries: RegionCountryDTO[]
