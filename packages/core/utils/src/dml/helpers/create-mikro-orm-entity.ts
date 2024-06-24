@@ -10,10 +10,8 @@ import type {
 } from "@medusajs/types"
 import {
   BeforeCreate,
-  BeforeUpdate,
   Entity,
   Enum,
-  EventArgs,
   Filter,
   ManyToMany,
   ManyToOne,
@@ -377,33 +375,20 @@ export function createMikrORMEntity() {
     }
 
     function applyForeignKeyAssignationHooks(foreignKeyName: string) {
+      const hookName = `assignRelationFromForeignKeyValue${foreignKeyName}`
       /**
        * Hook to handle foreign key assignation
        */
-      MikroORMEntity.prototype.assignRelationFromForeignKeyValue = function (
-        eventArgs: EventArgs<any>
-      ) {
-        const originalEntity = eventArgs.changeSet?.originalEntity
-        const currentEntity = eventArgs.changeSet?.entity
-        if (
-          currentEntity?.[foreignKeyName] !== originalEntity?.[foreignKeyName]
-        ) {
-          this[relationship.name] ??= this[foreignKeyName]
-        }
+      MikroORMEntity.prototype[hookName] = function () {
+        this[relationship.name] ??= this[foreignKeyName]
+        this[foreignKeyName] ??= this[relationship.name]?.id
       }
 
       /**
        * Execute hook via lifecycle decorators
        */
-      BeforeCreate()(
-        MikroORMEntity.prototype,
-        "assignRelationFromForeignKeyValue"
-      )
-      OnInit()(MikroORMEntity.prototype, "assignRelationFromForeignKeyValue")
-      BeforeUpdate()(
-        MikroORMEntity.prototype,
-        "assignRelationFromForeignKeyValue"
-      )
+      BeforeCreate()(MikroORMEntity.prototype, hookName)
+      OnInit()(MikroORMEntity.prototype, hookName)
     }
 
     /**
@@ -418,16 +403,26 @@ export function createMikrORMEntity() {
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
-        fieldName: foreignKeyName,
+        mapToPk: true,
+        fieldName: camelToSnakeCase(`${relationship.name}Id`),
         nullable: relationship.nullable,
         onDelete: shouldCascade ? "cascade" : undefined,
-      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}`))
+      })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
-      Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-      })
+      if (otherSideRelation instanceof DmlManyToMany) {
+        // Fix many to many foreign key usage
+        Property({
+          columnType: "text",
+          type: "string",
+          persist: false,
+        } as any)(MikroORMEntity.prototype, relationship.name)
+      } else {
+        // HasMany case
+        ManyToOne({
+          entity: relatedModelName,
+          persist: false,
+        })(MikroORMEntity.prototype, relationship.name)
+      }
 
       applyForeignKeyAssignationHooks(foreignKeyName)
       return
@@ -447,11 +442,10 @@ export function createMikrORMEntity() {
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, relationship.name)
 
-      Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
-        enumerable: true,
-        configurable: true,
-        writable: true,
-      })
+      Property({ type: "string", columnType: "text", persist: false })(
+        MikroORMEntity.prototype,
+        foreignKeyName
+      )
 
       applyForeignKeyAssignationHooks(foreignKeyName)
       return
