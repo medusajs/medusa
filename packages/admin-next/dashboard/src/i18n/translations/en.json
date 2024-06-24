@@ -848,7 +848,6 @@
       "shippingProfilesDesc": "Shipping rules for different types of products",
       "shippingOptionTypes": "Shipping Option Types",
       "shippingOptionTypesDesc": "Group options based on characteristic"
-
     },
     "salesChannels": {
       "header": "Sales Channels",
@@ -1422,6 +1421,7 @@
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
+    "automaticTaxesHint": "When enabled taxes will only be calculated at checkout based on the shipping address.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
     "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
@@ -1791,6 +1791,7 @@
     "inventory": "Inventory",
     "optional": "Optional",
     "note": "Note",
+    "automaticTaxes": "Automatic Taxes",
     "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",

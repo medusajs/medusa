@@ -42,7 +42,7 @@
         },
         "decimal_digits": {
           "name": "decimal_digits",
-          "type": "int",
+          "type": "integer",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
@@ -89,6 +89,16 @@
           "nullable": false,
           "length": 6,
           "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
           "mappedType": "datetime"
         }
       },

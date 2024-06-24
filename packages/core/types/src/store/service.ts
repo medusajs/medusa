@@ -20,13 +20,11 @@ export interface IStoreModuleService extends IModuleService {
    * const stores = await storeModuleService.createStores([
    *   {
    *     name: "Acme",
-   *     supported_currency_codes: ["usd", "eur"],
-   *     default_currency_code: "usd",
+   *     supported_currencies: [{ currency_code: "usd", is_default: true }, { currency_code: "eur" }],
    *   },
    *   {
    *     name: "Acme 2",
-   *     supported_currency_codes: ["usd"],
-   *     default_currency_code: "usd",
+   *     supported_currencies: [{currency_code: "usd", is_default: true}],
    *   },
    * ])
    */
@@ -45,8 +43,7 @@ export interface IStoreModuleService extends IModuleService {
    * @example
    * const store = await storeModuleService.createStores({
    *   name: "Acme",
-   *   supported_currency_codes: ["usd", "eur"],
-   *   default_currency_code: "usd",
+   *   supported_currencies: [{ currency_code: "usd", is_default: true }, { currency_code: "eur" }],
    * })
    */
   createStores(data: CreateStoreDTO, sharedContext?: Context): Promise<StoreDTO>
@@ -66,8 +63,7 @@ export interface IStoreModuleService extends IModuleService {
    *   },
    *   {
    *     name: "Acme 2",
-   *     supported_currency_codes: ["usd"],
-   *     default_currency_code: "usd",
+   *     supported_currencies: [{currency_code: "usd", is_default: true}],
    *   },
    * ])
    */
@@ -124,7 +120,6 @@ export interface IStoreModuleService extends IModuleService {
    *     name: ["Acme"],
    *   },
    *   {
-   *     default_currency_code: "usd",
    *   }
    * )
    */

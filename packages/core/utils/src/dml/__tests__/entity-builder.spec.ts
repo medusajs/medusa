@@ -1145,6 +1145,109 @@ describe("Entity builder", () => {
     })
   })
 
+  describe("Entity builder | primaryKey", () => {
+    test("should create both id fields and primaryKey fields", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.id({ primaryKey: false }),
+        email: model.text().primaryKey(),
+        account_id: model.number().primaryKey(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        email: string
+        account_id: number
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          primary: true,
+          reference: "scalar",
+          type: "string",
+        },
+        account_id: {
+          columnType: "integer",
+          name: "account_id",
+          nullable: false,
+          primary: true,
+          reference: "scalar",
+          type: "number",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      expect(userInstance.id).toBeDefined()
+    })
+  })
+
   describe("Entity builder | indexes", () => {
     test("define index on a field", () => {
       const user = model.define("user", {
