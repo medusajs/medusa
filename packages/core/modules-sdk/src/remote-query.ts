@@ -40,6 +40,9 @@ export class RemoteQuery {
     }
 
     for (const mod of modulesLoaded || []) {
+      if (mod.__definition.key === "currency") {
+        console.log("mod -- ", mod)
+      }
       if (!mod.__definition.isQueryable) {
         continue
       }
@@ -50,6 +53,11 @@ export class RemoteQuery {
         throw new Error(
           `Duplicated instance of module ${serviceName} is not allowed.`
         )
+      }
+
+      if (mod.__definition.key === "currency") {
+        console.log("serviceName -- ", serviceName)
+        console.log("mod.__joinerConfig -- ", mod.__joinerConfig)
       }
 
       this.modulesMap.set(serviceName, mod)
