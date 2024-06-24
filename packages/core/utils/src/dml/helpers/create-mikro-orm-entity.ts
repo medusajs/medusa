@@ -730,11 +730,6 @@ export const toMikroORMEntity = <T>(
  * This action is idempotent if non of the entities are DmlEntity
  * @param entities
  */
-/**
- * Takes any DmlEntity or mikro orm entities and return mikro orm entities only.
- * This action is idempotent if non of the entities are DmlEntity
- * @param entities
- */
 export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
   const entityBuilder = createMikrORMEntity()
 
