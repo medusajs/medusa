@@ -156,6 +156,7 @@ export function createMikrORMEntity() {
    * - [user.teams]: true // the teams relationship on user is an owner
    * - [team.users] // cannot be an owner
    */
+  // TODO: if we use the util toMikroOrmEntities then a new builder will be used each time, lets think about this. Currently if means that with many to many we need to use the same builder
   const MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean> = {}
 
   /**
@@ -710,12 +711,18 @@ export function createMikrORMEntity() {
  * return the input idempotently
  * @param entity
  */
-export const toMikroORMEntity = (entity: any) => {
+export const toMikroORMEntity = <T>(
+  entity: T
+): T extends DmlEntity<infer Schema> ? EntityConstructor<Schema> : T => {
   if (DmlEntity.isDmlEntity(entity)) {
-    return createMikrORMEntity()(entity)
+    return createMikrORMEntity()(entity) as T extends DmlEntity<infer Schema>
+      ? EntityConstructor<Schema>
+      : T
   }
 
-  return entity
+  return entity as T extends DmlEntity<infer Schema>
+    ? EntityConstructor<Schema>
+    : T
 }
 
 /**
@@ -723,6 +730,6 @@ export const toMikroORMEntity = (entity: any) => {
  * This action is idempotent if non of the entities are DmlEntity
  * @param entities
  */
-export const toMikroOrmEntities = function (entities: any[]) {
+export const toMikroOrmEntities = function <T extends []>(entities: T) {
   return entities.map(toMikroORMEntity)
 }
