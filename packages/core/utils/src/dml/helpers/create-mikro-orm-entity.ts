@@ -410,17 +410,17 @@ export function createMikrORMEntity() {
       })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
       if (otherSideRelation instanceof DmlManyToMany) {
-        // Fix many to many foreign key usage
         Property({
-          columnType: "text",
-          type: "string",
+          type: relatedModelName,
           persist: false,
-        } as any)(MikroORMEntity.prototype, relationship.name)
+          nullable: relationship.nullable,
+        })(MikroORMEntity.prototype, relationship.name)
       } else {
         // HasMany case
         ManyToOne({
           entity: relatedModelName,
           persist: false,
+          nullable: relationship.nullable,
         })(MikroORMEntity.prototype, relationship.name)
       }
 
@@ -442,10 +442,20 @@ export function createMikrORMEntity() {
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, relationship.name)
 
-      Property({ type: "string", columnType: "text", persist: false })(
-        MikroORMEntity.prototype,
-        foreignKeyName
-      )
+      if (relationship.nullable) {
+        Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
+          value: null,
+          configurable: true,
+          enumerable: true,
+          writable: true,
+        })
+      }
+
+      Property({
+        type: "string",
+        columnType: "text",
+        nullable: relationship.nullable,
+      })(MikroORMEntity.prototype, foreignKeyName)
 
       applyForeignKeyAssignationHooks(foreignKeyName)
       return

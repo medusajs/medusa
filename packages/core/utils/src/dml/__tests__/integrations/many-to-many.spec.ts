@@ -129,7 +129,7 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedSquad = mikroOrmSerializer(team)
+    const serializedSquad = mikroOrmSerializer<typeof Team>(team)
 
     expect(serializedSquad.users).toHaveLength(2)
     expect(serializedSquad).toEqual({
@@ -166,7 +166,7 @@ describe("manyToMany - manyToMany", () => {
       }
     )
 
-    const serializedUser = mikroOrmSerializer(user)
+    const serializedUser = mikroOrmSerializer<typeof User>(user)
 
     expect(serializedUser.squads).toHaveLength(1)
     expect(serializedUser).toEqual({
