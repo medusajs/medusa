@@ -58,7 +58,7 @@ export async function installNextjsStarter({
   try {
     await execute(
       [
-        `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
+        `npx create-next-app@latest -e ${NEXTJS_REPO} ${nextjsDirectory}`,
         {
           signal: abortController?.signal,
           env: {
