@@ -236,18 +236,24 @@ export function createMikrORMEntity() {
 
       IdDecorator(MikroORMEntity.prototype, field.fieldName)
 
-      /**
-       * Hook to generate entity within the code
-       */
-      MikroORMEntity.prototype.generateId = function () {
-        this.id = generateEntityId(this.id, field.dataType.options?.prefix)
+      if (field.dataType.options?.generateId) {
+        /**
+         * Hook to generate entity within the code
+         */
+        MikroORMEntity.prototype.generateId = function () {
+          this[field.fieldName] = generateEntityId(
+            this[field.fieldName],
+            field.dataType.options?.prefix
+          )
+        }
+
+        /**
+         * Execute hook via lifecycle decorators
+         */
+        BeforeCreate()(MikroORMEntity.prototype, "generateId")
+        OnInit()(MikroORMEntity.prototype, "generateId")
       }
 
-      /**
-       * Execute hook via lifecycle decorators
-       */
-      BeforeCreate()(MikroORMEntity.prototype, "generateId")
-      OnInit()(MikroORMEntity.prototype, "generateId")
       return
     }
 

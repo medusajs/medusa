@@ -10,11 +10,19 @@ export class IdProperty extends BaseProperty<string> {
     options: {
       primaryKey: boolean
       prefix?: string
+      generateId?: boolean
     }
   }
 
-  constructor(options?: { primaryKey?: boolean; prefix?: string }) {
+  constructor(options?: {
+    primaryKey?: boolean
+    prefix?: string
+    generateId?: boolean
+  }) {
     super()
-    this.dataType = { name: "id", options: { primaryKey: true, ...options } }
+    this.dataType = {
+      name: "id",
+      options: { primaryKey: true, generateId: true, ...options },
+    }
   }
 }

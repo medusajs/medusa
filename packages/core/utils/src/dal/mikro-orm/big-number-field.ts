@@ -1,7 +1,7 @@
-import { BigNumberInput } from "@medusajs/types"
 import { Property } from "@mikro-orm/core"
-import { isDefined, isPresent, trimZeros } from "../../common"
+import { isPresent, trimZeros } from "../../common"
 import { BigNumber } from "../../totals/big-number"
+import { BigNumberInput } from "@medusajs/types"
 
 export function MikroOrmBigNumberProperty(
   options: Parameters<typeof Property>[0] & {
@@ -45,20 +45,10 @@ export function MikroOrmBigNumberProperty(
           const raw = bigNumber.raw!
           raw.value = trimZeros(raw.value as string)
 
-          // Note: this.__helper isn't present when directly working with the entity
-          // Adding this in optionally for it not to break.
-          if (isDefined(this.__helper)) {
-            this.__helper.__data[columnName] = bigNumber.numeric
-            this.__helper.__data[rawColumnName] = raw
-          }
+          this.__helper.__data[columnName] = bigNumber.numeric
+          this.__helper.__data[rawColumnName] = raw
 
           this[rawColumnName] = raw
-        }
-
-        // Note: this.__helper isn't present when directly working with the entity
-        // Adding this in optionally for it not to break.
-        if (!isDefined(this.__helper)) {
-          return
         }
 
         // This is custom code to keep track of which fields are bignumber, as well as their data
