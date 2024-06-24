@@ -1,3 +1,13 @@
+import type {
+  EntityCascades,
+  EntityConstructor,
+  Infer,
+  KnownDataTypes,
+  PropertyMetadata,
+  PropertyType,
+  RelationshipMetadata,
+  RelationshipType,
+} from "@medusajs/types"
 import {
   BeforeCreate,
   BeforeUpdate,
@@ -22,21 +32,14 @@ import {
   toCamelCase,
 } from "../../common"
 import { upperCaseFirst } from "../../common/upper-case-first"
+import {
+  MikroOrmBigNumberProperty,
+  mikroOrmSoftDeletableFilterOptions,
+} from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
 import { HasOne } from "../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../relations/many-to-many"
-import type {
-  EntityCascades,
-  EntityConstructor,
-  Infer,
-  KnownDataTypes,
-  PropertyMetadata,
-  PropertyType,
-  RelationshipMetadata,
-  RelationshipType,
-} from "@medusajs/types"
-import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -51,6 +54,7 @@ const COLUMN_TYPES: {
   boolean: "boolean",
   dateTime: "timestamptz",
   number: "integer",
+  bigNumber: "numeric",
   text: "text",
   json: "jsonb",
 }
@@ -68,6 +72,7 @@ const PROPERTY_TYPES: {
   boolean: "boolean",
   dateTime: "date",
   number: "number",
+  bigNumber: "number",
   text: "string",
   json: "any",
 }
@@ -174,6 +179,27 @@ export function createMikrORMEntity() {
 
     if (SPECIAL_PROPERTIES[field.fieldName]) {
       SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)
+      return
+    }
+
+    /**
+     * Defining an big number property
+     * A big number property always comes with a raw_{{ fieldName }} column
+     * where the config of the bigNumber is set.
+     * The `raw_` field is generated during DML schema generation as a json
+     * dataType.
+     */
+    if (field.dataType.name === "bigNumber") {
+      MikroOrmBigNumberProperty({
+        nullable: field.nullable,
+        /**
+         * MikroORM does not ignore undefined values for default when generating
+         * the database schema SQL. Conditionally add it here to prevent undefined
+         * from being set as default value in SQL.
+         */
+        ...(isDefined(field.defaultValue) && { default: field.defaultValue }),
+      })(MikroORMEntity.prototype, field.fieldName)
+
       return
     }
 
@@ -661,6 +687,7 @@ export function createMikrORMEntity() {
      */
     Object.entries(schema).forEach(([name, property]) => {
       const field = property.parse(name)
+
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
         applyIndexes(MikroORMEntity, tableName, field)
@@ -678,4 +705,24 @@ export function createMikrORMEntity() {
   }
 }
 
-export const toMikroORMEntity = createMikrORMEntity()
+/**
+ * Takes a DML entity and returns a Mikro ORM entity otherwise
+ * return the input idempotently
+ * @param entity
+ */
+export const toMikroORMEntity = (entity: any) => {
+  if (DmlEntity.isDmlEntity(entity)) {
+    return createMikrORMEntity()(entity)
+  }
+
+  return entity
+}
+
+/**
+ * Takes any DmlEntity or mikro orm entities and return mikro orm entities only.
+ * This action is idempotent if non of the entities are DmlEntity
+ * @param entities
+ */
+export const toMikroOrmEntities = function (entities: any[]) {
+  return entities.map(toMikroORMEntity)
+}

@@ -1,26 +1,33 @@
-import { DmlEntity } from "./entity"
-import { TextProperty } from "./properties/text"
-import { EnumProperty } from "./properties/enum"
-import { JSONProperty } from "./properties/json"
-import { HasOne } from "./relations/has-one"
-import { HasMany } from "./relations/has-many"
-import { NumberProperty } from "./properties/number"
-import { BooleanProperty } from "./properties/boolean"
-import { BelongsTo } from "./relations/belongs-to"
-import { DateTimeProperty } from "./properties/date-time"
-import { ManyToMany } from "./relations/many-to-many"
 import type {
   PropertyType,
   RelationshipOptions,
   RelationshipType,
 } from "@medusajs/types"
-import { NullableModifier } from "./properties/nullable"
+import { DmlEntity } from "./entity"
+import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
+import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
+import { BigNumberProperty } from "./properties/big-number"
+import { BooleanProperty } from "./properties/boolean"
+import { DateTimeProperty } from "./properties/date-time"
+import { EnumProperty } from "./properties/enum"
 import { IdProperty } from "./properties/id"
+import { JSONProperty } from "./properties/json"
+import { NumberProperty } from "./properties/number"
+import { TextProperty } from "./properties/text"
+import { BelongsTo } from "./relations/belongs-to"
+import { HasMany } from "./relations/has-many"
+import { HasOne } from "./relations/has-one"
+import { ManyToMany } from "./relations/many-to-many"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
  */
 const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
+
+export type DMLSchema = Record<
+  string,
+  PropertyType<any> | RelationshipType<any>
+>
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -45,25 +52,13 @@ export class EntityBuilder {
    * Define an entity or a model. The name should be unique across
    * all the entities.
    */
-  define<
-    Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-  >(
-    name: string,
-    schema: Schema
-  ): DmlEntity<
-    Schema & {
-      created_at: DateTimeProperty
-      updated_at: DateTimeProperty
-      deleted_at: NullableModifier<Date, DateTimeProperty>
-    }
-  > {
+  define<Schema extends DMLSchema>(name: string, schema: Schema) {
     this.#disallowImplicitProperties(schema)
 
-    return new DmlEntity<any>(name, {
+    return new DmlEntity(name, {
       ...schema,
-      created_at: new DateTimeProperty(),
-      updated_at: new DateTimeProperty(),
-      deleted_at: new DateTimeProperty().nullable(),
+      ...createBigNumberProperties(schema),
+      ...createDefaultProperties(),
     })
   }
 
@@ -90,10 +85,19 @@ export class EntityBuilder {
   }
 
   /**
-   * Define a numeric/integer column
+   * Define an integer column
    */
   number() {
     return new NumberProperty()
+  }
+
+  /**
+   * Define a numeric column. This property produces an additional
+   * column - raw_{{ property_name }}, which stores the configuration
+   * of bignumber (https://github.com/MikeMcl/bignumber.js)
+   */
+  bigNumber() {
+    return new BigNumberProperty()
   }
 
   /**

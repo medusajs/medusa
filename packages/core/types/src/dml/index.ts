@@ -15,6 +15,7 @@ export type KnownDataTypes =
   | "boolean"
   | "enum"
   | "number"
+  | "bigNumber"
   | "dateTime"
   | "json"
   | "id"
