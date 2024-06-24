@@ -1,11 +1,10 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateServiceZoneDTO,
   GeoZoneDTO,
   IFulfillmentModuleService,
   UpdateServiceZoneDTO,
 } from "@medusajs/types"
-import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -30,7 +29,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list service zones with a filter", async function () {
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -85,7 +84,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
       describe("mutations", () => {
         describe("on create", () => {
           it("should create a new service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -119,7 +118,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should create a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -181,7 +180,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -205,7 +204,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on creating a service zone and new geo zones that are not valid", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -277,7 +276,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on update", () => {
           it("should update an existing service zone", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -369,25 +368,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_deleted,
+                eventName: FulfillmentEvents.GEO_ZONE_DELETED,
                 action: "deleted",
                 object: "geo_zone",
                 data: { id: ukGeoZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.service_zone_updated,
+                eventName: FulfillmentEvents.SERVICE_ZONE_UPDATED,
                 action: "updated",
                 object: "service_zone",
                 data: { id: updatedServiceZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_created,
+                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: chGeoZone.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_updated,
+                eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
                 action: "updated",
                 object: "geo_zone",
                 data: { id: usGeoZone.id },
@@ -396,7 +395,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
           })
 
           it("should fail on duplicated service zone name", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -449,7 +448,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
         describe("on upsert", () => {
           it("should upsert a collection of service zones", async function () {
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })

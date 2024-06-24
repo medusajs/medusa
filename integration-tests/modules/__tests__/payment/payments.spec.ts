@@ -2,13 +2,10 @@ import {
   capturePaymentWorkflow,
   refundPaymentWorkflow,
 } from "@medusajs/core-flows"
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/modules-sdk"
+import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -32,7 +29,7 @@ medusaIntegrationTestRunner({
 
       // TODO: Test should move to `integration-tests/api`
       it("should list payment providers", async () => {
-        const region = await regionService.create({
+        const region = await regionService.createRegions({
           name: "Test Region",
           currency_code: "usd",
         })

@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const OrderCart: ModuleJoinerConfig = {
   serviceName: LINKS.OrderCart,
@@ -24,12 +23,18 @@ export const OrderCart: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "order_id",
       alias: "order",
+      args: {
+        methodSuffix: "Orders",
+      },
     },
     {
       serviceName: Modules.CART,
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
   ],
   extends: [

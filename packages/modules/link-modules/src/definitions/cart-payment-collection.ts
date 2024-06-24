@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const CartPaymentCollection: ModuleJoinerConfig = {
   serviceName: LINKS.CartPaymentCollection,
@@ -24,12 +23,18 @@ export const CartPaymentCollection: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
     {
       serviceName: Modules.PAYMENT,
       primaryKey: "id",
       foreignKey: "payment_collection_id",
       alias: "payment_collection",
+      args: {
+        methodSuffix: "PaymentCollections",
+      },
     },
   ],
   extends: [

@@ -1,9 +1,9 @@
 import {
   DeleteEntityInput,
   ModuleRegistrationName,
-  Modules,
 } from "@medusajs/modules-sdk"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { Modules } from "@medusajs/utils"
 
 export const deleteStockLocationsStepId = "delete-stock-locations-step"
 export const deleteStockLocationsStep = createStep(
@@ -11,7 +11,7 @@ export const deleteStockLocationsStep = createStep(
   async (input: string[], { container }) => {
     const service = container.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    const softDeletedEntities = await service.softDelete(input)
+    const softDeletedEntities = await service.softDeleteStockLocations(input)
 
     return new StepResponse(
       {
@@ -26,6 +26,6 @@ export const deleteStockLocationsStep = createStep(
     }
     const service = container.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    await service.restore(deletedLocationIds)
+    await service.restoreStockLocations(deletedLocationIds)
   }
 )

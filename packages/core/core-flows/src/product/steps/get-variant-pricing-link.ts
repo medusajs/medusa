@@ -1,11 +1,10 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
   MedusaError,
-  arrayDifference,
+  Modules,
 } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 type StepInput = {
   ids: string[]

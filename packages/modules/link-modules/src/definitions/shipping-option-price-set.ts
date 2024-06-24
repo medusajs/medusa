@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const ShippingOptionPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ShippingOptionPriceSet,
@@ -33,6 +32,9 @@ export const ShippingOptionPriceSet: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "price_set_id",
       alias: "price_set",
+      args: {
+        methodSuffix: "PriceSets",
+      },
       deleteCascade: true,
     },
   ],

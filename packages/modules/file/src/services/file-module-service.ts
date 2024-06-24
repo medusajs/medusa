@@ -2,10 +2,10 @@ import {
   Context,
   CreateFileDTO,
   FileDTO,
-  ModuleJoinerConfig,
   FileTypes,
   FilterableFileProps,
   FindConfig,
+  ModuleJoinerConfig,
 } from "@medusajs/types"
 
 import { joinerConfig } from "../joiner-config"
@@ -26,10 +26,13 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     return joinerConfig
   }
 
-  create(data: CreateFileDTO[], sharedContext?: Context): Promise<FileDTO[]>
-  create(data: CreateFileDTO, sharedContext?: Context): Promise<FileDTO>
+  createFiles(
+    data: CreateFileDTO[],
+    sharedContext?: Context
+  ): Promise<FileDTO[]>
+  createFiles(data: CreateFileDTO, sharedContext?: Context): Promise<FileDTO>
 
-  async create(
+  async createFiles(
     data: CreateFileDTO[] | CreateFileDTO
   ): Promise<FileDTO[] | FileDTO> {
     const input = Array.isArray(data) ? data : [data]
@@ -46,9 +49,9 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     return Array.isArray(data) ? result : result[0]
   }
 
-  async delete(ids: string[], sharedContext?: Context): Promise<void>
-  async delete(id: string, sharedContext?: Context): Promise<void>
-  async delete(ids: string[] | string): Promise<void> {
+  async deleteFiles(ids: string[], sharedContext?: Context): Promise<void>
+  async deleteFiles(id: string, sharedContext?: Context): Promise<void>
+  async deleteFiles(ids: string[] | string): Promise<void> {
     const input = Array.isArray(ids) ? ids : [ids]
     await Promise.all(
       input.map((id) => this.fileProviderService_.delete({ fileKey: id }))
@@ -57,7 +60,7 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     return
   }
 
-  async retrieve(id: string): Promise<FileDTO> {
+  async retrieveFile(id: string): Promise<FileDTO> {
     const res = await this.fileProviderService_.getPresignedDownloadUrl({
       fileKey: id,
     })
@@ -68,7 +71,7 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     }
   }
 
-  async list(
+  async listFiles(
     filters?: FilterableFileProps,
     config?: FindConfig<FileDTO>,
     sharedContext?: Context
@@ -97,7 +100,7 @@ export default class FileModuleService implements FileTypes.IFileModuleService {
     ]
   }
 
-  async listAndCount(
+  async listAndCountFiles(
     filters?: FilterableFileProps,
     config?: FindConfig<FileDTO>,
     sharedContext?: Context

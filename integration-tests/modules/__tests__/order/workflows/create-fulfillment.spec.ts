@@ -3,12 +3,12 @@ import {
   createOrderFulfillmentWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentWorkflow,
   IOrderModuleService,
   IRegionModuleService,
-  IStockLocationServiceNext,
+  IStockLocationService,
   OrderWorkflow,
   ProductDTO,
   RegionDTO,
@@ -17,6 +17,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
@@ -34,7 +35,7 @@ async function prepareDataFixtures({ container }) {
   const salesChannelService = container.resolve(
     ModuleRegistrationName.SALES_CHANNEL
   )
-  const stockLocationModule: IStockLocationServiceNext = container.resolve(
+  const stockLocationModule: IStockLocationService = container.resolve(
     ModuleRegistrationName.STOCK_LOCATION
   )
   const productModule = container.resolve(ModuleRegistrationName.PRODUCT)
@@ -45,7 +46,7 @@ async function prepareDataFixtures({ container }) {
     type: "default",
   })
 
-  const fulfillmentSet = await fulfillmentService.create({
+  const fulfillmentSet = await fulfillmentService.createFulfillmentSets({
     name: "Test fulfillment set",
     type: "manual_test",
   })
@@ -65,7 +66,7 @@ async function prepareDataFixtures({ container }) {
     ModuleRegistrationName.REGION
   ) as IRegionModuleService
 
-  const [region] = await regionService.create([
+  const [region] = await regionService.createRegions([
     {
       name: "Test region",
       currency_code: "eur",
@@ -73,22 +74,23 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  const salesChannel = await salesChannelService.create({
+  const salesChannel = await salesChannelService.createSalesChannels({
     name: "Webshop",
   })
 
-  const location: StockLocationDTO = await stockLocationModule.create({
-    name: "Warehouse",
-    address: {
-      address_1: "Test",
-      city: "Test",
-      country_code: "US",
-      postal_code: "12345",
-      phone: "12345",
-    },
-  })
+  const location: StockLocationDTO =
+    await stockLocationModule.createStockLocations({
+      name: "Warehouse",
+      address: {
+        address_1: "Test",
+        city: "Test",
+        country_code: "US",
+        postal_code: "12345",
+        phone: "12345",
+      },
+    })
 
-  const [product] = await productModule.create([
+  const [product] = await productModule.createProducts([
     {
       title: "Test product",
       variants: [
@@ -105,7 +107,7 @@ async function prepareDataFixtures({ container }) {
     },
   ])
 
-  inventoryItem = await inventoryModule.create({
+  inventoryItem = await inventoryModule.createInventoryItems({
     sku: "inv-1234",
   })
 
@@ -214,7 +216,7 @@ async function createOrderFixture({ container, product, location }) {
   const orderService: IOrderModuleService = container.resolve(
     ModuleRegistrationName.ORDER
   )
-  let order = await orderService.create({
+  let order = await orderService.createOrders({
     region_id: "test_region_idclear",
     email: "foo@bar.com",
     items: [
@@ -305,7 +307,7 @@ async function createOrderFixture({ container, product, location }) {
     },
   ])
 
-  order = await orderService.retrieve(order.id, {
+  order = await orderService.retrieveOrder(order.id, {
     relations: ["items"],
   })
 

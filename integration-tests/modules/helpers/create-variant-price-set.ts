@@ -1,9 +1,10 @@
-import { MedusaContainer, Modules } from "@medusajs/modules-sdk"
+import { MedusaContainer } from "@medusajs/modules-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
   PriceSetDTO,
 } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 const defaultPrices = [
   {
@@ -30,7 +31,7 @@ export const createVariantPriceSet = async ({
     "pricingModuleService"
   )
 
-  const priceSet = await pricingModuleService.create({
+  const priceSet = await pricingModuleService.createPriceSets({
     rules,
     prices,
   })
@@ -40,7 +41,7 @@ export const createVariantPriceSet = async ({
     [Modules.PRICING]: { price_set_id: priceSet.id },
   })
 
-  return await pricingModuleService.retrieve(priceSet.id, {
+  return await pricingModuleService.retrievePriceSet(priceSet.id, {
     relations: ["prices"],
   })
 }

@@ -109,7 +109,7 @@ export async function setupFullDataFulfillmentStructure(
     name: "test_" + randomString,
     type: "default",
   })
-  const fulfillmentSet = await service.create({
+  const fulfillmentSet = await service.createFulfillmentSets({
     name: "test_" + randomString,
     type: "test-type",
   })

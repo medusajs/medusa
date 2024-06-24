@@ -1,5 +1,5 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/utils"
 
 export const InventoryLevelStockLocation: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const InventoryLevelStockLocation: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "location_id",
         alias: "stock_locations",
+        args: {
+          methodSuffix: "StockLocations",
+        },
         isList: true,
       },
     },

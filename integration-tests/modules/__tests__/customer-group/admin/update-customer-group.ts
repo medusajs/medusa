@@ -29,7 +29,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should update a customer group", async () => {
-        const customer = await customerModuleService.createCustomerGroup({
+        const customer = await customerModuleService.createCustomerGroups({
           name: "VIP",
         })
 

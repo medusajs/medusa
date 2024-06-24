@@ -1,7 +1,6 @@
 import {
   LinkModuleUtils,
   ModuleRegistrationName,
-  Modules,
   RemoteLink,
 } from "@medusajs/modules-sdk"
 import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
@@ -22,6 +21,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
   ProductStatus,
   PromotionRuleOperator,
   PromotionType,
@@ -98,16 +98,16 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts", () => {
         it("should create a cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product",
               variants: [
@@ -123,7 +123,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetTwo] = await pricingModule.create([
+          const [priceSet, priceSetTwo] = await pricingModule.createPriceSets([
             {
               prices: [
                 {
@@ -209,7 +209,7 @@ medusaIntegrationTestRunner({
         it("should create cart with customer from email and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
-          const [product] = await productModule.create([
+          const [product] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [
@@ -218,11 +218,11 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const [priceSet] = await pricingModule.create([
+          const [priceSet] = await pricingModule.createPriceSets([
             { prices: [{ amount: 3000, currency_code: "usd" }] },
           ])
 
@@ -281,7 +281,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with any region", async () => {
-          await regionModule.create({
+          await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -305,11 +305,11 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with default store sales channel", async () => {
-          const sc = await scModule.create({
+          const sc = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          await storeService.update(store.id, {
+          await storeService.updateStores(store.id, {
             default_sales_channel_id: sc.id,
           })
 
@@ -330,7 +330,7 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with region currency code", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -381,15 +381,15 @@ medusaIntegrationTestRunner({
         })
 
         it("throws if publishable key is not associated with sales channel", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const salesChannel2 = await scModule.create({
+          const salesChannel2 = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -426,15 +426,15 @@ medusaIntegrationTestRunner({
         })
 
         it("throws if publishable key has multiple associated sales channels", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const salesChannel2 = await scModule.create({
+          const salesChannel2 = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -469,11 +469,11 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with sales channel if pub key does not have any scopes defined", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -498,11 +498,11 @@ medusaIntegrationTestRunner({
         })
 
         it("should create cart with sales channel associated with pub key", async () => {
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Retail Store",
           })
 
-          const pubKey = await apiKeyModule.create({
+          const pubKey = await apiKeyModule.createApiKeys({
             title: "Test key",
             type: "publishable",
             created_by: "test",
@@ -545,7 +545,7 @@ medusaIntegrationTestRunner({
         it("should update a cart with promo codes with a replace action", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
@@ -558,7 +558,7 @@ medusaIntegrationTestRunner({
             },
           ]
 
-          const appliedPromotion = await promotionModule.create({
+          const appliedPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_APPLIED",
             type: PromotionType.STANDARD,
             application_method: {
@@ -573,7 +573,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const createdPromotion = await promotionModule.create({
+          const createdPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_TEST",
             type: PromotionType.STANDARD,
             application_method: {
@@ -587,7 +587,7 @@ medusaIntegrationTestRunner({
             },
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             email: "tony@stark.com",
             region_id: region.id,
@@ -686,13 +686,13 @@ medusaIntegrationTestRunner({
         it("should not generate tax lines if region is not present or automatic taxes is false", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             email: "tony@stark.com",
             shipping_address: {
@@ -732,7 +732,7 @@ medusaIntegrationTestRunner({
             })
           )
 
-          await cartModule.update(cart.id, {
+          await cartModule.updateCarts(cart.id, {
             region_id: region.id,
           })
 
@@ -758,16 +758,16 @@ medusaIntegrationTestRunner({
         it("should update a cart's region, sales channel, customer data and tax lines", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "us",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "eur",
             email: "tony@stark.com",
             shipping_address: {
@@ -795,7 +795,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -967,12 +967,12 @@ medusaIntegrationTestRunner({
         it("should remove invalid shipping methods", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             region_id: region.id,
             currency_code: "eur",
             email: "tony@stark.com",
@@ -992,7 +992,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1101,12 +1101,12 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts/:id", () => {
         it("should create and update a cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
@@ -1151,16 +1151,16 @@ medusaIntegrationTestRunner({
 
       describe("GET /store/carts", () => {
         it("should get cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             items: [
               {
@@ -1250,22 +1250,22 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          region = await regionModule.create({
+          region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
         })
 
         it("should add item to cart", async () => {
-          const customer = await customerModule.create({
+          const customer = await customerModule.createCustomers({
             email: "tony@stark-industries.com",
           })
 
-          const salesChannel = await scModule.create({
+          const salesChannel = await scModule.createSalesChannels({
             name: "Webshop",
           })
 
-          const [productWithSpecialTax] = await productModule.create([
+          const [productWithSpecialTax] = await productModule.createProducts([
             {
               // This product ID is setup in the tax structure fixture (setupTaxStructure)
               id: "product_id_1",
@@ -1274,7 +1274,7 @@ medusaIntegrationTestRunner({
             } as any,
           ])
 
-          const [productWithDefaultTax] = await productModule.create([
+          const [productWithDefaultTax] = await productModule.createProducts([
             {
               title: "Test product default tax",
               variants: [
@@ -1283,7 +1283,7 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             customer_id: customer.id,
             sales_channel_id: salesChannel.id,
@@ -1308,7 +1308,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          const appliedPromotion = await promotionModule.create({
+          const appliedPromotion = await promotionModule.createPromotions({
             code: "PROMOTION_APPLIED",
             type: PromotionType.STANDARD,
             application_method: {
@@ -1337,14 +1337,15 @@ medusaIntegrationTestRunner({
             },
           ])
 
-          const [priceSet, priceSetDefaultTax] = await pricingModule.create([
-            {
-              prices: [{ amount: 3000, currency_code: "usd" }],
-            },
-            {
-              prices: [{ amount: 2000, currency_code: "usd" }],
-            },
-          ])
+          const [priceSet, priceSetDefaultTax] =
+            await pricingModule.createPriceSets([
+              {
+                prices: [{ amount: 3000, currency_code: "usd" }],
+              },
+              {
+                prices: [{ amount: 2000, currency_code: "usd" }],
+              },
+            ])
 
           await remoteLink.create([
             {
@@ -1520,12 +1521,12 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/payment-collections", () => {
         it("should create a payment collection for the cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1547,12 +1548,12 @@ medusaIntegrationTestRunner({
         })
 
         it("should return an existing payment collection for the cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1580,17 +1581,17 @@ medusaIntegrationTestRunner({
         })
 
         it("should create a new payment collection for a new cart", async () => {
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
           })
 
-          const firstCart = await cartModule.create({
+          const firstCart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
 
-          const secondCart = await cartModule.create({
+          const secondCart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
           })
@@ -1622,13 +1623,13 @@ medusaIntegrationTestRunner({
         it("should update a carts tax lines when region.automatic_taxes is false", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
             shipping_address: {
@@ -1679,13 +1680,13 @@ medusaIntegrationTestRunner({
         it("should throw error when shipping is not present", async () => {
           await setupTaxStructure(taxModule)
 
-          const region = await regionModule.create({
+          const region = await regionModule.createRegions({
             name: "US",
             currency_code: "usd",
             automatic_taxes: false,
           })
 
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             region_id: region.id,
             items: [
@@ -1713,7 +1714,7 @@ medusaIntegrationTestRunner({
 
       describe("POST /store/carts/:id/shipping-methods", () => {
         it("should add a shipping methods to a cart", async () => {
-          const cart = await cartModule.create({
+          const cart = await cartModule.createCarts({
             currency_code: "usd",
             shipping_address: { country_code: "us" },
             items: [],
@@ -1725,7 +1726,7 @@ medusaIntegrationTestRunner({
               type: "default",
             })
 
-          const fulfillmentSet = await fulfillmentModule.create({
+          const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [
@@ -1736,7 +1737,7 @@ medusaIntegrationTestRunner({
             ],
           })
 
-          const priceSet = await pricingModule.create({
+          const priceSet = await pricingModule.createPriceSets({
             prices: [{ amount: 3000, currency_code: "usd" }],
           })
 
@@ -1809,7 +1810,7 @@ medusaIntegrationTestRunner({
         beforeEach(async () => {
           await setupTaxStructure(taxModule)
 
-          region = await regionService.create({
+          region = await regionService.createRegions({
             name: "Test region",
             countries: ["US"],
             currency_code: "usd",
@@ -1861,7 +1862,7 @@ medusaIntegrationTestRunner({
             type: "default",
           })
 
-          fulfillmentSet = await fulfillmentModule.create({
+          fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
             name: "Test",
             type: "test-type",
             service_zones: [

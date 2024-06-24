@@ -61,9 +61,9 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<UserDTO>} The retrieved user.
    *
    * @example
-   * const user = await userModuleService.retrieve("user_123")
+   * const user = await userModuleService.retrieveUser("user_123")
    */
-  retrieve(
+  retrieveUser(
     id: string,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
@@ -82,7 +82,7 @@ export interface IUserModuleService extends IModuleService {
    * To retrieve a list of users using their IDs:
    *
    * ```ts
-   * const users = await userModuleService.list({
+   * const users = await userModuleService.listUsers({
    *   id: ["user_123", "user_321"]
    * })
    * ```
@@ -90,7 +90,7 @@ export interface IUserModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const users = await userModuleService.list(
+   * const users = await userModuleService.listUsers(
    *   {
    *     id: ["user_123", "user_321"]
    *   },
@@ -101,7 +101,7 @@ export interface IUserModuleService extends IModuleService {
    * )
    * ```
    */
-  list(
+  listUsers(
     filters?: FilterableUserProps,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
@@ -120,7 +120,7 @@ export interface IUserModuleService extends IModuleService {
    * To retrieve a list of users using their IDs:
    *
    * ```ts
-   * const [users, count] = await userModuleService.listAndCount({
+   * const [users, count] = await userModuleService.listAndCountUsers({
    *   id: ["user_123", "user_321"]
    * })
    * ```
@@ -128,7 +128,7 @@ export interface IUserModuleService extends IModuleService {
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * const [users, count] = await userModuleService.listAndCount(
+   * const [users, count] = await userModuleService.listAndCountUsers(
    *   {
    *     id: ["user_123", "user_321"]
    *   },
@@ -139,7 +139,7 @@ export interface IUserModuleService extends IModuleService {
    * )
    * ```
    */
-  listAndCount(
+  listAndCountUsers(
     filters?: FilterableUserProps,
     config?: FindConfig<UserDTO>,
     sharedContext?: Context
@@ -153,7 +153,7 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<UserDTO[]>} The created users.
    *
    * @example
-   * const users = await userModuleService.create([
+   * const users = await userModuleService.createUsers([
    *   {
    *     email: "john@doe.com"
    *   },
@@ -162,7 +162,10 @@ export interface IUserModuleService extends IModuleService {
    *   }
    * ])
    */
-  create(data: CreateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
+  createUsers(
+    data: CreateUserDTO[],
+    sharedContext?: Context
+  ): Promise<UserDTO[]>
 
   /**
    * This method creates a user.
@@ -172,11 +175,11 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<UserDTO>} The created user.
    *
    * @example
-   * const user = await userModuleService.create({
+   * const user = await userModuleService.createUsers({
    *   email: "john@doe.com"
    * })
    */
-  create(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
+  createUsers(data: CreateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
   /**
    * This method updates existing users.
@@ -186,7 +189,7 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<UserDTO[]>} The updated users.
    *
    * @example
-   * const users = await userModuleService.update([
+   * const users = await userModuleService.updateUsers([
    *   {
    *     id: "user_123",
    *     first_name: "John"
@@ -197,7 +200,10 @@ export interface IUserModuleService extends IModuleService {
    *   }
    * ])
    */
-  update(data: UpdateUserDTO[], sharedContext?: Context): Promise<UserDTO[]>
+  updateUsers(
+    data: UpdateUserDTO[],
+    sharedContext?: Context
+  ): Promise<UserDTO[]>
 
   /**
    * This method updates an existing user.
@@ -207,12 +213,12 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<UserDTO>} The updated user.
    *
    * @example
-   * const user = await userModuleService.update({
+   * const user = await userModuleService.updateUsers({
    *   id: "user_123",
    *   first_name: "John"
    * })
    */
-  update(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
+  updateUsers(data: UpdateUserDTO, sharedContext?: Context): Promise<UserDTO>
 
   /**
    * This method deletes users by their IDs.
@@ -222,11 +228,11 @@ export interface IUserModuleService extends IModuleService {
    * @returns {Promise<void>} Resolves when the users are deleted successfully.
    *
    * @example
-   * await userModuleService.delete([
+   * await userModuleService.deleteUsers([
    *   "user_123", "user_321"
    * ])
    */
-  delete(ids: string[], sharedContext?: Context): Promise<void>
+  deleteUsers(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method soft deletes a user by its IDs.
@@ -238,11 +244,11 @@ export interface IUserModuleService extends IModuleService {
    * If there are no related records, the promise resolves to `void`.
    *
    * @example
-   * await userModuleService.softDelete([
+   * await userModuleService.softDeleteUsers([
    *   "user_123", "user_321"
    * ])
    */
-  softDelete<TReturnableLinkableKeys extends string = string>(
+  softDeleteUsers<TReturnableLinkableKeys extends string = string>(
     userIds: string[],
     config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
@@ -260,11 +266,11 @@ export interface IUserModuleService extends IModuleService {
    * If there are no related records restored, the promise resolves to `void`.
    *
    * @example
-   * await userModuleService.restore([
+   * await userModuleService.restoreUsers([
    *   "user_123", "user_321"
    * ])
    */
-  restore<TReturnableLinkableKeys extends string = string>(
+  restoreUsers<TReturnableLinkableKeys extends string = string>(
     userIds: string[],
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context

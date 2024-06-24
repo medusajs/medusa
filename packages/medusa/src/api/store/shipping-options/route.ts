@@ -17,7 +17,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.CART
   )
 
-  const cart = await cartService.retrieve(cart_id, {
+  const cart = await cartService.retrieveCart(cart_id, {
     select: [
       "id",
       "sales_channel_id",

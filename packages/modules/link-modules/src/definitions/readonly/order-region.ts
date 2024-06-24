@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const OrderRegion: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const OrderRegion: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "region_id",
         alias: "region",
+        args: {
+          methodSuffix: "Regions",
+        },
       },
     },
     {
@@ -21,6 +24,9 @@ export const OrderRegion: ModuleJoinerConfig = {
         primaryKey: "region_id",
         foreignKey: "id",
         alias: "orders",
+        args: {
+          methodSuffix: "Orders",
+        },
         isList: true,
       },
     },

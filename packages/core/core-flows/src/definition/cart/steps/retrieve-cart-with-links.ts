@@ -1,7 +1,7 @@
-import { LinkModuleUtils, Modules } from "@medusajs/modules-sdk"
+import { LinkModuleUtils } from "@medusajs/modules-sdk"
 import { CartWorkflowDTO } from "@medusajs/types"
-import { isObject, remoteQueryObjectFromString } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { isObject, Modules, remoteQueryObjectFromString } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   cart_or_cart_id: string | CartWorkflowDTO

@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import { ProductType } from "@models"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -30,7 +30,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listTypes", () => {
         it("should return types and count queried by ID", async () => {
-          const types = await service.listTypes({
+          const types = await service.listProductTypes({
             id: typeOne.id,
           })
 
@@ -42,7 +42,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return types and count based on the options and filter parameter", async () => {
-          let types = await service.listTypes(
+          let types = await service.listProductTypes(
             {
               id: typeOne.id,
             },
@@ -57,7 +57,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          types = await service.listTypes({}, { take: 1, skip: 1 })
+          types = await service.listProductTypes({}, { take: 1, skip: 1 })
 
           expect(types).toEqual([
             expect.objectContaining({
@@ -67,7 +67,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields for types", async () => {
-          const types = await service.listTypes(
+          const types = await service.listProductTypes(
             {
               id: typeOne.id,
             },
@@ -88,7 +88,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountTypes", () => {
         it("should return types and count queried by ID", async () => {
-          const [types, count] = await service.listAndCountTypes({
+          const [types, count] = await service.listAndCountProductTypes({
             id: typeOne.id,
           })
 
@@ -101,7 +101,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return types and count based on the options and filter parameter", async () => {
-          let [types, count] = await service.listAndCountTypes(
+          let [types, count] = await service.listAndCountProductTypes(
             {
               id: typeOne.id,
             },
@@ -116,10 +116,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
               id: typeOne.id,
             }),
           ])
-          ;[types, count] = await service.listAndCountTypes({}, { take: 1 })
+          ;[types, count] = await service.listAndCountProductTypes(
+            {},
+            { take: 1 }
+          )
 
           expect(count).toEqual(2)
-          ;[types, count] = await service.listAndCountTypes(
+          ;[types, count] = await service.listAndCountProductTypes(
             {},
             { take: 1, skip: 1 }
           )
@@ -133,7 +136,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields for types", async () => {
-          const [types, count] = await service.listAndCountTypes(
+          const [types, count] = await service.listAndCountProductTypes(
             {
               id: typeOne.id,
             },
@@ -155,7 +158,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveType", () => {
         it("should return the requested type", async () => {
-          const type = await service.retrieveType(typeOne.id)
+          const type = await service.retrieveProductType(typeOne.id)
 
           expect(type).toEqual(
             expect.objectContaining({
@@ -165,7 +168,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const type = await service.retrieveType(typeOne.id, {
+          const type = await service.retrieveProductType(typeOne.id, {
             select: ["id", "value"],
           })
 
@@ -179,7 +182,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveType("does-not-exist")
+            await service.retrieveProductType("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -194,9 +197,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const typeId = "type-1"
 
         it("should delete the product type given an ID successfully", async () => {
-          await service.deleteTypes([typeId])
+          await service.deleteProductTypes([typeId])
 
-          const types = await service.listTypes({
+          const types = await service.listProductTypes({
             id: typeId,
           })
 
@@ -208,11 +211,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const typeId = "type-1"
 
         it("should update the value of the type successfully", async () => {
-          await service.updateTypes(typeId, {
+          await service.updateProductTypes(typeId, {
             value: "UK",
           })
 
-          const productType = await service.retrieveType(typeId)
+          const productType = await service.retrieveProductType(typeId)
 
           expect(productType.value).toEqual("UK")
         })
@@ -221,7 +224,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateTypes("does-not-exist", {
+            await service.updateProductTypes("does-not-exist", {
               value: "UK",
             })
           } catch (e) {
@@ -236,13 +239,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createTypes", () => {
         it("should create a type successfully", async () => {
-          const res = await service.createTypes([
+          const res = await service.createProductTypes([
             {
               value: "UK",
             },
           ])
 
-          const productType = await service.listTypes({
+          const productType = await service.listProductTypes({
             value: "UK",
           })
 

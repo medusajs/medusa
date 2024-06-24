@@ -301,7 +301,7 @@ medusaIntegrationTestRunner({
         const fulfillmentModule = getContainer().resolve(
           ModuleRegistrationName.FULFILLMENT
         )
-        const sets = await fulfillmentModule.list()
+        const sets = await fulfillmentModule.listFulfillmentSets()
         expect(sets).toHaveLength(0)
       })
 

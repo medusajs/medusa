@@ -1,13 +1,13 @@
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { ITaxModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/modules-sdk"
 import { setupTaxStructure } from "../utils/setup-tax-structure"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ITaxModuleService>({
   moduleName: Modules.TAX,
-  testSuite: ({ service }: SuiteOptions<ITaxModuleService>) => {
+  testSuite: ({ service }) => {
     describe("TaxModuleService", function () {
       it("should create tax rates and update them", async () => {
         const region = await service.createTaxRegions({
@@ -18,14 +18,14 @@ moduleIntegrationTestRunner({
           },
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           code: "test",
           rate: 8.23,
         })
 
-        const updatedRate = await service.update(rate.id, {
+        const updatedRate = await service.updateTaxRates(rate.id, {
           name: "Updated Rate",
           code: "TEST",
           rate: 8.25,
@@ -41,7 +41,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        const updatedDefaultRate = await service.update(
+        const updatedDefaultRate = await service.updateTaxRates(
           { tax_region_id: region.id, is_default: true },
           { rate: 2 }
         )
@@ -56,7 +56,7 @@ moduleIntegrationTestRunner({
           }),
         ])
 
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         expect(rates).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -85,14 +85,14 @@ moduleIntegrationTestRunner({
           },
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           code: "test",
           rate: 8.23,
         })
 
-        await service.update(rate.id, {
+        await service.updateTaxRates(rate.id, {
           name: "Updated Rate",
           code: "TEST",
           rate: 8.25,
@@ -117,7 +117,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        await service.update(rate.id, {
+        await service.updateTaxRates(rate.id, {
           rules: [
             { reference: "product", reference_id: "product_id_1" },
             { reference: "product", reference_id: "product_id_2" },
@@ -198,7 +198,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         expect(rates).toEqual(
           expect.arrayContaining([
             expect.objectContaining({
@@ -228,7 +228,7 @@ moduleIntegrationTestRunner({
           },
         ])
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           name: "Shipping Rate",
           rate: 8.23,
@@ -453,16 +453,16 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const taxRate = await service.create({
+        const taxRate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
           name: "test",
         })
 
-        await service.delete(taxRate.id)
+        await service.deleteTaxRates(taxRate.id)
 
-        const rates = await service.list({ tax_region_id: region.id })
+        const rates = await service.listTaxRates({ tax_region_id: region.id })
 
         expect(rates).toEqual([])
       })
@@ -472,16 +472,16 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const taxRate = await service.create({
+        const taxRate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
           name: "test",
         })
 
-        await service.softDelete([taxRate.id])
+        await service.softDeleteTaxRates([taxRate.id])
 
-        const rates = await service.list(
+        const rates = await service.listTaxRates(
           { tax_region_id: region.id },
           { withDeleted: true }
         )
@@ -504,7 +504,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -514,7 +514,7 @@ moduleIntegrationTestRunner({
         await service.deleteTaxRegions(region.id)
 
         const taxRegions = await service.listTaxRegions()
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
 
         expect(taxRegions).toEqual([])
         expect(rates).toEqual([])
@@ -530,7 +530,7 @@ moduleIntegrationTestRunner({
           },
         })
 
-        await service.create({
+        await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -543,7 +543,7 @@ moduleIntegrationTestRunner({
           {},
           { withDeleted: true }
         )
-        const rates = await service.list({}, { withDeleted: true })
+        const rates = await service.listTaxRates({}, { withDeleted: true })
 
         expect(taxRegions).toEqual([
           expect.objectContaining({
@@ -567,7 +567,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -578,10 +578,10 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.delete(rate.id)
+        await service.deleteTaxRates(rate.id)
 
         const taxRegions = await service.listTaxRegions()
-        const rates = await service.list()
+        const rates = await service.listTaxRates()
         const rules = await service.listTaxRateRules()
 
         expect(taxRegions).toEqual([expect.objectContaining({ id: region.id })])
@@ -594,7 +594,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -605,13 +605,13 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        await service.softDelete(rate.id)
+        await service.softDeleteTaxRates(rate.id)
 
         const taxRegions = await service.listTaxRegions(
           {},
           { withDeleted: true }
         )
-        const rates = await service.list({}, { withDeleted: true })
+        const rates = await service.listTaxRates({}, { withDeleted: true })
         const rules = await service.listTaxRateRules({}, { withDeleted: true })
 
         expect(taxRegions).toEqual([
@@ -640,7 +640,7 @@ moduleIntegrationTestRunner({
           country_code: "US",
         })
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -676,7 +676,7 @@ moduleIntegrationTestRunner({
           ])
         )
 
-        const rateWithRules = await service.retrieve(rate.id, {
+        const rateWithRules = await service.retrieveTaxRate(rate.id, {
           relations: ["rules"],
         })
         expect(rateWithRules.rules.length).toBe(1)
@@ -688,7 +688,7 @@ moduleIntegrationTestRunner({
           reference_id: ruleOne.reference_id,
         })
 
-        const rateWithRulesAfterReAdd = await service.retrieve(rate.id, {
+        const rateWithRulesAfterReAdd = await service.retrieveTaxRate(rate.id, {
           relations: ["rules"],
         })
         expect(rateWithRulesAfterReAdd.rules.length).toBe(2)
@@ -700,7 +700,7 @@ moduleIntegrationTestRunner({
         })
 
         await expect(
-          service.create({
+          service.createTaxRates({
             tax_region_id: region.id,
             value: 10,
             code: "test",
@@ -714,7 +714,7 @@ moduleIntegrationTestRunner({
           /Tax rate rule with tax_rate_id: .*?, reference_id: product_id_1, already exists./
         )
 
-        const rate = await service.create({
+        const rate = await service.createTaxRates({
           tax_region_id: region.id,
           value: 10,
           code: "test",
@@ -790,7 +790,7 @@ moduleIntegrationTestRunner({
         })
 
         await expect(
-          service.create({
+          service.createTaxRates({
             tax_region_id: rate.id,
             name: "Shipping Rate",
             rate: 8.23,

@@ -24,6 +24,7 @@ import {
   OneToOne,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Promotion from "./promotion"
 import PromotionRule from "./promotion-rule"
@@ -79,21 +80,21 @@ export default class ApplicationMethod {
     entity: () => Promotion,
     onDelete: "cascade",
   })
-  promotion: Promotion
+  promotion: Rel<Promotion>
 
   @ManyToMany(() => PromotionRule, "method_target_rules", {
     owner: true,
     pivotTable: "application_method_target_rules",
     cascade: ["soft-remove"] as any,
   })
-  target_rules = new Collection<PromotionRule>(this)
+  target_rules = new Collection<Rel<PromotionRule>>(this)
 
   @ManyToMany(() => PromotionRule, "method_buy_rules", {
     owner: true,
     pivotTable: "application_method_buy_rules",
     cascade: ["soft-remove"] as any,
   })
-  buy_rules = new Collection<PromotionRule>(this)
+  buy_rules = new Collection<Rel<PromotionRule>>(this)
 
   @Property({
     onCreate: () => new Date(),

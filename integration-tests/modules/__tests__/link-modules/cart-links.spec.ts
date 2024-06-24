@@ -1,4 +1,4 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -7,6 +7,7 @@ import {
   ISalesChannelModuleService,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -41,20 +42,20 @@ medusaIntegrationTestRunner({
       })
 
       it("should query carts, sales channels, customers, regions with remote query", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Region",
           currency_code: "usd",
         })
 
-        const customer = await customerModule.create({
+        const customer = await customerModule.createCustomers({
           email: "tony@stark.com",
         })
 
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 
-        const cart = await cartModuleService.create({
+        const cart = await cartModuleService.createCarts({
           email: "tony@stark.com",
           currency_code: "usd",
           region_id: region.id,

@@ -13,6 +13,7 @@ export interface CreatePriceListDTO {
 export interface UpdatePriceListDTO {
   id: string
   title?: string
+  description?: string | null
   starts_at?: string | null
   ends_at?: string | null
   status?: PriceListStatus

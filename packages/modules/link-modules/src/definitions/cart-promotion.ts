@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const CartPromotion: ModuleJoinerConfig = {
   serviceName: LINKS.CartPromotion,
@@ -24,12 +23,18 @@ export const CartPromotion: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "cart_id",
       alias: "cart",
+      args: {
+        methodSuffix: "Carts",
+      },
     },
     {
       serviceName: Modules.PROMOTION,
       primaryKey: "id",
       foreignKey: "promotion_id",
       alias: "promotions",
+      args: {
+        methodSuffix: "Promotions",
+      },
     },
   ],
   extends: [

@@ -1,12 +1,12 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(1000000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order Module Service - Return flows", () => {
       const input = {
         email: "foo@bar.com",
@@ -103,7 +103,7 @@ moduleIntegrationTestRunner({
       } as CreateOrderDTO
 
       it("should create an order, fulfill, ship and return the items and cancel some item return", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         // Fullfilment
         await service.registerFulfillment({
@@ -116,7 +116,7 @@ moduleIntegrationTestRunner({
           }),
         })
 
-        let getOrder = await service.retrieve(createdOrder.id, {
+        let getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -176,7 +176,7 @@ moduleIntegrationTestRunner({
           }),
         })
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -269,7 +269,7 @@ moduleIntegrationTestRunner({
           ],
         })
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",
@@ -421,7 +421,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        getOrder = await service.retrieve(createdOrder.id, {
+        getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "version",

@@ -1,12 +1,12 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
-import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IOrderModuleService>({
   moduleName: Modules.ORDER,
-  testSuite: ({ service }: SuiteOptions<IOrderModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Order Module Service", () => {
       const input = {
         email: "foo@bar.com",
@@ -193,7 +193,7 @@ moduleIntegrationTestRunner({
       })
 
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them", async function () {
-        const createdOrder = await service.create(input)
+        const createdOrder = await service.createOrders(input)
 
         const serializedOrder = JSON.parse(JSON.stringify(createdOrder))
 
@@ -201,12 +201,12 @@ moduleIntegrationTestRunner({
       })
 
       it("should create an order, shipping method and items. Including taxes and adjustments associated with them and add new transactions", async function () {
-        const inpCopy = JSON.parse(JSON.stringify(input))
-        inpCopy.transactions.push({
+        const inpCopy = JSON.parse(JSON.stringify(input)) as CreateOrderDTO
+        inpCopy.transactions!.push({
           amount: 10,
           currency_code: "USD",
         })
-        const created = await service.create(inpCopy)
+        const created = await service.createOrders(inpCopy)
 
         const refund = await service.addTransactions([
           {
@@ -218,7 +218,7 @@ moduleIntegrationTestRunner({
 
         const serializedOrder = JSON.parse(
           JSON.stringify(
-            await service.retrieve(created.id, {
+            await service.retrieveOrder(created.id, {
               select: ["id", "summary"],
             })
           )
@@ -231,11 +231,11 @@ moduleIntegrationTestRunner({
           })
         )
 
-        await service.softDeleteTransactions(refund[0].id)
+        await service.softDeleteTransactions([refund[0].id])
 
         const serializedOrder2 = JSON.parse(
           JSON.stringify(
-            await service.retrieve(created.id, {
+            await service.retrieveOrder(created.id, {
               select: ["id", "summary"],
             })
           )
@@ -258,7 +258,7 @@ moduleIntegrationTestRunner({
 
         const serializedOrder3 = JSON.parse(
           JSON.stringify(
-            await service.retrieve(created.id, {
+            await service.retrieveOrder(created.id, {
               select: ["id", "summary"],
             })
           )
@@ -271,11 +271,11 @@ moduleIntegrationTestRunner({
           })
         )
 
-        await service.restoreTransactions(refund[0].id)
+        await service.restoreTransactions([refund[0].id])
 
         const serializedOrder4 = JSON.parse(
           JSON.stringify(
-            await service.retrieve(created.id, {
+            await service.retrieveOrder(created.id, {
               select: ["id", "summary"],
             })
           )
@@ -290,8 +290,8 @@ moduleIntegrationTestRunner({
       })
 
       it("should transform requested fields and relations to match the db schema and return the order", async function () {
-        const createdOrder = await service.create(input)
-        const getOrder = await service.retrieve(createdOrder.id, {
+        const createdOrder = await service.createOrders(input)
+        const getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "display_id",
@@ -330,8 +330,8 @@ moduleIntegrationTestRunner({
       })
 
       it("should return order transactions", async function () {
-        const createdOrder = await service.create(input)
-        const getOrder = await service.retrieve(createdOrder.id, {
+        const createdOrder = await service.createOrders(input)
+        const getOrder = await service.retrieveOrder(createdOrder.id, {
           select: [
             "id",
             "transactions.amount",
@@ -357,8 +357,8 @@ moduleIntegrationTestRunner({
       })
 
       it("should transform where clause to match the db schema and return the order", async function () {
-        await service.create(input)
-        const orders = await service.list(
+        await service.createOrders(input)
+        const orders = await service.listOrders(
           {
             items: {
               quantity: 2,
@@ -372,7 +372,7 @@ moduleIntegrationTestRunner({
         )
         expect(orders.length).toEqual(1)
 
-        const orders2 = await service.list(
+        const orders2 = await service.listOrders(
           {
             items: {
               quantity: 5,
@@ -386,7 +386,7 @@ moduleIntegrationTestRunner({
         )
         expect(orders2.length).toEqual(0)
 
-        const orders3 = await service.list(
+        const orders3 = await service.listOrders(
           {
             items: {
               detail: {
@@ -402,7 +402,7 @@ moduleIntegrationTestRunner({
         )
         expect(orders3.length).toEqual(1)
 
-        const orders4 = await service.list(
+        const orders4 = await service.listOrders(
           {
             items: {
               detail: {

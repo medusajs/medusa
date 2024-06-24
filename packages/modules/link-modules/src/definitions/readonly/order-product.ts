@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const OrderProduct: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const OrderProduct: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "items.product_id",
         alias: "product",
+        args: {
+          methodSuffix: "Products",
+        },
       },
     },
     {
@@ -22,7 +25,7 @@ export const OrderProduct: ModuleJoinerConfig = {
         foreignKey: "items.variant_id",
         alias: "variant",
         args: {
-          methodSuffix: "Variants",
+          methodSuffix: "ProductVariants",
         },
       },
     },

@@ -1,8 +1,12 @@
-import { expectTypeOf } from "expect-type"
 import { MetadataStorage } from "@mikro-orm/core"
-import { EntityConstructor } from "../types"
+import { expectTypeOf } from "expect-type"
+import { DmlEntity } from "../entity"
 import { EntityBuilder } from "../entity-builder"
-import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
+import {
+  createMikrORMEntity,
+  toMikroORMEntity,
+} from "../helpers/create-mikro-orm-entity"
+import { EntityConstructor } from "../types"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -10,7 +14,7 @@ describe("Entity builder", () => {
   })
 
   describe("Entity builder | properties", () => {
-    test("define an entity", () => {
+    test("should identify a DML entity correctly", () => {
       const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
@@ -18,12 +22,31 @@ describe("Entity builder", () => {
         email: model.text(),
       })
 
+      expect(DmlEntity.isDmlEntity(user)).toBe(true)
+
+      const nonDmlEntity = new Object()
+
+      expect(DmlEntity.isDmlEntity(nonDmlEntity)).toBe(false)
+    })
+
+    test("define an entity", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.text(),
+        spend_limit: model.bigNumber(),
+      })
+
       const entityBuilder = createMikrORMEntity()
       const User = entityBuilder(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
         email: string
+        spend_limit: number
+        raw_spend_limit: Record<string, unknown>
         created_at: Date
         updated_at: Date
         deleted_at: Date | null
@@ -81,6 +104,25 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
         updated_at: {
           reference: "scalar",
           type: "date",
@@ -111,6 +153,7 @@ describe("Entity builder", () => {
         id: model.number(),
         username: model.text().default("foo"),
         email: model.text(),
+        spend_limit: model.bigNumber().default(500.4),
       })
 
       const entityBuilder = createMikrORMEntity()
@@ -164,6 +207,26 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          default: 500.4,
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
         created_at: {
           reference: "scalar",
           type: "date",
@@ -205,20 +268,43 @@ describe("Entity builder", () => {
         id: model.number(),
         username: model.text().nullable(),
         email: model.text(),
+        spend_limit: model.bigNumber().nullable(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string | null
         email: string
+        spend_limit: number | null
+        raw_spend_limit: Record<string, unknown> | null
+        created_at: Date
+        updated_at: Date
         deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      const userInstance = new User()
+
+      expect(userInstance.username).toEqual(null)
+
+      expect(userInstance.spend_limit).toEqual(undefined)
+      expect(userInstance.raw_spend_limit).toEqual(null)
+
+      userInstance.username = "john"
+      expect(userInstance.username).toEqual("john")
+
+      userInstance.spend_limit = 150.5
+      expect(userInstance.spend_limit).toEqual(150.5)
+      expect(userInstance.raw_spend_limit).toEqual({
+        precision: 20,
+        value: "150.5",
+      })
 
       expect(metaData.filters).toEqual({
         softDeletable: {
@@ -256,6 +342,25 @@ describe("Entity builder", () => {
           nullable: false,
           getter: false,
           setter: false,
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
         },
         created_at: {
           reference: "scalar",
@@ -531,6 +636,12 @@ describe("Entity builder", () => {
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
+      const userInstance = new User()
+      expect(userInstance.role).toEqual(null)
+
+      userInstance.role = "admin"
+      expect(userInstance.role).toEqual("admin")
+
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
 
@@ -646,6 +757,413 @@ describe("Entity builder", () => {
         'Cannot define field(s) "deleted_at" as they are implicitly defined on every model'
       )
     })
+
+    test("define pg schema name in the entity name", () => {
+      const model = new EntityBuilder()
+      const user = model.define("public.user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.tableName).toEqual("public.user")
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+  })
+
+  describe("Entity builder | id", () => {
+    test("define an entity with id property", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.id(),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        username: string
+        email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          primary: true,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("mark id as non-primary", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.id({ primaryKey: false }),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        username: string
+        email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      expect(userInstance.id).toBeDefined()
+    })
+
+    test("define prefix for the id", () => {
+      const model = new EntityBuilder()
+      const user = model.define("user", {
+        id: model.id({ primaryKey: false, prefix: "us" }),
+        username: model.text(),
+        email: model.text(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        username: string
+        email: string
+        created_at: Date
+        updated_at: Date
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      expect(userInstance.id.startsWith("us_")).toBeTruthy()
+    })
   })
 
   describe("Entity builder | indexes", () => {
@@ -672,14 +1190,121 @@ describe("Entity builder", () => {
 
       expect(metaData.indexes).toEqual([
         {
-          name: "IDX_users_id",
+          name: "IDX_user_id",
           expression:
-            'CREATE INDEX IF NOT EXISTS "IDX_users_id" ON "users" (id) WHERE deleted_at IS NULL',
+            'CREATE INDEX IF NOT EXISTS "IDX_user_id" ON "user" (id) WHERE deleted_at IS NULL',
         },
         {
-          name: "IDX_users_email",
+          name: "IDX_user_email_unique",
           expression:
-            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_users_email" ON "users" (email) WHERE deleted_at IS NULL',
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_unique" ON "user" (email) WHERE deleted_at IS NULL',
+        },
+      ])
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define index when entity is using an explicit pg Schema", () => {
+      const model = new EntityBuilder()
+      const user = model.define("platform.user", {
+        id: model.number().index(),
+        username: model.text(),
+        email: model.text().unique(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        email: string
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.tableName).toEqual("platform.user")
+
+      expect(metaData.indexes).toEqual([
+        {
+          name: "IDX_user_id",
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_id" ON "platform"."user" (id) WHERE deleted_at IS NULL',
+        },
+        {
+          name: "IDX_user_email_unique",
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_unique" ON "platform"."user" (email) WHERE deleted_at IS NULL',
         },
       ])
 
@@ -2493,7 +3118,7 @@ describe("Entity builder", () => {
 
       const entityBuilder = createMikrORMEntity()
       expect(() => entityBuilder(email)).toThrow(
-        'Missing property "email" on "user" entity. Make sure to define it as a relationship'
+        'Missing property "email" on "User" entity. Make sure to define it as a relationship'
       )
     })
 
@@ -2509,12 +3134,12 @@ describe("Entity builder", () => {
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
-        email: model.manyToMany(() => email),
+        email: model.belongsTo(() => email),
       })
 
       const entityBuilder = createMikrORMEntity()
       expect(() => entityBuilder(email)).toThrow(
-        'Invalid relationship reference for "email" on "user" entity. Make sure to define a hasOne or hasMany relationship'
+        'Invalid relationship reference for "email" on "User" entity. Make sure to define a hasOne or hasMany relationship'
       )
     })
 
@@ -2541,6 +3166,368 @@ describe("Entity builder", () => {
       expect(defineEmail).toThrow(
         'Cannot cascade delete "user" relationship(s) from "email" entity. Child to parent cascades are not allowed'
       )
+    })
+
+    test("define relationships when entity names has pg schema name", () => {
+      const model = new EntityBuilder()
+
+      const email = model.define("platform.email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+        user: model.belongsTo(() => user),
+      })
+
+      const user = model.define("platform.user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.hasOne(() => email),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        deleted_at: Date | null
+        email: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+          user: EntityConstructor<{
+            id: number
+            username: string
+            deleted_at: Date | null
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Email()).toMatchTypeOf<{
+        email: string
+        isVerified: boolean
+        deleted_at: Date | null
+        user: EntityConstructor<{
+          id: number
+          username: string
+          deleted_at: Date | null
+          email: EntityConstructor<{
+            email: string
+            isVerified: boolean
+            deleted_at: Date | null
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.tableName).toEqual("platform.user")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "1:1",
+          name: "email",
+          entity: "Email",
+          nullable: false,
+          mappedBy: "user",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
+      expect(emailMetaData.className).toEqual("Email")
+      expect(emailMetaData.path).toEqual("Email")
+      expect(emailMetaData.tableName).toEqual("platform.email")
+      expect(emailMetaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        isVerified: {
+          reference: "scalar",
+          type: "boolean",
+          columnType: "boolean",
+          name: "isVerified",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        user: {
+          reference: "1:1",
+          name: "user",
+          entity: "User",
+          nullable: false,
+          owner: true,
+          mappedBy: "email",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define relationships between cross pg schemas entities", () => {
+      const model = new EntityBuilder()
+
+      const email = model.define("platform.email", {
+        email: model.text(),
+        isVerified: model.boolean(),
+        user: model.belongsTo(() => user),
+      })
+
+      const user = model.define("public.user", {
+        id: model.number(),
+        username: model.text(),
+        email: model.hasOne(() => email),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Email = entityBuilder(email)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        deleted_at: Date | null
+        email: EntityConstructor<{
+          email: string
+          isVerified: boolean
+          deleted_at: Date | null
+          user: EntityConstructor<{
+            id: number
+            username: string
+            deleted_at: Date | null
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Email()).toMatchTypeOf<{
+        email: string
+        isVerified: boolean
+        deleted_at: Date | null
+        user: EntityConstructor<{
+          id: number
+          username: string
+          deleted_at: Date | null
+          email: EntityConstructor<{
+            email: string
+            isVerified: boolean
+            deleted_at: Date | null
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.tableName).toEqual("public.user")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          reference: "1:1",
+          name: "email",
+          entity: "Email",
+          nullable: false,
+          mappedBy: "user",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
+      expect(emailMetaData.className).toEqual("Email")
+      expect(emailMetaData.path).toEqual("Email")
+      expect(emailMetaData.tableName).toEqual("platform.email")
+      expect(emailMetaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        isVerified: {
+          reference: "scalar",
+          type: "boolean",
+          columnType: "boolean",
+          name: "isVerified",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        user: {
+          reference: "1:1",
+          name: "user",
+          entity: "User",
+          nullable: false,
+          owner: true,
+          mappedBy: "email",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
     })
   })
 
@@ -2899,7 +3886,7 @@ describe("Entity builder", () => {
 
       const entityBuilder = createMikrORMEntity()
       expect(() => entityBuilder(user)).toThrow(
-        'Missing property "users" on "team" entity. Make sure to define it as a relationship'
+        'Missing property "users" on "Team" entity. Make sure to define it as a relationship'
       )
     })
 
@@ -2919,7 +3906,7 @@ describe("Entity builder", () => {
 
       const entityBuilder = createMikrORMEntity()
       expect(() => entityBuilder(user)).toThrow(
-        'Invalid relationship reference for "users" on "team" entity. Make sure to define a manyToMany relationship'
+        'Invalid relationship reference for "users" on "Team" entity. Make sure to define a manyToMany relationship'
       )
     })
 
@@ -3444,6 +4431,607 @@ describe("Entity builder", () => {
           entity: "User",
           pivotTable: "team_users",
           mappedBy: "activeTeams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define manyToMany relationship when entity names has pg schema name", () => {
+      const model = new EntityBuilder()
+      const team = model.define("platform.team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user),
+      })
+
+      const user = model.define("platform.user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.tableName).toEqual("platform.user")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "platform.team_users",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.tableName).toEqual("platform.team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "platform.team_users",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define custom pivot table name", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user, {
+          pivotTable: "users_teams",
+        }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { pivotTable: "users_teams" }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotTable: "users_teams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotTable: "users_teams",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
+    test("define custom pivot entity", () => {
+      const model = new EntityBuilder()
+      const team = model.define("team", {
+        id: model.number(),
+        name: model.text(),
+        users: model.manyToMany(() => user, {
+          pivotEntity: () => squad,
+        }),
+      })
+
+      const squad = model.define("teamUsers", {
+        id: model.number(),
+        user: model.belongsTo(() => user, { mappedBy: "teams" }),
+        team: model.belongsTo(() => team, { mappedBy: "users" }),
+      })
+
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+        teams: model.manyToMany(() => team, { pivotEntity: () => squad }),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+      const Team = entityBuilder(team)
+      const Squad = entityBuilder(squad)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        teams: EntityConstructor<{
+          id: number
+          name: string
+          users: EntityConstructor<{
+            id: number
+            username: string
+          }>
+        }>
+      }>()
+
+      expectTypeOf(new Team()).toMatchTypeOf<{
+        id: number
+        name: string
+        users: EntityConstructor<{
+          id: number
+          username: string
+          teams: EntityConstructor<{
+            id: number
+            name: string
+          }>
+        }>
+      }>()
+
+      const squadMetaData = MetadataStorage.getMetadataFromDecorator(Squad)
+      expect(squadMetaData.className).toEqual("TeamUsers")
+      expect(squadMetaData.path).toEqual("TeamUsers")
+      expect(squadMetaData.tableName).toEqual("team_users")
+
+      expect(squadMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        team: {
+          entity: "Team",
+          name: "team",
+          persist: false,
+          reference: "m:1",
+        },
+        team_id: {
+          columnType: "text",
+          entity: "Team",
+          fieldName: "team_id",
+          mapToPk: true,
+          name: "team_id",
+          nullable: false,
+          onDelete: undefined,
+          reference: "m:1",
+        },
+        user: {
+          entity: "User",
+          name: "user",
+          persist: false,
+          reference: "m:1",
+        },
+        user_id: {
+          columnType: "text",
+          entity: "User",
+          fieldName: "user_id",
+          mapToPk: true,
+          name: "user_id",
+          nullable: false,
+          onDelete: undefined,
+          reference: "m:1",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        teams: {
+          reference: "m:n",
+          name: "teams",
+          entity: "Team",
+          pivotEntity: "TeamUsers",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      const teamMetaData = MetadataStorage.getMetadataFromDecorator(Team)
+      expect(teamMetaData.className).toEqual("Team")
+      expect(teamMetaData.path).toEqual("Team")
+      expect(teamMetaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        name: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "name",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        users: {
+          reference: "m:n",
+          name: "users",
+          entity: "User",
+          pivotEntity: "TeamUsers",
         },
         created_at: {
           reference: "scalar",

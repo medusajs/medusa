@@ -1,5 +1,4 @@
 import { resolve } from "path"
-import { Modules } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   UpdateFulfillmentDTO,
@@ -13,7 +12,7 @@ import {
   generateCreateFulfillmentData,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
-import { FulfillmentEvents } from "@medusajs/utils"
+import { FulfillmentEvents, Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
@@ -56,7 +55,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             name: "test",
             type: "default",
           })
-          const fulfillmentSet = await service.create({
+          const fulfillmentSet = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
@@ -104,7 +103,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -160,25 +159,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_created,
+                eventName: FulfillmentEvents.FULFILLMENT_CREATED,
                 action: "created",
                 object: "fulfillment",
                 data: { id: fulfillment.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_address_created,
+                eventName: FulfillmentEvents.FULFILLMENT_ADDRESS_CREATED,
                 action: "created",
                 object: "fulfillment_address",
                 data: { id: fulfillment.delivery_address.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_item_created,
+                eventName: FulfillmentEvents.FULFILLMENT_ITEM_CREATED,
                 action: "created",
                 object: "fulfillment_item",
                 data: { id: fulfillment.items[0].id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_label_created,
+                eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: fulfillment.labels[0].id },
@@ -191,7 +190,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -247,25 +246,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_created,
+                eventName: FulfillmentEvents.FULFILLMENT_CREATED,
                 action: "created",
                 object: "fulfillment",
                 data: { id: fulfillment.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_address_created,
+                eventName: FulfillmentEvents.FULFILLMENT_ADDRESS_CREATED,
                 action: "created",
                 object: "fulfillment_address",
                 data: { id: fulfillment.delivery_address.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_item_created,
+                eventName: FulfillmentEvents.FULFILLMENT_ITEM_CREATED,
                 action: "created",
                 object: "fulfillment_item",
                 data: { id: fulfillment.items[0].id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_label_created,
+                eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: fulfillment.labels[0].id },
@@ -280,7 +279,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -332,7 +331,6 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             )!
 
             const updateData: UpdateFulfillmentDTO = {
-              id: fulfillment.id,
               labels: [
                 { id: label1.id },
                 { ...label2, label_url: "updated-test-label-url-2" },
@@ -382,25 +380,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(4)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_updated,
+                eventName: FulfillmentEvents.FULFILLMENT_UPDATED,
                 action: "updated",
                 object: "fulfillment",
                 data: { id: updatedFulfillment.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_label_deleted,
+                eventName: FulfillmentEvents.FULFILLMENT_LABEL_DELETED,
                 action: "deleted",
                 object: "fulfillment_label",
                 data: { id: label3.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_label_updated,
+                eventName: FulfillmentEvents.FULFILLMENT_LABEL_UPDATED,
                 action: "updated",
                 object: "fulfillment_label",
                 data: { id: label2.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_label_created,
+                eventName: FulfillmentEvents.FULFILLMENT_LABEL_CREATED,
                 action: "created",
                 object: "fulfillment_label",
                 data: { id: label4.id },
@@ -417,7 +415,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               name: "test",
               type: "default",
             })
-            const fulfillmentSet = await service.create({
+            const fulfillmentSet = await service.createFulfillmentSets({
               name: "test",
               type: "test-type",
             })
@@ -458,7 +456,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
             expect(eventBusEmitSpy).toHaveBeenNthCalledWith(1, [
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.fulfillment_updated,
+                eventName: FulfillmentEvents.FULFILLMENT_UPDATED,
                 action: "updated",
                 object: "fulfillment",
                 data: { id: fulfillment.id },

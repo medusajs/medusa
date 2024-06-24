@@ -5,7 +5,7 @@ import {
 } from "../../types/api-responses"
 import { deleteRequest, getRequest, postRequest } from "./common"
 
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 
 async function retrieveReservation(id: string, query?: Record<string, any>) {
   return getRequest<ReservationRes>(`/admin/reservations/${id}`, query)
@@ -16,14 +16,14 @@ async function listReservations(query?: Record<string, any>) {
 }
 
 async function createReservation(
-  payload: InventoryNext.CreateReservationItemInput
+  payload: InventoryTypes.CreateReservationItemInput
 ) {
   return postRequest<ReservationRes>(`/admin/reservations`, payload)
 }
 
 async function updateReservation(
   id: string,
-  payload: InventoryNext.UpdateReservationItemInput
+  payload: InventoryTypes.UpdateReservationItemInput
 ) {
   return postRequest<ReservationRes>(`/admin/reservations/${id}`, payload)
 }

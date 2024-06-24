@@ -1,10 +1,12 @@
 module.exports = {
   transform: {
     "^.+\\.[jt]s?$": [
-      "ts-jest",
+      "@swc/jest",
       {
-        tsconfig: "tsconfig.json",
-        isolatedModules: true,
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
       },
     ],
   },

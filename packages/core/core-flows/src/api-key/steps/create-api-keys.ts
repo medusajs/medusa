@@ -13,7 +13,7 @@ export const createApiKeysStep = createStep(
     const service = container.resolve<IApiKeyModuleService>(
       ModuleRegistrationName.API_KEY
     )
-    const created = await service.create(data.api_keys)
+    const created = await service.createApiKeys(data.api_keys)
     return new StepResponse(
       created,
       created.map((apiKey) => apiKey.id)
@@ -28,6 +28,6 @@ export const createApiKeysStep = createStep(
       ModuleRegistrationName.API_KEY
     )
 
-    await service.delete(createdIds)
+    await service.deleteApiKeys(createdIds)
   }
 )

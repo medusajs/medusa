@@ -28,12 +28,9 @@ type InjectedDependencies = {
 
 export class WorkflowsModuleService<
   TWorkflowExecution extends WorkflowExecution = WorkflowExecution
-> extends ModulesSdkUtils.MedusaService<
-  typeof WorkflowExecution,
-  {
-    WorkflowExecution: { dto: WorkflowExecution }
-  }
->(WorkflowExecution, { WorkflowExecution }, entityNameToLinkableKeysMap) {
+> extends ModulesSdkUtils.MedusaService<{
+  WorkflowExecution: { dto: WorkflowExecution }
+}>({ WorkflowExecution }, entityNameToLinkableKeysMap) {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<TWorkflowExecution>
   protected workflowOrchestratorService_: WorkflowOrchestratorService

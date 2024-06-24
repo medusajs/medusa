@@ -1,9 +1,9 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   IPricingModuleService,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -37,7 +37,7 @@ medusaIntegrationTestRunner({
           name: "Test",
           type: "default",
         })
-        const fulfillmentSet = await fulfillmentModule.create({
+        const fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test",
           type: "test-type",
         })
@@ -65,7 +65,7 @@ medusaIntegrationTestRunner({
           },
         })
 
-        const priceSet = await pricingModule.create({
+        const priceSet = await pricingModule.createPriceSets({
           prices: [
             {
               amount: 3000,

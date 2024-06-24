@@ -1,6 +1,9 @@
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const validateInventoryItemsForCreateStepId =
   "validate-inventory-items-for-create-step"

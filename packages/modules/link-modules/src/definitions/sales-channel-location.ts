@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const SalesChannelLocation: ModuleJoinerConfig = {
   serviceName: LINKS.SalesChannelLocation,
@@ -24,12 +23,18 @@ export const SalesChannelLocation: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
+      args: {
+        methodSuffix: "SalesChannels",
+      },
     },
     {
       serviceName: Modules.STOCK_LOCATION,
       primaryKey: "id",
       foreignKey: "stock_location_id",
       alias: "location",
+      args: {
+        methodSuffix: "StockLocations",
+      },
     },
   ],
   extends: [

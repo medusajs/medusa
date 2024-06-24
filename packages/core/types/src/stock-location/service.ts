@@ -3,294 +3,334 @@ import {
   FilterableStockLocationProps,
   StockLocationDTO,
   UpdateStockLocationInput,
+  UpsertStockLocationInput,
 } from "./common"
-
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
+import { Context } from "../shared-context"
 import { FindConfig } from "../common/common"
 import { IModuleService } from "../modules-sdk"
-import { SharedContext } from "../shared-context"
 
 /**
- * The main service interface for the stock location's module.
+ * The main service interface for the Stock Location Module.
  */
 export interface IStockLocationService extends IModuleService {
   /**
-   * This method is used to retrieve a paginated list of stock locations based on optional filters and configuration.
+   * This method retrieves a paginated list of stock locations based on optional filters and configuration.
    *
    * @param {FilterableStockLocationProps} selector - The filters to apply on the retrieved stock locations.
-   * @param {FindConfig<StockLocationDTO>} config -
-   * The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the
+   * @param {FindConfig<StockLocationDTO>} config - The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a stock location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @return {Promise<StockLocationDTO[]>} The list of stock locations.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The list of stock locations.
    *
    * @example
    * To retrieve a list of stock locations using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[]) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocations = await stockLocationModule.list({
-   *     id: ids
-   *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
+   * const stockLocations = await stockLocationModuleService.listStockLocations({
+   *   id: ["sloc_123", "sloc_321"],
+   * })
    * ```
    *
    * To specify relations that should be retrieved within the stock locations:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[]) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocations = await stockLocationModule.list({
-   *     id: ids
-   *   }, {
-   *     relations: ["address"]
-   *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
+   * const stockLocations = await stockLocationModuleService.listStockLocations(
+   *   {
+   *     id: ["sloc_123", "sloc_321"],
+   *   },
+   *   {
+   *     relations: ["address"],
+   *   }
+   * )
    * ```
    *
    * By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[], skip: number, take: number) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocations = await stockLocationModule.list({
-   *     id: ids
-   *   }, {
+   * const stockLocations = await stockLocationModuleService.listStockLocations(
+   *   {
+   *     id: ["sloc_123", "sloc_321"],
+   *   },
+   *   {
    *     relations: ["address"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
    * ```
    */
-  list(
+  listStockLocations(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO[]>
 
   /**
-   * This method is used to retrieve a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters.
+   * This method retrieves a paginated list of stock locations along with the total count of available stock locations satisfying the provided filters.
    *
    * @param {FilterableStockLocationProps} selector - The filters to apply on the retrieved stock locations.
-   * @param {FindConfig<StockLocationDTO>} config -
-   * The configurations determining how the stock locations are retrieved. Its properties, such as `select` or `relations`, accept the
+   * @param {FindConfig<StockLocationDTO>} config - The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a stock location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @return {Promise<[StockLocationDTO[], number]>} The list of stock locations along with the total count.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<[StockLocationDTO[], number]>} The list of stock locations along with their total count.
    *
    * @example
    * To retrieve a list of stock locations using their IDs:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[]) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const [stockLocations, count] = await stockLocationModule.listAndCount({
-   *     id: ids
+   * const [stockLocations, count] =
+   *   await stockLocationModuleService.listandCountStockLocations({
+   *     id: ["sloc_123", "sloc_321"],
    *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
    * ```
    *
    * To specify relations that should be retrieved within the stock locations:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[]) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const [stockLocations, count] = await stockLocationModule.listAndCount({
-   *     id: ids
-   *   }, {
-   *     relations: ["address"]
-   *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
+   * const [stockLocations, count] =
+   *   await stockLocationModuleService.listandCountStockLocations(
+   *     {
+   *       id: ["sloc_123", "sloc_321"],
+   *     },
+   *     {
+   *       relations: ["address"],
+   *     }
+   *   )
    * ```
    *
    * By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
    *
    * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function listStockLocations (ids: string[], skip: number, take: number) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const [stockLocations, count] = await stockLocationModule.listAndCount({
-   *     id: ids
-   *   }, {
-   *     relations: ["address"],
-   *     skip,
-   *     take
-   *   })
-   *
-   *   // do something with the stock locations or return them
-   * }
+   * const [stockLocations, count] =
+   *   await stockLocationModuleService.listandCountStockLocations(
+   *     {
+   *       id: ["sloc_123", "sloc_321"],
+   *     },
+   *     {
+   *       relations: ["address"],
+   *       take: 20,
+   *       skip: 2,
+   *     }
+   *   )
    * ```
    */
-  listAndCount(
+  listAndCountStockLocations(
     selector: FilterableStockLocationProps,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<[StockLocationDTO[], number]>
 
   /**
-   * This method is used to retrieve a stock location by its ID
+   * This method retrieves a stock location by its ID.
    *
-   * @param {string} id - The ID of the stock location
-   * @param {FindConfig<StockLocationDTO>} config -
-   * The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the
+   * @param {string} id - The ID of the stock location.
+   * @param {FindConfig<StockLocationDTO>} config - The configurations determining how the stock location is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a stock location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<StockLocationDTO>} The stock location's details.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO>} The retrieved stock location.
    *
    * @example
-   * A simple example that retrieves a inventory item by its ID:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function retrieveStockLocation (id: string) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocation = await stockLocationModule.retrieve(id)
-   *
-   *   // do something with the stock location or return it
-   * }
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function retrieveStockLocation (id: string) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocation = await stockLocationModule.retrieve(id, {
-   *     relations: ["address"]
-   *   })
-   *
-   *   // do something with the stock location or return it
-   * }
-   * ```
+   * const stockLocation =
+   *   await stockLocationModuleService.retrieveStockLocation("sloc_123")
    */
-  retrieve(
+  retrieveStockLocation(
     id: string,
     config?: FindConfig<StockLocationDTO>,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
   /**
-   * This method is used to create a stock location.
+   * This method creates a stock location.
    *
-   * @param {CreateStockLocationInput} input - The details of the stock location to create.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<StockLocationDTO>} The created stock location's details.
+   * @param {CreateStockLocationInput} input - The stock location to create.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO>} The created stock location.
    *
    * @example
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function createStockLocation (name: string) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocation = await stockLocationModule.create({
-   *     name
-   *   })
-   *
-   *   // do something with the stock location or return it
-   * }
+   * const stockLocation = await stockLocationModuleService.createStockLocations(
+   *   {
+   *     name: "Warehouse",
+   *     address: {
+   *       address_1: "1855 Powder Mill Rd",
+   *       country_code: "us",
+   *     },
+   *   }
+   * )
    */
-  create(
+  createStockLocations(
     input: CreateStockLocationInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
   /**
-   * This method is used to update a stock location.
+   * This method creates stock locations.
    *
-   * @param {string} id - The ID of the stock location.
-   * @param {UpdateStockLocationInput} input - The attributes to update in the stock location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<StockLocationDTO>} The stock location's details.
+   * @param {CreateStockLocationInput[]} input - The stock locations to create.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The created stock locations.
    *
    * @example
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function updateStockLocation (id:string, name: string) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   const stockLocation = await stockLocationModule.update(id, {
-   *     name
-   *   })
-   *
-   *   // do something with the stock location or return it
-   * }
+   * const stockLocations =
+   *   await stockLocationModuleService.createStockLocations([
+   *     {
+   *       name: "Warehouse",
+   *       address: {
+   *         address_1: "1855 Powder Mill Rd",
+   *         country_code: "us",
+   *       },
+   *     },
+   *     {
+   *       name: "Warehouse 2",
+   *       address_id: "laddr_123",
+   *     },
+   *   ])
    */
-  update(
+  createStockLocations(
+    input: CreateStockLocationInput[],
+    context?: Context
+  ): Promise<StockLocationDTO[]>
+
+  /**
+   * This method updates or creates stock location service nexts if they don't exist.
+   *
+   * @param {Partial<UpdateStockLocationInput>[]} data - The list of Make all properties in t optional
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The created or updated stock location service nexts.
+   *
+   * @example
+   * {example-code}
+   */
+  upsertStockLocations(
+    data: UpsertStockLocationInput[],
+    sharedContext?: Context
+  ): Promise<StockLocationDTO[]>
+
+  /**
+   * This method updates or creates a stock location service next if it doesn't exist.
+   *
+   * @param {Partial<UpdateStockLocationInput>} data - Make all properties in T optional
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO>} The created or updated stock location service next.
+   *
+   * @example
+   * {example-code}
+   */
+  upsertStockLocations(
+    data: UpsertStockLocationInput,
+    sharedContext?: Context
+  ): Promise<StockLocationDTO>
+
+  /**
+   * This method updates existing stock locations.
+   *
+   * @param {UpdateStockLocationInput[]} input - The attributes to update in the stock locations.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The updated stock locations.
+   *
+   * @example
+   * const stockLocations =
+   *   await stockLocationModuleService.updateStockLocations([
+   *     {
+   *       id: "sloc_123",
+   *       name: "Warehouse",
+   *     },
+   *     {
+   *       id: "sloc_321",
+   *       address_id: "laddr_123",
+   *     },
+   *   ])
+   */
+  updateStockLocations(
     id: string,
     input: UpdateStockLocationInput,
-    context?: SharedContext
+    context?: Context
   ): Promise<StockLocationDTO>
 
   /**
-   * This method is used to delete a stock location.
+   * This method updates existing stock locations matching the specified filters.
    *
-   * @param {string} id - The ID of the stock location.
-   * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when the stock location is successfully deleted.
+   * @param {FilterableStockLocationProps} selector - The filters specifying which stock locations to update.
+   * @param {UpdateStockLocationInput} input - The attributes to update in the stock locations.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<StockLocationDTO[]>} The updated stock locations.
    *
    * @example
-   * import {
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   *
-   * async function deleteStockLocation (id:string) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   *
-   *   await stockLocationModule.delete(id)
-   * }
+   * const stockLocations =
+   *   await stockLocationModuleService.updateStockLocations(
+   *     {
+   *       name: "Warehouse",
+   *     },
+   *     {
+   *       address_id: "laddr_123",
+   *     }
+   *   )
    */
-  delete(id: string, context?: SharedContext): Promise<void>
+  updateStockLocations(
+    selector: FilterableStockLocationProps,
+    input: UpdateStockLocationInput,
+    context?: Context
+  ): Promise<StockLocationDTO[]>
+
+  /**
+   * This method deletes a stock location by its ID.
+   *
+   * @param {string} id - The ID of the stock location.
+   * @param {Context} context - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the stock location is deleted successfully.
+   *
+   * @example
+   * await stockLocationModuleService.deleteStockLocations("sloc_123")
+   */
+  deleteStockLocations(id: string | string[], context?: Context): Promise<void>
+
+  /**
+   * This method soft deletes stock locations by their IDs.
+   *
+   * @param {string[]} stockLocationIds - The IDs of the stock locations.
+   * @param {SoftDeleteReturn<TReturnableLinkableKeys>} config - An object that is used to specify an entity's related entities that should be soft-deleted when the main entity is soft-deleted.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were also soft deleted, such as the ID of the associated address.
+   * The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`, and its value is an array of strings, each being the ID of a record associated
+   * with the stock location through this relation, such as the IDs of associated address.
+   *
+   * If there are no related records, the promise resolves to `void`.
+   *
+   * @example
+   * await stockLocationModuleService.softDeleteStockLocations([
+   *   "sloc_123",
+   *   "sloc_321",
+   * ])
+   */
+  softDeleteStockLocations<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method restores soft deleted stock locations by their IDs.
+   *
+   * @param {string[]} stockLocationIds - The IDs of the stock locations.
+   * @param {RestoreReturn<TReturnableLinkableKeys>} config - Configurations determining which relations to restore along with each of the stock location. You can pass to its `returnLinkableKeys`
+   * property any of the stock location's relation attribute names, such as `address`.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void | Record<string, string[]>>} An object that includes the IDs of related records that were restored, such as the ID of associated address.
+   * The object's keys are the ID attribute names of the stock location entity's relations, such as `address_id`,
+   * and its value is an array of strings, each being the ID of the record associated with the stock location through this relation,
+   * such as the ID of associated address.
+   *
+   * If there are no related records restored, the promise resolves to `void`.
+   *
+   * @example
+   * await stockLocationModuleService.restoreStockLocations([
+   *   "sloc_123",
+   *   "sloc_321",
+   * ])
+   */
+  restoreStockLocations<TReturnableLinkableKeys extends string = string>(
+    stockLocationIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import LineItem from "./line-item"
 import Order from "./order"
@@ -62,7 +63,7 @@ export default class OrderItem {
   @ManyToOne(() => Order, {
     persist: false,
   })
-  order: Order
+  order: Rel<Order>
 
   @Property({ columnType: "integer" })
   @OrderVersionIndex.MikroORMIndex()
@@ -80,7 +81,7 @@ export default class OrderItem {
   @ManyToOne(() => LineItem, {
     persist: false,
   })
-  item: LineItem
+  item: Rel<LineItem>
 
   @MikroOrmBigNumberProperty()
   quantity: BigNumber | number

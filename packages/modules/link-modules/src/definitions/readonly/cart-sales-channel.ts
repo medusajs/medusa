@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const CartSalesChannel: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const CartSalesChannel: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "sales_channel_id",
         alias: "sales_channel",
+        args: {
+          methodSuffix: "SalesChannels",
+        },
       },
     },
     {
@@ -21,6 +24,9 @@ export const CartSalesChannel: ModuleJoinerConfig = {
         primaryKey: "sales_channel_id",
         foreignKey: "id",
         alias: "carts",
+        args: {
+          methodSuffix: "Carts",
+        },
         isList: true,
       },
     },

@@ -1,6 +1,7 @@
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { MedusaApp, Modules } from "@medusajs/modules-sdk"
+import { MedusaApp } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -28,7 +29,7 @@ medusaIntegrationTestRunner({
           Modules.PRODUCT
         ] as unknown as IProductModuleService
 
-        const productList = await product.list()
+        const productList = await product.listProducts()
 
         expect(productList).toEqual(expect.arrayContaining([]))
       })

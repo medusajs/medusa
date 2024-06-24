@@ -82,7 +82,7 @@ medusaIntegrationTestRunner({
             { name: "region_id", rule_attribute: "region_id" },
           ])
 
-          priceSet = await pricingModuleService.create({
+          priceSet = await pricingModuleService.createPriceSets({
             rules: [{ rule_attribute: "region_id" }],
             prices: [
               {

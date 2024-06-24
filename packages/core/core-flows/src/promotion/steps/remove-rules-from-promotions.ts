@@ -18,7 +18,7 @@ export const removeRulesFromPromotionsStep = createStep(
       ModuleRegistrationName.PROMOTION
     )
 
-    const promotion = await promotionModule.retrieve(data.id, {
+    const promotion = await promotionModule.retrievePromotion(data.id, {
       relations: [
         "rules.values",
         "application_method.target_rules.values",

@@ -1,10 +1,10 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { INotificationModuleService } from "@medusajs/types"
 import {
   moduleIntegrationTestRunner,
   SuiteOptions,
 } from "medusa-test-utils/dist"
 import { resolve } from "path"
+import { Modules } from "@medusajs/utils"
 
 let moduleOptions = {
   providers: [
@@ -40,7 +40,7 @@ moduleIntegrationTestRunner({
           data: {},
         }
 
-        const result = await service.create(notification)
+        const result = await service.createNotifications(notification)
         expect(result).toEqual(
           expect.objectContaining({
             provider_id: "test-provider",
@@ -58,7 +58,7 @@ moduleIntegrationTestRunner({
           idempotency_key: "idempotency-key",
         }
 
-        const result = await service.create(notification)
+        const result = await service.createNotifications(notification)
         expect(result).toEqual(
           expect.objectContaining({
             provider_id: "test-provider",
@@ -66,7 +66,7 @@ moduleIntegrationTestRunner({
           })
         )
 
-        const secondResult = await service.create(notification)
+        const secondResult = await service.createNotifications(notification)
         expect(secondResult).toBe(undefined)
       })
     }),

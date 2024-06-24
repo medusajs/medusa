@@ -1,22 +1,13 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { ModuleJoinerConfig } from "@medusajs/types"
-import { MapToConfig } from "@medusajs/utils"
+import {
+  buildEntitiesNameToLinkableKeysMap,
+  defineJoinerConfig,
+  MapToConfig,
+  Modules,
+} from "@medusajs/utils"
 
-export const LinkableKeys = {}
+export const joinerConfig = defineJoinerConfig(Modules.FILE, {
+  entityQueryingConfig: [{ name: "File" }],
+})
 
-const entityLinkableKeysMap: MapToConfig = {}
-export const entityNameToLinkableKeysMap: MapToConfig = entityLinkableKeysMap
-
-export const joinerConfig: ModuleJoinerConfig = {
-  serviceName: Modules.FILE,
-  primaryKeys: ["id"],
-  linkableKeys: LinkableKeys,
-  alias: [
-    {
-      name: ["file", "files"],
-      args: {
-        entity: "File",
-      },
-    },
-  ],
-}
+export const entityNameToLinkableKeysMap: MapToConfig =
+  buildEntitiesNameToLinkableKeysMap({})

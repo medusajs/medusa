@@ -1,20 +1,38 @@
-import { BelongsTo } from "./relations/belongs-to"
 import {
-  PropertyType,
   EntityCascades,
-  RelationshipType,
   ExtractEntityRelations,
-} from "./types"
+  IDmlEntity,
+  IsDmlEntity,
+  PropertyType,
+  RelationshipType,
+} from "@medusajs/types"
+import { DMLSchema } from "./entity-builder"
+import { BelongsTo } from "./relations/belongs-to"
 
 /**
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
  */
-export class DmlEntity<
-  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> {
+export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
+  [IsDmlEntity]: true = true
+
   #cascades: EntityCascades<string[]> = {}
   constructor(public name: string, public schema: Schema) {}
+
+  /**
+   * A static method to check if an entity is an instance of DmlEntity.
+   * It allows us to identify a specific object as being an instance of
+   * DmlEntity.
+   *
+   * @param entity
+   */
+  static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
+    return (
+      !!entity &&
+      (entity instanceof DmlEntity ||
+        (typeof entity === "object" && entity[IsDmlEntity] === true))
+    )
+  }
 
   /**
    * Parse entity to get its underlying information

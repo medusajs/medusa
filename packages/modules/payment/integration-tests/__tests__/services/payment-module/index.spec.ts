@@ -1,10 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
-import {
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
+import { Modules, promiseAll } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils/dist"
 import {
   createPaymentCollections,
   createPayments,
@@ -13,12 +9,9 @@ import {
 
 jest.setTimeout(30000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IPaymentModuleService>({
   moduleName: Modules.PAYMENT,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IPaymentModuleService>) => {
+  testSuite: ({ MikroOrmWrapper, service }) => {
     describe("Payment Module Service", () => {
       describe("Payment Flow", () => {
         it("complete payment flow successfully", async () => {
@@ -180,7 +173,7 @@ moduleIntegrationTestRunner({
 
             expect(collection.length).toEqual(1)
 
-            await service.deletePaymentCollections(["pay-col-id-1"])
+            await service.deletePaymentCollections("pay-col-id-1")
 
             collection = await service.listPaymentCollections({
               id: ["pay-col-id-1"],

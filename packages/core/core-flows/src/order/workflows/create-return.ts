@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderShippingMethodDTO,
   FulfillmentWorkflow,
@@ -8,19 +7,20 @@ import {
   WithCalculatedPrice,
 } from "@medusajs/types"
 import {
+  arrayDifference,
   ContainerRegistrationKeys,
+  isDefined,
   MathBN,
   MedusaError,
-  arrayDifference,
-  isDefined,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
-  WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
 import { createReturnFulfillmentWorkflow } from "../../fulfillment"
@@ -168,7 +168,7 @@ function prepareFulfillmentData({
     } as FulfillmentWorkflow.CreateFulfillmentItemWorkflowDTO
   })
 
-  let locationId: string | undefined = input.location_id
+  let locationId: string | undefined | null = input.location_id
   if (!locationId) {
     locationId = returnShippingOption.service_zone.fulfillment_set.location?.id
   }

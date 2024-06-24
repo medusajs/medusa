@@ -31,11 +31,11 @@ export const updateProductVariantsStep = createStep(
         )
       }
 
-      const prevData = await service.listVariants({
+      const prevData = await service.listProductVariants({
         id: data.product_variants.map((p) => p.id) as string[],
       })
 
-      const productVariants = await service.upsertVariants(
+      const productVariants = await service.upsertProductVariants(
         data.product_variants
       )
       return new StepResponse(productVariants, prevData)
@@ -45,12 +45,12 @@ export const updateProductVariantsStep = createStep(
       data.update,
     ])
 
-    const prevData = await service.listVariants(data.selector, {
+    const prevData = await service.listProductVariants(data.selector, {
       select: selects,
       relations,
     })
 
-    const productVariants = await service.updateVariants(
+    const productVariants = await service.updateProductVariants(
       data.selector,
       data.update
     )
@@ -65,6 +65,6 @@ export const updateProductVariantsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.upsertVariants(prevData)
+    await service.upsertProductVariants(prevData)
   }
 )

@@ -19,7 +19,7 @@ export const batchLinkProductsToCategoryStep = createStep(
     }
 
     const toRemoveSet = new Set(data.remove?.map((id) => id))
-    const dbProducts = await service.list(
+    const dbProducts = await service.listProducts(
       { id: [...(data.add ?? []), ...(data.remove ?? [])] },
       {
         take: null,
@@ -43,7 +43,7 @@ export const batchLinkProductsToCategoryStep = createStep(
       }
     })
 
-    await service.upsert(productsWithUpdatedCategories)
+    await service.upsertProducts(productsWithUpdatedCategories)
 
     return new StepResponse(void 0, {
       id: data.id,
@@ -61,7 +61,7 @@ export const batchLinkProductsToCategoryStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    const dbProducts = await service.list(
+    const dbProducts = await service.listProducts(
       { id: prevData.productIds },
       {
         take: null,
@@ -86,6 +86,6 @@ export const batchLinkProductsToCategoryStep = createStep(
       }
     })
 
-    await service.upsert(productsWithRevertedCategories)
+    await service.upsertProducts(productsWithRevertedCategories)
   }
 )

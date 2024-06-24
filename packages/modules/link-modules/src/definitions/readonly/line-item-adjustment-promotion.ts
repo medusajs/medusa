@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const LineItemAdjustmentPromotion: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const LineItemAdjustmentPromotion: ModuleJoinerConfig = {
         primaryKey: "id",
         foreignKey: "promotion_id",
         alias: "promotion",
+        args: {
+          methodSuffix: "Promotions",
+        },
       },
     },
   ],

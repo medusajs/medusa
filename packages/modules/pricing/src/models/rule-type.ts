@@ -13,6 +13,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import PriceSet from "./price-set"
 
@@ -50,7 +51,7 @@ class RuleType {
   default_priority: number
 
   @ManyToMany(() => PriceSet, (priceSet) => priceSet.rule_types)
-  price_sets = new Collection<PriceSet>(this)
+  price_sets = new Collection<Rel<PriceSet>>(this)
 
   @Property({
     onCreate: () => new Date(),

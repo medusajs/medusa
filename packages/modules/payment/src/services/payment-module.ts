@@ -9,6 +9,7 @@ import {
   DAL,
   FilterablePaymentCollectionProps,
   FilterablePaymentProviderProps,
+  FilterablePaymentSessionProps,
   FindConfig,
   InternalModuleDeclaration,
   IPaymentModuleService,
@@ -62,38 +63,29 @@ type InjectedDependencies = {
 
 const generateMethodForModels = {
   PaymentCollection,
-  Payment,
   PaymentSession,
+  Payment,
   Capture,
   Refund,
 }
 
-export default class PaymentModuleService<
-    TPaymentCollection extends PaymentCollection = PaymentCollection,
-    TPayment extends Payment = Payment,
-    TCapture extends Capture = Capture,
-    TRefund extends Refund = Refund,
-    TPaymentSession extends PaymentSession = PaymentSession
-  >
-  extends ModulesSdkUtils.MedusaService<
-    PaymentCollectionDTO,
-    {
-      PaymentCollection: { dto: PaymentCollectionDTO }
-      PaymentSession: { dto: PaymentSessionDTO }
-      Payment: { dto: PaymentDTO }
-      Capture: { dto: CaptureDTO }
-      Refund: { dto: RefundDTO }
-    }
-  >(PaymentCollection, generateMethodForModels, entityNameToLinkableKeysMap)
+export default class PaymentModuleService
+  extends ModulesSdkUtils.MedusaService<{
+    PaymentCollection: { dto: PaymentCollectionDTO }
+    PaymentSession: { dto: PaymentSessionDTO }
+    Payment: { dto: PaymentDTO }
+    Capture: { dto: CaptureDTO }
+    Refund: { dto: RefundDTO }
+  }>(generateMethodForModels, entityNameToLinkableKeysMap)
   implements IPaymentModuleService
 {
   protected baseRepository_: DAL.RepositoryService
 
-  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<TPayment>
-  protected captureService_: ModulesSdkTypes.IMedusaInternalService<TCapture>
-  protected refundService_: ModulesSdkTypes.IMedusaInternalService<TRefund>
-  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentSession>
-  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<TPaymentCollection>
+  protected paymentService_: ModulesSdkTypes.IMedusaInternalService<Payment>
+  protected captureService_: ModulesSdkTypes.IMedusaInternalService<Capture>
+  protected refundService_: ModulesSdkTypes.IMedusaInternalService<Refund>
+  protected paymentSessionService_: ModulesSdkTypes.IMedusaInternalService<PaymentSession>
+  protected paymentCollectionService_: ModulesSdkTypes.IMedusaInternalService<PaymentCollection>
   protected paymentProviderService_: PaymentProviderService
 
   constructor(
@@ -155,7 +147,7 @@ export default class PaymentModuleService<
     )
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createPaymentCollections_(
     data: CreatePaymentCollectionDTO[],
     @MedusaContext() sharedContext?: Context
@@ -528,6 +520,38 @@ export default class PaymentModuleService<
   }
 
   @InjectManager("baseRepository_")
+  // @ts-expect-error
+  async retrievePaymentSession(
+    id: string,
+    config: FindConfig<PaymentSessionDTO> = {},
+    @MedusaContext() sharedContext?: Context
+  ): Promise<PaymentSessionDTO> {
+    const session = await this.paymentSessionService_.retrieve(
+      id,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize(session)
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-expect-error
+  async listPaymentSessions(
+    filters?: FilterablePaymentSessionProps,
+    config?: FindConfig<PaymentSessionDTO>,
+    sharedContext?: Context
+  ): Promise<PaymentSessionDTO[]> {
+    const sessions = await this.paymentSessionService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PaymentSessionDTO[]>(sessions)
+  }
+
+  @InjectManager("baseRepository_")
   async updatePayment(
     data: UpdatePaymentDTO,
     @MedusaContext() sharedContext?: Context
@@ -822,7 +846,7 @@ export default class PaymentModuleService<
       case PaymentActions.SUCCESSFUL: {
         const [payment] = await this.listPayments(
           {
-            session_id: event.data.resource_id,
+            payment_session_id: event.data.resource_id,
           },
           {},
           sharedContext

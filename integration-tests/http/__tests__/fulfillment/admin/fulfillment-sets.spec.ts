@@ -31,7 +31,7 @@ medusaIntegrationTestRunner({
       const fulfillmentModule: IFulfillmentModuleService =
         getContainer().resolve(ModuleRegistrationName.FULFILLMENT)
 
-      fulfillmentSet1 = await fulfillmentModule.create({
+      fulfillmentSet1 = await fulfillmentModule.createFulfillmentSets({
         name: "Test fulfillment set",
         type: "pickup",
       })

@@ -11,21 +11,18 @@ export const eventBuilders = {
     action: CommonEvents.CREATED,
     object: "product",
     eventsEnum: ProductEvents,
-    isMainEntity: true,
   }),
   updatedProduct: eventBuilderFactory({
     source: Modules.PRODUCT,
     action: CommonEvents.UPDATED,
     object: "product",
     eventsEnum: ProductEvents,
-    isMainEntity: true,
   }),
   deletedProduct: eventBuilderFactory({
     source: Modules.PRODUCT,
     action: CommonEvents.DELETED,
     object: "product",
     eventsEnum: ProductEvents,
-    isMainEntity: true,
   }),
   createdProductVariant: eventBuilderFactory({
     source: Modules.PRODUCT,

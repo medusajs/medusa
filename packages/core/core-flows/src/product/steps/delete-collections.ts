@@ -10,7 +10,7 @@ export const deleteCollectionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.softDeleteCollections(ids)
+    await service.softDeleteProductCollections(ids)
     return new StepResponse(void 0, ids)
   },
   async (prevIds, { container }) => {
@@ -22,6 +22,6 @@ export const deleteCollectionsStep = createStep(
       ModuleRegistrationName.PRODUCT
     )
 
-    await service.restoreCollections(prevIds)
+    await service.restoreProductCollections(prevIds)
   }
 )

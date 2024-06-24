@@ -1,7 +1,8 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPricingModuleService, IProductModuleService } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  Modules,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
@@ -31,7 +32,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should query product variants and price set link with remote query", async () => {
-        const [product] = await productModule.create([
+        const [product] = await productModule.createProducts([
           {
             title: "Test product",
             variants: [
@@ -52,7 +53,7 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        const [priceSet1, priceSet2] = await pricingModule.create([
+        const [priceSet1, priceSet2] = await pricingModule.createPriceSets([
           {
             rules: [{ rule_attribute: "customer_group_id" }],
             prices: [

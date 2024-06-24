@@ -16,7 +16,7 @@ export interface UpdateReservationItemInput {
   /**
    * The description of the reservation item.
    */
-  description?: string
+  description?: string | null
   /**
    * Allow backorder of the item. If true, it won't check inventory levels before reserving it.
    */
@@ -36,7 +36,7 @@ export interface CreateReservationItemInput {
   /**
    * The ID of the associated line item.
    */
-  line_item_id?: string
+  line_item_id?: string | null
   /**
    * The ID of the associated inventory item.
    */
@@ -56,15 +56,15 @@ export interface CreateReservationItemInput {
   /**
    * The description of the reservation.
    */
-  description?: string
+  description?: string | null
   /**
    * The user or system that created the reservation. Can be any form of identification string.
    */
-  created_by?: string
+  created_by?: string | null
   /**
    * An ID associated with an external third-party system that the reservation item is connected to.
    */
-  external_id?: string
+  external_id?: string | null
   /**
    * Holds custom data in key-value pairs.
    */
@@ -72,7 +72,7 @@ export interface CreateReservationItemInput {
 }
 
 export interface ReserveQuantityContext {
-  locationId?: string
-  lineItemId?: string
+  locationId?: string | null
+  lineItemId?: string | null
   salesChannelId?: string | null
 }

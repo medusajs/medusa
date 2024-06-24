@@ -1,8 +1,8 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import {
   ApplicationMethodType,
   CampaignBudgetType,
+  Modules,
   PromotionType,
 } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
@@ -40,7 +40,7 @@ moduleIntegrationTestRunner({
         it("should create a basic promotion successfully", async () => {
           const createdPromotion = await createDefaultPromotion(service, {})
 
-          const [promotion] = await service.list({
+          const [promotion] = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -113,7 +113,7 @@ moduleIntegrationTestRunner({
             },
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["campaign.budget"] }
           )
@@ -146,7 +146,7 @@ moduleIntegrationTestRunner({
             code: "PROMOTION_TEST",
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["campaign.budget"] }
           )
@@ -225,7 +225,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["rules", "rules.values"] }
           )
@@ -264,7 +264,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          const [promotion] = await service.list(
+          const [promotion] = await service.listPromotions(
             { id: [createdPromotion.id] },
             { relations: ["rules", "rules.values"] }
           )
@@ -358,7 +358,7 @@ moduleIntegrationTestRunner({
             } as any,
           })
 
-          const [promotion] = await service.list({
+          const [promotion] = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -512,7 +512,7 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service
-            .update([
+            .updatePromotions([
               {
                 type: PromotionType.STANDARD,
               } as any,
@@ -525,7 +525,7 @@ moduleIntegrationTestRunner({
         it("should update the attributes of a promotion successfully", async () => {
           await createDefaultPromotions(service)
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: "promotion-id-1",
               is_automatic: true,
@@ -549,7 +549,7 @@ moduleIntegrationTestRunner({
           } as any)
           const applicationMethod = createdPromotion.application_method
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               application_method: {
@@ -574,7 +574,7 @@ moduleIntegrationTestRunner({
           } as any)
           const applicationMethod = createdPromotion.application_method
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               application_method: {
@@ -608,7 +608,7 @@ moduleIntegrationTestRunner({
           const applicationMethod = createdPromotion.application_method
 
           let error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
@@ -624,7 +624,7 @@ moduleIntegrationTestRunner({
           )
 
           error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
@@ -640,7 +640,7 @@ moduleIntegrationTestRunner({
           )
 
           error = await service
-            .update([
+            .updatePromotions([
               {
                 id: createdPromotion.id,
                 application_method: {
@@ -661,7 +661,7 @@ moduleIntegrationTestRunner({
             campaign_id: "campaign-id-1",
           })
 
-          const [updatedPromotion] = await service.update([
+          const [updatedPromotion] = await service.updatePromotions([
             {
               id: createdPromotion.id,
               campaign_id: "campaign-id-2",
@@ -686,7 +686,7 @@ moduleIntegrationTestRunner({
         const id = "promotion-id-1"
 
         it("should return promotion for the given id", async () => {
-          const promotion = await service.retrieve(id)
+          const promotion = await service.retrievePromotion(id)
 
           expect(promotion).toEqual(
             expect.objectContaining({
@@ -699,7 +699,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve("does-not-exist")
+            await service.retrievePromotion("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -713,7 +713,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve(undefined as unknown as string)
+            await service.retrievePromotion(undefined as unknown as string)
           } catch (e) {
             error = e
           }
@@ -722,7 +722,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return promotion based on config select param", async () => {
-          const promotion = await service.retrieve(id, {
+          const promotion = await service.retrievePromotion(id, {
             select: ["id"],
           })
 
@@ -757,7 +757,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return all promotions and count", async () => {
-          const [promotions, count] = await service.listAndCount()
+          const [promotions, count] = await service.listAndCountPromotions()
 
           expect(count).toEqual(2)
           expect(promotions).toEqual([
@@ -789,7 +789,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return all promotions based on config select and relations param", async () => {
-          const [promotions, count] = await service.listAndCount(
+          const [promotions, count] = await service.listAndCountPromotions(
             {
               id: ["promotion-id-1"],
             },
@@ -820,9 +820,9 @@ moduleIntegrationTestRunner({
             type: "standard",
           })
 
-          await service.delete([createdPromotion.id])
+          await service.deletePromotions([createdPromotion.id])
 
-          const promotions = await service.list(
+          const promotions = await service.listPromotions(
             {
               id: [createdPromotion.id],
             },
@@ -840,9 +840,9 @@ moduleIntegrationTestRunner({
             type: "standard",
           })
 
-          await service.softDelete([createdPromotion.id])
+          await service.softDeletePromotions([createdPromotion.id])
 
-          const promotions = await service.list({
+          const promotions = await service.listPromotions({
             id: [createdPromotion.id],
           })
 
@@ -857,14 +857,18 @@ moduleIntegrationTestRunner({
             type: "standard",
           })
 
-          await service.softDelete([createdPromotion.id])
+          await service.softDeletePromotions([createdPromotion.id])
 
-          let promotions = await service.list({ id: [createdPromotion.id] })
+          let promotions = await service.listPromotions({
+            id: [createdPromotion.id],
+          })
 
           expect(promotions).toHaveLength(0)
-          await service.restore([createdPromotion.id])
+          await service.restorePromotions([createdPromotion.id])
 
-          promotions = await service.list({ id: [createdPromotion.id] })
+          promotions = await service.listPromotions({
+            id: [createdPromotion.id],
+          })
           expect(promotions).toHaveLength(1)
         })
       })
@@ -1127,9 +1131,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["rules", "rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["rules", "rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({
@@ -1193,9 +1200,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionTargetRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["application_method.target_rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["application_method.target_rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({
@@ -1271,9 +1281,12 @@ moduleIntegrationTestRunner({
 
           await service.removePromotionBuyRules(promotion.id, ruleIds)
 
-          const updatedPromotion = await service.retrieve(promotion.id, {
-            relations: ["application_method.buy_rules.values"],
-          })
+          const updatedPromotion = await service.retrievePromotion(
+            promotion.id,
+            {
+              relations: ["application_method.buy_rules.values"],
+            }
+          )
 
           expect(updatedPromotion).toEqual(
             expect.objectContaining({

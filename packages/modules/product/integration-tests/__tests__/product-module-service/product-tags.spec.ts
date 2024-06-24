@@ -1,8 +1,8 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService } from "@medusajs/types"
 import {
   CommonEvents,
   composeMessage,
+  Modules,
   ProductEvents,
   ProductStatus,
 } from "@medusajs/utils"
@@ -64,7 +64,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listTags", () => {
         it("should return tags and count queried by ID", async () => {
-          const tags = await service.listTags({
+          const tags = await service.listProductTags({
             id: tagOne.id,
           })
 
@@ -76,7 +76,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return tags and count based on the options and filter parameter", async () => {
-          let tags = await service.listTags(
+          let tags = await service.listProductTags(
             {
               id: tagOne.id,
             },
@@ -91,7 +91,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             }),
           ])
 
-          tags = await service.listTags({}, { take: 1, skip: 1 })
+          tags = await service.listProductTags({}, { take: 1, skip: 1 })
 
           expect(tags).toEqual([
             expect.objectContaining({
@@ -101,7 +101,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for tags", async () => {
-          const tags = await service.listTags(
+          const tags = await service.listProductTags(
             {
               id: tagOne.id,
             },
@@ -130,7 +130,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("listAndCountTags", () => {
         it("should return tags and count queried by ID", async () => {
-          const [tags, count] = await service.listAndCountTags({
+          const [tags, count] = await service.listAndCountProductTags({
             id: tagOne.id,
           })
 
@@ -143,7 +143,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return tags and count based on the options and filter parameter", async () => {
-          let [tags, count] = await service.listAndCountTags(
+          let [tags, count] = await service.listAndCountProductTags(
             {
               id: tagOne.id,
             },
@@ -158,10 +158,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
               id: tagOne.id,
             }),
           ])
-          ;[tags, count] = await service.listAndCountTags({}, { take: 1 })
+          ;[tags, count] = await service.listAndCountProductTags(
+            {},
+            { take: 1 }
+          )
 
           expect(count).toEqual(2)
-          ;[tags, count] = await service.listAndCountTags(
+          ;[tags, count] = await service.listAndCountProductTags(
             {},
             { take: 1, skip: 1 }
           )
@@ -175,7 +178,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return only requested fields and relations for tags", async () => {
-          const [tags, count] = await service.listAndCountTags(
+          const [tags, count] = await service.listAndCountProductTags(
             {
               id: tagOne.id,
             },
@@ -205,7 +208,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("retrieveTag", () => {
         it("should return the requested tag", async () => {
-          const tag = await service.retrieveTag(tagOne.id)
+          const tag = await service.retrieveProductTag(tagOne.id)
 
           expect(tag).toEqual(
             expect.objectContaining({
@@ -215,7 +218,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should return requested attributes when requested through config", async () => {
-          const tag = await service.retrieveTag(tagOne.id, {
+          const tag = await service.retrieveProductTag(tagOne.id, {
             select: ["id", "value", "products.title"],
             relations: ["products"],
           })
@@ -237,7 +240,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.retrieveTag("does-not-exist")
+            await service.retrieveProductTag("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -252,9 +255,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const tagId = "tag-1"
 
         it("should delete the product tag given an ID successfully", async () => {
-          await service.deleteTags([tagId])
+          await service.deleteProductTags([tagId])
 
-          const tags = await service.listTags({
+          const tags = await service.listProductTags({
             id: tagId,
           })
 
@@ -266,17 +269,17 @@ moduleIntegrationTestRunner<IProductModuleService>({
         const tagId = "tag-1"
 
         it("should update the value of the tag successfully", async () => {
-          await service.updateTags(tagId, {
+          await service.updateProductTags(tagId, {
             value: "UK",
           })
 
-          const productTag = await service.retrieveTag(tagId)
+          const productTag = await service.retrieveProductTag(tagId)
 
           expect(productTag.value).toEqual("UK")
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_updated, {
+            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
               data: { id: productTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,
@@ -289,7 +292,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
           let error
 
           try {
-            await service.updateTags("does-not-exist", {
+            await service.updateProductTags("does-not-exist", {
               value: "UK",
             })
           } catch (e) {
@@ -304,13 +307,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("createTags", () => {
         it("should create a tag successfully", async () => {
-          await service.createTags([
+          await service.createProductTags([
             {
               value: "UK",
             },
           ])
 
-          const productTag = await service.listTags({
+          const productTag = await service.listProductTags({
             value: "UK",
           })
 
@@ -318,7 +321,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_created, {
+            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
               data: { id: productTag[0].id },
               object: "product_tag",
               source: Modules.PRODUCT,
@@ -330,13 +333,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
       describe("upsertTags", () => {
         it("should upsert tags successfully", async () => {
-          await service.createTags([
+          await service.createProductTags([
             {
               value: "UK",
             },
           ])
 
-          let productTags = await service.listTags({
+          let productTags = await service.listProductTags({
             value: "UK",
           })
 
@@ -352,9 +355,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           jest.clearAllMocks()
 
-          await service.upsertTags(tagsData)
+          await service.upsertProductTags(tagsData)
 
-          productTags = await service.listTags()
+          productTags = await service.listProductTags()
 
           expect(productTags).toEqual(
             expect.arrayContaining([
@@ -372,13 +375,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(2)
           expect(eventBusEmitSpy).toHaveBeenCalledWith([
-            composeMessage(ProductEvents.product_tag_created, {
+            composeMessage(ProductEvents.PRODUCT_TAG_CREATED, {
               data: { id: newTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,
               action: CommonEvents.CREATED,
             }),
-            composeMessage(ProductEvents.product_tag_updated, {
+            composeMessage(ProductEvents.PRODUCT_TAG_UPDATED, {
               data: { id: updatedTag.id },
               object: "product_tag",
               source: Modules.PRODUCT,

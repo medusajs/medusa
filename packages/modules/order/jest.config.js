@@ -6,17 +6,17 @@ module.exports = {
     "^@types": "<rootDir>/src/types",
   },
   transform: {
-    "^.+\\.[jt]s?$": [
-      "ts-jest",
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
       {
-        tsconfig: "tsconfig.spec.json",
-        isolatedModules: true,
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
       },
     ],
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
   modulePathIgnorePatterns: ["dist/"],
-  setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
-  setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }

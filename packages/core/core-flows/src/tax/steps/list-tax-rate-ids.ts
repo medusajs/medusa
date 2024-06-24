@@ -14,7 +14,7 @@ export const listTaxRateIdsStep = createStep(
       ModuleRegistrationName.TAX
     )
 
-    const rates = await service.list(input.selector, {
+    const rates = await service.listTaxRates(input.selector, {
       select: ["id"],
     })
 

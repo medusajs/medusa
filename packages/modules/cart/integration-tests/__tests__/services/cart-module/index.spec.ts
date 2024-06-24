@@ -1,22 +1,18 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ICartModuleService } from "@medusajs/types"
-import { BigNumber } from "@medusajs/utils"
+import { BigNumber, Modules } from "@medusajs/utils"
 import { CheckConstraintViolationException } from "@mikro-orm/core"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ICartModuleService>({
   moduleName: Modules.CART,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<ICartModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Cart Module Service", () => {
       describe("create", () => {
         it("should throw an error when required params are not passed", async () => {
           const error = await service
-            .create([
+            .createCarts([
               {
                 email: "test@email.com",
               } as any,
@@ -29,13 +25,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a cart successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          const [cart] = await service.list({ id: [createdCart.id] })
+          const [cart] = await service.listCarts({ id: [createdCart.id] })
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -46,7 +42,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a cart with billing + shipping address successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
               billing_address: {
@@ -60,7 +56,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [cart] = await service.list(
+          const [cart] = await service.listCarts(
             { id: [createdCart.id] },
             { relations: ["billing_address", "shipping_address"] }
           )
@@ -89,7 +85,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
               billing_address_id: createdAddress.id,
@@ -116,7 +112,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create a cart with items", async () => {
-          const createdCart = await service.create({
+          const createdCart = await service.createCarts({
             currency_code: "eur",
             items: [
               {
@@ -127,7 +123,7 @@ moduleIntegrationTestRunner({
             ],
           })
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
           })
 
@@ -146,7 +142,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should create multiple carts with items", async () => {
-          const createdCarts = await service.create([
+          const createdCarts = await service.createCarts([
             {
               currency_code: "eur",
               items: [
@@ -169,7 +165,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const carts = await service.list(
+          const carts = await service.listCarts(
             { id: createdCarts.map((c) => c.id) },
             {
               relations: ["items"],
@@ -204,7 +200,7 @@ moduleIntegrationTestRunner({
       describe("update", () => {
         it("should throw an error if cart does not exist", async () => {
           const error = await service
-            .update([
+            .updateCarts([
               {
                 id: "none-existing",
               },
@@ -217,20 +213,20 @@ moduleIntegrationTestRunner({
         })
 
         it("should update a cart successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          const [updatedCart] = await service.update([
+          const [updatedCart] = await service.updateCarts([
             {
               id: createdCart.id,
               email: "test@email.com",
             },
           ])
 
-          const [cart] = await service.list({ id: [createdCart.id] })
+          const [cart] = await service.listCarts({ id: [createdCart.id] })
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -242,20 +238,20 @@ moduleIntegrationTestRunner({
         })
 
         it("should update a cart with selector successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          const [updatedCart] = await service.update(
+          const [updatedCart] = await service.updateCarts(
             { id: createdCart.id },
             {
               email: "test@email.com",
             }
           )
 
-          const [cart] = await service.list({ id: [createdCart.id] })
+          const [cart] = await service.listCarts({ id: [createdCart.id] })
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -267,17 +263,17 @@ moduleIntegrationTestRunner({
         })
 
         it("should update a cart with id successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          const updatedCart = await service.update(createdCart.id, {
+          const updatedCart = await service.updateCarts(createdCart.id, {
             email: "test@email.com",
           })
 
-          const [cart] = await service.list({ id: [createdCart.id] })
+          const [cart] = await service.listCarts({ id: [createdCart.id] })
 
           expect(cart).toEqual(
             expect.objectContaining({
@@ -291,15 +287,15 @@ moduleIntegrationTestRunner({
 
       describe("delete", () => {
         it("should delete a cart successfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          await service.delete([createdCart.id])
+          await service.deleteCarts([createdCart.id])
 
-          const carts = await service.list({ id: [createdCart.id] })
+          const carts = await service.listCarts({ id: [createdCart.id] })
 
           expect(carts.length).toEqual(0)
         })
@@ -367,7 +363,7 @@ moduleIntegrationTestRunner({
 
       describe("addLineItems", () => {
         it("should add a line item to cart succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -381,7 +377,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
           })
 
@@ -396,7 +392,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line items to cart succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -417,7 +413,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
           })
 
@@ -440,13 +436,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line items to multiple carts succesfully", async () => {
-          let [eurCart] = await service.create([
+          let [eurCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          let [usdCart] = await service.create([
+          let [usdCart] = await service.createCarts([
             {
               currency_code: "usd",
             },
@@ -467,7 +463,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const carts = await service.list(
+          const carts = await service.listCarts(
             { id: [eurCart.id, usdCart.id] },
             { relations: ["items"] }
           )
@@ -501,7 +497,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw an error when required params are not passed adding to a single cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -522,7 +518,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw a generic error when required params are not passed using bulk add method", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -546,7 +542,7 @@ moduleIntegrationTestRunner({
 
       describe("updateLineItems", () => {
         it("should update a line item in cart succesfully with selector approach", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -574,7 +570,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update a line item in cart succesfully with id approach", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -599,7 +595,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line items in carts succesfully with multi-selector approach", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -670,7 +666,7 @@ moduleIntegrationTestRunner({
 
       describe("removeLineItems", () => {
         it("should remove a line item succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -689,7 +685,7 @@ moduleIntegrationTestRunner({
 
           await service.softDeleteLineItems([item.id])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
           })
 
@@ -697,7 +693,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove multiple line items succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -718,7 +714,7 @@ moduleIntegrationTestRunner({
 
           await service.softDeleteLineItems([item.id, item2.id])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items"],
           })
 
@@ -728,7 +724,7 @@ moduleIntegrationTestRunner({
 
       describe("addShippingMethods", () => {
         it("should add a shipping method to cart succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -741,7 +737,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods"],
           })
 
@@ -749,7 +745,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw when amount is negative", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -768,13 +764,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple shipping methods to multiple carts succesfully", async () => {
-          let [eurCart] = await service.create([
+          let [eurCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          let [usdCart] = await service.create([
+          let [usdCart] = await service.createCarts([
             {
               currency_code: "usd",
             },
@@ -793,7 +789,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const carts = await service.list(
+          const carts = await service.listCarts(
             { id: [eurCart.id, usdCart.id] },
             { relations: ["shipping_methods"] }
           )
@@ -814,7 +810,7 @@ moduleIntegrationTestRunner({
 
       describe("removeShippingMethods", () => {
         it("should remove a line item succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -831,7 +827,7 @@ moduleIntegrationTestRunner({
 
           await service.softDeleteShippingMethods([method.id])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods"],
           })
 
@@ -841,7 +837,7 @@ moduleIntegrationTestRunner({
 
       describe("setLineItemAdjustments", () => {
         it("should set line item adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -896,7 +892,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace line item adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -939,7 +935,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
           })
 
@@ -963,7 +959,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove all line item adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1000,7 +996,7 @@ moduleIntegrationTestRunner({
 
           await service.setLineItemAdjustments(createdCart.id, [])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
           })
 
@@ -1018,7 +1014,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line item adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1062,7 +1058,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.adjustments"],
           })
 
@@ -1089,7 +1085,7 @@ moduleIntegrationTestRunner({
 
       describe("addLineItemAdjustments", () => {
         it("should add line item adjustments for items in a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1126,7 +1122,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line item adjustments for multiple line items", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1180,12 +1176,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should add line item adjustments for line items on multiple carts", async () => {
-          const [cartOne] = await service.create([
+          const [cartOne] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
-          const [cartTwo] = await service.create([
+          const [cartTwo] = await service.createCarts([
             {
               currency_code: "usd",
             },
@@ -1261,7 +1257,7 @@ moduleIntegrationTestRunner({
 
       describe("removeLineItemAdjustments", () => {
         it("should remove a line item succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1279,6 +1275,7 @@ moduleIntegrationTestRunner({
             createdCart.id,
             [
               {
+                code: "50",
                 item_id: item.id,
                 amount: 50,
               },
@@ -1299,7 +1296,7 @@ moduleIntegrationTestRunner({
 
       describe("setShippingMethodAdjustments", () => {
         it("should set shipping method adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1358,7 +1355,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace shipping method adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1403,7 +1400,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1428,7 +1425,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove all shipping method adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1467,7 +1464,7 @@ moduleIntegrationTestRunner({
 
           await service.setShippingMethodAdjustments(createdCart.id, [])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1485,7 +1482,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update shipping method adjustments for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1530,7 +1527,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["shipping_methods.adjustments"],
           })
 
@@ -1557,7 +1554,7 @@ moduleIntegrationTestRunner({
 
       describe("addShippingMethodAdjustments", () => {
         it("should add shipping method adjustments in a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1596,7 +1593,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple shipping method adjustments for multiple shipping methods", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1654,12 +1651,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should add shipping method adjustments for shipping methods on multiple carts", async () => {
-          const [cartOne] = await service.create([
+          const [cartOne] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
-          const [cartTwo] = await service.create([
+          const [cartTwo] = await service.createCarts([
             {
               currency_code: "usd",
             },
@@ -1738,13 +1735,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should throw if shipping method is not associated with cart", async () => {
-          const [cartOne] = await service.create([
+          const [cartOne] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
 
-          const [cartTwo] = await service.create([
+          const [cartTwo] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1778,7 +1775,7 @@ moduleIntegrationTestRunner({
 
       describe("removeShippingMethodAdjustments", () => {
         it("should remove a shipping method succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1816,7 +1813,7 @@ moduleIntegrationTestRunner({
 
       describe("setLineItemTaxLines", () => {
         it("should set line item tax lines for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1868,7 +1865,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should replace line item tax lines for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1908,7 +1905,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.tax_lines"],
           })
 
@@ -1932,7 +1929,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove all line item tax lines for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -1966,7 +1963,7 @@ moduleIntegrationTestRunner({
 
           await service.setLineItemTaxLines(createdCart.id, [])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.tax_lines"],
           })
 
@@ -1984,7 +1981,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should update line item tax lines for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -2025,7 +2022,7 @@ moduleIntegrationTestRunner({
             },
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.tax_lines"],
           })
 
@@ -2050,7 +2047,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should remove, update, and create line item tax lines for a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -2110,7 +2107,7 @@ moduleIntegrationTestRunner({
             // remove: should remove the initial tax line for itemOne
           ])
 
-          const cart = await service.retrieve(createdCart.id, {
+          const cart = await service.retrieveCart(createdCart.id, {
             relations: ["items.tax_lines"],
           })
 
@@ -2142,7 +2139,7 @@ moduleIntegrationTestRunner({
 
       describe("addLineItemAdjustments", () => {
         it("should add line item tax lines for items in a cart", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -2176,7 +2173,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should add multiple line item tax lines for multiple line items", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -2227,12 +2224,12 @@ moduleIntegrationTestRunner({
         })
 
         it("should add line item tax lines for line items on multiple carts", async () => {
-          const [cartOne] = await service.create([
+          const [cartOne] = await service.createCarts([
             {
               currency_code: "eur",
             },
           ])
-          const [cartTwo] = await service.create([
+          const [cartTwo] = await service.createCarts([
             {
               currency_code: "usd",
             },
@@ -2308,7 +2305,7 @@ moduleIntegrationTestRunner({
 
       describe("removeLineItemAdjustments", () => {
         it("should remove line item tax line succesfully", async () => {
-          const [createdCart] = await service.create([
+          const [createdCart] = await service.createCarts([
             {
               currency_code: "eur",
             },
@@ -2344,7 +2341,7 @@ moduleIntegrationTestRunner({
     })
 
     it("should calculate totals of a cart", async () => {
-      const [createdCart] = await service.create([
+      const [createdCart] = await service.createCarts([
         {
           currency_code: "eur",
         },
@@ -2386,7 +2383,9 @@ moduleIntegrationTestRunner({
         },
       ])
 
-      const cart = await service.retrieve(createdCart.id, { select: ["total"] })
+      const cart = await service.retrieveCart(createdCart.id, {
+        select: ["total"],
+      })
       expect(cart.total).toBeInstanceOf(BigNumber)
 
       const asJson = JSON.parse(JSON.stringify(cart))

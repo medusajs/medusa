@@ -1,6 +1,6 @@
 import { expectTypeOf } from "expect-type"
 import { BaseProperty } from "../properties/base"
-import { PropertyMetadata } from "../types"
+import { PropertyMetadata } from "@medusajs/types"
 
 describe("Base property", () => {
   test("create a property type from base property", () => {

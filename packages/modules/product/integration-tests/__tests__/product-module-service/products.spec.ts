@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductCategoryDTO } from "@medusajs/types"
-import { kebabCase, ProductStatus } from "@medusajs/utils"
+import { kebabCase, Modules, ProductStatus } from "@medusajs/utils"
 import {
   Product,
   ProductCategory,
@@ -102,13 +101,13 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           const categories: ProductCategoryDTO[] = []
           for (const entry of productCategoriesData) {
-            categories.push(await service.createCategories(entry))
+            categories.push(await service.createProductCategories(entry))
           }
 
           productCategoryOne = categories[0]
           productCategoryTwo = categories[1]
 
-          productOne = service.create({
+          productOne = service.createProducts({
             id: "product-1",
             title: "product 1",
             status: ProductStatus.PUBLISHED,
@@ -120,7 +119,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           })
 
-          productTwo = service.create({
+          productTwo = service.createProducts({
             id: "product-2",
             title: "product 2",
             status: ProductStatus.PUBLISHED,
@@ -166,7 +165,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
 
           const variantTitle = data.variants[0].title
 
-          const productBefore = (await service.retrieve(productOne.id, {
+          const productBefore = (await service.retrieveProduct(productOne.id, {
             relations: [
               "images",
               "variants",
@@ -187,10 +186,10 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productBefore.images = data.images
           productBefore.thumbnail = data.thumbnail
           productBefore.tags = data.tags
-          const updatedProducts = await service.upsert([productBefore])
+          const updatedProducts = await service.upsertProducts([productBefore])
           expect(updatedProducts).toHaveLength(1)
 
-          const product = await service.retrieve(productBefore.id, {
+          const product = await service.retrieveProduct(productBefore.id, {
             relations: [
               "images",
               "variants",
@@ -279,7 +278,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             title: "updated title",
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
@@ -302,9 +301,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             type_id: productTypeOne.id,
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
-          const product = await service.retrieve(updateData.id, {
+          const product = await service.retrieveProduct(updateData.id, {
             relations: ["categories", "collection", "type"],
           })
 
@@ -332,9 +331,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             type_id: productTypeOne.id,
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
-          let product = await service.retrieve(updateData.id, {
+          let product = await service.retrieveProduct(updateData.id, {
             relations: ["type"],
           })
 
@@ -366,9 +365,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             tags: [newTagData],
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
-          const product = await service.retrieve(updateData.id, {
+          const product = await service.retrieveProduct(updateData.id, {
             relations: ["categories", "collection", "tags", "type"],
           })
 
@@ -405,9 +404,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             tags: [],
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
-          const product = await service.retrieve(updateData.id, {
+          const product = await service.retrieveProduct(updateData.id, {
             relations: ["categories", "collection", "tags"],
           })
 
@@ -425,7 +424,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         it("should throw an error when product ID does not exist", async () => {
           let error
           try {
-            await service.update("does-not-exist", { title: "test" })
+            await service.updateProducts("does-not-exist", { title: "test" })
           } catch (e) {
             error = e.message
           }
@@ -448,9 +447,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           }
 
-          await service.upsert([updateData])
+          await service.upsertProducts([updateData])
 
-          const product = await service.retrieve(updateData.id, {
+          const product = await service.retrieveProduct(updateData.id, {
             relations: ["variants"],
           })
 
@@ -473,7 +472,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
         })
 
         it("should do a partial update on the options of a variant successfully", async () => {
-          await service.update(productTwo.id, {
+          await service.updateProducts(productTwo.id, {
             variants: [
               {
                 id: "variant-3",
@@ -482,7 +481,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           })
 
-          const fetchedProduct = await service.retrieve(productTwo.id, {
+          const fetchedProduct = await service.retrieveProduct(productTwo.id, {
             relations: ["variants", "variants.options"],
           })
 
@@ -513,8 +512,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
             ],
           }
 
-          await service.upsert([updateData])
-          const retrieved = await service.retrieve(updateData.id, {
+          await service.upsertProducts([updateData])
+          const retrieved = await service.retrieveProduct(updateData.id, {
             relations: ["variants"],
           })
 
@@ -542,9 +541,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const productsCreated = await service.create([data])
+          const productsCreated = await service.createProducts([data])
 
-          const products = await service.list(
+          const products = await service.listProducts(
             { id: productsCreated[0].id },
             {
               relations: [
@@ -628,7 +627,7 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const products = await service.create([data])
+          const products = await service.createProducts([data])
           expect(eventBusSpy).toHaveBeenCalledTimes(1)
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
@@ -647,11 +646,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const products = await service.create([data])
+          const products = await service.createProducts([data])
 
-          await service.softDelete([products[0].id])
+          await service.softDeleteProducts([products[0].id])
 
-          const deletedProducts = await service.list(
+          const deletedProducts = await service.listProducts(
             { id: products[0].id },
             {
               relations: [
@@ -698,11 +697,11 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const products = await service.create([data])
+          const products = await service.createProducts([data])
 
-          await service.softDelete([products[0].id])
+          await service.softDeleteProducts([products[0].id])
 
-          const softDeleted = await service.list({
+          const softDeleted = await service.listProducts({
             deleted_at: { $gt: "01-01-2022" },
           })
 
@@ -716,9 +715,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const products = await service.create([data])
+          const products = await service.createProducts([data])
 
-          await service.softDelete([products[0].id])
+          await service.softDeleteProducts([products[0].id])
 
           expect(eventBusSpy).toHaveBeenCalledWith([
             {
@@ -738,16 +737,18 @@ moduleIntegrationTestRunner<IProductModuleService>({
             thumbnail: images[0].url,
           })
 
-          const products = await service.create([data])
+          const products = await service.createProducts([data])
 
-          let retrievedProducts = await service.list({ id: products[0].id })
+          let retrievedProducts = await service.listProducts({
+            id: products[0].id,
+          })
 
           expect(retrievedProducts).toHaveLength(1)
           expect(retrievedProducts[0].deleted_at).toBeNull()
 
-          await service.softDelete([products[0].id])
+          await service.softDeleteProducts([products[0].id])
 
-          retrievedProducts = await service.list(
+          retrievedProducts = await service.listProducts(
             { id: products[0].id },
             {
               withDeleted: true,
@@ -757,9 +758,9 @@ moduleIntegrationTestRunner<IProductModuleService>({
           expect(retrievedProducts).toHaveLength(1)
           expect(retrievedProducts[0].deleted_at).not.toBeNull()
 
-          await service.restore([products[0].id])
+          await service.restoreProducts([products[0].id])
 
-          const deletedProducts = await service.list(
+          const deletedProducts = await service.listProducts(
             { id: products[0].id },
             {
               relations: [
@@ -802,6 +803,8 @@ moduleIntegrationTestRunner<IProductModuleService>({
       })
 
       describe("list", function () {
+        let productOneData
+        let productTwoData
         beforeEach(async () => {
           const collections = await createCollections(
             MikroOrmWrapper.forkManager(),
@@ -811,20 +814,24 @@ moduleIntegrationTestRunner<IProductModuleService>({
           productCollectionOne = collections[0]
           productCollectionTwo = collections[1]
 
-          const productOneData = buildProductAndRelationsData({
-            collection_id: productCollectionOne.id,
-          })
+          const resp = await service.createProducts([
+            buildProductAndRelationsData({
+              collection_id: productCollectionOne.id,
+              options: [{ title: "size", values: ["large", "small"] }],
+              variants: [{ title: "variant 1", options: { size: "small" } }],
+            }),
+            buildProductAndRelationsData({
+              collection_id: productCollectionTwo.id,
+              tags: [],
+            }),
+          ])
 
-          const productTwoData = buildProductAndRelationsData({
-            collection_id: productCollectionTwo.id,
-            tags: [],
-          })
-
-          await service.create([productOneData, productTwoData])
+          productOneData = resp[0]
+          productTwoData = resp[1]
         })
 
         it("should return a list of products scoped by collection id", async () => {
-          const productsWithCollectionOne = await service.list(
+          const productsWithCollectionOne = await service.listProducts(
             { collection_id: productCollectionOne.id },
             {
               relations: ["collection"],
@@ -842,8 +849,31 @@ moduleIntegrationTestRunner<IProductModuleService>({
           ])
         })
 
+        it("should return a list of products scoped by variant options", async () => {
+          const productsWithVariants = await service.listProducts(
+            {
+              variants: {
+                options: {
+                  option_id: productOneData.options[0].id,
+                  value: "small",
+                },
+              },
+            },
+            {
+              relations: ["variants", "variants.options"],
+            }
+          )
+
+          expect(productsWithVariants).toHaveLength(1)
+          expect(productsWithVariants).toEqual([
+            expect.objectContaining({
+              id: productOneData.id,
+            }),
+          ])
+        })
+
         it("should return empty array when querying for a collection that doesnt exist", async () => {
-          const products = await service.list(
+          const products = await service.listProducts(
             {
               categories: { id: ["collection-doesnt-exist-id"] },
             },

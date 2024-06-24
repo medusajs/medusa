@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "@medusajs/utils"
+import { LINKS, Modules } from "@medusajs/utils"
 
 export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.PublishableApiKeySalesChannel,
@@ -24,12 +23,18 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "publishable_key_id",
       alias: "api_key",
+      args: {
+        methodSuffix: "ApiKeys",
+      },
     },
     {
       serviceName: Modules.SALES_CHANNEL,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
+      args: {
+        methodSuffix: "SalesChannels",
+      },
     },
   ],
   extends: [

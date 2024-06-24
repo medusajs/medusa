@@ -1,5 +1,5 @@
 import { Button, Container, Heading } from "@medusajs/ui"
-import { InventoryNext } from "@medusajs/types"
+import { InventoryTypes } from "@medusajs/types"
 
 import { DataTable } from "../../../../components/table/data-table"
 import { useDataTable } from "../../../../hooks/use-data-table"
@@ -33,7 +33,7 @@ export const InventoryListTable = () => {
   const columns = useInventoryTableColumns()
 
   const { table } = useDataTable({
-    data: (inventory_items ?? []) as InventoryNext.InventoryItemDTO[],
+    data: (inventory_items ?? []) as InventoryTypes.InventoryItemDTO[],
     columns,
     count,
     enablePagination: true,

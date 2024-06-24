@@ -1,4 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { MockEventBusService } from "medusa-test-utils/dist"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 import {
   CreateFulfillmentSetDTO,
   CreateServiceZoneDTO,
@@ -6,10 +9,6 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { MockEventBusService } from "medusa-test-utils/dist"
-import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
@@ -29,11 +28,11 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment sets with a filter", async function () {
-          const createdSet1 = await service.create({
+          const createdSet1 = await service.createFulfillmentSets({
             name: "test",
             type: "test-type",
           })
-          const createdSet2 = await service.create({
+          const createdSet2 = await service.createFulfillmentSets({
             name: "test2",
             type: "test-type",
             service_zones: [
@@ -67,7 +66,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             ],
           })
 
-          let listedSets = await service.list(
+          let listedSets = await service.listFulfillmentSets(
             {
               type: createdSet1.type,
             },
@@ -76,7 +75,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             }
           )
 
-          const listedSets2 = await service.list(
+          const listedSets2 = await service.listFulfillmentSets(
             {
               type: createdSet1.type,
             },
@@ -101,7 +100,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
           expect(listedSets2).toEqual(listedSets2)
 
-          listedSets = await service.list({
+          listedSets = await service.listFulfillmentSets({
             name: createdSet2.name,
           })
 
@@ -116,7 +115,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             ])
           )
 
-          listedSets = await service.list({
+          listedSets = await service.listFulfillmentSets({
             service_zones: { name: "test" },
           })
 
@@ -131,7 +130,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             ])
           )
 
-          listedSets = await service.list({
+          listedSets = await service.listFulfillmentSets({
             service_zones: { geo_zones: { country_code: "fr" } },
           })
 
@@ -156,7 +155,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "test-type",
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -168,7 +167,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.created,
+                eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
@@ -188,7 +187,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSets).toHaveLength(2)
 
@@ -205,7 +204,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.created,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                     action: "created",
                     object: "fulfillment_set",
                     data: { id: fulfillmentSets[i].id },
@@ -228,7 +227,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -246,13 +245,13 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.created,
+                eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.service_zone_created,
+                eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                 action: "created",
                 object: "service_zone",
                 data: { id: fulfillmentSet.service_zones[0].id },
@@ -291,7 +290,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSets).toHaveLength(3)
 
@@ -314,13 +313,13 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.created,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                     action: "created",
                     object: "fulfillment_set",
                     data: { id: fulfillmentSets[i].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.service_zone_created,
+                    eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                     action: "created",
                     object: "service_zone",
                     data: { id: fulfillmentSets[i].service_zones[0].id },
@@ -349,7 +348,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const fulfillmentSet = await service.create(data)
+            const fulfillmentSet = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSet).toEqual(
               expect.objectContaining({
@@ -374,19 +373,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.created,
+                eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                 action: "created",
                 object: "fulfillment_set",
                 data: { id: fulfillmentSet.id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.service_zone_created,
+                eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                 action: "created",
                 object: "service_zone",
                 data: { id: fulfillmentSet.service_zones[0].id },
               }),
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_created,
+                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
@@ -445,7 +444,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const fulfillmentSets = await service.create(data)
+            const fulfillmentSets = await service.createFulfillmentSets(data)
 
             expect(fulfillmentSets).toHaveLength(3)
 
@@ -476,19 +475,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.created,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_CREATED,
                     action: "created",
                     object: "fulfillment_set",
                     data: { id: fulfillmentSets[i].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.service_zone_created,
+                    eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                     action: "created",
                     object: "service_zone",
                     data: { id: fulfillmentSets[i].service_zones[0].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_created,
+                    eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                     action: "created",
                     object: "geo_zone",
                     data: {
@@ -508,8 +507,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "test-type",
             }
 
-            await service.create(data)
-            const err = await service.create(data).catch((e) => e)
+            await service.createFulfillmentSets(data)
+            const err = await service
+              .createFulfillmentSets(data)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
             expect(err.message).toContain("exists")
@@ -532,7 +533,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            let err = await service.create(data).catch((e) => e)
+            let err = await service.createFulfillmentSets(data).catch((e) => e)
             expect(err.message).toBe(
               "Missing required property province_code for geo zone type province"
             )
@@ -554,7 +555,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            err = await service.create(data).catch((e) => e)
+            err = await service.createFulfillmentSets(data).catch((e) => e)
             expect(err.message).toBe(
               "Missing required property city for geo zone type city"
             )
@@ -575,7 +576,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            err = await service.create(data).catch((e) => e)
+            err = await service.createFulfillmentSets(data).catch((e) => e)
             expect(err.message).toBe(
               "Missing required property country_code for geo zone type zip"
             )
@@ -596,7 +597,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            err = await service.create(data).catch((e) => e)
+            err = await service.createFulfillmentSets(data).catch((e) => e)
             expect(err.message).toBe(`Invalid geo zone type: unknown`)
           })
         })
@@ -608,7 +609,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "test-type",
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet = await service.createFulfillmentSets(
+              createData
+            )
 
             const updateData = {
               id: createdFulfillmentSet.id,
@@ -616,7 +619,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "updated-test-type",
             }
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets = await service.updateFulfillmentSets(
+              updateData
+            )
 
             expect(updatedFulfillmentSets).toEqual(
               expect.objectContaining({
@@ -628,7 +633,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.updated,
+                eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                 action: "updated",
                 object: "fulfillment_set",
                 data: { id: updatedFulfillmentSets.id },
@@ -648,7 +653,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets = await service.createFulfillmentSets(
+              createData
+            )
 
             const updateData = createdFulfillmentSets.map(
               (fulfillmentSet, index) => ({
@@ -658,8 +665,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               })
             )
 
-            const updatedFulfillmentSets = await service.update(updateData)
-            const fullfillmentSets = await service.list({
+            const updatedFulfillmentSets = await service.updateFulfillmentSets(
+              updateData
+            )
+            const fullfillmentSets = await service.listFulfillmentSets({
               id: updateData.map((ud) => ud.id),
             })
 
@@ -669,7 +678,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             for (const data_ of updateData) {
               const currentFullfillmentSet = fullfillmentSets.find(
                 (fs) => fs.id === data_.id
-              )
+              )!
 
               expect(currentFullfillmentSet).toEqual(
                 expect.objectContaining({
@@ -682,7 +691,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.updated,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                     action: "updated",
                     object: "fulfillment_set",
                     data: { id: currentFullfillmentSet.id },
@@ -709,7 +718,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet = await service.createFulfillmentSets(
+              createData
+            )
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -729,7 +740,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               service_zones: [createServiceZoneData],
             }
 
-            const updatedFulfillmentSet = await service.update(updateData)
+            const updatedFulfillmentSet = await service.updateFulfillmentSets(
+              updateData
+            )
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -768,19 +781,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
               expect.arrayContaining([
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.updated,
+                  eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                   action: "updated",
                   object: "fulfillment_set",
                   data: { id: updatedFulfillmentSet.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.service_zone_created,
+                  eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                   action: "created",
                   object: "service_zone",
                   data: { id: updatedFulfillmentSet.service_zones[0].id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.geo_zone_created,
+                  eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                   action: "created",
                   object: "geo_zone",
                   data: {
@@ -788,13 +801,13 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                   },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.service_zone_deleted,
+                  eventName: FulfillmentEvents.SERVICE_ZONE_DELETED,
                   action: "deleted",
                   object: "service_zone",
                   data: { id: createdFulfillmentSet.service_zones[0].id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.geo_zone_deleted,
+                  eventName: FulfillmentEvents.GEO_ZONE_DELETED,
                   action: "deleted",
                   object: "geo_zone",
                   data: {
@@ -822,7 +835,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const createdFulfillmentSet = await service.create(createData)
+            const createdFulfillmentSet = await service.createFulfillmentSets(
+              createData
+            )
 
             const createServiceZoneData: CreateServiceZoneDTO = {
               fulfillment_set_id: createdFulfillmentSet.id,
@@ -845,7 +860,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               ],
             }
 
-            const updatedFulfillmentSet = await service.update(updateData)
+            const updatedFulfillmentSet = await service.updateFulfillmentSets(
+              updateData
+            )
 
             expect(updatedFulfillmentSet).toEqual(
               expect.objectContaining({
@@ -876,25 +893,25 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             const createdServiceZone = updatedFulfillmentSet.service_zones.find(
               (s) => s.name === "service-zone-test2"
-            )
+            )!
 
             expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(3)
             expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
               expect.arrayContaining([
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.updated,
+                  eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                   action: "updated",
                   object: "fulfillment_set",
                   data: { id: updatedFulfillmentSet.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.service_zone_created,
+                  eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                   action: "created",
                   object: "service_zone",
                   data: { id: createdServiceZone.id },
                 }),
                 buildExpectedEventMessageShape({
-                  eventName: FulfillmentEvents.geo_zone_created,
+                  eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                   action: "created",
                   object: "geo_zone",
                   data: {
@@ -917,7 +934,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets = await service.createFulfillmentSets(
+              createData
+            )
 
             const updateData = {
               id: createdFulfillmentSets[1].id,
@@ -925,7 +944,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               type: "updated-test-type2",
             }
 
-            const err = await service.update(updateData).catch((e) => e)
+            const err = await service
+              .updateFulfillmentSets(updateData)
+              .catch((e) => e)
 
             expect(err).toBeDefined()
             expect(err.message).toContain("exists")
@@ -965,7 +986,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets = await service.createFulfillmentSets(
+              createData
+            )
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -985,7 +1008,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets = await service.updateFulfillmentSets(
+              updateData
+            )
 
             expect(updatedFulfillmentSets).toHaveLength(2)
             expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(10)
@@ -993,10 +1018,10 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             for (const data_ of updateData) {
               const expectedFulfillmentSet = updatedFulfillmentSets.find(
                 (f) => f.id === data_.id
-              )
+              )!
               const originalFulfillmentSet = createdFulfillmentSets.find(
                 (f) => f.id === data_.id
-              )
+              )!
 
               expect(expectedFulfillmentSet).toEqual(
                 expect.objectContaining({
@@ -1025,19 +1050,19 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.updated,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                     action: "updated",
                     object: "fulfillment_set",
                     data: { id: expectedFulfillmentSet.id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.service_zone_created,
+                    eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                     action: "created",
                     object: "service_zone",
                     data: { id: expectedFulfillmentSet.service_zones[0].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_created,
+                    eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                     action: "created",
                     object: "geo_zone",
                     data: {
@@ -1046,13 +1071,13 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                     },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.service_zone_deleted,
+                    eventName: FulfillmentEvents.SERVICE_ZONE_DELETED,
                     action: "deleted",
                     object: "service_zone",
                     data: { id: originalFulfillmentSet.service_zones[0].id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_deleted,
+                    eventName: FulfillmentEvents.GEO_ZONE_DELETED,
                     action: "deleted",
                     object: "geo_zone",
                     data: {
@@ -1115,7 +1140,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               },
             ]
 
-            const createdFulfillmentSets = await service.create(createData)
+            const createdFulfillmentSets = await service.createFulfillmentSets(
+              createData
+            )
 
             const updateData: UpdateFulfillmentSetDTO[] =
               createdFulfillmentSets.map((fulfillmentSet, index) => ({
@@ -1136,7 +1163,9 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
                 ],
               }))
 
-            const updatedFulfillmentSets = await service.update(updateData)
+            const updatedFulfillmentSets = await service.updateFulfillmentSets(
+              updateData
+            )
 
             expect(updatedFulfillmentSets).toHaveLength(2)
             expect(eventBusEmitSpy.mock.calls[1][0]).toHaveLength(6)
@@ -1144,7 +1173,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             for (const data_ of updateData) {
               const expectedFulfillmentSet = updatedFulfillmentSets.find(
                 (f) => f.id === data_.id
-              )
+              )!
               expect(expectedFulfillmentSet).toEqual(
                 expect.objectContaining({
                   id: data_.id,
@@ -1175,24 +1204,24 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               const createdServiceZone =
                 expectedFulfillmentSet.service_zones.find((s) =>
                   s.name.includes(`added-service-zone-test`)
-                )
+                )!
 
               expect(eventBusEmitSpy).toHaveBeenLastCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.updated,
+                    eventName: FulfillmentEvents.FULFILLMENT_SET_UPDATED,
                     action: "updated",
                     object: "fulfillment_set",
                     data: { id: expectedFulfillmentSet.id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.service_zone_created,
+                    eventName: FulfillmentEvents.SERVICE_ZONE_CREATED,
                     action: "created",
                     object: "service_zone",
                     data: { id: createdServiceZone.id },
                   }),
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_created,
+                    eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                     action: "created",
                     object: "geo_zone",
                     data: {

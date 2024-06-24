@@ -18,6 +18,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Address from "./address"
 import FulfillmentItem from "./fulfillment-item"
@@ -117,7 +118,7 @@ export default class Fulfillment {
   shipping_option: ShippingOption | null
 
   @ManyToOne(() => FulfillmentProvider, { persist: false })
-  provider: FulfillmentProvider
+  provider: Rel<FulfillmentProvider>
 
   @OneToOne({
     entity: () => Address,
@@ -126,19 +127,19 @@ export default class Fulfillment {
     nullable: true,
     onDelete: "cascade",
   })
-  delivery_address!: Address
+  delivery_address!: Rel<Address>
 
   @OneToMany(() => FulfillmentItem, (item) => item.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  items = new Collection<FulfillmentItem>(this)
+  items = new Collection<Rel<FulfillmentItem>>(this)
 
   @OneToMany(() => FulfillmentLabel, (label) => label.fulfillment, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
     orphanRemoval: true,
   })
-  labels = new Collection<FulfillmentLabel>(this)
+  labels = new Collection<Rel<FulfillmentLabel>>(this)
 
   @Property({
     onCreate: () => new Date(),

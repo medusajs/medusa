@@ -1,8 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IApiKeyModuleService } from "@medusajs/types"
-import { ApiKeyType } from "@medusajs/utils"
+import { ApiKeyType, Modules } from "@medusajs/utils"
 import crypto from "crypto"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPublishableKeyFixture,
   createSecretKeyFixture,
@@ -33,12 +32,9 @@ const mockSecretKeyBytes = () => {
     })
 }
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<IApiKeyModuleService>({
   moduleName: Modules.API_KEY,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<IApiKeyModuleService>) => {
+  testSuite: ({ service }) => {
     afterEach(() => {
       jest.restoreAllMocks()
     })
@@ -47,7 +43,9 @@ moduleIntegrationTestRunner({
       describe("creating a publishable API key", () => {
         it("should create it successfully", async function () {
           mockPublishableKeyBytes()
-          const apiKey = await service.create(createPublishableKeyFixture)
+          const apiKey = await service.createApiKeys(
+            createPublishableKeyFixture
+          )
 
           expect(apiKey).toEqual(
             expect.objectContaining({
@@ -69,7 +67,7 @@ moduleIntegrationTestRunner({
       describe("creating a secret API key", () => {
         it("should get created successfully", async function () {
           mockSecretKeyBytes()
-          const apiKey = await service.create(createSecretKeyFixture)
+          const apiKey = await service.createApiKeys(createSecretKeyFixture)
 
           expect(apiKey).toEqual(
             expect.objectContaining({
@@ -89,14 +87,17 @@ moduleIntegrationTestRunner({
 
         it("should only allow creating one active token", async function () {
           await expect(
-            service.create([createSecretKeyFixture, createSecretKeyFixture])
+            service.createApiKeys([
+              createSecretKeyFixture,
+              createSecretKeyFixture,
+            ])
           ).rejects.toThrow(
             "You can only create one secret key at a time. You tried to create 2 secret keys."
           )
 
-          await service.create(createSecretKeyFixture)
+          await service.createApiKeys(createSecretKeyFixture)
           const err = await service
-            .create(createSecretKeyFixture)
+            .createApiKeys(createSecretKeyFixture)
             .catch((e) => e)
           expect(err.message).toEqual(
             "You can only have one active secret key a time. Revoke or delete your existing key before creating a new one."
@@ -104,7 +105,9 @@ moduleIntegrationTestRunner({
         })
 
         it("should allow for at most two tokens, where one is revoked", async function () {
-          const firstApiKey = await service.create(createSecretKeyFixture)
+          const firstApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           await service.revoke(
             { id: firstApiKey.id },
             {
@@ -112,9 +115,9 @@ moduleIntegrationTestRunner({
             }
           )
 
-          await service.create(createSecretKeyFixture)
+          await service.createApiKeys(createSecretKeyFixture)
           const err = await service
-            .create(createSecretKeyFixture)
+            .createApiKeys(createSecretKeyFixture)
             .catch((e) => e)
           expect(err.message).toEqual(
             "You can only have one active secret key a time. Revoke or delete your existing key before creating a new one."
@@ -124,7 +127,9 @@ moduleIntegrationTestRunner({
 
       describe("revoking API keys", () => {
         it("should have the revoked at and revoked by set when a key is revoked", async function () {
-          const firstApiKey = await service.create(createSecretKeyFixture)
+          const firstApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           const revokedKey = await service.revoke(firstApiKey.id, {
             revoked_by: "test",
           })
@@ -142,7 +147,7 @@ moduleIntegrationTestRunner({
           const hourInSec = 3600
           jest.useFakeTimers().setSystemTime(now)
 
-          const createdKey = await service.create(createSecretKeyFixture)
+          const createdKey = await service.createApiKeys(createSecretKeyFixture)
           const revokedKey = await service.revoke(createdKey.id, {
             revoked_by: "test",
             revoke_in: hourInSec,
@@ -159,17 +164,21 @@ moduleIntegrationTestRunner({
         })
 
         it("should do nothing if the revokal list is empty", async function () {
-          const firstApiKey = await service.create(createSecretKeyFixture)
+          const firstApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           let revokedKeys = await service.revoke([])
           expect(revokedKeys).toHaveLength(0)
 
-          const apiKey = await service.retrieve(firstApiKey.id)
+          const apiKey = await service.retrieveApiKey(firstApiKey.id)
           expect(apiKey.revoked_at).toBeFalsy()
           expect(apiKey.revoked_by).toBeFalsy()
         })
 
         it("should not allow revoking an already revoked API key", async function () {
-          const firstApiKey = await service.create(createSecretKeyFixture)
+          const firstApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           await service.revoke(firstApiKey.id, {
             revoked_by: "test",
           })
@@ -188,18 +197,22 @@ moduleIntegrationTestRunner({
 
       describe("updating an API key", () => {
         it("should update the name successfully", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
 
-          const updatedApiKey = await service.update(createdApiKey.id, {
+          const updatedApiKey = await service.updateApiKeys(createdApiKey.id, {
             title: "New Name",
           })
           expect(updatedApiKey.title).toEqual("New Name")
         })
 
         it("should not reflect any updates on other fields", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
 
-          const updatedApiKey = await service.update(createdApiKey.id, {
+          const updatedApiKey = await service.updateApiKeys(createdApiKey.id, {
             title: createdApiKey.title,
             revoked_by: "test",
             revoked_at: new Date(),
@@ -214,27 +227,34 @@ moduleIntegrationTestRunner({
 
       describe("deleting API keys", () => {
         it("should successfully delete existing api keys", async function () {
-          const createdApiKeys = await service.create([
+          const createdApiKeys = await service.createApiKeys([
             createPublishableKeyFixture,
             createSecretKeyFixture,
           ])
-          await service.delete([createdApiKeys[0].id, createdApiKeys[1].id])
+          await service.deleteApiKeys([
+            createdApiKeys[0].id,
+            createdApiKeys[1].id,
+          ])
 
-          const apiKeysInDatabase = await service.list()
+          const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(0)
         })
       })
 
       describe("authenticating with API keys", () => {
         it("should authenticate a secret key successfully", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           const authenticated = await service.authenticate(createdApiKey.token)
 
           expect(authenticated).toBeTruthy()
           expect(authenticated.title).toEqual(createSecretKeyFixture.title)
         })
         it("should authenticate with a token to be revoked in the future", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
 
           // We simulate setting the revoked_at in the future here
           jest.useFakeTimers().setSystemTime(new Date().setFullYear(3000))
@@ -249,7 +269,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should not authenticate a publishable key", async function () {
-          const createdApiKey = await service.create(
+          const createdApiKey = await service.createApiKeys(
             createPublishableKeyFixture
           )
           const authenticated = await service.authenticate(createdApiKey.token)
@@ -257,13 +277,17 @@ moduleIntegrationTestRunner({
           expect(authenticated).toBeFalsy()
         })
         it("should not authenticate with a non-existent token", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           const authenticated = await service.authenticate("some-token")
 
           expect(authenticated).toBeFalsy()
         })
         it("should not authenticate with a revoked token", async function () {
-          const createdApiKey = await service.create(createSecretKeyFixture)
+          const createdApiKey = await service.createApiKeys(
+            createSecretKeyFixture
+          )
           await service.revoke(createdApiKey.id, {
             revoked_by: "test",
           })
@@ -275,22 +299,22 @@ moduleIntegrationTestRunner({
 
       describe("retrieving API keys", () => {
         it("should successfully return all existing api keys", async function () {
-          await service.create([
+          await service.createApiKeys([
             createPublishableKeyFixture,
             createSecretKeyFixture,
           ])
 
-          const apiKeysInDatabase = await service.list()
+          const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(2)
         })
 
         it("should only return keys with matching token", async function () {
-          const created = await service.create([
+          const created = await service.createApiKeys([
             createPublishableKeyFixture,
             createPublishableKeyFixture,
           ])
 
-          const apiKeysInDatabase = await service.list({
+          const apiKeysInDatabase = await service.listApiKeys({
             token: created[0].token,
           })
           expect(apiKeysInDatabase).toHaveLength(1)
@@ -298,55 +322,61 @@ moduleIntegrationTestRunner({
         })
 
         it("should not return the token and salt for secret keys when listing", async function () {
-          await service.create([createSecretKeyFixture])
+          await service.createApiKeys([createSecretKeyFixture])
 
-          const apiKeysInDatabase = await service.list()
+          const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(1)
           expect(apiKeysInDatabase[0].token).toBeFalsy()
           expect(apiKeysInDatabase[0].salt).toBeFalsy()
         })
 
         it("should return the token for publishable keys when listing", async function () {
-          await service.create([createPublishableKeyFixture])
+          await service.createApiKeys([createPublishableKeyFixture])
 
-          const apiKeysInDatabase = await service.list()
+          const apiKeysInDatabase = await service.listApiKeys()
           expect(apiKeysInDatabase).toHaveLength(1)
           expect(apiKeysInDatabase[0].token).toBeTruthy()
           expect(apiKeysInDatabase[0].salt).toBeFalsy()
         })
 
         it("should not return the token and salt for secret keys when listing and counting", async function () {
-          await service.create([createSecretKeyFixture])
+          await service.createApiKeys([createSecretKeyFixture])
 
-          const [apiKeysInDatabase] = await service.listAndCount()
+          const [apiKeysInDatabase] = await service.listAndCountApiKeys()
           expect(apiKeysInDatabase).toHaveLength(1)
           expect(apiKeysInDatabase[0].token).toBeFalsy()
           expect(apiKeysInDatabase[0].salt).toBeFalsy()
         })
 
         it("should return the token for publishable keys when listing and counting", async function () {
-          await service.create([createPublishableKeyFixture])
+          await service.createApiKeys([createPublishableKeyFixture])
 
-          const [apiKeysInDatabase] = await service.listAndCount()
+          const [apiKeysInDatabase] = await service.listAndCountApiKeys()
           expect(apiKeysInDatabase).toHaveLength(1)
           expect(apiKeysInDatabase[0].token).toBeTruthy()
           expect(apiKeysInDatabase[0].salt).toBeFalsy()
         })
 
         it("should not return the token and salt for secret keys when retrieving", async function () {
-          const [createdApiKey] = await service.create([createSecretKeyFixture])
+          const [createdApiKey] = await service.createApiKeys([
+            createSecretKeyFixture,
+          ])
 
-          const apiKeyInDatabase = await service.retrieve(createdApiKey.id)
+          const apiKeyInDatabase = await service.retrieveApiKey(
+            createdApiKey.id
+          )
           expect(apiKeyInDatabase.token).toBeFalsy()
           expect(apiKeyInDatabase.salt).toBeFalsy()
         })
 
         it("should return the token for publishable keys when retrieving", async function () {
-          const [createdApiKey] = await service.create([
+          const [createdApiKey] = await service.createApiKeys([
             createPublishableKeyFixture,
           ])
 
-          const apiKeyInDatabase = await service.retrieve(createdApiKey.id)
+          const apiKeyInDatabase = await service.retrieveApiKey(
+            createdApiKey.id
+          )
           expect(apiKeyInDatabase.token).toBeTruthy()
           expect(apiKeyInDatabase.salt).toBeFalsy()
         })

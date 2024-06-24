@@ -18,6 +18,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import TaxProvider from "./tax-provider"
 import TaxRate from "./tax-rate"
@@ -65,7 +66,7 @@ export default class TaxRegion {
   provider_id: string | null = null
 
   @ManyToOne(() => TaxProvider, { persist: false })
-  provider: TaxProvider
+  provider: Rel<TaxProvider>
 
   @Searchable()
   @Property({ columnType: "text" })
@@ -85,7 +86,7 @@ export default class TaxRegion {
   parent_id: string | null = null
 
   @ManyToOne(() => TaxRegion, { persist: false })
-  parent: TaxRegion
+  parent: Rel<TaxRegion>
 
   @OneToMany(() => TaxRate, (label) => label.tax_region, {
     cascade: ["soft-remove" as Cascade],
@@ -95,7 +96,7 @@ export default class TaxRegion {
   @OneToMany(() => TaxRegion, (label) => label.parent, {
     cascade: ["soft-remove" as Cascade],
   })
-  children = new Collection<TaxRegion>(this)
+  children = new Collection<Rel<TaxRegion>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

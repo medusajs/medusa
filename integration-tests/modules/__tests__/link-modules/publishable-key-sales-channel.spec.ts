@@ -1,9 +1,9 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IApiKeyModuleService,
   ISalesChannelModuleService,
 } from "@medusajs/types"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import { Modules, remoteQueryObjectFromString } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
@@ -31,11 +31,11 @@ medusaIntegrationTestRunner({
       })
 
       it("should query api key and sales channels link with remote query", async () => {
-        const salesChannel = await scModuleService.create({
+        const salesChannel = await scModuleService.createSalesChannels({
           name: "Webshop",
         })
 
-        const apiKeys = await apiKeyModule.create([
+        const apiKeys = await apiKeyModule.createApiKeys([
           {
             title: "Api key",
             type: "publishable",

@@ -1,5 +1,3 @@
-import { ICustomerModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
@@ -12,13 +10,8 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api }) => {
     describe("GET /store/customers", () => {
       let appContainer
-      let customerModuleService: ICustomerModuleService
-
       beforeAll(async () => {
         appContainer = getContainer()
-        customerModuleService = appContainer.resolve(
-          ModuleRegistrationName.CUSTOMER
-        )
       })
 
       it("should retrieve auth user's customer", async () => {

@@ -1,11 +1,7 @@
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  Modules,
-} from "@medusajs/modules-sdk"
+import { LinkModuleUtils, ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
-import { PromotionActions } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { Modules, PromotionActions } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   id: string
@@ -38,7 +34,7 @@ export const updateCartPromotionsStep = createStep(
       existingCartPromotionLinks.map((link) => [link.promotion_id, link])
     )
 
-    const promotions = await promotionService.list(
+    const promotions = await promotionService.listPromotions(
       { code: promo_codes },
       { select: ["id"] }
     )

@@ -1,9 +1,9 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
 
@@ -43,7 +43,7 @@ medusaIntegrationTestRunner({
           ContainerRegistrationKeys.REMOTE_LINK
         )
 
-        region = await regionService.create({
+        region = await regionService.createRegions({
           name: "Test region",
           countries: ["US"],
           currency_code: "usd",
@@ -103,7 +103,7 @@ medusaIntegrationTestRunner({
           type: "default",
         })
 
-        fulfillmentSet = await fulfillmentModule.create({
+        fulfillmentSet = await fulfillmentModule.createFulfillmentSets({
           name: "Test",
           type: "test-type",
           service_zones: [
@@ -184,7 +184,9 @@ medusaIntegrationTestRunner({
 
       describe("GET /admin/shipping-options?cart_id=", () => {
         it("should get all shipping options for a cart successfully", async () => {
-          const resp = await api.get(`/store/shipping-options?cart_id=${cart.id}`)
+          const resp = await api.get(
+            `/store/shipping-options?cart_id=${cart.id}`
+          )
 
           const shippingOptions = resp.data.shipping_options
           expect(shippingOptions).toHaveLength(1)

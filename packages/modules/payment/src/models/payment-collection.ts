@@ -19,6 +19,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
@@ -99,17 +100,17 @@ export default class PaymentCollection {
   status: PaymentCollectionStatus = PaymentCollectionStatus.NOT_PAID
 
   @ManyToMany(() => PaymentProvider)
-  payment_providers = new Collection<PaymentProvider>(this)
+  payment_providers = new Collection<Rel<PaymentProvider>>(this)
 
   @OneToMany(() => PaymentSession, (ps) => ps.payment_collection, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  payment_sessions = new Collection<PaymentSession>(this)
+  payment_sessions = new Collection<Rel<PaymentSession>>(this)
 
   @OneToMany(() => Payment, (payment) => payment.payment_collection, {
     cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
-  payments = new Collection<Payment>(this)
+  payments = new Collection<Rel<Payment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

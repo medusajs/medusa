@@ -1,19 +1,19 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ICurrencyModuleService } from "@medusajs/types"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
-moduleIntegrationTestRunner({
+moduleIntegrationTestRunner<ICurrencyModuleService>({
   moduleName: Modules.CURRENCY,
-  testSuite: ({
-    MikroOrmWrapper,
-    service,
-  }: SuiteOptions<ICurrencyModuleService>) => {
+  testSuite: ({ service }) => {
     describe("Currency Module Service", () => {
       describe("list", () => {
         it("list currencies", async () => {
-          const currenciesResult = await service.list({}, { take: null })
+          const currenciesResult = await service.listCurrencies(
+            {},
+            { take: null }
+          )
           expect(currenciesResult).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
@@ -31,7 +31,7 @@ moduleIntegrationTestRunner({
         })
 
         it("list currencies by code", async () => {
-          const currenciesResult = await service.list(
+          const currenciesResult = await service.listCurrencies(
             { code: ["usd"] },
             { take: null }
           )
@@ -45,7 +45,7 @@ moduleIntegrationTestRunner({
         })
 
         it("list currencies by code regardless of case-sensitivity", async () => {
-          const currenciesResult = await service.list(
+          const currenciesResult = await service.listCurrencies(
             { code: ["Usd"] },
             { take: null }
           )
@@ -59,12 +59,10 @@ moduleIntegrationTestRunner({
         })
       })
 
-      describe("listAndCount", () => {
+      describe("listAndCountCurrenciesCurrencies", () => {
         it("should return currencies and count", async () => {
-          const [currenciesResult, count] = await service.listAndCount(
-            {},
-            { take: null }
-          )
+          const [currenciesResult, count] =
+            await service.listAndCountCurrencies({}, { take: null })
 
           expect(count).toEqual(120)
           expect(currenciesResult).toEqual(
@@ -82,12 +80,13 @@ moduleIntegrationTestRunner({
         })
 
         it("should return currencies and count when filtered", async () => {
-          const [currenciesResult, count] = await service.listAndCount(
-            {
-              code: ["usd"],
-            },
-            { take: null }
-          )
+          const [currenciesResult, count] =
+            await service.listAndCountCurrencies(
+              {
+                code: ["usd"],
+              },
+              { take: null }
+            )
 
           expect(count).toEqual(1)
           expect(currenciesResult).toEqual([
@@ -99,10 +98,8 @@ moduleIntegrationTestRunner({
         })
 
         it("should return currencies and count when using skip and take", async () => {
-          const [currenciesResult, count] = await service.listAndCount(
-            {},
-            { skip: 5, take: 1 }
-          )
+          const [currenciesResult, count] =
+            await service.listAndCountCurrencies({}, { skip: 5, take: 1 })
 
           expect(count).toEqual(120)
           expect(currenciesResult).toEqual([
@@ -114,13 +111,14 @@ moduleIntegrationTestRunner({
         })
 
         it("should return requested fields", async () => {
-          const [currenciesResult, count] = await service.listAndCount(
-            {},
-            {
-              take: 1,
-              select: ["code", "rounding"],
-            }
-          )
+          const [currenciesResult, count] =
+            await service.listAndCountCurrencies(
+              {},
+              {
+                take: 1,
+                select: ["code", "rounding"],
+              }
+            )
 
           const serialized = JSON.parse(JSON.stringify(currenciesResult))
 
@@ -140,7 +138,7 @@ moduleIntegrationTestRunner({
         const name = "US Dollar"
 
         it("should return currency for the given code", async () => {
-          const currency = await service.retrieve(code)
+          const currency = await service.retrieveCurrency(code)
 
           expect(currency).toEqual(
             expect.objectContaining({
@@ -150,7 +148,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return currency for the given code in a case-insensitive manner", async () => {
-          const currency = await service.retrieve(code.toUpperCase())
+          const currency = await service.retrieveCurrency(code.toUpperCase())
 
           expect(currency).toEqual(
             expect.objectContaining({
@@ -163,7 +161,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve("does-not-exist")
+            await service.retrieveCurrency("does-not-exist")
           } catch (e) {
             error = e
           }
@@ -177,7 +175,7 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.retrieve(undefined as unknown as string)
+            await service.retrieveCurrency(undefined as unknown as string)
           } catch (e) {
             error = e
           }
@@ -186,7 +184,7 @@ moduleIntegrationTestRunner({
         })
 
         it("should return currency based on config select param", async () => {
-          const currency = await service.retrieve(code, {
+          const currency = await service.retrieveCurrency(code, {
             select: ["code", "name"],
           })
 

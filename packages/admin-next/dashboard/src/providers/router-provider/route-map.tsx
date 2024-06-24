@@ -110,10 +110,25 @@ export const RouteMap: RouteObject[] = [
                     lazy: () =>
                       import("../../routes/products/product-create-variant"),
                   },
+                ],
+              },
+              {
+                path: ":id/variants/:variant_id",
+                lazy: () =>
+                  import(
+                    "../../routes/product-variants/product-variant-detail"
+                  ),
+                children: [
                   {
-                    path: "variants/:variant_id/edit",
+                    path: "edit",
                     lazy: () =>
-                      import("../../routes/products/product-edit-variant"),
+                      import(
+                        "../../routes/product-variants/product-variant-edit"
+                      ),
+                  },
+                  {
+                    path: "prices",
+                    lazy: () => import("../../routes/products/product-prices"),
                   },
                 ],
               },
@@ -733,6 +748,48 @@ export const RouteMap: RouteObject[] = [
                 lazy: () => import("../../routes/locations/location-create"),
               },
               {
+                path: "shipping-profiles",
+                element: <Outlet />,
+                handle: {
+                  crumb: () => "Shipping Profiles",
+                },
+                children: [
+                  {
+                    path: "",
+                    lazy: () =>
+                      import(
+                        "../../routes/shipping-profiles/shipping-profiles-list"
+                      ),
+                    children: [
+                      {
+                        path: "create",
+                        lazy: () =>
+                          import(
+                            "../../routes/shipping-profiles/shipping-profile-create"
+                          ),
+                      },
+                    ],
+                  },
+                  {
+                    path: ":id",
+                    handle: {
+                      crumb: (data) => data.shipping_profile.name,
+                    },
+                    lazy: () =>
+                      import(
+                        "../../routes/shipping-profiles/shipping-profile-detail"
+                      ),
+                  },
+                ],
+              },
+              {
+                path: "shipping-option-types",
+                element: <Outlet />,
+                handle: {
+                  crumb: () => "Shipping Option Types",
+                },
+              },
+              {
                 path: ":location_id",
                 lazy: () => import("../../routes/locations/location-detail"),
                 handle: {
@@ -885,38 +942,7 @@ export const RouteMap: RouteObject[] = [
               },
             ],
           },
-          {
-            path: "shipping-profiles",
-            element: <Outlet />,
-            handle: {
-              crumb: () => "Shipping Profiles",
-            },
-            children: [
-              {
-                path: "",
-                lazy: () =>
-                  import(
-                    "../../routes/shipping-profiles/shipping-profiles-list"
-                  ),
-                children: [
-                  {
-                    path: "create",
-                    lazy: () =>
-                      import(
-                        "../../routes/shipping-profiles/shipping-profile-create"
-                      ),
-                  },
-                ],
-              },
-              {
-                path: ":id",
-                lazy: () =>
-                  import(
-                    "../../routes/shipping-profiles/shipping-profile-detail"
-                  ),
-              },
-            ],
-          },
+
           {
             path: "publishable-api-keys",
             element: <Outlet />,

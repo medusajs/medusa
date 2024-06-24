@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
 export const StoreDefaultCurrency: ModuleJoinerConfig = {
   isLink: true,
@@ -12,6 +12,9 @@ export const StoreDefaultCurrency: ModuleJoinerConfig = {
         primaryKey: "code",
         foreignKey: "default_currency_code",
         alias: "default_currency",
+        args: {
+          methodSuffix: "Currencies",
+        },
       },
     },
   ],

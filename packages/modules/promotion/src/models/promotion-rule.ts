@@ -14,6 +14,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import ApplicationMethod from "./application-method"
 import Promotion from "./promotion"
@@ -44,22 +45,22 @@ export default class PromotionRule {
   @OneToMany(() => PromotionRuleValue, (prv) => prv.promotion_rule, {
     cascade: [Cascade.REMOVE],
   })
-  values = new Collection<PromotionRuleValue>(this)
+  values = new Collection<Rel<PromotionRuleValue>>(this)
 
   @ManyToMany(() => Promotion, (promotion) => promotion.rules)
-  promotions = new Collection<Promotion>(this)
+  promotions = new Collection<Rel<Promotion>>(this)
 
   @ManyToMany(
     () => ApplicationMethod,
     (applicationMethod) => applicationMethod.target_rules
   )
-  method_target_rules = new Collection<ApplicationMethod>(this)
+  method_target_rules = new Collection<Rel<ApplicationMethod>>(this)
 
   @ManyToMany(
     () => ApplicationMethod,
     (applicationMethod) => applicationMethod.buy_rules
   )
-  method_buy_rules = new Collection<ApplicationMethod>(this)
+  method_buy_rules = new Collection<Rel<ApplicationMethod>>(this)
 
   @Property({
     onCreate: () => new Date(),

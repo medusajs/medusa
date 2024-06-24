@@ -76,6 +76,7 @@
     "viewDetails": "View details",
     "back": "Back",
     "close": "Close",
+    "showMore": "Show more",
     "continue": "Continue",
     "reset": "Reset",
     "confirm": "Confirm",
@@ -325,6 +326,7 @@
       "create": {
         "header": "Create Variant"
       },
+      "pricesPagination": "1 - {{current}} of {{total}} prices",
       "tableItemAvailable": "{{availableCount}} available",
       "tableItem_one": "{{availableCount}} available at {{locationCount}} location",
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
@@ -479,6 +481,9 @@
       "successToast": "Reservation was successfully created.",
       "updateSuccessToast": "Reservation was successfully updated.",
       "deleteSuccessToast": "Reservation was successfully deleted."
+    },
+    "toast": {
+      "updateLocations": "Locations updated successfully."
     }
   },
   "giftCards": {
@@ -801,6 +806,14 @@
         "pickup": "Pickup was successfully enabled.",
         "shipping": "Shipping was successfully enabled."
       }
+    },
+    "sidebar": {
+      "shippingConfiguration": "Shipping configuration",
+      "shippingProfiles": "Shipping profiles",
+      "shippingProfilesDesc": "Shipping rules for different types of products",
+      "shippingOptionTypes": "Shipping Option Types",
+      "shippingOptionTypesDesc": "Group options based on characteristic"
+
     },
     "salesChannels": {
       "header": "Sales Channels",
@@ -1677,6 +1690,10 @@
     "enabled": "Enabled",
     "disabled": "Disabled"
   },
+  "labels": {
+    "productVariant": "Product Variant",
+    "prices": "Prices"
+  },
   "fields": {
     "amount": "Amount",
     "refundAmount": "Refund amount",
@@ -1688,6 +1705,8 @@
     "customTitle": "Custom title",
     "manageInventory": "Manage inventory",
     "inventoryKit": "Inventory kit",
+    "inventoryItems": "Inventory items",
+    "requiredQuantity": "Required quantity",
     "description": "Description",
     "email": "Email",
     "password": "Password",

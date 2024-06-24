@@ -1,6 +1,6 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
-import { IPaymentModuleService, IRegionModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IRegionModuleService } from "@medusajs/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
 import { adminHeaders } from "../../../helpers/create-admin-user"
@@ -15,14 +15,12 @@ medusaIntegrationTestRunner({
     describe("Remote Query", () => {
       let appContainer
       let regionModule: IRegionModuleService
-      let paymentModule: IPaymentModuleService
       let remoteQuery
       let remoteLink
 
       beforeAll(async () => {
         appContainer = getContainer()
         regionModule = appContainer.resolve(ModuleRegistrationName.REGION)
-        paymentModule = appContainer.resolve(ModuleRegistrationName.PAYMENT)
         remoteQuery = appContainer.resolve(
           ContainerRegistrationKeys.REMOTE_QUERY
         )
@@ -34,7 +32,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail to retrieve a single non-existing id", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
@@ -75,19 +73,19 @@ medusaIntegrationTestRunner({
       })
 
       it("should fail if a expected relation is not found", async () => {
-        const region = await regionModule.create({
+        const region = await regionModule.createRegions({
           name: "Test Region",
           currency_code: "usd",
           countries: ["us"],
         })
 
-        const regionWithPayment = await regionModule.create({
+        const regionWithPayment = await regionModule.createRegions({
           name: "Test W/ Payment",
           currency_code: "brl",
           countries: ["br"],
         })
 
-        const regionNoLink = await regionModule.create({
+        const regionNoLink = await regionModule.createRegions({
           name: "No link",
           currency_code: "eur",
           countries: ["dk"],
