@@ -632,4 +632,24 @@ export function createMikrORMEntity() {
   }
 }
 
-export const toMikroORMEntity = createMikrORMEntity()
+/**
+ * Takes a DML entity and returns a Mikro ORM entity otherwise
+ * return the input idempotently
+ * @param entity
+ */
+export const toMikroORMEntity = (entity: any) => {
+  if (DmlEntity.isDmlEntity(entity)) {
+    return createMikrORMEntity()(entity)
+  }
+
+  return entity
+}
+
+/**
+ * Takes any DmlEntity or mikro orm entities and return mikro orm entities only.
+ * This action is idempotent if non of the entities are DmlEntity
+ * @param entities
+ */
+export const toMikroOrmEntities = function (entities: any[]) {
+  return entities.map(toMikroORMEntity)
+}

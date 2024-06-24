@@ -8,7 +8,7 @@ import {
   upperCaseFirst,
 } from "../common"
 import { join } from "path"
-import { readdirSync, statSync } from "fs"
+import { loadModels } from "./loaders/load-models"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -110,38 +110,4 @@ export function buildEntitiesNameToLinkableKeysMap(
   })
 
   return entityLinkableKeysMap
-}
-
-function loadModels(basePath: string) {
-  const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
-
-  let modelsFiles: any[] = []
-  try {
-    modelsFiles = readdirSync(basePath)
-  } catch (e) {}
-
-  return modelsFiles
-    .flatMap((file) => {
-      if (
-        file.startsWith("index.") ||
-        excludedExtensions.some((ext) => file.endsWith(ext))
-      ) {
-        return
-      }
-
-      const filePath = join(basePath, file)
-      const stats = statSync(filePath)
-
-      if (stats.isFile()) {
-        try {
-          const required = require(filePath)
-          return Object.values(required).filter(
-            (resource) => typeof resource === "function" && !!resource.name
-          )
-        } catch (e) {}
-      }
-
-      return
-    })
-    .filter(Boolean) as { name: string }[]
 }
