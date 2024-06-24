@@ -66,6 +66,8 @@ export function ManageVariantInventoryItemsForm({
     name: `inventory`,
   })
 
+  const hasKit = inventory.fields.length > 1
+
   const items = useComboboxData({
     queryKey: ["inventory_items"],
     queryFn: (params) => sdk.admin.inventoryItem.list(params),
@@ -166,7 +168,13 @@ export function ManageVariantInventoryItemsForm({
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex justify-center">
           <div className="flex w-full flex-col gap-y-8 px-6 pt-12 md:w-[720px] md:pt-24">
-            <Heading>{t("products.create.inventory.heading")}</Heading>
+            <Heading>
+              {t(
+                hasKit
+                  ? "products.create.inventory.heading"
+                  : "fields.inventoryItems"
+              )}
+            </Heading>
 
             <div className="grid gap-y-4">
               <div className="flex items-start justify-between gap-x-4">

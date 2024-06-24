@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 
-import { Component } from "@medusajs/icons"
+import { Buildings, Component } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { InventoryItemDTO } from "@medusajs/types"
 
@@ -34,6 +34,8 @@ export function VariantInventorySection({
     pageSize: PAGE_SIZE,
   })
 
+  const hasKit = inventoryItems.length > 1
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -47,9 +49,13 @@ export function VariantInventorySection({
                 {
                   actions: [
                     {
-                      label: t("products.variant.inventory.manageItems"),
+                      label: t(
+                        hasKit
+                          ? "products.variant.inventory.manageKit"
+                          : "products.variant.inventory.manageItems"
+                      ),
                       to: "manage-items",
-                      icon: <Component />,
+                      icon: hasKit ? <Component /> : <Buildings />,
                     },
                   ],
                 },

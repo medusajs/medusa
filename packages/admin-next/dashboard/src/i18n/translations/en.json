@@ -333,6 +333,7 @@
       "inventory": {
         "notManaged": "Not managed",
         "manageItems": "Manage inventory items",
+        "manageKit": "Manage inventory kit",
         "navigateToItem": "Go to inventory item",
         "actions": {
           "inventoryItems": "Go to inventory item",
