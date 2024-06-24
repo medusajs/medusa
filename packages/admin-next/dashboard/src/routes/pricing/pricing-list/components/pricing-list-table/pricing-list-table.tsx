@@ -18,10 +18,7 @@ export const PricingListTable = () => {
     pageSize: PAGE_SIZE,
   })
   const { price_lists, count, isLoading, isError, error } = usePriceLists(
-    // {
-    //   ...searchParams, // TODO: Query params are not currently supported by the API.
-    // },
-    undefined,
+    searchParams,
     {
       placeholderData: keepPreviousData,
     }
@@ -46,7 +43,7 @@ export const PricingListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("pricing.domain")}</Heading>
+        <Heading>{t("priceLists.domain")}</Heading>
         <Button size="small" variant="secondary" asChild>
           <Link to="create">{t("actions.create")}</Link>
         </Button>
@@ -56,7 +53,7 @@ export const PricingListTable = () => {
         columns={columns}
         count={count}
         filters={filters}
-        orderBy={["name", "status", "created_at", "updated_at"]}
+        orderBy={["title", "status", "created_at", "updated_at"]}
         queryObject={raw}
         pageSize={PAGE_SIZE}
         navigateTo={(row) => row.original.id}

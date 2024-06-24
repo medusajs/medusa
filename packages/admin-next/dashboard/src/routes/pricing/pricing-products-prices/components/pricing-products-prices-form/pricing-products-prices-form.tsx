@@ -1,27 +1,18 @@
-import {
-  CreatePriceListPriceDTO,
-  PriceListDTO,
-  UpdatePriceListPriceDTO,
-  HttpTypes,
-} from "@medusajs/types"
-import { Button } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { Button, toast } from "@medusajs/ui"
 import { UseFormReturn, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useMemo } from "react"
-import { DataGrid } from "../../../../../components/grid/data-grid"
+import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useCurrencies } from "../../../../../hooks/api/currencies"
-import {
-  usePriceListAddPrices,
-  usePriceListRemovePrices,
-  useUpdatePriceList,
-} from "../../../../../hooks/api/price-lists"
+import { useBatchPriceListPrices } from "../../../../../hooks/api/price-lists"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
 import { castNumber } from "../../../../../lib/cast-number"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
@@ -32,7 +23,7 @@ import {
 import { isProductRow } from "../../../common/utils"
 
 type PricingProductPricesFormProps = {
-  priceList: PriceListDTO
+  priceList: HttpTypes.AdminPriceList
   products: HttpTypes.AdminProduct[]
 }
 
@@ -45,7 +36,9 @@ type VariantsPriceRecord = Record<
   { currency_code: string; amount: number; id: string }[]
 >
 
-const initRecord = (priceList: PriceListDTO): VariantsPriceRecord => {
+const initRecord = (
+  priceList: HttpTypes.AdminPriceList
+): VariantsPriceRecord => {
   const prices = priceList.prices
   const sortedPrices: VariantsPriceRecord = {}
 
@@ -54,7 +47,6 @@ const initRecord = (priceList: PriceListDTO): VariantsPriceRecord => {
   }
 
   prices.forEach((price) => {
-    // @ts-ignore - Type is wrong
     const { variant_id, currency_code, amount, id } = price
 
     if (!currency_code || !amount || !variant_id) {
@@ -90,19 +82,18 @@ export const PricingProductPricesForm = ({
     error: storeError,
   } = useStore()
 
+  const currencies = store?.supported_currency_codes || []
+
   const {
-    currencies,
-    isLoading: isCurrenciesLoading,
-    isError: isCurrencyError,
-    error: currencyError,
-  } = useCurrencies(
-    {
-      code: store?.supported_currency_codes,
-    },
-    {
-      enabled: !!store,
-    }
-  )
+    regions,
+    isPending: isRegionsLoading,
+    isError: isRegionsError,
+    error: regionsError,
+  } = useRegions({
+    fields: "id,name,currency_code",
+    limit: 999,
+  })
+
   const form = useForm<z.infer<typeof PricingProductPricesSchema>>({
     defaultValues: {
       products: {},
@@ -119,16 +110,7 @@ export const PricingProductPricesForm = ({
     initDefaultValues(products, existingProducts, form, record)
   }, [existingProducts, form, products, record])
 
-  const { mutateAsync: updateAsync, isPending: isUpdatePending } =
-    useUpdatePriceList(priceList.id)
-
-  const { mutateAsync: deleteAsync, isPending: isDeletePending } =
-    usePriceListRemovePrices(priceList.id)
-
-  const { mutateAsync: addAsync, isPending: isAddPending } =
-    usePriceListAddPrices(priceList.id)
-
-  const isPending = isUpdatePending || isDeletePending || isAddPending
+  const { mutateAsync, isPending } = useBatchPriceListPrices(priceList.id)
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const { products } = values
@@ -138,7 +120,7 @@ export const PricingProductPricesForm = ({
       record
     )
 
-    let failed = false
+    const failed = false
 
     // TODO: Currently not working, need to fix the API
     // await updateAsync(
@@ -158,57 +140,33 @@ export const PricingProductPricesForm = ({
     //   return
     // }
 
-    if (pricesToDelete.length) {
-      await deleteAsync(
-        {
-          ids: pricesToDelete,
+    mutateAsync(
+      {
+        delete: pricesToDelete,
+        update: pricesToUpdate,
+        create: pricesToCreate,
+      },
+      {
+        onSuccess: () => {
+          handleSuccess()
         },
-        {
-          onError(error) {
-            console.error(error)
-            failed = true
-          },
-        }
-      )
-    }
-
-    if (failed) {
-      return
-    }
-
-    if (pricesToCreate.length) {
-      await addAsync(
-        {
-          // @ts-expect-error - type is wrong
-          prices: pricesToCreate,
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissable: true,
+            dismissLabel: t("actions.close"),
+          })
         },
-        {
-          onError(error) {
-            console.error(error)
-            failed = true
-          },
-        }
-      )
-    }
-
-    if (failed) {
-      return
-    }
-
-    handleSuccess()
+      }
+    )
   })
 
-  const columns = usePriceListGridColumns({ currencies })
+  const columns = usePriceListGridColumns({ currencies, regions })
 
-  const initializing =
-    isStoreLoading || isCurrenciesLoading || !products || !store || !currencies
+  const initializing = isStoreLoading || !products || !store || !currencies
 
   if (isStoreError) {
     throw storeError
-  }
-
-  if (isCurrencyError) {
-    throw currencyError
   }
 
   return (
@@ -227,15 +185,14 @@ export const PricingProductPricesForm = ({
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-          <DataGrid
+          <DataGridRoot
             columns={columns}
             data={products}
             getSubRows={(row) => {
-              if (isProductRow(row)) {
+              if (isProductRow(row) && row.variants) {
                 return row.variants
               }
             }}
-            isLoading={initializing}
             state={form}
           />
         </RouteFocusModal.Body>
@@ -316,8 +273,8 @@ function sortPrices(
   >,
   record: VariantsPriceRecord
 ) {
-  const pricesToUpdate: UpdatePriceListPriceDTO[] = []
-  const pricesToCreate: CreatePriceListPriceDTO[] = []
+  const pricesToUpdate: HttpTypes.AdminUpdatePriceListPrice[] = []
+  const pricesToCreate: HttpTypes.AdminCreatePriceListPrice[] = []
   const pricesToDelete: string[] = []
 
   for (const [_productId, product] of Object.entries(products)) {
@@ -350,7 +307,6 @@ function sortPrices(
             id: currencyPrice.id,
             amount: castNumber(currencyPrice.amount),
             currency_code: currencyCode,
-            // @ts-expect-error type is wrong
             variant_id: variantId,
           })
 
@@ -366,7 +322,6 @@ function sortPrices(
           pricesToCreate.push({
             amount: castNumber(currencyPrice.amount),
             currency_code: currencyCode,
-            // @ts-expect-error type is wrong
             variant_id: variantId,
           })
           continue

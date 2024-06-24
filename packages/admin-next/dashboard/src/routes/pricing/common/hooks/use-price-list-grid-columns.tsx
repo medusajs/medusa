@@ -1,22 +1,24 @@
-import { CurrencyDTO, HttpTypes } from "@medusajs/types"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { HttpTypes } from "@medusajs/types"
+import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+
 import { Thumbnail } from "../../../../components/common/thumbnail"
-import { CurrencyCell } from "../../../../components/grid/grid-cells/common/currency-cell"
-import { ReadonlyCell } from "../../../../components/grid/grid-cells/common/readonly-cell"
-import { VoidCell } from "../../../../components/grid/grid-cells/common/void-cell"
-import { DataGridMeta } from "../../../../components/grid/types"
+import { DataGridCurrencyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
+import { DataGridReadOnlyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
+import { createDataGridHelper } from "../../../../components/data-grid/utils"
 import { isProductRow } from "../utils"
 
-const columnHelper = createColumnHelper<
+const columnHelper = createDataGridHelper<
   HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
 >()
 
 export const usePriceListGridColumns = ({
   currencies = [],
+  regions = [],
 }: {
-  currencies?: CurrencyDTO[]
+  currencies?: string[]
+  regions?: HttpTypes.AdminRegion[]
 }) => {
   const { t } = useTranslation()
 
@@ -24,7 +26,7 @@ export const usePriceListGridColumns = ({
     HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
   >[] = useMemo(() => {
     return [
-      columnHelper.display({
+      columnHelper.column({
         id: t("fields.title"),
         header: t("fields.title"),
         cell: ({ row }) => {
@@ -32,46 +34,71 @@ export const usePriceListGridColumns = ({
 
           if (isProductRow(entity)) {
             return (
-              <VoidCell>
+              <DataGridReadOnlyCell>
                 <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                   <Thumbnail src={entity.thumbnail} />
                   <span className="truncate">{entity.title}</span>
                 </div>
-              </VoidCell>
+              </DataGridReadOnlyCell>
             )
           }
 
           return (
-            <ReadonlyCell>
+            <DataGridReadOnlyCell>
               <div className="flex h-full w-full items-center gap-x-2 overflow-hidden">
                 <span className="truncate">{entity.title}</span>
               </div>
-            </ReadonlyCell>
+            </DataGridReadOnlyCell>
           )
         },
+        disableHiding: true,
       }),
       ...currencies.map((currency) => {
-        return columnHelper.display({
-          header: `Price ${currency.code.toUpperCase()}`,
-          cell: ({ row, table }) => {
-            const entity = row.original
+        return columnHelper.column({
+          id: `currency-price-${currency}`,
+          name: `Price ${currency.toUpperCase()}`,
+          header: `Price ${currency.toUpperCase()}`,
+          cell: (context) => {
+            const entity = context.row.original
 
             if (isProductRow(entity)) {
-              return <VoidCell />
+              return <DataGridReadOnlyCell />
             }
 
             return (
-              <CurrencyCell
-                currency={currency}
-                meta={table.options.meta as DataGridMeta}
-                field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${currency.code}.amount`}
+              <DataGridCurrencyCell
+                context={context}
+                code={currency}
+                field={`products.${entity.product_id}.variants.${entity.id}.currency_prices.${currency}.amount`}
+              />
+            )
+          },
+        })
+      }),
+      ...regions.map((region) => {
+        return columnHelper.column({
+          id: `region-price-${region.id}`,
+          name: `Price ${region.name}`,
+          header: `Price ${region.name}`,
+          cell: (context) => {
+            const entity = context.row.original
+
+            if (isProductRow(entity)) {
+              return <DataGridReadOnlyCell />
+            }
+
+            return (
+              <DataGridCurrencyCell
+                context={context}
+                code={region.currency_code}
+                field={`products.${entity.product_id}.variants.${entity.id}.region_prices.${region.id}.amount`}
               />
             )
           },
         })
       }),
     ]
-  }, [t, currencies])
+  }, [t, currencies, regions])
 
   return colDefs
 }

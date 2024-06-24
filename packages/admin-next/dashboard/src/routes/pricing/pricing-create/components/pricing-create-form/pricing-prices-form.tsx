@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
-import { DataGrid } from "../../../../../components/grid/data-grid"
-import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root"
 import { useProducts } from "../../../../../hooks/api/products"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import { PricingVariantsRecordType } from "../../../common/schemas"
@@ -16,25 +16,24 @@ type PricingPricesFormProps = {
 export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
   const {
     store,
-    isLoading: isStoreLoading,
+    isPending: isStoreLoading,
     isError: isStoreError,
     error: storeError,
   } = useStore()
 
+  const currencies = store?.supported_currency_codes || []
+
   const {
-    currencies,
-    isLoading: isCurrenciesLoading,
-    isError: isCurrencyError,
-    error: currencyError,
-  } = useCurrencies(
-    {
-      code: store?.supported_currency_codes,
-      limit: store?.supported_currency_codes?.length,
-    },
-    {
-      enabled: !!store,
-    }
-  )
+    regions,
+    isPending: isRegionsPending,
+    isError: isRegionsError,
+    error: regionsError,
+  } = useRegions({
+    fields: "id,name,currency_code",
+    limit: 999,
+  })
+
+  console.log(regions)
 
   const ids = useWatch({
     control: form.control,
@@ -79,14 +78,16 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
 
   const columns = usePriceListGridColumns({
     currencies,
+    regions,
   })
 
   const initializing =
     isLoading ||
     isStoreLoading ||
-    isCurrenciesLoading ||
+    isRegionsPending ||
     !products ||
     !store ||
+    !regions ||
     !currencies
 
   if (isError) {
@@ -97,21 +98,20 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
     throw storeError
   }
 
-  if (isCurrencyError) {
-    throw currencyError
+  if (isRegionsError) {
+    throw regionsError
   }
 
   return (
     <div className="flex size-full flex-col divide-y overflow-hidden">
-      <DataGrid
+      <DataGridRoot
         columns={columns}
         data={products}
         getSubRows={(row) => {
-          if (isProductRow(row)) {
+          if (isProductRow(row) && row.variants) {
             return row.variants
           }
         }}
-        isLoading={initializing}
         state={form}
       />
     </div>

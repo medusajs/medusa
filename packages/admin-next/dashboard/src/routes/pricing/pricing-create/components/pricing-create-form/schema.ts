@@ -14,10 +14,11 @@ export type PricingCustomerGroupsArrayType = z.infer<
 
 export const PricingCreateSchema = z.object({
   type: z.enum(["sale", "override"]),
+  status: z.enum(["draft", "active"]),
   title: z.string().min(1),
   description: z.string().min(1),
-  starts_at: z.date().nullable(),
-  ends_at: z.date().nullable(),
+  starts_at: z.date().optional(),
+  ends_at: z.date().optional(),
   customer_group_ids: PricingCustomerGroupsArray.optional(),
   product_ids: z.array(z.object({ id: z.string() })).min(1),
   products: PricingProductsRecordSchema,

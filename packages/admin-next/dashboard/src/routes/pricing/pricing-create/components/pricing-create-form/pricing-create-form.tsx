@@ -3,7 +3,11 @@ import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { FieldPath, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { CreatePriceListDTO, CreatePriceListPriceDTO } from "@medusajs/types"
+import {
+  CreatePriceListPriceDTO,
+  PriceListStatus,
+  PriceListType,
+} from "@medusajs/types"
 import { useState } from "react"
 import { z } from "zod"
 import {
@@ -51,6 +55,7 @@ export const PricingCreateForm = () => {
   const form = useForm<PricingCreateSchemaType>({
     defaultValues: {
       type: "sale",
+      status: "active",
       title: "",
       description: "",
       starts_at: null,
@@ -78,10 +83,10 @@ export const PricingCreateForm = () => {
         const { variants } = product
 
         for (const [variantId, variant] of Object.entries(variants)) {
-          const { currency_prices } = variant
+          const { currency_prices, region_prices } = variant
 
           for (const [currencyCode, currencyPrice] of Object.entries(
-            currency_prices
+            currency_prices || {}
           )) {
             if (!currencyPrice?.amount) {
               continue
@@ -90,7 +95,21 @@ export const PricingCreateForm = () => {
             prices.push({
               amount: castNumber(currencyPrice.amount),
               currency_code: currencyCode,
-              // @ts-expect-error type is wrong
+              variant_id: variantId,
+            })
+          }
+
+          for (const [regionId, regionPrice] of Object.entries(
+            region_prices || {}
+          )) {
+            if (!regionPrice?.amount) {
+              continue
+            }
+
+            prices.push({
+              amount: castNumber(regionPrice.amount),
+              rules: { region_id: regionId },
+              // @ts-ignore TODO: Types is wrong here
               variant_id: variantId,
             })
           }
@@ -100,7 +119,8 @@ export const PricingCreateForm = () => {
       await mutateAsync(
         {
           title: data.title,
-          type: data.type as CreatePriceListDTO["type"],
+          type: data.type as PriceListType,
+          status: data.status as PriceListStatus,
           description: data.description,
           starts_at: data.starts_at ? data.starts_at.toISOString() : null,
           ends_at: data.ends_at ? data.ends_at.toISOString() : null,
@@ -131,9 +151,9 @@ export const PricingCreateForm = () => {
     const validationResult = schema.safeParse(values)
 
     if (!validationResult.success) {
-      validationResult.error.errors.forEach(({ path, message }) => {
+      validationResult.error.errors.forEach(({ path, message, code }) => {
         form.setError(path.join(".") as keyof PricingCreateSchemaType, {
-          type: "manual",
+          type: code,
           message,
         })
       })

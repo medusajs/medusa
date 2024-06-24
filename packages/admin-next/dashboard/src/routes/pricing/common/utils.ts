@@ -1,8 +1,8 @@
-import { HttpTypes, PriceListDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { TFunction } from "i18next"
 import { PriceListDateStatus, PriceListStatus } from "./constants"
 
-const getValues = (priceList: PriceListDTO) => {
+const getValues = (priceList: HttpTypes.AdminPriceList) => {
   const startsAt = priceList.starts_at
   const endsAt = priceList.ends_at
 
@@ -19,7 +19,7 @@ const getValues = (priceList: PriceListDTO) => {
 
 export const getPriceListStatus = (
   t: TFunction<"translation">,
-  priceList: PriceListDTO
+  priceList: HttpTypes.AdminPriceList
 ) => {
   const { isExpired, isScheduled, isDraft } = getValues(priceList)
 

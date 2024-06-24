@@ -810,7 +810,6 @@
       "shippingProfilesDesc": "Shipping rules for different types of products",
       "shippingOptionTypes": "Shipping Option Types",
       "shippingOptionTypesDesc": "Group options based on characteristic"
-
     },
     "salesChannels": {
       "header": "Sales Channels",
@@ -1305,6 +1304,43 @@
     },
     "actions": {
       "addCustomerGroups": "Add customer groups"
+    }
+  },
+  "priceLists": {
+    "domain": "Price Lists",
+    "delete": {
+      "confirmation": "You are about to delete the price list {{title}}. This action cannot be undone.",
+      "successToast": "Price list {{title}} was successfully deleted."
+    },
+    "fields": {
+      "priceOverrides": "Price overrides",
+      "status": {
+        "label": "Status",
+        "active": "Active",
+        "draft": "Draft"
+      },
+      "type": {
+        "label": "Type",
+        "hint": "Choose the type of price list you want to create.",
+        "options": {
+          "sale": {
+            "label": "Sale",
+            "description": "Sale prices are temporary price changes for products."
+          },
+          "override": {
+            "label": "Override",
+            "description": "Overrides are usually used to create customer-specific prices."
+          }
+        }
+      },
+      "startsAt": {
+        "label": "Price list has a start date?",
+        "hint": "Schedule the price list to activate in the future."
+      },
+      "endsAt": {
+        "label": "Price list has an expiry date?",
+        "hint": "Schedule the price list to deactivate in the future."
+      }
     }
   },
   "profile": {

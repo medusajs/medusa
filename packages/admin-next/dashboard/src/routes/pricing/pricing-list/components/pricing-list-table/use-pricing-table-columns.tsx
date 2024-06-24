@@ -1,7 +1,8 @@
-import { PriceListDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
+
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
 import {
   TextCell,
@@ -10,7 +11,7 @@ import {
 import { getPriceListStatus } from "../../../common/utils"
 import { PricingTableActions } from "./pricing-table-actions"
 
-const columnHelper = createColumnHelper<PriceListDTO>()
+const columnHelper = createColumnHelper<HttpTypes.AdminPriceList>()
 
 export const usePricingTableColumns = () => {
   const { t } = useTranslation()
@@ -18,7 +19,7 @@ export const usePricingTableColumns = () => {
   return useMemo(
     () => [
       columnHelper.accessor("title", {
-        header: () => <TextHeader text={t("fields.name")} />,
+        header: () => <TextHeader text={t("fields.title")} />,
         cell: (info) => info.getValue(),
       }),
       columnHelper.accessor("status", {

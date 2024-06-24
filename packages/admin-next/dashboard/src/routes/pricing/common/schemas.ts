@@ -11,8 +11,8 @@ const PricingVariantPricesRecordSchema = z.record(
 
 const PricingVariantsRecordSchema = z.record(
   z.object({
-    currency_prices: PricingVariantPricesRecordSchema,
-    region_prices: PricingVariantPricesRecordSchema,
+    currency_prices: PricingVariantPricesRecordSchema.optional(),
+    region_prices: PricingVariantPricesRecordSchema.optional(),
   })
 )
 

@@ -5,6 +5,7 @@ import {
   Heading,
   Input,
   RadioGroup,
+  Select,
   Switch,
   Text,
   Textarea,
@@ -14,6 +15,7 @@ import { useFieldArray, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { XMarkMini } from "@medusajs/icons"
+import { HttpTypes } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
   OnChangeFn,
@@ -34,7 +36,6 @@ import type {
   PricingCreateSchemaType,
   PricingCustomerGroupsArrayType,
 } from "./schema"
-import { HttpTypes } from "@medusajs/types"
 
 type PricingDetailsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -87,7 +88,7 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
     <SplitView open={open} onOpenChange={setOpen}>
       <SplitView.Content>
         <div className="flex flex-1 flex-col items-center overflow-y-auto">
-          <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
+          <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-8 py-16">
             <div>
               <Heading>{t("pricing.create.header")}</Heading>
               <Text size="small" className="text-ui-fg-subtle">
@@ -102,8 +103,12 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                   <Form.Item>
                     <div className="flex flex-col gap-y-4">
                       <div>
-                        <Form.Label>{t("fields.type")}</Form.Label>
-                        <Form.Hint>{t("pricing.fields.typeHint")}</Form.Hint>
+                        <Form.Label>
+                          {t("priceLists.fields.type.label")}
+                        </Form.Label>
+                        <Form.Hint>
+                          {t("priceLists.fields.type.hint")}
+                        </Form.Hint>
                       </div>
                       <Form.Control>
                         <RadioGroup
@@ -113,13 +118,21 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                         >
                           <RadioGroup.ChoiceBox
                             value={"sale"}
-                            label="Sale"
-                            description="Choose this if you are creating a sale"
+                            label={t(
+                              "priceLists.fields.type.options.sale.label"
+                            )}
+                            description={t(
+                              "priceLists.fields.type.options.sale.description"
+                            )}
                           />
                           <RadioGroup.ChoiceBox
                             value={"override"}
-                            label="Override"
-                            description="Choose this if you are creating an override"
+                            label={t(
+                              "priceLists.fields.type.options.override.label"
+                            )}
+                            description={t(
+                              "priceLists.fields.type.options.override.description"
+                            )}
                           />
                         </RadioGroup>
                       </Form.Control>
@@ -130,7 +143,7 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
               }}
             />
             <div className="flex flex-col gap-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1  gap-4 md:grid-cols-2">
                 <Form.Field
                   control={form.control}
                   name="title"
@@ -140,6 +153,35 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                         <Form.Label>{t("fields.title")}</Form.Label>
                         <Form.Control>
                           <Input {...field} />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="status"
+                  render={({ field: { onChange, ref, ...field } }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>
+                          {t("priceLists.fields.status.label")}
+                        </Form.Label>
+                        <Form.Control>
+                          <Select {...field} onValueChange={onChange}>
+                            <Select.Trigger ref={ref}>
+                              <Select.Value />
+                            </Select.Trigger>
+                            <Select.Content>
+                              <Select.Item value="active">
+                                {t("priceLists.fields.status.active")}
+                              </Select.Item>
+                              <Select.Item value="draft">
+                                {t("priceLists.fields.status.draft")}
+                              </Select.Item>
+                            </Select.Content>
+                          </Select>
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -167,62 +209,24 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
             <Form.Field
               control={form.control}
               name="starts_at"
-              render={({ field: { value, onChange, ...rest } }) => {
-                const handleSwitchChange = (checked: boolean) => {
-                  if (!checked) {
-                    onChange(null)
-                    return
-                  }
-
-                  const now = new Date()
-
-                  onChange(now)
-                }
-
+              render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Collapsible.Root
-                      open={!!value}
-                      onOpenChange={handleSwitchChange}
-                    >
-                      <div className="grid grid-cols-[1fr_32px] gap-4">
-                        <div>
-                          <div className="flex items-center gap-x-1">
-                            <Text size="small" leading="compact" weight="plus">
-                              {t("pricing.fields.startDateLabel")}
-                            </Text>
-                            <Text
-                              size="small"
-                              leading="compact"
-                              className="text-ui-fg-muted"
-                            >
-                              ({t("fields.optional")})
-                            </Text>
-                          </div>
-                          <Text size="small" className="text-ui-fg-subtle">
-                            {t("pricing.fields.startDateHint")}
-                          </Text>
-                        </div>
-                        <Collapsible.Trigger asChild>
-                          <Switch name={rest.name} checked={!!value} />
-                        </Collapsible.Trigger>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <div className="flex flex-col">
+                        <Form.Label>
+                          {t("priceLists.fields.startsAt.label")}
+                        </Form.Label>
+                        <Form.Hint>
+                          {t("priceLists.fields.startsAt.hint")}
+                        </Form.Hint>
                       </div>
-                      <Collapsible.Content>
-                        <div className="flex flex-col gap-y-2 pt-4">
-                          <Form.Label className="!txt-small text-ui-fg-subtle">
-                            {t("fields.startDate")}
-                          </Form.Label>
-                          <Form.Control>
-                            <DatePicker
-                              value={value || undefined}
-                              onChange={onChange}
-                              {...rest}
-                            />
-                          </Form.Control>
-                        </div>
-                      </Collapsible.Content>
-                      <Form.ErrorMessage />
-                    </Collapsible.Root>
+                      <Form.Control>
+                        {/* TODO: Add timepicker see CORE-2382 */}
+                        <DatePicker mode="single" {...field} />
+                      </Form.Control>
+                    </div>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
@@ -231,74 +235,30 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
             <Form.Field
               control={form.control}
               name="ends_at"
-              render={({ field: { value, onChange, ...rest } }) => {
-                const handleSwitchChange = (checked: boolean) => {
-                  if (!checked) {
-                    onChange(null)
-                    return
-                  }
-
-                  const inAWeek = new Date(
-                    new Date().setDate(new Date().getDate() + 7)
-                  )
-
-                  onChange(inAWeek)
-                }
-
+              render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Collapsible.Root
-                      open={!!value}
-                      onOpenChange={handleSwitchChange}
-                    >
-                      <div className="grid grid-cols-[1fr_32px] gap-4">
-                        <div>
-                          <div className="flex items-center gap-x-1">
-                            <Text size="small" leading="compact" weight="plus">
-                              {t("pricing.fields.endDateLabel")}
-                            </Text>
-                            <Text
-                              size="small"
-                              leading="compact"
-                              className="text-ui-fg-muted"
-                            >
-                              ({t("fields.optional")})
-                            </Text>
-                          </div>
-                          <Text size="small" className="text-ui-fg-subtle">
-                            {t("pricing.fields.endDateHint")}
-                          </Text>
-                        </div>
-                        <Collapsible.Trigger asChild>
-                          <Switch name={rest.name} checked={!!value} />
-                        </Collapsible.Trigger>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <div className="flex flex-col">
+                        <Form.Label>
+                          {t("priceLists.fields.endsAt.label")}
+                        </Form.Label>
+                        <Form.Hint>
+                          {t("priceLists.fields.endsAt.hint")}
+                        </Form.Hint>
                       </div>
-                      <Collapsible.Content>
-                        <div className="flex flex-col gap-y-2 pt-4">
-                          <Form.Label className="!txt-small text-ui-fg-subtle">
-                            {t("fields.endDate")}
-                          </Form.Label>
-                          <Form.Control>
-                            <DatePicker
-                              value={value || undefined}
-                              onChange={onChange}
-                              {...rest}
-                            />
-                          </Form.Control>
-                        </div>
-                      </Collapsible.Content>
-                      <Form.ErrorMessage />
-                    </Collapsible.Root>
+                      <Form.Control>
+                        <DatePicker mode="single" {...field} />
+                      </Form.Control>
+                    </div>
+                    <Form.ErrorMessage />
                   </Form.Item>
                 )
               }}
             />
             <Divider />
             <div>
-              <Collapsible.Root
-                open={showCustomerGroups}
-                onOpenChange={handleShowCustomerGroups}
-              >
+              <Collapsible.Root open={showCustomerGroups}>
                 <Form.Field
                   control={form.control}
                   name="customer_group_ids"
@@ -315,12 +275,11 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
                             </Form.Hint>
                           </div>
                           <Form.Control>
-                            <Collapsible.Trigger asChild>
-                              <Switch
-                                name={field.name}
-                                checked={showCustomerGroups}
-                              />
-                            </Collapsible.Trigger>
+                            <Switch
+                              name={field.name}
+                              checked={showCustomerGroups}
+                              onCheckedChange={handleShowCustomerGroups}
+                            />
                           </Form.Control>
                         </div>
                         <Form.ErrorMessage />

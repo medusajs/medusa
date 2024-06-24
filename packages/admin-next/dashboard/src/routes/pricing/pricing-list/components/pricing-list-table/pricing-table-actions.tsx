@@ -1,38 +1,19 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { PriceListDTO } from "@medusajs/types"
-import { usePrompt } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeletePriceList } from "../../../../../hooks/api/price-lists"
+import { useDeletePriceListAction } from "../../../common/hooks/use-delete-price-list-action"
 
 type PricingTableActionsProps = {
-  priceList: PriceListDTO
+  priceList: HttpTypes.AdminPriceList
 }
 
 export const PricingTableActions = ({
   priceList,
 }: PricingTableActionsProps) => {
   const { t } = useTranslation()
-  const prompt = usePrompt()
-
-  const { mutateAsync } = useDeletePriceList(priceList.id)
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("pricing.deletePriceListWarning", {
-        name: priceList.title,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync()
-  }
+  const handleDelete = useDeletePriceListAction({ priceList })
 
   return (
     <ActionMenu
