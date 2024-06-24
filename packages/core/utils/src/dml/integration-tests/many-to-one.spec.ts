@@ -5,6 +5,7 @@ import { createDatabase, dropDatabase } from "pg-god"
 import { mikroOrmSerializer } from "../../dal"
 import { FileSystem } from "../../common"
 import { join } from "path"
+import { EntityConstructor } from "@medusajs/types"
 
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
@@ -22,7 +23,7 @@ describe("manyToOne - belongTo", () => {
   const dbName = "EntityBuilder-ManyToOne"
 
   let orm!: MikroORM
-  let Team, User
+  let Team: EntityConstructor<any>, User: EntityConstructor<any>
 
   afterAll(() => {
     fileSystem.cleanup()
@@ -72,21 +73,21 @@ describe("manyToOne - belongTo", () => {
   it(`should handle the relation properly`, async () => {
     let manager = orm.em.fork()
 
-    const user1 = manager.create<typeof User>("User", {
+    const user1 = manager.create(User, {
       username: "User 1",
     })
-    const user2 = manager.create<typeof User>("User", {
+    const user2 = manager.create(User, {
       username: "User 2",
     })
 
     await manager.persistAndFlush([user1, user2])
     manager = orm.em.fork()
 
-    const team1 = manager.create<typeof Team>("Team", {
+    const team1 = manager.create(Team, {
       name: "Team 1",
       user_id: user1.id,
     })
-    const team2 = manager.create<typeof Team>("Team", {
+    const team2 = manager.create(Team, {
       name: "Team 2",
       user_id: user2.id,
     })
@@ -104,7 +105,7 @@ describe("manyToOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer(team)).toEqual({
+    expect(mikroOrmSerializer<InstanceType<typeof Team>>(team)).toEqual({
       id: team1.id,
       name: "Team 1",
       created_at: expect.any(Date),
@@ -130,7 +131,7 @@ describe("manyToOne - belongTo", () => {
       }
     )
 
-    expect(mikroOrmSerializer(user)).toEqual({
+    expect(mikroOrmSerializer<InstanceType<typeof User>>(user)).toEqual({
       id: user1.id,
       username: "User 1",
       created_at: expect.any(Date),
