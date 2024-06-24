@@ -16,7 +16,6 @@ import type {
 } from "@medusajs/types"
 import { NullableModifier } from "./properties/nullable"
 import { IdProperty } from "./properties/id"
-import { createMikrORMEntity } from "./helpers/create-mikro-orm-entity"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -185,20 +184,3 @@ export class EntityBuilder {
 }
 
 export const model = new EntityBuilder()
-
-const user = model.define("user", {
-  id: model.id(),
-  name: model.text(),
-  email: model.text(),
-  password: model.text(),
-  tests: model.hasMany(() => test),
-})
-
-const test = model.define("test", {
-  name: model.text(),
-  user: model.belongsTo(() => user),
-})
-
-const testMikro = createMikrORMEntity()(test)
-const _ = new testMikro()
-_.user_id = "1"

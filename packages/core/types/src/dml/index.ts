@@ -99,6 +99,23 @@ export interface EntityConstructor<Props> extends Function {
 }
 
 /**
+ * From a DmlEntity, infer the foreign keys name and type
+ */
+export type InferForeignKeys<T> = T extends DmlEntity<infer Schema>
+  ? {
+      [K in keyof Schema as Schema[K] extends RelationshipType<any>
+        ? Schema[K]["type"] extends "belongsTo"
+          ? `${K & string}_id`
+          : K
+        : K]: Schema[K] extends RelationshipType<infer R>
+        ? Schema[K]["type"] extends "belongsTo"
+          ? string
+          : Schema[K]
+        : Schema[K]
+    }
+  : never
+
+/**
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends DmlEntity<infer Schema>
@@ -109,17 +126,7 @@ export type Infer<T> = T extends DmlEntity<infer Schema>
           : Schema[K]["$dataType"] extends (() => infer R) | null
           ? Infer<R> | null
           : Schema[K]["$dataType"]
-      } & {
-        [K in keyof Schema as Schema[K] extends RelationshipType<any>
-          ? Schema[K]["type"] extends "belongsTo"
-            ? `${K & string}_id`
-            : K
-          : K]: Schema[K] extends RelationshipType<infer R>
-          ? Schema[K]["type"] extends "belongsTo"
-            ? string
-            : Schema[K]
-          : Schema[K]
-      }
+      } & InferForeignKeys<T>
     >
   : never
 
