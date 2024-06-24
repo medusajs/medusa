@@ -279,4 +279,37 @@ describe("defineJoiner", () => {
       ],
     })
   })
+
+  it("should return a full joiner configuration with custom aliases overriding defaults", () => {
+    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+      entityQueryingConfig: [FulfillmentSet],
+      alias: [
+        {
+          name: ["fulfillment_set", "fulfillment_sets"],
+          args: {
+            entity: "FulfillmentSet",
+            methodSuffix: "fulfillmentSetCustom",
+          },
+        },
+      ],
+    })
+
+    expect(joinerConfig).toEqual({
+      serviceName: Modules.FULFILLMENT,
+      primaryKeys: ["id"],
+      schema: undefined,
+      linkableKeys: {
+        fulfillment_set_id: FulfillmentSet.name,
+      },
+      alias: [
+        {
+          name: ["fulfillment_set", "fulfillment_sets"],
+          args: {
+            entity: "FulfillmentSet",
+            methodSuffix: "fulfillmentSetCustom",
+          },
+        },
+      ],
+    })
+  })
 })

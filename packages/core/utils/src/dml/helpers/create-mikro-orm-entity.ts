@@ -240,7 +240,10 @@ export function createMikrORMEntity() {
        * Hook to generate entity within the code
        */
       MikroORMEntity.prototype.generateId = function () {
-        this.id = generateEntityId(this.id, field.dataType.options?.prefix)
+        this[field.fieldName] = generateEntityId(
+          this[field.fieldName],
+          field.dataType.options?.prefix
+        )
       }
 
       /**
@@ -248,6 +251,7 @@ export function createMikrORMEntity() {
        */
       BeforeCreate()(MikroORMEntity.prototype, "generateId")
       OnInit()(MikroORMEntity.prototype, "generateId")
+
       return
     }
 
@@ -256,6 +260,19 @@ export function createMikrORMEntity() {
      */
     const columnType = COLUMN_TYPES[field.dataType.name]
     const propertyType = PROPERTY_TYPES[field.dataType.name]
+
+    /**
+     * Defining a primary key property
+     */
+    if (field.dataType.options?.primaryKey) {
+      PrimaryKey({
+        columnType,
+        type: propertyType,
+        nullable: false,
+      })(MikroORMEntity.prototype, field.fieldName)
+
+      return
+    }
 
     Property({
       columnType,
