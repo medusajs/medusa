@@ -1,7 +1,7 @@
 import { defineMikroOrmCliConfig } from "@medusajs/utils"
 import * as entities from "./src/models"
 
-defineMikroOrmCliConfig({
-  entities: Object.values(entities) as any[],
+export default defineMikroOrmCliConfig({
+  entities: Object.values(entities),
   databaseName: "medusa-currency",
 })

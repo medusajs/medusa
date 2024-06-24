@@ -1,4 +1,5 @@
 import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
+import { join } from "path"
 import {
   camelToSnakeCase,
   deduplicate,
@@ -7,7 +8,6 @@ import {
   pluralize,
   upperCaseFirst,
 } from "../common"
-import { join } from "path"
 import { loadModels } from "./loaders/load-models"
 
 /**
@@ -81,9 +81,9 @@ export function defineJoinerConfig(
       })),
       ...models
         .filter((model) => {
-          return !alias
-            ? model
-            : !alias.some((alias) => alias.args?.entity === model.name)
+          return (
+            !alias || !alias.some((alias) => alias.args?.entity === model.name)
+          )
         })
         .map((entity, i) => ({
           name: [

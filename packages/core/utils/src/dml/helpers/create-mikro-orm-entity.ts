@@ -236,23 +236,21 @@ export function createMikrORMEntity() {
 
       IdDecorator(MikroORMEntity.prototype, field.fieldName)
 
-      if (field.dataType.options?.generateId) {
-        /**
-         * Hook to generate entity within the code
-         */
-        MikroORMEntity.prototype.generateId = function () {
-          this[field.fieldName] = generateEntityId(
-            this[field.fieldName],
-            field.dataType.options?.prefix
-          )
-        }
-
-        /**
-         * Execute hook via lifecycle decorators
-         */
-        BeforeCreate()(MikroORMEntity.prototype, "generateId")
-        OnInit()(MikroORMEntity.prototype, "generateId")
+      /**
+       * Hook to generate entity within the code
+       */
+      MikroORMEntity.prototype.generateId = function () {
+        this[field.fieldName] = generateEntityId(
+          this[field.fieldName],
+          field.dataType.options?.prefix
+        )
       }
+
+      /**
+       * Execute hook via lifecycle decorators
+       */
+      BeforeCreate()(MikroORMEntity.prototype, "generateId")
+      OnInit()(MikroORMEntity.prototype, "generateId")
 
       return
     }
@@ -262,6 +260,19 @@ export function createMikrORMEntity() {
      */
     const columnType = COLUMN_TYPES[field.dataType.name]
     const propertyType = PROPERTY_TYPES[field.dataType.name]
+
+    /**
+     * Defining a primary key property
+     */
+    if (field.dataType.options?.primaryKey) {
+      PrimaryKey({
+        columnType,
+        type: propertyType,
+        nullable: false,
+      })(MikroORMEntity.prototype, field.fieldName)
+
+      return
+    }
 
     Property({
       columnType,

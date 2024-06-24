@@ -12,7 +12,6 @@ describe("Id property", () => {
         name: "id",
         options: {
           primaryKey: true,
-          generateId: true,
         },
       },
       nullable: false,
@@ -31,7 +30,6 @@ describe("Id property", () => {
         name: "id",
         options: {
           primaryKey: false,
-          generateId: true,
         },
       },
       nullable: false,
