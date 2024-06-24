@@ -2,9 +2,17 @@ import { MikroORMOptions } from "@mikro-orm/core/utils/Configuration"
 import { IDmlEntity } from "@medusajs/types"
 import { DmlEntity, toMikroORMEntity } from "../dml"
 import { TSMigrationGenerator } from "../dal"
+import { AnyEntity, EntityClassGroup, EntitySchema } from "@mikro-orm/core"
+import { EntityClass } from "@mikro-orm/core/typings"
 
 type Options = Partial<MikroORMOptions> & {
-  entities: (MikroORMOptions["entities"] | IDmlEntity<any>)[]
+  entities: (
+    | string
+    | EntityClass<AnyEntity>
+    | EntityClassGroup<AnyEntity>
+    | EntitySchema
+    | IDmlEntity<any>
+  )[]
   databaseName: string
 }
 
