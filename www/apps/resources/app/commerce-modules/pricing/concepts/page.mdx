@@ -18,7 +18,7 @@ A [PriceSet](/references/pricing/models/PriceSet) represents a collection of pri
 
 Each price within a price set can be applied for different conditions. These conditions are represented as rule types.
 
-A [RuleType](/references/pricing/models/RuleType) defines custom conditions. A rule type has a unique `rule_attribute` which indicates the field this rule applies on. For example, `region_id`.
+A [RuleType](/references/pricing/models/RuleType) defines custom conditions. A rule type has a unique `rule_attribute` which indicates the property this rule applies on. For example, `region_id`.
 
 This is referenced when setting a rule of a price. For example:
 
@@ -46,6 +46,6 @@ const priceSet = await pricingModuleService.addPrices({
 
 ## Price List
 
-A [PriceList](/references/pricing/models/PriceList) is a group of prices only enabled if their conditions and rules are satisfied. A price list has optional `start_date` and `end_date` fields, which indicate the date range in which a price list can be applied.
+A [PriceList](/references/pricing/models/PriceList) is a group of prices only enabled if their conditions and rules are satisfied. A price list has optional `start_date` and `end_date` properties, which indicate the date range in which a price list can be applied.
 
 Its associated prices are represented by the `Price` data model.

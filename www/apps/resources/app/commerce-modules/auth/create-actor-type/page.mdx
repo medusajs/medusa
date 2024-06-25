@@ -13,30 +13,17 @@ Before creating an actor type, you must define a data model the actor type belon
 The rest of this guide uses this `Manager` data model as an example:
 
 ```ts title="src/modules/manager/models/manager.ts"
-import { BaseEntity } from "@medusajs/utils"
-import { 
-  Entity, 
-  PrimaryKey, 
-  Property,
-} from "@mikro-orm/core"
+import { model } from "@medusajs/utils"
 
-@Entity()
-export class Manager extends BaseEntity {
-  @PrimaryKey({ columnType: "text" })
-  id!: string
+const Manager = model.define("manager", {
+  id: model.id(),
+  firstName: model.text(),
+  lastName: model.text(),
+  email: model.text()
+})
 
-  @Property({ columnType: "text" })
-  first_name: string
-
-  @Property({ columnType: "text" })
-  last_name: string
-
-  @Property({ columnType: "text" })
-  email: string
-}
+export default Manager
 ```
-
-The module’s main service must also have a `create` method to create a record of the `Manager` data model.
 
 ---
 
@@ -45,7 +32,7 @@ The module’s main service must also have a `create` method to create a record 
 Start by creating a workflow that does two things:
 
 - Create a record of the `Manager` data model.
-- Sets the `app_metadata` field of the associated `AuthIdentity` record based on the new actor type.
+- Sets the `app_metadata` property of the associated `AuthIdentity` record based on the new actor type.
 
 For example, create the file `src/workflows/create-manager.ts`. with the following content:
 
@@ -92,7 +79,7 @@ const createManagerStep = createStep(
     const managerModuleService: ManagerModuleService = 
       container.resolve("managerModuleService")
 
-    const manager = await managerModuleService.create(
+    const manager = await managerModuleService.createManager(
       managerData
     )
 
@@ -127,7 +114,7 @@ This workflow accepts the manager’s data and the associated auth identity’s 
 The workflow has two steps:
 
 1. Create the manager using the `createManagerStep`.
-2. Set the `app_metadata` field of the associated auth identity using the `setAuthAppMetadataStep` step imported from `@medusajs/core-flows`. You specify the actor type `manager` in the `actorType` property of the step’s input.
+2. Set the `app_metadata` property of the associated auth identity using the `setAuthAppMetadataStep` step imported from `@medusajs/core-flows`. You specify the actor type `manager` in the `actorType` property of the step’s input.
 
 ---
 
@@ -250,13 +237,12 @@ export async function GET(
   const managerModuleService: ManagerModuleService = 
     req.scope.resolve("managerModuleService")
 
-  const manager = await managerModuleService.retrieve(
+  const manager = await managerModuleService.retrieveManager(
     req.auth_context.actor_id
   )
 
   res.json({ manager })
 }
-
 ```
 
 This route is only accessible by authenticated managers. You access the manager’s ID using `req.auth_context.actor_id`.

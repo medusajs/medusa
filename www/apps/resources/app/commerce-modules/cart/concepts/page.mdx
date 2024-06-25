@@ -18,7 +18,7 @@ A cart has a shipping and billing address. Both of these addresses are represent
 
 A line item, represented by the `LineItem` data model, is a product variant added to the cart. A cart has multiple line items.
 
-A line item stores some of the product variant’s fields, such as the `product_title` and `product_description`. It also stores data related to the item’s quantity and price.
+A line item stores some of the product variant’s properties, such as the `product_title` and `product_description`. It also stores data related to the item’s quantity and price.
 
 <Note>
 
@@ -36,8 +36,8 @@ If the shipping method is created from a shipping option, available through the 
 
 A shipping method can also be a custom method associated with this cart only.
 
-### data Field
+### data Property
 
-After an order is placed, you may use a third-party fulfillment provider to fulfill its shipments. If the fulfillment provider requires additional custom data to be passed along from the checkout process, you can add this data in the `ShippingMethod`'s `data` field.
+After an order is placed, you may use a third-party fulfillment provider to fulfill its shipments. If the fulfillment provider requires additional custom data to be passed along from the checkout process, you can add this data in the `ShippingMethod`'s `data` property.
 
-The `data` field is an object used to store custom data relevant later for fulfillment.
+The `data` property is an object used to store custom data relevant later for fulfillment.

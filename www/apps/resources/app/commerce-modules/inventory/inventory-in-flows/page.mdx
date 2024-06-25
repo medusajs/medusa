@@ -8,7 +8,7 @@ This document explains how the Inventory Module is used within the Medusa applic
 
 ## Product Variant Creation
 
-When a product variant is created and its `manage_inventory` field's value is `true`, the Medusa application creates an inventory item associated with that product variant.
+When a product variant is created and its `manage_inventory` property's value is `true`, the Medusa application creates an inventory item associated with that product variant.
 
 ![A diagram showcasing how the Inventory Module is used in the product variant creation form](https://res.cloudinary.com/dza7lstvk/image/upload/v1709661511/Medusa%20Resources/inventory-product-create_khz2hk.jpg)
 
@@ -32,7 +32,7 @@ When an order is placed, the Medusa application creates a reservation item for e
 
 ## Order Fulfillment
 
-When an item in an order is fulfilled and the associated variant has its `manage_inventory` field set to `true`, the Medusa application:
+When an item in an order is fulfilled and the associated variant has its `manage_inventory` property set to `true`, the Medusa application:
 
 - Subtracts the `reserved_quantity` from the `stocked_quantity` in the inventory level associated with the variant's inventory item.
 - Resets the `reserved_quantity` to `0`.
@@ -44,6 +44,6 @@ When an item in an order is fulfilled and the associated variant has its `manage
 
 ## Order Return
 
-When an item in an order is returned and the associated variant has its `manage_inventory` field set to `true`, the Medusa application increments the `stocked_quantity` of the inventory item's level with the returned quantity.
+When an item in an order is returned and the associated variant has its `manage_inventory` property set to `true`, the Medusa application increments the `stocked_quantity` of the inventory item's level with the returned quantity.
 
 ![A diagram showcasing how the Inventory Module is used in the order return flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1709712457/Medusa%20Resources/inventory-order-return_ihftyk.jpg)
