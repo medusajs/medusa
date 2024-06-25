@@ -416,7 +416,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
     await authModuleService.deleteAuthIdentities([
-      "authusr_123"
+      "authusr_123",
     ])
 
     res.status(200)
@@ -446,7 +446,7 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     const authModuleService = await initializeAuthModule()
 
     await authModuleService.deleteAuthIdentities([
-      "authusr_123"
+      "authusr_123",
     ])
   }
   ```

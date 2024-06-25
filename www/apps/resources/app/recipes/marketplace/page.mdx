@@ -71,7 +71,7 @@ Module Relationships is coming soon.
   const StoreUser = model.define("store_user", {
     id: model.id(),
     store_id: model.text(),
-    user_id: model.text()
+    user_id: model.text(),
   })
 
   export default StoreUser
@@ -89,7 +89,7 @@ Module Relationships is coming soon.
   const StoreProduct = model.define("store_user", {
     id: model.id(),
     store_id: model.text(),
-    product_id: model.text()
+    product_id: model.text(),
   })
 
   export default StoreProduct
@@ -108,7 +108,7 @@ Module Relationships is coming soon.
     id: model.id(),
     store_id: model.text(),
     order_id: model.text(),
-    parent_order_id: model.text()
+    parent_order_id: model.text(),
   })
 
   export default StoreOrder
@@ -161,7 +161,7 @@ export const mainServiceHighlights = [
   class MarketplaceModuleService extends MedusaService({
     StoreUser,
     StoreProduct,
-    StoreOrder
+    StoreOrder,
   }){
     // TODO add custom methods
   }
@@ -241,7 +241,7 @@ export const userSubscriberHighlights = [
   ```ts title="src/subscribers/user-created.ts" highlights={userSubscriberHighlights} collapsibleLines="1-11" expandButtonLabel="Show Imports"
   import type { 
     SubscriberArgs, 
-    SubscriberConfig
+    SubscriberConfig,
   } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 
@@ -334,7 +334,7 @@ export const productSubscriberHighlights = [
   ```ts title="src/subscribers/product-created.ts" highlights={productSubscriberHighlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
   import type { 
     SubscriberArgs, 
-    SubscriberConfig
+    SubscriberConfig,
   } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { 

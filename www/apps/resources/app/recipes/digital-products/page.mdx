@@ -187,7 +187,7 @@ Module Relationships is coming soon.
     type: model.enum(Object.values(MediaType)),
     fileKey: model.text(),
     mimeType: model.text(),
-    variant_id: model.text().index("IDX_product_media_variant_id")
+    variant_id: model.text().index("IDX_product_media_variant_id"),
   })
 
   export default ProductMedia
@@ -257,7 +257,7 @@ Medusa facilitates implementing data-management features by providing a service 
   import ProductMedia from "./models/product-media"
 
   class DigitalProductModuleService extends MedusaService({
-    ProductMedia
+    ProductMedia,
   }){
     // TODO add custom methods
   }

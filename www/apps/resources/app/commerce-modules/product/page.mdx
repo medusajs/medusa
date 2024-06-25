@@ -82,7 +82,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
     res.json({ 
-      products: await productModuleService.listProducts()
+      products: await productModuleService.listProducts(),
     })
   }
   ```

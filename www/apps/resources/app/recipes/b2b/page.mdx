@@ -233,7 +233,7 @@ Module Relationships is coming soon.
     name: model.text(),
     city: model.text(),
     country_code: model.text(),
-    customer_group_id: model.text().nullable()
+    customer_group_id: model.text().nullable(),
   })
 
   export default Company
@@ -267,7 +267,7 @@ Module Relationships is coming soon.
   import Company from "./models/company"
 
   class B2bModuleService extends MedusaService({
-    Company
+    Company,
   }){
     // TODO add custom methods
   }
@@ -638,7 +638,7 @@ export const checkCustomerHighlights = [
   ```ts title="src/api/store/b2b/check-customer/route.ts" highlights={checkCustomerHighlights} collapsibleLines="1-5" expandButtonLabel="Show Imports"
   import type { 
     AuthenticatedMedusaRequest, 
-    MedusaResponse
+    MedusaResponse,
   } from "@medusajs/medusa"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
   import { ICustomerModuleService } from "@medusajs/types"
@@ -682,7 +682,7 @@ export const checkCustomerHighlights = [
   ```ts title="src/api/middlewares.ts"
   import { 
     MiddlewaresConfig, 
-    authenticate
+    authenticate,
   } from "@medusajs/medusa"
 
   export const config: MiddlewaresConfig = {
