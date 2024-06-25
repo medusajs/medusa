@@ -53,11 +53,20 @@ export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
   items: z.array(ItemSchema),
   return_shipping: ReturnShippingSchema,
-  note: z.string().nullish(),
+  internal_note: z.string().nullish(),
   receive_now: z.boolean().optional(),
   refund_amount: z.number().optional(),
   location_id: z.string().nullish(),
 })
 export type AdminPostReturnsReqSchemaType = z.infer<
   typeof AdminPostReturnsReqSchema
+>
+
+export const AdminPostReceiveReturnsReqSchema = z.object({
+  return_id: z.string(),
+  items: z.array(ItemSchema),
+  internal_note: z.string().nullish(),
+})
+export type AdminPostReceiveReturnsReqSchemaType = z.infer<
+  typeof AdminPostReceiveReturnsReqSchema
 >

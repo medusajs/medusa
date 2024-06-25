@@ -71,17 +71,6 @@ const validateOrder = createStep(
     const notCanceled = (o) => !o.canceled_at
 
     throwErrorIf(order_.fulfillments, notCanceled, "fulfillments")
-    /*
-    TODO: relationship between order and returns, swaps, claims
-
-    throwErrorIf(
-      order_.returns,
-      (ret) => ret.status !== "canceled",
-      "returns"
-    )
-    throwErrorIf(order_.swaps, notCanceled, "swaps")
-    throwErrorIf(order_.claims, notCanceled, "claims")
-    */
   }
 )
 

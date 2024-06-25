@@ -1,15 +1,15 @@
 import { ModulesDefinition } from "@medusajs/modules-sdk"
 import { FulfillmentSetDTO, IFulfillmentModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
+import { FulfillmentProviderService } from "@services"
 import {
+  SuiteOptions,
   initModules,
   moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
+} from "medusa-test-utils"
 import { resolve } from "path"
 import { createFullDataStructure } from "../../__fixtures__"
-import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { Modules } from "@medusajs/utils"
 
 let moduleOptions = {
   providers: [
