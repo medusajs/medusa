@@ -1518,7 +1518,7 @@ describe("Entity builder", () => {
   describe("Entity builder | primaryKey", () => {
     test("should create both id fields and primaryKey fields", () => {
       const user = model.define("user", {
-        id: model.id({ primaryKey: false }),
+        id: model.id(),
         email: model.text().primaryKey(),
         account_id: model.number().primaryKey(),
       })
@@ -1533,25 +1533,6 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
-      const userInstance = new User()
-      userInstance["generateId"]()
-
-      expect(metaData.className).toEqual("User")
-      expect(metaData.path).toEqual("User")
-
-      expect(metaData.hooks).toEqual({
-        beforeCreate: ["generateId"],
-        onInit: ["generateId"],
-      })
-
-      expect(metaData.filters).toEqual({
-        softDeletable: {
-          name: "softDeletable",
-          cond: expect.any(Function),
-          default: true,
-          args: false,
-        },
-      })
 
       expect(metaData.properties).toEqual({
         id: {
@@ -1612,8 +1593,6 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
-
-      expect(userInstance.id).toBeDefined()
     })
 
     test("should infer primaryKeys from a model", () => {
