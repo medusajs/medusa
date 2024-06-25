@@ -7,11 +7,7 @@ import {
   TransactionOrchestrator,
 } from "./transaction-orchestrator"
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
-import {
-  SchedulerOptions,
-  TransactionHandlerType,
-  TransactionState,
-} from "./types"
+import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
  * @typedef TransactionMetadata
@@ -90,7 +86,7 @@ export class DistributedTransaction extends EventEmitter {
     this.keyValueStore = storage
   }
 
-  public static keyPrefix = "dtrans"
+  public static keyPrefix = "dtrx"
 
   constructor(
     private flow: TransactionFlow,
@@ -191,7 +187,10 @@ export class DistributedTransaction extends EventEmitter {
   public async saveCheckpoint(
     ttl = 0
   ): Promise<TransactionCheckpoint | undefined> {
-    const options = this.getFlow().options
+    const options =
+      TransactionOrchestrator.getWorkflowOptions(this.modelId) ??
+      this.getFlow().options
+
     if (!options?.store) {
       return
     }
@@ -207,7 +206,7 @@ export class DistributedTransaction extends EventEmitter {
       this.modelId,
       this.transactionId
     )
-    await DistributedTransaction.keyValueStore.save(key, data, ttl)
+    await DistributedTransaction.keyValueStore.save(key, data, ttl, options)
 
     return data
   }
@@ -222,7 +221,11 @@ export class DistributedTransaction extends EventEmitter {
       transactionId
     )
 
-    const loadedData = await DistributedTransaction.keyValueStore.get(key)
+    const options = TransactionOrchestrator.getWorkflowOptions(modelId)
+    const loadedData = await DistributedTransaction.keyValueStore.get(
+      key,
+      options
+    )
     if (loadedData) {
       return loadedData
     }

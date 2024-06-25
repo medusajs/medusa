@@ -498,10 +498,10 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
 
     expect(transaction.transactionId).toBe("transaction_id_123")
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(4)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(4)
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
-    expect(mocks.compensateOne).toBeCalledTimes(1)
+    expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
     expect(mocks.two).nthCalledWith(
       1,
@@ -561,7 +561,7 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledTimes(2)
+    expect(mocks.one).toHaveBeenCalledTimes(2)
     expect(transaction.getState()).toBe(TransactionState.FAILED)
   })
 
@@ -617,8 +617,8 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
 
     expect(transaction.transactionId).toBe("transaction_id_123")
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(2)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(2)
     expect(transaction.getState()).toBe(TransactionState.DONE)
     expect(transaction.isPartiallyCompleted).toBe(true)
   })
@@ -677,8 +677,8 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(0)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(0)
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
     expect(transaction.getFlow().hasWaitingSteps).toBe(true)
 
@@ -771,9 +771,9 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.compensateOne).toBeCalledTimes(0)
-    expect(mocks.two).toBeCalledTimes(0)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.compensateOne).toHaveBeenCalledTimes(0)
+    expect(mocks.two).toHaveBeenCalledTimes(0)
 
     const registerBeforeAllowed = await strategy
       .registerStepSuccess(mockSecondStepId, handler)
@@ -791,7 +791,7 @@ describe("Transaction Orchestrator", () => {
     )
 
     expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
-    expect(mocks.compensateOne).toBeCalledTimes(1)
+    expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
 
     const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
       "transaction-name",
@@ -881,11 +881,11 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.compensateOne).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(1)
-    expect(mocks.compensateTwo).toBeCalledTimes(1)
-    expect(mocks.three).toBeCalledTimes(1)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(1)
+    expect(mocks.compensateTwo).toHaveBeenCalledTimes(1)
+    expect(mocks.three).toHaveBeenCalledTimes(1)
 
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
   })
@@ -951,16 +951,16 @@ describe("Transaction Orchestrator", () => {
     await strategy.resume(transaction)
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(1)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(1)
 
     await strategy.cancelTransaction(transaction)
 
     expect(transaction.getState()).toBe(TransactionState.REVERTED)
-    expect(mocks.one).toBeCalledTimes(1)
-    expect(mocks.two).toBeCalledTimes(1)
-    expect(mocks.oneCompensate).toBeCalledTimes(1)
-    expect(mocks.twoCompensate).toBeCalledTimes(1)
+    expect(mocks.one).toHaveBeenCalledTimes(1)
+    expect(mocks.two).toHaveBeenCalledTimes(1)
+    expect(mocks.oneCompensate).toHaveBeenCalledTimes(1)
+    expect(mocks.twoCompensate).toHaveBeenCalledTimes(1)
   })
 
   it("Should receive the current transaction as reference in the handler", async () => {
@@ -1081,10 +1081,10 @@ describe("Transaction Orchestrator", () => {
       await strategy.resume(transaction)
 
       expect(transaction.transactionId).toBe("transaction_id_123")
-      expect(mocks.f1).toBeCalledTimes(2)
-      expect(mocks.f2).toBeCalledTimes(2)
-      expect(mocks.f3).toBeCalledTimes(2)
-      expect(mocks.f4).toBeCalledTimes(0)
+      expect(mocks.f1).toHaveBeenCalledTimes(2)
+      expect(mocks.f2).toHaveBeenCalledTimes(2)
+      expect(mocks.f3).toHaveBeenCalledTimes(2)
+      expect(mocks.f4).toHaveBeenCalledTimes(0)
       expect(transaction.getContext().invoke.action1).toBe("content f1")
       expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
       expect(transaction.getContext().invoke.action3).toBe("content f3")
@@ -1187,10 +1187,10 @@ describe("Transaction Orchestrator", () => {
       await strategy.resume(transaction)
 
       expect(transaction.transactionId).toBe("transaction_id_123")
-      expect(mocks.f1).toBeCalledTimes(1)
-      expect(mocks.f2).toBeCalledTimes(1)
-      expect(mocks.f3).toBeCalledTimes(1)
-      expect(mocks.f4).toBeCalledTimes(0)
+      expect(mocks.f1).toHaveBeenCalledTimes(1)
+      expect(mocks.f2).toHaveBeenCalledTimes(1)
+      expect(mocks.f3).toHaveBeenCalledTimes(1)
+      expect(mocks.f4).toHaveBeenCalledTimes(0)
       expect(transaction.getContext().invoke.action1).toBe("content f1")
       expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
       expect(transaction.getContext().invoke.action3).toBe("content f3")
@@ -1304,10 +1304,10 @@ describe("Transaction Orchestrator", () => {
       await strategy.resume(transaction)
 
       expect(transaction.transactionId).toBe("transaction_id_123")
-      expect(mocks.f1).toBeCalledTimes(2)
-      expect(mocks.f2).toBeCalledTimes(2)
-      expect(mocks.f3).toBeCalledTimes(2)
-      expect(mocks.f4).toBeCalledTimes(0)
+      expect(mocks.f1).toHaveBeenCalledTimes(2)
+      expect(mocks.f2).toHaveBeenCalledTimes(2)
+      expect(mocks.f3).toHaveBeenCalledTimes(2)
+      expect(mocks.f4).toHaveBeenCalledTimes(0)
       expect(transaction.getContext().invoke.action1).toBe("content f1")
       expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
       expect(transaction.getContext().invoke.action3).toBe("content f3")
@@ -1413,10 +1413,10 @@ describe("Transaction Orchestrator", () => {
       await strategy.resume(transaction)
 
       expect(transaction.transactionId).toBe("transaction_id_123")
-      expect(mocks.f1).toBeCalledTimes(2)
-      expect(mocks.f2).toBeCalledTimes(2)
-      expect(mocks.f3).toBeCalledTimes(2)
-      expect(mocks.f4).toBeCalledTimes(0)
+      expect(mocks.f1).toHaveBeenCalledTimes(2)
+      expect(mocks.f2).toHaveBeenCalledTimes(2)
+      expect(mocks.f3).toHaveBeenCalledTimes(2)
+      expect(mocks.f4).toHaveBeenCalledTimes(0)
       expect(transaction.getContext().invoke.action1).toBe("content f1")
       expect(transaction.getContext().invoke.action2).toBe("delayed content f2")
       expect(transaction.getContext().invoke.action3).toBe("content f3")
