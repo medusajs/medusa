@@ -29,8 +29,8 @@ export const RegionEdit = () => {
 
   const isLoading = isRegionLoading || isStoreLoading
 
-  const storeCurrencies = (store?.supported_currency_codes ?? []).map(
-    (code) => currencies[code.toUpperCase()]
+  const storeCurrencies = (store?.supported_currencies ?? []).map(
+    (c) => currencies[c.currency_code.toUpperCase()]
   )
   const { payment_providers: paymentProviders = [] } = usePaymentProviders({
     limit: 999,

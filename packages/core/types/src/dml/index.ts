@@ -15,6 +15,7 @@ export type KnownDataTypes =
   | "boolean"
   | "enum"
   | "number"
+  | "bigNumber"
   | "dateTime"
   | "json"
   | "id"
@@ -97,16 +98,35 @@ export interface EntityConstructor<Props> extends Function {
 }
 
 /**
+ * From a IDmlEntity, infer the foreign keys name and type for belongsTo relation meaning hasOne and ManyToOne
+ */
+export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
+  ? {
+      [K in keyof Schema as Schema[K] extends RelationshipType<any>
+        ? Schema[K]["type"] extends "belongsTo"
+          ? `${K & string}_id`
+          : K
+        : K]: Schema[K] extends RelationshipType<infer R>
+        ? Schema[K]["type"] extends "belongsTo"
+          ? string
+          : Schema[K]
+        : Schema[K]
+    }
+  : never
+
+/**
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends IDmlEntity<infer Schema>
-  ? EntityConstructor<{
-      [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
-        ? Infer<R>
-        : Schema[K]["$dataType"] extends (() => infer R) | null
-        ? Infer<R> | null
-        : Schema[K]["$dataType"]
-    }>
+  ? EntityConstructor<
+      {
+        [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
+          ? Infer<R>
+          : Schema[K]["$dataType"] extends (() => infer R) | null
+          ? Infer<R> | null
+          : Schema[K]["$dataType"]
+      } & InferForeignKeys<T>
+    >
   : never
 
 /**
@@ -132,13 +152,13 @@ export type EntityCascades<Relationships> = {
 }
 
 /**
- * Helper to infer the instance type of a DmlEntity once converted as an Entity
+ * Helper to infer the instance type of a IDmlEntity once converted as an Entity
  */
 export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
 
 /**
  * Used in the module sdk internal service to infer propert entity typings from DML
  */
-export type ExtractEntityType<T extends any> = T extends IDmlEntity<any>
+export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T

@@ -33,8 +33,6 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
     limit: 999,
   })
 
-  console.log(regions)
-
   const ids = useWatch({
     control: form.control,
     name: "product_ids",

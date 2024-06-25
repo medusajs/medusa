@@ -16,7 +16,17 @@ module.exports = {
     `.cache`,
   ],
   transformIgnorePatterns: ["/dist", "/node_modules/"],
-  transform: { "^.+\\.[jt]s$": ["@swc/jest"] },
+  transform: {
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
+      },
+    ],
+  },
   setupFiles: ["../setup-env.js"],
   setupFilesAfterEnv: ["../setup.js"],
   globalSetup: "../globalSetup.js",

@@ -1,9 +1,13 @@
-import { expectTypeOf } from "expect-type"
+import { EntityConstructor } from "@medusajs/types"
 import { MetadataStorage } from "@mikro-orm/core"
-import { EntityConstructor } from "../types"
-import { EntityBuilder } from "../entity-builder"
-import { createMikrORMEntity } from "../helpers/create-mikro-orm-entity"
+import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
+import { model } from "../entity-builder"
+import {
+  createMikrORMEntity,
+  toMikroOrmEntities,
+  toMikroORMEntity,
+} from "../helpers/create-mikro-orm-entity"
 
 describe("Entity builder", () => {
   beforeEach(() => {
@@ -12,7 +16,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | properties", () => {
     test("should identify a DML entity correctly", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
@@ -27,19 +30,21 @@ describe("Entity builder", () => {
     })
 
     test("define an entity", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
         email: model.text(),
+        spend_limit: model.bigNumber(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
         email: string
+        spend_limit: number
+        raw_spend_limit: Record<string, unknown>
         created_at: Date
         updated_at: Date
         deleted_at: Date | null
@@ -97,6 +102,25 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
         updated_at: {
           reference: "scalar",
           type: "date",
@@ -122,15 +146,14 @@ describe("Entity builder", () => {
     })
 
     test("define a property with default value", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text().default("foo"),
         email: model.text(),
+        spend_limit: model.bigNumber().default(500.4),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -180,6 +203,26 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        spend_limit: {
+          columnType: "numeric",
+          default: 500.4,
+          getter: true,
+          name: "spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
         created_at: {
           reference: "scalar",
           type: "date",
@@ -216,25 +259,47 @@ describe("Entity builder", () => {
     })
 
     test("mark property nullable", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text().nullable(),
         email: model.text(),
+        spend_limit: model.bigNumber().nullable(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
+
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string | null
         email: string
+        spend_limit: number | null
+        raw_spend_limit: Record<string, unknown> | null
+        created_at: Date
+        updated_at: Date
         deleted_at: Date | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
+
+      const userInstance = new User()
+
+      expect(userInstance.username).toEqual(null)
+
+      expect(userInstance.spend_limit).toEqual(undefined)
+      expect(userInstance.raw_spend_limit).toEqual(null)
+
+      userInstance.username = "john"
+      expect(userInstance.username).toEqual("john")
+
+      userInstance.spend_limit = 150.5
+      expect(userInstance.spend_limit).toEqual(150.5)
+      expect(userInstance.raw_spend_limit).toEqual({
+        precision: 20,
+        value: "150.5",
+      })
 
       expect(metaData.filters).toEqual({
         softDeletable: {
@@ -273,6 +338,25 @@ describe("Entity builder", () => {
           getter: false,
           setter: false,
         },
+        raw_spend_limit: {
+          columnType: "jsonb",
+          getter: false,
+          name: "raw_spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: false,
+          type: "any",
+        },
+        spend_limit: {
+          columnType: "numeric",
+          getter: true,
+          name: "spend_limit",
+          nullable: true,
+          reference: "scalar",
+          setter: true,
+          trackChanges: false,
+          type: "any",
+        },
         created_at: {
           reference: "scalar",
           type: "date",
@@ -309,7 +393,6 @@ describe("Entity builder", () => {
     })
 
     test("define an entity with enum property", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
@@ -317,8 +400,7 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -418,7 +500,6 @@ describe("Entity builder", () => {
     })
 
     test("define enum property with default value", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
@@ -426,8 +507,7 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]).default("guest"),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -527,7 +607,6 @@ describe("Entity builder", () => {
     })
 
     test("mark enum property nullable", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
@@ -535,8 +614,7 @@ describe("Entity builder", () => {
         role: model.enum(["moderator", "admin", "guest"]).nullable(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -546,6 +624,12 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      const userInstance = new User()
+      expect(userInstance.role).toEqual(null)
+
+      userInstance.role = "admin"
+      expect(userInstance.role).toEqual("admin")
 
       expect(metaData.className).toEqual("User")
       expect(metaData.path).toEqual("User")
@@ -635,7 +719,6 @@ describe("Entity builder", () => {
     })
 
     test("disallow defining created_at and updated_at timestamps", () => {
-      const model = new EntityBuilder()
       expect(() =>
         model.define("user", {
           id: model.number(),
@@ -650,7 +733,6 @@ describe("Entity builder", () => {
     })
 
     test("disallow defining deleted_at timestamp", () => {
-      const model = new EntityBuilder()
       expect(() =>
         model.define("user", {
           id: model.number(),
@@ -664,15 +746,13 @@ describe("Entity builder", () => {
     })
 
     test("define pg schema name in the entity name", () => {
-      const model = new EntityBuilder()
       const user = model.define("public.user", {
         id: model.number(),
         username: model.text(),
         email: model.text(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -762,15 +842,13 @@ describe("Entity builder", () => {
 
   describe("Entity builder | id", () => {
     test("define an entity with id property", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.id(),
         username: model.text(),
         email: model.text(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: string
         username: string
@@ -861,15 +939,13 @@ describe("Entity builder", () => {
     })
 
     test("mark id as non-primary", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.id({ primaryKey: false }),
         username: model.text(),
         email: model.text(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: string
         username: string
@@ -966,15 +1042,13 @@ describe("Entity builder", () => {
     })
 
     test("define prefix for the id", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.id({ primaryKey: false, prefix: "us" }),
         username: model.text(),
         email: model.text(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: string
         username: string
@@ -1071,17 +1145,117 @@ describe("Entity builder", () => {
     })
   })
 
+  describe("Entity builder | primaryKey", () => {
+    test("should create both id fields and primaryKey fields", () => {
+      const user = model.define("user", {
+        id: model.id({ primaryKey: false }),
+        email: model.text().primaryKey(),
+        account_id: model.number().primaryKey(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      const User = entityBuilder(user)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: string
+        email: string
+        account_id: number
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const userInstance = new User()
+      userInstance["generateId"]()
+
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.hooks).toEqual({
+        beforeCreate: ["generateId"],
+        onInit: ["generateId"],
+      })
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        email: {
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          primary: true,
+          reference: "scalar",
+          type: "string",
+        },
+        account_id: {
+          columnType: "integer",
+          name: "account_id",
+          nullable: false,
+          primary: true,
+          reference: "scalar",
+          type: "number",
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+
+      expect(userInstance.id).toBeDefined()
+    })
+  })
+
   describe("Entity builder | indexes", () => {
     test("define index on a field", () => {
-      const model = new EntityBuilder()
       const user = model.define("user", {
         id: model.number().index(),
         username: model.text(),
         email: model.text().unique(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1179,15 +1353,13 @@ describe("Entity builder", () => {
     })
 
     test("define index when entity is using an explicit pg Schema", () => {
-      const model = new EntityBuilder()
       const user = model.define("platform.user", {
         id: model.number().index(),
         username: model.text(),
         email: model.text().unique(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1288,7 +1460,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | hasOne", () => {
     test("define hasOne relationship", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1300,8 +1471,7 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1378,7 +1548,6 @@ describe("Entity builder", () => {
     })
 
     test("mark hasOne relationship as nullable", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1390,8 +1559,7 @@ describe("Entity builder", () => {
         emails: model.hasOne(() => email).nullable(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -1469,7 +1637,6 @@ describe("Entity builder", () => {
     })
 
     test("define custom mappedBy key for relationship", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1481,8 +1648,7 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email, { mappedBy: "owner" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1554,7 +1720,6 @@ describe("Entity builder", () => {
     })
 
     test("define delete cascades for the entity", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1570,8 +1735,7 @@ describe("Entity builder", () => {
           delete: ["email"],
         })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1642,7 +1806,7 @@ describe("Entity builder", () => {
         },
       })
 
-      const Email = entityBuilder(email)
+      const Email = toMikroORMEntity(email)
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
       expect(emailMetaData.className).toEqual("Email")
       expect(emailMetaData.path).toEqual("Email")
@@ -1701,7 +1865,6 @@ describe("Entity builder", () => {
     })
 
     test("define delete cascades with belongsTo on the other end", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1718,8 +1881,7 @@ describe("Entity builder", () => {
           delete: ["email"],
         })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1797,7 +1959,7 @@ describe("Entity builder", () => {
         },
       })
 
-      const Email = entityBuilder(email)
+      const Email = toMikroORMEntity(email)
       const emailMetaData = MetadataStorage.getMetadataFromDecorator(Email)
       expect(emailMetaData.className).toEqual("Email")
       expect(emailMetaData.path).toEqual("Email")
@@ -1828,6 +1990,15 @@ describe("Entity builder", () => {
           onDelete: "cascade",
           owner: true,
           reference: "1:1",
+        },
+        user_id: {
+          columnType: "text",
+          getter: false,
+          name: "user_id",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -1867,7 +2038,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | hasMany", () => {
     test("define hasMany relationship", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1879,8 +2049,7 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1952,7 +2121,6 @@ describe("Entity builder", () => {
     })
 
     test("define custom mappedBy property name for hasMany relationship", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -1966,8 +2134,7 @@ describe("Entity builder", () => {
         }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -2040,7 +2207,6 @@ describe("Entity builder", () => {
     })
 
     test("define delete cascades for the entity", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2056,8 +2222,7 @@ describe("Entity builder", () => {
           delete: ["emails"],
         })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
+      const User = toMikroORMEntity(user)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -2130,7 +2295,6 @@ describe("Entity builder", () => {
     })
 
     test("define delete cascades with belongsTo on the other end", () => {
-      const model = new EntityBuilder()
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2147,9 +2311,8 @@ describe("Entity builder", () => {
           delete: ["emails"],
         })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -2243,10 +2406,11 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "m:1",
-          name: "user",
           entity: "User",
+          name: "user",
+          nullable: false,
           persist: false,
+          reference: "m:1",
         },
         user_id: {
           columnType: "text",
@@ -2255,8 +2419,8 @@ describe("Entity builder", () => {
           mapToPk: true,
           name: "user_id",
           nullable: false,
-          reference: "m:1",
           onDelete: "cascade",
+          reference: "m:1",
         },
         created_at: {
           reference: "scalar",
@@ -2296,8 +2460,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | belongsTo", () => {
     test("define belongsTo relationship with hasOne", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2310,9 +2472,7 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const [User, Email] = [user, email].map(toMikroORMEntity)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -2432,12 +2592,21 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "1:1",
           name: "user",
+          reference: "1:1",
           entity: "User",
           nullable: false,
-          owner: true,
           mappedBy: "email",
+          owner: true,
+        },
+        user_id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          nullable: false,
+          name: "user_id",
+          getter: false,
+          setter: false,
         },
         created_at: {
           reference: "scalar",
@@ -2475,8 +2644,6 @@ describe("Entity builder", () => {
     })
 
     test("mark belongsTo with hasOne as nullable", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2489,9 +2656,8 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -2605,12 +2771,21 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "1:1",
           name: "user",
+          reference: "1:1",
           entity: "User",
           nullable: true,
-          owner: true,
           mappedBy: "email",
+          owner: true,
+        },
+        user_id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          nullable: true,
+          name: "user_id",
+          getter: false,
+          setter: false,
         },
         created_at: {
           reference: "scalar",
@@ -2648,8 +2823,6 @@ describe("Entity builder", () => {
     })
 
     test("define belongsTo relationship with hasMany", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2662,9 +2835,8 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -2778,19 +2950,20 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "m:1",
           name: "user",
+          reference: "m:1",
           entity: "User",
           persist: false,
+          nullable: false,
         },
         user_id: {
-          columnType: "text",
-          entity: "User",
-          fieldName: "user_id",
-          mapToPk: true,
           name: "user_id",
-          nullable: false,
           reference: "m:1",
+          entity: "User",
+          columnType: "text",
+          mapToPk: true,
+          fieldName: "user_id",
+          nullable: false,
         },
         created_at: {
           reference: "scalar",
@@ -2828,8 +3001,6 @@ describe("Entity builder", () => {
     })
 
     test("define belongsTo with hasMany as nullable", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -2842,9 +3013,8 @@ describe("Entity builder", () => {
         emails: model.hasMany(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -2958,19 +3128,20 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "m:1",
           name: "user",
+          reference: "m:1",
           entity: "User",
           persist: false,
+          nullable: true,
         },
         user_id: {
-          columnType: "text",
-          entity: "User",
-          fieldName: "user_id",
-          mapToPk: true,
           name: "user_id",
-          nullable: true,
           reference: "m:1",
+          entity: "User",
+          columnType: "text",
+          mapToPk: true,
+          fieldName: "user_id",
+          nullable: true,
         },
         created_at: {
           reference: "scalar",
@@ -3008,8 +3179,6 @@ describe("Entity builder", () => {
     })
 
     test("throw error when other side relationship is missing", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -3021,15 +3190,12 @@ describe("Entity builder", () => {
         username: model.text(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      expect(() => entityBuilder(email)).toThrow(
+      expect(() => toMikroORMEntity(email)).toThrow(
         'Missing property "email" on "User" entity. Make sure to define it as a relationship'
       )
     })
 
     test("throw error when other side relationship is invalid", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -3042,15 +3208,12 @@ describe("Entity builder", () => {
         email: model.belongsTo(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      expect(() => entityBuilder(email)).toThrow(
+      expect(() => toMikroORMEntity(email)).toThrow(
         'Invalid relationship reference for "email" on "User" entity. Make sure to define a hasOne or hasMany relationship'
       )
     })
 
     test("throw error when cascading a parent from a child", () => {
-      const model = new EntityBuilder()
-
       const user = model.define("user", {
         id: model.number(),
         username: model.text(),
@@ -3074,8 +3237,6 @@ describe("Entity builder", () => {
     })
 
     test("define relationships when entity names has pg schema name", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("platform.email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -3088,9 +3249,8 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -3212,12 +3372,21 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "1:1",
           name: "user",
+          reference: "1:1",
           entity: "User",
           nullable: false,
-          owner: true,
           mappedBy: "email",
+          owner: true,
+        },
+        user_id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          nullable: false,
+          name: "user_id",
+          getter: false,
+          setter: false,
         },
         created_at: {
           reference: "scalar",
@@ -3255,8 +3424,6 @@ describe("Entity builder", () => {
     })
 
     test("define relationships between cross pg schemas entities", () => {
-      const model = new EntityBuilder()
-
       const email = model.define("platform.email", {
         email: model.text(),
         isVerified: model.boolean(),
@@ -3269,9 +3436,8 @@ describe("Entity builder", () => {
         email: model.hasOne(() => email),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Email = entityBuilder(email)
+      const User = toMikroORMEntity(user)
+      const Email = toMikroORMEntity(email)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -3393,12 +3559,21 @@ describe("Entity builder", () => {
           setter: false,
         },
         user: {
-          reference: "1:1",
           name: "user",
+          reference: "1:1",
           entity: "User",
           nullable: false,
-          owner: true,
           mappedBy: "email",
+          owner: true,
+        },
+        user_id: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          nullable: false,
+          name: "user_id",
+          getter: false,
+          setter: false,
         },
         created_at: {
           reference: "scalar",
@@ -3438,7 +3613,6 @@ describe("Entity builder", () => {
 
   describe("Entity builder | manyToMany", () => {
     test("define manyToMany relationship", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -3451,9 +3625,8 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const User = toMikroORMEntity(user)
+      const Team = toMikroORMEntity(team)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -3607,7 +3780,6 @@ describe("Entity builder", () => {
     })
 
     test("define mappedBy on one side", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -3620,9 +3792,8 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { mappedBy: "users" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const User = toMikroORMEntity(user)
+      const Team = toMikroORMEntity(team)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -3777,7 +3948,6 @@ describe("Entity builder", () => {
     })
 
     test("throw error when unable to locate relationship via mappedBy", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -3789,14 +3959,12 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { mappedBy: "users" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      expect(() => entityBuilder(user)).toThrow(
+      expect(() => toMikroORMEntity(user)).toThrow(
         'Missing property "users" on "Team" entity. Make sure to define it as a relationship'
       )
     })
 
     test("throw error when mappedBy relationship is not a manyToMany", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -3809,14 +3977,12 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { mappedBy: "users" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      expect(() => entityBuilder(user)).toThrow(
+      expect(() => toMikroORMEntity(user)).toThrow(
         'Invalid relationship reference for "users" on "Team" entity. Make sure to define a manyToMany relationship'
       )
     })
 
     test("define mappedBy on both sides", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -3829,9 +3995,7 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { mappedBy: "users" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const [User, Team] = toMikroOrmEntities([user, team, {}])
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -3991,7 +4155,6 @@ describe("Entity builder", () => {
     })
 
     test("define mappedBy on both sides and reverse order of registering entities", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -4166,7 +4329,6 @@ describe("Entity builder", () => {
     })
 
     test("define multiple many to many relationships to the same entity", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -4373,7 +4535,6 @@ describe("Entity builder", () => {
     })
 
     test("define manyToMany relationship when entity names has pg schema name", () => {
-      const model = new EntityBuilder()
       const team = model.define("platform.team", {
         id: model.number(),
         name: model.text(),
@@ -4386,9 +4547,8 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const User = toMikroORMEntity(user)
+      const Team = toMikroORMEntity(team)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -4544,7 +4704,6 @@ describe("Entity builder", () => {
     })
 
     test("define custom pivot table name", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -4559,9 +4718,8 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { pivotTable: "users_teams" }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
+      const User = toMikroORMEntity(user)
+      const Team = toMikroORMEntity(team)
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -4715,7 +4873,6 @@ describe("Entity builder", () => {
     })
 
     test("define custom pivot entity", () => {
-      const model = new EntityBuilder()
       const team = model.define("team", {
         id: model.number(),
         name: model.text(),
@@ -4736,10 +4893,7 @@ describe("Entity builder", () => {
         teams: model.manyToMany(() => team, { pivotEntity: () => squad }),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const Team = entityBuilder(team)
-      const Squad = entityBuilder(squad)
+      const [User, Team, Squad] = toMikroOrmEntities([user, team, squad])
 
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
@@ -4775,74 +4929,78 @@ describe("Entity builder", () => {
       expect(squadMetaData.properties).toEqual({
         id: {
           reference: "scalar",
-          type: "number",
           columnType: "integer",
-          name: "id",
+          type: "number",
           nullable: false,
+          name: "id",
           getter: false,
           setter: false,
         },
-        team: {
-          entity: "Team",
-          name: "team",
-          persist: false,
+        user_id: {
+          name: "user_id",
           reference: "m:1",
-        },
-        team_id: {
+          entity: "User",
           columnType: "text",
-          entity: "Team",
-          fieldName: "team_id",
           mapToPk: true,
-          name: "team_id",
+          fieldName: "user_id",
           nullable: false,
-          onDelete: undefined,
-          reference: "m:1",
         },
         user: {
-          entity: "User",
-          name: "user",
+          reference: "scalar",
+          type: "User",
           persist: false,
-          reference: "m:1",
-        },
-        user_id: {
-          columnType: "text",
-          entity: "User",
-          fieldName: "user_id",
-          mapToPk: true,
-          name: "user_id",
           nullable: false,
-          onDelete: undefined,
+          name: "user",
+          getter: false,
+          setter: false,
+        },
+        team_id: {
+          name: "team_id",
           reference: "m:1",
+          entity: "Team",
+          columnType: "text",
+          mapToPk: true,
+          fieldName: "team_id",
+          nullable: false,
+        },
+        team: {
+          reference: "scalar",
+          type: "Team",
+          persist: false,
+          nullable: false,
+          name: "team",
+          getter: false,
+          setter: false,
         },
         created_at: {
           reference: "scalar",
-          type: "date",
           columnType: "timestamptz",
-          name: "created_at",
-          defaultRaw: "now()",
-          onCreate: expect.any(Function),
+          type: "date",
           nullable: false,
+          onCreate: expect.any(Function),
+          defaultRaw: "now()",
+          name: "created_at",
           getter: false,
           setter: false,
         },
         updated_at: {
           reference: "scalar",
-          type: "date",
           columnType: "timestamptz",
-          name: "updated_at",
-          defaultRaw: "now()",
+          type: "date",
+          nullable: false,
           onCreate: expect.any(Function),
           onUpdate: expect.any(Function),
-          nullable: false,
+          defaultRaw: "now()",
+          name: "updated_at",
           getter: false,
           setter: false,
         },
         deleted_at: {
           reference: "scalar",
-          type: "date",
           columnType: "timestamptz",
-          name: "deleted_at",
+          type: "date",
           nullable: true,
+          name: "deleted_at",
           getter: false,
           setter: false,
         },
