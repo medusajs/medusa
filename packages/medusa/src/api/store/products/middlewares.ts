@@ -3,8 +3,11 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import {
   applyDefaultFilters,
+  clearContextFields,
   filterByValidSalesChannels,
+  normalizeDataForContext,
   setPricingContext,
+  setTaxContext,
 } from "../../utils/middlewares"
 import { setContext } from "../../utils/middlewares/common/set-context"
 import { validateAndTransformQuery } from "../../utils/validate-query"
@@ -47,7 +50,10 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
           return { id: categoryIds, is_internal: false, is_active: true }
         },
       }),
+      normalizeDataForContext(),
       setPricingContext(),
+      setTaxContext(),
+      clearContextFields(["region_id", "country_code", "province", "cart_id"]),
     ],
   },
   {
@@ -78,7 +84,10 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
           return { is_internal: false, is_active: true }
         },
       }),
+      normalizeDataForContext(),
       setPricingContext(),
+      setTaxContext(),
+      clearContextFields(["region_id", "country_code", "province", "cart_id"]),
     ],
   },
 ]
