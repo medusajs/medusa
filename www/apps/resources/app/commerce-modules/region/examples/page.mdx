@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
     const regionModuleService: IRegionModuleService =
       req.scope.resolve(ModuleRegistrationName.REGION)
 
-    const region = await regionModuleService.create({
+    const region = await regionModuleService.createRegions({
       name: "Europe",
       currency_code: "eur",
     })
@@ -49,7 +49,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   export async function POST(request: Request) {
     const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService.create({
+    const region = await regionModuleService.createRegions({
       name: "Europe",
       currency_code: "eur",
     })
@@ -83,7 +83,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
       req.scope.resolve(ModuleRegistrationName.REGION)
 
     res.json({
-      regions: await regionModuleService.list(),
+      regions: await regionModuleService.listRegions(),
     })
   }
   ```
@@ -102,7 +102,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
     const regionModuleService = await initializeRegionModule()
 
     return NextResponse.json({
-      regions: await regionModuleService.list(),
+      regions: await regionModuleService.listRegions(),
     })
   }
   ```
@@ -129,7 +129,8 @@ In this guide, you’ll find common examples of how you can use the Region Modul
     const regionModuleService: IRegionModuleService =
       req.scope.resolve(ModuleRegistrationName.REGION)
 
-    const region = await regionModuleService.retrieve("reg_123")
+    const region = await regionModuleService
+      .retrieveRegion("reg_123")
 
     res.json({ region })
   }
@@ -150,7 +151,8 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   ) {
     const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService.retrieve("reg_123")
+    const region = await regionModuleService
+      .retrieveRegion("reg_123")
 
     return NextResponse.json({ region })
   }
@@ -178,9 +180,10 @@ In this guide, you’ll find common examples of how you can use the Region Modul
     const regionModuleService: IRegionModuleService =
       req.scope.resolve(ModuleRegistrationName.REGION)
 
-    const region = await regionModuleService.update("reg_123", {
-      automatic_taxes: false,
-    })
+    const region = await regionModuleService
+      .updateRegions("reg_123", {
+        automatic_taxes: false,
+      })
 
     res.json({ region })
   }
@@ -201,9 +204,10 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   ) {
     const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService.update("reg_123", {
-      automatic_taxes: false,
-    })
+    const region = await regionModuleService
+      .updateRegions("reg_123", {
+        automatic_taxes: false,
+      })
 
     return NextResponse.json({ region })
   }
@@ -231,7 +235,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
     const regionModuleService: IRegionModuleService =
       req.scope.resolve(ModuleRegistrationName.REGION)
 
-    await regionModuleService.delete("reg_123")
+    await regionModuleService.deleteRegions("reg_123")
 
     res.status(200)
   }
@@ -252,7 +256,7 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   ) {
     const regionModuleService = await initializeRegionModule()
 
-    await regionModuleService.delete("reg_123")
+    await regionModuleService.deleteRegions("reg_123")
   }
   ```
 

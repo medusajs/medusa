@@ -21,7 +21,7 @@ You also have freedom in how you choose to implement the storefront, allowing yo
 
 ## Store Personalized Data
 
-The Cart Module's `LineItem` data model has a `metadata` field that holds any custom data. You can pass the customer's customization in that field when adding a product to the cart.
+The Cart Module's `LineItem` data model has a `metadata` property that holds any custom data. You can pass the customer's customization in the request body's `metadata` field when adding a product to the cart.
 
 For example, if you’re asking customers to enter a message to put in a letter they’re purchasing, use the `metadata` attribute of the `LineItem` data model to set the personalized information entered by the customer:
 
@@ -81,9 +81,9 @@ Medusa provides a Next.js Starter storefront with basic ecommerce functionalitie
     showLinkIcon: false
   },
   {
-    href: "!docs!/storefront-development/tips",
-    title: "Build Your Own Storefront",
-    text: "Find tips on how to create a storefront.",
+    href: "/storefront-development",
+    title: "Storefront Development",
+    text: "Find guides for your storefront development.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },

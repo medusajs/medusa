@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const userModuleService: IUserModuleService =
       req.scope.resolve(ModuleRegistrationName.USER)
 
-    const user = await userModuleService.create({
+    const user = await userModuleService.createUsers({
       email: "user@example.com",
       first_name: "John",
       last_name: "Smith",
@@ -48,7 +48,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
   export async function POST(request: Request) {
     const userModuleService = await initializeUserModule()
 
-    const user = await userModuleService.create({
+    const user = await userModuleService.createUsers({
       email: "user@example.com",
       first_name: "John",
       last_name: "Smith",
@@ -83,7 +83,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
       req.scope.resolve(ModuleRegistrationName.USER)
 
     res.json({
-      users: await userModuleService.list(),
+      users: await userModuleService.listUsers(),
     })
   }
   ```
@@ -102,7 +102,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const userModuleService = await initializeUserModule()
 
     return NextResponse.json({
-      users: await userModuleService.list(),
+      users: await userModuleService.listUsers(),
     })
   }
   ```
@@ -129,7 +129,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const userModuleService: IUserModuleService =
       req.scope.resolve(ModuleRegistrationName.USER)
 
-    const user = await userModuleService.update({
+    const user = await userModuleService.updateUsers({
       id: "user_123",
       last_name: "Smith",
     })
@@ -153,7 +153,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ) {
     const userModuleService = await initializeUserModule()
 
-    const user = await userModuleService.update({
+    const user = await userModuleService.updateUsers({
       id: "user_123",
       last_name: "Smith",
     })
@@ -186,7 +186,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const userModuleService: IUserModuleService =
       req.scope.resolve(ModuleRegistrationName.USER)
 
-    await userModuleService.delete(["user_123"])
+    await userModuleService.deleteUsers(["user_123"])
   }
   ```
 
@@ -205,7 +205,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
   ) {
     const userModuleService = await initializeUserModule()
 
-    await userModuleService.delete(["user_123"])
+    await userModuleService.deleteUsers(["user_123"])
   }
   ```
 
@@ -292,7 +292,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const invite =
       await userModuleService.validateInviteToken("secret_123")
 
-    const user = await userModuleService.create({
+    const user = await userModuleService.createUsers({
       email: invite.email,
       metadata: invite.metadata,
     })
@@ -327,7 +327,7 @@ In this guide, you’ll find common examples of how you can use the User Module 
     const invite =
       await userModuleService.validateInviteToken("secret_123")
 
-    const user = await userModuleService.create({
+    const user = await userModuleService.createUsers({
       email: invite.email,
       metadata: invite.metadata,
     })

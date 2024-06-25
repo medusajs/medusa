@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
     const customerModuleService: ICustomerModuleService =
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
-    const customer = await customerModuleService.create({
+    const customer = await customerModuleService.createCustomers({
       first_name: "Peter",
       last_name: "Hayes",
       email: "peter.hayes@example.com",
@@ -50,7 +50,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   export async function POST(request: Request) {
     const customerModuleService = await initializeCustomerModule()
 
-    const customer = await customerModuleService.create({
+    const customer = await customerModuleService.createCustomers({
       first_name: "Peter",
       last_name: "Hayes",
       email: "peter.hayes@example.com",
@@ -85,7 +85,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
     const customerGroup =
-      await customerModuleService.createCustomerGroup({
+      await customerModuleService.createCustomerGroups({
         name: "VIP",
       })
 
@@ -109,7 +109,7 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
     const customerModuleService = await initializeCustomerModule()
 
     const customerGroup =
-      await customerModuleService.createCustomerGroup({
+      await customerModuleService.createCustomerGroups({
         name: "VIP",
       })
 

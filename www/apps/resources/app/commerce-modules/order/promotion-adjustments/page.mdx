@@ -52,7 +52,7 @@ import {
 // ...
 
 // retrieve the order
-const order = await orderModuleService.retrieve("ord_123", {
+const order = await orderModuleService.retrieveOrder("ord_123", {
   relations: [
     "items.item.adjustments",
     "shipping_methods.adjustments",

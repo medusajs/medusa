@@ -38,7 +38,7 @@ When using the Cart and Tax modules together, you can use the `getTaxLines` meth
 
 ```ts
 // retrieve the cart
-const cart = await cartModuleService.retrieve("cart_123", {
+const cart = await cartModuleService.retrieveCart("cart_123", {
   relations: [
     "items.tax_lines",
     "shipping_methods.tax_lines",

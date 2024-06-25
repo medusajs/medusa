@@ -15,7 +15,7 @@ The Product Module is the `@medusajs/product` NPM package that provides product-
 Store and manage products. Products have custom options, such as color or size, and each variant in the product sets the value for these options.
 
 ```ts
-const products = await productService.create([
+const products = await productService.createProducts([
   {
     title: "Medusa Shirt",
     options: [
@@ -42,11 +42,11 @@ const products = await productService.create([
 The Product Module provides different data models used to organize products, including categories, collections, tags, and more.
 
 ```ts
-const category = await productService.createCategory({
+const category = await productService.createProductCategories({
   name: "Shirts",
 })
 
-const products = await productService.update([
+const products = await productService.updateProducts([
   {
     id: product.id,
     categories: [
@@ -81,7 +81,9 @@ For example:
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    res.json({ products: await productModuleService.list() })
+    res.json({ 
+      products: await productModuleService.listProducts()
+    })
   }
   ```
 
@@ -99,7 +101,7 @@ For example:
     const productModuleService: IProductModuleService =
       container.resolve(ModuleRegistrationName.PRODUCT)
 
-    const products = await productModuleService.list()
+    const products = await productModuleService.listProducts()
   }
   ```
 
@@ -117,7 +119,7 @@ For example:
     const productModuleService: IProductModuleService =
       container.resolve(ModuleRegistrationName.PRODUCT)
 
-    const products = await productModuleService.list()
+    const products = await productModuleService.listProducts()
   })
   ```
 

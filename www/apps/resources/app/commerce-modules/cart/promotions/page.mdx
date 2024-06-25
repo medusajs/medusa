@@ -50,7 +50,7 @@ import {
 } from "@medusajs/types"
 
 // retrieve the cart
-const cart = await cartModuleService.retrieve("cart_123", {
+const cart = await cartModuleService.retrieveCart("cart_123", {
   relations: [
     "items.adjustments",
     "shipping_methods.adjustments",

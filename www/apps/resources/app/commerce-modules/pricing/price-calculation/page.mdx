@@ -178,7 +178,7 @@ const ruleTypes = await pricingModuleService.createRuleTypes([
   },
 ])
 
-const priceSet = await pricingModuleService.create({
+const priceSet = await pricingModuleService.createPriceSets({
   rules: [
     { rule_attribute: "region_id" },
     { rule_attribute: "city" },
@@ -422,7 +422,7 @@ const priceSet = await pricingModuleService.create({
     <TabsContent value="code">
 
     ```ts
-    const priceList = pricingModuleService.createPriceList({
+    const priceList = pricingModuleService.createPriceLists({
       name: "Test Price List",
       starts_at: Date.parse("01/10/2023"),
       ends_at: Date.parse("31/10/2023"),

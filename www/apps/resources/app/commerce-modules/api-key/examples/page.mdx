@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService: IApiKeyModuleService =
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
-    const apiKey = await apiKeyModuleService.create({
+    const apiKey = await apiKeyModuleService.createApiKeys({
       title: "Publishable API key",
       type: "publishable",
       created_by: "user_123",
@@ -50,7 +50,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
   export async function POST(request: Request) {
     const apiKeyModuleService = await initializeApiKeyModule()
 
-    const apiKey = await apiKeyModuleService.create({
+    const apiKey = await apiKeyModuleService.createApiKeys({
       title: "Publishable API key",
       type: "publishable",
       created_by: "user_123",
@@ -85,7 +85,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
     res.json({
-      api_keys: await apiKeyModuleService.list(),
+      api_keys: await apiKeyModuleService.listApiKeys(),
     })
   }
   ```
@@ -104,7 +104,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
     const apiKeyModuleService = await initializeApiKeyModule()
 
     return NextResponse.json({
-      api_keys: await apiKeyModuleService.list(),
+      api_keys: await apiKeyModuleService.listApiKeys(),
     })
   }
   ```
@@ -279,7 +279,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       }
     )
 
-    const newKey = await apiKeyModuleService.create({
+    const newKey = await apiKeyModuleService.createApiKeys({
       title: revokedKey.title,
       type: revokedKey.type,
       created_by: revokedKey.created_by,
@@ -318,7 +318,7 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
       revoked_by: params.user_id,
     })
 
-    const newKey = await apiKeyModuleService.create({
+    const newKey = await apiKeyModuleService.createApiKeys({
       title: revokedKey.title,
       type: revokedKey.type,
       created_by: revokedKey.created_by,
