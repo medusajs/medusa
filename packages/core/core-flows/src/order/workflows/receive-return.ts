@@ -6,7 +6,7 @@ import {
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 
-import { ReturnDTO } from "@medusajs/types/src"
+import { ReturnDTO } from "@medusajs/types"
 import { receiveReturnStep } from "../steps/receive-return"
 import {
   throwIfItemsDoesNotExistsInReturn,

@@ -1,19 +1,19 @@
 import {
+  BatchWorkflowInput,
+  BatchWorkflowOutput,
+  CreateProductWorkflowInputDTO,
+  ProductTypes,
+  UpdateProductWorkflowInputDTO,
+} from "@medusajs/types"
+import {
   WorkflowData,
   createWorkflow,
   parallelize,
   transform,
 } from "@medusajs/workflows-sdk"
-import {
-  ProductTypes,
-  BatchWorkflowInput,
-  CreateProductWorkflowInputDTO,
-  UpdateProductWorkflowInputDTO,
-} from "@medusajs/types"
-import { BatchWorkflowOutput } from "@medusajs/types/src"
 import { createProductsWorkflow } from "./create-products"
-import { updateProductsWorkflow } from "./update-products"
 import { deleteProductsWorkflow } from "./delete-products"
+import { updateProductsWorkflow } from "./update-products"
 
 export const batchProductsWorkflowId = "batch-products"
 export const batchProductsWorkflow = createWorkflow(
