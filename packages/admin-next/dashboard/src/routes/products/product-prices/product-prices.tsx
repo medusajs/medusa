@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom"
 
 import { useProduct } from "../../../hooks/api/products"
-import { PricingEdit } from "./pricing-edit"
 import { RouteFocusModal } from "../../../components/route-modal"
+import { PricingEdit } from "./pricing-edit"
 
 export const ProductPrices = () => {
   const { id, variant_id } = useParams()

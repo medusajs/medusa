@@ -97,8 +97,10 @@ medusaIntegrationTestRunner({
 
       store = await storeModule.createStores({
         name: "New store",
-        supported_currency_codes: ["usd", "dkk"],
-        default_currency_code: "usd",
+        supported_currencies: [
+          { currency_code: "usd", is_default: true },
+          { currency_code: "dkk" },
+        ],
       })
     })
 
@@ -570,8 +572,10 @@ medusaIntegrationTestRunner({
         }
 
         await service.createStores({
-          supported_currency_codes: ["usd", "dkk"],
-          default_currency_code: "usd",
+          supported_currencies: [
+            { currency_code: "usd", is_default: true },
+            { currency_code: "dkk" },
+          ],
           default_sales_channel_id: defaultSalesChannel.id,
         })
       })
@@ -1139,8 +1143,10 @@ medusaIntegrationTestRunner({
         }
 
         await service.createStores({
-          supported_currency_codes: ["usd", "dkk"],
-          default_currency_code: "usd",
+          supported_currencies: [
+            { currency_code: "usd", is_default: true },
+            { currency_code: "dkk" },
+          ],
           default_sales_channel_id: defaultSalesChannel.id,
         })
       })

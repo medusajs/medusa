@@ -1,4 +1,4 @@
-import { CurrencyDTO, HttpTypes } from "@medusajs/types"
+import { CurrencyDTO, HttpTypes, RegionDTO } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -10,6 +10,7 @@ import { DataGridMeta } from "../../../components/grid/types"
 import { useCurrencies } from "../../../hooks/api/currencies"
 import { useStore } from "../../../hooks/api/store"
 import { ProductCreateSchema } from "../product-create/constants"
+import { useRegions } from "../../../hooks/api/regions.tsx"
 
 type VariantPricingFormProps = {
   form: UseFormReturn<ProductCreateSchema>
@@ -19,16 +20,19 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
   const { store, isLoading: isStoreLoading } = useStore()
   const { currencies, isLoading: isCurrenciesLoading } = useCurrencies(
     {
-      code: store?.supported_currency_codes,
-      limit: store?.supported_currency_codes?.length,
+      code: store?.supported_currencies?.map((c) => c.currency_code),
+      limit: store?.supported_currencies?.length,
     },
     {
       enabled: !!store,
     }
   )
 
+  const { regions } = useRegions({ limit: 9999 })
+
   const columns = useVariantPriceGridColumns({
     currencies,
+    regions,
   })
 
   const variants = useWatch({
@@ -52,8 +56,10 @@ const columnHelper = createColumnHelper<HttpTypes.AdminProductVariant>()
 
 export const useVariantPriceGridColumns = ({
   currencies = [],
+  regions = [],
 }: {
   currencies?: CurrencyDTO[]
+  regions?: RegionDTO[]
 }) => {
   const { t } = useTranslation()
 
@@ -87,8 +93,24 @@ export const useVariantPriceGridColumns = ({
           },
         })
       }),
+      ...regions.map((region) => {
+        return columnHelper.display({
+          header: `Price ${region.name}`,
+          cell: ({ row, table }) => {
+            return (
+              <CurrencyCell
+                currency={currencies.find(
+                  (c) => c.code === region.currency_code
+                )}
+                meta={table.options.meta as DataGridMeta}
+                field={`variants.${row.index}.prices.${region.id}`}
+              />
+            )
+          },
+        })
+      }),
     ]
-  }, [t, currencies])
+  }, [t, currencies, regions])
 
   return colDefs
 }

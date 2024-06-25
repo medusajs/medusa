@@ -44,7 +44,7 @@ const AttributeGridRow = ({
   )
 }
 
-export const CreateReservationForm = () => {
+export const CreateReservationForm = (props: { inventoryItemId?: string }) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const [inventorySearch, setInventorySearch] = React.useState<string | null>(
@@ -53,7 +53,7 @@ export const CreateReservationForm = () => {
 
   const form = useForm<zod.infer<typeof CreateReservationSchema>>({
     defaultValues: {
-      inventory_item_id: "",
+      inventory_item_id: props.inventoryItemId || "",
       location_id: "",
       quantity: 0,
       description: "",
@@ -98,7 +98,11 @@ export const CreateReservationForm = () => {
           dismissLabel: t("actions.close"),
           description: t("inventory.reservation.successToast"),
         })
-        handleSuccess(`/reservations/${reservation.id}`)
+        handleSuccess(
+          props.inventoryItemId
+            ? `/inventory/${props.inventoryItemId}`
+            : `/reservations/${reservation.id}`
+        )
       },
     })
   })
@@ -147,6 +151,7 @@ export const CreateReservationForm = () => {
                             onChange(v)
                           }}
                           {...field}
+                          disabled={!!props.inventoryItemId}
                           options={(inventory_items ?? []).map(
                             (inventoryItem) => ({
                               label: inventoryItem.title ?? inventoryItem.sku!,

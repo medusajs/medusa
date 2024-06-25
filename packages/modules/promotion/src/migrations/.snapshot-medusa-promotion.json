@@ -99,13 +99,14 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_campaign_identifier_unique",
+          "keyName": "IDX_promotion_campaign_campaign_identifier_unique",
           "columnNames": [
             "campaign_identifier"
           ],
           "composite": false,
           "primary": false,
-          "unique": true
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_promotion_campaign_campaign_identifier_unique\" ON \"promotion_campaign\" (campaign_identifier) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "promotion_campaign_pkey",

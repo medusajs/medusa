@@ -21,9 +21,7 @@ export const ProductCreateVariantsForm = ({
 }: ProductCreateVariantsFormProps) => {
   const { regions } = useRegions({ limit: 9999 })
 
-  const { store, isPending, isError, error } = useStore({
-    fields: "supported_currency_codes",
-  })
+  const { store, isPending, isError, error } = useStore()
 
   const variants = useWatch({
     control: form.control,
@@ -39,7 +37,7 @@ export const ProductCreateVariantsForm = ({
 
   const columns = useColumns({
     options,
-    currencies: store?.supported_currency_codes,
+    currencies: store?.supported_currencies?.map((c) => c.currency_code) || [],
     regions,
   })
 

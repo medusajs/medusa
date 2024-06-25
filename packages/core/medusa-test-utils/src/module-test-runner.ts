@@ -1,9 +1,11 @@
+import {
+  ContainerRegistrationKeys,
+  ModulesSdkUtils,
+  toMikroOrmEntities,
+} from "@medusajs/utils"
+import { MockEventBusService } from "."
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
-
-import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { MockEventBusService } from "."
-import { toMikroOrmEntities } from "@medusajs/utils/src"
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase

@@ -46,7 +46,7 @@ async function deleteKeysByPattern(pattern) {
 async function cleanRedis() {
   try {
     await deleteKeysByPattern("bull:*")
-    await deleteKeysByPattern("dtrans:*")
+    await deleteKeysByPattern("dtrx:*")
   } catch (error) {
     console.error("Error:", error)
   }

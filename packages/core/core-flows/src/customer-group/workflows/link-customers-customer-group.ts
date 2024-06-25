@@ -1,6 +1,6 @@
+import { LinkWorkflowInput } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { linkCustomersToCustomerGroupStep } from "../steps"
-import { LinkWorkflowInput } from "@medusajs/types/src"
 
 export const linkCustomersToCustomerGroupWorkflowId =
   "link-customers-to-customer-group"
