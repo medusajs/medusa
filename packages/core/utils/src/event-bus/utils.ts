@@ -1,6 +1,6 @@
+import { KebabCase, SnakeCase } from "@medusajs/types"
 import { camelToSnakeCase, kebabCase, lowerCaseFirst } from "../common"
 import { CommonEvents } from "./common-events"
-import { KebabCase, SnakeCase } from "@medusajs/types"
 
 type ReturnType<TNames extends string[]> = {
   [K in TNames[number] as `${Uppercase<
@@ -56,7 +56,8 @@ export function buildEventNamesFromEntityName<TNames extends string[]>(
     const kebabCaseName = lowerCaseFirst(kebabCase(name))
 
     for (const event of Object.values(CommonEvents) as string[]) {
-      events[`${snakedCaseName}_${event}`] = `${
+      const upperCasedEvent = event.toUpperCase()
+      events[`${snakedCaseName}_${upperCasedEvent}`] = `${
         prefix ? prefix + "." : ""
       }${kebabCaseName}.${event}` as `${KebabCase<typeof name>}.${typeof event}`
     }

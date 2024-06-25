@@ -1,7 +1,5 @@
 {
-  "namespaces": [
-    "public"
-  ],
+  "namespaces": ["public"],
   "name": "public",
   "tables": [
     {
@@ -32,6 +30,16 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
+        },
+        "automatic_taxes": {
+          "name": "automatic_taxes",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
         },
         "metadata": {
           "name": "metadata",
@@ -79,9 +87,7 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": [
-            "deleted_at"
-          ],
+          "columnNames": ["deleted_at"],
           "composite": false,
           "keyName": "IDX_region_deleted_at",
           "primary": false,
@@ -89,9 +95,7 @@
         },
         {
           "keyName": "region_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["id"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -102,15 +106,6 @@
     },
     {
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
-        },
         "iso_2": {
           "name": "iso_2",
           "type": "text",
@@ -171,9 +166,7 @@
       "indexes": [
         {
           "keyName": "region_country_pkey",
-          "columnNames": [
-            "id"
-          ],
+          "columnNames": ["iso_2"],
           "composite": false,
           "primary": true,
           "unique": true
@@ -183,13 +176,9 @@
       "foreignKeys": {
         "region_country_region_id_foreign": {
           "constraintName": "region_country_region_id_foreign",
-          "columnNames": [
-            "region_id"
-          ],
+          "columnNames": ["region_id"],
           "localTableName": "public.region_country",
-          "referencedColumnNames": [
-            "id"
-          ],
+          "referencedColumnNames": ["id"],
           "referencedTableName": "public.region",
           "deleteRule": "set null",
           "updateRule": "cascade"

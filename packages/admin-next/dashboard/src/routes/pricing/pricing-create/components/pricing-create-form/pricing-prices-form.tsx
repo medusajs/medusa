@@ -28,8 +28,8 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
     error: currencyError,
   } = useCurrencies(
     {
-      code: store?.supported_currency_codes,
-      limit: store?.supported_currency_codes?.length,
+      code: store?.supported_currencies?.map((c) => c.currency_code),
+      limit: store?.supported_currencies?.length,
     },
     {
       enabled: !!store,
