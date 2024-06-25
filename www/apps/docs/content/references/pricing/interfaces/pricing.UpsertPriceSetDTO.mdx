@@ -1,0 +1,11 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# UpsertPriceSetDTO
+
+The data to upsert in a price set.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"A string indicating the ID of the price set to update.\nIf not provided, a price set is created.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"`object`[]","description":"The rules to associate with the price set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"rule_attribute","type":"`string`","description":"the value of the rule's `rule_attribute` attribute.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"prices","type":"[CreatePricesDTO](pricing.CreatePricesDTO.mdx)[]","description":"The prices to create and add to this price set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"currency_code","type":"`string`","description":"The currency code of this money amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The amount of this money amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The ID of the money amount.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"min_quantity","type":"`null` \\| [BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"max_quantity","type":"`null` \\| [BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"[CreatePriceSetPriceRules](pricing.CreatePriceSetPriceRules.mdx)","description":"The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="UpsertPriceSetDTO"/>

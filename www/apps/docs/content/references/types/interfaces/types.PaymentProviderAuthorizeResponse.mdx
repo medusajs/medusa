@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# PaymentProviderAuthorizeResponse
+
+The successful result of authorizing a payment session using a payment provider.
+
+## Properties
+
+<TypeList types={[{"name":"status","type":"[PaymentSessionStatus](../enums/types.PaymentSessionStatus.mdx)","description":"The status of the payment, which will be stored in the payment session's `status` field.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PENDING","type":"`\"pending\"`","description":"The payment is pending.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"REQUIRES_MORE","type":"`\"requires_more\"`","description":"The payment requires an action.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ERROR","type":"`\"error\"`","description":"An error occurred while processing the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data","type":"`Record<string, unknown>`","description":"The `data` to be stored in the payment session's `data` field.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="PaymentProviderAuthorizeResponse"/>

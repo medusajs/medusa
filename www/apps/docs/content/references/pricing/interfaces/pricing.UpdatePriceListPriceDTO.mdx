@@ -1,0 +1,11 @@
+---
+displayed_sidebar: pricingReference
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# UpdatePriceListPriceDTO
+
+The data to update in a money amount. The `id` is used to identify which money amount to update.
+
+<TypeList types={[{"name":"id","type":"`string`","description":"The ID of the money amount to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"price_set_id","type":"`string`","description":"The ID of the associated price set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`null` \\| `string`","description":"The code of the currency to associate with the money amount.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The price of this money amount.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"min_quantity","type":"[BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The minimum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"max_quantity","type":"[BigNumberInput](../types/pricing.BigNumberInput.mdx)","description":"The maximum quantity required to be purchased for this money amount to be applied.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"[CreatePriceSetPriceRules](pricing.CreatePriceSetPriceRules.mdx)","description":"The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="UpdatePriceListPriceDTO"/>

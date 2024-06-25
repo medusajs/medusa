@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# FilterableUserProps
+
+The filters to apply on the retrieved user.
+
+## Properties
+
+<TypeList types={[{"name":"$and","type":"([FilterableUserProps](types.UserTypes.FilterableUserProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/types.DAL.BaseFilterable.mdx)&#60;[FilterableUserProps](types.UserTypes.FilterableUserProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableUserProps](types.UserTypes.FilterableUserProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/types.DAL.BaseFilterable.mdx)&#60;[FilterableUserProps](types.UserTypes.FilterableUserProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Find users by name or email through this search term","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter users by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string` \\| `string`[]","description":"Filter users by their email.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string` \\| `string`[]","description":"Filter users by their first name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string` \\| `string`[]","description":"Filter users by their last name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="FilterableUserProps"/>

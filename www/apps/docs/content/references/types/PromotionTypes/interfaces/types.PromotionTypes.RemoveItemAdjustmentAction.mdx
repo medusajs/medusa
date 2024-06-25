@@ -2,6 +2,8 @@ import TypeList from "@site/src/components/TypeList"
 
 # RemoveItemAdjustmentAction
 
+This action indicates that an adjustment must be removed from a line item. For example, remove the $5 discount applied before.
+
 ## Properties
 
-<TypeList types={[{"name":"action","type":"`\"removeItemAdjustment\"`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustment_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="RemoveItemAdjustmentAction"/>
+<TypeList types={[{"name":"action","type":"`\"removeItemAdjustment\"`","description":"The type of action.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"adjustment_id","type":"`string`","description":"The associated adjustment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"The promotion's code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`string`","description":"The promotion's description.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="RemoveItemAdjustmentAction"/>

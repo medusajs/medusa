@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# CreateFulfillmentSetDTO
+
+The fulfillment set to be created.
+
+## Properties
+
+<TypeList types={[{"name":"name","type":"`string`","description":"The name of the fulfillment set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The type of the fulfillment set.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"service_zones","type":"Omit&#60;[CreateServiceZoneDTO](types.FulfillmentTypes.CreateServiceZoneDTO.mdx), \"fulfillment_set_id\"&#62;[]","description":"The service zones associated with the fulfillment set.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The name of the service zone.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"geo_zones","type":"(Omit&#60;[CreateCountryGeoZoneDTO](types.FulfillmentTypes.CreateCountryGeoZoneDTO.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateProvinceGeoZoneDTO](types.FulfillmentTypes.CreateProvinceGeoZoneDTO.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateCityGeoZoneDTO](types.FulfillmentTypes.CreateCityGeoZoneDTO.mdx), \"service_zone_id\"&#62; \\| Omit&#60;[CreateZipGeoZoneDTO](types.FulfillmentTypes.CreateZipGeoZoneDTO.mdx), \"service_zone_id\"&#62;)[]","description":"The geo zones associated with the service zone.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="CreateFulfillmentSetDTO"/>

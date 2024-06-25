@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# ProviderWebhookPayload
+
+The details of the webhook event payload.
+
+## Properties
+
+<TypeList types={[{"name":"provider","type":"`string`","description":"The ID of the provider to pass the webhook event payload to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"`object`","description":"The webhook event payload passed to the specified provider.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"payload.data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload.rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload.headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ProviderWebhookPayload"/>

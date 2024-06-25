@@ -1,0 +1,147 @@
+import TypeList from "@site/src/components/TypeList"
+
+# IPaymentProvider
+
+## Methods
+
+### initiatePayment
+
+This methods sends a request to the third-party provider to initialize the payment. It's called when the payment session is created.
+
+For example, in the Stripe provider, this method is used to create a Payment Intent for the customer.
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreatePaymentProviderSession](types.CreatePaymentProviderSession.mdx)","description":"The data necessary to initiate the payment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"context","type":"[PaymentProviderContext](types.PaymentProviderContext.mdx)","description":"A context necessary for the payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"billing_address","type":"Partial&#60;[AddressDTO](../types/types.AddressDTO.mdx)&#62;","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The associated customer's email.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the ID of the payment session.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"Partial&#60;[CustomerDTO](../CustomerTypes/interfaces/types.CustomerTypes.CustomerDTO.mdx)&#62;","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extra","type":"`Record<string, unknown>`","description":"The extra fields specific to the provider session.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"amount","type":"[BigNumberInput](../types/types.BigNumberInput.mdx)","description":"The amount to be authorized.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The ISO 3 character currency code.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentProviderSessionResponse](types.PaymentProviderSessionResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data, which is stored in the `data` field\nof the payment session, or an error object.","expandable":false,"children":[{"name":"PaymentProviderSessionResponse \\| PaymentProviderError","type":"[PaymentProviderSessionResponse](types.PaymentProviderSessionResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
+
+### updatePayment
+
+This method is used to update a payment associated with a session in the third-party provider.
+
+#### Parameters
+
+<TypeList types={[{"name":"context","type":"[UpdatePaymentProviderSession](types.UpdatePaymentProviderSession.mdx)","description":"The data related to the update.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"context","type":"[PaymentProviderContext](types.PaymentProviderContext.mdx)","description":"A payment's context.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"billing_address","type":"Partial&#60;[AddressDTO](../types/types.AddressDTO.mdx)&#62;","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The associated customer's email.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the ID of the payment session.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"Partial&#60;[CustomerDTO](../CustomerTypes/interfaces/types.CustomerTypes.CustomerDTO.mdx)&#62;","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"extra","type":"`Record<string, unknown>`","description":"The extra fields specific to the provider session.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data","type":"`Record<string, unknown>`","description":"The `data` field of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../types/types.BigNumberInput.mdx)","description":"The payment session's amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The ISO 3 character code of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentProviderSessionResponse](types.PaymentProviderSessionResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"PaymentProviderSessionResponse \\| PaymentProviderError","type":"[PaymentProviderSessionResponse](types.PaymentProviderSessionResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
+
+### deletePayment
+
+This method is called before a payment session is deleted. It's used to perform any actions necessary before the deletion.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment Session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deletePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an empty object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="deletePayment"/>
+
+### authorizePayment
+
+This method is called when a payment session should be authorized.
+You can interact with a third-party provider and perform the necessary actions to authorize the payment.
+
+Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/#3-authorize-payment-session)
+to learn more about how this fits into the payment flow and how to handle required actions.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context of the authorization.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentProviderAuthorizeResponse](types.PaymentProviderAuthorizeResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"The authorization details or an error object. If\nthe authorization details are returned, the `data` and `status` field are set in the associated payment session.","expandable":false,"children":[{"name":"PaymentProviderAuthorizeResponse \\| PaymentProviderError","type":"[PaymentProviderAuthorizeResponse](types.PaymentProviderAuthorizeResponse.mdx) \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="authorizePayment"/>
+
+### capturePayment
+
+This method is called when a payment should be captured. The payment is captured in one of the following scenarios:
+
+- The payment provider supports automatically capturing the payment after authorization.
+- The merchant requests to capture the payment after its associated payment session was authorized.
+- A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
+
+In this method, you can interact with the third-party provider and perform any actions necessary to capture the payment.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="capturePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="capturePayment"/>
+
+### refundPayment
+
+This method is called when a payment should be refunded. This is typically triggered manually by the merchant.
+
+In this method, you can interact with the third-party provider and perform any actions necessary to refund the payment.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"[BigNumberInput](../types/types.BigNumberInput.mdx)","description":"The amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refundPayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an object that's stored in the `data` field of the payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="refundPayment"/>
+
+### retrievePayment
+
+This method is used to provide a uniform way of retrieving the payment information from the third-party provider.
+
+For example, in Stripe’s payment provider this method is used to retrieve the payment intent details from Stripe.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a payment session. Make sure to store in the `data` field any necessary data that would allow you to retrieve the payment data from the third-party provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrievePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or the payment's data retrieved from a third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="retrievePayment"/>
+
+### cancelPayment
+
+This method is called when a payment is canceled.
+
+In this method, you can interact with the third-party provider and perform any actions necessary to cancel the payment.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancelPayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProviderError](types.PaymentProviderError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProviderError","type":"`Record<string, unknown>` \\| [PaymentProviderError](types.PaymentProviderError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelPayment"/>
+
+### getPaymentStatus
+
+This method is used to get the status of a payment or a payment session.
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaymentStatus"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../enums/types.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the payment or payment session.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"[PaymentSessionStatus](../enums/types.PaymentSessionStatus.mdx)","optional":false,"defaultValue":"","description":"The status of a payment session.","expandable":false,"children":[{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"The payment is authorized.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"PENDING","type":"`\"pending\"`","description":"The payment is pending.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"REQUIRES_MORE","type":"`\"requires_more\"`","description":"The payment requires an action.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"ERROR","type":"`\"error\"`","description":"An error occurred while processing the payment.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"CANCELED","type":"`\"canceled\"`","description":"The payment is canceled.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getPaymentStatus"/>
+
+### getWebhookActionAndData
+
+The method is called when a webhook event is received for this provider.
+
+The method is responsible for normalizing the received event and inform the Payment Module of actions to perform, such as authorize or capture payment.
+
+Learn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`object`","description":"The webhook event's details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"data.data","type":"`Record<string, unknown>`","description":"The parsed webhook body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.rawData","type":"`string` \\| `Buffer`","description":"The raw webhook request body.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data.headers","type":"`Record<string, unknown>`","description":"The headers of the webhook request.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getWebhookActionAndData"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[WebhookActionResult](types.WebhookActionResult.mdx)&#62;","optional":false,"defaultValue":"","description":"The method is called when a webhook event is received for this provider.\n\nThe method is responsible for normalizing the received event and inform the Payment Module of actions to perform, such as authorize or capture payment.\n\nLearn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)","expandable":false,"children":[{"name":"WebhookActionResult","type":"[WebhookActionResult](types.WebhookActionResult.mdx)","optional":false,"defaultValue":"","description":"The actions that the payment provider informs the Payment Module to perform.","expandable":false,"children":[{"name":"action","type":"[PaymentActions](../enums/types.PaymentActions.mdx)","description":"Received an event that is not processable.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"Payment session has been authorized and there are available funds for capture.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SUCCESSFUL","type":"`\"captured\"`","description":"Payment was successful and the mount is captured.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"FAILED","type":"`\"failed\"`","description":"Payment failed.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"NOT_SUPPORTED","type":"`\"not_supported\"`","description":"Received an event that is not processable.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}]}  sectionTitle="getWebhookActionAndData"/>

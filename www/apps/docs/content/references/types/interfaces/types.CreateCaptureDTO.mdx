@@ -2,6 +2,8 @@ import TypeList from "@site/src/components/TypeList"
 
 # CreateCaptureDTO
 
+The capture to be created.
+
 ## Properties
 
-<TypeList types={[{"name":"amount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payment_id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_by","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CreateCaptureDTO"/>
+<TypeList types={[{"name":"payment_id","type":"`string`","description":"The associated payment's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"[BigNumberInput](../types/types.BigNumberInput.mdx)","description":"The amount of the capture.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"captured_by","type":"`string`","description":"Who captured the payment. For example,\na user's ID.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CreateCaptureDTO"/>

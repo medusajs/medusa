@@ -31,7 +31,7 @@ export const createProductStep = createStep(
     const productService = context.container.resolve(
       "productService"
     )
-    
+
     try {
       const product = await productService.create(input)
       return new StepResponse({

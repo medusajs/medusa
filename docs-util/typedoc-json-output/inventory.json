@@ -6,7 +6,7 @@
 	"flags": {},
 	"children": [
 		{
-			"id": 154,
+			"id": 166,
 			"name": "FindConfig",
 			"variant": "declaration",
 			"kind": 256,
@@ -29,7 +29,7 @@
 			},
 			"children": [
 				{
-					"id": 155,
+					"id": 167,
 					"name": "select",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 									"operator": "keyof",
 									"target": {
 										"type": "reference",
-										"target": 164,
+										"target": 177,
 										"name": "Entity",
 										"package": "@medusajs/types",
 										"qualifiedName": "FindConfig.Entity",
@@ -70,7 +70,7 @@
 					}
 				},
 				{
-					"id": 156,
+					"id": 168,
 					"name": "skip",
 					"variant": "declaration",
 					"kind": 1024,
@@ -100,7 +100,7 @@
 					}
 				},
 				{
-					"id": 157,
+					"id": 169,
 					"name": "take",
 					"variant": "declaration",
 					"kind": 1024,
@@ -130,7 +130,7 @@
 					}
 				},
 				{
-					"id": 158,
+					"id": 170,
 					"name": "relations",
 					"variant": "declaration",
 					"kind": 1024,
@@ -154,7 +154,7 @@
 					}
 				},
 				{
-					"id": 159,
+					"id": 171,
 					"name": "order",
 					"variant": "declaration",
 					"kind": 1024,
@@ -188,20 +188,20 @@
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 160,
+							"id": 172,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"indexSignature": {
-								"id": 161,
+								"id": 173,
 								"name": "__index",
 								"variant": "signature",
 								"kind": 8192,
 								"flags": {},
 								"parameters": [
 									{
-										"id": 162,
+										"id": 174,
 										"name": "K",
 										"variant": "param",
 										"kind": 32768,
@@ -230,7 +230,7 @@
 					}
 				},
 				{
-					"id": 163,
+					"id": 175,
 					"name": "withDeleted",
 					"variant": "declaration",
 					"kind": 1024,
@@ -257,24 +257,61 @@
 						"type": "intrinsic",
 						"name": "boolean"
 					}
+				},
+				{
+					"id": 176,
+					"name": "filters",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Enable ORM specific defined filters"
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "any"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Properties",
 					"children": [
-						155,
-						156,
-						157,
-						158,
-						159,
-						163
+						167,
+						168,
+						169,
+						170,
+						171,
+						175,
+						176
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 164,
+					"id": 177,
 					"name": "Entity",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -283,58 +320,77 @@
 			]
 		},
 		{
-			"id": 298,
+			"id": 312,
 			"name": "StringComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Fields used to apply flexible filters on strings."
+					}
+				]
+			},
 			"children": [
 				{
-					"id": 299,
+					"id": 313,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must be less than this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
 					}
 				},
 				{
-					"id": 300,
+					"id": 314,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must be greater than this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
 					}
 				},
 				{
-					"id": 301,
+					"id": 315,
 					"name": "gte",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 302,
-					"name": "lte",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must be greater than or equal to this value."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -342,39 +398,84 @@
 					}
 				},
 				{
-					"id": 303,
+					"id": 316,
+					"name": "lte",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must be less than or equal to this value."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 317,
 					"name": "contains",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must contain this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
 					}
 				},
 				{
-					"id": 304,
+					"id": 318,
 					"name": "starts_with",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must start with this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
 					}
 				},
 				{
-					"id": 305,
+					"id": 319,
 					"name": "ends_with",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered string must end with this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "string"
@@ -385,57 +486,68 @@
 				{
 					"title": "Properties",
 					"children": [
-						299,
-						300,
-						301,
-						302,
-						303,
-						304,
-						305
+						313,
+						314,
+						315,
+						316,
+						317,
+						318,
+						319
 					]
 				}
 			]
 		},
 		{
-			"id": 306,
+			"id": 320,
 			"name": "NumericalComparisonOperator",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "Fields used to apply flexible filters on numbers."
+					}
+				]
+			},
 			"children": [
 				{
-					"id": 307,
+					"id": 321,
 					"name": "lt",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered number must be less than this value."
+							}
+						]
+					},
 					"type": {
 						"type": "intrinsic",
 						"name": "number"
 					}
 				},
 				{
-					"id": 308,
+					"id": 322,
 					"name": "gt",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
 					},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 309,
-					"name": "gte",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered number must be greater than this value."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -443,12 +555,41 @@
 					}
 				},
 				{
-					"id": 310,
+					"id": 323,
+					"name": "gte",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered number must be greater than or equal to this value."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 324,
 					"name": "lte",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
 						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The filtered number must be less than or equal to this value."
+							}
+						]
 					},
 					"type": {
 						"type": "intrinsic",
@@ -460,16 +601,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						307,
-						308,
-						309,
-						310
+						321,
+						322,
+						323,
+						324
 					]
 				}
 			]
 		},
 		{
-			"id": 165,
+			"id": 178,
 			"name": "InventoryItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -483,14 +624,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 166,
+					"id": 179,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 167,
+							"id": 180,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -509,7 +650,7 @@
 							}
 						},
 						{
-							"id": 168,
+							"id": 181,
 							"name": "sku",
 							"variant": "declaration",
 							"kind": 1024,
@@ -539,7 +680,7 @@
 							}
 						},
 						{
-							"id": 169,
+							"id": 182,
 							"name": "origin_country",
 							"variant": "declaration",
 							"kind": 1024,
@@ -569,7 +710,7 @@
 							}
 						},
 						{
-							"id": 170,
+							"id": 183,
 							"name": "hs_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -599,7 +740,7 @@
 							}
 						},
 						{
-							"id": 171,
+							"id": 184,
 							"name": "requires_shipping",
 							"variant": "declaration",
 							"kind": 1024,
@@ -618,7 +759,7 @@
 							}
 						},
 						{
-							"id": 172,
+							"id": 185,
 							"name": "mid_code",
 							"variant": "declaration",
 							"kind": 1024,
@@ -648,7 +789,7 @@
 							}
 						},
 						{
-							"id": 173,
+							"id": 186,
 							"name": "material",
 							"variant": "declaration",
 							"kind": 1024,
@@ -678,7 +819,7 @@
 							}
 						},
 						{
-							"id": 174,
+							"id": 187,
 							"name": "weight",
 							"variant": "declaration",
 							"kind": 1024,
@@ -708,7 +849,7 @@
 							}
 						},
 						{
-							"id": 175,
+							"id": 188,
 							"name": "length",
 							"variant": "declaration",
 							"kind": 1024,
@@ -738,7 +879,7 @@
 							}
 						},
 						{
-							"id": 176,
+							"id": 189,
 							"name": "height",
 							"variant": "declaration",
 							"kind": 1024,
@@ -768,7 +909,7 @@
 							}
 						},
 						{
-							"id": 177,
+							"id": 190,
 							"name": "width",
 							"variant": "declaration",
 							"kind": 1024,
@@ -798,7 +939,7 @@
 							}
 						},
 						{
-							"id": 178,
+							"id": 191,
 							"name": "title",
 							"variant": "declaration",
 							"kind": 1024,
@@ -828,7 +969,7 @@
 							}
 						},
 						{
-							"id": 179,
+							"id": 192,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -858,7 +999,7 @@
 							}
 						},
 						{
-							"id": 180,
+							"id": 193,
 							"name": "thumbnail",
 							"variant": "declaration",
 							"kind": 1024,
@@ -888,7 +1029,7 @@
 							}
 						},
 						{
-							"id": 181,
+							"id": 194,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -933,7 +1074,7 @@
 							}
 						},
 						{
-							"id": 182,
+							"id": 195,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -966,7 +1107,7 @@
 							}
 						},
 						{
-							"id": 183,
+							"id": 196,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -999,7 +1140,7 @@
 							}
 						},
 						{
-							"id": 184,
+							"id": 197,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1040,24 +1181,24 @@
 						{
 							"title": "Properties",
 							"children": [
-								167,
-								168,
-								169,
-								170,
-								171,
-								172,
-								173,
-								174,
-								175,
-								176,
-								177,
-								178,
-								179,
 								180,
 								181,
 								182,
 								183,
-								184
+								184,
+								185,
+								186,
+								187,
+								188,
+								189,
+								190,
+								191,
+								192,
+								193,
+								194,
+								195,
+								196,
+								197
 							]
 						}
 					]
@@ -1065,7 +1206,7 @@
 			}
 		},
 		{
-			"id": 197,
+			"id": 210,
 			"name": "ReservationItemDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1084,14 +1225,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 198,
+					"id": 211,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 199,
+							"id": 212,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1110,7 +1251,7 @@
 							}
 						},
 						{
-							"id": 200,
+							"id": 213,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1129,7 +1270,7 @@
 							}
 						},
 						{
-							"id": 201,
+							"id": 214,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1148,7 +1289,7 @@
 							}
 						},
 						{
-							"id": 202,
+							"id": 215,
 							"name": "quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1167,7 +1308,7 @@
 							}
 						},
 						{
-							"id": 203,
+							"id": 216,
 							"name": "line_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1189,7 +1330,7 @@
 							}
 						},
 						{
-							"id": 204,
+							"id": 217,
 							"name": "description",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1219,7 +1360,7 @@
 							}
 						},
 						{
-							"id": 205,
+							"id": 218,
 							"name": "created_by",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1249,7 +1390,7 @@
 							}
 						},
 						{
-							"id": 206,
+							"id": 219,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1292,7 +1433,7 @@
 							}
 						},
 						{
-							"id": 207,
+							"id": 220,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1325,7 +1466,7 @@
 							}
 						},
 						{
-							"id": 208,
+							"id": 221,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1358,7 +1499,7 @@
 							}
 						},
 						{
-							"id": 209,
+							"id": 222,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1399,17 +1540,17 @@
 						{
 							"title": "Properties",
 							"children": [
-								199,
-								200,
-								201,
-								202,
-								203,
-								204,
-								205,
-								206,
-								207,
-								208,
-								209
+								212,
+								213,
+								214,
+								215,
+								216,
+								217,
+								218,
+								219,
+								220,
+								221,
+								222
 							]
 						}
 					]
@@ -1417,7 +1558,7 @@
 			}
 		},
 		{
-			"id": 216,
+			"id": 229,
 			"name": "InventoryLevelDTO",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -1431,14 +1572,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 217,
+					"id": 230,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 218,
+							"id": 231,
 							"name": "id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1449,7 +1590,7 @@
 							}
 						},
 						{
-							"id": 219,
+							"id": 232,
 							"name": "inventory_item_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1460,7 +1601,7 @@
 							}
 						},
 						{
-							"id": 220,
+							"id": 233,
 							"name": "location_id",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1479,7 +1620,7 @@
 							}
 						},
 						{
-							"id": 221,
+							"id": 234,
 							"name": "stocked_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1498,7 +1639,7 @@
 							}
 						},
 						{
-							"id": 222,
+							"id": 235,
 							"name": "reserved_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1517,7 +1658,7 @@
 							}
 						},
 						{
-							"id": 223,
+							"id": 236,
 							"name": "incoming_quantity",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1536,7 +1677,7 @@
 							}
 						},
 						{
-							"id": 224,
+							"id": 237,
 							"name": "metadata",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1579,7 +1720,7 @@
 							}
 						},
 						{
-							"id": 225,
+							"id": 238,
 							"name": "created_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1612,7 +1753,7 @@
 							}
 						},
 						{
-							"id": 226,
+							"id": 239,
 							"name": "updated_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1645,7 +1786,7 @@
 							}
 						},
 						{
-							"id": 227,
+							"id": 240,
 							"name": "deleted_at",
 							"variant": "declaration",
 							"kind": 1024,
@@ -1686,16 +1827,16 @@
 						{
 							"title": "Properties",
 							"children": [
-								218,
-								219,
-								220,
-								221,
-								222,
-								223,
-								224,
-								225,
-								226,
-								227
+								231,
+								232,
+								233,
+								234,
+								235,
+								236,
+								237,
+								238,
+								239,
+								240
 							]
 						}
 					]
@@ -1703,7 +1844,7 @@
 			}
 		},
 		{
-			"id": 188,
+			"id": 201,
 			"name": "FilterableReservationItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -1718,7 +1859,7 @@
 			},
 			"children": [
 				{
-					"id": 189,
+					"id": 202,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1751,7 +1892,7 @@
 					}
 				},
 				{
-					"id": 191,
+					"id": 204,
 					"name": "line_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1784,7 +1925,7 @@
 					}
 				},
 				{
-					"id": 192,
+					"id": 205,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1817,7 +1958,7 @@
 					}
 				},
 				{
-					"id": 193,
+					"id": 206,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1850,7 +1991,7 @@
 					}
 				},
 				{
-					"id": 194,
+					"id": 207,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1882,7 +2023,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 298,
+								"target": 312,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -1890,7 +2031,7 @@
 					}
 				},
 				{
-					"id": 195,
+					"id": 208,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1923,7 +2064,7 @@
 					}
 				},
 				{
-					"id": 196,
+					"id": 209,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1955,7 +2096,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 306,
+								"target": 320,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -1967,19 +2108,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						189,
-						191,
-						192,
-						193,
-						194,
-						195,
-						196
+						202,
+						204,
+						205,
+						206,
+						207,
+						208,
+						209
 					]
 				}
 			]
 		},
 		{
-			"id": 146,
+			"id": 158,
 			"name": "FilterableInventoryItemProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -1994,7 +2135,7 @@
 			},
 			"children": [
 				{
-					"id": 147,
+					"id": 159,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2027,7 +2168,7 @@
 					}
 				},
 				{
-					"id": 148,
+					"id": 160,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2060,7 +2201,7 @@
 					}
 				},
 				{
-					"id": 149,
+					"id": 161,
 					"name": "q",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2081,7 +2222,7 @@
 					}
 				},
 				{
-					"id": 150,
+					"id": 162,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2112,7 +2253,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 298,
+								"target": 312,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2120,7 +2261,7 @@
 					}
 				},
 				{
-					"id": 151,
+					"id": 163,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2153,7 +2294,7 @@
 					}
 				},
 				{
-					"id": 152,
+					"id": 164,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2184,7 +2325,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 298,
+								"target": 312,
 								"name": "StringComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -2192,7 +2333,7 @@
 					}
 				},
 				{
-					"id": 153,
+					"id": 165,
 					"name": "requires_shipping",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2217,19 +2358,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						147,
-						148,
-						149,
-						150,
-						151,
-						152,
-						153
+						159,
+						160,
+						161,
+						162,
+						163,
+						164,
+						165
 					]
 				}
 			]
 		},
 		{
-			"id": 237,
+			"id": 250,
 			"name": "CreateInventoryItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -2244,7 +2385,7 @@
 			},
 			"children": [
 				{
-					"id": 238,
+					"id": 251,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2274,7 +2415,7 @@
 					}
 				},
 				{
-					"id": 239,
+					"id": 252,
 					"name": "origin_country",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2304,7 +2445,7 @@
 					}
 				},
 				{
-					"id": 240,
+					"id": 253,
 					"name": "mid_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2334,7 +2475,7 @@
 					}
 				},
 				{
-					"id": 241,
+					"id": 254,
 					"name": "material",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2364,7 +2505,7 @@
 					}
 				},
 				{
-					"id": 242,
+					"id": 255,
 					"name": "weight",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2394,7 +2535,7 @@
 					}
 				},
 				{
-					"id": 243,
+					"id": 256,
 					"name": "length",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2424,7 +2565,7 @@
 					}
 				},
 				{
-					"id": 244,
+					"id": 257,
 					"name": "height",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2454,7 +2595,7 @@
 					}
 				},
 				{
-					"id": 245,
+					"id": 258,
 					"name": "width",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2484,7 +2625,7 @@
 					}
 				},
 				{
-					"id": 246,
+					"id": 259,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2514,7 +2655,7 @@
 					}
 				},
 				{
-					"id": 247,
+					"id": 260,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2544,7 +2685,7 @@
 					}
 				},
 				{
-					"id": 248,
+					"id": 261,
 					"name": "thumbnail",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2571,6 +2712,281 @@
 								"name": "string"
 							}
 						]
+					}
+				},
+				{
+					"id": 262,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Holds custom data in key-value pairs."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 263,
+					"name": "hs_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The HS code of the inventory item."
+							}
+						]
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 264,
+					"name": "requires_shipping",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Whether the inventory item requires shipping."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Properties",
+					"children": [
+						251,
+						252,
+						253,
+						254,
+						255,
+						256,
+						257,
+						258,
+						259,
+						260,
+						261,
+						262,
+						263,
+						264
+					]
+				}
+			]
+		},
+		{
+			"id": 241,
+			"name": "CreateReservationItemInput",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The details of the reservation item to be created."
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 242,
+					"name": "line_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the associated line item."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 243,
+					"name": "inventory_item_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the associated inventory item."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 244,
+					"name": "location_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The ID of the associated location."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 245,
+					"name": "quantity",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The reserved quantity."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
+				},
+				{
+					"id": 246,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The description of the reservation."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 247,
+					"name": "created_by",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "The user or system that created the reservation. Can be any form of identification string."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 248,
+					"name": "external_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "An ID associated with an external third-party system that the reservation item is connected to."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
 					}
 				},
 				{
@@ -2617,67 +3033,12 @@
 							}
 						]
 					}
-				},
-				{
-					"id": 250,
-					"name": "hs_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The HS code of the inventory item."
-							}
-						]
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 251,
-					"name": "requires_shipping",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Whether the inventory item requires shipping."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					}
 				}
 			],
 			"groups": [
 				{
 					"title": "Properties",
 					"children": [
-						238,
-						239,
-						240,
-						241,
 						242,
 						243,
 						244,
@@ -2685,233 +3046,13 @@
 						246,
 						247,
 						248,
-						249,
-						250,
-						251
+						249
 					]
 				}
 			]
 		},
 		{
-			"id": 228,
-			"name": "CreateReservationItemInput",
-			"variant": "declaration",
-			"kind": 256,
-			"flags": {},
-			"comment": {
-				"summary": [
-					{
-						"kind": "text",
-						"text": "The details of the reservation item to be created."
-					}
-				]
-			},
-			"children": [
-				{
-					"id": 229,
-					"name": "line_item_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The ID of the associated line item."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 230,
-					"name": "inventory_item_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The ID of the associated inventory item."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 231,
-					"name": "location_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The ID of the associated location."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 232,
-					"name": "quantity",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The reserved quantity."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 233,
-					"name": "description",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The description of the reservation."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 234,
-					"name": "created_by",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "The user or system that created the reservation. Can be any form of identification string."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 235,
-					"name": "external_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "An ID associated with an external third-party system that the reservation item is connected to."
-							}
-						]
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 236,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"comment": {
-						"summary": [
-							{
-								"kind": "text",
-								"text": "Holds custom data in key-value pairs."
-							}
-						]
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Properties",
-					"children": [
-						229,
-						230,
-						231,
-						232,
-						233,
-						234,
-						235,
-						236
-					]
-				}
-			]
-		},
-		{
-			"id": 210,
+			"id": 223,
 			"name": "FilterableInventoryLevelProps",
 			"variant": "declaration",
 			"kind": 256,
@@ -2926,7 +3067,7 @@
 			},
 			"children": [
 				{
-					"id": 211,
+					"id": 224,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2959,7 +3100,7 @@
 					}
 				},
 				{
-					"id": 212,
+					"id": 225,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2992,7 +3133,7 @@
 					}
 				},
 				{
-					"id": 213,
+					"id": 226,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3024,7 +3165,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 306,
+								"target": 320,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3032,7 +3173,7 @@
 					}
 				},
 				{
-					"id": 214,
+					"id": 227,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3064,7 +3205,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 306,
+								"target": 320,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3072,7 +3213,7 @@
 					}
 				},
 				{
-					"id": 215,
+					"id": 228,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3104,7 +3245,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 306,
+								"target": 320,
 								"name": "NumericalComparisonOperator",
 								"package": "@medusajs/types"
 							}
@@ -3116,17 +3257,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						211,
-						212,
-						213,
-						214,
-						215
+						224,
+						225,
+						226,
+						227,
+						228
 					]
 				}
 			]
 		},
 		{
-			"id": 252,
+			"id": 265,
 			"name": "CreateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3141,7 +3282,7 @@
 			},
 			"children": [
 				{
-					"id": 253,
+					"id": 266,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3160,7 +3301,7 @@
 					}
 				},
 				{
-					"id": 254,
+					"id": 267,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3179,7 +3320,7 @@
 					}
 				},
 				{
-					"id": 255,
+					"id": 268,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3198,7 +3339,7 @@
 					}
 				},
 				{
-					"id": 256,
+					"id": 269,
 					"name": "reserved_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3219,7 +3360,7 @@
 					}
 				},
 				{
-					"id": 257,
+					"id": 270,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3244,17 +3385,17 @@
 				{
 					"title": "Properties",
 					"children": [
-						253,
-						254,
-						255,
-						256,
-						257
+						266,
+						267,
+						268,
+						269,
+						270
 					]
 				}
 			]
 		},
 		{
-			"id": 263,
+			"id": 276,
 			"name": "UpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3269,7 +3410,7 @@
 			},
 			"children": [
 				{
-					"id": 264,
+					"id": 277,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3290,7 +3431,7 @@
 					}
 				},
 				{
-					"id": 265,
+					"id": 278,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3315,14 +3456,14 @@
 				{
 					"title": "Properties",
 					"children": [
-						264,
-						265
+						277,
+						278
 					]
 				}
 			]
 		},
 		{
-			"id": 258,
+			"id": 271,
 			"name": "BulkUpdateInventoryLevelInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3337,7 +3478,7 @@
 			},
 			"children": [
 				{
-					"id": 261,
+					"id": 274,
 					"name": "stocked_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3358,7 +3499,7 @@
 					}
 				},
 				{
-					"id": 262,
+					"id": 275,
 					"name": "incoming_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3379,7 +3520,7 @@
 					}
 				},
 				{
-					"id": 259,
+					"id": 272,
 					"name": "inventory_item_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3398,7 +3539,7 @@
 					}
 				},
 				{
-					"id": 260,
+					"id": 273,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3421,16 +3562,16 @@
 				{
 					"title": "Properties",
 					"children": [
-						261,
-						262,
-						259,
-						260
+						274,
+						275,
+						272,
+						273
 					]
 				}
 			]
 		},
 		{
-			"id": 266,
+			"id": 279,
 			"name": "UpdateReservationItemInput",
 			"variant": "declaration",
 			"kind": 256,
@@ -3445,7 +3586,7 @@
 			},
 			"children": [
 				{
-					"id": 267,
+					"id": 280,
 					"name": "quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3466,7 +3607,7 @@
 					}
 				},
 				{
-					"id": 268,
+					"id": 281,
 					"name": "location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3487,7 +3628,7 @@
 					}
 				},
 				{
-					"id": 269,
+					"id": 282,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3508,7 +3649,7 @@
 					}
 				},
 				{
-					"id": 270,
+					"id": 283,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3557,10 +3698,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						267,
-						268,
-						269,
-						270
+						280,
+						281,
+						282,
+						283
 					]
 				}
 			]
@@ -3571,6 +3712,14 @@
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "The main service interface for the inventory module."
+					}
+				]
+			},
 			"children": [
 				{
 					"id": 2,
@@ -3682,7 +3831,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 146,
+										"target": 158,
 										"name": "FilterableInventoryItemProps",
 										"package": "@medusajs/types"
 									}
@@ -3721,11 +3870,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 154,
+										"target": 166,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 165,
+												"target": 178,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -3752,7 +3901,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -3772,7 +3921,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 165,
+													"target": 178,
 													"name": "InventoryItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -3900,7 +4049,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 188,
+										"target": 201,
 										"name": "FilterableReservationItemProps",
 										"package": "@medusajs/types"
 									}
@@ -3939,11 +4088,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 154,
+										"target": 166,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 197,
+												"target": 210,
 												"name": "ReservationItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -3970,7 +4119,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -3990,7 +4139,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 197,
+													"target": 210,
 													"name": "ReservationItemDTO",
 													"package": "@medusajs/types"
 												}
@@ -4118,7 +4267,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 210,
+										"target": 223,
 										"name": "FilterableInventoryLevelProps",
 										"package": "@medusajs/types"
 									}
@@ -4157,11 +4306,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 154,
+										"target": 166,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 216,
+												"target": 229,
 												"name": "InventoryLevelDTO",
 												"package": "@medusajs/types"
 											}
@@ -4188,7 +4337,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4208,7 +4357,7 @@
 												"type": "array",
 												"elementType": {
 													"type": "reference",
-													"target": 216,
+													"target": 229,
 													"name": "InventoryLevelDTO",
 													"package": "@medusajs/types"
 												}
@@ -4333,11 +4482,11 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 154,
+										"target": 166,
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 165,
+												"target": 178,
 												"name": "InventoryItemDTO",
 												"package": "@medusajs/types"
 											}
@@ -4364,7 +4513,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4379,7 +4528,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 165,
+										"target": 178,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4488,7 +4637,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4503,7 +4652,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 216,
+										"target": 229,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -4593,7 +4742,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4608,7 +4757,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 197,
+										"target": 210,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4677,7 +4826,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 228,
+										"target": 241,
 										"name": "CreateReservationItemInput",
 										"package": "@medusajs/types"
 									}
@@ -4700,7 +4849,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4715,7 +4864,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 197,
+										"target": 210,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -4786,7 +4935,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 228,
+											"target": 241,
 											"name": "CreateReservationItemInput",
 											"package": "@medusajs/types"
 										}
@@ -4810,7 +4959,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4827,7 +4976,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 197,
+											"target": 210,
 											"name": "ReservationItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -4897,7 +5046,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 237,
+										"target": 250,
 										"name": "CreateInventoryItemInput",
 										"package": "@medusajs/types"
 									}
@@ -4920,7 +5069,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -4935,7 +5084,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 165,
+										"target": 178,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5006,7 +5155,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 237,
+											"target": 250,
 											"name": "CreateInventoryItemInput",
 											"package": "@medusajs/types"
 										}
@@ -5030,7 +5179,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5047,7 +5196,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 165,
+											"target": 178,
 											"name": "InventoryItemDTO",
 											"package": "@medusajs/types"
 										}
@@ -5117,7 +5266,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 252,
+										"target": 265,
 										"name": "CreateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
@@ -5140,7 +5289,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5155,7 +5304,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 216,
+										"target": 229,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5226,7 +5375,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 252,
+											"target": 265,
 											"name": "CreateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
@@ -5250,7 +5399,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5267,7 +5416,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 216,
+											"target": 229,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5339,7 +5488,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 258,
+											"target": 271,
 											"name": "BulkUpdateInventoryLevelInput",
 											"package": "@medusajs/types"
 										}
@@ -5363,7 +5512,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5380,7 +5529,7 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 216,
+											"target": 229,
 											"name": "InventoryLevelDTO",
 											"package": "@medusajs/types"
 										}
@@ -5488,7 +5637,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 263,
+										"target": 276,
 										"name": "UpdateInventoryLevelInput",
 										"package": "@medusajs/types"
 									}
@@ -5511,7 +5660,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5526,7 +5675,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 216,
+										"target": 229,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -5621,7 +5770,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 237,
+												"target": 250,
 												"name": "CreateInventoryItemInput",
 												"package": "@medusajs/types"
 											}
@@ -5648,7 +5797,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5663,7 +5812,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 165,
+										"target": 178,
 										"name": "InventoryItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5751,7 +5900,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 266,
+										"target": 279,
 										"name": "UpdateReservationItemInput",
 										"package": "@medusajs/types"
 									}
@@ -5774,7 +5923,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -5789,7 +5938,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 197,
+										"target": 210,
 										"name": "ReservationItemDTO",
 										"package": "@medusajs/types"
 									}
@@ -5891,7 +6040,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6006,7 +6155,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6132,7 +6281,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6258,7 +6407,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6373,7 +6522,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6488,7 +6637,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6610,7 +6759,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6751,7 +6900,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -6766,7 +6915,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 216,
+										"target": 229,
 										"name": "InventoryLevelDTO",
 										"package": "@medusajs/types"
 									}
@@ -6897,7 +7046,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7022,7 +7171,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7147,7 +7296,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7272,7 +7421,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 185,
+										"target": 198,
 										"name": "SharedContext",
 										"package": "@medusajs/types"
 									}
@@ -7335,14 +7484,14 @@
 			"extendedTypes": [
 				{
 					"type": "reference",
-					"target": 138,
+					"target": 144,
 					"name": "IModuleService",
 					"package": "@medusajs/types"
 				}
 			]
 		},
 		{
-			"id": 332,
+			"id": 346,
 			"name": "JoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7350,14 +7499,14 @@
 			"type": {
 				"type": "reflection",
 				"declaration": {
-					"id": 333,
+					"id": 347,
 					"name": "__type",
 					"variant": "declaration",
 					"kind": 65536,
 					"flags": {},
 					"children": [
 						{
-							"id": 334,
+							"id": 348,
 							"name": "alias",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7368,7 +7517,7 @@
 							}
 						},
 						{
-							"id": 335,
+							"id": 349,
 							"name": "foreignKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7379,7 +7528,7 @@
 							}
 						},
 						{
-							"id": 336,
+							"id": 350,
 							"name": "primaryKey",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7390,7 +7539,7 @@
 							}
 						},
 						{
-							"id": 337,
+							"id": 351,
 							"name": "serviceName",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7401,7 +7550,7 @@
 							}
 						},
 						{
-							"id": 338,
+							"id": 352,
 							"name": "isInternalService",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7422,7 +7571,7 @@
 							}
 						},
 						{
-							"id": 339,
+							"id": 353,
 							"name": "inverse",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7443,7 +7592,7 @@
 							}
 						},
 						{
-							"id": 340,
+							"id": 354,
 							"name": "isList",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7464,7 +7613,7 @@
 							}
 						},
 						{
-							"id": 341,
+							"id": 355,
 							"name": "args",
 							"variant": "declaration",
 							"kind": 1024,
@@ -7504,14 +7653,14 @@
 						{
 							"title": "Properties",
 							"children": [
-								334,
-								335,
-								336,
-								337,
-								338,
-								339,
-								340,
-								341
+								348,
+								349,
+								350,
+								351,
+								352,
+								353,
+								354,
+								355
 							]
 						}
 					]
@@ -7519,14 +7668,14 @@
 			}
 		},
 		{
-			"id": 329,
+			"id": 343,
 			"name": "JoinerServiceConfigAlias",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 330,
+					"id": 344,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7549,7 +7698,7 @@
 					}
 				},
 				{
-					"id": 331,
+					"id": 345,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7589,21 +7738,21 @@
 				{
 					"title": "Properties",
 					"children": [
-						330,
-						331
+						344,
+						345
 					]
 				}
 			]
 		},
 		{
-			"id": 311,
+			"id": 325,
 			"name": "JoinerServiceConfig",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 312,
+					"id": 326,
 					"name": "serviceName",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7614,7 +7763,7 @@
 					}
 				},
 				{
-					"id": 313,
+					"id": 327,
 					"name": "alias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7634,7 +7783,7 @@
 						"types": [
 							{
 								"type": "reference",
-								"target": 329,
+								"target": 343,
 								"name": "JoinerServiceConfigAlias",
 								"package": "@medusajs/types"
 							},
@@ -7642,7 +7791,7 @@
 								"type": "array",
 								"elementType": {
 									"type": "reference",
-									"target": 329,
+									"target": 343,
 									"name": "JoinerServiceConfigAlias",
 									"package": "@medusajs/types"
 								}
@@ -7651,7 +7800,7 @@
 					}
 				},
 				{
-					"id": 314,
+					"id": 328,
 					"name": "fieldAlias",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7687,14 +7836,14 @@
 									{
 										"type": "reflection",
 										"declaration": {
-											"id": 315,
+											"id": 329,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 316,
+													"id": 330,
 													"name": "path",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7705,7 +7854,7 @@
 													}
 												},
 												{
-													"id": 317,
+													"id": 331,
 													"name": "forwardArgumentsOnPath",
 													"variant": "declaration",
 													"kind": 1024,
@@ -7723,8 +7872,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														316,
-														317
+														330,
+														331
 													]
 												}
 											]
@@ -7738,7 +7887,7 @@
 					}
 				},
 				{
-					"id": 318,
+					"id": 332,
 					"name": "primaryKeys",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7752,7 +7901,7 @@
 					}
 				},
 				{
-					"id": 319,
+					"id": 333,
 					"name": "relationships",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7763,14 +7912,14 @@
 						"type": "array",
 						"elementType": {
 							"type": "reference",
-							"target": 332,
+							"target": 346,
 							"name": "JoinerRelationship",
 							"package": "@medusajs/types"
 						}
 					}
 				},
 				{
-					"id": 320,
+					"id": 334,
 					"name": "extends",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7782,14 +7931,14 @@
 						"elementType": {
 							"type": "reflection",
 							"declaration": {
-								"id": 321,
+								"id": 335,
 								"name": "__type",
 								"variant": "declaration",
 								"kind": 65536,
 								"flags": {},
 								"children": [
 									{
-										"id": 322,
+										"id": 336,
 										"name": "serviceName",
 										"variant": "declaration",
 										"kind": 1024,
@@ -7800,14 +7949,14 @@
 										}
 									},
 									{
-										"id": 323,
+										"id": 337,
 										"name": "relationship",
 										"variant": "declaration",
 										"kind": 1024,
 										"flags": {},
 										"type": {
 											"type": "reference",
-											"target": 332,
+											"target": 346,
 											"name": "JoinerRelationship",
 											"package": "@medusajs/types"
 										}
@@ -7817,8 +7966,8 @@
 									{
 										"title": "Properties",
 										"children": [
-											322,
-											323
+											336,
+											337
 										]
 									}
 								]
@@ -7827,7 +7976,7 @@
 					}
 				},
 				{
-					"id": 324,
+					"id": 338,
 					"name": "args",
 					"variant": "declaration",
 					"kind": 1024,
@@ -7867,19 +8016,19 @@
 				{
 					"title": "Properties",
 					"children": [
-						312,
-						313,
-						314,
-						318,
-						319,
-						320,
-						324
+						326,
+						327,
+						328,
+						332,
+						333,
+						334,
+						338
 					]
 				}
 			]
 		},
 		{
-			"id": 271,
+			"id": 284,
 			"name": "ModuleJoinerConfig",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -7896,7 +8045,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 311,
+								"target": 325,
 								"name": "JoinerServiceConfig",
 								"package": "@medusajs/types"
 							},
@@ -7928,14 +8077,14 @@
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 272,
+							"id": 285,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 273,
+									"id": 286,
 									"name": "schema",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7956,7 +8105,7 @@
 									}
 								},
 								{
-									"id": 274,
+									"id": 287,
 									"name": "relationships",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7967,14 +8116,14 @@
 										"type": "array",
 										"elementType": {
 											"type": "reference",
-											"target": 325,
+											"target": 339,
 											"name": "ModuleJoinerRelationship",
 											"package": "@medusajs/types"
 										}
 									}
 								},
 								{
-									"id": 275,
+									"id": 288,
 									"name": "extends",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7986,14 +8135,14 @@
 										"elementType": {
 											"type": "reflection",
 											"declaration": {
-												"id": 276,
+												"id": 289,
 												"name": "__type",
 												"variant": "declaration",
 												"kind": 65536,
 												"flags": {},
 												"children": [
 													{
-														"id": 277,
+														"id": 290,
 														"name": "serviceName",
 														"variant": "declaration",
 														"kind": 1024,
@@ -8004,7 +8153,7 @@
 														}
 													},
 													{
-														"id": 278,
+														"id": 291,
 														"name": "fieldAlias",
 														"variant": "declaration",
 														"kind": 1024,
@@ -8032,14 +8181,14 @@
 																		{
 																			"type": "reflection",
 																			"declaration": {
-																				"id": 279,
+																				"id": 292,
 																				"name": "__type",
 																				"variant": "declaration",
 																				"kind": 65536,
 																				"flags": {},
 																				"children": [
 																					{
-																						"id": 280,
+																						"id": 293,
 																						"name": "path",
 																						"variant": "declaration",
 																						"kind": 1024,
@@ -8050,11 +8199,13 @@
 																						}
 																					},
 																					{
-																						"id": 281,
+																						"id": 294,
 																						"name": "forwardArgumentsOnPath",
 																						"variant": "declaration",
 																						"kind": 1024,
-																						"flags": {},
+																						"flags": {
+																							"isOptional": true
+																						},
 																						"type": {
 																							"type": "array",
 																							"elementType": {
@@ -8062,14 +8213,28 @@
 																								"name": "string"
 																							}
 																						}
+																					},
+																					{
+																						"id": 295,
+																						"name": "isList",
+																						"variant": "declaration",
+																						"kind": 1024,
+																						"flags": {
+																							"isOptional": true
+																						},
+																						"type": {
+																							"type": "intrinsic",
+																							"name": "boolean"
+																						}
 																					}
 																				],
 																				"groups": [
 																					{
 																						"title": "Properties",
 																						"children": [
-																							280,
-																							281
+																							293,
+																							294,
+																							295
 																						]
 																					}
 																				]
@@ -8083,14 +8248,14 @@
 														}
 													},
 													{
-														"id": 282,
+														"id": 296,
 														"name": "relationship",
 														"variant": "declaration",
 														"kind": 1024,
 														"flags": {},
 														"type": {
 															"type": "reference",
-															"target": 325,
+															"target": 339,
 															"name": "ModuleJoinerRelationship",
 															"package": "@medusajs/types"
 														}
@@ -8100,9 +8265,9 @@
 													{
 														"title": "Properties",
 														"children": [
-															277,
-															278,
-															282
+															290,
+															291,
+															296
 														]
 													}
 												]
@@ -8111,7 +8276,7 @@
 									}
 								},
 								{
-									"id": 283,
+									"id": 297,
 									"name": "serviceName",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8124,7 +8289,7 @@
 									}
 								},
 								{
-									"id": 284,
+									"id": 298,
 									"name": "primaryKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8140,7 +8305,7 @@
 									}
 								},
 								{
-									"id": 285,
+									"id": 299,
 									"name": "isLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8161,7 +8326,7 @@
 									}
 								},
 								{
-									"id": 286,
+									"id": 300,
 									"name": "linkableKeys",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8197,7 +8362,7 @@
 									}
 								},
 								{
-									"id": 287,
+									"id": 301,
 									"name": "isReadOnlyLink",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8218,7 +8383,7 @@
 									}
 								},
 								{
-									"id": 288,
+									"id": 302,
 									"name": "databaseConfig",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8228,14 +8393,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 289,
+											"id": 303,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 290,
+													"id": 304,
 													"name": "tableName",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8256,7 +8421,7 @@
 													}
 												},
 												{
-													"id": 291,
+													"id": 305,
 													"name": "idPrefix",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8277,7 +8442,7 @@
 													}
 												},
 												{
-													"id": 292,
+													"id": 306,
 													"name": "extraFields",
 													"variant": "declaration",
 													"kind": 1024,
@@ -8298,14 +8463,14 @@
 															{
 																"type": "reflection",
 																"declaration": {
-																	"id": 293,
+																	"id": 307,
 																	"name": "__type",
 																	"variant": "declaration",
 																	"kind": 65536,
 																	"flags": {},
 																	"children": [
 																		{
-																			"id": 294,
+																			"id": 308,
 																			"name": "type",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8401,7 +8566,7 @@
 																			}
 																		},
 																		{
-																			"id": 295,
+																			"id": 309,
 																			"name": "defaultValue",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8414,7 +8579,7 @@
 																			}
 																		},
 																		{
-																			"id": 296,
+																			"id": 310,
 																			"name": "nullable",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8427,7 +8592,7 @@
 																			}
 																		},
 																		{
-																			"id": 297,
+																			"id": 311,
 																			"name": "options",
 																			"variant": "declaration",
 																			"kind": 1024,
@@ -8467,10 +8632,10 @@
 																		{
 																			"title": "Properties",
 																			"children": [
-																				294,
-																				295,
-																				296,
-																				297
+																				308,
+																				309,
+																				310,
+																				311
 																			]
 																		}
 																	]
@@ -8486,9 +8651,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														290,
-														291,
-														292
+														304,
+														305,
+														306
 													]
 												}
 											]
@@ -8500,15 +8665,15 @@
 								{
 									"title": "Properties",
 									"children": [
-										273,
-										274,
-										275,
-										283,
-										284,
-										285,
 										286,
 										287,
-										288
+										288,
+										297,
+										298,
+										299,
+										300,
+										301,
+										302
 									]
 								}
 							]
@@ -8518,7 +8683,7 @@
 			}
 		},
 		{
-			"id": 325,
+			"id": 339,
 			"name": "ModuleJoinerRelationship",
 			"variant": "declaration",
 			"kind": 2097152,
@@ -8528,21 +8693,21 @@
 				"types": [
 					{
 						"type": "reference",
-						"target": 332,
+						"target": 346,
 						"name": "JoinerRelationship",
 						"package": "@medusajs/types"
 					},
 					{
 						"type": "reflection",
 						"declaration": {
-							"id": 326,
+							"id": 340,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 327,
+									"id": 341,
 									"name": "isInternalService",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8563,7 +8728,7 @@
 									}
 								},
 								{
-									"id": 328,
+									"id": 342,
 									"name": "deleteCascade",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8588,8 +8753,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										327,
-										328
+										341,
+										342
 									]
 								}
 							]
@@ -8599,7 +8764,7 @@
 			}
 		},
 		{
-			"id": 138,
+			"id": 144,
 			"name": "IModuleService",
 			"variant": "declaration",
 			"kind": 256,
@@ -8613,7 +8778,7 @@
 			]
 		},
 		{
-			"id": 185,
+			"id": 198,
 			"name": "SharedContext",
 			"variant": "declaration",
 			"kind": 256,
@@ -8642,7 +8807,7 @@
 			},
 			"children": [
 				{
-					"id": 186,
+					"id": 199,
 					"name": "transactionManager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8668,7 +8833,7 @@
 					}
 				},
 				{
-					"id": 187,
+					"id": 200,
 					"name": "manager",
 					"variant": "declaration",
 					"kind": 1024,
@@ -8698,8 +8863,8 @@
 				{
 					"title": "Properties",
 					"children": [
-						186,
-						187
+						199,
+						200
 					]
 				}
 			]
@@ -8709,34 +8874,34 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				154,
-				298,
-				306,
-				188,
-				146,
-				237,
-				228,
-				210,
-				252,
-				263,
-				258,
-				266,
+				166,
+				312,
+				320,
+				201,
+				158,
+				250,
+				241,
+				223,
+				265,
+				276,
+				271,
+				279,
 				1,
-				329,
-				311,
-				138,
-				185
+				343,
+				325,
+				144,
+				198
 			]
 		},
 		{
 			"title": "Type Aliases",
 			"children": [
-				165,
-				197,
-				216,
-				332,
-				271,
-				325
+				178,
+				210,
+				229,
+				346,
+				284,
+				339
 			]
 		}
 	],
@@ -9266,413 +9431,365 @@
 			"sourceFileName": "../../../packages/types/src/inventory/service.ts",
 			"qualifiedName": "context"
 		},
-		"138": {
+		"144": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
 			"qualifiedName": "IModuleService"
 		},
-		"146": {
+		"158": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "FilterableInventoryItemProps"
 		},
-		"147": {
+		"159": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.id"
 		},
-		"148": {
+		"160": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.location_id"
 		},
-		"149": {
+		"161": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.q"
 		},
-		"150": {
+		"162": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.sku"
 		},
-		"151": {
+		"163": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.origin_country"
 		},
-		"152": {
+		"164": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.hs_code"
-		},
-		"153": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.requires_shipping"
-		},
-		"154": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig"
-		},
-		"155": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.select"
-		},
-		"156": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.skip"
-		},
-		"157": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.take"
-		},
-		"158": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.relations"
-		},
-		"159": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.order"
-		},
-		"160": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "__type"
-		},
-		"161": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "__type.__index"
-		},
-		"163": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.withDeleted"
-		},
-		"164": {
-			"sourceFileName": "../../../packages/types/src/common/common.ts",
-			"qualifiedName": "FindConfig.Entity"
 		},
 		"165": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "InventoryItemDTO"
-		},
-		"166": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type"
-		},
-		"167": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.id"
-		},
-		"168": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.sku"
-		},
-		"169": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.origin_country"
-		},
-		"170": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.hs_code"
-		},
-		"171": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.requires_shipping"
 		},
+		"166": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig"
+		},
+		"167": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.select"
+		},
+		"168": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.skip"
+		},
+		"169": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.take"
+		},
+		"170": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.relations"
+		},
+		"171": {
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.order"
+		},
 		"172": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.mid_code"
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type"
 		},
 		"173": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.material"
-		},
-		"174": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.weight"
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "__type.__index"
 		},
 		"175": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.length"
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.withDeleted"
 		},
 		"176": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.height"
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.filters"
 		},
 		"177": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.width"
+			"sourceFileName": "../../../packages/types/src/common/common.ts",
+			"qualifiedName": "FindConfig.Entity"
 		},
 		"178": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.title"
+			"qualifiedName": "InventoryItemDTO"
 		},
 		"179": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
+			"qualifiedName": "__type"
 		},
 		"180": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.thumbnail"
+			"qualifiedName": "__type.id"
 		},
 		"181": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type.sku"
 		},
 		"182": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_at"
+			"qualifiedName": "__type.origin_country"
 		},
 		"183": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.updated_at"
+			"qualifiedName": "__type.hs_code"
 		},
 		"184": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.deleted_at"
+			"qualifiedName": "__type.requires_shipping"
 		},
 		"185": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "SharedContext"
-		},
-		"186": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "__type.transactionManager"
-		},
-		"187": {
-			"sourceFileName": "../../../packages/types/src/shared-context.ts",
-			"qualifiedName": "__type.manager"
-		},
-		"188": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "FilterableReservationItemProps"
-		},
-		"189": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.id"
-		},
-		"191": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.line_item_id"
-		},
-		"192": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"193": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"194": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
-		},
-		"195": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_by"
-		},
-		"196": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.quantity"
-		},
-		"197": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "ReservationItemDTO"
-		},
-		"198": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type"
-		},
-		"199": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.id"
-		},
-		"200": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"201": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"202": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.quantity"
-		},
-		"203": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.line_item_id"
-		},
-		"204": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
-		},
-		"205": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_by"
-		},
-		"206": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
-		},
-		"207": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_at"
-		},
-		"208": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.updated_at"
-		},
-		"209": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.deleted_at"
-		},
-		"210": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "FilterableInventoryLevelProps"
-		},
-		"211": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"212": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"213": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
-		},
-		"214": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.reserved_quantity"
-		},
-		"215": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
-		},
-		"216": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "InventoryLevelDTO"
-		},
-		"217": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type"
-		},
-		"218": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.id"
-		},
-		"219": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"220": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"221": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
-		},
-		"222": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.reserved_quantity"
-		},
-		"223": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
-		},
-		"224": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
-		},
-		"225": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_at"
-		},
-		"226": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.updated_at"
-		},
-		"227": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.deleted_at"
-		},
-		"228": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "CreateReservationItemInput"
-		},
-		"229": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.line_item_id"
-		},
-		"230": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
-		},
-		"231": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
-		},
-		"232": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.quantity"
-		},
-		"233": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
-		},
-		"234": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.created_by"
-		},
-		"235": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.external_id"
-		},
-		"236": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
-		},
-		"237": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "CreateInventoryItemInput"
-		},
-		"238": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.sku"
-		},
-		"239": {
-			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.origin_country"
-		},
-		"240": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.mid_code"
 		},
-		"241": {
+		"186": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.material"
 		},
-		"242": {
+		"187": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.weight"
 		},
-		"243": {
+		"188": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.length"
 		},
-		"244": {
+		"189": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.height"
 		},
-		"245": {
+		"190": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.width"
 		},
-		"246": {
+		"191": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.title"
 		},
-		"247": {
+		"192": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.description"
 		},
-		"248": {
+		"193": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
 			"qualifiedName": "__type.thumbnail"
+		},
+		"194": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"195": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_at"
+		},
+		"196": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.updated_at"
+		},
+		"197": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.deleted_at"
+		},
+		"198": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "SharedContext"
+		},
+		"199": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.transactionManager"
+		},
+		"200": {
+			"sourceFileName": "../../../packages/types/src/shared-context.ts",
+			"qualifiedName": "__type.manager"
+		},
+		"201": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "FilterableReservationItemProps"
+		},
+		"202": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"204": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.line_item_id"
+		},
+		"205": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
+		},
+		"206": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
+		},
+		"207": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.description"
+		},
+		"208": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_by"
+		},
+		"209": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.quantity"
+		},
+		"210": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "ReservationItemDTO"
+		},
+		"211": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type"
+		},
+		"212": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"213": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
+		},
+		"214": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
+		},
+		"215": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.quantity"
+		},
+		"216": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.line_item_id"
+		},
+		"217": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.description"
+		},
+		"218": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_by"
+		},
+		"219": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"220": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_at"
+		},
+		"221": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.updated_at"
+		},
+		"222": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.deleted_at"
+		},
+		"223": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "FilterableInventoryLevelProps"
+		},
+		"224": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
+		},
+		"225": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
+		},
+		"226": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.stocked_quantity"
+		},
+		"227": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.reserved_quantity"
+		},
+		"228": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.incoming_quantity"
+		},
+		"229": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "InventoryLevelDTO"
+		},
+		"230": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type"
+		},
+		"231": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.id"
+		},
+		"232": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
+		},
+		"233": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
+		},
+		"234": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.stocked_quantity"
+		},
+		"235": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.reserved_quantity"
+		},
+		"236": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.incoming_quantity"
+		},
+		"237": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.metadata"
+		},
+		"238": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_at"
+		},
+		"239": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.updated_at"
+		},
+		"240": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.deleted_at"
+		},
+		"241": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "CreateReservationItemInput"
+		},
+		"242": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.line_item_id"
+		},
+		"243": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
+		},
+		"244": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
+		},
+		"245": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.quantity"
+		},
+		"246": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.description"
+		},
+		"247": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.created_by"
+		},
+		"248": {
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.external_id"
 		},
 		"249": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
@@ -9680,159 +9797,159 @@
 		},
 		"250": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.hs_code"
+			"qualifiedName": "CreateInventoryItemInput"
 		},
 		"251": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.requires_shipping"
+			"qualifiedName": "CreateInventoryItemInput.sku"
 		},
 		"252": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "CreateInventoryLevelInput"
+			"qualifiedName": "CreateInventoryItemInput.origin_country"
 		},
 		"253": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
+			"qualifiedName": "CreateInventoryItemInput.mid_code"
 		},
 		"254": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
+			"qualifiedName": "CreateInventoryItemInput.material"
 		},
 		"255": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
+			"qualifiedName": "CreateInventoryItemInput.weight"
 		},
 		"256": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.reserved_quantity"
+			"qualifiedName": "CreateInventoryItemInput.length"
 		},
 		"257": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
+			"qualifiedName": "CreateInventoryItemInput.height"
 		},
 		"258": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "BulkUpdateInventoryLevelInput"
+			"qualifiedName": "CreateInventoryItemInput.width"
 		},
 		"259": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.inventory_item_id"
+			"qualifiedName": "CreateInventoryItemInput.title"
 		},
 		"260": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
+			"qualifiedName": "CreateInventoryItemInput.description"
 		},
 		"261": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
+			"qualifiedName": "CreateInventoryItemInput.thumbnail"
 		},
 		"262": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
+			"qualifiedName": "CreateInventoryItemInput.metadata"
 		},
 		"263": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "UpdateInventoryLevelInput"
+			"qualifiedName": "CreateInventoryItemInput.hs_code"
 		},
 		"264": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.stocked_quantity"
+			"qualifiedName": "CreateInventoryItemInput.requires_shipping"
 		},
 		"265": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.incoming_quantity"
+			"qualifiedName": "CreateInventoryLevelInput"
 		},
 		"266": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "UpdateReservationItemInput"
+			"qualifiedName": "__type.inventory_item_id"
 		},
 		"267": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.quantity"
+			"qualifiedName": "__type.location_id"
 		},
 		"268": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.location_id"
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"269": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.description"
+			"qualifiedName": "__type.reserved_quantity"
 		},
 		"270": {
 			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
-			"qualifiedName": "__type.metadata"
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"271": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerConfig"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "BulkUpdateInventoryLevelInput"
 		},
 		"272": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.inventory_item_id"
 		},
 		"273": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.schema"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
 		},
 		"274": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.relationships"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"275": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.extends"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"276": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "UpdateInventoryLevelInput"
 		},
 		"277": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.stocked_quantity"
 		},
 		"278": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.fieldAlias"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.incoming_quantity"
 		},
 		"279": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "UpdateReservationItemInput"
 		},
 		"280": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.path"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.quantity"
 		},
 		"281": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.location_id"
 		},
 		"282": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.relationship"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.description"
 		},
 		"283": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"sourceFileName": "../../../packages/types/src/inventory/common.ts",
+			"qualifiedName": "__type.metadata"
 		},
 		"284": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.primaryKeys"
+			"qualifiedName": "ModuleJoinerConfig"
 		},
 		"285": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isLink"
+			"qualifiedName": "__type"
 		},
 		"286": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.linkableKeys"
+			"qualifiedName": "__type.schema"
 		},
 		"287": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isReadOnlyLink"
+			"qualifiedName": "__type.relationships"
 		},
 		"288": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.databaseConfig"
+			"qualifiedName": "__type.extends"
 		},
 		"289": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
@@ -9840,209 +9957,265 @@
 		},
 		"290": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.tableName"
+			"qualifiedName": "__type.serviceName"
 		},
 		"291": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.idPrefix"
+			"qualifiedName": "__type.fieldAlias"
 		},
 		"292": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.extraFields"
+			"qualifiedName": "__type"
 		},
 		"293": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.path"
 		},
 		"294": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.type"
+			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
 		"295": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.defaultValue"
+			"qualifiedName": "__type.isList"
 		},
 		"296": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.nullable"
+			"qualifiedName": "__type.relationship"
 		},
 		"297": {
 			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.options"
+			"qualifiedName": "__type.serviceName"
 		},
 		"298": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.primaryKeys"
+		},
+		"299": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isLink"
+		},
+		"300": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.linkableKeys"
+		},
+		"301": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isReadOnlyLink"
+		},
+		"302": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.databaseConfig"
+		},
+		"303": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"304": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.tableName"
+		},
+		"305": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.idPrefix"
+		},
+		"306": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.extraFields"
+		},
+		"307": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"308": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.type"
+		},
+		"309": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.defaultValue"
+		},
+		"310": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.nullable"
+		},
+		"311": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"312": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator"
 		},
-		"299": {
+		"313": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lt"
 		},
-		"300": {
+		"314": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gt"
 		},
-		"301": {
+		"315": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.gte"
 		},
-		"302": {
+		"316": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.lte"
 		},
-		"303": {
+		"317": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.contains"
 		},
-		"304": {
+		"318": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.starts_with"
 		},
-		"305": {
+		"319": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "StringComparisonOperator.ends_with"
 		},
-		"306": {
+		"320": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator"
 		},
-		"307": {
+		"321": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lt"
 		},
-		"308": {
+		"322": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gt"
 		},
-		"309": {
+		"323": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.gte"
 		},
-		"310": {
+		"324": {
 			"sourceFileName": "../../../packages/types/src/common/common.ts",
 			"qualifiedName": "NumericalComparisonOperator.lte"
 		},
-		"311": {
+		"325": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig"
 		},
-		"312": {
+		"326": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.serviceName"
 		},
-		"313": {
+		"327": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.alias"
 		},
-		"314": {
+		"328": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "JoinerServiceConfig.fieldAlias"
 		},
-		"315": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
-		},
-		"316": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.path"
-		},
-		"317": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.forwardArgumentsOnPath"
-		},
-		"318": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.primaryKeys"
-		},
-		"319": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.relationships"
-		},
-		"320": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.extends"
-		},
-		"321": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
-		},
-		"322": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
-		},
-		"323": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.relationship"
-		},
-		"324": {
-			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfig.args"
-		},
-		"325": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "ModuleJoinerRelationship"
-		},
-		"326": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type"
-		},
-		"327": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.isInternalService"
-		},
-		"328": {
-			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
-			"qualifiedName": "__type.deleteCascade"
-		},
 		"329": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias"
+			"qualifiedName": "__type"
 		},
 		"330": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.name"
+			"qualifiedName": "__type.path"
 		},
 		"331": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerServiceConfigAlias.args"
+			"qualifiedName": "__type.forwardArgumentsOnPath"
 		},
 		"332": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "JoinerRelationship"
+			"qualifiedName": "JoinerServiceConfig.primaryKeys"
 		},
 		"333": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "JoinerServiceConfig.relationships"
 		},
 		"334": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.alias"
+			"qualifiedName": "JoinerServiceConfig.extends"
 		},
 		"335": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.foreignKey"
+			"qualifiedName": "__type"
 		},
 		"336": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.primaryKey"
+			"qualifiedName": "__type.serviceName"
 		},
 		"337": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.serviceName"
+			"qualifiedName": "__type.relationship"
 		},
 		"338": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
-			"qualifiedName": "__type.isInternalService"
+			"qualifiedName": "JoinerServiceConfig.args"
 		},
 		"339": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "ModuleJoinerRelationship"
+		},
+		"340": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type"
+		},
+		"341": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"342": {
+			"sourceFileName": "../../../packages/types/src/modules-sdk/index.ts",
+			"qualifiedName": "__type.deleteCascade"
+		},
+		"343": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias"
+		},
+		"344": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.name"
+		},
+		"345": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerServiceConfigAlias.args"
+		},
+		"346": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "JoinerRelationship"
+		},
+		"347": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type"
+		},
+		"348": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.alias"
+		},
+		"349": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.foreignKey"
+		},
+		"350": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.primaryKey"
+		},
+		"351": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.serviceName"
+		},
+		"352": {
+			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
+			"qualifiedName": "__type.isInternalService"
+		},
+		"353": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.inverse"
 		},
-		"340": {
+		"354": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.isList"
 		},
-		"341": {
+		"355": {
 			"sourceFileName": "../../../packages/types/src/joiner/index.ts",
 			"qualifiedName": "__type.args"
 		}

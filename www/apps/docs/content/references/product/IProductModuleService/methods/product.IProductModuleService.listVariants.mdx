@@ -20,95 +20,42 @@ This method is used to retrieve a paginated list of product variants based on op
 To retrieve a list of product variants using their IDs:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductVariants (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const variants = await productModule.listVariants({
-    id: ids
-  })
-
-  // do something with the product variants or return them
-}
+const variants = await productModuleService.listVariants({
+  id: ["variant_123", "variant_321"],
+})
 ```
 
 To specify relations that should be retrieved within the product variants:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductVariants (ids: string[]) {
-  const productModule = await initializeProductModule()
-
-  const variants = await productModule.listVariants({
-    id: ids
-  }, {
-    relations: ["options"]
-  })
-
-  // do something with the product variants or return them
-}
+const variants = await productModuleService.listVariants(
+  {
+    id: ["variant_123", "variant_321"],
+  },
+  {
+    relations: ["options"],
+  }
+)
 ```
 
 By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
 
 ```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductVariants (ids: string[], skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const variants = await productModule.listVariants({
-    id: ids
-  }, {
+const variants = await productModuleService.listVariants(
+  {
+    id: ["variant_123", "variant_321"],
+  },
+  {
     relations: ["options"],
-    skip,
-    take
-  })
-
-  // do something with the product variants or return them
-}
-```
-
-You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-
-```ts
-import {
-  initialize as initializeProductModule,
-} from "@medusajs/product"
-
-async function retrieveProductVariants (ids: string[], sku: string, skip: number, take: number) {
-  const productModule = await initializeProductModule()
-
-  const variants = await productModule.listVariants({
-    $and: [
-      {
-        id: ids
-      },
-      {
-        sku
-      }
-    ]
-  }, {
-    relations: ["options"],
-    skip,
-    take
-  })
-
-  // do something with the product variants or return them
-}
+    take: 20,
+    skip: 2,
+  }
+)
 ```
 
 ## Parameters
 
-<TypeList types={[{"name":"filters","type":"[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)","description":"The filters applied on the retrieved product variants.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx) \\| [BaseFilterable](../../interfaces/product.BaseFilterable.mdx)&#60;[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx) \\| [BaseFilterable](../../interfaces/product.BaseFilterable.mdx)&#60;[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sku","type":"`string` \\| `string`[]","description":"The SKUs to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_id","type":"`string` \\| `string`[]","description":"Filter the product variants by their associated products' IDs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`object`","description":"Filter product variants by their associated options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`[]","description":"IDs to filter options by.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"config","type":"[FindConfig](../../interfaces/product.FindConfig.mdx)&#60;[ProductVariantDTO](../../interfaces/product.ProductVariantDTO.mdx)&#62;","description":"The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a product variant.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../interfaces/product.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/product.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listVariants"/>
+<TypeList types={[{"name":"filters","type":"[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)","description":"The filters applied on the retrieved product variants.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"$and","type":"([FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx) \\| [BaseFilterable](../../interfaces/product.BaseFilterable.mdx)&#60;[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"$or","type":"([FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx) \\| [BaseFilterable](../../interfaces/product.BaseFilterable.mdx)&#60;[FilterableProductVariantProps](../../interfaces/product.FilterableProductVariantProps.mdx)&#62;)[]","description":"An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"q","type":"`string`","description":"Search through the title and different code attributes on the variant","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string` \\| `string`[]","description":"The IDs to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"sku","type":"`string` \\| `string`[]","description":"The SKUs to filter product variants by.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"product_id","type":"`string` \\| `string`[]","description":"Filter the product variants by their associated products' IDs.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, string>`","description":"Filter product variants by their associated options.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"config","type":"[FindConfig](../../interfaces/product.FindConfig.mdx)&#60;[ProductVariantDTO](../../interfaces/product.ProductVariantDTO.mdx)&#62;","description":"The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the\nattributes or relations associated with a product variant.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"select","type":"(`string` \\| keyof Entity)[]","description":"An array of strings, each being attribute names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"skip","type":"`null` \\| `number`","description":"A number indicating the number of records to skip before retrieving the results.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"take","type":"`null` \\| `number`","description":"A number indicating the number of records to return in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"relations","type":"`string`[]","description":"An array of strings, each being relation names of the entity to retrieve in the result.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`object`","description":"An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC`\nto sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"withDeleted","type":"`boolean`","description":"A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the\n`SoftDeletableEntity` class.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"filters","type":"`Record<string, any>`","description":"Enable ORM specific defined filters","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../interfaces/product.Context.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../interfaces/product.IMessageAggregator.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="listVariants"/>
 
 ## Returns
 

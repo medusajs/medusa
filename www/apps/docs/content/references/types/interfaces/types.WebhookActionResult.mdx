@@ -1,0 +1,9 @@
+import TypeList from "@site/src/components/TypeList"
+
+# WebhookActionResult
+
+The actions that the payment provider informs the Payment Module to perform.
+
+## Properties
+
+<TypeList types={[{"name":"action","type":"[PaymentActions](../enums/types.PaymentActions.mdx)","description":"Received an event that is not processable.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"AUTHORIZED","type":"`\"authorized\"`","description":"Payment session has been authorized and there are available funds for capture.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"SUCCESSFUL","type":"`\"captured\"`","description":"Payment was successful and the mount is captured.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"FAILED","type":"`\"failed\"`","description":"Payment failed.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"NOT_SUPPORTED","type":"`\"not_supported\"`","description":"Received an event that is not processable.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="WebhookActionResult"/>

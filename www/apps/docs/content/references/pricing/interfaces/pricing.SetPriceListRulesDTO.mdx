@@ -6,6 +6,6 @@ import TypeList from "@site/src/components/TypeList"
 
 # SetPriceListRulesDTO
 
-The rules to add to a price list.
+The rules to set in a price list.
 
-<TypeList types={[{"name":"priceListId","type":"`string`","description":"The ID of the price list to add rules to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"`Record<string, string \\| string[]>`","description":"The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value\nis the value(s) of the rule.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SetPriceListRulesDTO"/>
+<TypeList types={[{"name":"price_list_id","type":"`string`","description":"The ID of the price list to set its rules.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rules","type":"`Record<string, string \\| string[]>`","description":"The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value\nis the value(s) of the rule.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SetPriceListRulesDTO"/>

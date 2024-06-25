@@ -2398,7 +2398,7 @@
 										"summary": [
 											{
 												"kind": "text",
-												"text": "If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter."
+												"text": "If this payment processor is created in a plugin, the plugin's options are passed in this parameter."
 											}
 										]
 									},
@@ -2491,7 +2491,7 @@
 						"summary": [
 							{
 								"kind": "text",
-								"text": "If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter."
+								"text": "If this payment processor is created in a plugin, the plugin's options are passed in this parameter."
 							}
 						]
 					},
