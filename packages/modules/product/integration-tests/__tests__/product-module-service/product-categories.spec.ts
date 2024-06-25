@@ -1,7 +1,7 @@
 import { IProductModuleService } from "@medusajs/types"
 import {
-  Modules,
   CommonEvents,
+  Modules,
   ProductEvents,
   ProductStatus,
   composeMessage,

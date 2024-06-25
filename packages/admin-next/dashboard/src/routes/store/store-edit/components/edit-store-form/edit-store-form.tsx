@@ -32,7 +32,9 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
     defaultValues: {
       name: store.name,
       default_region_id: store.default_region_id || undefined,
-      default_currency_code: store.default_currency_code || undefined,
+      default_currency_code:
+        store.supported_currencies?.find((c) => c.is_default)?.currency_code ||
+        undefined,
     },
     resolver: zodResolver(EditStoreSchema),
   })
@@ -43,7 +45,15 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (values) => {
     try {
-      await mutateAsync(values)
+      const normalizedMutation = {
+        ...values,
+        default_currency_code: undefined,
+        supported_currencies: store.supported_currencies?.map((c) => ({
+          ...c,
+          is_default: c.currency_code === values.default_currency_code,
+        })),
+      }
+      await mutateAsync(normalizedMutation)
 
       handleSuccess()
 
@@ -91,9 +101,12 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {store.supported_currency_codes.map((code) => (
-                            <Select.Item key={code} value={code}>
-                              {code.toUpperCase()}
+                          {store.supported_currencies?.map((currency) => (
+                            <Select.Item
+                              key={currency.currency_code}
+                              value={currency.currency_code}
+                            >
+                              {currency.currency_code.toUpperCase()}
                             </Select.Item>
                           ))}
                         </Select.Content>

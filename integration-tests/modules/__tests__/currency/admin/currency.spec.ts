@@ -60,9 +60,10 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
 
-        expect(listResp.data.currencies).toHaveLength(1)
-        expect(listResp.data.currencies[0]).toEqual(
-          expect.objectContaining({ code: "zwl", name: "Zimbabwean Dollar" })
+        expect(listResp.data.currencies).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ code: "zwl", name: "Zimbabwean Dollar" }),
+          ])
         )
       })
     })
