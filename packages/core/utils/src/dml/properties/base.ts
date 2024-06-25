@@ -18,6 +18,12 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   #defaultValue?: T
 
   /**
+   * Whether the property is searchable through free text search
+   * @private
+   */
+  #searchable: boolean = false
+
+  /**
    * The runtime dataType for the schema. It is not the same as
    * the "$dataType".
    */
@@ -60,6 +66,11 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
     return this
   }
 
+  searchable() {
+    this.#searchable = true
+    return this
+  }
+
   /**
    * Returns the serialized metadata
    */
@@ -68,6 +79,7 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
       fieldName,
       dataType: this.dataType,
       nullable: false,
+      searchable: this.#searchable,
       defaultValue: this.#defaultValue,
       indexes: this.#indexes,
       relationships: this.#relationships,

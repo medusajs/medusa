@@ -44,6 +44,7 @@ export type PropertyMetadata = {
     name?: string
     type: "index" | "unique"
   }[]
+  searchable: boolean
   relationships: RelationshipMetadata[]
 }
 

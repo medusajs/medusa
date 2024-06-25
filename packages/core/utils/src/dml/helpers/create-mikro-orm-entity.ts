@@ -33,6 +33,7 @@ import { upperCaseFirst } from "../../common/upper-case-first"
 import {
   MikroOrmBigNumberProperty,
   mikroOrmSoftDeletableFilterOptions,
+  Searchable,
 } from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
@@ -306,6 +307,18 @@ export function createMikrORMEntity() {
 
       providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
     })
+  }
+
+  /**
+   * Apply searchable decorator to the field
+   */
+  function applySearchable(
+    MikroORMEntity: EntityConstructor<any>,
+    field: PropertyMetadata
+  ) {
+    if (field.searchable) {
+      Searchable()(MikroORMEntity.prototype, field.fieldName)
+    }
   }
 
   /**
@@ -713,6 +726,7 @@ export function createMikrORMEntity() {
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
         applyIndexes(MikroORMEntity, tableName, field)
+        applySearchable(MikroORMEntity, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }

@@ -24,6 +24,28 @@ describe("Base property", () => {
     })
   })
 
+  test("apply searchable modifier", () => {
+    class StringProperty extends BaseProperty<string> {
+      protected dataType: PropertyMetadata["dataType"] = {
+        name: "text",
+      }
+    }
+
+    const property = new StringProperty().searchable()
+
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
+    expect(property.parse("username")).toEqual({
+      fieldName: "username",
+      dataType: {
+        name: "text",
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+      searchable: true,
+    })
+  })
+
   test("apply nullable modifier", () => {
     class StringProperty extends BaseProperty<string> {
       protected dataType: PropertyMetadata["dataType"] = {

@@ -1,8 +1,7 @@
 import * as entities from "./src/models"
+import { defineMikroOrmCliConfig } from "@medusajs/utils"
 
-module.exports = {
+module.exports = defineMikroOrmCliConfig({
   entities: Object.values(entities),
-  schema: "public",
-  clientUrl: "postgres://postgres@localhost/medusa-store",
-  type: "postgresql",
-}
+  databaseName: "medusa-store",
+})
