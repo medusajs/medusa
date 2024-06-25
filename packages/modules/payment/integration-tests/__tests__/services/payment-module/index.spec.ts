@@ -1,10 +1,10 @@
 import { IPaymentModuleService } from "@medusajs/types"
 import { Modules, promiseAll } from "@medusajs/utils"
-import { moduleIntegrationTestRunner } from "medusa-test-utils/dist"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
-  createPayments,
   createPaymentSessions,
+  createPayments,
 } from "../../../__fixtures__"
 
 jest.setTimeout(30000)

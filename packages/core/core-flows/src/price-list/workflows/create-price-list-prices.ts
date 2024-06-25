@@ -1,5 +1,4 @@
-import { CreatePriceListPricesWorkflowDTO } from "@medusajs/types"
-import { PricingTypes } from "@medusajs/types/src"
+import { CreatePriceListPricesWorkflowDTO, PricingTypes } from "@medusajs/types"
 import {
   WorkflowData,
   createWorkflow,

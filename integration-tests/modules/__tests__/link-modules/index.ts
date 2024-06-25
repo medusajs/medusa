@@ -1,6 +1,6 @@
 import { initialize, runMigrations } from "@medusajs/link-modules"
 import { MedusaModule, ModuleJoinerConfig } from "@medusajs/modules-sdk"
-import { medusaIntegrationTestRunner } from "medusa-test-utils/dist"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(5000000)
 
