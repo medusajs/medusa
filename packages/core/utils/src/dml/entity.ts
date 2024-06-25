@@ -27,11 +27,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
-    return (
-      !!entity &&
-      (entity instanceof DmlEntity ||
-        (typeof entity === "object" && entity[IsDmlEntity] === true))
-    )
+    return !!entity && entity[IsDmlEntity]
   }
 
   /**
@@ -63,7 +59,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     >
   ) {
     const childToParentCascades = options.delete?.filter((relationship) => {
-      return this.schema[relationship] instanceof BelongsTo
+      return BelongsTo.isBelongsTo(this.schema[relationship])
     })
 
     if (childToParentCascades?.length) {

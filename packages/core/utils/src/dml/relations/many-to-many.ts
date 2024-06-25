@@ -13,4 +13,8 @@ import { BaseRelationship } from "./base"
  */
 export class ManyToMany<T> extends BaseRelationship<T> {
   type = "manyToMany" as const
+
+  static isManyToMany<T>(relationship: any): relationship is ManyToMany<T> {
+    return !!relationship && relationship.type === "manyToMany"
+  }
 }

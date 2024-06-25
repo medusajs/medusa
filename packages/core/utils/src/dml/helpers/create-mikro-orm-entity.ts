@@ -427,8 +427,8 @@ export function createMikrORMEntity() {
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
     if (
-      otherSideRelation instanceof HasMany ||
-      otherSideRelation instanceof DmlManyToMany
+      HasMany.isHasMany(otherSideRelation) ||
+      DmlManyToMany.isManyToMany(otherSideRelation)
     ) {
       const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
 
@@ -441,7 +441,7 @@ export function createMikrORMEntity() {
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
-      if (otherSideRelation instanceof DmlManyToMany) {
+      if (DmlManyToMany.isManyToMany(otherSideRelation)) {
         Property({
           type: relatedModelName,
           persist: false,
@@ -463,7 +463,7 @@ export function createMikrORMEntity() {
     /**
      * Otherside is a has one. Hence we should defined a OneToOne
      */
-    if (otherSideRelation instanceof HasOne) {
+    if (HasOne.isHasOne(otherSideRelation)) {
       const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
 
       OneToOne({
@@ -531,7 +531,7 @@ export function createMikrORMEntity() {
         )
       }
 
-      if (otherSideRelation instanceof DmlManyToMany === false) {
+      if (!DmlManyToMany.isManyToMany(otherSideRelation)) {
         throw new Error(
           `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a manyToMany relationship`
         )
@@ -569,7 +569,7 @@ export function createMikrORMEntity() {
       }
 
       const pivotEntity = relationship.options.pivotEntity()
-      if (!(pivotEntity instanceof DmlEntity)) {
+      if (!DmlEntity.isDmlEntity(pivotEntity)) {
         throw new Error(
           `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the pivotEntity callback`
         )
@@ -645,7 +645,7 @@ export function createMikrORMEntity() {
     /**
      * Ensure the return value is a DML entity instance
      */
-    if (!(relatedEntity instanceof DmlEntity)) {
+    if (!DmlEntity.isDmlEntity(relatedEntity)) {
       throw new Error(
         `Invalid relationship reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the relationship callback`
       )

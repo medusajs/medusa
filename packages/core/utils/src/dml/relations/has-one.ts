@@ -14,6 +14,10 @@ import { NullableModifier } from "./nullable"
 export class HasOne<T> extends BaseRelationship<T> {
   type = "hasOne" as const
 
+  static isHasOne<T>(relationship: any): relationship is HasOne<T> {
+    return !!relationship && relationship.type === "hasOne"
+  }
+
   /**
    * Apply nullable modifier on the schema
    */

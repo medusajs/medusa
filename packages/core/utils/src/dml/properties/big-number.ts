@@ -8,4 +8,8 @@ export class BigNumberProperty extends BaseProperty<number> {
   protected dataType = {
     name: "bigNumber",
   } as const
+
+  static isBigNumberProperty(obj: any): obj is BigNumberProperty {
+    return !!obj && obj.dataType.name === "bigNumber"
+  }
 }
