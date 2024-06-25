@@ -10,7 +10,7 @@ export class NullableModifier<T, Schema extends PropertyType<T>>
   [IsNullableModifier]: true = true
 
   static isNullableModifier(obj: any): obj is NullableModifier<any, any> {
-    return !!obj && obj[IsNullableModifier]
+    return !!obj?.[IsNullableModifier]
   }
   /**
    * A type-only property to infer the JavScript data-type

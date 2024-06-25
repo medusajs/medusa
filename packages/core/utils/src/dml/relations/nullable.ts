@@ -13,7 +13,7 @@ export class NullableModifier<T, Relation extends RelationshipType<T>>
   static isNullableModifier<T>(
     modifier: any
   ): modifier is NullableModifier<T, any> {
-    return !!modifier && modifier[IsNullableModifier]
+    return !!modifier?.[IsNullableModifier]
   }
 
   declare type: RelationshipType<T>["type"]

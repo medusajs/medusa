@@ -10,6 +10,6 @@ export class BigNumberProperty extends BaseProperty<number> {
   } as const
 
   static isBigNumberProperty(obj: any): obj is BigNumberProperty {
-    return !!obj && obj.dataType.name === "bigNumber"
+    return obj?.dataType?.name === "bigNumber"
   }
 }

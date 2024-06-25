@@ -27,7 +27,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
-    return !!entity && entity[IsDmlEntity]
+    return !!entity?.[IsDmlEntity]
   }
 
   /**

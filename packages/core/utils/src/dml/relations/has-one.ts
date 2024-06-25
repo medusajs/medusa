@@ -15,7 +15,7 @@ export class HasOne<T> extends BaseRelationship<T> {
   type = "hasOne" as const
 
   static isHasOne<T>(relationship: any): relationship is HasOne<T> {
-    return !!relationship && relationship.type === "hasOne"
+    return relationship?.type === "hasOne"
   }
 
   /**

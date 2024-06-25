@@ -5,7 +5,7 @@ export class BelongsTo<T> extends BaseRelationship<T> {
   type = "belongsTo" as const
 
   static isBelongsTo<T>(relationship: any): relationship is BelongsTo<T> {
-    return !!relationship && relationship.type === "belongsTo"
+    return relationship?.type === "belongsTo"
   }
 
   /**
