@@ -17,7 +17,7 @@ import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  currencyService: ModulesSdkTypes.IMedusaInternalService<any>
+  currencyService: ModulesSdkTypes.IMedusaInternalService<typeof Currency>
 }
 
 export default class CurrencyModuleService

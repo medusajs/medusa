@@ -159,6 +159,6 @@ export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
 /**
  * Used in the module sdk internal service to infer propert entity typings from DML
  */
-export type ExtractEntityType<T extends any> = T extends IDmlEntity<any>
+export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
