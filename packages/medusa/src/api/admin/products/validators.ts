@@ -97,7 +97,6 @@ export const AdminUpdateProductOption = z.object({
   values: z.array(z.string()).optional(),
 })
 
-// TODO: Add support for rules
 export type AdminCreateVariantPriceType = z.infer<
   typeof AdminCreateVariantPrice
 >
@@ -109,7 +108,6 @@ export const AdminCreateVariantPrice = z.object({
   rules: z.record(z.string(), z.string()).optional(),
 })
 
-// TODO: Add support for rules
 export type AdminUpdateVariantPriceType = z.infer<
   typeof AdminUpdateVariantPrice
 >
