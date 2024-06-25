@@ -1,6 +1,5 @@
 import { PropertyMetadata, PropertyType } from "@medusajs/types"
 import { NullableModifier } from "./nullable"
-import { SearchableModifier } from "./searchable"
 
 /**
  * The BaseProperty class offers shared affordances to define
@@ -38,13 +37,6 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
   }
 
   /**
-   * Apply searchable modifier on the schema
-   */
-  searchable() {
-    return new SearchableModifier<T, this>(this)
-  }
-
-  /**
    * Define an index on the property
    */
   index(name?: string) {
@@ -76,7 +68,6 @@ export abstract class BaseProperty<T> implements PropertyType<T> {
       fieldName,
       dataType: this.dataType,
       nullable: false,
-      searchable: false,
       defaultValue: this.#defaultValue,
       indexes: this.#indexes,
       relationships: this.#relationships,

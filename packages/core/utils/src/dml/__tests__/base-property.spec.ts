@@ -1,6 +1,7 @@
 import { expectTypeOf } from "expect-type"
 import { BaseProperty } from "../properties/base"
 import { PropertyMetadata } from "@medusajs/types"
+import { TextProperty } from "../properties/text"
 
 describe("Base property", () => {
   test("create a property type from base property", () => {
@@ -25,22 +26,19 @@ describe("Base property", () => {
   })
 
   test("apply searchable modifier", () => {
-    class StringProperty extends BaseProperty<string> {
-      protected dataType: PropertyMetadata["dataType"] = {
-        name: "text",
-      }
-    }
-
-    const property = new StringProperty().searchable()
+    const property = new TextProperty().searchable()
 
     expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
     expect(property.parse("username")).toEqual({
       fieldName: "username",
       dataType: {
         name: "text",
+        options: {
+          primaryKey: false,
+          searchable: true,
+        },
       },
       nullable: false,
-      searchable: true,
       indexes: [],
       relationships: [],
     })

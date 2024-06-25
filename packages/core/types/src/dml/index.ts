@@ -36,7 +36,6 @@ export type PropertyMetadata = {
   fieldName: string
   defaultValue?: any
   nullable: boolean
-  searchable: boolean
   dataType: {
     name: KnownDataTypes
     options?: Record<string, any>

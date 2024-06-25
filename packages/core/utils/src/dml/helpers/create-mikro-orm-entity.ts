@@ -316,7 +316,7 @@ export function createMikrORMEntity() {
     MikroORMEntity: EntityConstructor<any>,
     field: PropertyMetadata
   ) {
-    if (!field.searchable) {
+    if (!field.dataType.options?.searchable) {
       return
     }
 
