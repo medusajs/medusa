@@ -32,8 +32,8 @@ export function createBigNumberProperties<Schema extends DMLSchema>(
 
   for (const [key, property] of Object.entries(schema)) {
     if (
-      property instanceof BigNumberProperty ||
-      property instanceof NullableModifier
+      BigNumberProperty.isBigNumberProperty(property) ||
+      NullableModifier.isNullableModifier(property)
     ) {
       const parsed = property.parse(key)
 

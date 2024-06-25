@@ -33,6 +33,7 @@ import { upperCaseFirst } from "../../common/upper-case-first"
 import {
   MikroOrmBigNumberProperty,
   mikroOrmSoftDeletableFilterOptions,
+  Searchable,
 } from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
@@ -118,14 +119,16 @@ export function createMikrORMEntity() {
    * Parses entity name and returns model and table name from
    * it
    */
-  function parseEntityName(entityName: string) {
+  function parseEntityName(entity: DmlEntity<any>) {
+    const parsedEntity = entity.parse()
+
     /**
      * Table name is going to be the snake case version of the entity name.
      * Here we should preserve PG schema (if defined).
      *
      * For example: "platform.user" should stay as "platform.user"
      */
-    const tableName = camelToSnakeCase(entityName)
+    const tableName = camelToSnakeCase(parsedEntity.tableName)
 
     /**
      * Entity name is going to be the camelCase version of the
@@ -134,9 +137,7 @@ export function createMikrORMEntity() {
     const [pgSchema, ...rest] = tableName.split(".")
     return {
       tableName,
-      modelName: upperCaseFirst(
-        toCamelCase(rest.length ? rest.join("_") : pgSchema)
-      ),
+      modelName: upperCaseFirst(toCamelCase(parsedEntity.name)),
       pgSchema: rest.length ? pgSchema : undefined,
     }
   }
@@ -309,6 +310,20 @@ export function createMikrORMEntity() {
   }
 
   /**
+   * Apply the searchable decorator to the property marked as searchable to enable the free text search
+   */
+  function applySearchable(
+    MikroORMEntity: EntityConstructor<any>,
+    field: PropertyMetadata
+  ) {
+    if (!field.dataType.options?.searchable) {
+      return
+    }
+
+    Searchable()(MikroORMEntity.prototype, field.fieldName)
+  }
+
+  /**
    * Defines has one relationship on the Mikro ORM entity.
    */
   function defineHasOneRelationship(
@@ -412,8 +427,8 @@ export function createMikrORMEntity() {
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
     if (
-      otherSideRelation instanceof HasMany ||
-      otherSideRelation instanceof DmlManyToMany
+      HasMany.isHasMany(otherSideRelation) ||
+      DmlManyToMany.isManyToMany(otherSideRelation)
     ) {
       const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
 
@@ -426,7 +441,7 @@ export function createMikrORMEntity() {
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
-      if (otherSideRelation instanceof DmlManyToMany) {
+      if (DmlManyToMany.isManyToMany(otherSideRelation)) {
         Property({
           type: relatedModelName,
           persist: false,
@@ -448,7 +463,7 @@ export function createMikrORMEntity() {
     /**
      * Otherside is a has one. Hence we should defined a OneToOne
      */
-    if (otherSideRelation instanceof HasOne) {
+    if (HasOne.isHasOne(otherSideRelation)) {
       const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
 
       OneToOne({
@@ -516,7 +531,7 @@ export function createMikrORMEntity() {
         )
       }
 
-      if (otherSideRelation instanceof DmlManyToMany === false) {
+      if (!DmlManyToMany.isManyToMany(otherSideRelation)) {
         throw new Error(
           `Invalid relationship reference for "${mappedBy}" on "${relatedModelName}" entity. Make sure to define a manyToMany relationship`
         )
@@ -554,13 +569,13 @@ export function createMikrORMEntity() {
       }
 
       const pivotEntity = relationship.options.pivotEntity()
-      if (!(pivotEntity instanceof DmlEntity)) {
+      if (!DmlEntity.isDmlEntity(pivotEntity)) {
         throw new Error(
           `Invalid pivotEntity reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the pivotEntity callback`
         )
       }
 
-      pivotEntityName = parseEntityName(pivotEntity.parse().name).modelName
+      pivotEntityName = parseEntityName(pivotEntity).modelName
     }
 
     if (!pivotEntityName) {
@@ -630,15 +645,13 @@ export function createMikrORMEntity() {
     /**
      * Ensure the return value is a DML entity instance
      */
-    if (!(relatedEntity instanceof DmlEntity)) {
+    if (!DmlEntity.isDmlEntity(relatedEntity)) {
       throw new Error(
         `Invalid relationship reference for "${MikroORMEntity.name}.${relationship.name}". Make sure to return a DML entity from the relationship callback`
       )
     }
 
-    const { modelName, tableName, pgSchema } = parseEntityName(
-      relatedEntity.parse().name
-    )
+    const { modelName, tableName, pgSchema } = parseEntityName(relatedEntity)
     const relatedEntityInfo = {
       relatedModelName: modelName,
       relatedTableName: tableName,
@@ -691,8 +704,8 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
 
-    const { name, schema, cascades } = entity.parse()
-    const { modelName, tableName } = parseEntityName(name)
+    const { schema, cascades } = entity.parse()
+    const { modelName, tableName } = parseEntityName(entity)
 
     /**
      * Assigning name to the class constructor, so that it matches
@@ -713,6 +726,7 @@ export function createMikrORMEntity() {
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
         applyIndexes(MikroORMEntity, tableName, field)
+        applySearchable(MikroORMEntity, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }
@@ -734,16 +748,14 @@ export function createMikrORMEntity() {
  */
 export const toMikroORMEntity = <T>(
   entity: T
-): T extends DmlEntity<infer Schema> ? EntityConstructor<Schema> : T => {
+): T extends DmlEntity<infer Schema> ? Infer<T> : T => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<infer Schema>
-    ? EntityConstructor<Schema>
-    : T
+  return mikroOrmEntity as T extends DmlEntity<infer Schema> ? Infer<T> : T
 }
 
 /**
@@ -761,6 +773,6 @@ export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
 
     return entity
   }) as {
-    [K in keyof T]: T[K] extends DmlEntity<any> ? EntityConstructor<T[K]> : T[K]
+    [K in keyof T]: T[K] extends DmlEntity<any> ? Infer<T[K]> : T[K]
   }
 }

@@ -8,6 +8,40 @@ import {
 } from "@medusajs/types"
 import { DMLSchema } from "./entity-builder"
 import { BelongsTo } from "./relations/belongs-to"
+import { isObject, isString, toCamelCase } from "../common"
+
+type Config = string | { name?: string; tableName: string }
+
+function extractNameAndTableName(nameOrConfig: Config) {
+  const result = {
+    name: "",
+    tableName: "",
+  }
+
+  if (isString(nameOrConfig)) {
+    const [schema, ...rest] = nameOrConfig.split(".")
+    const name = rest.length ? rest.join(".") : schema
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig
+  }
+
+  if (isObject(nameOrConfig)) {
+    if (!nameOrConfig.tableName) {
+      throw new Error(
+        `Missing "tableName" property in the config object for "${nameOrConfig.name}" entity`
+      )
+    }
+
+    const potentialName = nameOrConfig.name ?? nameOrConfig.tableName
+    const [schema, ...rest] = potentialName.split(".")
+    const name = rest.length ? rest.join(".") : schema
+
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig.tableName
+  }
+
+  return result
+}
 
 /**
  * Dml entity is a representation of a DML model with a unique
@@ -16,8 +50,16 @@ import { BelongsTo } from "./relations/belongs-to"
 export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   [IsDmlEntity]: true = true
 
+  name: string
+
+  readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
-  constructor(public name: string, public schema: Schema) {}
+
+  constructor(nameOrConfig: Config, public schema: Schema) {
+    const { name, tableName } = extractNameAndTableName(nameOrConfig)
+    this.name = name
+    this.#tableName = tableName
+  }
 
   /**
    * A static method to check if an entity is an instance of DmlEntity.
@@ -27,11 +69,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
-    return (
-      !!entity &&
-      (entity instanceof DmlEntity ||
-        (typeof entity === "object" && entity[IsDmlEntity] === true))
-    )
+    return !!entity?.[IsDmlEntity]
   }
 
   /**
@@ -39,11 +77,13 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    */
   parse(): {
     name: string
+    tableName: string
     schema: PropertyType<any> | RelationshipType<any>
     cascades: EntityCascades<string[]>
   } {
     return {
       name: this.name,
+      tableName: this.#tableName,
       schema: this.schema as unknown as
         | PropertyType<any>
         | RelationshipType<any>,
@@ -63,7 +103,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     >
   ) {
     const childToParentCascades = options.delete?.filter((relationship) => {
-      return this.schema[relationship] instanceof BelongsTo
+      return BelongsTo.isBelongsTo(this.schema[relationship])
     })
 
     if (childToParentCascades?.length) {
