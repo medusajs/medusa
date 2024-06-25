@@ -3,11 +3,7 @@ import { Button, ProgressStatus, ProgressTabs } from "@medusajs/ui"
 import { FieldPath, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import {
-  CreatePriceListPriceDTO,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/types"
 import { useState } from "react"
 import { z } from "zod"
 import {
@@ -16,6 +12,10 @@ import {
 } from "../../../../../components/route-modal"
 import { useCreatePriceList } from "../../../../../hooks/api/price-lists"
 import { castNumber } from "../../../../../lib/cast-number"
+import {
+  CreatePriceListPrice,
+  PricingVariantsRecord,
+} from "../../../common/schemas"
 import { PricingDetailsForm } from "./pricing-details-form"
 import { PricingPricesForm } from "./pricing-prices-form"
 import { PricingProductsForm } from "./pricing-products-form"
@@ -69,73 +69,71 @@ export const PricingCreateForm = () => {
 
   const { mutateAsync, isPending } = useCreatePriceList()
 
-  const handleSubmit = form.handleSubmit(
-    async (data) => {
-      const { customer_group_ids, products } = data
+  const extractPricesFromVariants = (
+    variantId: string,
+    variant: PricingVariantsRecord
+  ) => {
+    const extractPriceDetails = (
+      price: CreatePriceListPrice,
+      priceType: "region" | "currency",
+      id: string
+    ) => ({
+      amount: castNumber(price.amount!),
+      ...(priceType === "region" ? { rules: { region_id: id } } : {}),
+      currency_code: priceType === "currency" ? id : undefined,
+      variant_id: variantId,
+    })
 
-      const rules = customer_group_ids?.length
-        ? { customer_group_id: customer_group_ids.map((cg) => cg.id) }
-        : undefined
+    const currencyPrices = Object.entries(
+      variant.currency_prices || {}
+    ).flatMap(([currencyCode, currencyPrice]) => {
+      return currencyPrice?.amount
+        ? [extractPriceDetails(currencyPrice, "currency", currencyCode)]
+        : []
+    })
 
-      const prices: CreatePriceListPriceDTO[] = []
-
-      for (const [_, product] of Object.entries(products)) {
-        const { variants } = product
-
-        for (const [variantId, variant] of Object.entries(variants)) {
-          const { currency_prices, region_prices } = variant
-
-          for (const [currencyCode, currencyPrice] of Object.entries(
-            currency_prices || {}
-          )) {
-            if (!currencyPrice?.amount) {
-              continue
-            }
-
-            prices.push({
-              amount: castNumber(currencyPrice.amount),
-              currency_code: currencyCode,
-              variant_id: variantId,
-            })
-          }
-
-          for (const [regionId, regionPrice] of Object.entries(
-            region_prices || {}
-          )) {
-            if (!regionPrice?.amount) {
-              continue
-            }
-
-            prices.push({
-              amount: castNumber(regionPrice.amount),
-              rules: { region_id: regionId },
-              // @ts-ignore TODO: Types is wrong here
-              variant_id: variantId,
-            })
-          }
-        }
+    const regionPrices = Object.entries(variant.region_prices || {}).flatMap(
+      ([regionId, regionPrice]) => {
+        return regionPrice?.amount
+          ? [extractPriceDetails(regionPrice, "region", regionId)]
+          : []
       }
+    )
 
-      await mutateAsync(
-        {
-          title: data.title,
-          type: data.type as PriceListType,
-          status: data.status as PriceListStatus,
-          description: data.description,
-          starts_at: data.starts_at ? data.starts_at.toISOString() : null,
-          ends_at: data.ends_at ? data.ends_at.toISOString() : null,
-          rules,
-          prices: prices,
-        },
-        {
-          onSuccess: ({ price_list }) => {
-            handleSuccess(`../${price_list.id}`)
-          },
-        }
+    return [...currencyPrices, ...regionPrices]
+  }
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const { customer_group_ids, products } = data
+
+    const rules = customer_group_ids?.length
+      ? { customer_group_id: customer_group_ids.map((cg) => cg.id) }
+      : undefined
+
+    const prices = Object.values(products).flatMap(({ variants }) =>
+      Object.entries(variants).flatMap(([variantId, variant]) =>
+        extractPricesFromVariants(variantId, variant)
       )
-    },
-    (error) => console.error(error)
-  )
+    )
+
+    await mutateAsync(
+      {
+        title: data.title,
+        type: data.type as PriceListType,
+        status: data.status as PriceListStatus,
+        description: data.description,
+        starts_at: data.starts_at ? data.starts_at.toISOString() : null,
+        ends_at: data.ends_at ? data.ends_at.toISOString() : null,
+        rules,
+        prices,
+      },
+      {
+        onSuccess: ({ price_list }) => {
+          handleSuccess(`../${price_list.id}`)
+        },
+      }
+    )
+  })
 
   const partialFormValidation = (
     fields: FieldPath<PricingCreateSchemaType>[],
@@ -276,25 +274,25 @@ export const PricingCreateForm = () => {
         <form onSubmit={handleSubmit} className="flex h-full flex-col">
           <RouteFocusModal.Header>
             <div className="flex w-full items-center justify-between gap-x-4">
-              <div className="-my-2 w-full max-w-[400px] border-l">
+              <div className="-my-2 w-full max-w-[600px] border-l">
                 <ProgressTabs.List className="grid w-full grid-cols-3">
                   <ProgressTabs.Trigger
                     status={tabState.detail}
                     value={Tab.DETAIL}
                   >
-                    Details
+                    {t("priceLists.create.tabs.details")}
                   </ProgressTabs.Trigger>
                   <ProgressTabs.Trigger
                     status={tabState.product}
                     value={Tab.PRODUCT}
                   >
-                    Products
+                    {t("priceLists.create.tabs.products")}
                   </ProgressTabs.Trigger>
                   <ProgressTabs.Trigger
                     status={tabState.price}
                     value={Tab.PRICE}
                   >
-                    Prices
+                    {t("priceLists.create.tabs.prices")}
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
               </div>

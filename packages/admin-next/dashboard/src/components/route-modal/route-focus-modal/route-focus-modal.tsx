@@ -1,6 +1,7 @@
-import { FocusModal } from "@medusajs/ui"
+import { FocusModal, clx } from "@medusajs/ui"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { ChildModalProvider } from "../child-modal"
 import { RouteForm } from "../route-form"
 import { RouteModalProvider } from "../route-modal-provider/route-provider"
 
@@ -11,6 +12,7 @@ type RouteFocusModalProps = PropsWithChildren<{
 const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [childModalOpen, setChildModalOpen] = useState(false)
 
   /**
    * Open the modal when the component mounts. This
@@ -33,7 +35,15 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   return (
     <FocusModal open={open} onOpenChange={handleOpenChange}>
       <RouteModalProvider prev={prev}>
-        <FocusModal.Content>{children}</FocusModal.Content>
+        <ChildModalProvider setChildModalIsOpen={setChildModalOpen}>
+          <FocusModal.Content
+            className={clx({
+              "!inset-x-5 !inset-y-3": childModalOpen,
+            })}
+          >
+            {children}
+          </FocusModal.Content>
+        </ChildModalProvider>
       </RouteModalProvider>
     </FocusModal>
   )

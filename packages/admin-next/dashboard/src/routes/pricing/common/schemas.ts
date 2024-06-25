@@ -1,12 +1,14 @@
 import { z } from "zod"
 
+const CreatePriceListPriceSchema = z.object({
+  amount: z.string().optional(),
+  id: z.string().nullish(),
+})
+
+export type CreatePriceListPrice = z.infer<typeof CreatePriceListPriceSchema>
+
 const PricingVariantPricesRecordSchema = z.record(
-  z
-    .object({
-      amount: z.string().optional(),
-      id: z.string().nullable().optional(),
-    })
-    .optional()
+  CreatePriceListPriceSchema.optional()
 )
 
 const PricingVariantsRecordSchema = z.record(
@@ -16,9 +18,7 @@ const PricingVariantsRecordSchema = z.record(
   })
 )
 
-export type PricingVariantsRecordType = z.infer<
-  typeof PricingVariantsRecordSchema
->
+export type PricingVariantsRecord = z.infer<typeof PricingVariantsRecordSchema>
 
 export const PricingProductsRecordSchema = z.record(
   z.object({
@@ -26,6 +26,4 @@ export const PricingProductsRecordSchema = z.record(
   })
 )
 
-export type PricingProductsRecordType = z.infer<
-  typeof PricingProductsRecordSchema
->
+export type PricingProductsRecord = z.infer<typeof PricingProductsRecordSchema>

@@ -5,7 +5,7 @@ import { useProducts } from "../../../../../hooks/api/products"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useStore } from "../../../../../hooks/api/store"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
-import { PricingVariantsRecordType } from "../../../common/schemas"
+import { PricingVariantsRecord } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 import { PricingCreateSchemaType } from "./schema"
 
@@ -70,7 +70,7 @@ export const PricingPricesForm = ({ form }: PricingPricesFormProps) => {
               region_prices: {},
             }
             return variants
-          }, {} as PricingVariantsRecordType),
+          }, {} as PricingVariantsRecord),
         })
       })
     }

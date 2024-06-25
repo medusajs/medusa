@@ -3,18 +3,18 @@ import {
   Checkbox,
   DatePicker,
   Heading,
+  IconButton,
   Input,
   RadioGroup,
   Select,
-  Switch,
   Text,
   Textarea,
+  clx,
 } from "@medusajs/ui"
-import * as Collapsible from "@radix-ui/react-collapsible"
 import { useFieldArray, type UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
-import { XMarkMini } from "@medusajs/icons"
+import { MagnifyingGlass, XMarkMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
@@ -26,7 +26,8 @@ import { t } from "i18next"
 import { useEffect, useMemo, useState } from "react"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
-import { SplitView } from "../../../../../components/layout/split-view"
+import { ChildModal } from "../../../../../components/route-modal/child-modal"
+import { useChildModal } from "../../../../../components/route-modal/child-modal/hooks"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCustomerGroups } from "../../../../../hooks/api/customer-groups"
 import { useCustomerGroupTableColumns } from "../../../../../hooks/table/columns/use-customer-group-table-columns"
@@ -42,11 +43,6 @@ type PricingDetailsFormProps = {
 }
 
 export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
-  const [open, setOpen] = useState(false)
-  const [showCustomerGroups, setShowCustomerGroups] = useState(
-    !!form.getValues("customer_group_ids")?.length
-  )
-
   const { t } = useTranslation()
 
   const { fields, remove, append } = useFieldArray({
@@ -54,6 +50,8 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
     name: "customer_group_ids",
     keyName: "cg_id",
   })
+
+  const { setIsOpen } = useChildModal()
 
   const handleAddCustomerGroup = (groups: PricingCustomerGroupsArrayType) => {
     const newIds = groups.map((group) => group.id)
@@ -69,281 +67,274 @@ export const PricingDetailsForm = ({ form }: PricingDetailsFormProps) => {
     }
 
     append(fieldsToAdd)
-    setOpen(false)
-  }
-
-  const handleOpenDrawer = () => {
-    setOpen(true)
-  }
-
-  const handleShowCustomerGroups = (open: boolean) => {
-    if (!open) {
-      form.setValue("customer_group_ids", [])
-    }
-
-    setShowCustomerGroups(open)
+    setIsOpen("cg", false)
   }
 
   return (
-    <SplitView open={open} onOpenChange={setOpen}>
-      <SplitView.Content>
-        <div className="flex flex-1 flex-col items-center overflow-y-auto">
-          <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-8 py-16">
-            <div>
-              <Heading>{t("pricing.create.header")}</Heading>
-              <Text size="small" className="text-ui-fg-subtle">
-                {t("pricing.create.hint")}
-              </Text>
-            </div>
-            <Form.Field
-              control={form.control}
-              name="type"
-              render={({ field: { onChange, ...rest } }) => {
-                return (
-                  <Form.Item>
-                    <div className="flex flex-col gap-y-4">
-                      <div>
-                        <Form.Label>
-                          {t("priceLists.fields.type.label")}
-                        </Form.Label>
-                        <Form.Hint>
-                          {t("priceLists.fields.type.hint")}
-                        </Form.Hint>
-                      </div>
-                      <Form.Control>
-                        <RadioGroup
-                          onValueChange={onChange}
-                          {...rest}
-                          className="grid grid-cols-1 gap-4 md:grid-cols-2"
-                        >
-                          <RadioGroup.ChoiceBox
-                            value={"sale"}
-                            label={t(
-                              "priceLists.fields.type.options.sale.label"
-                            )}
-                            description={t(
-                              "priceLists.fields.type.options.sale.description"
-                            )}
-                          />
-                          <RadioGroup.ChoiceBox
-                            value={"override"}
-                            label={t(
-                              "priceLists.fields.type.options.override.label"
-                            )}
-                            description={t(
-                              "priceLists.fields.type.options.override.description"
-                            )}
-                          />
-                        </RadioGroup>
-                      </Form.Control>
-                    </div>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <div className="flex flex-col gap-y-4">
-              <div className="grid grid-cols-1  gap-4 md:grid-cols-2">
-                <Form.Field
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>{t("fields.title")}</Form.Label>
-                        <Form.Control>
-                          <Input {...field} />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="status"
-                  render={({ field: { onChange, ref, ...field } }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label>
-                          {t("priceLists.fields.status.label")}
-                        </Form.Label>
-                        <Form.Control>
-                          <Select {...field} onValueChange={onChange}>
-                            <Select.Trigger ref={ref}>
-                              <Select.Value />
-                            </Select.Trigger>
-                            <Select.Content>
-                              <Select.Item value="active">
-                                {t("priceLists.fields.status.active")}
-                              </Select.Item>
-                              <Select.Item value="draft">
-                                {t("priceLists.fields.status.draft")}
-                              </Select.Item>
-                            </Select.Content>
-                          </Select>
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-              </div>
-              <Form.Field
-                control={form.control}
-                name="description"
-                render={({ field }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.description")}</Form.Label>
-                      <Form.Control>
-                        <Textarea {...field} />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-            </div>
-            <Divider />
-            <Form.Field
-              control={form.control}
-              name="starts_at"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                      <div className="flex flex-col">
-                        <Form.Label>
-                          {t("priceLists.fields.startsAt.label")}
-                        </Form.Label>
-                        <Form.Hint>
-                          {t("priceLists.fields.startsAt.hint")}
-                        </Form.Hint>
-                      </div>
-                      <Form.Control>
-                        {/* TODO: Add timepicker see CORE-2382 */}
-                        <DatePicker mode="single" {...field} />
-                      </Form.Control>
-                    </div>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Divider />
-            <Form.Field
-              control={form.control}
-              name="ends_at"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                      <div className="flex flex-col">
-                        <Form.Label>
-                          {t("priceLists.fields.endsAt.label")}
-                        </Form.Label>
-                        <Form.Hint>
-                          {t("priceLists.fields.endsAt.hint")}
-                        </Form.Hint>
-                      </div>
-                      <Form.Control>
-                        <DatePicker mode="single" {...field} />
-                      </Form.Control>
-                    </div>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Divider />
-            <div>
-              <Collapsible.Root open={showCustomerGroups}>
-                <Form.Field
-                  control={form.control}
-                  name="customer_group_ids"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <div className="grid grid-cols-[1fr_32px] items-start gap-4">
-                          <div>
-                            <Form.Label optional>
-                              {t("pricing.fields.customerAvailabilityLabel")}
-                            </Form.Label>
-                            <Form.Hint>
-                              {t("pricing.fields.customerAvailabilityHint")}
-                            </Form.Hint>
-                          </div>
-                          <Form.Control>
-                            <Switch
-                              name={field.name}
-                              checked={showCustomerGroups}
-                              onCheckedChange={handleShowCustomerGroups}
-                            />
-                          </Form.Control>
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Collapsible.Content>
-                  <div className="flex flex-col pt-4">
-                    {fields.length > 0 ? (
-                      fields.map((field, index) => {
-                        return (
-                          <div
-                            key={field.cg_id}
-                            className="bg-ui-bg-field shadow-borders-base transition-fg hover:bg-ui-bg-field-hover flex h-7 w-fit items-center overflow-hidden rounded-md"
-                          >
-                            <div className="txt-compact-small-plus flex h-full select-none items-center justify-center px-2 py-0.5">
-                              {field.name}
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => remove(index)}
-                              className="focus-visible:bg-ui-bg-field-hover transition-fg hover:bg-ui-bg-field-hover flex h-full w-7 items-center justify-center border-l outline-none"
-                            >
-                              <XMarkMini className="text-ui-fg-muted" />
-                            </button>
-                          </div>
-                        )
-                      })
-                    ) : (
-                      <div className="flex items-center justify-center px-2 py-3">
-                        <Text
-                          size="small"
-                          leading="compact"
-                          className="text-ui-fg-muted"
-                        >
-                          {t(
-                            "pricing.fields.customerAvailabilityNoSelectionLabel"
-                          )}
-                        </Text>
-                      </div>
-                    )}
-                    <div className="flex items-center justify-end">
-                      <Button
-                        size="small"
-                        variant="secondary"
-                        type="button"
-                        onClick={handleOpenDrawer}
-                      >
-                        {t("pricing.actions.addCustomerGroups")}
-                      </Button>
-                    </div>
-                  </div>
-                </Collapsible.Content>
-              </Collapsible.Root>
-            </div>
-          </div>
+    <div className="flex flex-1 flex-col items-center overflow-y-auto">
+      <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-8 py-16">
+        <div>
+          <Heading>{t("pricing.create.header")}</Heading>
+          <Text size="small" className="text-ui-fg-subtle">
+            {t("pricing.create.hint")}
+          </Text>
         </div>
-      </SplitView.Content>
-      <CustomerGroupDrawer
-        selectedCustomerGroups={fields}
-        saveCustomerGroups={handleAddCustomerGroup}
-      />
-    </SplitView>
+        <Form.Field
+          control={form.control}
+          name="type"
+          render={({ field: { onChange, ...rest } }) => {
+            return (
+              <Form.Item>
+                <div className="flex flex-col gap-y-4">
+                  <div>
+                    <Form.Label>{t("priceLists.fields.type.label")}</Form.Label>
+                    <Form.Hint>{t("priceLists.fields.type.hint")}</Form.Hint>
+                  </div>
+                  <Form.Control>
+                    <RadioGroup
+                      onValueChange={onChange}
+                      {...rest}
+                      className="grid grid-cols-1 gap-4 md:grid-cols-2"
+                    >
+                      <RadioGroup.ChoiceBox
+                        value={"sale"}
+                        label={t("priceLists.fields.type.options.sale.label")}
+                        description={t(
+                          "priceLists.fields.type.options.sale.description"
+                        )}
+                      />
+                      <RadioGroup.ChoiceBox
+                        value={"override"}
+                        label={t(
+                          "priceLists.fields.type.options.override.label"
+                        )}
+                        description={t(
+                          "priceLists.fields.type.options.override.description"
+                        )}
+                      />
+                    </RadioGroup>
+                  </Form.Control>
+                </div>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+        <div className="flex flex-col gap-y-4">
+          <div className="grid grid-cols-1  gap-4 md:grid-cols-2">
+            <Form.Field
+              control={form.control}
+              name="title"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("fields.title")}</Form.Label>
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="status"
+              render={({ field: { onChange, ref, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>
+                      {t("priceLists.fields.status.label")}
+                    </Form.Label>
+                    <Form.Control>
+                      <Select {...field} onValueChange={onChange}>
+                        <Select.Trigger ref={ref}>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          <Select.Item value="active">
+                            {t("priceLists.fields.status.active")}
+                          </Select.Item>
+                          <Select.Item value="draft">
+                            {t("priceLists.fields.status.draft")}
+                          </Select.Item>
+                        </Select.Content>
+                      </Select>
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
+          </div>
+          <Form.Field
+            control={form.control}
+            name="description"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>{t("fields.description")}</Form.Label>
+                  <Form.Control>
+                    <Textarea {...field} />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+        </div>
+        <Divider />
+        <Form.Field
+          control={form.control}
+          name="starts_at"
+          render={({ field: { value, ...field } }) => {
+            return (
+              <Form.Item>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <div className="flex flex-col">
+                    <Form.Label optional>
+                      {t("priceLists.fields.startsAt.label")}
+                    </Form.Label>
+                    <Form.Hint>
+                      {t("priceLists.fields.startsAt.hint")}
+                    </Form.Hint>
+                  </div>
+                  <Form.Control>
+                    {/* TODO: Add timepicker see CORE-2382 */}
+                    <DatePicker
+                      mode="single"
+                      {...field}
+                      value={value ?? undefined}
+                    />
+                  </Form.Control>
+                </div>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+        <Divider />
+        <Form.Field
+          control={form.control}
+          name="ends_at"
+          render={({ field: { value, ...field } }) => {
+            return (
+              <Form.Item>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  <div className="flex flex-col">
+                    <Form.Label optional>
+                      {t("priceLists.fields.endsAt.label")}
+                    </Form.Label>
+                    <Form.Hint>{t("priceLists.fields.endsAt.hint")}</Form.Hint>
+                  </div>
+                  <Form.Control>
+                    <DatePicker
+                      mode="single"
+                      {...field}
+                      value={value ?? undefined}
+                    />
+                  </Form.Control>
+                </div>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+        <Divider />
+        <Form.Field
+          control={form.control}
+          name="customer_group_ids"
+          render={({ field }) => {
+            return (
+              <Form.Item>
+                <div>
+                  <Form.Label optional>
+                    {t("priceLists.fields.customerAvailability.label")}
+                  </Form.Label>
+                  <Form.Hint>
+                    {t("priceLists.fields.customerAvailability.hint")}
+                  </Form.Hint>
+                </div>
+                <Form.Control>
+                  <div
+                    className={clx(
+                      "bg-ui-bg-component shadow-elevation-card-rest transition-fg grid gap-1.5 rounded-xl py-1.5",
+                      "aria-[invalid='true']:shadow-borders-error"
+                    )}
+                    role="application"
+                    ref={field.ref}
+                  >
+                    <div className="text-ui-fg-subtle grid gap-1.5 px-1.5 md:grid-cols-2">
+                      <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                        {t("priceLists.fields.customerAvailability.attribute")}
+                      </div>
+                      <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                        {t("operators.in")}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-1.5">
+                      <ChildModal id="cg">
+                        <ChildModal.Trigger asChild>
+                          <button
+                            type="button"
+                            className="bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-muted flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5"
+                          >
+                            <MagnifyingGlass />
+                            {t(
+                              "priceLists.fields.customerAvailability.placeholder"
+                            )}
+                          </button>
+                        </ChildModal.Trigger>
+                        <ChildModal.Trigger asChild>
+                          <Button variant="secondary">
+                            {t("actions.browse")}
+                          </Button>
+                        </ChildModal.Trigger>
+                        <ChildModal.Content>
+                          <ChildModal.Header />
+                          <CustomerGroupDrawer
+                            saveCustomerGroups={handleAddCustomerGroup}
+                            selectedCustomerGroups={fields}
+                          />
+                        </ChildModal.Content>
+                      </ChildModal>
+                    </div>
+                    {fields.length > 0 ? (
+                      <div className="flex flex-col gap-y-1.5">
+                        <Divider variant="dashed" />
+                        <div className="flex flex-col gap-y-1.5 px-1.5">
+                          {fields.map((field, index) => {
+                            return (
+                              <div
+                                key={field.cg_id}
+                                className="bg-ui-bg-field-component shadow-borders-base flex items-center justify-between gap-2 rounded-md px-2 py-0.5"
+                              >
+                                <Text size="small" leading="compact">
+                                  {field.name}
+                                </Text>
+                                <IconButton
+                                  size="small"
+                                  variant="transparent"
+                                  type="button"
+                                  onClick={() => remove(index)}
+                                >
+                                  <XMarkMini />
+                                </IconButton>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </Form.Control>
+                <Form.ErrorMessage />
+              </Form.Item>
+            )
+          }}
+        />
+      </div>
+    </div>
   )
 }
 
@@ -436,8 +427,8 @@ const CustomerGroupDrawer = ({
   }
 
   return (
-    <SplitView.Drawer>
-      <div className="flex size-full flex-col overflow-hidden">
+    <div className="flex size-full flex-col overflow-hidden">
+      <ChildModal.Body className="min-h-0">
         <DataTable
           table={table}
           columns={columns}
@@ -450,23 +441,18 @@ const CustomerGroupDrawer = ({
           prefix={PREFIX}
           queryObject={raw}
         />
-        <div className="flex items-center justify-end gap-x-2 border-t p-4">
-          <SplitView.Close type="button" asChild>
-            <Button variant="secondary" size="small">
-              {t("actions.cancel")}
-            </Button>
-          </SplitView.Close>
-          <Button
-            type="button"
-            variant="primary"
-            size="small"
-            onClick={handleSave}
-          >
-            {t("actions.add")}
+      </ChildModal.Body>
+      <ChildModal.Footer>
+        <ChildModal.Close asChild>
+          <Button variant="secondary" size="small" type="button">
+            {t("actions.cancel")}
           </Button>
-        </div>
-      </div>
-    </SplitView.Drawer>
+        </ChildModal.Close>
+        <Button type="button" size="small" onClick={handleSave}>
+          {t("actions.add")}
+        </Button>
+      </ChildModal.Footer>
+    </div>
   )
 }
 

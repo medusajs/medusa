@@ -1,3 +1,4 @@
+import { HttpTypes } from "@medusajs/types"
 import { Checkbox } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
@@ -13,9 +14,8 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { PricingProductsRecordType } from "../../../common/schemas"
+import { PricingProductsRecord } from "../../../common/schemas"
 import { PricingCreateSchemaType } from "./schema"
-import { HttpTypes } from "@medusajs/types"
 
 type PricingProductsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -71,7 +71,7 @@ export const PricingProductsForm = ({ form }: PricingProductsFormProps) => {
       }
 
       return acc
-    }, {} as PricingProductsRecordType)
+    }, {} as PricingProductsRecord)
 
     const update = ids.map((id) => ({ id }))
 

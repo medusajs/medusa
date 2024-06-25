@@ -85,7 +85,11 @@
     "clearAll": "Clear all",
     "apply": "Apply",
     "add": "Add",
-    "select": "Select"
+    "select": "Select",
+    "browse": "Browse"
+  },
+  "operators": {
+    "in": "In"
   },
   "filters": {
     "date": {
@@ -1312,6 +1316,13 @@
       "confirmation": "You are about to delete the price list {{title}}. This action cannot be undone.",
       "successToast": "Price list {{title}} was successfully deleted."
     },
+    "create": {
+      "tabs": {
+        "details": "Details",
+        "products": "Products",
+        "prices": "Prices"
+      }
+    },
     "fields": {
       "priceOverrides": "Price overrides",
       "status": {
@@ -1340,6 +1351,12 @@
       "endsAt": {
         "label": "Price list has an expiry date?",
         "hint": "Schedule the price list to deactivate in the future."
+      },
+      "customerAvailability": {
+        "label": "Customer availability",
+        "hint": "Choose which customer groups the price list should be applied to.",
+        "placeholder": "Search for customer groups",
+        "attribute": "Customer groups"
       }
     }
   },

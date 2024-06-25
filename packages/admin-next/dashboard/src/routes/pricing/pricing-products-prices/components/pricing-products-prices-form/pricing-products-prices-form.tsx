@@ -18,7 +18,7 @@ import { castNumber } from "../../../../../lib/cast-number"
 import { usePriceListGridColumns } from "../../../common/hooks/use-price-list-grid-columns"
 import {
   PricingProductsRecordSchema,
-  PricingVariantsRecordType,
+  PricingVariantsRecord,
 } from "../../../common/schemas"
 import { isProductRow } from "../../../common/utils"
 
@@ -239,7 +239,7 @@ function initDefaultValues(
           }
 
           return variants
-        }, {} as PricingVariantsRecordType),
+        }, {} as PricingVariantsRecord),
       },
       {
         shouldDirty: false,

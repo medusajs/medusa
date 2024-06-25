@@ -17,8 +17,8 @@ export const PricingCreateSchema = z.object({
   status: z.enum(["draft", "active"]),
   title: z.string().min(1),
   description: z.string().min(1),
-  starts_at: z.date().optional(),
-  ends_at: z.date().optional(),
+  starts_at: z.date().nullish(),
+  ends_at: z.date().nullish(),
   customer_group_ids: PricingCustomerGroupsArray.optional(),
   product_ids: z.array(z.object({ id: z.string() })).min(1),
   products: PricingProductsRecordSchema,
@@ -32,6 +32,7 @@ export const PricingDetailsSchema = PricingCreateSchema.pick({
   description: true,
   starts_at: true,
   ends_at: true,
+  customer_group_ids: true,
 })
 
 export const PricingDetailsFields = Object.keys(
