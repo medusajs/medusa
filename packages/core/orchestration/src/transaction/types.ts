@@ -119,7 +119,7 @@ export type TransactionModelOptions = {
   storeExecution?: boolean
 
   /**
-   * If true, the workflow will be executed only once with the same transaction id.
+   * If true, the workflow will use the transaction ID as the key to ensure only-once execution
    */
   idempotent?: boolean
 
