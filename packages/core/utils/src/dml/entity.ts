@@ -12,6 +12,37 @@ import { isObject, isString, toCamelCase } from "../common"
 
 type Config = string | { name?: string; tableName: string }
 
+function extractNameAndTableName(nameOrConfig: Config) {
+  const result = {
+    name: "",
+    tableName: "",
+  }
+
+  if (isString(nameOrConfig)) {
+    const [schema, ...rest] = nameOrConfig.split(".")
+    const name = rest.length ? rest.join(".") : schema
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig
+  }
+
+  if (isObject(nameOrConfig)) {
+    if (!nameOrConfig.tableName) {
+      throw new Error(
+        `Missing "tableName" property in the config object for "${nameOrConfig.name}" entity`
+      )
+    }
+
+    const potentialName = nameOrConfig.name ?? nameOrConfig.tableName
+    const [schema, ...rest] = potentialName.split(".")
+    const name = rest.length ? rest.join(".") : schema
+
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig.tableName
+  }
+
+  return result
+}
+
 /**
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
@@ -25,27 +56,9 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   #cascades: EntityCascades<string[]> = {}
 
   constructor(nameOrConfig: Config, public schema: Schema) {
-    if (isString(nameOrConfig)) {
-      const [schema, ...rest] = nameOrConfig.split(".")
-      const name = rest.length ? rest.join(".") : schema
-      this.name = toCamelCase(name)
-      this.#tableName = nameOrConfig
-    }
-
-    if (isObject(nameOrConfig)) {
-      if (!nameOrConfig.tableName) {
-        throw new Error(
-          `Missing "tableName" property in the config object for "${nameOrConfig.name}" entity`
-        )
-      }
-
-      const potentialName = nameOrConfig.name ?? nameOrConfig.tableName
-      const [schema, ...rest] = potentialName.split(".")
-      const name = rest.length ? rest.join(".") : schema
-
-      this.name = toCamelCase(name)
-      this.#tableName = nameOrConfig.tableName
-    }
+    const { name, tableName } = extractNameAndTableName(nameOrConfig)
+    this.name = name
+    this.#tableName = tableName
   }
 
   /**
