@@ -1,5 +1,5 @@
 import { EntityConstructor } from "@medusajs/types"
-import { MetadataStorage } from "@mikro-orm/core"
+import { ArrayType, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
@@ -35,6 +35,7 @@ describe("Entity builder", () => {
         username: model.text(),
         email: model.text(),
         spend_limit: model.bigNumber(),
+        phones: model.array(),
       })
 
       expect(user.name).toEqual("user")
@@ -48,6 +49,7 @@ describe("Entity builder", () => {
         email: string
         spend_limit: number
         raw_spend_limit: Record<string, unknown>
+        phones: string[]
         created_at: Date
         updated_at: Date
         deleted_at: Date | null
@@ -123,6 +125,14 @@ describe("Entity builder", () => {
           reference: "scalar",
           setter: false,
           type: "any",
+        },
+        phones: {
+          getter: false,
+          name: "phones",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: ArrayType,
         },
         updated_at: {
           reference: "scalar",
