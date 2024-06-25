@@ -119,14 +119,16 @@ export function createMikrORMEntity() {
    * Parses entity name and returns model and table name from
    * it
    */
-  function parseEntityName(entityName: string) {
+  function parseEntityName(entity: DmlEntity<any>) {
+    const parsedEntity = entity.parse()
+
     /**
      * Table name is going to be the snake case version of the entity name.
      * Here we should preserve PG schema (if defined).
      *
      * For example: "platform.user" should stay as "platform.user"
      */
-    const tableName = camelToSnakeCase(entityName)
+    const tableName = camelToSnakeCase(parsedEntity.tableName)
 
     /**
      * Entity name is going to be the camelCase version of the
@@ -135,9 +137,7 @@ export function createMikrORMEntity() {
     const [pgSchema, ...rest] = tableName.split(".")
     return {
       tableName,
-      modelName: upperCaseFirst(
-        toCamelCase(rest.length ? rest.join("_") : pgSchema)
-      ),
+      modelName: upperCaseFirst(toCamelCase(parsedEntity.name)),
       pgSchema: rest.length ? pgSchema : undefined,
     }
   }
@@ -575,7 +575,7 @@ export function createMikrORMEntity() {
         )
       }
 
-      pivotEntityName = parseEntityName(pivotEntity.parse().name).modelName
+      pivotEntityName = parseEntityName(pivotEntity).modelName
     }
 
     if (!pivotEntityName) {
@@ -651,9 +651,7 @@ export function createMikrORMEntity() {
       )
     }
 
-    const { modelName, tableName, pgSchema } = parseEntityName(
-      relatedEntity.parse().name
-    )
+    const { modelName, tableName, pgSchema } = parseEntityName(relatedEntity)
     const relatedEntityInfo = {
       relatedModelName: modelName,
       relatedTableName: tableName,
@@ -706,8 +704,8 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
 
-    const { name, schema, cascades } = entity.parse()
-    const { modelName, tableName } = parseEntityName(name)
+    const { schema, cascades } = entity.parse()
+    const { modelName, tableName } = parseEntityName(entity)
 
     /**
      * Assigning name to the class constructor, so that it matches

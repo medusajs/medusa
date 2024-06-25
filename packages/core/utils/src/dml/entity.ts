@@ -8,6 +8,9 @@ import {
 } from "@medusajs/types"
 import { DMLSchema } from "./entity-builder"
 import { BelongsTo } from "./relations/belongs-to"
+import { isObject, isString, toCamelCase } from "../common"
+
+type Config = string | { name?: string; tableName: string }
 
 /**
  * Dml entity is a representation of a DML model with a unique
@@ -16,8 +19,34 @@ import { BelongsTo } from "./relations/belongs-to"
 export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   [IsDmlEntity]: true = true
 
+  name: string
+
+  readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
-  constructor(public name: string, public schema: Schema) {}
+
+  constructor(nameOrConfig: Config, public schema: Schema) {
+    if (isString(nameOrConfig)) {
+      const [schema, ...rest] = nameOrConfig.split(".")
+      const name = rest.length ? rest.join(".") : schema
+      this.name = toCamelCase(name)
+      this.#tableName = nameOrConfig
+    }
+
+    if (isObject(nameOrConfig)) {
+      if (!nameOrConfig.tableName) {
+        throw new Error(
+          `Missing "tableName" property in the config object for "${nameOrConfig.name}" entity`
+        )
+      }
+
+      const potentialName = nameOrConfig.name ?? nameOrConfig.tableName
+      const [schema, ...rest] = potentialName.split(".")
+      const name = rest.length ? rest.join(".") : schema
+
+      this.name = toCamelCase(name)
+      this.#tableName = nameOrConfig.tableName
+    }
+  }
 
   /**
    * A static method to check if an entity is an instance of DmlEntity.
@@ -35,11 +64,13 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    */
   parse(): {
     name: string
+    tableName: string
     schema: PropertyType<any> | RelationshipType<any>
     cascades: EntityCascades<string[]>
   } {
     return {
       name: this.name,
+      tableName: this.#tableName,
       schema: this.schema as unknown as
         | PropertyType<any>
         | RelationshipType<any>,
