@@ -1,4 +1,5 @@
-import { ModuleJoinerConfig } from "@medusajs/types"
+import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
+import { join } from "path"
 import {
   camelToSnakeCase,
   deduplicate,
@@ -7,7 +8,6 @@ import {
   pluralize,
   upperCaseFirst,
 } from "../common"
-import { join } from "path"
 import { loadModels } from "./loaders/load-models"
 
 /**
@@ -33,7 +33,7 @@ export function defineJoinerConfig(
     linkableKeys,
     primaryKeys,
   }: {
-    alias?: ModuleJoinerConfig["alias"]
+    alias?: JoinerServiceConfigAlias[]
     schema?: string
     entityQueryingConfig?: { name: string }[]
     linkableKeys?: Record<string, string>
@@ -79,16 +79,22 @@ export function defineJoinerConfig(
             pluralize(upperCaseFirst(alias.args.entity)),
         },
       })),
-      ...models.map((entity, i) => ({
-        name: [
-          `${camelToSnakeCase(entity.name).toLowerCase()}`,
-          `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
-        ],
-        args: {
-          entity: entity.name,
-          methodSuffix: pluralize(upperCaseFirst(entity.name)),
-        },
-      })),
+      ...models
+        .filter((model) => {
+          return (
+            !alias || !alias.some((alias) => alias.args?.entity === model.name)
+          )
+        })
+        .map((entity, i) => ({
+          name: [
+            `${camelToSnakeCase(entity.name).toLowerCase()}`,
+            `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
+          ],
+          args: {
+            entity: entity.name,
+            methodSuffix: pluralize(upperCaseFirst(entity.name)),
+          },
+        })),
     ],
   }
 }

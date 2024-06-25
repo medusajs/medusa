@@ -1,12 +1,12 @@
 import { dirname, join } from "path"
 import {
-  promises,
   constants,
   type Dirent,
+  type MakeDirectoryOptions,
+  promises,
   type RmOptions,
   type StatOptions,
   type WriteFileOptions,
-  type MakeDirectoryOptions,
 } from "fs"
 
 const { rm, stat, mkdir, access, readdir, readFile, writeFile } = promises
@@ -31,7 +31,7 @@ export class FileSystem {
    * Cleanup directory
    */
   async cleanup(options?: RmOptions) {
-    return rm(this.basePath, {
+    return await rm(this.basePath, {
       recursive: true,
       maxRetries: 10,
       force: true,
@@ -61,7 +61,7 @@ export class FileSystem {
    * Remove a file
    */
   async remove(filePath: string, options?: RmOptions) {
-    return rm(this.makePath(filePath), {
+    return await rm(this.makePath(filePath), {
       recursive: true,
       force: true,
       maxRetries: 2,
@@ -103,7 +103,7 @@ export class FileSystem {
    * Returns file contents
    */
   async contents(filePath: string) {
-    return readFile(this.makePath(filePath), "utf-8")
+    return await readFile(this.makePath(filePath), "utf-8")
   }
 
   /**
@@ -139,14 +139,14 @@ export class FileSystem {
   async createJson(filePath: string, contents: any, options?: JSONFileOptions) {
     if (options && typeof options === "object") {
       const { replacer, spaces, ...rest } = options
-      return this.create(
+      return await this.create(
         filePath,
         JSON.stringify(contents, replacer, spaces),
         rest
       )
     }
 
-    return this.create(filePath, JSON.stringify(contents), options)
+    return await this.create(filePath, JSON.stringify(contents), options)
   }
 
   /**

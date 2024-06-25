@@ -154,6 +154,7 @@ export function createMikrORMEntity() {
    * - [user.teams]: true // the teams relationship on user is an owner
    * - [team.users] // cannot be an owner
    */
+  // TODO: if we use the util toMikroOrmEntities then a new builder will be used each time, lets think about this. Currently if means that with many to many we need to use the same builder
   const MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean> = {}
 
   /**
@@ -240,7 +241,10 @@ export function createMikrORMEntity() {
        * Hook to generate entity within the code
        */
       MikroORMEntity.prototype.generateId = function () {
-        this.id = generateEntityId(this.id, field.dataType.options?.prefix)
+        this[field.fieldName] = generateEntityId(
+          this[field.fieldName],
+          field.dataType.options?.prefix
+        )
       }
 
       /**
@@ -248,6 +252,7 @@ export function createMikrORMEntity() {
        */
       BeforeCreate()(MikroORMEntity.prototype, "generateId")
       OnInit()(MikroORMEntity.prototype, "generateId")
+
       return
     }
 
@@ -256,6 +261,19 @@ export function createMikrORMEntity() {
      */
     const columnType = COLUMN_TYPES[field.dataType.name]
     const propertyType = PROPERTY_TYPES[field.dataType.name]
+
+    /**
+     * Defining a primary key property
+     */
+    if (field.dataType.options?.primaryKey) {
+      PrimaryKey({
+        columnType,
+        type: propertyType,
+        nullable: false,
+      })(MikroORMEntity.prototype, field.fieldName)
+
+      return
+    }
 
     Property({
       columnType,
@@ -373,6 +391,23 @@ export function createMikrORMEntity() {
       )
     }
 
+    function applyForeignKeyAssignationHooks(foreignKeyName: string) {
+      const hookName = `assignRelationFromForeignKeyValue${foreignKeyName}`
+      /**
+       * Hook to handle foreign key assignation
+       */
+      MikroORMEntity.prototype[hookName] = function () {
+        this[relationship.name] ??= this[foreignKeyName]
+        this[foreignKeyName] ??= this[relationship.name]?.id
+      }
+
+      /**
+       * Execute hook via lifecycle decorators
+       */
+      BeforeCreate()(MikroORMEntity.prototype, hookName)
+      OnInit()(MikroORMEntity.prototype, hookName)
+    }
+
     /**
      * Otherside is a has many. Hence we should defined a ManyToOne
      */
@@ -380,6 +415,8 @@ export function createMikrORMEntity() {
       otherSideRelation instanceof HasMany ||
       otherSideRelation instanceof DmlManyToMany
     ) {
+      const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
+
       ManyToOne({
         entity: relatedModelName,
         columnType: "text",
@@ -389,10 +426,22 @@ export function createMikrORMEntity() {
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
 
-      ManyToOne({
-        entity: relatedModelName,
-        persist: false,
-      })(MikroORMEntity.prototype, relationship.name)
+      if (otherSideRelation instanceof DmlManyToMany) {
+        Property({
+          type: relatedModelName,
+          persist: false,
+          nullable: relationship.nullable,
+        })(MikroORMEntity.prototype, relationship.name)
+      } else {
+        // HasMany case
+        ManyToOne({
+          entity: relatedModelName,
+          persist: false,
+          nullable: relationship.nullable,
+        })(MikroORMEntity.prototype, relationship.name)
+      }
+
+      applyForeignKeyAssignationHooks(foreignKeyName)
       return
     }
 
@@ -400,6 +449,8 @@ export function createMikrORMEntity() {
      * Otherside is a has one. Hence we should defined a OneToOne
      */
     if (otherSideRelation instanceof HasOne) {
+      const foreignKeyName = camelToSnakeCase(`${relationship.name}Id`)
+
       OneToOne({
         entity: relatedModelName,
         nullable: relationship.nullable,
@@ -407,6 +458,23 @@ export function createMikrORMEntity() {
         owner: true,
         onDelete: shouldCascade ? "cascade" : undefined,
       })(MikroORMEntity.prototype, relationship.name)
+
+      if (relationship.nullable) {
+        Object.defineProperty(MikroORMEntity.prototype, foreignKeyName, {
+          value: null,
+          configurable: true,
+          enumerable: true,
+          writable: true,
+        })
+      }
+
+      Property({
+        type: "string",
+        columnType: "text",
+        nullable: relationship.nullable,
+      })(MikroORMEntity.prototype, foreignKeyName)
+
+      applyForeignKeyAssignationHooks(foreignKeyName)
       return
     }
 
@@ -664,12 +732,18 @@ export function createMikrORMEntity() {
  * return the input idempotently
  * @param entity
  */
-export const toMikroORMEntity = (entity: any) => {
+export const toMikroORMEntity = <T>(
+  entity: T
+): T extends DmlEntity<infer Schema> ? EntityConstructor<Schema> : T => {
+  let mikroOrmEntity: T | EntityConstructor<any> = entity
+
   if (DmlEntity.isDmlEntity(entity)) {
-    return createMikrORMEntity()(entity)
+    mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return entity
+  return mikroOrmEntity as T extends DmlEntity<infer Schema>
+    ? EntityConstructor<Schema>
+    : T
 }
 
 /**
@@ -677,6 +751,16 @@ export const toMikroORMEntity = (entity: any) => {
  * This action is idempotent if non of the entities are DmlEntity
  * @param entities
  */
-export const toMikroOrmEntities = function (entities: any[]) {
-  return entities.map(toMikroORMEntity)
+export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
+  const entityBuilder = createMikrORMEntity()
+
+  return entities.map((entity) => {
+    if (DmlEntity.isDmlEntity(entity)) {
+      return entityBuilder(entity)
+    }
+
+    return entity
+  }) as {
+    [K in keyof T]: T[K] extends DmlEntity<any> ? EntityConstructor<T[K]> : T[K]
+  }
 }

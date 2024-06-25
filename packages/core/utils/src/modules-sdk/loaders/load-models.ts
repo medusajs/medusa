@@ -27,10 +27,11 @@ export function loadModels(basePath: string) {
 
       if (stats.isFile()) {
         try {
-          const required = require(filePath)
-          return Object.values(required).filter(
-            (resource) => typeof resource === "function" && !!resource.name
-          )
+          const required = require(filePath) as {
+            [key: string]: { name?: string }
+          }
+
+          return Object.values(required).filter((resource) => !!resource.name)
         } catch (e) {}
       }
 
