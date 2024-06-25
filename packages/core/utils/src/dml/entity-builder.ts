@@ -18,6 +18,7 @@ import { BelongsTo } from "./relations/belongs-to"
 import { HasMany } from "./relations/has-many"
 import { HasOne } from "./relations/has-one"
 import { ManyToMany } from "./relations/many-to-many"
+import { ArrayProperty } from "./properties/array"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -103,6 +104,13 @@ export class EntityBuilder {
    */
   bigNumber() {
     return new BigNumberProperty()
+  }
+
+  /**
+   * Define an array column
+   */
+  array() {
+    return new ArrayProperty()
   }
 
   /**
