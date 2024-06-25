@@ -33,6 +33,7 @@ import { upperCaseFirst } from "../../common/upper-case-first"
 import {
   MikroOrmBigNumberProperty,
   mikroOrmSoftDeletableFilterOptions,
+  Searchable,
 } from "../../dal"
 import { DmlEntity } from "../entity"
 import { HasMany } from "../relations/has-many"
@@ -306,6 +307,20 @@ export function createMikrORMEntity() {
 
       providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
     })
+  }
+
+  /**
+   * Apply the searchable decorator to the property marked as searchable to enable the free text search
+   */
+  function applySearchable(
+    MikroORMEntity: EntityConstructor<any>,
+    field: PropertyMetadata
+  ) {
+    if (!field.searchable) {
+      return
+    }
+
+    Searchable()(MikroORMEntity.prototype, field.fieldName)
   }
 
   /**
@@ -713,6 +728,7 @@ export function createMikrORMEntity() {
       if ("fieldName" in field) {
         defineProperty(MikroORMEntity, field)
         applyIndexes(MikroORMEntity, tableName, field)
+        applySearchable(MikroORMEntity, field)
       } else {
         defineRelationship(MikroORMEntity, field, cascades)
       }
@@ -734,16 +750,14 @@ export function createMikrORMEntity() {
  */
 export const toMikroORMEntity = <T>(
   entity: T
-): T extends DmlEntity<infer Schema> ? EntityConstructor<Schema> : T => {
+): T extends DmlEntity<infer Schema> ? Infer<T> : T => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<infer Schema>
-    ? EntityConstructor<Schema>
-    : T
+  return mikroOrmEntity as T extends DmlEntity<infer Schema> ? Infer<T> : T
 }
 
 /**
@@ -761,6 +775,6 @@ export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
 
     return entity
   }) as {
-    [K in keyof T]: T[K] extends DmlEntity<any> ? EntityConstructor<T[K]> : T[K]
+    [K in keyof T]: T[K] extends DmlEntity<any> ? Infer<T[K]> : T[K]
   }
 }
