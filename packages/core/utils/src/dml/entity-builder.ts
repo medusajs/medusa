@@ -6,6 +6,7 @@ import type {
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
+import { inferPrimaryKeyProperties } from "./helpers/entity-builder/infer-primary-key-properties"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
 import { DateTimeProperty } from "./properties/date-time"
@@ -34,7 +35,7 @@ export type DMLSchema = Record<
  * schema using the shorthand methods.
  */
 export class EntityBuilder {
-  #disallowImplicitProperties(schema: Record<string, any>) {
+  #disallowImplicitProperties(schema: DMLSchema) {
     const implicitProperties = Object.keys(schema).filter((fieldName) =>
       IMPLICIT_PROPERTIES.includes(fieldName)
     )
@@ -54,6 +55,7 @@ export class EntityBuilder {
    */
   define<Schema extends DMLSchema>(name: string, schema: Schema) {
     this.#disallowImplicitProperties(schema)
+    schema = inferPrimaryKeyProperties(schema)
 
     return new DmlEntity(name, {
       ...schema,
