@@ -1,10 +1,10 @@
 import {
   BaseFilterable,
   Context,
-  ExtractEntityType,
   FilterQuery,
   FilterQuery as InternalFilterQuery,
   FindConfig,
+  InferEntityType,
   ModulesSdkTypes,
   PerformedActions,
   UpsertWithReplaceConfig,
@@ -101,9 +101,9 @@ export function MedusaInternalService<TContainer extends object = object>(
     @InjectManager(propertyRepositoryName)
     async retrieve(
       idOrObject: string | object,
-      config: FindConfig<ExtractEntityType<TEntity>> = {},
+      config: FindConfig<InferEntityType<TEntity>> = {},
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<ExtractEntityType<TEntity>> {
+    ): Promise<InferEntityType<TEntity>> {
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
 
       if (
@@ -163,7 +163,7 @@ export function MedusaInternalService<TContainer extends object = object>(
       filters: FilterQuery<any> | BaseFilterable<FilterQuery<any>> = {},
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<ExtractEntityType<TEntity>[]> {
+    ): Promise<InferEntityType<TEntity>[]> {
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
 
@@ -180,7 +180,7 @@ export function MedusaInternalService<TContainer extends object = object>(
       filters: FilterQuery<any> | BaseFilterable<FilterQuery<any>> = {},
       config: FindConfig<any> = {},
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<[ExtractEntityType<TEntity>[], number]> {
+    ): Promise<[InferEntityType<TEntity>[], number]> {
       AbstractService_.applyDefaultOrdering(config)
       AbstractService_.applyFreeTextSearchFilter(filters, config)
 
@@ -195,21 +195,21 @@ export function MedusaInternalService<TContainer extends object = object>(
     create(
       data: any,
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>>
+    ): Promise<InferEntityType<TEntity>>
     create(
       data: any[],
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>[]>
+    ): Promise<InferEntityType<TEntity>[]>
 
     @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
     async create(
       data: any | any[],
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<ExtractEntityType<TEntity> | ExtractEntityType<TEntity>[]> {
+    ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
       if (!isDefined(data) || (Array.isArray(data) && data.length === 0)) {
         return (Array.isArray(data) ? [] : void 0) as
-          | ExtractEntityType<TEntity>
-          | ExtractEntityType<TEntity>[]
+          | InferEntityType<TEntity>
+          | InferEntityType<TEntity>[]
       }
 
       const data_ = Array.isArray(data) ? data : [data]
@@ -224,29 +224,29 @@ export function MedusaInternalService<TContainer extends object = object>(
     update(
       data: any[],
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>[]>
+    ): Promise<InferEntityType<TEntity>[]>
     update(
       data: any,
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>>
+    ): Promise<InferEntityType<TEntity>>
     update(
       selectorAndData: SelectorAndData,
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>[]>
+    ): Promise<InferEntityType<TEntity>[]>
     update(
       selectorAndData: SelectorAndData[],
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>[]>
+    ): Promise<InferEntityType<TEntity>[]>
 
     @InjectTransactionManager(shouldForceTransaction, propertyRepositoryName)
     async update(
       input: any | any[] | SelectorAndData | SelectorAndData[],
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<ExtractEntityType<TEntity> | ExtractEntityType<TEntity>[]> {
+    ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
       if (!isDefined(input) || (Array.isArray(input) && input.length === 0)) {
         return (Array.isArray(input) ? [] : void 0) as
-          | ExtractEntityType<TEntity>
-          | ExtractEntityType<TEntity>[]
+          | InferEntityType<TEntity>
+          | InferEntityType<TEntity>[]
       }
 
       const primaryKeys = AbstractService_.retrievePrimaryKeys(model)
@@ -312,7 +312,7 @@ export function MedusaInternalService<TContainer extends object = object>(
         // Only throw for missing entities when we dont have selectors involved as selector by design can return 0 entities
         if (entitiesToUpdate.length !== keySelectorDataMap.size) {
           const entityName =
-            (model as EntityClass<ExtractEntityType<TEntity>>).name ?? model
+            (model as EntityClass<InferEntityType<TEntity>>).name ?? model
 
           const compositeKeysValuesForFoundEntities = new Set(
             entitiesToUpdate.map((entity) => {
@@ -465,7 +465,7 @@ export function MedusaInternalService<TContainer extends object = object>(
         | InternalFilterQuery
         | InternalFilterQuery[],
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<[ExtractEntityType<TEntity>[], Record<string, unknown[]>]> {
+    ): Promise<[InferEntityType<TEntity>[], Record<string, unknown[]>]> {
       if (
         (Array.isArray(idsOrFilter) && !idsOrFilter.length) ||
         (!Array.isArray(idsOrFilter) && !idsOrFilter)
@@ -483,7 +483,7 @@ export function MedusaInternalService<TContainer extends object = object>(
     async restore(
       idsOrFilter: string[] | InternalFilterQuery,
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<[ExtractEntityType<TEntity>[], Record<string, unknown[]>]> {
+    ): Promise<[InferEntityType<TEntity>[], Record<string, unknown[]>]> {
       return await this[propertyRepositoryName].restore(
         idsOrFilter,
         sharedContext
@@ -493,17 +493,17 @@ export function MedusaInternalService<TContainer extends object = object>(
     upsert(
       data: any[],
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>[]>
+    ): Promise<InferEntityType<TEntity>[]>
     upsert(
       data: any,
       sharedContext?: Context
-    ): Promise<ExtractEntityType<TEntity>>
+    ): Promise<InferEntityType<TEntity>>
 
     @InjectTransactionManager(propertyRepositoryName)
     async upsert(
       data: any | any[],
       @MedusaContext() sharedContext: Context = {}
-    ): Promise<ExtractEntityType<TEntity> | ExtractEntityType<TEntity>[]> {
+    ): Promise<InferEntityType<TEntity> | InferEntityType<TEntity>[]> {
       const data_ = Array.isArray(data) ? data : [data]
       const entities = await this[propertyRepositoryName].upsert(
         data_,
@@ -514,30 +514,30 @@ export function MedusaInternalService<TContainer extends object = object>(
 
     upsertWithReplace(
       data: any[],
-      config?: UpsertWithReplaceConfig<ExtractEntityType<TEntity>>,
+      config?: UpsertWithReplaceConfig<InferEntityType<TEntity>>,
       sharedContext?: Context
     ): Promise<{
-      entities: ExtractEntityType<TEntity>[]
+      entities: InferEntityType<TEntity>[]
       performedActions: PerformedActions
     }>
     upsertWithReplace(
       data: any,
-      config?: UpsertWithReplaceConfig<ExtractEntityType<TEntity>>,
+      config?: UpsertWithReplaceConfig<InferEntityType<TEntity>>,
       sharedContext?: Context
     ): Promise<{
-      entities: ExtractEntityType<TEntity>
+      entities: InferEntityType<TEntity>
       performedActions: PerformedActions
     }>
 
     @InjectTransactionManager(propertyRepositoryName)
     async upsertWithReplace(
       data: any | any[],
-      config: UpsertWithReplaceConfig<ExtractEntityType<TEntity>> = {
+      config: UpsertWithReplaceConfig<InferEntityType<TEntity>> = {
         relations: [],
       },
       @MedusaContext() sharedContext: Context = {}
     ): Promise<{
-      entities: ExtractEntityType<TEntity> | ExtractEntityType<TEntity>[]
+      entities: InferEntityType<TEntity> | InferEntityType<TEntity>[]
       performedActions: PerformedActions
     }> {
       const data_ = Array.isArray(data) ? data : [data]
