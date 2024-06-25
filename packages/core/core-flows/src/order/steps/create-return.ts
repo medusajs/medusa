@@ -12,8 +12,8 @@ export const createReturnStep = createStep(
       ModuleRegistrationName.ORDER
     )
 
-    await service.createReturn(data)
-    return new StepResponse(void 0, data.order_id)
+    const orderReturn = await service.createReturn(data)
+    return new StepResponse(orderReturn, data.order_id)
   },
   async (orderId, { container }) => {
     if (!orderId) {
