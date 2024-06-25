@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { CampaignBudgetType } from "../../../../../../core/utils/src/promotion/index"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
@@ -168,6 +168,35 @@ moduleIntegrationTestRunner<IPromotionModuleService>({
                 used: 10,
               }),
             })
+          )
+        })
+
+        it("should create a campaign with a campaign identitifer of a deleted campaign", async () => {
+          const campaign = await service.createCampaigns({
+            name: "test",
+            campaign_identifier: "test",
+          })
+
+          await service.softDeleteCampaigns(campaign.id)
+
+          const recreatedCampaign = await service.createCampaigns({
+            name: "test",
+            campaign_identifier: "test",
+          })
+
+          expect(recreatedCampaign).toEqual(
+            expect.objectContaining({
+              name: "test",
+              campaign_identifier: "test",
+            })
+          )
+
+          const error = await service
+            .restoreCampaigns(campaign.id)
+            .catch((e) => e)
+
+          expect(error.message).toEqual(
+            "Promotion campaign with campaign_identifier: test, already exists."
           )
         })
       })

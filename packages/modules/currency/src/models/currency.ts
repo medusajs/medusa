@@ -1,50 +1,10 @@
-import { BigNumberRawValue } from "@medusajs/types"
-import {
-  BigNumber,
-  MikroOrmBigNumberProperty,
-  Searchable,
-} from "@medusajs/utils"
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import { model } from "@medusajs/utils"
 
-@Entity({ tableName: "currency" })
-class Currency {
-  @Searchable()
-  @PrimaryKey({ columnType: "text" })
-  code!: string
-
-  @Property({ columnType: "text" })
-  symbol: string
-
-  @Property({ columnType: "text" })
-  symbol_native: string
-
-  @Searchable()
-  @Property({ columnType: "text" })
-  name: string
-
-  @Property({ columnType: "int", default: 0 })
-  decimal_digits: number
-
-  @MikroOrmBigNumberProperty({ default: 0 })
-  rounding: BigNumber | number
-
-  @Property({ columnType: "jsonb" })
-  raw_rounding: BigNumberRawValue
-
-  @Property({
-    onCreate: () => new Date(),
-    columnType: "timestamptz",
-    defaultRaw: "now()",
-  })
-  created_at: Date
-
-  @Property({
-    onCreate: () => new Date(),
-    onUpdate: () => new Date(),
-    columnType: "timestamptz",
-    defaultRaw: "now()",
-  })
-  updated_at: Date
-}
-
-export default Currency
+export default model.define("currency", {
+  code: model.text().primaryKey(),
+  symbol: model.text(),
+  symbol_native: model.text(),
+  name: model.text(),
+  decimal_digits: model.number().default(0),
+  rounding: model.bigNumber().default(0),
+})

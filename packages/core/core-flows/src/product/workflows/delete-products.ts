@@ -1,13 +1,13 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
-  WorkflowData,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { removeRemoteLinkStep } from "../../common"
 import { deleteProductsStep } from "../steps/delete-products"
 import { getProductsStep } from "../steps/get-products"
+import { Modules } from "@medusajs/utils"
 
 type WorkflowInput = { ids: string[] }
 

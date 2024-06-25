@@ -15,13 +15,22 @@ export const LocationItem = ({
 }: LocationItemProps) => {
   return (
     <div
-      className={clx("flex w-full gap-x-2 rounded-lg border px-2 py-2", {
-        "border-ui-border-interactive ": selected,
-      })}
+      className={clx(
+        "flex w-full cursor-pointer gap-x-2 rounded-lg border px-2 py-2",
+        {
+          "border-ui-border-interactive ": selected,
+        }
+      )}
       onClick={() => onSelect(!selected)}
     >
       <div className="h-5 w-5">
-        <Checkbox checked={selected} />
+        <Checkbox
+          onClick={(e) => {
+            e.stopPropagation()
+            onSelect(!selected)
+          }}
+          checked={selected}
+        />
       </div>
       <div className="flex w-full flex-col">
         <Text size="small" leading="compact" weight="plus">

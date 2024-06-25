@@ -85,7 +85,42 @@
     "clearAll": "Clear all",
     "apply": "Apply",
     "add": "Add",
-    "select": "Select"
+    "select": "Select",
+    "logout": "Logout"
+  },
+  "app": {
+    "search": {
+      "allAreas": "All areas",
+      "navigation": "Navigation",
+      "openResult": "Open result",
+      "placeholder": "Jump to or find anything..."
+    },
+    "keyboardShortcuts": {
+      "pageShortcut": "Jump to",
+      "settingShortcut": "Settings",
+      "commandShortcut": "Commands",
+      "goToOrders": "Go to orders",
+      "goToProducts": "Go to products",
+      "goToCollections": "Go to collections",
+      "goToCategories": "Go to categories",
+      "goToCustomers": "Go to customers",
+      "goToCustomerGroups": "Go to customer groups",
+      "goToInventory": "Go to inventory",
+      "goToReservations": "Go to reservations",
+      "goToPriceLists": "Go to price lists",
+      "goToPromotions": "Go to promotions",
+      "goToCampaigns": "Go to campaigns",
+      "goToStore": "Go to store",
+      "goToUsers": "Go to users",
+      "goToRegions": "Go to regions",
+      "goToTaxRegions": "Go to tax region",
+      "goToSalesChannels": "Go to sales channels",
+      "goToProductTypes": "Go to product types",
+      "goToLocations": "Go to locations",
+      "goToPublishableApiKeys": "Go to publishable API keys",
+      "goToSecretApiKeys": "Go to secret API keys",
+      "goToWorkflows": "Go to workflows"
+    }
   },
   "filters": {
     "date": {
@@ -481,6 +516,9 @@
       "successToast": "Reservation was successfully created.",
       "updateSuccessToast": "Reservation was successfully updated.",
       "deleteSuccessToast": "Reservation was successfully deleted."
+    },
+    "toast": {
+      "updateLocations": "Locations updated successfully."
     }
   },
   "giftCards": {
@@ -810,7 +848,6 @@
       "shippingProfilesDesc": "Shipping rules for different types of products",
       "shippingOptionTypes": "Shipping Option Types",
       "shippingOptionTypesDesc": "Group options based on characteristic"
-
     },
     "salesChannels": {
       "header": "Sales Channels",
@@ -1385,6 +1422,7 @@
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
+    "automaticTaxesHint": "When enabled taxes will only be calculated at checkout based on the shipping address.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
     "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
@@ -1754,6 +1792,7 @@
     "inventory": "Inventory",
     "optional": "Optional",
     "note": "Note",
+    "automaticTaxes": "Automatic Taxes",
     "taxInclusivePricing": "Tax inclusive pricing",
     "taxRate": "Tax Rate",
     "taxCode": "Tax Code",

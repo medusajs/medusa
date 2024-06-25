@@ -1,7 +1,7 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 
-export const StoreDefaultCurrency: ModuleJoinerConfig = {
+export const StoreCurrencies: ModuleJoinerConfig = {
   isLink: true,
   isReadOnlyLink: true,
   extends: [
@@ -10,8 +10,8 @@ export const StoreDefaultCurrency: ModuleJoinerConfig = {
       relationship: {
         serviceName: Modules.CURRENCY,
         primaryKey: "code",
-        foreignKey: "default_currency_code",
-        alias: "default_currency",
+        foreignKey: "supported_currencies.currency_code",
+        alias: "currency",
         args: {
           methodSuffix: "Currencies",
         },

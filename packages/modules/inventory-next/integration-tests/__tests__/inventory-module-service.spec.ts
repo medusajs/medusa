@@ -1,7 +1,6 @@
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 

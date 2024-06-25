@@ -94,7 +94,7 @@ export function EditShippingOptionsPricingForm({
   } = useStore()
 
   const currencies = useMemo(
-    () => store?.supported_currency_codes || [],
+    () => store?.supported_currencies?.map((c) => c.currency_code) || [],
     [store]
   )
 

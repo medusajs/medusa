@@ -3,8 +3,8 @@ import {
   buildEntitiesNameToLinkableKeysMap,
   defineJoinerConfig,
   MapToConfig,
+  Modules,
 } from "@medusajs/utils"
-import { Modules } from "@medusajs/modules-sdk"
 
 export const joinerConfig = defineJoinerConfig(Modules.AUTH, {
   entityQueryingConfig: [AuthIdentity],

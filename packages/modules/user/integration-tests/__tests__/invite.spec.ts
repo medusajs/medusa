@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IUserModuleService } from "@medusajs/types/dist/user"
-import { UserEvents } from "@medusajs/utils"
+import { Modules, UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -176,7 +175,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_updated,
+              eventName: UserEvents.INVITE_UPDATED,
             }),
           ])
         })
@@ -193,7 +192,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
           ])
         })
@@ -222,19 +221,19 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_created,
+              eventName: UserEvents.INVITE_CREATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.invite_created,
+              eventName: UserEvents.INVITE_CREATED,
             }),
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.invite_token_generated,
+              eventName: UserEvents.INVITE_TOKEN_GENERATED,
             }),
           ])
         })

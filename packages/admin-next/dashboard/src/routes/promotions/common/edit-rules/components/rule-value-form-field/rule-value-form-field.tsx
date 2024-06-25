@@ -28,7 +28,7 @@ const buildFilters = (attribute?: string, store?: StoreDTO) => {
 
   if (attribute === "currency_code") {
     return {
-      value: store.supported_currency_codes,
+      value: store.supported_currencies?.map((c) => c.currency_code),
     }
   }
 

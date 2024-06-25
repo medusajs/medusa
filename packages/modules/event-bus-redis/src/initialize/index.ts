@@ -2,10 +2,10 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaModule,
-  Modules,
 } from "@medusajs/modules-sdk"
 import { IEventBusService } from "@medusajs/types"
 import { EventBusRedisModuleOptions } from "../types"
+import { Modules } from "@medusajs/utils"
 
 export const initialize = async (
   options?: EventBusRedisModuleOptions | ExternalModuleDeclaration

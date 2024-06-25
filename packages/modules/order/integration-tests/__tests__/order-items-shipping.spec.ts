@@ -1,9 +1,8 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateOrderLineItemTaxLineDTO,
   IOrderModuleService,
 } from "@medusajs/types"
-import { OrderStatus } from "@medusajs/utils"
+import { Modules, OrderStatus } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
@@ -1203,7 +1202,10 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
           const [checkOrderOne, checkOrderTwo] = JSON.parse(
             JSON.stringify(
-              await service.listOrders({}, { relations: ["items.item.adjustments"] })
+              await service.listOrders(
+                {},
+                { relations: ["items.item.adjustments"] }
+              )
             )
           )
 
@@ -1718,12 +1720,16 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             },
           ])
 
-          const orderOneMethods = await (service as any).listOrderShippingMethods(
+          const orderOneMethods = await (
+            service as any
+          ).listOrderShippingMethods(
             { order_id: orderOne.id },
             { relations: ["shipping_method.adjustments"] }
           )
 
-          const orderTwoMethods = await (service as any).listOrderShippingMethods(
+          const orderTwoMethods = await (
+            service as any
+          ).listOrderShippingMethods(
             { order_id: orderTwo.id },
             { relations: ["shipping_method.adjustments"] }
           )
@@ -2346,7 +2352,10 @@ moduleIntegrationTestRunner<IOrderModuleService>({
 
           const [checkOrderOne, checkOrderTwo] = JSON.parse(
             JSON.stringify(
-              await service.listOrders({}, { relations: ["items.item.tax_lines"] })
+              await service.listOrders(
+                {},
+                { relations: ["items.item.tax_lines"] }
+              )
             )
           )
 

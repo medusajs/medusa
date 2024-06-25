@@ -1,4 +1,4 @@
-import { ModuleRegistrationName, Modules } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -7,6 +7,7 @@ import {
   ISalesChannelModuleService,
 } from "@medusajs/types"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 

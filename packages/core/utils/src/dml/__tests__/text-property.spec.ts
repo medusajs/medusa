@@ -10,6 +10,7 @@ describe("Text property", () => {
       fieldName: "username",
       dataType: {
         name: "text",
+        options: { primaryKey: false },
       },
       nullable: false,
       indexes: [],

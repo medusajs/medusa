@@ -7,11 +7,9 @@ type InjectedDependencies = {
   priceListRepository: DAL.RepositoryService
 }
 
-export default class PriceListService<
-  TEntity extends PriceList = PriceList
-> extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+export default class PriceListService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   PriceList
-)<TEntity> {
+)<PriceList> {
   constructor(container: InjectedDependencies) {
     // @ts-ignore
     super(...arguments)
@@ -20,32 +18,32 @@ export default class PriceListService<
   create(
     data: ServiceTypes.CreatePriceListDTO[],
     sharedContext?: Context
-  ): Promise<TEntity[]>
+  ): Promise<PriceList[]>
   create(
     data: ServiceTypes.CreatePriceListDTO,
     sharedContext?: Context
-  ): Promise<TEntity>
+  ): Promise<PriceList>
 
   async create(
     data: ServiceTypes.CreatePriceListDTO | ServiceTypes.CreatePriceListDTO[],
     sharedContext?: Context
-  ): Promise<TEntity | TEntity[]> {
+  ): Promise<PriceList | PriceList[]> {
     const data_ = Array.isArray(data) ? data : [data]
     const priceLists = this.normalizePriceListDate(data_)
     return await super.create(priceLists, sharedContext)
   }
 
   // @ts-ignore
-  update(data: any[], sharedContext?: Context): Promise<TEntity[]>
+  update(data: any[], sharedContext?: Context): Promise<PriceList[]>
   // @ts-ignore
-  update(data: any, sharedContext?: Context): Promise<TEntity>
+  update(data: any, sharedContext?: Context): Promise<PriceList>
 
   // TODO: Add support for selector? and then rm ts ignore
   // @ts-ignore
   async update(
     data: ServiceTypes.UpdatePriceListDTO | ServiceTypes.UpdatePriceListDTO[],
     sharedContext?: Context
-  ): Promise<TEntity | TEntity[]> {
+  ): Promise<PriceList | PriceList[]> {
     const data_ = Array.isArray(data) ? data : [data]
     const priceLists = this.normalizePriceListDate(data_)
     return await super.update(priceLists, sharedContext)

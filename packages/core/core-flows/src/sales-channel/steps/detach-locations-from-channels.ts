@@ -1,7 +1,7 @@
-import { Modules, RemoteLink } from "@medusajs/modules-sdk"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 
 interface StepInput {
   links: {

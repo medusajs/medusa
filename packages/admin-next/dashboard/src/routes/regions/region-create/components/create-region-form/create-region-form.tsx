@@ -44,7 +44,7 @@ type CreateRegionFormProps = {
 const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string().min(2, "Select a currency"),
-  includes_tax: zod.boolean(),
+  automatic_taxes: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
   payment_providers: zod.array(zod.string()).min(1),
 })
@@ -64,7 +64,7 @@ export const CreateRegionForm = ({
     defaultValues: {
       name: "",
       currency_code: "",
-      includes_tax: false,
+      automatic_taxes: true,
       countries: [],
       payment_providers: [],
     },
@@ -88,7 +88,7 @@ export const CreateRegionForm = ({
         countries: values.countries.map((c) => c.code),
         currency_code: values.currency_code,
         payment_providers: values.payment_providers,
-        automatic_taxes: values.includes_tax,
+        automatic_taxes: values.automatic_taxes,
       },
       {
         onSuccess: ({ region }) => {
@@ -277,14 +277,14 @@ export const CreateRegionForm = ({
                   </div>
                   <Form.Field
                     control={form.control}
-                    name="includes_tax"
+                    name="automatic_taxes"
                     render={({ field: { value, onChange, ...field } }) => {
                       return (
                         <Form.Item>
                           <div>
                             <div className="flex items-start justify-between">
                               <Form.Label>
-                                {t("fields.taxInclusivePricing")}
+                                {t("fields.automaticTaxes")}
                               </Form.Label>
                               <Form.Control>
                                 <Switch
@@ -295,7 +295,7 @@ export const CreateRegionForm = ({
                               </Form.Control>
                             </div>
                             <Form.Hint>
-                              {t("regions.taxInclusiveHint")}
+                              {t("regions.automaticTaxesHint")}
                             </Form.Hint>
                             <Form.ErrorMessage />
                           </div>
@@ -303,6 +303,7 @@ export const CreateRegionForm = ({
                       )
                     }}
                   />
+
                   <div className="bg-ui-border-base h-px w-full" />
                   <div className="flex flex-col gap-y-4">
                     <div>

@@ -1,7 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { LinkWorkflowInput } from "@medusajs/types/src"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { ContainerRegistrationKeys, Modules, promiseAll } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const linkSalesChannelsToApiKeyStepId = "link-sales-channels-to-api-key"
 export const linkSalesChannelsToApiKeyStep = createStep(

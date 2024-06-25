@@ -1,4 +1,4 @@
-import { RelationshipType, PropertyType } from "../types"
+import { RelationshipType } from "@medusajs/types"
 
 /**
  * Nullable modifier marks a schema node as nullable
