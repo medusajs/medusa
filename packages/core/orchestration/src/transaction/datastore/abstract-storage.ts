@@ -3,7 +3,7 @@ import {
   TransactionCheckpoint,
 } from "../distributed-transaction"
 import { TransactionStep } from "../transaction-step"
-import { SchedulerOptions } from "../types"
+import { SchedulerOptions, TransactionOptions } from "../types"
 
 export interface IDistributedSchedulerStorage {
   schedule(
@@ -17,9 +17,17 @@ export interface IDistributedSchedulerStorage {
 }
 
 export interface IDistributedTransactionStorage {
-  get(key: string): Promise<TransactionCheckpoint | undefined>
+  get(
+    key: string,
+    options?: TransactionOptions
+  ): Promise<TransactionCheckpoint | undefined>
   list(): Promise<TransactionCheckpoint[]>
-  save(key: string, data: TransactionCheckpoint, ttl?: number): Promise<void>
+  save(
+    key: string,
+    data: TransactionCheckpoint,
+    ttl?: number,
+    options?: TransactionOptions
+  ): Promise<void>
   scheduleRetry(
     transaction: DistributedTransaction,
     step: TransactionStep,
