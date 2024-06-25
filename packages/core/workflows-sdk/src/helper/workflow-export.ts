@@ -8,9 +8,10 @@ import {
 } from "@medusajs/orchestration"
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
-  isPresent,
+  ContainerRegistrationKeys,
   MedusaContextType,
   ModuleRegistrationName,
+  isPresent,
 } from "@medusajs/utils"
 import { EOL } from "os"
 import { ulid } from "ulid"
@@ -25,7 +26,6 @@ import {
   MainExportedWorkflow,
   WorkflowResult,
 } from "./type"
-import { ContainerRegistrationKeys } from "@medusajs/utils/dist"
 
 function createContextualWorkflowRunner<
   TData = unknown,

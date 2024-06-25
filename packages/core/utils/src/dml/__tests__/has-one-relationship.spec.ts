@@ -40,4 +40,19 @@ describe("HasOne relationship", () => {
       entity: entityRef,
     })
   })
+
+  test("should identify has one relationship", () => {
+    const user = {
+      username: new TextProperty(),
+    }
+
+    const entityRef = () => user
+    let relationship = new HasOne(entityRef, {})
+
+    expect(HasOne.isHasOne(relationship)).toEqual(true)
+
+    relationship = {} as any
+
+    expect(HasOne.isHasOne(relationship)).toEqual(false)
+  })
 })

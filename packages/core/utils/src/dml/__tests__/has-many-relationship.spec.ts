@@ -20,4 +20,19 @@ describe("HasMany relationship", () => {
       entity: entityRef,
     })
   })
+
+  test("should identify has many relationship", () => {
+    const user = {
+      username: new TextProperty(),
+    }
+
+    const entityRef = () => user
+    let relationship = new HasMany(entityRef, {})
+
+    expect(HasMany.isHasMany(relationship)).toEqual(true)
+
+    relationship = {} as any
+
+    expect(HasMany.isHasMany(relationship)).toEqual(false)
+  })
 })

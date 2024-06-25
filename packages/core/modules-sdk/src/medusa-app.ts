@@ -226,6 +226,7 @@ export type MedusaAppOutput = {
   revertMigrations: RunMigrationFn
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
+  sharedContainer?: MedusaContainer
 }
 
 export type MedusaAppOptions = {
@@ -470,6 +471,7 @@ async function MedusaApp_({
     notFound,
     runMigrations,
     revertMigrations,
+    sharedContainer: sharedContainer_,
   }
 }
 

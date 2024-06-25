@@ -30,6 +30,8 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
+type DefineOptions = string | { name?: string; tableName: string }
+
 /**
  * Entity builder exposes the API to create an entity and define its
  * schema using the shorthand methods.
@@ -53,11 +55,14 @@ export class EntityBuilder {
    * Define an entity or a model. The name should be unique across
    * all the entities.
    */
-  define<Schema extends DMLSchema>(name: string, schema: Schema) {
+  define<Schema extends DMLSchema>(
+    nameOrConfig: DefineOptions,
+    schema: Schema
+  ) {
     this.#disallowImplicitProperties(schema)
     schema = inferPrimaryKeyProperties(schema)
 
-    return new DmlEntity(name, {
+    return new DmlEntity(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
