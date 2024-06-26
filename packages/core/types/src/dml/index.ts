@@ -1,5 +1,10 @@
 export const IsDmlEntity = Symbol.for("isDmlEntity")
 
+export type DMLSchema = Record<
+  string,
+  PropertyType<any> | RelationshipType<any>
+>
+
 export interface IDmlEntity<
   Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
 > {
@@ -164,9 +169,9 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
 
-export type EntityIndex = {
+export type EntityIndex<TSchema extends DMLSchema = DMLSchema> = {
   name?: string
   unique?: boolean
-  fields: string[]
+  fields: (keyof TSchema)[]
   where?: string
 }
