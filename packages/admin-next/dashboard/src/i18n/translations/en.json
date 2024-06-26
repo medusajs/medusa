@@ -627,6 +627,7 @@
         "requiresAction": "Requires action"
       }
     },
+
     "edits": {
       "title": "Edit order",
       "currentItems": "Current items",
@@ -638,26 +639,10 @@
       "differenceDue": "Difference due"
     },
     "returns": {
-      "details": "Details",
-      "chooseItems": "Choose items",
-      "refundAmount": "Refund amount",
-      "locationDescription": "Choose which location you want to return the items to.",
-      "shippingDescription": "Choose which method you want to use for this return.",
-      "noInventoryLevel": "No inventory level",
+      "create": "Create Return",
+      "inbound": "Inbound",
       "sendNotification": "Send notification",
-      "sendNotificationHint": "Notify customer of created return.",
-      "customRefund": "Custom refund",
-      "shippingPriceTooltip1": "Custom refund is enabled",
-      "noShippingOptions": "There are no shipping options for the region",
-      "shippingPriceTooltip2": "Shipping needs to be selected",
-      "customRefundHint": "If you want to refund something else instead of the total refund.",
-      "customShippingPrice": "Custom shipping",
-      "customShippingPriceHint": "Custom shipping cost.",
-      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
-      "refundableAmountLabel": "Refundable amount",
-      "refundableAmountHeader": "Refundable Amount",
-      "returnableQuantityLabel": "Returnable quantity",
-      "returnableQuantityHeader": "Returnable Quantity"
+      "sendNotificationHint": "Notify customer about return."
     },
     "reservations": {
       "allocatedLabel": "Allocated",

@@ -12,6 +12,7 @@ import {
   getLocaleAmount,
   getStylizedAmount,
 } from "../../../../../lib/money-amount-helpers"
+import { ArrowUturnLeft } from "@medusajs/icons"
 
 type OrderSummarySectionProps = {
   order: AdminOrder
@@ -48,11 +49,11 @@ const Header = ({ order }: { order: AdminOrder }) => {
               //   to: "#", // TODO: Open modal to allocate items
               //   icon: <Buildings />,
               // },
-              // {
-              //   label: t("orders.summary.requestReturn"),
-              //   to: `/orders/${order.id}/returns`,
-              //   icon: <ArrowUturnLeft />,
-              // },
+              {
+                label: t("orders.returns.create"),
+                to: `/orders/${order.id}/returns`,
+                icon: <ArrowUturnLeft />,
+              },
             ],
           },
         ]}
