@@ -163,3 +163,9 @@ export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
 export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
+
+export type EntityIndex = {
+  unique?: boolean
+  fields: string[]
+  where?: string
+}

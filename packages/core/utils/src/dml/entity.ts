@@ -1,14 +1,19 @@
 import {
   EntityCascades,
+  EntityIndex,
   ExtractEntityRelations,
   IDmlEntity,
   IsDmlEntity,
   PropertyType,
   RelationshipType,
 } from "@medusajs/types"
-import { DMLSchema } from "./entity-builder"
-import { BelongsTo } from "./relations/belongs-to"
 import { isObject, isString, toCamelCase } from "../common"
+import { DMLSchema } from "./entity-builder"
+import {
+  transformIndexWhere,
+  validateIndexFields,
+} from "./helpers/entity-builder/build-indexes"
+import { BelongsTo } from "./relations/belongs-to"
 
 type Config = string | { name?: string; tableName: string }
 
@@ -54,6 +59,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
 
   readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
+  #indexes: EntityIndex[] = []
 
   constructor(nameOrConfig: Config, public schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
@@ -80,6 +86,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     tableName: string
     schema: PropertyType<any> | RelationshipType<any>
     cascades: EntityCascades<string[]>
+    indexes: EntityIndex[]
   } {
     return {
       name: this.name,
@@ -88,6 +95,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
         | PropertyType<any>
         | RelationshipType<any>,
       cascades: this.#cascades,
+      indexes: this.#indexes,
     }
   }
 
@@ -117,6 +125,18 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     }
 
     this.#cascades = options
+    return this
+  }
+
+  indexes(indexes: EntityIndex[]) {
+    for (const index of indexes) {
+      validateIndexFields(index, this.schema)
+
+      index.where = transformIndexWhere(index)
+      index.unique = index.unique ?? false
+    }
+
+    this.#indexes = indexes
     return this
   }
 }

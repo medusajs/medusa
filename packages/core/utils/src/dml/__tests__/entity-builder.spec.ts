@@ -14,6 +14,41 @@ describe("Entity builder", () => {
     MetadataStorage.clear()
   })
 
+  const defaultColumnMetadata = {
+    created_at: {
+      columnType: "timestamptz",
+      defaultRaw: "now()",
+      getter: false,
+      name: "created_at",
+      nullable: false,
+      onCreate: expect.any(Function),
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+    deleted_at: {
+      columnType: "timestamptz",
+      getter: false,
+      name: "deleted_at",
+      nullable: true,
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+    updated_at: {
+      columnType: "timestamptz",
+      defaultRaw: "now()",
+      getter: false,
+      name: "updated_at",
+      nullable: false,
+      onCreate: expect.any(Function),
+      onUpdate: expect.any(Function),
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+  }
+
   describe("Entity builder | properties", () => {
     test("should identify a DML entity correctly", () => {
       const user = model.define("user", {
@@ -2403,6 +2438,103 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
+    })
+  })
+
+  describe("Entity builder | indexes", () => {
+    test("should define indexes for an entity", () => {
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+        })
+        .indexes([
+          {
+            unique: true,
+            fields: ["email", "account"],
+          },
+          { fields: ["email", "account"] },
+          {
+            fields: ["organization", "account"],
+            where: "email IS NOT NULL",
+          },
+        ])
+
+      const User = toMikroORMEntity(user)
+
+      expectTypeOf(new User()).toMatchTypeOf<{
+        email: string
+        account: string
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        account: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "account",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        organization: {
+          columnType: "text",
+          getter: false,
+          name: "organization",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "string",
+        },
+        ...defaultColumnMetadata,
+      })
+
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_account_unique" ON "user" (email, account) WHERE deleted_at IS NULL',
+          name: "IDX_user_email_account_unique",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_email_account" ON "user" (email, account) WHERE deleted_at IS NULL',
+          name: "IDX_user_email_account",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_account" ON "user" (organization, account) WHERE email IS NOT NULL AND deleted_at IS NULL',
+          name: "IDX_user_organization_account",
+        },
+      ])
+    })
+
+    test("should throw an error if field is unknown for an index", () => {
+      try {
+        model
+          .define("user", {
+            email: model.text(),
+            account: model.text(),
+          })
+          .indexes([
+            { fields: ["doesnotexist", "account", "another", "email"] },
+          ])
+      } catch (e) {
+        expect(e.message).toEqual(
+          "cannot find fields (doesnotexist, another) in entity definition"
+        )
+      }
     })
   })
 

@@ -1,4 +1,8 @@
-import { EntityConstructor, PropertyMetadata } from "@medusajs/types"
+import {
+  EntityConstructor,
+  EntityIndex,
+  PropertyMetadata,
+} from "@medusajs/types"
 import { createPsqlIndexStatementHelper } from "../../../common"
 
 /**
@@ -15,6 +19,26 @@ export function applyIndexes(
       columns: [field.fieldName],
       unique: index.type === "unique",
       where: "deleted_at IS NULL",
+    })
+
+    providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)
+  })
+}
+
+/**
+ * Prepares indexes for a given field
+ */
+export function applyEntityIndexes(
+  MikroORMEntity: EntityConstructor<any>,
+  tableName: string,
+  indexes: EntityIndex[]
+) {
+  indexes.forEach((index) => {
+    const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
+      tableName,
+      columns: index.fields,
+      unique: index.unique,
+      where: index.where,
     })
 
     providerEntityIdIndexStatement.MikroORMIndex()(MikroORMEntity)

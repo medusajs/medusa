@@ -2,9 +2,12 @@ import type { EntityConstructor, Infer } from "@medusajs/types"
 import { Entity, Filter } from "@mikro-orm/core"
 import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 import { DmlEntity } from "../entity"
-import { defineProperty } from "./entity-builder/define-property"
-import { applyIndexes } from "./entity-builder/apply-indexes"
+import {
+  applyEntityIndexes,
+  applyIndexes,
+} from "./entity-builder/apply-indexes"
 import { applySearchable } from "./entity-builder/apply-searchable"
+import { defineProperty } from "./entity-builder/define-property"
 import { defineRelationship } from "./entity-builder/define-relationship"
 import { parseEntityName } from "./entity-builder/parse-entity-name"
 
@@ -37,7 +40,7 @@ export function createMikrORMEntity() {
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
     class MikroORMEntity {}
 
-    const { schema, cascades } = entity.parse()
+    const { schema, cascades, indexes: entityIndexes = [] } = entity.parse()
     const { modelName, tableName } = parseEntityName(entity)
 
     /**
@@ -68,6 +71,10 @@ export function createMikrORMEntity() {
         defineRelationship(MikroORMEntity, field, cascades, context)
       }
     })
+
+    if (entityIndexes?.length) {
+      applyEntityIndexes(MikroORMEntity, tableName, entityIndexes)
+    }
 
     /**
      * Converting class to a MikroORM entity
