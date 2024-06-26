@@ -169,6 +169,9 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
 
+/**
+ * Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
+ */
 export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
   infer Schema
 >
