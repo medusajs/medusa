@@ -154,32 +154,11 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             },
           ]
 
-          const ruleTypesData = [
-            {
-              id: "rule-type-company_id",
-              name: "rule type company id",
-              rule_attribute: "company_id",
-              default_priority: 2,
-            },
-            {
-              id: "rule-type-region_id",
-              name: "rule type region id",
-              rule_attribute: "region_id",
-              default_priority: 1,
-            },
-            {
-              id: "rule-type-customer_group_id",
-              name: "rule type customer group id",
-              rule_attribute: "customer_group_id",
-              default_priority: 3,
-            },
-          ]
-
           const priceRuleData = [
             {
               id: "price-rule-company_id-EUR",
               price_set_id: "price-set-EUR",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "EUR",
               price_list_id: "test",
               price_id: "price-company_id-EUR",
@@ -187,7 +166,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-company_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-company_id-PLN",
@@ -195,7 +174,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id-PLN",
@@ -203,7 +182,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id+company_id-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id+company_id-PLN",
@@ -211,7 +190,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id+company_id-medusa-company-id",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id+company_id-PLN",
@@ -219,7 +198,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-PLN-5-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id-PLN-5-qty",
@@ -227,7 +206,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-company_id-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR",
@@ -235,7 +214,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-company_id-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR",
@@ -243,7 +222,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-company_id-PL-4-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-4-qty",
@@ -251,7 +230,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-company_id-PLN-4-qty",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-4-qty",
@@ -259,7 +238,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-currency_customer_group_code-PL",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-region_id",
+              attribute: "region_id",
               value: "PL",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -267,7 +246,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-currency_customer_group_code-PLN",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-company_id",
+              attribute: "company_id",
               value: "medusa-company-id",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -275,7 +254,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             {
               id: "price-rule-region_id-currency_customer_group_code-test_customer_group",
               price_set_id: "price-set-PLN",
-              rule_type_id: "rule-type-customer_group_id",
+              attribute: "customer_group_id",
               value: "test-customer-group",
               price_list_id: "test",
               price_id: "price-region_id_company_id-PL-EUR-customer-group",
@@ -286,7 +265,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             priceSetsData,
             pricesData,
             priceRuleData,
-            ruleTypesData,
           })
         })
 
@@ -1043,7 +1021,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           ])
         })
 
-        describe("Price Lists", () => {
+        describe.only("Price Lists", () => {
           it("should return price list prices when price list conditions match", async () => {
             await createPriceLists(service)
 
