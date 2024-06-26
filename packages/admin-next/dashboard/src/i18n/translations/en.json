@@ -376,7 +376,7 @@
         },
         "validation": {
           "itemId": "Please select inventory item.",
-          "quantity": "Quantity is required. Plese input a positiv number."
+          "quantity": "Quantity is required. Please input a positive number."
         },
         "header": "Stock & Inventory",
         "editItemDetails": "Edit item details",
@@ -1749,6 +1749,7 @@
     "manageInventory": "Manage inventory",
     "inventoryKit": "Inventory kit",
     "inventoryItems": "Inventory items",
+    "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
     "description": "Description",
     "email": "Email",

@@ -180,7 +180,13 @@ export function ManageVariantInventoryItemsForm({
               <div className="flex items-start justify-between gap-x-4">
                 <div className="flex flex-col">
                   <Form.Label>{variant.title}</Form.Label>
-                  <Form.Hint>{t("products.create.inventory.label")}</Form.Hint>
+                  <Form.Hint>
+                    {t(
+                      hasKit
+                        ? "products.create.inventory.label"
+                        : "fields.inventoryItem"
+                    )}
+                  </Form.Hint>
                 </div>
                 <Button
                   size="small"
