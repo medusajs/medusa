@@ -5,9 +5,7 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
-export interface IDmlEntity<
-  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> {
+export interface IDmlEntity<Schema extends DMLSchema> {
   [IsDmlEntity]: true
   schema: Schema
 }
