@@ -1721,7 +1721,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
             children: [
               {
                 path: "/references/file-provider-module",
-                title: "Create File Module",
+                title: "Create File Provider",
               },
             ],
           },
@@ -1749,7 +1749,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
               },
               {
                 path: "/references/notification-provider-module",
-                title: "Create Notification Module",
+                title: "Create Notification Provider",
               },
             ],
           },

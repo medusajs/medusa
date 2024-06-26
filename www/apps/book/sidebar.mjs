@@ -107,16 +107,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Service Factory",
             },
             {
-              path: "/advanced-development/modules/database-operations-in-services",
-              title: "Database Operations",
-            },
-            {
               path: "/advanced-development/modules/options",
               title: "Module Options",
-            },
-            {
-              path: "/advanced-development/modules/module-relationships",
-              title: "Module Relationships",
             },
             {
               path: "/advanced-development/modules/remote-query",
@@ -136,12 +128,36 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           title: "Data Models",
           children: [
             {
-              path: "/advanced-development/data-models/common-definitions",
-              title: "Common Definitions",
+              path: "/advanced-development/data-models/property-types",
+              title: "Property Types",
+            },
+            {
+              path: "/advanced-development/data-models/configure-properties",
+              title: "Configure Properties",
+            },
+            {
+              path: "/advanced-development/data-models/primary-key",
+              title: "Primary Key",
+            },
+            {
+              path: "/advanced-development/data-models/relationships",
+              title: "Relationships",
+            },
+            {
+              path: "/advanced-development/data-models/relationship-cascades",
+              title: "Relationship Cascades",
+            },
+            {
+              path: "/advanced-development/data-models/indexes",
+              title: "Data Model Index",
             },
             {
               path: "/advanced-development/data-models/soft-deletable",
               title: "Soft-Deletable Models",
+            },
+            {
+              path: "/advanced-development/data-models/searchable-property",
+              title: "Searchable Property",
             },
           ],
         },

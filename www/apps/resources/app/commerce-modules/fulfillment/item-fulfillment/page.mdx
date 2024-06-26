@@ -22,11 +22,11 @@ The fulfillment is also associated with a shipping option of that provider, whic
 
 ---
 
-## data Field
+## data Property
 
-The `Fulfillment` data model has a `data` field that holds any necessary data for the third-party fulfillment provider to process the fulfillment.
+The `Fulfillment` data model has a `data` property that holds any necessary data for the third-party fulfillment provider to process the fulfillment.
 
-For example, the `data` field can hold the ID of the fulfillment in the third-party provider. The associated fulfillment provider then uses it whenever it retrieves the fulfillment’s details. 
+For example, the `data` property can hold the ID of the fulfillment in the third-party provider. The associated fulfillment provider then uses it whenever it retrieves the fulfillment’s details. 
 
 ---
 
@@ -48,7 +48,7 @@ Once a shipment is created for the fulfillment, you can store its tracking numbe
 
 ## Fulfillment Status
 
-The `Fulfillment` data model has three fields to keep track of the current status of the fulfillment:
+The `Fulfillment` data model has three properties to keep track of the current status of the fulfillment:
 
 - `packed_at`: The date the fulfillment was packed. If set, then the fulfillment has been packed.
 - `shipped_at`: The date the fulfillment was shipped. If set, then the fulfillment has been shipped.

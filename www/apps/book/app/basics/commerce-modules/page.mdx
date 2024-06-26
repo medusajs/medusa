@@ -8,7 +8,9 @@ In this chapter, you'll learn about Medusa's commerce modules.
 
 ## What is a Commerce Module?
 
-Medusa provides all its commerce features as separate modules, such as the Product Module, Cart Module, or Order Module. These modules and your custom modules are interchangeable in the Medusa application, making Medusa’s architecture more flexible.
+Medusa provides all its commerce features as separate modules, such as the Product or Order modules.
+
+These modules and your custom modules are interchangeable in the Medusa application, making Medusa’s architecture more flexible.
 
 Refer to [this reference](!resources!/commerce-modules) for a full list of commerce modules in Medusa.
 
@@ -47,6 +49,6 @@ When you resolve the `ModuleRegistrationName.PRODUCT` (or `productModuleService`
 
 <Note title="Tip">
 
-To resolve the main service of any commerce module, use the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk` to refer to its registration name in the Medusa container.
+To resolve the main service of any commerce module, use the registration name defined in the `ModuleRegistrationName` enum imported from `@medusajs/modules-sdk`.
 
 </Note>

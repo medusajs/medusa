@@ -21,7 +21,7 @@ A region represents the area you sell products in. Each region can cover multipl
 You can manage your regions to create, update, retrieve, or delete them.
 
 ```ts
-const region = await regionModuleService.create({
+const region = await regionModuleService.createRegions({
   name: "Europe",
   currency_code: "eur",
 })
@@ -32,7 +32,7 @@ const region = await regionModuleService.create({
 As each region has a currency, you can support multiple currencies in your store by creating multiple regions.
 
 ```ts
-const regions = await regionModuleService.create([
+const regions = await regionModuleService.createRegions([
   {
     name: "Europe",
     currency_code: "eur",
@@ -49,7 +49,7 @@ const regions = await regionModuleService.create([
 Each region has its own settings, such as what countries belong to a region or its tax settings. Each region has different tax rates, payment providers, and more provided by other commerce modules.
 
 ```ts
-const regions = await regionModuleService.create([
+const regions = await regionModuleService.createRegions([
   {
     name: "Europe",
     currency_code: "eur",
@@ -89,7 +89,7 @@ For example:
       req.scope.resolve(ModuleRegistrationName.REGION)
 
     res.json({
-      regions: await regionModuleService.list(),
+      regions: await regionModuleService.listRegions(),
     })
   }
   ```
@@ -108,7 +108,7 @@ For example:
     const regionModuleService: IRegionModuleService =
       container.resolve(ModuleRegistrationName.REGION)
 
-    const regions = await regionModuleService.list()
+    const regions = await regionModuleService.listRegions()
   }
   ```
 
@@ -128,7 +128,7 @@ For example:
         ModuleRegistrationName.REGION
       )
     
-    const regions = await regionModuleService.list()
+    const regions = await regionModuleService.listRegions()
   })
   ```
 

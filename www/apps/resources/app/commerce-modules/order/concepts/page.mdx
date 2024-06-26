@@ -22,13 +22,13 @@ The details of the purchased products are represented by the [LineItem data mode
 
 An order has one or more shipping methods used to handle item shipment. Each shipping method is represented by the [ShippingMethod data model](/references/order/models/ShippingMethod) that holds its details.
 
-### data Field
+### data Property
 
 When fulfilling the order, you may use a third-party fulfillment provider that requires additional custom data to be passed along from the order creation process.
 
-The `ShippingMethod` data model has a `data` field. It’s an object used to store custom data relevant later for fulfillment.
+The `ShippingMethod` data model has a `data` property. It’s an object used to store custom data relevant later for fulfillment.
 
-The Medusa application passes the `data` field to the Fulfillment Module when fulfilling items.
+The Medusa application passes the `data` property to the Fulfillment Module when fulfilling items.
 
 ---
 

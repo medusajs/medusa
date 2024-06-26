@@ -26,7 +26,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItem =
-      await inventoryModuleService.create({
+      await inventoryModuleService.createInventoryItems({
         sku: request.body.sku,
         title: request.body.title,
         requires_shipping: request.body.requires_shipping,
@@ -52,7 +52,7 @@ In this document, you’ll find common examples of how you can use the Inventory
     const body = await request.json()
 
     const inventoryItem =
-      await inventoryModuleService.create({
+      await inventoryModuleService.createInventoryItems({
         sku: body.sku,
         title: body.title,
         requires_shipping: body.requires_shipping,
@@ -85,7 +85,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.list({})
+      await inventoryModuleService.listInventoryItems({})
 
     res.json({ inventory_items: inventoryItems })
   }
@@ -106,7 +106,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       await initializeInventoryModule({})
 
     const inventoryItems =
-      await inventoryModuleService.list({})
+      await inventoryModuleService.listInventoryItems({})
 
     return NextResponse.json({ inventory_items: inventoryItems })
   }
@@ -135,7 +135,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       request.scope.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItem =
-      await inventoryModuleService.retrieve(
+      await inventoryModuleService.retrieveInventoryItem(
         request.params.id
       )
 
@@ -167,7 +167,7 @@ In this document, you’ll find common examples of how you can use the Inventory
       await initializeInventoryModule({})
 
     const inventoryItem =
-      await inventoryModuleService.retrieve(
+      await inventoryModuleService.retrieveInventoryItem(
         params.id
       )
 
