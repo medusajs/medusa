@@ -13,6 +13,7 @@ import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inven
 import { useFieldArray, useForm } from "react-hook-form"
 
 import { LocationItem } from "./location-item"
+import { useEffect, useMemo } from "react"
 
 type EditInventoryItemAttributeFormProps = {
   item: AdminInventoryItem
@@ -46,8 +47,9 @@ export const ManageLocationsForm = ({
   item,
   locations,
 }: EditInventoryItemAttributeFormProps) => {
-  const existingLocationLevels = new Set(
-    item.location_levels?.map((l) => l.location_id) ?? []
+  const existingLocationLevels = useMemo(
+    () => new Set(item.location_levels?.map((l) => l.location_id) ?? []),
+    item.location_levels
   )
 
   const { t } = useTranslation()
@@ -62,6 +64,13 @@ export const ManageLocationsForm = ({
     control: form.control,
     name: "locations",
   })
+
+  useEffect(() => {
+    form.setValue(
+      "locations",
+      getDefaultValues(locations, existingLocationLevels).locations
+    )
+  }, [existingLocationLevels, locations])
 
   const { mutateAsync } = useBatchUpdateInventoryLevels(item.id)
 
