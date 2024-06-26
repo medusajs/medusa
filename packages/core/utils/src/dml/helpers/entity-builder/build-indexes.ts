@@ -1,6 +1,5 @@
-import { EntityIndex } from "@medusajs/types"
+import { DMLSchema, EntityIndex } from "@medusajs/types"
 import { arrayDifference, isPresent } from "../../../common"
-import { DMLSchema } from "../../entity-builder"
 
 /*
   The DML provides an opinionated soft deletable entity as a part of every model
@@ -8,7 +7,9 @@ import { DMLSchema } from "../../entity-builder"
   doesn't seem to be valid. If a case presents itself where one would like to remove the scope, 
   this will need to be updated to include that case.
 */
-export function transformIndexWhere(index: EntityIndex) {
+export function transformIndexWhere<TSchema extends DMLSchema>(
+  index: EntityIndex<TSchema>
+) {
   let where = index.where
   const lowerCaseWhere = where?.toLowerCase()
   const whereIncludesDeleteable =
@@ -32,7 +33,10 @@ export function transformIndexWhere(index: EntityIndex) {
   The DML should strictly define indexes where the fields provided for the index are 
   already present in the schema definition. If not, we throw an error.
 */
-export function validateIndexFields(index: EntityIndex, schema: DMLSchema) {
+export function validateIndexFields<TSchema extends DMLSchema>(
+  index: EntityIndex<TSchema>,
+  schema: TSchema
+) {
   const schemaFields: string[] = Object.keys(schema)
   const invalidFields = arrayDifference(index.fields, schemaFields)
 
