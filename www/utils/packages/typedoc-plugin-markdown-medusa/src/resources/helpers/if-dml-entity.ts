@@ -1,6 +1,6 @@
 import * as Handlebars from "handlebars"
 import { DeclarationReflection } from "typedoc"
-import { isDmlEntity } from "../../utils/dml-utils"
+import { isDmlEntity } from "utils"
 
 export default function () {
   Handlebars.registerHelper(

@@ -16,7 +16,7 @@ import {
   stripLineBreaks,
 } from "utils"
 import { MarkdownTheme } from "../theme"
-import { getDmlProperties, isDmlEntity } from "./dml-utils"
+import { getDmlProperties, isDmlEntity } from "utils"
 
 const ALLOWED_KINDS: ReflectionKind[] = [
   ReflectionKind.EnumMember,

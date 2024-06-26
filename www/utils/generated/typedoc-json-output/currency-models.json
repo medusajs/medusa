@@ -131,38 +131,6 @@
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
-										},
-										{
-											"id": 194,
-											"name": "test",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/enum.d.ts",
-													"qualifiedName": "EnumProperty"
-												},
-												"typeArguments": [
-													{
-														"type": "union",
-														"types": [
-															{
-																"type": "literal",
-																"value": "test1"
-															},
-															{
-																"type": "literal",
-																"value": "test2"
-															}
-														]
-													}
-												],
-												"name": "EnumProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
 										}
 									],
 									"groups": [
@@ -174,8 +142,7 @@
 												190,
 												191,
 												192,
-												193,
-												194
+												193
 											]
 										}
 									]
@@ -184,14 +151,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 195,
+									"id": 194,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 196,
+											"id": 195,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -208,7 +175,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 197,
+											"id": 196,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -225,7 +192,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 198,
+											"id": 197,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -242,7 +209,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 199,
+											"id": 198,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -259,7 +226,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 200,
+											"id": 199,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -276,7 +243,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 201,
+											"id": 200,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -291,51 +258,18 @@
 												"package": "@medusajs/utils"
 											},
 											"defaultValue": "..."
-										},
-										{
-											"id": 202,
-											"name": "test",
-											"variant": "declaration",
-											"kind": 1024,
-											"flags": {},
-											"type": {
-												"type": "reference",
-												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/enum.d.ts",
-													"qualifiedName": "EnumProperty"
-												},
-												"typeArguments": [
-													{
-														"type": "union",
-														"types": [
-															{
-																"type": "literal",
-																"value": "test1"
-															},
-															{
-																"type": "literal",
-																"value": "test2"
-															}
-														]
-													}
-												],
-												"name": "EnumProperty",
-												"package": "@medusajs/utils"
-											},
-											"defaultValue": "..."
 										}
 									],
 									"groups": [
 										{
 											"title": "Properties",
 											"children": [
+												195,
 												196,
 												197,
 												198,
 												199,
-												200,
-												201,
-												202
+												200
 											]
 										}
 									]
@@ -344,14 +278,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 203,
+									"id": 201,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 204,
+											"id": 202,
 											"name": "raw_rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -371,7 +305,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												204
+												202
 											]
 										}
 									]
@@ -441,46 +375,38 @@
 			"qualifiedName": "__object.rounding"
 		},
 		"194": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
-			"qualifiedName": "__object.test"
-		},
-		"195": {
 			"sourceFileName": "../../../../packages/core/utils/dist/dml/entity-builder.d.ts",
 			"qualifiedName": "__type"
 		},
-		"196": {
+		"195": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "code"
 		},
-		"197": {
+		"196": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol"
 		},
-		"198": {
+		"197": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol_native"
 		},
-		"199": {
+		"198": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "name"
 		},
-		"200": {
+		"199": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "decimal_digits"
 		},
-		"201": {
+		"200": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "rounding"
 		},
-		"202": {
-			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
-			"qualifiedName": "test"
-		},
-		"203": {
+		"201": {
 			"sourceFileName": "../../../../packages/core/utils/dist/dml/entity-builder.d.ts",
 			"qualifiedName": "__type"
 		},
-		"204": {
+		"202": {
 			"sourceFileName": "",
 			"qualifiedName": "raw_rounding"
 		}

@@ -18,6 +18,9 @@ export default function getModelOptions({
     tsConfigName: `${moduleName}.json`,
     generateModelsDiagram: true,
     diagramAddToFile: entryPath,
+    resolveDmlRelations: true,
+    generateDMLsDiagram: true,
+    diagramDMLAddToFile: entryPath,
     ...typedocOptions,
   })
 }

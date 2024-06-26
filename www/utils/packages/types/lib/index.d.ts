@@ -233,5 +233,20 @@ export declare module "typedoc" {
      * The file to add the mermaid diagram to. The diagram is added as a package comment.
      */
     diagramAddToFile: string
+    /**
+     * Whether to generate a Mermaid.js class diagram for data models in the reference.
+     * (Used for DML)
+     */
+    generateDMLsDiagram: boolean
+    /**
+     * The file to add the mermaid diagram to. The diagram is added as a package comment.
+     * (Used for DML)
+     */
+    diagramDMLAddToFile: string
+    /**
+     * Whether to enable resolving DML relations.
+     * @defaultValue false
+     */
+    resolveDmlRelations: boolean
   }
 }
