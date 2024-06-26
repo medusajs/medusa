@@ -20,4 +20,10 @@ export class IdProperty extends BaseProperty<string> {
       options: { primaryKey: true, ...options },
     }
   }
+
+  primaryKey(decision: boolean) {
+    this.dataType.options.primaryKey = decision
+
+    return this
+  }
 }
