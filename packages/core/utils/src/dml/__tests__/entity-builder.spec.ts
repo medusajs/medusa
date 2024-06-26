@@ -2626,35 +2626,94 @@ describe("Entity builder", () => {
       ])
     })
 
-    test("should throw an error if field is unknown for an index", () => {
-      try {
-        const group = model.define("group", {
-          id: model.number(),
-          name: model.text(),
-          users: model.hasMany(() => user),
+    test("should define indexes with a query builder", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
         })
-
-        const user = model
-          .define("user", {
-            email: model.text(),
-            account: model.text(),
-            organization: model.text(),
-            group: model.belongsTo(() => group, { mappedBy: "users" }),
-          })
-          .indexes([
-            {
-              on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
+        .indexes([
+          {
+            on: ["organization", "account"],
+            where: { email: { $ne: null } },
+          },
+          {
+            name: "IDX-email-account-special",
+            on: ["organization", "account"],
+            where: {
+              email: { $ne: null },
+              account: null,
             },
-          ])
+          },
+          {
+            name: "IDX_unique-name",
+            unique: true,
+            on: ["organization", "account", "group_id"],
+          },
+        ])
 
+      const metaData = MetadataStorage.getMetadataFromDecorator(
         toMikroORMEntity(user)
+      )
 
-        throw "should not reach"
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_account" ON "user" (organization, account) WHERE email IS NOT NULL AND deleted_at IS NULL',
+          name: "IDX_user_organization_account",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX-email-account-special" ON "user" (organization, account) WHERE email IS NOT NULL AND account IS NULL AND deleted_at IS NULL',
+          name: "IDX-email-account-special",
+        },
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
+          name: "IDX_unique-name",
+        },
+      ])
+    })
+
+    test("should throw an error if field is unknown for an index", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
+        })
+        .indexes([
+          {
+            on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
+          },
+        ])
+
+      let err: any
+
+      try {
+        toMikroORMEntity(user)
       } catch (e) {
-        expect(e.message).toEqual(
-          "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
-        )
+        err = e
       }
+
+      expect(err.message).toEqual(
+        "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
+      )
     })
   })
 
