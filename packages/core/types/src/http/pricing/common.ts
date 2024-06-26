@@ -9,6 +9,12 @@ export interface BaseCalculatedPriceSet {
    * the calculated price is set to the original price, which doesn't belong to a price list. In that case, the value of this property is `false`.
    */
   is_calculated_price_price_list?: boolean
+
+  /**
+   * Whether the calculated price is tax inclusive.
+   */
+  is_calculated_price_tax_inclusive?: boolean
+
   /**
    * The amount of the calculated price, or `null` if there isn't a calculated price.
    */
@@ -19,6 +25,12 @@ export interface BaseCalculatedPriceSet {
    * the original price will be the same as the calculated price. In that case, the value of this property is `true`.
    */
   is_original_price_price_list?: boolean
+
+  /**
+   * Whether the original price is tax inclusive.
+   */
+  is_original_price_tax_inclusive?: boolean
+
   /**
    * The amount of the original price, or `null` if there isn't a calculated price.
    */

@@ -1,3 +1,7 @@
+import {
+  ModuleRegistrationName,
+  calculateAmountsWithTax,
+} from "@medusajs/utils"
 import { MedusaRequest } from "../../../types/routing"
 import { refetchEntities, refetchEntity } from "../../utils/refetch-entity"
 import {
@@ -7,14 +11,12 @@ import {
   ItemTaxLineDTO,
   TaxCalculationContext,
 } from "@medusajs/types"
-import { ModuleRegistrationName, calculateTaxTotal } from "@medusajs/utils"
 
 export type RequestWithContext<T> = MedusaRequest<T> & {
   taxContext: {
     taxLineContext?: TaxCalculationContext
     taxInclusivityContext?: {
       automaticTaxes: boolean
-      isTaxInclusive: boolean
     }
   }
 }
@@ -65,7 +67,6 @@ export const wrapProductsWithTaxPrices = async <T>(
     return
   }
 
-  const { isTaxInclusive } = req.taxContext.taxInclusivityContext
   const taxService = req.scope.resolve(ModuleRegistrationName.TAX)
 
   const taxRates = (await taxService.getTaxLines(
@@ -73,53 +74,36 @@ export const wrapProductsWithTaxPrices = async <T>(
     req.taxContext.taxLineContext
   )) as unknown as ItemTaxLineDTO[]
 
-  const taxRatesAsMap = new Map<string, ItemTaxLineDTO[]>()
+  const taxRatesMap = new Map<string, ItemTaxLineDTO[]>()
   taxRates.forEach((taxRate) => {
-    if (!taxRatesAsMap.has(taxRate.line_item_id)) {
-      taxRatesAsMap.set(taxRate.line_item_id, [])
+    if (!taxRatesMap.has(taxRate.line_item_id)) {
+      taxRatesMap.set(taxRate.line_item_id, [])
     }
 
-    taxRatesAsMap.get(taxRate.line_item_id)?.push(taxRate)
+    taxRatesMap.get(taxRate.line_item_id)?.push(taxRate)
   })
 
   products.forEach((product) => {
     product.variants?.forEach((variant) => {
-      const taxRatesForVariant = taxRatesAsMap.get(variant.id) || []
-      const { priceWithTax, priceWithoutTax } = getTaxPricesForVariant(
-        variant,
-        taxRatesForVariant,
-        isTaxInclusive
-      )
+      if (!variant.calculated_price) {
+        return
+      }
 
+      const taxRatesForVariant = taxRatesMap.get(variant.id) || []
+      const { priceWithTax, priceWithoutTax } = calculateAmountsWithTax({
+        taxLines: taxRatesForVariant,
+        amount: variant.calculated_price!.calculated_amount!,
+        includesTax:
+          variant.calculated_price!.is_calculated_price_tax_inclusive!,
+      })
+
+      // TODO: Resolve the typings when tax inclusivity is finalized.
       ;(variant.calculated_price as any).calculated_amount_with_tax =
         priceWithTax
       ;(variant.calculated_price as any).calculated_amount_without_tax =
         priceWithoutTax
     })
   })
-}
-
-const getTaxPricesForVariant = (
-  variant: HttpTypes.StoreProductVariant,
-  taxRatesForVariant: ItemTaxLineDTO[],
-  isTaxInclusive: boolean
-) => {
-  const tax = calculateTaxTotal({
-    // TODO: See why rate is nullable in tax
-    taxLines: taxRatesForVariant as any,
-    taxableAmount: variant.calculated_price!.calculated_amount!,
-    includesTax: isTaxInclusive,
-  })
-
-  const priceWithoutTax = isTaxInclusive
-    ? tax.minus(variant.calculated_price!.calculated_amount!).abs().toNumber()
-    : variant.calculated_price!.calculated_amount
-
-  const priceWithTax = isTaxInclusive
-    ? variant.calculated_price!.calculated_amount
-    : tax.plus(variant.calculated_price!.calculated_amount!).abs().toNumber()
-
-  return { priceWithTax, priceWithoutTax }
 }
 
 const asTaxItem = (product: HttpTypes.StoreProduct): TaxableItemDTO[] => {
@@ -134,6 +118,7 @@ const asTaxItem = (product: HttpTypes.StoreProduct): TaxableItemDTO[] => {
         product_id: product.id,
         product_name: product.title,
         product_categories: product.categories?.map((c) => c.name),
+        // TODO: It is strange that we only accept a single category, revisit the tax module implementation
         product_category_id: product.categories?.[0]?.id,
         product_sku: variant.sku,
         product_type: product.type,

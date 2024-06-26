@@ -52,9 +52,7 @@ const getTaxInclusivityInfo = async (req: MedusaRequest) => {
     )
   }
 
-  // TODO: Add is_tax_inclusive here from pricing module
   return {
-    isTaxInclusive: true,
     automaticTaxes: region.automatic_taxes,
   }
 }

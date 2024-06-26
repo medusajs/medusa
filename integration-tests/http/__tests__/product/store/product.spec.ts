@@ -1292,7 +1292,7 @@ medusaIntegrationTestRunner({
               name: "Test Region",
               currency_code: "usd",
               countries: ["us"],
-              // is_tax_inclusive: false,
+              is_tax_inclusive: false,
               automatic_taxes: false,
             },
             adminHeaders
@@ -1306,7 +1306,7 @@ medusaIntegrationTestRunner({
               name: "Test Region",
               currency_code: "eur",
               countries: ["it", "de"],
-              // is_tax_inclusive: true,
+              is_tax_inclusive: true,
               automatic_taxes: true,
             },
             adminHeaders
@@ -1320,7 +1320,7 @@ medusaIntegrationTestRunner({
               name: "Test Region",
               currency_code: "dkk",
               countries: ["dk"],
-              // is_tax_inclusive: false,
+              is_tax_inclusive: false,
               automatic_taxes: true,
             },
             adminHeaders

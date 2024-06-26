@@ -3,7 +3,7 @@ import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
 import {
   applyDefaultFilters,
-  clearContextFields,
+  clearFiltersByKey,
   filterByValidSalesChannels,
   normalizeDataForContext,
   setPricingContext,
@@ -53,7 +53,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       normalizeDataForContext(),
       setPricingContext(),
       setTaxContext(),
-      clearContextFields(["region_id", "country_code", "province", "cart_id"]),
+      clearFiltersByKey(["region_id", "country_code", "province", "cart_id"]),
     ],
   },
   {
@@ -87,7 +87,7 @@ export const storeProductRoutesMiddlewares: MiddlewareRoute[] = [
       normalizeDataForContext(),
       setPricingContext(),
       setTaxContext(),
-      clearContextFields(["region_id", "country_code", "province", "cart_id"]),
+      clearFiltersByKey(["region_id", "country_code", "province", "cart_id"]),
     ],
   },
 ]
