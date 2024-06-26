@@ -1,6 +1,6 @@
 import { EntityIndex } from "@medusajs/types"
-import { DMLSchema } from "../../../../dist/dml/entity-builder"
 import { arrayDifference, isPresent } from "../../../common"
+import { DMLSchema } from "../../entity-builder"
 
 /*
   The DML provides an opinionated soft deletable entity as a part of every model

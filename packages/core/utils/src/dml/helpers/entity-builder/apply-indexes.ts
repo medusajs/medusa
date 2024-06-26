@@ -36,6 +36,7 @@ export function applyEntityIndexes(
   indexes.forEach((index) => {
     const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
       tableName,
+      name: index.name,
       columns: index.fields,
       unique: index.unique,
       where: index.where,

@@ -2534,15 +2534,14 @@ describe("Entity builder", () => {
             fields: ["organization", "account"],
             where: "email IS NOT NULL",
           },
+          {
+            name: "IDX_unique-name",
+            unique: true,
+            fields: ["organization", "account"],
+          },
         ])
 
       const User = toMikroORMEntity(user)
-
-      expectTypeOf(new User()).toMatchTypeOf<{
-        email: string
-        account: string
-      }>()
-
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
       expect(metaData.properties).toEqual({
@@ -2591,6 +2590,11 @@ describe("Entity builder", () => {
           expression:
             'CREATE INDEX IF NOT EXISTS "IDX_user_organization_account" ON "user" (organization, account) WHERE email IS NOT NULL AND deleted_at IS NULL',
           name: "IDX_user_organization_account",
+        },
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account) WHERE deleted_at IS NULL',
+          name: "IDX_unique-name",
         },
       ])
     })

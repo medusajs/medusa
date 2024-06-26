@@ -165,6 +165,7 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   : T
 
 export type EntityIndex = {
+  name?: string
   unique?: boolean
   fields: string[]
   where?: string
