@@ -169,9 +169,17 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
 
+export type InferIndexableProperties<T> = T extends IDmlEntity<infer Schema>
+  ? Infer<T> & {
+      [K in keyof Infer<T>]: Infer<T>[K] extends RelationshipType<any>
+        ? never
+        : Infer<T>[K]
+    }
+  : never
+
 export type EntityIndex<TSchema extends DMLSchema = DMLSchema> = {
   name?: string
   unique?: boolean
-  fields: (keyof TSchema)[]
+  fields: (keyof Infer<IDmlEntity<TSchema>>)[]
   where?: string
 }
