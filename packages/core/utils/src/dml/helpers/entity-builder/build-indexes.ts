@@ -38,7 +38,7 @@ export function validateIndexFields<TSchema extends DMLSchema>(
   schema: TSchema
 ) {
   const schemaFields: string[] = Object.keys(schema)
-  const invalidFields = arrayDifference(index.fields, schemaFields)
+  const invalidFields = arrayDifference(index.fields as string[], schemaFields)
 
   if (invalidFields.length) {
     throw new Error(
