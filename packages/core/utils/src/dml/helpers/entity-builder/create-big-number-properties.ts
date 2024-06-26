@@ -1,4 +1,4 @@
-import { DMLSchema } from "../../entity-builder"
+import { DMLSchema } from "@medusajs/types"
 import { BigNumberProperty } from "../../properties/big-number"
 import { JSONProperty } from "../../properties/json"
 import { NullableModifier } from "../../properties/nullable"

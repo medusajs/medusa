@@ -1,4 +1,4 @@
-import { DMLSchema } from "../../entity-builder"
+import { DMLSchema } from "@medusajs/types"
 import { IdProperty } from "../../properties/id"
 
 /*

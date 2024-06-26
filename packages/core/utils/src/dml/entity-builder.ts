@@ -1,12 +1,9 @@
-import type {
-  PropertyType,
-  RelationshipOptions,
-  RelationshipType,
-} from "@medusajs/types"
+import type { DMLSchema, RelationshipOptions } from "@medusajs/types"
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
 import { inferPrimaryKeyProperties } from "./helpers/entity-builder/infer-primary-key-properties"
+import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
 import { DateTimeProperty } from "./properties/date-time"
@@ -19,17 +16,11 @@ import { BelongsTo } from "./relations/belongs-to"
 import { HasMany } from "./relations/has-many"
 import { HasOne } from "./relations/has-one"
 import { ManyToMany } from "./relations/many-to-many"
-import { ArrayProperty } from "./properties/array"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
  */
 const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
-
-export type DMLSchema = Record<
-  string,
-  PropertyType<any> | RelationshipType<any>
->
 
 type DefineOptions = string | { name?: string; tableName: string }
 

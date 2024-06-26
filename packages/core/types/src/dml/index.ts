@@ -1,8 +1,11 @@
 export const IsDmlEntity = Symbol.for("isDmlEntity")
 
-export interface IDmlEntity<
-  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> {
+export type DMLSchema = Record<
+  string,
+  PropertyType<any> | RelationshipType<any>
+>
+
+export interface IDmlEntity<Schema extends DMLSchema> {
   [IsDmlEntity]: true
   schema: Schema
 }
@@ -164,9 +167,22 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
 
-export type EntityIndex = {
+/**
+ * Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
+ */
+export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
+  infer Schema
+>
+  ? {
+      [K in keyof Schema as Schema[K] extends RelationshipType<any>
+        ? never
+        : K]: string
+    } & InferForeignKeys<T>
+  : never)
+
+export type EntityIndex<TSchema extends DMLSchema = DMLSchema> = {
   name?: string
   unique?: boolean
-  fields: string[]
+  fields: InferIndexableProperties<IDmlEntity<TSchema>>[]
   where?: string
 }

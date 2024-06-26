@@ -1,14 +1,12 @@
 import {
+  DMLSchema,
   EntityCascades,
   EntityIndex,
   ExtractEntityRelations,
   IDmlEntity,
   IsDmlEntity,
-  PropertyType,
-  RelationshipType,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase } from "../common"
-import { DMLSchema } from "./entity-builder"
 import {
   transformIndexWhere,
   validateIndexFields,
@@ -59,7 +57,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
 
   readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
-  #indexes: EntityIndex[] = []
+  #indexes: EntityIndex<Schema>[] = []
 
   constructor(nameOrConfig: Config, public schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
@@ -84,16 +82,14 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   parse(): {
     name: string
     tableName: string
-    schema: PropertyType<any> | RelationshipType<any>
+    schema: DMLSchema
     cascades: EntityCascades<string[]>
-    indexes: EntityIndex[]
+    indexes: EntityIndex<Schema>[]
   } {
     return {
       name: this.name,
       tableName: this.#tableName,
-      schema: this.schema as unknown as
-        | PropertyType<any>
-        | RelationshipType<any>,
+      schema: this.schema,
       cascades: this.#cascades,
       indexes: this.#indexes,
     }
@@ -128,9 +124,9 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     return this
   }
 
-  indexes(indexes: EntityIndex[]) {
+  indexes<T = Schema>(indexes: EntityIndex<Schema>[]) {
     for (const index of indexes) {
-      validateIndexFields(index, this.schema)
+      validateIndexFields<Schema>(index, this.schema)
 
       index.where = transformIndexWhere(index)
       index.unique = index.unique ?? false
