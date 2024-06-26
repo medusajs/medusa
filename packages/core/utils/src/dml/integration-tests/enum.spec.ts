@@ -1,4 +1,8 @@
-import { MetadataStorage, MikroORM } from "@mikro-orm/core"
+import {
+  CheckConstraintViolationException,
+  MetadataStorage,
+  MikroORM,
+} from "@mikro-orm/core"
 import { model } from "../entity-builder"
 import { toMikroOrmEntities } from "../helpers/create-mikro-orm-entity"
 import { createDatabase, dropDatabase } from "pg-god"
@@ -87,5 +91,18 @@ describe("EntityBuilder | enum", () => {
       updated_at: expect.any(Date),
       deleted_at: null,
     })
+  })
+
+  it(`should fail to handle the enum property`, async () => {
+    let manager = orm.em.fork()
+
+    const user1 = manager.create(User, {
+      username: "User 1",
+      role: "test",
+    })
+
+    const err = await manager.persistAndFlush([user1]).catch((e) => e)
+
+    expect(err.name).toEqual(CheckConstraintViolationException.name)
   })
 })
