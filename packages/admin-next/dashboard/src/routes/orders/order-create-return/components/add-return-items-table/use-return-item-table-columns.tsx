@@ -71,7 +71,7 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
         ),
         cell: ({ getValue, row }) => {
           const returnableQuantity =
-            getValue() - (row.original.returned_quantity || 0)
+            getValue() - (row.original.returned_quantity || 0) // TODO: create helper for calculating this correctly
 
           return returnableQuantity
         },

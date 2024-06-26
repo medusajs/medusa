@@ -645,8 +645,16 @@
       "sendNotification": "Send notification",
       "sendNotificationHint": "Notify customer about return.",
       "returnTotal": "Return total",
+      "refundAmount": "Refund amount",
+      "reason": "Reason",
+      "reasonHint": "Choose why the customer want to return items.",
+      "note": "Note",
+      "noteHint": "You can type freely if you want to specify something.",
+      "location": "Location",
+      "locationHint": "Choose which location you want to return the items to.",
       "inboundShipping": "Inbound shipping",
-      "refundAmount": "Refund amount"
+      "inboundShippingHint": "Choose which method you want to use."
+
     },
     "reservations": {
       "allocatedLabel": "Allocated",

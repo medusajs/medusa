@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Switch } from "@medusajs/ui"
+import { Button, Heading, Input, Select, Switch } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { AdminOrder } from "@medusajs/types"
@@ -15,6 +15,9 @@ import { LinkButton } from "../../../../../components/common/link-button"
 import { AddReturnItemsTable } from "../add-return-items-table"
 import { Form } from "../../../../../components/common/form"
 import { ReturnItem } from "./return-item.tsx"
+import { Combobox } from "../../../../../components/inputs/combobox"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations.tsx"
+import { useShippingOptions } from "../../../../../hooks/api/shipping-options.tsx"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -27,6 +30,9 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const { handleSuccess } = useRouteModal()
 
   const [showAddItemView, setShowAddItemView] = useState(false)
+
+  const { stock_locations = [] } = useStockLocations({ limit: 999 })
+  const { shipping_options = [] } = useShippingOptions({ limit: 999 })
 
   const form = useForm<ReturnCreateSchemaType>({
     defaultValues: { items: [] },
@@ -126,6 +132,150 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 form={form}
               />
             ))}
+
+            {!showPlaceholder && (
+              <div className="mt-8 flex flex-col gap-y-4">
+                {/*REASON*/}
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div>
+                    <Form.Label>{t("orders.returns.reason")}</Form.Label>
+                    <Form.Hint className="!mt-1">
+                      {t("orders.returns.reasonHint")}
+                    </Form.Hint>
+                  </div>
+
+                  <Form.Field
+                    control={form.control}
+                    name="reason"
+                    render={({ field: { ref, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Control>
+                            <Select {...field} onValueChange={onChange}>
+                              <Select.Trigger ref={ref}>
+                                <Select.Value />
+                              </Select.Trigger>
+                              <Select.Content>
+                                {/*<Select.Item value="active">*/}
+                                {/*  TODO*/}
+                                {/*</Select.Item>*/}
+                              </Select.Content>
+                            </Select>
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+
+                {/*NOTE*/}
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div>
+                    <Form.Label>{t("orders.returns.note")}</Form.Label>
+                    <Form.Hint className="!mt-1">
+                      {t("orders.returns.noteHint")}
+                    </Form.Hint>
+                  </div>
+
+                  <Form.Field
+                    control={form.control}
+                    name="reason"
+                    render={({ field: { ref, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Control>
+                            <Input onChange={onChange} {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+
+                {/*LOCATION*/}
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div>
+                    <Form.Label>{t("orders.returns.location")}</Form.Label>
+                    <Form.Hint className="!mt-1">
+                      {t("orders.returns.locationHint")}
+                    </Form.Hint>
+                  </div>
+
+                  <Form.Field
+                    control={form.control}
+                    name="location_id"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Control>
+                            <Combobox
+                              value={value}
+                              onChange={(v) => {
+                                onChange(v)
+                              }}
+                              {...field}
+                              options={(stock_locations ?? []).map(
+                                (stockLocation) => ({
+                                  label: stockLocation.name,
+                                  value: stockLocation.id,
+                                })
+                              )}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+
+                {/*INBOUND SHIPPING*/}
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <div>
+                    <Form.Label>
+                      {t("orders.returns.inboundShipping")}
+                    </Form.Label>
+                    <Form.Hint className="!mt-1">
+                      {t("orders.returns.inboundShippingHint")}
+                    </Form.Hint>
+                  </div>
+
+                  <Form.Field
+                    control={form.control}
+                    name="shipping_option_id"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Control>
+                            <Combobox
+                              value={value}
+                              onChange={(v) => {
+                                onChange(v)
+                              }}
+                              {...field}
+                              options={(shipping_options ?? [])
+                                .filter(
+                                  (so) =>
+                                    !!so.rules.find(
+                                      (r) =>
+                                        r.attribute === "is_return" &&
+                                        r.value === "true"
+                                    )
+                                )
+                                .map((so) => ({
+                                  label: so.name,
+                                  value: so.id,
+                                }))}
+                            />
+                          </Form.Control>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
