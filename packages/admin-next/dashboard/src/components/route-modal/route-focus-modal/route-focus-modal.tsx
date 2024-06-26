@@ -6,9 +6,10 @@ import { RouteModalProvider } from "../route-modal-provider/route-provider"
 
 type RouteFocusModalProps = PropsWithChildren<{
   prev?: string
+  className?: string
 }>
 
-const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
+const Root = ({ prev = "..", children, className }: RouteFocusModalProps) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
 
@@ -33,7 +34,9 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
   return (
     <FocusModal open={open} onOpenChange={handleOpenChange}>
       <RouteModalProvider prev={prev}>
-        <FocusModal.Content>{children}</FocusModal.Content>
+        <FocusModal.Content className={className}>
+          {children}
+        </FocusModal.Content>
       </RouteModalProvider>
     </FocusModal>
   )

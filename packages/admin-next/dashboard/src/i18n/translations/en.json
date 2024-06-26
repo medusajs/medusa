@@ -81,6 +81,7 @@
     "reset": "Reset",
     "confirm": "Confirm",
     "edit": "Edit",
+    "addItems": "Add items",
     "download": "Download",
     "clearAll": "Clear all",
     "apply": "Apply",
@@ -642,7 +643,10 @@
       "create": "Create Return",
       "inbound": "Inbound",
       "sendNotification": "Send notification",
-      "sendNotificationHint": "Notify customer about return."
+      "sendNotificationHint": "Notify customer about return.",
+      "returnTotal": "Return total",
+      "inboundShipping": "Inbound shipping",
+      "refundAmount": "Refund amount"
     },
     "reservations": {
       "allocatedLabel": "Allocated",
@@ -1848,6 +1852,7 @@
     "inStock": "In stock",
     "location": "Location",
     "quantity": "Quantity",
+    "qty": "Qty",
     "variant": "Variant",
     "id": "ID",
     "parent": "Parent",
