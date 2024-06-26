@@ -2523,12 +2523,12 @@ describe("Entity builder", () => {
           email: model.text(),
           account: model.text(),
           organization: model.text(),
-          //test: model.belongsTo(() => Object),
+          test: model.belongsTo(() => Object),
         })
         .indexes([
           {
             unique: true,
-            fields: ["email", "account", ""],
+            fields: ["email", "account", "test_id"],
           },
           { fields: ["email", "account"] },
           {
