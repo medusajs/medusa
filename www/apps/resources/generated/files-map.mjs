@@ -1988,16 +1988,16 @@ export const filesMap = [
     "pathname": "/references/cart_models/classes/cart_models.ShippingMethodTaxLine"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency"
   },
   {
     "filePath": "/www/apps/resources/references/currency/IMessageAggregator/methods/currency.IMessageAggregator.clearMessages/page.mdx",
@@ -2060,8 +2060,16 @@ export const filesMap = [
     "pathname": "/references/currency/interfaces/currency.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/currency/types/currency.EventMetadata/page.mdx",
+    "pathname": "/references/currency/types/currency.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/types/currency.JoinerRelationship/page.mdx",
     "pathname": "/references/currency/types/currency.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/currency/types/currency.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/currency/types/currency.Message/page.mdx",
@@ -2072,10 +2080,6 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/types/currency.MessageFormat/page.mdx",
-    "pathname": "/references/currency/types/currency.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/currency/types/currency.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/currency/types/currency.ModuleJoinerConfig"
   },
@@ -2084,8 +2088,12 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.ModuleJoinerRelationship"
   },
   {
-    "filePath": "/www/apps/resources/references/currency_models/classes/currency_models.Currency/page.mdx",
-    "pathname": "/references/currency_models/classes/currency_models.Currency"
+    "filePath": "/www/apps/resources/references/currency/types/currency.RawMessageFormat/page.mdx",
+    "pathname": "/references/currency/types/currency.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency_models/variables/currency_models.Currency/page.mdx",
+    "pathname": "/references/currency_models/variables/currency_models.Currency"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses/page.mdx",

@@ -53,6 +53,9 @@ export type FormattingOptionType = {
   reflectionGroups?: {
     [k: string]: boolean
   }
+  reflectionGroupRename?: {
+    [k: string]: string
+  }
   reflectionCategories?: {
     [k: string]: boolean
   }

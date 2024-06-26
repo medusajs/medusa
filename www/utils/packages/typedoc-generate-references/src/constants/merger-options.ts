@@ -6,6 +6,7 @@ import { modules } from "./references.js"
 import {
   customModuleServiceNames,
   customModuleTitles,
+  dmlModules,
 } from "./references-details.js"
 import { FormattingOptionType } from "types"
 import { kebabToCamel, kebabToPascal, kebabToSnake, kebabToTitle } from "utils"
@@ -28,7 +29,11 @@ const mergerOptions: Partial<TypeDocOptions> = {
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 3,
-  allReflectionsHaveOwnDocument: [...modules, "workflows"],
+  allReflectionsHaveOwnDocument: [
+    ...modules,
+    ...dmlModules.map((module) => `${module}-models`),
+    "workflows",
+  ],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
   formatting: {
     "*": {
@@ -55,6 +60,8 @@ const mergerOptions: Partial<TypeDocOptions> = {
       )
         ? customModuleServiceNames[moduleName]
         : `I${kebabToPascal(moduleName)}ModuleService`
+      const isDmlModule = dmlModules.includes(moduleName)
+
       return Object.assign(obj, {
         // module config
         [`^${snakeCaseModuleName}`]: {
@@ -107,11 +114,15 @@ const mergerOptions: Partial<TypeDocOptions> = {
             typeParameters: false,
             suffix: `- ${titleModuleName} Module Data Models Reference`,
           },
-          reflectionGroups: {
-            Constructors: false,
-            Functions: false,
-            Methods: false,
-          },
+          reflectionGroups: isDmlModule
+            ? {
+                Variables: true,
+              }
+            : {
+                Constructors: false,
+                Functions: false,
+                Methods: false,
+              },
         },
         [`^modules/${snakeCaseModuleName}_models`]: {
           reflectionDescription: `This documentation provides a reference to the data models in the ${titleModuleName} Module`,
@@ -122,6 +133,11 @@ const mergerOptions: Partial<TypeDocOptions> = {
           reflectionTitle: {
             fullReplacement: `${titleModuleName} Module Data Models Reference`,
           },
+          reflectionGroupRename: isDmlModule
+            ? {
+                Variables: "Data Models",
+              }
+            : {},
         },
       } as FormattingOptionType)
     }, {} as FormattingOptionType),
