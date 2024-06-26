@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Input, Select, Switch } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { AdminOrder } from "@medusajs/types"
+import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
 
 import {
   RouteFocusModal,
@@ -16,8 +16,9 @@ import { AddReturnItemsTable } from "../add-return-items-table"
 import { Form } from "../../../../../components/common/form"
 import { ReturnItem } from "./return-item.tsx"
 import { Combobox } from "../../../../../components/inputs/combobox"
-import { useStockLocations } from "../../../../../hooks/api/stock-locations.tsx"
-import { useShippingOptions } from "../../../../../hooks/api/shipping-options.tsx"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
+import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers.ts"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -32,7 +33,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const [showAddItemView, setShowAddItemView] = useState(false)
 
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
-  const { shipping_options = [] } = useShippingOptions({ limit: 999 })
+  const { shipping_options = [] } = useShippingOptions({
+    limit: 999,
+    fields: "*prices",
+  })
 
   const form = useForm<ReturnCreateSchemaType>({
     defaultValues: { items: [] },
@@ -83,6 +87,20 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
     setShowAddItemView(false)
   }
+
+  const showLevelsWarning = useMemo(() => {
+    // TODO
+    return false
+  }, [items])
+
+  const returnTotal = useMemo(() => {
+    return items
+      .map((i) => itemsMap.get(i.item_id))
+      .reduce((acc: number, curr: AdminOrderLineItem, index): number => {
+        // TODO: revisit this calculation when totals are done - probably not correct ATM
+        return acc + items[index].quantity * curr.total
+      }, 0)
+  }, [items])
 
   const showPlaceholder = !items.length
 
@@ -283,7 +301,9 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 <span className="txt-small text-ui-fg-subtle">
                   {t("orders.returns.returnTotal")}
                 </span>
-                <span className="txt-small text-ui-fg-subtle">-</span>
+                <span className="txt-small text-ui-fg-subtle">
+                  {getStylizedAmount(returnTotal, order.currency_code)}
+                </span>
               </div>
 
               <div className="flex items-center justify-between">

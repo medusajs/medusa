@@ -38,7 +38,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
         </div>
 
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-grow items-center gap-1">
+          <div className="flex flex-grow items-center gap-2">
             <Form.Field
               control={form.control}
               name={`${index}.quantity`}
