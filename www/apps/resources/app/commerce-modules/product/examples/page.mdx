@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const products = await productModuleService.create([
+    const products = await productModuleService.createProducts([
       {
         title: "Medusa Shirt",
         options: [
@@ -63,7 +63,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function POST(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const products = await productModuleService.create([
+    const products = await productModuleService.createProducts([
       {
         title: "Medusa Shirt",
         options: [
@@ -110,7 +110,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const products = await productModuleService.list()
+    const products = await productModuleService.listProducts()
 
     res.json({ products })
   }
@@ -129,7 +129,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const products = await productModuleService.list()
+    const products = await productModuleService.listProducts()
 
     return NextResponse.json({ products })
   }
@@ -157,7 +157,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const product = await productModuleService.retrieve(
+    const product = await productModuleService.retrieveProduct(
       request.params.id
     )
 
@@ -182,7 +182,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const { id } = params
     const productModuleService = await initializeProductModule()
 
-    const product = await productModuleService.retrieve(
+    const product = await productModuleService.retrieveProduct(
       id
     )
 
@@ -212,7 +212,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.list({
+    const data = await productModuleService.listProducts({
       handle: "shirt",
     })
 
@@ -233,7 +233,7 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.list({
+    const data = await productModuleService.listProducts({
       handle: "shirt",
     })
 
@@ -263,7 +263,8 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const categories = await productModuleService.listCategories()
+    const categories = await productModuleService
+      .listProductCategories()
 
     res.json({ categories })
   }
@@ -282,7 +283,8 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   export async function GET(request: Request) {
     const productModuleService = await initializeProductModule()
 
-    const categories = await productModuleService.listCategories()
+    const categories = await productModuleService
+      .listProductCategories()
 
     return NextResponse.json({ categories })
   }
@@ -310,9 +312,10 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const productModuleService: IProductModuleService =
       request.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-    const data = await productModuleService.listCategories({
-      handle: request.params.handle,
-    })
+    const data = await productModuleService
+      .listProductCategories({
+        handle: request.params.handle,
+      })
 
     res.json({ category: data[0] })
   }
@@ -335,9 +338,10 @@ In this guide, you’ll find common examples of how you can use the Product Modu
     const { handle } = params
     const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.listCategories({
-      handle,
-    })
+    const data = await productModuleService
+      .listProductCategories({
+        handle,
+      })
 
     return NextResponse.json({ category: data[0] })
   }

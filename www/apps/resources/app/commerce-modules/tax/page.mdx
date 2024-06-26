@@ -25,7 +25,7 @@ const taxRegion = await taxModuleService.createTaxRegions({
 Manage each region's default tax rates and override them with conditioned tax rates.
 
 ```ts
-const taxRates = await taxModuleService.create([
+const taxRates = await taxModuleService.createTaxRates([
   {
     tax_region_id: "txreg_123",
     name: "Default tax rate",

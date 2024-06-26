@@ -45,7 +45,7 @@ Medusa's modular architecture removes any restrictions you may have while making
 
 POS systems make the checkout process smoother by integrating a barcode scanner. Merchants scan a product by its barcode to check its details or add it to the customer's purchase.
 
-The Product Module's `ProductVariant` data model has the fields to implement this integration, mainly the `barcode` attribute. Other notable fields include `ean`, `upc`, and `hs_code`, among others.
+The Product Module's `ProductVariant` data model has the properties to implement this integration, mainly the `barcode` attribute. Other notable properties include `ean`, `upc`, and `hs_code`, among others.
 
 To search through product variants by their barcode, create a custom API Route and call it within your POS.
 
@@ -53,14 +53,14 @@ To search through product variants by their barcode, create a custom API Route a
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "#",
+    href: "/commerce-modules/product",
     title: "Product Module",
     text: "Learn about the Product Module.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
   {
-    href: "https://docs.medusajs.com/api/admin",
+    href: "!docs!/basics/api-routes",
     title: "Create API Route",
     text: "Learn how to create an API Route.",
     startIcon: <AcademicCapSolid />,
@@ -100,7 +100,7 @@ To search through product variants by their barcode, create a custom API Route a
 
     // retrieve product variants by barcode
     const productVariants = await productModuleService
-      .listVariants({
+      .listProductVariants({
         // @ts-ignore
         barcode,
       })

@@ -25,7 +25,7 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
     const cartModuleService: ICartModuleService =
       req.scope.resolve(ModuleRegistrationName.CART)
 
-    const cart = await cartModuleService.create({
+    const cart = await cartModuleService.createCarts({
       currency_code: "usd",
       shipping_address: {
         address_1: "1512 Barataria Blvd",
@@ -57,7 +57,7 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   export async function POST(request: Request) {
     const cartModuleService = await initializeCartModule()
 
-    const cart = await cartModuleService.create({
+    const cart = await cartModuleService.createCarts({
       currency_code: "usd",
       shipping_address: {
         address_1: "1512 Barataria Blvd",
@@ -100,7 +100,9 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
     const cartModuleService: ICartModuleService =
       req.scope.resolve(ModuleRegistrationName.CART)
 
-    const cart = await cartModuleService.retrieve("cart_123")
+    const cart = await cartModuleService.retrieveCart(
+      "cart_123"
+    )
 
     res.json({ cart })
   }
@@ -119,7 +121,9 @@ In this guide, you’ll find common examples of how you can use the Cart Module 
   export async function GET(request: Request) {
     const cartModuleService = await initializeCartModule()
 
-    const cart = await cartModuleService.retrieve("cart_123")
+    const cart = await cartModuleService.retrieveCart(
+      "cart_123"
+    )
 
     return NextResponse.json({
       cart,

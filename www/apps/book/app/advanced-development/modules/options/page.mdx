@@ -34,7 +34,6 @@ module.exports = defineConfig({
     },
   },
 })
-
 ```
 
 The `options` property’s value is an object. You can pass any properties you want.
@@ -47,36 +46,30 @@ The module’s main service receives the module options as a second parameter.
 
 For example:
 
-```ts title="src/modules/hello/service.ts" highlights={[["15"], ["21"], ["25"], ["26"], ["27"]]}
-// ...
+```ts title="src/modules/hello/service.ts" highlights={[["12"], ["14", "options?: ModuleOptions"], ["17"], ["18"], ["19"]]}
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
 
 // recommended to define type in another file
-type HelloModuleOptions = {
+type ModuleOptions = {
   capitalize?: boolean
 }
 
-class HelloModuleService extends ModulesSdkUtils
-  .abstractModuleServiceFactory<
-  // ...
-  >(
-  // ...
-  ) {
-    // ...
-    protected options_: HelloModuleOptions
-    
-    constructor(
-      {
-        // ...
-      }: InjectedDependencies,
-      protected readonly moduleOptions: HelloModuleOptions
-    ) {
-      //...
-      
-      this.options_ = moduleOptions || {
-        capitalize: false,
-      }
+export default class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  protected options_: ModuleOptions
+
+  constructor({}, options?: ModuleOptions) {
+    super(...arguments)
+
+    this.options_ = options || {
+      capitalize: false,
     }
   }
+
+  // ...
+}
 ```
 
 ---
@@ -93,13 +86,13 @@ import {
 } from "@medusajs/modules-sdk"
 
 // recommended to define type in another file
-type HelloModuleOptions = {
+type ModuleOptions = {
   capitalize?: boolean
 }
 
 export default function helloWorldLoader({
   options,
-}: LoaderOptions<HelloModuleOptions>) {
+}: LoaderOptions<ModuleOptions>) {
   
   console.log(
     "[HELLO MODULE] Just started the Medusa application!",

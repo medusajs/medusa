@@ -34,9 +34,9 @@ Service zones can be more restrictive, such as restricting to certain cities or 
 
 You can restrict shipping options by custom rules, such as the item’s weight or the customer’s group.
 
-These rules are represented by the [ShippingOptionRule data model](/references/fulfillment/models/ShippingOptionRule). Its fields define the custom rule:
+These rules are represented by the [ShippingOptionRule data model](/references/fulfillment/models/ShippingOptionRule). Its properties define the custom rule:
 
-- `attribute`: The name of a field or table that the rule applies to. For example, `customer_group`.
+- `attribute`: The name of a property or table that the rule applies to. For example, `customer_group`.
 - `operator`: The operator used in the condition. For example:
     - To allow multiple values, use the operator `in`, which validates that the provided values are in the rule’s values.
     - To create a negation condition that considers `value` against the rule, use `nin`, which validates that the provided values aren’t in the rule’s values.
@@ -59,8 +59,8 @@ A shipping option also belongs to a shipping profile, as each shipping profile d
 
 ---
 
-## data Field
+## data Property
 
 When fulfilling an item, you might use a third-party fulfillment provider that requires additional custom data to be passed along from the checkout or order-creation process.
 
-The `ShippingOption` data model has a `data` field. It's an object that stores custom data relevant later when creating and processing a fulfillment.
+The `ShippingOption` data model has a `data` property. It's an object that stores custom data relevant later when creating and processing a fulfillment.
