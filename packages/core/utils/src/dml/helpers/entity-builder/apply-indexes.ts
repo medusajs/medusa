@@ -4,6 +4,7 @@ import {
   PropertyMetadata,
 } from "@medusajs/types"
 import { createPsqlIndexStatementHelper } from "../../../common"
+import { validateIndexFields } from "../mikro-orm/build-indexes"
 
 /**
  * Prepares indexes for a given field
@@ -34,10 +35,12 @@ export function applyEntityIndexes(
   indexes: EntityIndex[]
 ) {
   indexes.forEach((index) => {
+    validateIndexFields(MikroORMEntity, index)
+
     const providerEntityIdIndexStatement = createPsqlIndexStatementHelper({
       tableName,
       name: index.name,
-      columns: index.fields as string[],
+      columns: index.on as string[],
       unique: index.unique,
       where: index.where,
     })

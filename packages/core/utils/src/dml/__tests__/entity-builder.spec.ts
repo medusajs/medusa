@@ -2518,26 +2518,33 @@ describe("Entity builder", () => {
 
   describe("Entity builder | indexes", () => {
     test("should define indexes for an entity", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
       const user = model
         .define("user", {
           email: model.text(),
           account: model.text(),
           organization: model.text(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
         })
         .indexes([
           {
             unique: true,
-            fields: ["email", "account"],
+            on: ["email", "account"],
           },
-          { fields: ["email", "account"] },
+          { on: ["email", "account"] },
           {
-            fields: ["organization", "account"],
+            on: ["organization", "account"],
             where: "email IS NOT NULL",
           },
           {
             name: "IDX_unique-name",
             unique: true,
-            fields: ["organization", "account"],
+            on: ["organization", "account", "group_id"],
           },
         ])
 
@@ -2572,6 +2579,23 @@ describe("Entity builder", () => {
           setter: false,
           type: "string",
         },
+        group: {
+          entity: "Group",
+          name: "group",
+          nullable: false,
+          persist: false,
+          reference: "m:1",
+        },
+        group_id: {
+          columnType: "text",
+          entity: "Group",
+          fieldName: "group_id",
+          mapToPk: true,
+          name: "group_id",
+          nullable: false,
+          onDelete: undefined,
+          reference: "m:1",
+        },
         ...defaultColumnMetadata,
       })
 
@@ -2593,7 +2617,7 @@ describe("Entity builder", () => {
         },
         {
           expression:
-            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account) WHERE deleted_at IS NULL',
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
           name: "IDX_unique-name",
         },
       ])
@@ -2601,17 +2625,31 @@ describe("Entity builder", () => {
 
     test("should throw an error if field is unknown for an index", () => {
       try {
-        model
+        const group = model.define("group", {
+          id: model.number(),
+          name: model.text(),
+          users: model.hasMany(() => user),
+        })
+
+        const user = model
           .define("user", {
             email: model.text(),
             account: model.text(),
+            organization: model.text(),
+            group: model.belongsTo(() => group, { mappedBy: "users" }),
           })
           .indexes([
-            { fields: ["doesnotexist", "account", "another", "email"] },
+            {
+              on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
+            },
           ])
+
+        toMikroORMEntity(user)
+
+        throw "should not reach"
       } catch (e) {
         expect(e.message).toEqual(
-          "cannot find fields (doesnotexist, another) in entity definition"
+          "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
         )
       }
     })

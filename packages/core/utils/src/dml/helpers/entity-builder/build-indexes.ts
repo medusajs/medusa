@@ -1,5 +1,5 @@
 import { DMLSchema, EntityIndex } from "@medusajs/types"
-import { arrayDifference, isPresent } from "../../../common"
+import { isPresent } from "../../../common"
 
 /*
   The DML provides an opinionated soft deletable entity as a part of every model
@@ -27,22 +27,4 @@ export function transformIndexWhere<TSchema extends DMLSchema>(
   }
 
   return where
-}
-
-/*
-  The DML should strictly define indexes where the fields provided for the index are 
-  already present in the schema definition. If not, we throw an error.
-*/
-export function validateIndexFields<TSchema extends DMLSchema>(
-  index: EntityIndex<TSchema>,
-  schema: TSchema
-) {
-  const schemaFields: string[] = Object.keys(schema)
-  const invalidFields = arrayDifference(index.fields as string[], schemaFields)
-
-  if (invalidFields.length) {
-    throw new Error(
-      `cannot find fields (${invalidFields.join(", ")}) in entity definition`
-    )
-  }
 }

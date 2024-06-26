@@ -183,6 +183,6 @@ export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
 export type EntityIndex<TSchema extends DMLSchema = DMLSchema> = {
   name?: string
   unique?: boolean
-  fields: InferIndexableProperties<IDmlEntity<TSchema>>[]
+  on: InferIndexableProperties<IDmlEntity<TSchema>>[]
   where?: string
 }

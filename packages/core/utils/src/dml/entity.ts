@@ -7,10 +7,7 @@ import {
   IsDmlEntity,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase } from "../common"
-import {
-  transformIndexWhere,
-  validateIndexFields,
-} from "./helpers/entity-builder/build-indexes"
+import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
 type Config = string | { name?: string; tableName: string }
@@ -124,10 +121,8 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     return this
   }
 
-  indexes<T = Schema>(indexes: EntityIndex<Schema>[]) {
+  indexes(indexes: EntityIndex<Schema>[]) {
     for (const index of indexes) {
-      validateIndexFields<Schema>(index, this.schema)
-
       index.where = transformIndexWhere(index)
       index.unique = index.unique ?? false
     }
