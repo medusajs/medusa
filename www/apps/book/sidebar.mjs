@@ -149,11 +149,15 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             },
             {
               path: "/advanced-development/data-models/indexes",
-              title: "Define Indexes",
+              title: "Data Model Index",
             },
             {
               path: "/advanced-development/data-models/soft-deletable",
               title: "Soft-Deletable Models",
+            },
+            {
+              path: "/advanced-development/data-models/searchable-property",
+              title: "Searchable Property",
             },
           ],
         },

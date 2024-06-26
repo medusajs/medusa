@@ -159,7 +159,7 @@ export default MyCustom
 
 ## json
 
-The `json` method defines property whose value is a stringified JSON object.
+The `json` method defines a property whose value is a stringified JSON object.
 
 For example:
 
@@ -170,6 +170,27 @@ import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {
   metadata: model.json(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## array
+
+The `array` method defines an array or strings property.
+
+For example:
+
+export const arrHightlights = [["4", "array", "Define an `array` property."]]
+
+```ts highlights={arrHightlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  names: model.array(),
   // ...
 })
 
