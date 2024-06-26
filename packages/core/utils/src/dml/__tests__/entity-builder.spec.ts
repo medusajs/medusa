@@ -827,6 +827,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: false,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -935,6 +936,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: false,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -1047,6 +1049,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: true,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
