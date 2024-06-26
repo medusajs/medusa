@@ -32,9 +32,16 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 
   // If explicit primaryKey fields are found, set any id() properties to no longer be
   // set to primaryKey.
-  for (const property of Object.values(schema)) {
-    if (property instanceof IdProperty) {
-      property.primaryKey(false)
+  for (const [field, property] of Object.entries(schema)) {
+    const parsed = property.parse(field)
+    const isRelationshipType = "type" in parsed
+
+    if (isRelationshipType) {
+      continue
+    }
+
+    if (parsed.dataType.name === "id") {
+      ;(property as IdProperty).primaryKey(false)
     }
   }
 
@@ -54,14 +61,11 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 */
 function getExplicitPrimaryKeyFields(schema: DMLSchema) {
   return Object.entries(schema).filter(([field, property]) => {
-    if (property instanceof IdProperty) {
-      return false
-    }
-
     const parsed = property.parse(field)
+    const isRelationshipType = "type" in parsed
 
-    // Return early if its a relationship property
-    if ("type" in parsed) {
+    // Return early if its a relationship property or an id property
+    if (isRelationshipType || parsed.dataType.name === "id") {
       return false
     }
 
