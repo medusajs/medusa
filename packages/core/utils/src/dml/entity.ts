@@ -124,15 +124,15 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     return this
   }
 
-  indexes<TSchema extends Schema>(indexes: EntityIndex<TSchema>[]) {
+  indexes<T = Schema>(indexes: EntityIndex<Schema>[]) {
     for (const index of indexes) {
-      validateIndexFields<TSchema>(index, this.schema as TSchema)
+      validateIndexFields<Schema>(index, this.schema)
 
       index.where = transformIndexWhere(index)
       index.unique = index.unique ?? false
     }
 
-    this.#indexes = indexes as EntityIndex<Schema>[]
+    this.#indexes = indexes
     return this
   }
 }
