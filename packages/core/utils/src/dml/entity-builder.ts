@@ -18,6 +18,7 @@ import { BelongsTo } from "./relations/belongs-to"
 import { HasMany } from "./relations/has-many"
 import { HasOne } from "./relations/has-one"
 import { ManyToMany } from "./relations/many-to-many"
+import { ArrayProperty } from "./properties/array"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -28,6 +29,8 @@ export type DMLSchema = Record<
   string,
   PropertyType<any> | RelationshipType<any>
 >
+
+type DefineOptions = string | { name?: string; tableName: string }
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -52,10 +55,13 @@ export class EntityBuilder {
    * Define an entity or a model. The name should be unique across
    * all the entities.
    */
-  define<Schema extends DMLSchema>(name: string, schema: Schema) {
+  define<Schema extends DMLSchema>(
+    nameOrConfig: DefineOptions,
+    schema: Schema
+  ) {
     this.#disallowImplicitProperties(schema)
 
-    return new DmlEntity(name, {
+    return new DmlEntity(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
@@ -98,6 +104,13 @@ export class EntityBuilder {
    */
   bigNumber() {
     return new BigNumberProperty()
+  }
+
+  /**
+   * Define an array column
+   */
+  array() {
+    return new ArrayProperty()
   }
 
   /**

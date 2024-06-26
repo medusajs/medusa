@@ -17,6 +17,7 @@ export type KnownDataTypes =
   | "number"
   | "bigNumber"
   | "dateTime"
+  | "array"
   | "json"
   | "id"
 
