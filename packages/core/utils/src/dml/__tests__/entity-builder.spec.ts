@@ -2537,7 +2537,7 @@ describe("Entity builder", () => {
           {
             name: "IDX_unique-name",
             unique: true,
-            fields: ["organization"],
+            fields: ["organization", "account"],
           },
         ])
 
