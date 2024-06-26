@@ -6,7 +6,7 @@ import { BigNumberInput, BigNumberRawValue, BigNumberValue } from "../totals"
 
 export type ChangeActionType =
   | "CANCEL"
-  | "CANCEL_RETURN"
+  | "CANCEL_RETURN_ITEM"
   | "FULFILL_ITEM"
   | "CANCEL_ITEM_FULFILLMENT"
   | "ITEM_ADD"
@@ -17,6 +17,7 @@ export type ChangeActionType =
   | "SHIPPING_ADD"
   | "SHIP_ITEM"
   | "WRITE_OFF_ITEM"
+  | "REINSTATE_ITEM"
 
 export type OrderSummaryDTO = {
   total: BigNumberValue

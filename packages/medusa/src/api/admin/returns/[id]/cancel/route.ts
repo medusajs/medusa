@@ -19,17 +19,13 @@ export const POST = async (
       filters: {
         ...req.filterableFields,
       },
-      ...req.remoteQueryConfig.pagination,
     },
     fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: orders, metadata } = await remoteQuery(queryObject)
+  const [orderReturn] = await remoteQuery(queryObject)
 
   res.json({
-    orders,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    return: orderReturn,
   })
 }

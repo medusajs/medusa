@@ -2803,8 +2803,7 @@ export default class OrderModuleService<
   async createReturn(
     data: OrderTypes.CreateOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<any> {
-    // TODO: type ReturnDTO
+  ): Promise<OrderTypes.ReturnDTO> {
     const ret = await BundledActions.createReturn.bind(this)(
       data,
       sharedContext
@@ -2823,7 +2822,7 @@ export default class OrderModuleService<
   async receiveReturn(
     data: OrderTypes.ReceiveOrderReturnDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<any> {
+  ): Promise<OrderTypes.ReturnDTO> {
     const ret = await this.receiveReturn_(data, sharedContext)
 
     return await this.retrieveReturn(ret.id, {
@@ -2840,10 +2839,30 @@ export default class OrderModuleService<
   }
 
   @InjectManager("baseRepository_")
+  async cancelReturn(
+    data: OrderTypes.CancelOrderReturnDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.ReturnDTO> {
+    const ret = await this.cancelReturn_(data, sharedContext)
+
+    return await this.retrieveReturn(ret.id, {
+      relations: ["items"],
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async cancelReturn_(
+    data: OrderTypes.CancelOrderReturnDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<any> {
+    return await BundledActions.cancelReturn.bind(this)(data, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
   async createClaim(
     data: OrderTypes.CreateOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<any> {
+  ): Promise<OrderTypes.OrderClaimDTO> {
     const ret = await this.createClaim_(data, sharedContext)
 
     const claim = await this.retrieveOrderClaim(
@@ -2865,7 +2884,7 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<OrderTypes.OrderClaimDTO[]>(
+    return await this.baseRepository_.serialize<OrderTypes.OrderClaimDTO>(
       claim,
       {
         populate: true,
@@ -2874,18 +2893,38 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async createExchange_(
-    data: OrderTypes.CreateOrderExchangeDTO,
+  async createClaim_(
+    data: OrderTypes.CreateOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<any> {
-    return await BundledActions.createExchange.bind(this)(data, sharedContext)
+    return await BundledActions.createClaim.bind(this)(data, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async cancelClaim(
+    data: OrderTypes.CancelOrderClaimDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.OrderClaimDTO> {
+    const ret = await this.cancelClaim_(data, sharedContext)
+
+    return await this.retrieveOrderClaim(ret.id, {
+      relations: ["items"],
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async cancelClaim_(
+    data: OrderTypes.CancelOrderClaimDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<any> {
+    // return await BundledActions.cancelOrderClaim.bind(this)(data, sharedContext)
   }
 
   @InjectManager("baseRepository_")
   async createExchange(
     data: OrderTypes.CreateOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
-  ): Promise<any> {
+  ): Promise<OrderTypes.OrderExchangeDTO> {
     const ret = await this.createExchange_(data, sharedContext)
 
     const claim = await this.retrieveOrderExchange(
@@ -2905,7 +2944,7 @@ export default class OrderModuleService<
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<OrderTypes.OrderExchangeDTO[]>(
+    return await this.baseRepository_.serialize<OrderTypes.OrderExchangeDTO>(
       claim,
       {
         populate: true,
@@ -2914,11 +2953,36 @@ export default class OrderModuleService<
   }
 
   @InjectTransactionManager("baseRepository_")
-  async createClaim_(
-    data: OrderTypes.CreateOrderClaimDTO,
+  async createExchange_(
+    data: OrderTypes.CreateOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<any> {
-    return await BundledActions.createClaim.bind(this)(data, sharedContext)
+    return await BundledActions.createExchange.bind(this)(data, sharedContext)
+  }
+
+  @InjectManager("baseRepository_")
+  async cancelExchange(
+    data: OrderTypes.CancelOrderExchangeDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<OrderTypes.OrderExchangeDTO> {
+    const ret = await this.cancelExchange_(data, sharedContext)
+
+    return await this.retrieveOrderExchange(ret.id, {
+      relations: ["items"],
+    })
+  }
+
+  @InjectTransactionManager("baseRepository_")
+  private async cancelExchange_(
+    data: OrderTypes.CancelOrderExchangeDTO,
+    @MedusaContext() sharedContext?: Context
+  ): Promise<any> {
+    /*
+    return await BundledActions.cancelOrderExchange.bind(this)(
+      data,
+      sharedContext
+    )
+    */
   }
 
   @InjectTransactionManager("baseRepository_")

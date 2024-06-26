@@ -424,6 +424,10 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
+export interface CancelOrderReturnDTO extends BaseOrderBundledActionsDTO {
+  return_id: string
+}
+
 export type OrderClaimType = "refund" | "replace"
 export type ClaimReason =
   | "missing_item"
@@ -446,6 +450,10 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
+export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
+  claim_id: string
+}
+
 export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   additional_items?: BaseOrderBundledItemActionsDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
@@ -455,8 +463,8 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderReturnDTO {
-  return_id: string
+export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
+  exchange_id: string
 }
 
 export interface ReceiveOrderReturnDTO
