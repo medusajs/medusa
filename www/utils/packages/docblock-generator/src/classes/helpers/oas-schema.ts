@@ -187,11 +187,11 @@ class OasSchemaHelper {
    * @param name - The schema's name
    * @returns The schema's file name
    */
-  getSchemaFileName(name: string): string {
+  getSchemaFileName(name: string, shouldNormalizeName = true): string {
     return join(
       this.baseOutputPath,
       "schemas",
-      `${this.normalizeSchemaName(name)}.ts`
+      `${shouldNormalizeName ? this.normalizeSchemaName(name) : name}.ts`
     )
   }
 
@@ -202,8 +202,13 @@ class OasSchemaHelper {
    * @param name - The schema's name.
    * @returns The parsed schema, if found.
    */
-  getSchemaByName(name: string): ParsedSchema | undefined {
-    const schemaName = this.normalizeSchemaName(name)
+  getSchemaByName(
+    name: string,
+    shouldNormalizeName = true
+  ): ParsedSchema | undefined {
+    const schemaName = shouldNormalizeName
+      ? this.normalizeSchemaName(name)
+      : name
     // check if it already exists in the schemas map
     if (this.schemas.has(schemaName)) {
       return {
@@ -211,7 +216,7 @@ class OasSchemaHelper {
         schemaPrefix: `@schema ${schemaName}`,
       }
     }
-    const schemaFile = this.getSchemaFileName(schemaName)
+    const schemaFile = this.getSchemaFileName(schemaName, shouldNormalizeName)
     const schemaFileContent = ts.sys.readFile(schemaFile)
 
     if (!schemaFileContent) {
@@ -267,7 +272,7 @@ class OasSchemaHelper {
     return name
       .replace("DTO", "")
       .replace(this.schemaRefPrefix, "")
-      .replace(/Type$/, "")
+      .replace(/(?<!Type)Type$/, "")
   }
 
   /**
@@ -325,13 +330,9 @@ class OasSchemaHelper {
    * @param tagName - The name of the tag.
    * @returns The possible names of the associated schema.
    */
-  tagNameToSchemaName(tagName: string, area: OasArea): string[] {
+  tagNameToSchemaName(tagName: string, area: OasArea): string {
     const mainSchemaName = wordsToPascal(pluralize.singular(tagName))
-    return [
-      mainSchemaName,
-      `${mainSchemaName}Response`,
-      `${capitalize(area)}Create${mainSchemaName}`,
-    ]
+    return `${capitalize(area)}${mainSchemaName}`
   }
 }
 
