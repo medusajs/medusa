@@ -19,13 +19,13 @@ Store and manage API keys in your store. You can create both publishable and sec
 - Password reset tokens when a user or customer requests to reset their password.
 
 ```ts
-const pubApiKey = await apiKeyModuleService.create({
+const pubApiKey = await apiKeyModuleService.createApiKeys({
   title: "Publishable API key",
   type: "publishable",
   created_by: "user_123",
 })
 
-const secretApiKey = await apiKeyModuleService.create({
+const secretApiKey = await apiKeyModuleService.createApiKeys({
   title: "Authentication Key",
   type: "secret",
   created_by: "user_123",
@@ -66,7 +66,7 @@ const revokedKey = await apiKeyModuleService.revoke("apk_1", {
   revoked_by: "user_123",
 })
 
-const newKey = await apiKeyModuleService.create({
+const newKey = await apiKeyModuleService.createApiKeys({
   title: revokedKey.title,
   type: revokedKey.type,
   created_by: revokedKey.created_by,
@@ -97,7 +97,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.API_KEY)
 
     res.json({
-      api_keys: await apiKeyModuleService.list(),
+      api_keys: await apiKeyModuleService.listApiKeys(),
     })
   }
   ```
@@ -116,7 +116,7 @@ For example:
     const apiKeyModuleService: IApiKeyModuleService =
       container.resolve(ModuleRegistrationName.API_KEY)
 
-    const apiKeys = await apiKeyModuleService.list()
+    const apiKeys = await apiKeyModuleService.listApiKeys()
   }
   ```
 
@@ -136,7 +136,7 @@ For example:
           ModuleRegistrationName.API_KEY
         )
 
-      const apiKeys = await apiKeyModuleService.list()
+      const apiKeys = await apiKeyModuleService.listApiKeys()
   })
   ```
 

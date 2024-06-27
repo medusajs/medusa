@@ -27,7 +27,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
     // A rule type with \`rule_field=region_id\` should
     // already be present in the database
-    const priceSet = await pricingModuleService.create([
+    const priceSet = await pricingModuleService.createPriceSets([
       {
         rules: [{ rule_field: "region_id" }],
         prices: [
@@ -62,7 +62,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
     // A rule type with \`rule_field=region_i\` should 
     // already be present in the database
-    const priceSet = await pricingModuleService.create([
+    const priceSet = await pricingModuleService.createPriceSets([
       {
         rules: [{ rule_field: "region_id" }],
         prices: [
@@ -103,7 +103,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
 
     res.json({ price_sets: priceSets })
   }
@@ -122,7 +122,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   export async function GET(request: Request) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
 
     return NextResponse.json({ price_sets: priceSets })
   }
@@ -150,7 +150,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSet = await pricingModuleService.retrieve(
+    const priceSet = await pricingModuleService.retrievePriceSet(
       request.params.id
     )
 
@@ -180,7 +180,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSet = await pricingModuleService.retrieve(
+    const priceSet = await pricingModuleService.retrievePriceSet(
       params.id
     )
 

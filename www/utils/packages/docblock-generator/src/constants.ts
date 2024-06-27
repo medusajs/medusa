@@ -27,3 +27,9 @@ export const DEFAULT_OAS_RESPONSES: {
     $ref: "#/components/responses/500_error",
   },
 }
+export const API_ROUTE_PARAM_REGEX = /\[(.+?)\]/g
+// we can't use `{summary}` because it causes an MDX error
+// when we finally render the summary. We can alternatively
+// use `\{summary\}` but it wouldn't look pretty in the OAS,
+// so doing this for now.
+export const SUMMARY_PLACEHOLDER = "SUMMARY"

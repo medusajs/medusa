@@ -99,7 +99,8 @@ For example:
       req.scope.resolve(ModuleRegistrationName.AUTH)
 
     res.json({
-      authIdentitys: authModuleService.list(),
+      authIdentitys: 
+        await authModuleService.listAuthIdentities(),
     })
   }
   ```
@@ -120,7 +121,8 @@ For example:
     const authModuleService: IAuthModuleService =
       container.resolve(ModuleRegistrationName.AUTH)
 
-    const authIdentitys = await authModuleService.list()
+    const authIdentitys = await authModuleService
+      .listAuthIdentities()
   }
   ```
 
@@ -141,7 +143,8 @@ For example:
       container.resolve(
         ModuleRegistrationName.AUTH
       )
-    const authIdentitys = await authModuleService.list()
+    const authIdentitys = await authModuleService
+      .listAuthIdentities()
   })
   ```
 

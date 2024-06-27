@@ -14,6 +14,41 @@ describe("Entity builder", () => {
     MetadataStorage.clear()
   })
 
+  const defaultColumnMetadata = {
+    created_at: {
+      columnType: "timestamptz",
+      defaultRaw: "now()",
+      getter: false,
+      name: "created_at",
+      nullable: false,
+      onCreate: expect.any(Function),
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+    deleted_at: {
+      columnType: "timestamptz",
+      getter: false,
+      name: "deleted_at",
+      nullable: true,
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+    updated_at: {
+      columnType: "timestamptz",
+      defaultRaw: "now()",
+      getter: false,
+      name: "updated_at",
+      nullable: false,
+      onCreate: expect.any(Function),
+      onUpdate: expect.any(Function),
+      reference: "scalar",
+      setter: false,
+      type: "date",
+    },
+  }
+
   describe("Entity builder | properties", () => {
     test("should identify a DML entity correctly", () => {
       const user = model.define("user", {
@@ -827,6 +862,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: false,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -935,6 +971,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: false,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -1047,6 +1084,7 @@ describe("Entity builder", () => {
           items: expect.any(Function),
           nullable: true,
           name: "role",
+          type: "string",
         },
         created_at: {
           reference: "scalar",
@@ -1518,7 +1556,7 @@ describe("Entity builder", () => {
   describe("Entity builder | primaryKey", () => {
     test("should create both id fields and primaryKey fields", () => {
       const user = model.define("user", {
-        id: model.id({ primaryKey: false }),
+        id: model.id(),
         email: model.text().primaryKey(),
         account_id: model.number().primaryKey(),
       })
@@ -1533,25 +1571,6 @@ describe("Entity builder", () => {
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
-      const userInstance = new User()
-      userInstance["generateId"]()
-
-      expect(metaData.className).toEqual("User")
-      expect(metaData.path).toEqual("User")
-
-      expect(metaData.hooks).toEqual({
-        beforeCreate: ["generateId"],
-        onInit: ["generateId"],
-      })
-
-      expect(metaData.filters).toEqual({
-        softDeletable: {
-          name: "softDeletable",
-          cond: expect.any(Function),
-          default: true,
-          args: false,
-        },
-      })
 
       expect(metaData.properties).toEqual({
         id: {
@@ -1612,8 +1631,102 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
+    })
 
-      expect(userInstance.id).toBeDefined()
+    test("should infer primaryKeys from a model", () => {
+      let user = model.define("user", {
+        id: model.id(),
+        email: model.text(),
+        account_id: model.number(),
+      })
+
+      const entityBuilder = createMikrORMEntity()
+      let User = entityBuilder(user)
+      let metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.properties.id).toEqual({
+        columnType: "text",
+        name: "id",
+        nullable: false,
+        primary: true,
+        reference: "scalar",
+        type: "string",
+      })
+
+      user = model.define("user", {
+        id: model.id(),
+        email: model.text().primaryKey(),
+        account_id: model.number(),
+      })
+
+      User = entityBuilder(user)
+      metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.properties.id).toEqual({
+        columnType: "text",
+        name: "id",
+        nullable: false,
+        reference: "scalar",
+        type: "string",
+        getter: false,
+        setter: false,
+      })
+
+      expect(metaData.properties.email).toEqual({
+        columnType: "text",
+        name: "email",
+        nullable: false,
+        reference: "scalar",
+        type: "string",
+        primary: true,
+      })
+
+      expect(metaData.properties.account_id).toEqual({
+        columnType: "integer",
+        name: "account_id",
+        nullable: false,
+        reference: "scalar",
+        type: "number",
+        getter: false,
+        setter: false,
+      })
+
+      user = model.define("user", {
+        id: model.id(),
+        email: model.text().primaryKey(),
+        account_id: model.number().primaryKey(),
+      })
+
+      User = entityBuilder(user)
+      metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.properties.id).toEqual({
+        columnType: "text",
+        name: "id",
+        nullable: false,
+        reference: "scalar",
+        type: "string",
+        getter: false,
+        setter: false,
+      })
+
+      expect(metaData.properties.email).toEqual({
+        columnType: "text",
+        name: "email",
+        nullable: false,
+        reference: "scalar",
+        type: "string",
+        primary: true,
+      })
+
+      expect(metaData.properties.account_id).toEqual({
+        columnType: "integer",
+        name: "account_id",
+        nullable: false,
+        reference: "scalar",
+        type: "number",
+        primary: true,
+      })
     })
   })
 
@@ -2403,6 +2516,145 @@ describe("Entity builder", () => {
           setter: false,
         },
       })
+    })
+  })
+
+  describe("Entity builder | indexes", () => {
+    test("should define indexes for an entity", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
+        })
+        .indexes([
+          {
+            unique: true,
+            on: ["email", "account"],
+          },
+          { on: ["email", "account"] },
+          {
+            on: ["organization", "account"],
+            where: "email IS NOT NULL",
+          },
+          {
+            name: "IDX_unique-name",
+            unique: true,
+            on: ["organization", "account", "group_id"],
+          },
+        ])
+
+      const User = toMikroORMEntity(user)
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.properties).toEqual({
+        email: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "email",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        account: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "account",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        organization: {
+          columnType: "text",
+          getter: false,
+          name: "organization",
+          nullable: false,
+          reference: "scalar",
+          setter: false,
+          type: "string",
+        },
+        group: {
+          entity: "Group",
+          name: "group",
+          nullable: false,
+          persist: false,
+          reference: "m:1",
+        },
+        group_id: {
+          columnType: "text",
+          entity: "Group",
+          fieldName: "group_id",
+          mapToPk: true,
+          name: "group_id",
+          nullable: false,
+          onDelete: undefined,
+          reference: "m:1",
+        },
+        ...defaultColumnMetadata,
+      })
+
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_user_email_account_unique" ON "user" (email, account) WHERE deleted_at IS NULL',
+          name: "IDX_user_email_account_unique",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_email_account" ON "user" (email, account) WHERE deleted_at IS NULL',
+          name: "IDX_user_email_account",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_account" ON "user" (organization, account) WHERE email IS NOT NULL AND deleted_at IS NULL',
+          name: "IDX_user_organization_account",
+        },
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
+          name: "IDX_unique-name",
+        },
+      ])
+    })
+
+    test("should throw an error if field is unknown for an index", () => {
+      try {
+        const group = model.define("group", {
+          id: model.number(),
+          name: model.text(),
+          users: model.hasMany(() => user),
+        })
+
+        const user = model
+          .define("user", {
+            email: model.text(),
+            account: model.text(),
+            organization: model.text(),
+            group: model.belongsTo(() => group, { mappedBy: "users" }),
+          })
+          .indexes([
+            {
+              on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
+            },
+          ])
+
+        toMikroORMEntity(user)
+
+        throw "should not reach"
+      } catch (e) {
+        expect(e.message).toEqual(
+          "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
+        )
+      }
     })
   })
 

@@ -8,9 +8,7 @@ In this chapter, you’ll learn what data models are and how to create a data mo
 
 ## What is a Data Model?
 
-A data model is a class that represents a table in the database. A data model is created in a module. You can then create a service that manages that data model.
-
-Data models are based on [MikroORM](https://mikro-orm.io/docs/quick-start). So, you can use its decorators, types, and utilities when creating a model.
+A data model is a class that represents a table in the database. It's created in a module.
 
 ---
 
@@ -20,67 +18,66 @@ Data models are based on [MikroORM](https://mikro-orm.io/docs/quick-start). So, 
 
 1. Create data model class in a module.
 2. Generate migration for the data model.
-3. Add migration scripts to the module's definition.
 4. Run migration to add table for data model in the database.
 
 </Note>
 
-A data model is a class created in a TypeScript or JavaScript file under a module's `models` directory.
+A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medjusajs/utils`.
 
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
 ```ts title="src/modules/hello/models/my-custom.ts"
-import { BaseEntity } from "@medusajs/utils"
-import { 
-  Entity, 
-  PrimaryKey, 
-  Property,
-} from "@mikro-orm/core"
+import { model } from "@medusajs/utils"
 
-@Entity()
-export class MyCustom extends BaseEntity {
-  @PrimaryKey({ columnType: "text" })
-  id!: string
+const MyCustom = model.define("my_custom", {
+  id: model.id(),
+  name: model.text(),
+})
 
-  @Property({ columnType: "text" })
-  name: string
-}
+export default MyCustom
 ```
 
-This defines a new data model `MyCustom` with the fields `id` and `name`. Data models extend the `BaseEntity` class imported from `@medusajs/utils`.
+You define a data model using the `model`'s `define` method. It accepts two parameters:
+
+1. The first one is the name of the data model's table in the database.
+2. The second is an object, which is the data model's schema. The schema's properties are defined using the `model`'s methods.
+
+The example above defines the data model `MyCustom` with the properties `id` and `name`. 
 
 ### Create a Migration
 
-After creating the data model, you must create a migration that creates a table in your database for this data model.
+A migration defines changes to be made in the database, such as create or update tables.
 
-A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It implements an `up` and `down` method, where the `up` method reflects changes on the database, and the `down` method reverts the changes from the database.
+So, you must create a migration that creates a table for your data model in the database.
 
-<Details summaryContent="Generate with MikroORM">
-  MikroORM provides a CLI tool that helps you generate migrations. To use it:
+A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It has two methods:
 
-  1. Create the file `src/modules/hello/mikro-orm.config.dev.ts` with the following content:
+- The `up` method reflects changes on the database.
+- The `down` method reverts the changes made in the `up` method.
 
-  ```ts highlights={[["8", "hello", "The module's name."]]}
+<Details summaryContent="Generate Migration">
+  To generate migrations:
+
+  1. Create the file `src/modules/hello/migrations-config.ts` with the following content:
+
+  ```ts highlights={[["7", '"medusa-hello"', "Use any database name relevant for your module."]]}
+  import { defineMikroOrmCliConfig } from "@medusajs/utils"
   import path from "path"
-  import { TSMigrationGenerator } from "@medusajs/utils"
-  import { MyCustom } from "./models/my-custom"
+  import MyCustom from "./models/my-custom"
 
-  module.exports = {
-    entities: [MyCustom],
-    schema: "public",
-    clientUrl: "postgres://postgres@localhost/medusa-hello",
-    type: "postgresql",
+  export default defineMikroOrmCliConfig({
+    entities: [MyCustom] as any[],
+    databaseName: "medusa-hello",
     migrations: {
       path: path.join(__dirname, "migrations"),
-      generator: TSMigrationGenerator,
     },
-  }
+  })
   ```
 
   2. Run the following command in the root directory of your Medusa application:
 
   ```bash
-  npx cross-env MIKRO_ORM_CLI=./src/modules/hello/mikro-orm.config.dev.ts mikro-orm migration:create
+  npx cross-env MIKRO_ORM_CLI=./src/modules/hello/migrations-config.ts mikro-orm migration:create
   ```
 
   <Note title="Tip">
@@ -89,7 +86,7 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 
   </Note>
 
-  After running the command, a new file is created under the `src/modules/hello/migrations` directory. This file holds `up` and `down` methods that define the actions to execute when running and reverting the migration respectively.
+  After running the command, a migration file is generated under the `src/modules/hello/migrations` directory.
   
 </Details>
 
@@ -98,10 +95,10 @@ For example:
 ```ts title="src/modules/migrations/Migration20240429090012.ts"
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20240429090012 extends Migration {
+export class Migration20240624145652 extends Migration {
 
   async up(): Promise<void> {
-    this.addSql("create table if not exists \"my_custom\" (\"id\" varchar(255) not null, \"name\" text not null, constraint \"my_custom_pkey\" primary key (\"id\"));")
+    this.addSql("create table if not exists \"my_custom\" (\"id\" text not null, \"name\" text not null, \"created_at\" timestamptz not null default now(), \"updated_at\" timestamptz not null default now(), \"deleted_at\" timestamptz null, constraint \"my_custom_pkey\" primary key (\"id\"));")
   }
 
   async down(): Promise<void> {

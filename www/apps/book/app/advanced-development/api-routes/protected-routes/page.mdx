@@ -125,12 +125,15 @@ To protect custom API Routes that don’t start with `/store/customers/me` or `/
 For example:
 
 export const highlights = [
-  ["8", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
-  ["14", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
+  ["11", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
+  ["17", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
+import { 
+  MiddlewaresConfig, 
+  authenticate,
+} from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [

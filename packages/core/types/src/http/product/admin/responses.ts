@@ -5,6 +5,7 @@ import {
   AdminProductOption,
   AdminProductVariant,
 } from "./entitites"
+import { AdminInventoryItem } from "../../inventory"
 
 export interface AdminProductResponse {
   product: AdminProduct
@@ -32,6 +33,9 @@ export interface AdminProductVariantDeleteResponse
 
 export interface AdminBatchProductVariantResponse
   extends BatchMethodResponse<AdminProductVariant> {}
+
+export interface AdminBatchProductVariantInventoryItemResponse
+  extends BatchMethodResponse<AdminInventoryItem> {}
 
 export interface AdminProductOptionResponse {
   product_option: AdminProductOption

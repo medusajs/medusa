@@ -78,19 +78,19 @@ A promotion can be restricted by a set of rules, each rule is represented by the
 
 ![A diagram showcasing the relation between Promotion and PromotionRule](https://res.cloudinary.com/dza7lstvk/image/upload/v1709833196/Medusa%20Resources/promotion-promotion-rule_msbx0w.jpg)
 
-A `PromotionRule`'s `attribute` field indicates the field's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
+A `PromotionRule`'s `attribute` property indicates the property's name to which this rule is applied. For example, `customer_group_id`. Its value is stored in the `PromotionRuleValue` data model. So, a rule can have multiple values.
 
-When testing whether a promotion can be applied to a cart, the rule's `attribute` field and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
+When testing whether a promotion can be applied to a cart, the rule's `attribute` property and its values are tested on the cart itself. For example, the cart's customer must be part of the customer group(s) indicated in the promotion rule's value.
 
 ---
 
 ## Flexible Rules
 
-The `PromotionRule`'s `operator` field adds more flexibility to the rule’s condition rather than simple equality (`eq`).
+The `PromotionRule`'s `operator` property adds more flexibility to the rule’s condition rather than simple equality (`eq`).
 
 For example, to restrict the promotion to only `VIP` and `B2B` customer groups:
 
-- Add a `PromotionRule` with its `attribute` field set to `customer_group_id` and `operator` field to `in`.
+- Add a `PromotionRule` with its `attribute` property set to `customer_group_id` and `operator` property to `in`.
 - Add two `PromotionRuleValue` associated with the rule: one with the value `VIP` and the other `B2B`.
 
 ![A diagram showcasing the relation between PromotionRule and PromotionRuleValue when a rule has multiple values](https://res.cloudinary.com/dza7lstvk/image/upload/v1709897383/Medusa%20Resources/promotion-promotion-rule-multiple_hctpmt.jpg)

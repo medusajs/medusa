@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next"
 
+import { Buildings, Component } from "@medusajs/icons"
 import { Container, Heading } from "@medusajs/ui"
 import { InventoryItemDTO } from "@medusajs/types"
 
@@ -13,10 +14,12 @@ const PAGE_SIZE = 20
 
 type VariantInventorySectionProps = {
   inventoryItems: InventoryItemDTO[]
+  manageInventory?: boolean
 }
 
 export function VariantInventorySection({
   inventoryItems,
+  manageInventory,
 }: VariantInventorySectionProps) {
   const { t } = useTranslation()
 
@@ -31,6 +34,8 @@ export function VariantInventorySection({
     pageSize: PAGE_SIZE,
   })
 
+  const hasKit = inventoryItems.length > 1
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -38,20 +43,25 @@ export function VariantInventorySection({
           <Heading level="h2">{t("fields.inventoryItems")}</Heading>
         </div>
         <div className="flex items-center gap-x-4">
-          {/*TODO: add inventory management*/}
-          {/*<ActionMenu*/}
-          {/*  groups={[*/}
-          {/*    {*/}
-          {/*      actions: [*/}
-          {/*        {*/}
-          {/*          label: t("actions.manageInventoryItems"),*/}
-          {/*          to: "edit",*/}
-          {/*          icon: <Component />,*/}
-          {/*        },*/}
-          {/*      ],*/}
-          {/*    },*/}
-          {/*  ]}*/}
-          {/*/>*/}
+          {manageInventory && (
+            <ActionMenu
+              groups={[
+                {
+                  actions: [
+                    {
+                      label: t(
+                        hasKit
+                          ? "products.variant.inventory.manageKit"
+                          : "products.variant.inventory.manageItems"
+                      ),
+                      to: "manage-items",
+                      icon: hasKit ? <Component /> : <Buildings />,
+                    },
+                  ],
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
 

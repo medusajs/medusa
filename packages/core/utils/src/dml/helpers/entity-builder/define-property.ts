@@ -12,6 +12,7 @@ import {
   OnInit,
   PrimaryKey,
   Property,
+  Utils,
 } from "@mikro-orm/core"
 
 /**
@@ -152,6 +153,7 @@ export function defineProperty(
     Enum({
       items: () => field.dataType.options!.choices,
       nullable: field.nullable,
+      type: Utils.getObjectType(field.dataType.options!.choices[0]),
       /**
        * MikroORM does not ignore undefined values for default when generating
        * the database schema SQL. Conditionally add it here to prevent undefined

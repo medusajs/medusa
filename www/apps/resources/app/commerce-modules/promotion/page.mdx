@@ -17,7 +17,7 @@ A promotion discounts an amount or percentage of a cart's items, shipping method
 The Promotion Module allows you to store and manage promotions.
 
 ```ts
-const promotion = await promotionModuleService.create({
+const promotion = await promotionModuleService.createPromotions({
   code: "10%OFF",
   type: "standard",
   application_method: {
@@ -34,7 +34,7 @@ const promotion = await promotionModuleService.create({
 A promotion has rules that restricts when it's applied. For example, you can create a promotion that's only applied to VIP customers.
 
 ```ts
-const promotion = await promotionModuleService.create({
+const promotion = await promotionModuleService.createPromotions({
   code: "10%OFF",
   type: "standard",
   application_method: {
@@ -94,7 +94,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
     res.json({
-      promotions: await promotionModuleService.list(),
+      promotions: await promotionModuleService.listPromotions(),
     })
   }
   ```
@@ -113,7 +113,7 @@ For example:
     const promotionModuleService: IPromotionModuleService =
       container.resolve(ModuleRegistrationName.PROMOTION)
 
-    const promotions = await promotionModuleService.list()
+    const promotions = await promotionModuleService.listPromotions()
   }
   ```
 
@@ -131,7 +131,7 @@ For example:
     const promotionModuleService: IPromotionModuleService =
       container.resolve(ModuleRegistrationName.PROMOTION)
 
-    const promotions = await promotionModuleService.list()
+    const promotions = await promotionModuleService.listPromotions()
   })
   ```
 
