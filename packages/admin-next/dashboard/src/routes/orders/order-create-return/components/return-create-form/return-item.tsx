@@ -41,7 +41,7 @@ function ReturnItem({ item, currencyCode, form, index }: OrderEditItemProps) {
           <div className="flex flex-grow items-center gap-2">
             <Form.Field
               control={form.control}
-              name={`${index}.quantity`}
+              name={`items.${index}.quantity`}
               render={({ field }) => {
                 return (
                   <Form.Item>

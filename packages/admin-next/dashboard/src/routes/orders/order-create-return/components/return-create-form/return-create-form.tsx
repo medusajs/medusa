@@ -35,7 +35,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
   const { shipping_options = [] } = useShippingOptions({
     limit: 999,
-    fields: "*prices",
+    fields: "*prices,+service_zone.fulfillment_set.location.id",
+    /**
+     * TODO: this should accept filter for location_id
+     */
   })
 
   const form = useForm<ReturnCreateSchemaType>({
@@ -103,6 +106,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   }, [items])
 
   const showPlaceholder = !items.length
+  const locationId = form.watch("location_id")
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -142,12 +146,13 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
               <div className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed" />
             )}
 
-            {items.map((item) => (
+            {items.map((item, index) => (
               <ReturnItem
                 key={item.id}
                 item={itemsMap.get(item.item_id)!}
                 currencyCode={order.currency_code}
                 form={form}
+                index={index}
               />
             ))}
 
@@ -212,6 +217,8 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   />
                 </div>
 
+                {/*TODO: WHAT IF ITEM DOSEN'T REQUIRE SHIPPING?*/}
+
                 {/*LOCATION*/}
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div>
@@ -259,6 +266,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                     </Form.Hint>
                   </div>
 
+                  {/*TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
                   <Form.Field
                     control={form.control}
                     name="shipping_option_id"
@@ -275,6 +283,8 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                               options={(shipping_options ?? [])
                                 .filter(
                                   (so) =>
+                                    so.service_zone.fulfillment_set!.location
+                                      .id === locationId &&
                                     !!so.rules.find(
                                       (r) =>
                                         r.attribute === "is_return" &&
@@ -285,6 +295,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                                   label: so.name,
                                   value: so.id,
                                 }))}
+                              disabled={!locationId}
                             />
                           </Form.Control>
                         </Form.Item>
