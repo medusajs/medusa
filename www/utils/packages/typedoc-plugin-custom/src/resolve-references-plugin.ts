@@ -1,4 +1,3 @@
-import { ok } from "assert"
 import {
   Application,
   Context,
@@ -10,7 +9,18 @@ import {
   DeclarationReflection,
   ProjectReflection,
   ParameterType,
+  ContainerReflection,
 } from "typedoc"
+
+declare module "typedoc" {
+  export interface Reflection {
+    [InternalModule]?: boolean
+  }
+}
+
+const ModuleLike: ReflectionKind =
+  ReflectionKind.Project | ReflectionKind.Module
+const InternalModule = Symbol()
 
 export function load(app: Application) {
   app.options.addDeclaration({
@@ -32,19 +42,18 @@ export function load(app: Application) {
     defaultValue: false,
   })
 
-  let activeReflection: Reflection | undefined
   let referencedSymbols = new Map<ts.Program, Set<ts.Symbol>>()
-  let symbolToActiveRefl = new Map<ts.Symbol, Reflection>()
+  let symbolToOwningModule = new Map<ts.Symbol, Reflection>()
   let knownPrograms = new Map<Reflection, ts.Program>()
   let checkedVariableSymbols = false
 
   function discoverMissingExports(
+    owningModule: Reflection,
     context: Context,
     program: ts.Program
   ): Set<ts.Symbol> {
     // An export is missing if if was referenced
     // Is not contained in the documented
-    // And is "owned" by the active reflection
     const referenced = referencedSymbols.get(program) || new Set()
     const ownedByOther = new Set<ts.Symbol>()
     referencedSymbols.set(program, ownedByOther)
@@ -52,7 +61,7 @@ export function load(app: Application) {
     for (const s of [...referenced]) {
       if (context.project.getReflectionFromSymbol(s)) {
         referenced.delete(s)
-      } else if (symbolToActiveRefl.get(s) !== activeReflection) {
+      } else if (symbolToOwningModule.get(s) !== owningModule) {
         referenced.delete(s)
         ownedByOther.add(s)
       }
@@ -67,9 +76,9 @@ export function load(app: Application) {
     if (!app.options.getValue("enableInternalResolve")) {
       return origCreateSymbolReference.call(this, symbol, context, name)
     }
-    ok(activeReflection, "active reflection has not been set")
+    const owningModule = getOwningModule(context)
     const set = referencedSymbols.get(context.program)
-    symbolToActiveRefl.set(symbol, activeReflection)
+    symbolToOwningModule.set(symbol, owningModule)
     if (set) {
       set.add(symbol)
     } else {
@@ -84,9 +93,14 @@ export function load(app: Application) {
       if (!app.options.getValue("enableInternalResolve")) {
         return
       }
-      if (refl.kindOf(ReflectionKind.Project | ReflectionKind.Module)) {
+      // TypeDoc 0.26 doesn't fire EVENT_CREATE_DECLARATION for project
+      // We need to ensure the project has a program attached to it, so
+      // do that when the first declaration is created.
+      if (knownPrograms.size === 0) {
+        knownPrograms.set(refl.project, context.program)
+      }
+      if (refl.kindOf(ModuleLike)) {
         knownPrograms.set(refl, context.program)
-        activeReflection = refl
       }
     }
   )
@@ -147,13 +161,11 @@ export function load(app: Application) {
       }
 
       for (const mod of modules) {
-        activeReflection = mod
-
         const program = knownPrograms.get(mod)
         if (!program) {
           continue
         }
-        let missing = discoverMissingExports(context, program)
+        let missing = discoverMissingExports(mod, context, program)
         if (!missing || !missing.size) {
           continue
         }
@@ -178,7 +190,7 @@ export function load(app: Application) {
             tried.add(s)
           }
 
-          missing = discoverMissingExports(context, program)
+          missing = discoverMissingExports(mod, context, program)
           for (const s of tried) {
             missing.delete(s)
           }
@@ -192,9 +204,11 @@ export function load(app: Application) {
           }
         })
 
-        // All the missing symbols were excluded, so get rid of our namespace.
-        if (internalNs && !internalNs.children?.length) {
-          context.project.removeReflection(internalNs)
+        if (
+          internalContext.scope[InternalModule] &&
+          !(internalContext.scope as ContainerReflection).children?.length
+        ) {
+          context.project.removeReflection(internalContext.scope)
         }
 
         context.setActiveProgram(void 0)
@@ -202,20 +216,34 @@ export function load(app: Application) {
 
       knownPrograms.clear()
       referencedSymbols.clear()
-      symbolToActiveRefl.clear()
     },
     void 0
   )
 
   app.converter.on(Converter.EVENT_END, () => {
     ReferenceType.createSymbolReference = origCreateSymbolReference
-    activeReflection = undefined
     referencedSymbols = new Map()
-    symbolToActiveRefl = new Map()
+    symbolToOwningModule = new Map()
     knownPrograms = new Map()
     checkedVariableSymbols = false
   })
 }
+
+function getOwningModule(context: Context): Reflection {
+  let refl = context.scope
+  // Go up the reflection hierarchy until we get to a module
+  while (!refl.kindOf(ModuleLike)) {
+    refl = refl.parent!
+  }
+
+  // The <internal> module cannot be an owning module.
+  if (refl[InternalModule]) {
+    return refl.parent!
+  }
+
+  return refl
+}
+
 function shouldConvertSymbol(symbol: ts.Symbol, checker: ts.TypeChecker) {
   while (symbol.flags & ts.SymbolFlags.Alias) {
     symbol = checker.getAliasedSymbol(symbol)
