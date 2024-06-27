@@ -128,8 +128,8 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   /**
    * Adds indexes to be created at during model creation on the DML entity.
    *
-   * Generated Indexes:
-   *  - A foreign key indexes will be added if any belongsTo relationships are present.
+   * Default Indexes:
+   *  - Foreign key indexes will be added for all defined belongsTo relationships.
    */
   indexes(entityIndexes: EntityIndex<Schema, string | QueryCondition>[]) {
     const foreignKeyIndexes = buildForeignKeyIndexes(this.schema)

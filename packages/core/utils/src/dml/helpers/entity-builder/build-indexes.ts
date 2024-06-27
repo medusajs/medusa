@@ -53,11 +53,7 @@ export function buildForeignKeyIndexes<TSchema extends DMLSchema>(
   const indexes: EntityIndex<TSchema, QueryCondition>[] = []
 
   for (const [field, property] of Object.entries(schema)) {
-    const parsed = property.parse(field)
-    const isRelationshipType = "type" in parsed
-    const isBelongsTo = isRelationshipType && parsed.type === "belongsTo"
-
-    if (!isBelongsTo) {
+    if (!BelongsTo.isBelongsTo(property)) {
       continue
     }
 
