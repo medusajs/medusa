@@ -1021,7 +1021,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           ])
         })
 
-        describe.only("Price Lists", () => {
+        describe("Price Lists", () => {
           it("should return price list prices when price list conditions match", async () => {
             await createPriceLists(service)
 

@@ -9,9 +9,11 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  PriceDTO,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
+  PricingRepositoryService,
   PricingTypes,
   UpsertPriceSetDTO,
 } from "@medusajs/types"
@@ -42,6 +44,7 @@ import { CreatePriceListDTO } from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
+  pricingRepository: PricingRepositoryService
   priceSetService: ModulesSdkTypes.IMedusaInternalService<any>
   priceRuleService: ModulesSdkTypes.IMedusaInternalService<any>
   priceService: ModulesSdkTypes.IMedusaInternalService<any>
@@ -72,6 +75,7 @@ export default class PricingModuleService
   implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService
+  protected readonly pricingRepository_: PricingRepositoryService
   protected readonly priceSetService_: ModulesSdkTypes.IMedusaInternalService<PriceSet>
   protected readonly priceRuleService_: ModulesSdkTypes.IMedusaInternalService<PriceRule>
   protected readonly priceService_: ModulesSdkTypes.IMedusaInternalService<Price>
@@ -81,6 +85,7 @@ export default class PricingModuleService
   constructor(
     {
       baseRepository,
+      pricingRepository,
       priceSetService,
       priceRuleService,
       priceService,
@@ -93,6 +98,7 @@ export default class PricingModuleService
     super(...arguments)
 
     this.baseRepository_ = baseRepository
+    this.pricingRepository_ = pricingRepository
     this.priceSetService_ = priceSetService
     this.priceRuleService_ = priceRuleService
     this.priceService_ = priceService
@@ -202,155 +208,13 @@ export default class PricingModuleService
     pricingContext: PricingContext = { context: {} },
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricingTypes.CalculatedPriceSet[]> {
-    const quantity = pricingContext.context?.quantity
-    delete pricingContext.context?.quantity
-
-    // Currency code here is a required param.
-    const currencyCode = pricingContext.context?.currency_code
-    delete pricingContext.context?.currency_code
-
-    if (!currencyCode) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Method calculatePrices requires currency_code in the pricing context`
-      )
-    }
-
-    const now = new Date()
-    const priceRules = {
-      price_rules: {
-        $or: Object.entries(pricingContext.context ?? {}).map(
-          ([attribute, value]) => ({
-            attribute,
-            value,
-          })
-        ),
-      },
-    }
-    const priceListRules = {
-      price_list_rules: {
-        $or: Object.entries(pricingContext.context ?? {}).map(
-          ([attribute, value]) => ({
-            attribute,
-            value: { $in: Array.isArray(value) ? value : [value] },
-          })
-        ),
-      },
-    }
-
-    const priceListFilter = {
-      price_list: {
-        status: PriceListStatus.ACTIVE,
-        $or: [
-          {
-            starts_at: { $lte: now },
-            ends_at: { $gte: now },
-            ...priceListRules,
-          },
-          {
-            starts_at: null,
-            ends_at: null,
-            ...priceListRules,
-          },
-          {
-            starts_at: null,
-            ends_at: { $gte: now },
-            ...priceListRules,
-          },
-          {
-            starts_at: { $lte: now },
-            ends_at: null,
-            ...priceListRules,
-          },
-          {
-            starts_at: { $lte: now },
-            ends_at: { $gte: now },
-            rules_count: 0,
-          },
-          {
-            starts_at: null,
-            ends_at: null,
-            rules_count: 0,
-          },
-          {
-            starts_at: null,
-            ends_at: { $gte: now },
-            rules_count: 0,
-          },
-          {
-            starts_at: { $lte: now },
-            ends_at: null,
-            rules_count: 0,
-          },
-        ],
-      },
-    }
-
-    const relevantPrices = await this.priceService_.list(
-      {
-        price_set_id: pricingFilters,
-        currency_code: currencyCode,
-        // TODO: Originally, even if there was min/max quantity set, we didn't require quantity in context which is wrong.
-        // If quantity is not passed, and min/max is set we should exclude that price
-        $or: [
-          {
-            min_quantity: { $lte: quantity ?? Number.MAX_SAFE_INTEGER },
-            max_quantity: { $gte: quantity ?? 1 },
-            ...priceRules,
-          },
-          {
-            min_quantity: null,
-            max_quantity: null,
-            ...priceRules,
-          },
-          {
-            min_quantity: null,
-            max_quantity: { $gte: quantity ?? 1 },
-            ...priceRules,
-          },
-          {
-            min_quantity: { $lte: quantity ?? 1 },
-            max_quantity: null,
-            ...priceRules,
-          },
-          {
-            min_quantity: { $lte: quantity ?? Number.MAX_SAFE_INTEGER },
-            max_quantity: { $gte: quantity ?? 1 },
-            rules_count: 0,
-          },
-          {
-            min_quantity: null,
-            max_quantity: null,
-            rules_count: 0,
-          },
-          {
-            min_quantity: null,
-            max_quantity: { $gte: quantity ?? 1 },
-            rules_count: 0,
-          },
-          {
-            min_quantity: { $lte: quantity ?? Number.MAX_SAFE_INTEGER },
-            max_quantity: null,
-            rules_count: 0,
-          },
-          priceListFilter,
-        ],
-      },
-      {
-        take: null,
-        relations: [
-          "price_list",
-          "price_list.price_list_rules",
-          "price_set",
-          "price_rules",
-        ],
-      }
+    const results = await this.pricingRepository_.calculatePrices(
+      pricingFilters,
+      pricingContext,
+      sharedContext
     )
 
-    const normPrices = relevantPrices.filter((p) => {
-      return p.rules_count === p.price_rules.length
-    })
-    const pricesSetPricesMap = groupBy(normPrices, "price_set_id")
+    const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
       pricingFilters.id.map(
@@ -358,26 +222,20 @@ export default class PricingModuleService
           // This is where we select prices, for now we just do a first match based on the database results
           // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
 
-          // TODO: For now we simply count the number of rules, apply weights to attributes
-          const prices = (pricesSetPricesMap.get(priceSetId) || []).sort(
-            (a, b) => b.rules_count - a.rules_count
-          )
-          const priceListPrice = prices
-            .filter((p) => p.price_list_id)
-            .sort((a, b) => {
-              return b.price_list.rules_count - a.price_list.rules_count
-            })[0]
+          // TODO: inject custom price selection here
+
+          const prices = pricesSetPricesMap.get(priceSetId) || []
+          const priceListPrice = prices.find((p) => p.price_list_id)
+
           const defaultPrice = prices?.find((p) => !p.price_list_id)
 
-          let calculatedPrice: PricingTypes.CalculatedPriceSetDTO | any =
-            defaultPrice
-          let originalPrice: PricingTypes.CalculatedPriceSetDTO | any =
-            defaultPrice
+          let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
+          let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
 
           if (priceListPrice) {
             calculatedPrice = priceListPrice
 
-            if (priceListPrice.price_list?.type === PriceListType.OVERRIDE) {
+            if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
               originalPrice = priceListPrice
             }
           }
@@ -395,7 +253,7 @@ export default class PricingModuleService
             calculated_price: {
               id: calculatedPrice?.id || null,
               price_list_id: calculatedPrice?.price_list_id || null,
-              price_list_type: calculatedPrice?.price_list?.type || null,
+              price_list_type: calculatedPrice?.price_list_type || null,
               min_quantity:
                 parseInt(calculatedPrice?.min_quantity || "") || null,
               max_quantity:
@@ -405,7 +263,7 @@ export default class PricingModuleService
             original_price: {
               id: originalPrice?.id || null,
               price_list_id: originalPrice?.price_list_id || null,
-              price_list_type: originalPrice?.price_list?.type || null,
+              price_list_type: originalPrice?.price_list_type || null,
               min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
               max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
             },
@@ -545,12 +403,12 @@ export default class PricingModuleService
         const rules = Object.entries(price.rules ?? {}).map(
           ([attribute, value]) => {
             return {
-              price_set_id: priceSet.id,
               attribute,
               value,
             }
           }
         )
+
         const hasRulesInput = isPresent(price.rules)
         delete price.rules
         return {

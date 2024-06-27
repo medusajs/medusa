@@ -814,9 +814,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
       describe("removePrices", () => {
         it("should remove prices from a priceList successfully", async () => {
-          const [priceSet] = await service.createPriceSets([
-            { rules: [{ rule_attribute: "region_id" }] },
-          ])
+          const [priceSet] = await service.createPriceSets([{}])
 
           await service.addPriceListPrices([
             {

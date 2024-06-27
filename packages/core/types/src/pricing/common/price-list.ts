@@ -92,18 +92,18 @@ export interface CreatePriceListPriceDTO extends CreateMoneyAmountDTO {
    */
   price_set_id: string
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
   rules?: CreatePriceListPriceRules
 }
 
 export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
   /**
-   * The ID of the associated price list.
+   * The ID of the associated price set.
    */
   price_set_id: string
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
   rules?: CreatePriceListPriceRules
 }
@@ -113,7 +113,7 @@ export interface UpdatePriceListPriceDTO extends UpdateMoneyAmountDTO {
  *
  * The price rules to be set for each price in the price list.
  *
- * Each key of the object is a rule type's `rule_attribute`, and its value
+ * Each key of the object is an attribute, and its value
  * is the values of the rule.
  */
 export interface CreatePriceListPriceRules extends Record<string, string> {}
@@ -121,7 +121,7 @@ export interface CreatePriceListPriceRules extends Record<string, string> {}
 /**
  * @interface
  *
- * The price list's rules to be set. Each key of the object is a rule type's `rule_attribute`, and its value
+ * The price list's rules to be set. Each key of the object the attribute, and its value
  * is the values of the rule.
  */
 export interface CreatePriceListRules extends Record<string, string[]> {}
@@ -267,7 +267,7 @@ export interface PriceListRuleDTO {
    */
   id: string
   /**
-   * The value of the rule.
+   * The attribute of the rule.
    *
    */
   attribute: string
@@ -275,7 +275,7 @@ export interface PriceListRuleDTO {
    * The value of the rule.
    *
    */
-  value: string
+  value: string | string[]
   /**
    * The associated price list.
    *
@@ -343,7 +343,7 @@ export interface SetPriceListRulesDTO {
    */
   price_list_id: string
   /**
-   * The rules to add to the price list. Each key of the object is a rule type's `rule_attribute`, and its value
+   * The rules to add to the price list. Each key of the object is the attribute, and its value
    * is the value(s) of the rule.
    */
   rules: Record<string, string | string[]>
@@ -360,7 +360,7 @@ export interface RemovePriceListRulesDTO {
    */
   price_list_id: string
   /**
-   * The rules to remove from the price list. Each item being a rule type's `rule_attribute`.
+   * The rules to remove from the price list. Each item being the attribute.
    */
   rules: string[]
 }

@@ -199,7 +199,7 @@ export interface CalculatedPriceSet {
  *
  * The price rules to be set for each price in the price set.
  *
- * Each key of the object is a rule type's `rule_attribute`, and its value
+ * Each key of the object is a the attribute, and its value
  * is the values of the rule.
  */
 export interface CreatePriceSetPriceRules extends Record<string, string> {}
@@ -211,7 +211,7 @@ export interface CreatePriceSetPriceRules extends Record<string, string> {}
  */
 export interface CreatePricesDTO extends CreateMoneyAmountDTO {
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
   rules?: CreatePriceSetPriceRules
 }

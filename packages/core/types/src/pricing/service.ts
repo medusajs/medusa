@@ -280,10 +280,6 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const priceSet = await pricingModuleService.createPriceSets({
-   *   rules: [
-   *     { rule_attribute: "region_id" },
-   *     { rule_attribute: "city" },
-   *   ],
    *   prices: [
    *     {
    *       amount: 300,
@@ -347,10 +343,6 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    *   // price set with rules
    *   {
-   *     rules: [
-   *       { rule_attribute: "region_id" },
-   *       { rule_attribute: "city" },
-   *     ],
    *     prices: [
    *       {
    *         amount: 300,
@@ -400,10 +392,6 @@ export interface IPricingModuleService extends IModuleService {
    *       },
    *     ],
    *   },
-   *   {
-   *     id: "pset_123",
-   *     rules: [{ rule_attribute: "region_id" }],
-   *   },
    * ])
    */
   upsertPriceSets(
@@ -421,7 +409,7 @@ export interface IPricingModuleService extends IModuleService {
    * @example
    * const priceSet = await pricingModuleService.upsertPriceSets({
    *   id: "pset_123",
-   *   rules: [{ rule_attribute: "region_id" }],
+   *   prices: [{ amount: 100, currency_code: "USD" }],
    * })
    */
   upsertPriceSets(
@@ -441,7 +429,7 @@ export interface IPricingModuleService extends IModuleService {
    * const priceSet = await pricingModuleService.updatePriceSets(
    *   "pset_123",
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *      prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
@@ -465,7 +453,7 @@ export interface IPricingModuleService extends IModuleService {
    *     id: ["pset_123", "pset_321"],
    *   },
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *     prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
@@ -906,7 +894,7 @@ export interface IPricingModuleService extends IModuleService {
    *   await pricingModuleService.createPriceRules([
    *     {
    *       value: "VIP",
-   *       rule_type_id: "rul-typ_123",
+   *       attribute: "customer_group",
    *       price_set_id: "pset_123",
    *     },
    *   ])
