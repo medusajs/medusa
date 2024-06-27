@@ -2482,6 +2482,7 @@ describe("Entity builder", () => {
           reference: "scalar",
           setter: false,
           type: "string",
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -2598,6 +2599,7 @@ describe("Entity builder", () => {
           nullable: false,
           onDelete: undefined,
           reference: "m:1",
+          isForeignKey: true,
         },
         ...defaultColumnMetadata,
       })
@@ -3131,6 +3133,7 @@ describe("Entity builder", () => {
           nullable: false,
           onDelete: "cascade",
           reference: "m:1",
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3317,6 +3320,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3496,6 +3500,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3674,6 +3679,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3852,6 +3858,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: true,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -4097,6 +4104,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -4284,6 +4292,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -5654,6 +5663,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: false,
+          isForeignKey: true,
         },
         user: {
           reference: "scalar",
@@ -5672,6 +5682,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "team_id",
           nullable: false,
+          isForeignKey: true,
         },
         team: {
           reference: "scalar",

@@ -4,7 +4,7 @@ import {
   PropertyMetadata,
 } from "@medusajs/types"
 import { MetadataStorage } from "@mikro-orm/core"
-import { createPsqlIndexStatementHelper, isDefined } from "../../../common"
+import { createPsqlIndexStatementHelper } from "../../../common"
 import { validateIndexFields } from "../mikro-orm/build-indexes"
 
 /**
@@ -77,17 +77,7 @@ function getEntityForeignKeys(MikroORMEntity: EntityConstructor<any>) {
   const properties =
     MetadataStorage.getMetadataFromDecorator(MikroORMEntity).properties
 
-  return Object.keys(properties).filter((propertyName) => {
-    const property = properties[propertyName]
-
-    // The relationship and the foreign key properties are both m:1 relationships
-    // we differentiate the foreignkey property by checking if a fieldName and columnType
-    // is defined, which are present in the foreignkey property, but not the relationship
-    // property itself.
-    return (
-      property.reference === "m:1" &&
-      isDefined(property.fieldName) &&
-      isDefined(property.columnType)
-    )
-  })
+  return Object.keys(properties).filter(
+    (propertyName) => properties[propertyName].isForeignKey
+  )
 }
