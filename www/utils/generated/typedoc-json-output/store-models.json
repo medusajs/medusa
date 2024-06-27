@@ -1,59 +1,54 @@
 {
-	"id": 11808,
+	"id": 12042,
 	"name": "store-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
+	"comment": {
+		"summary": [
+			{
+				"text": "## Relations Overview\n\n",
+				"kind": "text"
+			},
+			{
+				"text": "```mermaid\nerDiagram\n\tStore ||--|| StoreCurrency : supported_currencies\n\n```",
+				"kind": "code"
+			}
+		]
+	},
 	"children": [
 		{
-			"id": 11809,
-			"name": "Store",
+			"id": 12061,
+			"name": "StoreCurrency",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 11810,
+					"id": 12062,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11811,
-							"name": "new Store",
+							"id": 12063,
+							"name": "new StoreCurrency",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 11809,
-								"name": "default",
-								"package": "@medusajs/store"
+								"target": 12061,
+								"name": "StoreCurrency",
+								"package": "@medusajs/store",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 11827,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
-							"qualifiedName": "SoftDeletableEntityDateColumns"
-						},
-						"name": "SoftDeletableEntityDateColumns",
-						"package": "@medusajs/types"
-					}
-				},
-				{
-					"id": 11812,
+					"id": 12064,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -64,8 +59,8 @@
 					}
 				},
 				{
-					"id": 11813,
-					"name": "name",
+					"id": 12065,
+					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -75,23 +70,21 @@
 					}
 				},
 				{
-					"id": 11814,
-					"name": "supported_currency_codes",
+					"id": 12066,
+					"name": "is_default",
 					"variant": "declaration",
 					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "array",
-						"elementType": {
-							"type": "intrinsic",
-							"name": "string"
-						}
+					"flags": {
+						"isOptional": true
 					},
-					"defaultValue": "[]"
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
 				},
 				{
-					"id": 11815,
-					"name": "default_currency_code",
+					"id": 12067,
+					"name": "store_id",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -107,11 +100,261 @@
 								"name": "string"
 							}
 						]
+					}
+				},
+				{
+					"id": 12068,
+					"name": "store",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 12043,
+								"name": "Store",
+								"package": "@medusajs/store",
+								"qualifiedName": "default"
+							}
+						]
+					}
+				},
+				{
+					"id": 12069,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12070,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 12071,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Date"
+								},
+								"name": "Date",
+								"package": "typescript"
+							}
+						]
 					},
 					"defaultValue": "null"
 				},
 				{
-					"id": 11816,
+					"id": 12072,
+					"name": "onCreate",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12073,
+							"name": "onCreate",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				},
+				{
+					"id": 12074,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12075,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						12062
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						12064,
+						12065,
+						12066,
+						12067,
+						12068,
+						12069,
+						12070,
+						12071
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						12072,
+						12074
+					]
+				}
+			]
+		},
+		{
+			"id": 12043,
+			"name": "Store",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 12044,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 12045,
+							"name": "new Store",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 12043,
+								"name": "Store",
+								"package": "@medusajs/store",
+								"qualifiedName": "default"
+							}
+						}
+					]
+				},
+				{
+					"id": 12060,
+					"name": "[OptionalProps]",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
+							"qualifiedName": "SoftDeletableEntityDateColumns"
+						},
+						"name": "SoftDeletableEntityDateColumns",
+						"package": "@medusajs/types"
+					}
+				},
+				{
+					"id": 12046,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12047,
+					"name": "name",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 12048,
+					"name": "supported_currencies",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 12061,
+								"name": "StoreCurrency",
+								"package": "@medusajs/store",
+								"qualifiedName": "default"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 12049,
 					"name": "default_sales_channel_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -132,7 +375,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11817,
+					"id": 12050,
 					"name": "default_region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -153,7 +396,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11818,
+					"id": 12051,
 					"name": "default_location_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -174,7 +417,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11819,
+					"id": 12052,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -210,7 +453,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11820,
+					"id": 12053,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -226,7 +469,7 @@
 					}
 				},
 				{
-					"id": 11821,
+					"id": 12054,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -242,7 +485,7 @@
 					}
 				},
 				{
-					"id": 11822,
+					"id": 12055,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -268,14 +511,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 11823,
+					"id": 12056,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11824,
+							"id": 12057,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -288,14 +531,14 @@
 					]
 				},
 				{
-					"id": 11825,
+					"id": 12058,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11826,
+							"id": 12059,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -312,31 +555,30 @@
 				{
 					"title": "Constructors",
 					"children": [
-						11810
+						12044
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						11827,
-						11812,
-						11813,
-						11814,
-						11815,
-						11816,
-						11817,
-						11818,
-						11819,
-						11820,
-						11821,
-						11822
+						12060,
+						12046,
+						12047,
+						12048,
+						12049,
+						12050,
+						12051,
+						12052,
+						12053,
+						12054,
+						12055
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						11823,
-						11825
+						12056,
+						12058
 					]
 				}
 			]
@@ -346,83 +588,140 @@
 		{
 			"title": "Classes",
 			"children": [
-				11809
+				12061,
+				12043
 			]
 		}
 	],
 	"packageName": "@medusajs/store",
 	"symbolIdMap": {
-		"11808": {
-			"sourceFileName": "../../../packages/store/src/models/index.ts",
+		"12042": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"11809": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12043": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default"
 		},
-		"11812": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12046": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.id"
 		},
-		"11813": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12047": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.name"
 		},
-		"11814": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
-			"qualifiedName": "default.supported_currency_codes"
+		"12048": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
+			"qualifiedName": "default.supported_currencies"
 		},
-		"11815": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
-			"qualifiedName": "default.default_currency_code"
-		},
-		"11816": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12049": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_sales_channel_id"
 		},
-		"11817": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12050": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_region_id"
 		},
-		"11818": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12051": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.default_location_id"
 		},
-		"11819": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12052": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"11820": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12053": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"11821": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12054": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"11822": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12055": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"11823": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12056": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"11824": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12057": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"11825": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12058": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"11826": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12059": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"11827": {
-			"sourceFileName": "../../../packages/store/src/models/store.ts",
+		"12060": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/store.ts",
 			"qualifiedName": "default.[OptionalProps]"
+		},
+		"12061": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default"
+		},
+		"12064": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.id"
+		},
+		"12065": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.currency_code"
+		},
+		"12066": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.is_default"
+		},
+		"12067": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.store_id"
+		},
+		"12068": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.store"
+		},
+		"12069": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.created_at"
+		},
+		"12070": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.updated_at"
+		},
+		"12071": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.deleted_at"
+		},
+		"12072": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12073": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.onCreate"
+		},
+		"12074": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.onInit"
+		},
+		"12075": {
+			"sourceFileName": "../../../../packages/modules/store/src/models/currency.ts",
+			"qualifiedName": "default.onInit"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/store/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 12042
 		}
 	}
 }

@@ -115691,5 +115691,13 @@
 			"sourceFileName": "../../../packages/medusa-react/src/types.ts",
 			"qualifiedName": "TDetailQuery"
 		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/medusa-react/src/index.ts"
+		},
+		"reflections": {
+			"1": 16383
+		}
 	}
 }

@@ -120,11 +120,13 @@ export declare module "typedoc" {
      */
     hideBreadcrumbs: boolean
     /**
-     * [Markdown Plugin] Specifies the base path that all links to be served from. If omitted all urls will be relative.
+     * [Markdown Plugin] Specifies the base path that all links to be served from.
+     * If omitted all urls will be relative.
      */
     publicPath: string
     /**
-     * [Markdown Plugin] Use HTML named anchors as fragment identifiers for engines that do not automatically assign header ids. Should be set for Bitbucket Server docs.
+     * [Markdown Plugin] Use HTML named anchors as fragment identifiers for engines
+     * that do not automatically assign header ids. Should be set for Bitbucket Server docs.
      * @defaultValue false
      */
     namedAnchors: boolean
