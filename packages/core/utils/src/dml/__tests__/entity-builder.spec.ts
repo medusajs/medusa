@@ -2638,6 +2638,7 @@ describe("Entity builder", () => {
           email: model.text(),
           account: model.text(),
           organization: model.text(),
+          is_owner: model.boolean(),
           group: model.belongsTo(() => group, { mappedBy: "users" }),
         })
         .indexes([
@@ -2657,6 +2658,14 @@ describe("Entity builder", () => {
             name: "IDX_unique-name",
             unique: true,
             on: ["organization", "account", "group_id"],
+          },
+          {
+            on: ["organization", "group_id"],
+            where: { is_owner: false },
+          },
+          {
+            on: ["account", "group_id"],
+            where: { is_owner: true },
           },
         ])
 
@@ -2679,6 +2688,16 @@ describe("Entity builder", () => {
           expression:
             'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
           name: "IDX_unique-name",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_group_id" ON "user" (organization, group_id) WHERE is_owner IS FALSE AND deleted_at IS NULL',
+          name: "IDX_user_organization_group_id",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_account_group_id" ON "user" (account, group_id) WHERE is_owner IS TRUE AND deleted_at IS NULL',
+          name: "IDX_user_account_group_id",
         },
       ])
     })
@@ -2712,7 +2731,7 @@ describe("Entity builder", () => {
       }
 
       expect(err.message).toEqual(
-        "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
+        `Cannot apply indexes on fields (doesnotexist, anotherdoesnotexist) for model User`
       )
     })
   })
