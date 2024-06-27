@@ -1,5 +1,6 @@
 import {
   AdminCancelOrderFulfillment,
+  AdminCreateOrderReturn,
   FindParams,
   HttpTypes,
   PaginatedResponse,
@@ -54,6 +55,23 @@ export class Order {
   ) {
     return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
       `/admin/orders/${id}/fulfillments`,
+      {
+        method: "POST",
+        headers,
+        body,
+        query,
+      }
+    )
+  }
+
+  async createReturn(
+    id: string,
+    body: HttpTypes.AdminCreateOrderReturn,
+    query?: SelectParams,
+    headers?: ClientHeaders
+  ) {
+    return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
+      `/admin/orders/${id}/returns`,
       {
         method: "POST",
         headers,

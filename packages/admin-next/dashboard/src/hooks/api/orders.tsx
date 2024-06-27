@@ -9,6 +9,7 @@ import {
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
 import { sdk } from "../../lib/client"
+import { AdminOrderResponse, HttpTypes } from "@medusajs/types"
 
 const ORDERS_QUERY_KEY = "orders" as const
 export const ordersQueryKeys = queryKeysFactory(ORDERS_QUERY_KEY)
@@ -46,12 +47,37 @@ export const useOrders = (
   return { ...data, ...rest }
 }
 
-export const useCreateOrderFulfillment = (
+export const useCreateOrderReturn = (
   orderId: string,
-  options?: UseMutationOptions<any, Error, any>
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderResponse,
+    Error,
+    HttpTypes.AdminCreateOrderReturn
+  >
 ) => {
   return useMutation({
-    mutationFn: (payload: any) =>
+    mutationFn: (payload: HttpTypes.AdminCreateOrderReturn) =>
+      sdk.admin.order.createReturn(orderId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useCreateOrderFulfillment = (
+  orderId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminOrderResponse,
+    Error,
+    HttpTypes.AdminCreateOrderFulfillment
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: HttpTypes.AdminCreateOrderFulfillment) =>
       sdk.admin.order.createFulfillment(orderId, payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({

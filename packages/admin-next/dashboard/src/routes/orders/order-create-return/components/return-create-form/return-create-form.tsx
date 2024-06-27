@@ -8,10 +8,12 @@ import {
   Input,
   Select,
   Switch,
+  toast,
 } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
+import { PencilSquare } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -26,9 +28,9 @@ import { ReturnItem } from "./return-item.tsx"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
-import { getStylizedAmount } from "../../../../../lib/money-amount-helpers.ts"
-import { PencilSquare } from "@medusajs/icons"
-import { currencies } from "../../../../../lib/currencies.ts"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { useCreateOrderReturn } from "../../../../../hooks/api/orders"
+import { currencies } from "../../../../../lib/currencies"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -55,7 +57,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   })
 
   const form = useForm<ReturnCreateSchemaType>({
-    defaultValues: { items: [] },
+    /**
+     * TODO: reason selection once Return reason settings are added
+     */
+    defaultValues: { items: [], reason_id: "todo" },
     resolver: zodResolver(ReturnCreateSchema),
   })
 
@@ -73,12 +78,31 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     control: form.control,
   })
 
-  const { mutateAsync, isPending } = {} // useCreateReturn()
+  const { mutateAsync, isPending } = useCreateOrderReturn(order.id)
 
-  const handleSubmit = form.handleSubmit(
-    async (data) => {},
-    (error) => console.error(error)
-  )
+  const handleSubmit = form.handleSubmit(async (data) => {
+    try {
+      await mutateAsync({
+        order_id: order.id,
+        location_id: data.location_id,
+        return_shipping: {
+          option_id: data.option_id,
+          price: customShippingAmount, // TODO: conditionally send this
+        },
+        internal_note: data.note,
+        items: data.items.map((i) => ({
+          id: i.item_id,
+          quantity: i.quantity,
+          reason_id: data.reason_id,
+        })),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
+  })
 
   const onItemsSelected = () => {
     const selected = Object.fromEntries(selectedItems.map((i) => [i, true]))
@@ -138,6 +162,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
+  const shippingOptionId = form.watch("option_id")
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -165,18 +190,15 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
         <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
           <div className="mt-16 w-[720px] max-w-[100%] px-4 md:p-0">
             <Heading level="h1">{t("orders.returns.create")}</Heading>
-
             <div className="mt-8 flex items-center justify-between">
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
               <LinkButton onClick={() => setShowAddItemView(true)}>
                 {t("actions.addItems")}
               </LinkButton>
             </div>
-
             {showPlaceholder && (
               <div className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed" />
             )}
-
             {items.map((item, index) => (
               <ReturnItem
                 key={item.id}
@@ -186,7 +208,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 index={index}
               />
             ))}
-
             {!showPlaceholder && (
               <div className="mt-8 flex flex-col gap-y-4">
                 {/*REASON*/}
@@ -200,7 +221,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
                   <Form.Field
                     control={form.control}
-                    name="reason"
+                    name="reason_id"
                     render={({ field: { ref, onChange, ...field } }) => {
                       return (
                         <Form.Item>
@@ -234,7 +255,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
                   <Form.Field
                     control={form.control}
-                    name="reason"
+                    name="note"
                     render={({ field: { ref, onChange, ...field } }) => {
                       return (
                         <Form.Item>
@@ -300,7 +321,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   {/*TODO: WHAT IF THE RETURN OPTION HAS COMPUTED PRICE*/}
                   <Form.Field
                     control={form.control}
-                    name="shipping_option_id"
+                    name="option_id"
                     render={({ field: { value, onChange, ...field } }) => {
                       return (
                         <Form.Item>
@@ -336,7 +357,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 </div>
               </div>
             )}
-
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
@@ -358,7 +378,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                       onClick={() => setIsShippingPriceEdit(true)}
                       variant="transparent"
                       className="text-ui-fg-muted"
-                      disabled={showPlaceholder}
+                      disabled={showPlaceholder || !shippingOptionId}
                     >
                       <PencilSquare />
                     </IconButton>
@@ -394,6 +414,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
               </div>
             </div>
 
+            {/*TODO: MISSING AS AN API PARAM*/}
             {/*SEND NOTIFICATION*/}
             <div className="bg-ui-bg-field mt-8 rounded-lg border py-2 pl-2 pr-4">
               <Form.Field

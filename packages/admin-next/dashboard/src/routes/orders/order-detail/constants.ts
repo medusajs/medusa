@@ -11,6 +11,7 @@ const DEFAULT_PROPERTIES = [
   "subtotal",
   "discounts_total",
   "shipping_total",
+  "shipping_tax_total",
   "tax_total",
 ]
 
