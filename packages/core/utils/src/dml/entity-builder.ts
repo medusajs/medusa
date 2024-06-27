@@ -64,6 +64,8 @@ export class EntityBuilder {
   /**
    * Define an id property. Id properties are marked
    * primary by default
+   * 
+   * @group Property Types
    */
   id(options?: ConstructorParameters<typeof IdProperty>[0]) {
     return new IdProperty(options)
@@ -71,6 +73,8 @@ export class EntityBuilder {
 
   /**
    * Define a text/string based column
+   * 
+   * @group Property Types
    */
   text() {
     return new TextProperty()
@@ -78,6 +82,8 @@ export class EntityBuilder {
 
   /**
    * Define a boolean column
+   * 
+   * @group Property Types
    */
   boolean() {
     return new BooleanProperty()
@@ -85,6 +91,8 @@ export class EntityBuilder {
 
   /**
    * Define an integer column
+   * 
+   * @group Property Types
    */
   number() {
     return new NumberProperty()
@@ -94,6 +102,8 @@ export class EntityBuilder {
    * Define a numeric column. This property produces an additional
    * column - raw_{{ property_name }}, which stores the configuration
    * of bignumber (https://github.com/MikeMcl/bignumber.js)
+   * 
+   * @group Property Types
    */
   bigNumber() {
     return new BigNumberProperty()
@@ -101,6 +111,8 @@ export class EntityBuilder {
 
   /**
    * Define an array column
+   * 
+   * @group Property Types
    */
   array() {
     return new ArrayProperty()
@@ -108,6 +120,8 @@ export class EntityBuilder {
 
   /**
    * Define a timestampz column
+   * 
+   * @group Property Types
    */
   dateTime() {
     return new DateTimeProperty()
@@ -116,6 +130,8 @@ export class EntityBuilder {
   /**
    * Define a JSON column to store data as a
    * JSON string
+   * 
+   * @group Property Types
    */
   json() {
     return new JSONProperty()
@@ -124,6 +140,8 @@ export class EntityBuilder {
   /**
    * Define an enum column where only a pre-defined set
    * of values are allowed.
+   * 
+   * @group Property Types
    */
   enum<const Values extends unknown>(values: Values[]) {
     return new EnumProperty<Values>(values)
@@ -138,6 +156,8 @@ export class EntityBuilder {
    *
    * You may use the "belongsTo" relationship to define the inverse
    * of the "hasOne" relationship
+   * 
+   * @group Relationship Methods
    */
   hasOne<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new HasOne<T>(entityBuilder, options || {})
@@ -145,6 +165,8 @@ export class EntityBuilder {
 
   /**
    * Define inverse of "hasOne" and "hasMany" relationship.
+   * 
+   * @group Relationship Methods
    */
   belongsTo<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new BelongsTo<T>(entityBuilder, options || {})
@@ -159,6 +181,8 @@ export class EntityBuilder {
    *
    * - A user "hasMany" books
    * - A user "hasMany" addresses
+   * 
+   * @group Relationship Methods
    */
   hasMany<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new HasMany<T>(entityBuilder, options || {})
@@ -174,6 +198,8 @@ export class EntityBuilder {
    * - A user has many teams. But a team has many users as well. So this
    *   relationship requires a pivot table to establish a many to many
    *   relationship between two entities
+   * 
+   * @group Relationship Methods
    */
   manyToMany<T>(
     entityBuilder: T,

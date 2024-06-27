@@ -97,6 +97,8 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *
    * You can configure relationship data to be deleted when the current
    * entity is deleted.
+   * 
+   * @group Configuration Methods
    */
   cascades(
     options: EntityCascades<
@@ -121,6 +123,13 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     return this
   }
 
+  /**
+   * 
+   * @param indexes 
+   * @returns 
+   * 
+   * @group Configuration Methods
+   */
   indexes(indexes: EntityIndex<Schema>[]) {
     for (const index of indexes) {
       index.where = transformIndexWhere(index)
