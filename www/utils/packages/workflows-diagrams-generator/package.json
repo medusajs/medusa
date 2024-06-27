@@ -21,7 +21,7 @@
     "@mermaid-js/mermaid-cli": "^10.6.1",
     "commander": "^11.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "devDependencies": {
     "@types/node": "^20.9.4"

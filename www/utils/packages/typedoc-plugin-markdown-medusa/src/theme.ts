@@ -98,11 +98,6 @@ export class MarkdownTheme extends Theme {
     this.outputModules = this.getOption("outputModules") as boolean
     MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
-    this.listenTo(this.owner, {
-      [RendererEvent.BEGIN]: this.onBeginRenderer,
-      [PageEvent.BEGIN]: this.onBeginPage,
-    })
-
     registerPartials()
     registerHelpers(this)
   }

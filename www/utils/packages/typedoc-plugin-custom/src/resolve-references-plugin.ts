@@ -204,8 +204,7 @@ export function load(app: Application) {
       referencedSymbols.clear()
       symbolToActiveRefl.clear()
     },
-    void 0,
-    1e9
+    void 0
   )
 
   app.converter.on(Converter.EVENT_END, () => {

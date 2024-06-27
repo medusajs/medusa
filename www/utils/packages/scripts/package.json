@@ -25,7 +25,7 @@
     "glob": "^10.3.10",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.8"
