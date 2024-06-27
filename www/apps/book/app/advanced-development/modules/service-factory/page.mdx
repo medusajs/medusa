@@ -172,3 +172,24 @@ For example, the following methods are generated for the code snippet above:
 Except for the `retrieve` method, the suffixed data model's name is plural.
 
 </Note>
+
+### Using a Constructor
+
+If your service implements the `constructor` of the class, make sure to call `super` passing it `...arguments`.
+
+For example:
+
+```ts highlights={[["8"]]}
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  constructor() {
+    super(...arguments)
+  }
+}
+
+export default HelloModuleService
+```
