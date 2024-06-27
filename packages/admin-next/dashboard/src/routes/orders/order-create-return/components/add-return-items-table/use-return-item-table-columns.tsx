@@ -8,6 +8,7 @@ import {
   ProductHeader,
 } from "../../../../../components/table/table-cells/product/product-cell"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { getReturnableQuantity } from "../../../../../lib/rma.ts"
 
 const columnHelper = createColumnHelper<any>()
 
@@ -70,10 +71,7 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
           </div>
         ),
         cell: ({ getValue, row }) => {
-          const returnableQuantity =
-            getValue() - (row.original.returned_quantity || 0) // TODO: create helper for calculating this correctly
-
-          return returnableQuantity
+          return getReturnableQuantity(row.original)
         },
       }),
       columnHelper.accessor("refundable", {
