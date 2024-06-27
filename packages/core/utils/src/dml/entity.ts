@@ -125,9 +125,9 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   /**
    * Adds indexes to be created at during model creation on the DML entity.
    */
-  indexes(indexes: EntityIndex<Schema, string | QueryCondition>[]) {
+  indexes(indexes: EntityIndex<Schema, string | QueryCondition<Schema>>[]) {
     for (const index of indexes) {
-      index.where = transformIndexWhere(index)
+      index.where = transformIndexWhere<Schema>(index)
       index.unique ??= false
     }
 

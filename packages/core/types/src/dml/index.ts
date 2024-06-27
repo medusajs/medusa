@@ -196,6 +196,8 @@ export type SimpleQueryValue = string | number | boolean | null
 export type NeQueryValue = { $ne: SimpleQueryValue }
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
-export interface QueryCondition {
-  [key: string]: QueryValue | QueryCondition | QueryCondition[]
+export type QueryCondition<T extends DMLSchema = DMLSchema> = {
+  [K in keyof IDmlEntity<T>["schema"]]?: T[K] extends object
+    ? QueryValue
+    : QueryCondition<T>
 }
