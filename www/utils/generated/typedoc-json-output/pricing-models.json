@@ -1,5 +1,5 @@
 {
-	"id": 8031,
+	"id": 8594,
 	"name": "pricing-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,36 +18,37 @@
 	},
 	"children": [
 		{
-			"id": 8095,
+			"id": 8658,
 			"name": "PriceListRuleValue",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8096,
+					"id": 8659,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8097,
+							"id": 8660,
 							"name": "new PriceListRuleValue",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8095,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8658,
+								"name": "PriceListRuleValue",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8109,
+					"id": 8672,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -57,7 +58,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
 							"qualifiedName": "SoftDeletableEntityDateColumns"
 						},
 						"name": "SoftDeletableEntityDateColumns",
@@ -65,7 +66,7 @@
 					}
 				},
 				{
-					"id": 8098,
+					"id": 8661,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -76,7 +77,7 @@
 					}
 				},
 				{
-					"id": 8099,
+					"id": 8662,
 					"name": "price_list_rule_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -87,20 +88,21 @@
 					}
 				},
 				{
-					"id": 8100,
+					"id": 8663,
 					"name": "price_list_rule",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8078,
-						"name": "default",
-						"package": "@medusajs/pricing"
+						"target": 8641,
+						"name": "PriceListRule",
+						"package": "@medusajs/pricing",
+						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8101,
+					"id": 8664,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -111,7 +113,7 @@
 					}
 				},
 				{
-					"id": 8102,
+					"id": 8665,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -127,7 +129,7 @@
 					}
 				},
 				{
-					"id": 8103,
+					"id": 8666,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -143,7 +145,7 @@
 					}
 				},
 				{
-					"id": 8104,
+					"id": 8667,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -169,14 +171,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8105,
+					"id": 8668,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8106,
+							"id": 8669,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -189,14 +191,14 @@
 					]
 				},
 				{
-					"id": 8107,
+					"id": 8670,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8108,
+							"id": 8671,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -213,62 +215,63 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8096
+						8659
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8109,
-						8098,
-						8099,
-						8100,
-						8101,
-						8102,
-						8103,
-						8104
+						8672,
+						8661,
+						8662,
+						8663,
+						8664,
+						8665,
+						8666,
+						8667
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8105,
-						8107
+						8668,
+						8670
 					]
 				}
 			]
 		},
 		{
-			"id": 8078,
+			"id": 8641,
 			"name": "PriceListRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8079,
+					"id": 8642,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8080,
+							"id": 8643,
 							"name": "new PriceListRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8078,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8641,
+								"name": "PriceListRule",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8094,
+					"id": 8657,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -276,7 +279,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
 							"qualifiedName": "SoftDeletableEntityDateColumns"
 						},
 						"name": "SoftDeletableEntityDateColumns",
@@ -284,7 +287,7 @@
 					}
 				},
 				{
-					"id": 8081,
+					"id": 8644,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -295,7 +298,7 @@
 					}
 				},
 				{
-					"id": 8082,
+					"id": 8645,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -306,20 +309,20 @@
 					}
 				},
 				{
-					"id": 8083,
+					"id": 8646,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8157,
+						"target": 8720,
 						"name": "RuleType",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 8084,
+					"id": 8647,
 					"name": "price_list_rule_values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -327,15 +330,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8095,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8658,
+								"name": "PriceListRuleValue",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -348,7 +352,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8085,
+					"id": 8648,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -359,20 +363,21 @@
 					}
 				},
 				{
-					"id": 8086,
+					"id": 8649,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8056,
-						"name": "default",
-						"package": "@medusajs/pricing"
+						"target": 8619,
+						"name": "PriceList",
+						"package": "@medusajs/pricing",
+						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8087,
+					"id": 8650,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -388,7 +393,7 @@
 					}
 				},
 				{
-					"id": 8088,
+					"id": 8651,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -404,7 +409,7 @@
 					}
 				},
 				{
-					"id": 8089,
+					"id": 8652,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -430,14 +435,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8090,
+					"id": 8653,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8091,
+							"id": 8654,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -450,14 +455,14 @@
 					]
 				},
 				{
-					"id": 8092,
+					"id": 8655,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8093,
+							"id": 8656,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -474,64 +479,65 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8079
+						8642
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8094,
-						8081,
-						8082,
-						8083,
-						8084,
-						8085,
-						8086,
-						8087,
-						8088,
-						8089
+						8657,
+						8644,
+						8645,
+						8646,
+						8647,
+						8648,
+						8649,
+						8650,
+						8651,
+						8652
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8090,
-						8092
+						8653,
+						8655
 					]
 				}
 			]
 		},
 		{
-			"id": 8056,
+			"id": 8619,
 			"name": "PriceList",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8057,
+					"id": 8620,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8058,
+							"id": 8621,
 							"name": "new PriceList",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8056,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8619,
+								"name": "PriceList",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8077,
+					"id": 8640,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -539,7 +545,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+							"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 							"qualifiedName": "OptionalFields"
 						},
 						"name": "OptionalFields",
@@ -547,7 +553,7 @@
 					}
 				},
 				{
-					"id": 8059,
+					"id": 8622,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -558,7 +564,7 @@
 					}
 				},
 				{
-					"id": 8060,
+					"id": 8623,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -569,7 +575,7 @@
 					}
 				},
 				{
-					"id": 8061,
+					"id": 8624,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -580,7 +586,7 @@
 					}
 				},
 				{
-					"id": 8062,
+					"id": 8625,
 					"name": "status",
 					"variant": "declaration",
 					"kind": 1024,
@@ -588,7 +594,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+							"sourceFileName": "../../../../packages/core/utils/src/pricing/price-list.ts",
 							"qualifiedName": "PriceListStatus"
 						},
 						"name": "PriceListStatus",
@@ -596,7 +602,7 @@
 					}
 				},
 				{
-					"id": 8063,
+					"id": 8626,
 					"name": "type",
 					"variant": "declaration",
 					"kind": 1024,
@@ -604,7 +610,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/utils/src/pricing/price-list.ts",
+							"sourceFileName": "../../../../packages/core/utils/src/pricing/price-list.ts",
 							"qualifiedName": "PriceListType"
 						},
 						"name": "PriceListType",
@@ -612,7 +618,7 @@
 					}
 				},
 				{
-					"id": 8064,
+					"id": 8627,
 					"name": "starts_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -638,7 +644,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8065,
+					"id": 8628,
 					"name": "ends_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -664,7 +670,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8066,
+					"id": 8629,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -672,15 +678,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8032,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8595,
+								"name": "Price",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -693,7 +700,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8067,
+					"id": 8630,
 					"name": "price_list_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -701,15 +708,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8078,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8641,
+								"name": "PriceListRule",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -722,7 +730,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8068,
+					"id": 8631,
 					"name": "rule_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -730,13 +738,13 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8157,
+								"target": 8720,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							},
@@ -751,7 +759,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8069,
+					"id": 8632,
 					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -763,7 +771,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 8070,
+					"id": 8633,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -779,7 +787,7 @@
 					}
 				},
 				{
-					"id": 8071,
+					"id": 8634,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -795,7 +803,7 @@
 					}
 				},
 				{
-					"id": 8072,
+					"id": 8635,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -821,14 +829,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8073,
+					"id": 8636,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8074,
+							"id": 8637,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -841,14 +849,14 @@
 					]
 				},
 				{
-					"id": 8075,
+					"id": 8638,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8076,
+							"id": 8639,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -865,69 +873,70 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8057
+						8620
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8077,
-						8059,
-						8060,
-						8061,
-						8062,
-						8063,
-						8064,
-						8065,
-						8066,
-						8067,
-						8068,
-						8069,
-						8070,
-						8071,
-						8072
+						8640,
+						8622,
+						8623,
+						8624,
+						8625,
+						8626,
+						8627,
+						8628,
+						8629,
+						8630,
+						8631,
+						8632,
+						8633,
+						8634,
+						8635
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8073,
-						8075
+						8636,
+						8638
 					]
 				}
 			]
 		},
 		{
-			"id": 8110,
+			"id": 8673,
 			"name": "PriceRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8111,
+					"id": 8674,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8112,
+							"id": 8675,
 							"name": "new PriceRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8110,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8673,
+								"name": "PriceRule",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8129,
+					"id": 8692,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -937,7 +946,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
 							"qualifiedName": "SoftDeletableEntityDateColumns"
 						},
 						"name": "SoftDeletableEntityDateColumns",
@@ -945,7 +954,7 @@
 					}
 				},
 				{
-					"id": 8113,
+					"id": 8676,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -956,7 +965,7 @@
 					}
 				},
 				{
-					"id": 8114,
+					"id": 8677,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -967,20 +976,21 @@
 					}
 				},
 				{
-					"id": 8115,
+					"id": 8678,
 					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8130,
-						"name": "default",
-						"package": "@medusajs/pricing"
+						"target": 8693,
+						"name": "PriceSet",
+						"package": "@medusajs/pricing",
+						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8116,
+					"id": 8679,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -991,20 +1001,20 @@
 					}
 				},
 				{
-					"id": 8117,
+					"id": 8680,
 					"name": "rule_type",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8157,
+						"target": 8720,
 						"name": "RuleType",
 						"package": "@medusajs/pricing"
 					}
 				},
 				{
-					"id": 8118,
+					"id": 8681,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1015,7 +1025,7 @@
 					}
 				},
 				{
-					"id": 8119,
+					"id": 8682,
 					"name": "priority",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1027,7 +1037,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 8120,
+					"id": 8683,
 					"name": "price_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1038,20 +1048,21 @@
 					}
 				},
 				{
-					"id": 8121,
+					"id": 8684,
 					"name": "price",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 8032,
-						"name": "default",
-						"package": "@medusajs/pricing"
+						"target": 8595,
+						"name": "Price",
+						"package": "@medusajs/pricing",
+						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8122,
+					"id": 8685,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1067,7 +1078,7 @@
 					}
 				},
 				{
-					"id": 8123,
+					"id": 8686,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1083,7 +1094,7 @@
 					}
 				},
 				{
-					"id": 8124,
+					"id": 8687,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1109,14 +1120,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8125,
+					"id": 8688,
 					"name": "beforeCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8126,
+							"id": 8689,
 							"name": "beforeCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1129,14 +1140,14 @@
 					]
 				},
 				{
-					"id": 8127,
+					"id": 8690,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8128,
+							"id": 8691,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1153,67 +1164,68 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8111
+						8674
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8129,
-						8113,
-						8114,
-						8115,
-						8116,
-						8117,
-						8118,
-						8119,
-						8120,
-						8121,
-						8122,
-						8123,
-						8124
+						8692,
+						8676,
+						8677,
+						8678,
+						8679,
+						8680,
+						8681,
+						8682,
+						8683,
+						8684,
+						8685,
+						8686,
+						8687
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8125,
-						8127
+						8688,
+						8690
 					]
 				}
 			]
 		},
 		{
-			"id": 8144,
+			"id": 8707,
 			"name": "PriceSetRuleType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8145,
+					"id": 8708,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8146,
+							"id": 8709,
 							"name": "new PriceSetRuleType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8144,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8707,
+								"name": "PriceSetRuleType",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8147,
+					"id": 8710,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1224,7 +1236,7 @@
 					}
 				},
 				{
-					"id": 8148,
+					"id": 8711,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1235,7 +1247,7 @@
 					}
 				},
 				{
-					"id": 8149,
+					"id": 8712,
 					"name": "rule_type_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1246,7 +1258,7 @@
 					}
 				},
 				{
-					"id": 8150,
+					"id": 8713,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1262,7 +1274,7 @@
 					}
 				},
 				{
-					"id": 8151,
+					"id": 8714,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1278,7 +1290,7 @@
 					}
 				},
 				{
-					"id": 8152,
+					"id": 8715,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1304,14 +1316,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8153,
+					"id": 8716,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8154,
+							"id": 8717,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1324,14 +1336,14 @@
 					]
 				},
 				{
-					"id": 8155,
+					"id": 8718,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8156,
+							"id": 8719,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1348,60 +1360,61 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8145
+						8708
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8147,
-						8148,
-						8149,
-						8150,
-						8151,
-						8152
+						8710,
+						8711,
+						8712,
+						8713,
+						8714,
+						8715
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8153,
-						8155
+						8716,
+						8718
 					]
 				}
 			]
 		},
 		{
-			"id": 8130,
+			"id": 8693,
 			"name": "PriceSet",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8131,
+					"id": 8694,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8132,
+							"id": 8695,
 							"name": "new PriceSet",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8130,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8693,
+								"name": "PriceSet",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8133,
+					"id": 8696,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1412,7 +1425,7 @@
 					}
 				},
 				{
-					"id": 8134,
+					"id": 8697,
 					"name": "prices",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1420,15 +1433,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8032,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8595,
+								"name": "Price",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -1441,7 +1455,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8135,
+					"id": 8698,
 					"name": "price_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1449,15 +1463,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8110,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8673,
+								"name": "PriceRule",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -1470,7 +1485,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8136,
+					"id": 8699,
 					"name": "rule_types",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1478,13 +1493,13 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8157,
+								"target": 8720,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							},
@@ -1499,7 +1514,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8137,
+					"id": 8700,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1515,7 +1530,7 @@
 					}
 				},
 				{
-					"id": 8138,
+					"id": 8701,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1531,7 +1546,7 @@
 					}
 				},
 				{
-					"id": 8139,
+					"id": 8702,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1557,14 +1572,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8140,
+					"id": 8703,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8141,
+							"id": 8704,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1577,14 +1592,14 @@
 					]
 				},
 				{
-					"id": 8142,
+					"id": 8705,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8143,
+							"id": 8706,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1601,61 +1616,62 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8131
+						8694
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8133,
-						8134,
-						8135,
-						8136,
-						8137,
-						8138,
-						8139
+						8696,
+						8697,
+						8698,
+						8699,
+						8700,
+						8701,
+						8702
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8140,
-						8142
+						8703,
+						8705
 					]
 				}
 			]
 		},
 		{
-			"id": 8032,
+			"id": 8595,
 			"name": "Price",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8033,
+					"id": 8596,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8034,
+							"id": 8597,
 							"name": "new Price",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8032,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8595,
+								"name": "Price",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						}
 					]
 				},
 				{
-					"id": 8055,
+					"id": 8618,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1665,7 +1681,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/dal/entity.ts",
+							"sourceFileName": "../../../../packages/core/types/src/dal/entity.ts",
 							"qualifiedName": "SoftDeletableEntityDateColumns"
 						},
 						"name": "SoftDeletableEntityDateColumns",
@@ -1673,7 +1689,7 @@
 					}
 				},
 				{
-					"id": 8035,
+					"id": 8598,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1684,7 +1700,7 @@
 					}
 				},
 				{
-					"id": 8036,
+					"id": 8599,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1705,7 +1721,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8037,
+					"id": 8600,
 					"name": "currency_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1716,7 +1732,7 @@
 					}
 				},
 				{
-					"id": 8038,
+					"id": 8601,
 					"name": "amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1731,7 +1747,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../packages/utils/src/totals/big-number.ts",
+									"sourceFileName": "../../../../packages/core/utils/src/totals/big-number.ts",
 									"qualifiedName": "BigNumber"
 								},
 								"name": "BigNumber",
@@ -1741,7 +1757,7 @@
 					}
 				},
 				{
-					"id": 8039,
+					"id": 8602,
 					"name": "raw_amount",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1767,7 +1783,7 @@
 					}
 				},
 				{
-					"id": 8040,
+					"id": 8603,
 					"name": "min_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1788,7 +1804,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8041,
+					"id": 8604,
 					"name": "max_quantity",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1809,7 +1825,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8042,
+					"id": 8605,
 					"name": "price_set_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1820,7 +1836,7 @@
 					}
 				},
 				{
-					"id": 8043,
+					"id": 8606,
 					"name": "price_set",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1829,13 +1845,14 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 8130,
-						"name": "default",
-						"package": "@medusajs/pricing"
+						"target": 8693,
+						"name": "PriceSet",
+						"package": "@medusajs/pricing",
+						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 8044,
+					"id": 8607,
 					"name": "rules_count",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1847,7 +1864,7 @@
 					"defaultValue": "0"
 				},
 				{
-					"id": 8045,
+					"id": 8608,
 					"name": "price_rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1855,15 +1872,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8110,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8673,
+								"name": "PriceRule",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -1876,7 +1894,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8046,
+					"id": 8609,
 					"name": "price_list_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1897,7 +1915,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8047,
+					"id": 8610,
 					"name": "price_list",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1911,16 +1929,17 @@
 							},
 							{
 								"type": "reference",
-								"target": 8056,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8619,
+								"name": "PriceList",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							}
 						]
 					},
 					"defaultValue": "null"
 				},
 				{
-					"id": 8048,
+					"id": 8611,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1936,7 +1955,7 @@
 					}
 				},
 				{
-					"id": 8049,
+					"id": 8612,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1952,7 +1971,7 @@
 					}
 				},
 				{
-					"id": 8050,
+					"id": 8613,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1978,14 +1997,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8051,
+					"id": 8614,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8052,
+							"id": 8615,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1998,14 +2017,14 @@
 					]
 				},
 				{
-					"id": 8053,
+					"id": 8616,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8054,
+							"id": 8617,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2022,63 +2041,63 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8033
+						8596
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8055,
-						8035,
-						8036,
-						8037,
-						8038,
-						8039,
-						8040,
-						8041,
-						8042,
-						8043,
-						8044,
-						8045,
-						8046,
-						8047,
-						8048,
-						8049,
-						8050
+						8618,
+						8598,
+						8599,
+						8600,
+						8601,
+						8602,
+						8603,
+						8604,
+						8605,
+						8606,
+						8607,
+						8608,
+						8609,
+						8610,
+						8611,
+						8612,
+						8613
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8051,
-						8053
+						8614,
+						8616
 					]
 				}
 			]
 		},
 		{
-			"id": 8157,
+			"id": 8720,
 			"name": "RuleType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 8158,
+					"id": 8721,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8159,
+							"id": 8722,
 							"name": "new RuleType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8157,
+								"target": 8720,
 								"name": "RuleType",
 								"package": "@medusajs/pricing"
 							}
@@ -2086,7 +2105,7 @@
 					]
 				},
 				{
-					"id": 8172,
+					"id": 8735,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2099,7 +2118,7 @@
 					}
 				},
 				{
-					"id": 8160,
+					"id": 8723,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2110,7 +2129,7 @@
 					}
 				},
 				{
-					"id": 8161,
+					"id": 8724,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2121,7 +2140,7 @@
 					}
 				},
 				{
-					"id": 8162,
+					"id": 8725,
 					"name": "rule_attribute",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2132,7 +2151,7 @@
 					}
 				},
 				{
-					"id": 8163,
+					"id": 8726,
 					"name": "default_priority",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2143,7 +2162,7 @@
 					}
 				},
 				{
-					"id": 8164,
+					"id": 8727,
 					"name": "price_sets",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2151,15 +2170,16 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
 							"qualifiedName": "Collection"
 						},
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 8130,
-								"name": "default",
-								"package": "@medusajs/pricing"
+								"target": 8693,
+								"name": "PriceSet",
+								"package": "@medusajs/pricing",
+								"qualifiedName": "default"
 							},
 							{
 								"type": "intrinsic",
@@ -2172,7 +2192,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 8165,
+					"id": 8728,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2188,7 +2208,7 @@
 					}
 				},
 				{
-					"id": 8166,
+					"id": 8729,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2204,7 +2224,7 @@
 					}
 				},
 				{
-					"id": 8167,
+					"id": 8730,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -2230,14 +2250,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 8168,
+					"id": 8731,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8169,
+							"id": 8732,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -2250,14 +2270,14 @@
 					]
 				},
 				{
-					"id": 8170,
+					"id": 8733,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 8171,
+							"id": 8734,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -2274,28 +2294,28 @@
 				{
 					"title": "Constructors",
 					"children": [
-						8158
+						8721
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						8172,
-						8160,
-						8161,
-						8162,
-						8163,
-						8164,
-						8165,
-						8166,
-						8167
+						8735,
+						8723,
+						8724,
+						8725,
+						8726,
+						8727,
+						8728,
+						8729,
+						8730
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						8168,
-						8170
+						8731,
+						8733
 					]
 				}
 			]
@@ -2305,522 +2325,530 @@
 		{
 			"title": "Classes",
 			"children": [
-				8095,
-				8078,
-				8056,
-				8110,
-				8144,
-				8130,
-				8032,
-				8157
+				8658,
+				8641,
+				8619,
+				8673,
+				8707,
+				8693,
+				8595,
+				8720
 			]
 		}
 	],
 	"packageName": "@medusajs/pricing",
 	"symbolIdMap": {
-		"8031": {
-			"sourceFileName": "../../../packages/pricing/src/models/index.ts",
+		"8594": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"8032": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8595": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default"
 		},
-		"8035": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8598": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.id"
 		},
-		"8036": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8599": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.title"
 		},
-		"8037": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8600": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.currency_code"
 		},
-		"8038": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8601": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.amount"
 		},
-		"8039": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8602": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.raw_amount"
 		},
-		"8040": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8603": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.min_quantity"
 		},
-		"8041": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8604": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.max_quantity"
 		},
-		"8042": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8605": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"8043": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8606": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_set"
 		},
-		"8044": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8607": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.rules_count"
 		},
-		"8045": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8608": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_rules"
 		},
-		"8046": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8609": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_list_id"
 		},
-		"8047": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8610": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.price_list"
 		},
-		"8048": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8611": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8049": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8612": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8050": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8613": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8051": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8614": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8052": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8615": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8053": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8616": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8054": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8617": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8055": {
-			"sourceFileName": "../../../packages/pricing/src/models/price.ts",
+		"8618": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8056": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8619": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default"
 		},
-		"8059": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8622": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.id"
 		},
-		"8060": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8623": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.title"
 		},
-		"8061": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8624": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.description"
 		},
-		"8062": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8625": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.status"
 		},
-		"8063": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8626": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.type"
 		},
-		"8064": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8627": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.starts_at"
 		},
-		"8065": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8628": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.ends_at"
 		},
-		"8066": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8629": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.prices"
 		},
-		"8067": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8630": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.price_list_rules"
 		},
-		"8068": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8631": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.rule_types"
 		},
-		"8069": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8632": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.rules_count"
 		},
-		"8070": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8633": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8071": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8634": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8072": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8635": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8073": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8636": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8074": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8637": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8075": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8638": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8076": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8639": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8077": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list.ts",
+		"8640": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8078": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8641": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default"
 		},
-		"8081": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8644": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"8082": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8645": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"8083": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8646": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.rule_type"
 		},
-		"8084": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8647": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list_rule_values"
 		},
-		"8085": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8648": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list_id"
 		},
-		"8086": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8649": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.price_list"
 		},
-		"8087": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8650": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8088": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8651": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8089": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8652": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8090": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8653": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"8091": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8654": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"8092": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8655": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8093": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8656": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8094": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule.ts",
+		"8657": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8095": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8658": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default"
 		},
-		"8098": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8661": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.id"
 		},
-		"8099": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8662": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.price_list_rule_id"
 		},
-		"8100": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8663": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.price_list_rule"
 		},
-		"8101": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8664": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.value"
 		},
-		"8102": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8665": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8103": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8666": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8104": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8667": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8105": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8668": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8106": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8669": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8107": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8670": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8108": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8671": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8109": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-list-rule-value.ts",
+		"8672": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-list-rule-value.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8110": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8673": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default"
 		},
-		"8113": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8676": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"8114": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8677": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"8115": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8678": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_set"
 		},
-		"8116": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8679": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"8117": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8680": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.rule_type"
 		},
-		"8118": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8681": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.value"
 		},
-		"8119": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8682": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.priority"
 		},
-		"8120": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8683": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price_id"
 		},
-		"8121": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8684": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.price"
 		},
-		"8122": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8685": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8123": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8686": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8124": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8687": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8125": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8688": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"8126": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8689": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.beforeCreate"
 		},
-		"8127": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8690": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8128": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8691": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8129": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-rule.ts",
+		"8692": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"8130": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8693": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default"
 		},
-		"8133": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8696": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.id"
 		},
-		"8134": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8697": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.prices"
 		},
-		"8135": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8698": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.price_rules"
 		},
-		"8136": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8699": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.rule_types"
 		},
-		"8137": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8700": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8138": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8701": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8139": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8702": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8140": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8703": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8141": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8704": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8142": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8705": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8143": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set.ts",
+		"8706": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8144": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8707": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default"
 		},
-		"8147": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8710": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.id"
 		},
-		"8148": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8711": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.price_set_id"
 		},
-		"8149": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8712": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.rule_type_id"
 		},
-		"8150": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8713": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"8151": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8714": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"8152": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8715": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"8153": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8716": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8154": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8717": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"8155": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8718": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8156": {
-			"sourceFileName": "../../../packages/pricing/src/models/price-set-rule-type.ts",
+		"8719": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/price-set-rule-type.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"8157": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8720": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType"
 		},
-		"8160": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8723": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.id"
 		},
-		"8161": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8724": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.name"
 		},
-		"8162": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8725": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.rule_attribute"
 		},
-		"8163": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8726": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.default_priority"
 		},
-		"8164": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8727": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.price_sets"
 		},
-		"8165": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8728": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.created_at"
 		},
-		"8166": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8729": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.updated_at"
 		},
-		"8167": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8730": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.deleted_at"
 		},
-		"8168": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8731": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onCreate"
 		},
-		"8169": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8732": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onCreate"
 		},
-		"8170": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8733": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onInit"
 		},
-		"8171": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8734": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.onInit"
 		},
-		"8172": {
-			"sourceFileName": "../../../packages/pricing/src/models/rule-type.ts",
+		"8735": {
+			"sourceFileName": "../../../../packages/modules/pricing/src/models/rule-type.ts",
 			"qualifiedName": "RuleType.[OptionalProps]"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/pricing/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 8594
 		}
 	}
 }

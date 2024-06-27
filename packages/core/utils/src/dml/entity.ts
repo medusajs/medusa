@@ -5,6 +5,7 @@ import {
   ExtractEntityRelations,
   IDmlEntity,
   IsDmlEntity,
+  QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
@@ -130,13 +131,13 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * 
    * @group Configuration Methods
    */
-  indexes(indexes: EntityIndex<Schema>[]) {
+  indexes(indexes: EntityIndex<Schema, string | QueryCondition>[]) {
     for (const index of indexes) {
       index.where = transformIndexWhere(index)
-      index.unique = index.unique ?? false
+      index.unique ??= false
     }
 
-    this.#indexes = indexes
+    this.#indexes = indexes as EntityIndex<Schema>[]
     return this
   }
 }
