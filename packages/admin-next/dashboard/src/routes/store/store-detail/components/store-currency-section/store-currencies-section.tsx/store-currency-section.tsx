@@ -32,19 +32,14 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const {
-    currencies,
-    count,
-    isPending: isLoading,
-    isError,
-    error,
-  } = useCurrencies(
+  const { currencies, count, isPending, isError, error } = useCurrencies(
     {
       code: store.supported_currencies?.map((c) => c.currency_code),
       ...searchParams,
     },
     {
       placeholderData: keepPreviousData,
+      enabled: !!store.supported_currencies?.length,
     }
   )
 
@@ -140,8 +135,8 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         table={table}
         pageSize={PAGE_SIZE}
         columns={columns}
-        count={count}
-        isLoading={isLoading}
+        count={!store.supported_currencies?.length ? 0 : count}
+        isLoading={!store.supported_currencies?.length ? false : isPending}
         queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>

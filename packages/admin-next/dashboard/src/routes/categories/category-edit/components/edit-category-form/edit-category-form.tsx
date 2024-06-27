@@ -7,7 +7,7 @@ import { z } from "zod"
 import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { HandleInput } from "../../../../../components/inputs/handle-input"
-import { RouteDrawer } from "../../../../../components/route-modal"
+import { RouteDrawer } from "../../../../../components/modals"
 
 const EditCategorySchema = z.object({
   name: z.string().min(1),

@@ -138,7 +138,7 @@ const FocusModalTitle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof FocusModalPrimitives.Title>
 >(({ className, ...props }, ref) => {
   return (
-    <FocusModalPrimitives.Title className={clx("h1-core")} ref={ref} {...props} />
+    <FocusModalPrimitives.Title ref={ref} {...props} />
   )
 })
 FocusModalTitle.displayName = "FocusModal.Title"

@@ -1291,63 +1291,6 @@
     "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
     "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
   },
-  "pricing": {
-    "domain": "Pricing",
-    "create": {
-      "header": "Create Price List",
-      "hint": "Create a new price list to manage the prices of your products."
-    },
-    "edit": {
-      "header": "Edit Price List"
-    },
-    "configuration": {
-      "header": "Configuration",
-      "editHeader": "Edit Price List Configuration"
-    },
-    "warnings": {
-      "delete": "You are about to delete the price list {{name}}. This action cannot be undone."
-    },
-    "status": {
-      "draft": "Draft",
-      "expired": "Expired",
-      "active": "Active",
-      "scheduled": "Scheduled"
-    },
-    "type": {
-      "sale": "Sale",
-      "override": "Override"
-    },
-    "products": {
-      "deleteProductsPricesWarning": "You are about to delete all prices of {{count}} product(s). This action cannot be undone."
-    },
-    "prices": {
-      "addPrices": "Add prices",
-      "editPrices": "Edit prices"
-    },
-    "table": {
-      "pricesHeader": "Prices"
-    },
-    "fields": {
-      "statusTooltip": "Status can also be expired or scheduled depending on the start and end date.",
-      "typeHint": "Choose the type of price you want to create.",
-      "statusHint": "Choose if price should be published to users",
-      "draftTypeHint": "Prices will not be visible to users in a draft state",
-      "activeTypeHint": "Prices are visibile to users in an active state",
-      "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
-      "startDateLabel": "Price list has a start date?",
-      "startDateHint": "Schedule the price list to activate in the future.",
-      "endDateLabel": "Price list has an expiry date?",
-      "endDateHint": "Schedule the price list to deactivate in the future.",
-      "customerAvailabilityLabel": "Customer availability",
-      "customerAvailabilityHint": "Choose which customer groups the price list should be applied to.",
-      "customerAvailabilityNoSelectionLabel": "No customer groups selected",
-      "priceOverridesLabel": "Price overrides"
-    },
-    "actions": {
-      "addCustomerGroups": "Add customer groups"
-    }
-  },
   "priceLists": {
     "domain": "Price Lists",
     "delete": {
@@ -1355,18 +1298,59 @@
       "successToast": "Price list {{title}} was successfully deleted."
     },
     "create": {
+      "header": "Create Price List",
+      "subheader": "Create a new price list to manage the prices of your products.",
       "tabs": {
         "details": "Details",
         "products": "Products",
         "prices": "Prices"
+      },
+      "successToast": "Price list {{title}} was successfully created."
+    },
+    "edit": {
+      "header": "Edit Price List",
+      "successToast": "Price list {{title}} was successfully updated."
+    },
+    "configuration": {
+      "header": "Configuration",
+      "edit": {
+        "header": "Edit Price List Configuration",
+        "description": "Edit the configuration of the price list.",
+        "successToast": "Price list configuration was successfully updated."
+      }
+    },
+    "products": {
+      "header": "Products",
+      "actions": {
+        "addProducts": "Add products",
+        "editPrices": "Edit prices"
+      },
+      "delete": {
+        "confirmation_one": "You are about to delete the prices for {{count}} product in the price list. This action cannot be undone.",
+        "confirmation_other": "You are about to delete the prices for {{count}} products in the price list. This action cannot be undone.",
+        "successToast_one": "Successfully deleted prices for {{count}} product.",
+        "successToast_other": "Successfully deleted prices for {{count}} products."
+      },
+      "add": {
+        "successToast": "Prices were successfully added to the price list."
+      },
+      "edit": {
+        "successToast": "Prices were successfully updated."
       }
     },
     "fields": {
-      "priceOverrides": "Price overrides",
+      "priceOverrides": {
+        "label": "Price overrides",
+        "header": "Price Overrides"
+      },
       "status": {
         "label": "Status",
-        "active": "Active",
-        "draft": "Draft"
+        "options": {
+          "active": "Active",
+          "draft": "Draft",
+          "expired": "Expired",
+          "scheduled": "Scheduled"
+        }
       },
       "type": {
         "label": "Type",
@@ -1391,6 +1375,7 @@
         "hint": "Schedule the price list to deactivate in the future."
       },
       "customerAvailability": {
+        "header": "Choose customer groups",
         "label": "Customer availability",
         "hint": "Choose which customer groups the price list should be applied to.",
         "placeholder": "Search for customer groups",

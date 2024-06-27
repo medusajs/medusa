@@ -1,14 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { SalesChannelDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProduct } from "../../../../../hooks/api/products"
+import { sdk } from "../../../../../lib/client"
+import { isFetchError } from "../../../../../lib/is-fetch-error"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -16,11 +18,9 @@ import {
 import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
-import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
+import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
-import { isFetchError } from "../../../../../lib/is-fetch-error"
-import { sdk } from "../../../../../lib/client"
 
 enum Tab {
   DETAILS = "details",

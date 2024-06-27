@@ -63,7 +63,7 @@ export class PriceList {
     return this.client.fetch<HttpTypes.AdminPriceListResponse>(
       `/admin/price-lists/${id}`,
       {
-        method: "PATCH",
+        method: "POST",
         headers,
         body,
         query,

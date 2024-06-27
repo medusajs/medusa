@@ -185,8 +185,6 @@ export const DataGridRoot = <
       activeElement.blur()
     }
 
-    console.log(point)
-
     setAnchor(point)
   }, [])
 
@@ -516,8 +514,6 @@ export const DataGridRoot = <
           setRangeEnd(coords)
           return
         }
-
-        console.log("mouse down", coords)
 
         setIsSelecting(true)
         clearRange(coords)

@@ -11,7 +11,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateApiKey } from "../../../../../hooks/api/api-keys"
 import { ApiKeyType } from "../../../common/constants"
 

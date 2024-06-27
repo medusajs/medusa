@@ -10,6 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { customerGroupsQueryKeys } from "./customer-groups"
 import { productsQueryKeys } from "./products"
 
 const PRICE_LISTS_QUERY_KEY = "price-lists" as const
@@ -71,6 +72,8 @@ export const useCreatePriceList = (
     onSuccess: (data, variables, context) => {
       queryClient.invalidateQueries({ queryKey: priceListsQueryKeys.list() })
 
+      queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
@@ -93,6 +96,8 @@ export const useUpdatePriceList = (
       queryClient.invalidateQueries({
         queryKey: priceListsQueryKeys.detail(id),
       })
+
+      queryClient.invalidateQueries({ queryKey: customerGroupsQueryKeys.all })
 
       options?.onSuccess?.(data, variables, context)
     },

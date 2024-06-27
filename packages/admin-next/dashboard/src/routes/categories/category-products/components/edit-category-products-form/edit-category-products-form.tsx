@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useUpdateProductCategoryProducts } from "../../../../../hooks/api/categories"
 import { useProducts } from "../../../../../hooks/api/products"
