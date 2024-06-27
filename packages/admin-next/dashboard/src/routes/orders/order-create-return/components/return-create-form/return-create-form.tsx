@@ -1,6 +1,14 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Select, Switch } from "@medusajs/ui"
+import {
+  Button,
+  CurrencyInput,
+  Heading,
+  IconButton,
+  Input,
+  Select,
+  Switch,
+} from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
@@ -19,6 +27,8 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers.ts"
+import { PencilSquare } from "@medusajs/icons"
+import { currencies } from "../../../../../lib/currencies.ts"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -29,6 +39,9 @@ let selectedItems: string[] = []
 export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+
+  const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
+  const [customShippingAmount, setCustomShippingAmount] = useState(0)
 
   const [showAddItemView, setShowAddItemView] = useState(false)
 
@@ -91,6 +104,12 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     setShowAddItemView(false)
   }
 
+  useEffect(() => {
+    if (isShippingPriceEdit) {
+      document.getElementById("js-shipping-input").focus()
+    }
+  }, [isShippingPriceEdit])
+
   const showLevelsWarning = useMemo(() => {
     // TODO
     return false
@@ -100,10 +119,22 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     return items
       .map((i) => itemsMap.get(i.item_id))
       .reduce((acc: number, curr: AdminOrderLineItem, index): number => {
-        // TODO: revisit this calculation when totals are done - probably not correct ATM
-        return acc + items[index].quantity * curr.total
+        /**
+         * TODO: IMPORTANT! Change `curr.total` to `curr.refundable` once the filed is added on the BD
+         */
+        const totalPerItem = curr.total / curr.quantity
+        return acc + items[index].quantity * totalPerItem
       }, 0)
   }, [items])
+
+  const shippingTotal = useMemo(() => {
+    /**
+     * TODO: we should infer shipping price from shipping option but for now we use a value that the user provides
+     */
+    return typeof customShippingAmount === "number" ? customShippingAmount : 0
+  }, [items, customShippingAmount])
+
+  const refundAmount = returnTotal - shippingTotal
 
   const showPlaceholder = !items.length
   const locationId = form.watch("location_id")
@@ -313,7 +344,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   {t("orders.returns.returnTotal")}
                 </span>
                 <span className="txt-small text-ui-fg-subtle">
-                  {getStylizedAmount(returnTotal, order.currency_code)}
+                  {getStylizedAmount(-1 * returnTotal, order.currency_code)}
                 </span>
               </div>
 
@@ -321,14 +352,45 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 <span className="txt-small text-ui-fg-subtle">
                   {t("orders.returns.inboundShipping")}
                 </span>
-                <span className="txt-small text-ui-fg-subtle">-</span>
+                <span className="txt-small text-ui-fg-subtle flex items-center">
+                  {!isShippingPriceEdit && (
+                    <IconButton
+                      onClick={() => setIsShippingPriceEdit(true)}
+                      variant="transparent"
+                      className="text-ui-fg-muted"
+                      disabled={showPlaceholder}
+                    >
+                      <PencilSquare />
+                    </IconButton>
+                  )}
+                  {isShippingPriceEdit ? (
+                    <CurrencyInput
+                      id="js-shipping-input"
+                      onBlur={() => setIsShippingPriceEdit(false)}
+                      symbol={
+                        currencies[order.currency_code.toUpperCase()]
+                          .symbol_native
+                      }
+                      code={order.currency_code}
+                      onValueChange={(value) =>
+                        setCustomShippingAmount(value ? parseInt(value) : "")
+                      }
+                      value={customShippingAmount}
+                      disabled={showPlaceholder}
+                    />
+                  ) : (
+                    getStylizedAmount(shippingTotal, order.currency_code)
+                  )}
+                </span>
               </div>
 
               <div className="mt-4 flex items-center justify-between border-t border-dotted pt-4">
                 <span className="txt-small font-medium">
                   {t("orders.returns.refundAmount")}
                 </span>
-                <span className="txt-small font-medium">-</span>
+                <span className="txt-small font-medium">
+                  {getStylizedAmount(-1 * refundAmount, order.currency_code)}
+                </span>
               </div>
             </div>
 
