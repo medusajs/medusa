@@ -28,6 +28,7 @@ export const defaultAdminRetrieveOrderFields = [
   "original_item_total",
   "original_item_subtotal",
   "original_item_tax_total",
+  "item_refundable_total",
   "shipping_total",
   "shipping_subtotal",
   "shipping_tax_total",
