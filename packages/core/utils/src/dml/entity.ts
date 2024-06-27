@@ -8,10 +8,7 @@ import {
   QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase } from "../common"
-import {
-  buildForeignKeyIndexes,
-  transformIndexWhere,
-} from "./helpers/entity-builder/build-indexes"
+import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
 type Config = string | { name?: string; tableName: string }
@@ -127,14 +124,8 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
 
   /**
    * Adds indexes to be created at during model creation on the DML entity.
-   *
-   * Default Indexes:
-   *  - Foreign key indexes will be added for all defined belongsTo relationships.
    */
-  indexes(entityIndexes: EntityIndex<Schema, string | QueryCondition>[]) {
-    const foreignKeyIndexes = buildForeignKeyIndexes(this.schema)
-    const indexes = [...entityIndexes, ...foreignKeyIndexes]
-
+  indexes(indexes: EntityIndex<Schema, string | QueryCondition>[]) {
     for (const index of indexes) {
       index.where = transformIndexWhere(index)
       index.unique ??= false

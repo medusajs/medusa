@@ -42,29 +42,3 @@ function transformWhere(where?: string): string {
 
   return where
 }
-
-/*
-  When a "belongsTo" relationship is found on the DML schema, we create a default index on the
-  foreign key name of the field.
-*/
-export function buildForeignKeyIndexes<TSchema extends DMLSchema>(
-  schema: TSchema
-) {
-  const indexes: EntityIndex<TSchema, QueryCondition>[] = []
-
-  for (const [field, property] of Object.entries(schema)) {
-    if (!BelongsTo.isBelongsTo(property)) {
-      continue
-    }
-
-    // TODO: infer the keyname from schema
-    const foreignKeyName: any = `${field}_id`
-
-    indexes.push({
-      on: [foreignKeyName],
-      where: { deleted_at: null },
-    })
-  }
-
-  return indexes
-}
