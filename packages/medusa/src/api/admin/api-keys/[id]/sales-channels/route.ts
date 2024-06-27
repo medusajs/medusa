@@ -1,11 +1,11 @@
+import { linkSalesChannelsToApiKeyWorkflow } from "@medusajs/core-flows"
+import { LinkMethodRequest } from "@medusajs/types"
 import { ApiKeyType, MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
 import { refetchApiKey } from "../../helpers"
-import { LinkMethodRequest } from "@medusajs/types/src"
-import { linkSalesChannelsToApiKeyWorkflow } from "@medusajs/core-flows"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<LinkMethodRequest>,

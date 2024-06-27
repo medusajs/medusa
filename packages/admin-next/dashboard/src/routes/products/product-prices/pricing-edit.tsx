@@ -1,14 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
+import { useRegions } from "../../../hooks/api/regions"
 import { castNumber } from "../../../lib/cast-number"
-import { VariantPricingForm } from "../common/variant-pricing-form"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
@@ -34,6 +35,18 @@ export const PricingEdit = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const { regions } = useRegions({ limit: 9999 })
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
+    }
+
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {})
+  }, regions)
+
   const variants = variantId
     ? product.variants.filter((v) => v.id === variantId)
     : product.variants
@@ -43,7 +56,11 @@ export const PricingEdit = ({
       variants: variants.map((variant: any) => ({
         title: variant.title,
         prices: variant.prices.reduce((acc: any, price: any) => {
-          acc[price.currency_code] = price.amount
+          if (price.rules?.region_id) {
+            acc[price.rules.region_id] = price.amount
+          } else {
+            acc[price.currency_code] = price.amount
+          }
           return acc
         }, {}),
       })) as any,
@@ -59,19 +76,45 @@ export const PricingEdit = ({
       const reqData = values.variants.map((variant, ind) => ({
         id: variants[ind].id,
         prices: Object.entries(variant.prices || {}).map(
-          ([currency_code, value]: any) => {
-            const id = variants[ind].prices.find(
-              (p) => p.currency_code === currency_code
-            )?.id
+          ([currencyCodeOrRegionId, value]: any) => {
+            const regionId = currencyCodeOrRegionId.startsWith("reg_")
+              ? currencyCodeOrRegionId
+              : undefined
+            const currencyCode = currencyCodeOrRegionId.startsWith("reg_")
+              ? regionsCurrencyMap[regionId]
+              : currencyCodeOrRegionId
+
+            let existingId = undefined
+
+            if (regionId) {
+              existingId = variants[ind].prices.find(
+                (p) => p.rules["region_id"] === regionId
+              )?.id
+            } else {
+              existingId = variants[ind].prices.find(
+                (p) => p.currency_code === currencyCode
+              )?.id
+            }
 
             const amount = castNumber(value)
 
-            return id
-              ? { id, amount, currency_code }
-              : { currency_code, amount }
+            const pricePayload = existingId
+              ? {
+                  id: existingId,
+                  amount,
+                  currency_code: currencyCode,
+                }
+              : { currency_code: currencyCode, amount }
+
+            if (regionId && !existingId) {
+              pricePayload.rules = { region_id: regionId }
+            }
+
+            return pricePayload
           }
         ),
       }))
+
       await mutateAsync(reqData, {
         onSuccess: () => {
           handleSuccess("..")

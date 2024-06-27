@@ -3,10 +3,18 @@ import { ProductStatus } from "../common"
 
 export interface AdminBatchProductRequest
   extends BatchMethodRequest<AdminCreateProduct, AdminUpdateProduct> {}
+
 export interface AdminBatchProductVariantRequest
   extends BatchMethodRequest<
     AdminCreateProductVariant,
     AdminUpdateProductVariant
+  > {}
+
+export interface AdminBatchProductVariantInventoryItemRequest
+  extends BatchMethodRequest<
+    AdminCreateProductVariantInventoryItem,
+    AdminUpdateProductVariantInventoryItem,
+    AdminDeleteProductVariantInventoryItem
   > {}
 
 export interface AdminCreateProductVariantPrice {
@@ -124,4 +132,21 @@ export interface AdminCreateProductOption {
 export interface AdminUpdateProductOption {
   title?: string
   values?: string[]
+}
+
+interface AdminCreateProductVariantInventoryItem {
+  required_quantity: number
+  inventory_item_id: string
+  variant_id: string
+}
+
+interface AdminUpdateProductVariantInventoryItem {
+  required_quantity: number
+  inventory_item_id: string
+  variant_id: string
+}
+
+interface AdminDeleteProductVariantInventoryItem {
+  inventory_item_id: string
+  variant_id: string
 }

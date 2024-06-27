@@ -8,7 +8,7 @@ In this document, you'll learn about price rules for price sets and price lists.
 
 ## Price Rule
 
-Each rule of a price within a price set is represented by the [PriceRule data model](/references/pricing/models/PriceRule), which holds the value of a rule type. The `Price` data model has a `rules_count` field, which indicates how many rules, represented by `PriceRule`, are applied to the price.
+Each rule of a price within a price set is represented by the [PriceRule data model](/references/pricing/models/PriceRule), which holds the value of a rule type. The `Price` data model has a `rules_count` property, which indicates how many rules, represented by `PriceRule`, are applied to the price.
 
 ![A diagram showcasing the relation between the PriceRule, PriceSet, Price, and RuleType.](https://res.cloudinary.com/dza7lstvk/image/upload/v1709648772/Medusa%20Resources/price-rule-1_vy8bn9.jpg)
 
@@ -40,7 +40,7 @@ For example, to use the `zip_code` rule type on a price in a price set, the rule
 
 ## Price List Rules
 
-Rules that can be applied to a price list are represented by the [PriceListRule data model](/references/pricing/models/PriceListRule). The `rules_count` field of a `PriceList` indicates how many rules are applied to it.
+Rules that can be applied to a price list are represented by the [PriceListRule data model](/references/pricing/models/PriceListRule). The `rules_count` property of a `PriceList` indicates how many rules are applied to it.
 
 Each rule of a price list can have more than one value, representing its values by the [PriceListRuleValue data model](/references/pricing/models/PriceListRuleValue).
 

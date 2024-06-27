@@ -15,7 +15,7 @@ The Cart Module is the `@medusajs/cart` NPM package that provides cart-related f
 Store and manage carts, including their addresses, line items, shipping methods, and more.
 
 ```ts
-const cart = await cartModuleService.create({
+const cart = await cartModuleService.createCarts({
   currency_code: "usd",
   shipping_address: {
     address_1: "1512 Barataria Blvd",
@@ -76,7 +76,6 @@ For example:
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICartModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-  import { res } from "express"
 
   export async function GET(
     req: MedusaRequest,
@@ -86,7 +85,7 @@ For example:
       req.scope.resolve(ModuleRegistrationName.CART)
 
     res.json({
-      carts: await cartModuleService.list(),
+      carts: await cartModuleService.listCarts(),
     })
   }
   ```
@@ -105,7 +104,7 @@ For example:
     const cartModuleService: ICartModuleService =
       container.resolve(ModuleRegistrationName.CART)
 
-    const carts = await cartModuleService.list()
+    const carts = await cartModuleService.listCarts()
   }
   ```
 
@@ -125,7 +124,7 @@ For example:
         ModuleRegistrationName.CART
       )
     
-    const carts = await cartModuleService.list()
+    const carts = await cartModuleService.listCarts()
   })
   ```
 

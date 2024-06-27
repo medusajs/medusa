@@ -1,99 +1,19 @@
 export const metadata = {
-  title: `${pageNumber} Soft-Deletable Models`,
+  title: `${pageNumber} Soft-Deletable Data Models`,
 }
 
 # {metadata.title}
 
-In this document, you'll learn how to create soft-deletable data models.
+In this chapter, you’ll learn about soft-deletable data models.
 
-## What is a Soft-Deletable Model?
+## What is a Soft-Deletable Data Model?
 
-A soft-deletable data model is a model whose records aren't actually removed from the database when they're deleted.
+A soft-deletable data model is a model that has a `deleted_at` `dateTime` property.
 
-Instead, their `deleted_at` field is set to the date the record was deleted.
-
-When retrieving or listing records of that data model, records having their `deleted_at` field set aren't retrieved unless the `withDeleted` filter is provided.
+When a record of the data model is deleted, this field is set to the current date, marking it as deleted.
 
 ---
 
-## How to Create a Soft-Deletable Model?
+## Configure Data Model Soft-Deletion
 
-To create a soft-deletable model, first, add the following filter decorator to the data model class:
-
-```ts title="src/module/hello/models/my-soft-deletable.ts" highlights={[["7"]]} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-// other imports...
-import { Entity, Filter } from "@mikro-orm/core"
-import { DALUtils } from "@medusajs/utils"
-import { BaseEntity } from "@medusajs/utils"
-
-@Entity()
-@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
-class MySoftDeletable extends BaseEntity {
-  // ...
-}
-
-export default MySoftDeletable
-```
-
-Then, add a `deleted_at` field to the data model:
-
-```ts highlights={[["7"], ["8"]]}
-// other imports...
-import { Property } from "@mikro-orm/core"
-
-class MySoftDeletable extends BaseEntity {
-  // ...
-
-  @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date | null = null
-}
-```
-
----
-
-## Manage Soft-Deletable Models
-
-Services extending the service factory have methods to soft delete and restore records for all models specified during its creation.
-
-### Soft Delete a Record
-
-For example, to soft delete a `MySoftDeletable` record:
-
-```ts
-await helloModuleService.softDelete([
-  "id_123", "id_321",
-])
-```
-
-The method receives an array of IDs of records to delete.
-
-### Retrieve Soft-Deleted Records
-
-The `retrieve`, `list`, and `listAndCount` methods accept as a second parameter a configuration object.
-
-To retrieve soft-deleted records, set `withDeleted` to `true` in the configuration object passed as a second parameter.
-
-For example:
-
-```ts
-const deletedRecords = await helloModuleService
-  .listMySoftDeletables({
-    // ...
-  }, {
-    withDeleted: true,
-  })
-```
-
-### Restore a Soft-Deleted Record
-
-To restore a `MySoftDeletable` record:
-
-```ts
-await helloModuleService.restore([
-  "id_123", "id_321",
-])
-```
-
-The method also receives an array of IDs of records to restore.
-
-If the data model isn't the main data model, its method names are `softDelete` and `restore` suffixed with the plural name of the model. For example, `softDeleteMySoftDeletable`.
+By default, all data models have a `deleted_at` property and are considered soft-deletable.

@@ -4,9 +4,10 @@ import {
   IDistributedTransactionStorage,
   SchedulerOptions,
   TransactionCheckpoint,
+  TransactionOptions,
   TransactionStep,
 } from "@medusajs/orchestration"
-import { ModulesSdkTypes } from "@medusajs/types"
+import { Logger, ModulesSdkTypes } from "@medusajs/types"
 import { MedusaError, TransactionState, promiseAll } from "@medusajs/utils"
 import { WorkflowOrchestratorService } from "@services"
 import { Queue, Worker } from "bullmq"
@@ -19,12 +20,12 @@ enum JobType {
   TRANSACTION_TIMEOUT = "transaction_timeout",
 }
 
-// eslint-disable-next-line max-len
 export class RedisDistributedTransactionStorage
   implements IDistributedTransactionStorage, IDistributedSchedulerStorage
 {
-  private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
+  private static TTL_AFTER_COMPLETED = 60 * 2 // 2 minutes
   private workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<any>
+  private logger_: Logger
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private redisClient: Redis
@@ -36,13 +37,16 @@ export class RedisDistributedTransactionStorage
     redisConnection,
     redisWorkerConnection,
     redisQueueName,
+    logger,
   }: {
     workflowExecutionService: ModulesSdkTypes.IMedusaInternalService<any>
     redisConnection: Redis
     redisWorkerConnection: Redis
     redisQueueName: string
+    logger: Logger
   }) {
     this.workflowExecutionService_ = workflowExecutionService
+    this.logger_ = logger
 
     this.redisClient = redisConnection
 
@@ -131,7 +135,7 @@ export class RedisDistributedTransactionStorage
       })
     } catch (e) {
       if (e instanceof MedusaError && e.type === MedusaError.Types.NOT_FOUND) {
-        console.warn(
+        this.logger_?.warn(
           `Tried to execute a scheduled workflow with ID ${jobId} that does not exist, removing it from the scheduler.`
         )
 
@@ -143,10 +147,42 @@ export class RedisDistributedTransactionStorage
     }
   }
 
-  async get(key: string): Promise<TransactionCheckpoint | undefined> {
+  async get(
+    key: string,
+    options?: TransactionOptions
+  ): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
-    return data ? JSON.parse(data) : undefined
+    if (data) {
+      return JSON.parse(data)
+    }
+
+    const { idempotent } = options ?? {}
+    if (!idempotent) {
+      return
+    }
+
+    const [_, workflowId, transactionId] = key.split(":")
+    const trx = await this.workflowExecutionService_
+      .retrieve(
+        {
+          workflow_id: workflowId,
+          transaction_id: transactionId,
+        },
+        {
+          select: ["execution", "context"],
+        }
+      )
+      .catch(() => undefined)
+
+    if (trx) {
+      return {
+        flow: trx.execution,
+        context: trx.context.data,
+        errors: trx.context.errors,
+      }
+    }
+    return
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -166,10 +202,9 @@ export class RedisDistributedTransactionStorage
   async save(
     key: string,
     data: TransactionCheckpoint,
-    ttl?: number
+    ttl?: number,
+    options?: TransactionOptions
   ): Promise<void> {
-    let retentionTime
-
     /**
      * Store the retention time only if the transaction is done, failed or reverted.
      * From that moment, this tuple can be later on archived or deleted after the retention time.
@@ -180,8 +215,9 @@ export class RedisDistributedTransactionStorage
       TransactionState.REVERTED,
     ].includes(data.flow.state)
 
+    const { retentionTime, idempotent } = options ?? {}
+
     if (hasFinished) {
-      retentionTime = data.flow.options?.retentionTime
       Object.assign(data, {
         retention_time: retentionTime,
       })
@@ -198,14 +234,13 @@ export class RedisDistributedTransactionStorage
       }
     }
 
-    if (hasFinished && !retentionTime) {
+    if (hasFinished && !retentionTime && !idempotent) {
       await this.deleteFromDb(parsedData)
     } else {
       await this.saveToDb(parsedData)
     }
 
     if (hasFinished) {
-      // await this.redisClient.del(key)
       await this.redisClient.set(
         key,
         stringifiedData,

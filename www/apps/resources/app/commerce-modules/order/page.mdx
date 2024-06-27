@@ -15,7 +15,7 @@ The Order Module is the `@medusajs/order` NPM package that provides order-relate
 Store and manage your orders to retriev, create, cancel, and perform other operations.
 
 ```ts
-const order = await orderModuleService.create({
+const order = await orderModuleService.createOrders({
   currency_code: "usd",
   items: [
     {
@@ -38,7 +38,7 @@ const order = await orderModuleService.create({
 Allow merchants to create orders on behalf of their customers as draft orders that later are transformed to regular orders.
 
 ```ts
-const draftOrder = await orderModuleService.create({
+const draftOrder = await orderModuleService.createOrders({
   currency_code: "usd",
   // other details...
   status: "draft",
@@ -122,7 +122,7 @@ For example:
       req.scope.resolve(ModuleRegistrationName.ORDER)
 
     res.json({
-      orders: await orderModuleService.list(),
+      orders: await orderModuleService.listOrders(),
     })
   }
   ```
@@ -141,7 +141,7 @@ For example:
     const orderModuleService: IOrderModuleService =
       container.resolve(ModuleRegistrationName.ORDER)
 
-    const orders = await orderModuleService.list()
+    const orders = await orderModuleService.listOrders()
   }
   ```
 
@@ -160,7 +160,7 @@ For example:
       container.resolve(
         ModuleRegistrationName.ORDER
       )
-    const orders = await orderModuleService.list()
+    const orders = await orderModuleService.listOrders()
   })
   ```
 

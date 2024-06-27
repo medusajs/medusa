@@ -1,12 +1,12 @@
 {
-	"id": 24303,
+	"id": 13332,
 	"name": "payment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 24307,
+			"id": 13336,
 			"name": "AbstractPaymentProvider",
 			"variant": "declaration",
 			"kind": 128,
@@ -155,7 +155,7 @@
 			},
 			"children": [
 				{
-					"id": 24313,
+					"id": 13342,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
@@ -164,7 +164,7 @@
 					},
 					"signatures": [
 						{
-							"id": 24314,
+							"id": 13343,
 							"name": "new AbstractPaymentProvider",
 							"variant": "signature",
 							"kind": 16384,
@@ -196,9 +196,9 @@
 									}
 								]
 							},
-							"typeParameter": [
+							"typeParameters": [
 								{
-									"id": 24315,
+									"id": 13344,
 									"name": "TConfig",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -226,7 +226,7 @@
 							],
 							"parameters": [
 								{
-									"id": 24316,
+									"id": 13345,
 									"name": "container",
 									"variant": "param",
 									"kind": 32768,
@@ -250,7 +250,7 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
+											"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 											"qualifiedName": "MedusaContainer"
 										},
 										"name": "MedusaContainer",
@@ -258,7 +258,7 @@
 									}
 								},
 								{
-									"id": 24317,
+									"id": 13346,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -273,7 +273,7 @@
 									},
 									"type": {
 										"type": "reference",
-										"target": 24315,
+										"target": 13344,
 										"name": "TConfig",
 										"package": "@medusajs/utils",
 										"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -284,11 +284,11 @@
 							],
 							"type": {
 								"type": "reference",
-								"target": 24307,
+								"target": 13336,
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 24315,
+										"target": 13344,
 										"name": "TConfig",
 										"package": "@medusajs/utils",
 										"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -302,7 +302,7 @@
 					]
 				},
 				{
-					"id": 24318,
+					"id": 13347,
 					"name": "container",
 					"variant": "declaration",
 					"kind": 1024,
@@ -329,7 +329,7 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
+							"sourceFileName": "../../../../packages/core/types/src/common/medusa-container.ts",
 							"qualifiedName": "MedusaContainer"
 						},
 						"name": "MedusaContainer",
@@ -337,7 +337,7 @@
 					}
 				},
 				{
-					"id": 24319,
+					"id": 13348,
 					"name": "config",
 					"variant": "declaration",
 					"kind": 1024,
@@ -355,7 +355,7 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 24315,
+						"target": 13344,
 						"name": "TConfig",
 						"package": "@medusajs/utils",
 						"qualifiedName": "AbstractPaymentProvider.TConfig",
@@ -364,7 +364,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 24312,
+					"id": 13341,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -414,7 +414,7 @@
 					}
 				},
 				{
-					"id": 24322,
+					"id": 13351,
 					"name": "capturePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -423,18 +423,61 @@
 					},
 					"signatures": [
 						{
-							"id": 24323,
+							"id": 13352,
 							"name": "capturePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called when a payment should be captured. The payment is captured in one of the following scenarios:\n\n- The payment provider supports automatically capturing the payment after authorization.\n- The merchant requests to capture the payment after its associated payment session was authorized.\n- A webhook event occurred that instructs the payment provider to capture the payment session. Learn more about handing webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to capture the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or a value that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24324,
+									"id": 13353,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -488,7 +531,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -514,7 +557,7 @@
 					}
 				},
 				{
-					"id": 24325,
+					"id": 13354,
 					"name": "authorizePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -523,18 +566,69 @@
 					},
 					"signatures": [
 						{
-							"id": 24326,
+							"id": 13355,
 							"name": "authorizePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called when a payment session should be authorized.\nYou can interact with a third-party provider and perform the necessary actions to authorize the payment.\n\nRefer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/#3-authorize-payment-session)\nto learn more about how this fits into the payment flow and how to handle required actions."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authorization details or an error object. If\nthe authorization details are returned, the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`status`"
+											},
+											{
+												"kind": "text",
+												"text": " field are set in the associated payment session."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24327,
+									"id": 13356,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment session."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -556,11 +650,19 @@
 									}
 								},
 								{
-									"id": 24328,
+									"id": 13357,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The context of the authorization."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -595,7 +697,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -604,14 +706,14 @@
 											{
 												"type": "reflection",
 												"declaration": {
-													"id": 24329,
+													"id": 13358,
 													"name": "__type",
 													"variant": "declaration",
 													"kind": 65536,
 													"flags": {},
 													"children": [
 														{
-															"id": 24330,
+															"id": 13359,
 															"name": "status",
 															"variant": "declaration",
 															"kind": 1024,
@@ -619,7 +721,7 @@
 															"type": {
 																"type": "reference",
 																"target": {
-																	"sourceFileName": "../../../packages/types/src/payment/common.ts",
+																	"sourceFileName": "../../../../packages/core/types/src/payment/common.ts",
 																	"qualifiedName": "PaymentSessionStatus"
 																},
 																"name": "PaymentSessionStatus",
@@ -627,7 +729,7 @@
 															}
 														},
 														{
-															"id": 24331,
+															"id": 13360,
 															"name": "data",
 															"variant": "declaration",
 															"kind": 1024,
@@ -657,8 +759,8 @@
 														{
 															"title": "Properties",
 															"children": [
-																24330,
-																24331
+																13359,
+																13360
 															]
 														}
 													]
@@ -684,7 +786,7 @@
 					}
 				},
 				{
-					"id": 24332,
+					"id": 13361,
 					"name": "cancelPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -693,18 +795,61 @@
 					},
 					"signatures": [
 						{
-							"id": 24333,
+							"id": 13362,
 							"name": "cancelPayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called when a payment is canceled.\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to cancel the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or a value that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24334,
+									"id": 13363,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -758,7 +903,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -784,7 +929,7 @@
 					}
 				},
 				{
-					"id": 24335,
+					"id": 13364,
 					"name": "initiatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -793,14 +938,41 @@
 					},
 					"signatures": [
 						{
-							"id": 24336,
+							"id": 13365,
 							"name": "initiatePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This methods sends a request to the third-party provider to initialize the payment. It's called when the payment session is created.\n\nFor example, in the Stripe provider, this method is used to create a Payment Intent for the customer."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either the payment's data, which is stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field\nof the payment session, or an error object."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24337,
+									"id": 13366,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
@@ -808,7 +980,7 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 											"qualifiedName": "CreatePaymentProviderSession"
 										},
 										"name": "CreatePaymentProviderSession",
@@ -829,7 +1001,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -838,7 +1010,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderSessionResponse"
 												},
 												"name": "PaymentProviderSessionResponse",
@@ -864,7 +1036,7 @@
 					}
 				},
 				{
-					"id": 24338,
+					"id": 13367,
 					"name": "deletePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -873,18 +1045,53 @@
 					},
 					"signatures": [
 						{
-							"id": 24339,
+							"id": 13368,
 							"name": "deletePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called before a payment session is deleted. It's used to perform any actions necessary before the deletion."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or an empty object."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24340,
+									"id": 13369,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the Payment Session."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -938,7 +1145,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -964,7 +1171,7 @@
 					}
 				},
 				{
-					"id": 24341,
+					"id": 13370,
 					"name": "getPaymentStatus",
 					"variant": "declaration",
 					"kind": 2048,
@@ -973,18 +1180,53 @@
 					},
 					"signatures": [
 						{
-							"id": 24342,
+							"id": 13371,
 							"name": "getPaymentStatus",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to get the status of a payment or a payment session."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The status of the payment or payment session."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24343,
+									"id": 13372,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -1016,7 +1258,7 @@
 									{
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/payment/common.ts",
+											"sourceFileName": "../../../../packages/core/types/src/payment/common.ts",
 											"qualifiedName": "PaymentSessionStatus"
 										},
 										"name": "PaymentSessionStatus",
@@ -1040,7 +1282,7 @@
 					}
 				},
 				{
-					"id": 24344,
+					"id": 13373,
 					"name": "refundPayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1049,18 +1291,61 @@
 					},
 					"signatures": [
 						{
-							"id": 24345,
+							"id": 13374,
 							"name": "refundPayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is called when a payment should be refunded. This is typically triggered manually by the merchant.\n\nIn this method, you can interact with the third-party provider and perform any actions necessary to refund the payment."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or an object that's stored in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of the payment."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24346,
+									"id": 13375,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a Payment."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -1082,11 +1367,19 @@
 									}
 								},
 								{
-									"id": 24347,
+									"id": 13376,
 									"name": "refundAmount",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The amount to refund."
+											}
+										]
+									},
 									"type": {
 										"type": "intrinsic",
 										"name": "number"
@@ -1125,7 +1418,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -1151,7 +1444,7 @@
 					}
 				},
 				{
-					"id": 24348,
+					"id": 13377,
 					"name": "retrievePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1160,18 +1453,61 @@
 					},
 					"signatures": [
 						{
-							"id": 24349,
+							"id": 13378,
 							"name": "retrievePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to provide a uniform way of retrieving the payment information from the third-party provider.\n\nFor example, in Stripe’s payment provider this method is used to retrieve the payment intent details from Stripe."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either an error object or the payment's data retrieved from a third-party provider."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24350,
+									"id": 13379,
 									"name": "paymentSessionData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field of a payment session. Make sure to store in the "
+											},
+											{
+												"kind": "code",
+												"text": "`data`"
+											},
+											{
+												"kind": "text",
+												"text": " field any necessary data that would allow you to retrieve the payment data from the third-party provider."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -1225,7 +1561,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -1251,7 +1587,7 @@
 					}
 				},
 				{
-					"id": 24351,
+					"id": 13380,
 					"name": "updatePayment",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1260,22 +1596,49 @@
 					},
 					"signatures": [
 						{
-							"id": 24352,
+							"id": 13381,
 							"name": "updatePayment",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update a payment associated with a session in the third-party provider."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Either the payment's data or an error object."
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24353,
+									"id": 13382,
 									"name": "context",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The data related to the update."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 											"qualifiedName": "UpdatePaymentProviderSession"
 										},
 										"name": "UpdatePaymentProviderSession",
@@ -1296,7 +1659,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderError"
 												},
 												"name": "PaymentProviderError",
@@ -1305,7 +1668,7 @@
 											{
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+													"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 													"qualifiedName": "PaymentProviderSessionResponse"
 												},
 												"name": "PaymentProviderSessionResponse",
@@ -1331,7 +1694,7 @@
 					}
 				},
 				{
-					"id": 24354,
+					"id": 13383,
 					"name": "getWebhookActionAndData",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1340,29 +1703,45 @@
 					},
 					"signatures": [
 						{
-							"id": 24355,
+							"id": 13384,
 							"name": "getWebhookActionAndData",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "The method is called when a webhook event is received for this provider.\n\nThe method is responsible for normalizing the received event and inform the Payment Module of actions to perform, such as authorize or capture payment.\n\nLearn more about handling webhook events in [this guide](https://docs.medusajs.com/experimental/payment/webhook-events/)"
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 24356,
+									"id": 13385,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The webhook event's details."
+											}
+										]
+									},
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 24357,
+											"id": 13386,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 24358,
+													"id": 13387,
 													"name": "data",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1396,7 +1775,7 @@
 													}
 												},
 												{
-													"id": 24359,
+													"id": 13388,
 													"name": "rawData",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1430,7 +1809,7 @@
 													}
 												},
 												{
-													"id": 24360,
+													"id": 13389,
 													"name": "headers",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1468,9 +1847,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														24358,
-														24359,
-														24360
+														13387,
+														13388,
+														13389
 													]
 												}
 											]
@@ -1488,7 +1867,7 @@
 									{
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+											"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 											"qualifiedName": "WebhookActionResult"
 										},
 										"name": "WebhookActionResult",
@@ -1516,36 +1895,36 @@
 				{
 					"title": "Constructors",
 					"children": [
-						24313
+						13342
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						24318,
-						24319,
-						24312
+						13347,
+						13348,
+						13341
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						24322,
-						24325,
-						24332,
-						24335,
-						24338,
-						24341,
-						24344,
-						24348,
-						24351,
-						24354
+						13351,
+						13354,
+						13361,
+						13364,
+						13367,
+						13370,
+						13373,
+						13377,
+						13380,
+						13383
 					]
 				}
 			],
 			"typeParameters": [
 				{
-					"id": 24361,
+					"id": 13390,
 					"name": "TConfig",
 					"variant": "typeParam",
 					"kind": 131072,
@@ -1575,7 +1954,7 @@
 				{
 					"type": "reference",
 					"target": {
-						"sourceFileName": "../../../packages/types/src/payment/provider.ts",
+						"sourceFileName": "../../../../packages/core/types/src/payment/provider.ts",
 						"qualifiedName": "IPaymentProvider"
 					},
 					"name": "IPaymentProvider",
@@ -1588,211 +1967,219 @@
 		{
 			"title": "Classes",
 			"children": [
-				24307
+				13336
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"24303": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13332": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": ""
 		},
-		"24307": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13336": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider"
 		},
-		"24312": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13341": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.identifier"
 		},
-		"24313": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13342": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.__constructor"
 		},
-		"24314": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13343": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider"
 		},
-		"24315": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13344": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.TConfig"
 		},
-		"24316": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13345": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "container"
 		},
-		"24317": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13346": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "config"
 		},
-		"24318": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13347": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.container"
 		},
-		"24319": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13348": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.config"
 		},
-		"24322": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13351": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.capturePayment"
 		},
-		"24323": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13352": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.capturePayment"
 		},
-		"24324": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13353": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24325": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13354": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
 		},
-		"24326": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13355": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.authorizePayment"
 		},
-		"24327": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13356": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24328": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13357": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"24329": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13358": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type"
 		},
-		"24330": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13359": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type.status"
 		},
-		"24331": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13360": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "__type.data"
 		},
-		"24332": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13361": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
 		},
-		"24333": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13362": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.cancelPayment"
 		},
-		"24334": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13363": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24335": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13364": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
 		},
-		"24336": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13365": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.initiatePayment"
 		},
-		"24337": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13366": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"24338": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13367": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.deletePayment"
 		},
-		"24339": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13368": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.deletePayment"
 		},
-		"24340": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13369": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24341": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13370": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
 		},
-		"24342": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13371": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getPaymentStatus"
 		},
-		"24343": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13372": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24344": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13373": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.refundPayment"
 		},
-		"24345": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13374": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.refundPayment"
 		},
-		"24346": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13375": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24347": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13376": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "refundAmount"
 		},
-		"24348": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13377": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
 		},
-		"24349": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13378": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.retrievePayment"
 		},
-		"24350": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13379": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "paymentSessionData"
 		},
-		"24351": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13380": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.updatePayment"
 		},
-		"24352": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13381": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.updatePayment"
 		},
-		"24353": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13382": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "context"
 		},
-		"24354": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13383": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
 		},
-		"24355": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13384": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.getWebhookActionAndData"
 		},
-		"24356": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13385": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "data"
 		},
-		"24357": {
-			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+		"13386": {
+			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type"
 		},
-		"24358": {
-			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+		"13387": {
+			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.data"
 		},
-		"24359": {
-			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+		"13388": {
+			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.rawData"
 		},
-		"24360": {
-			"sourceFileName": "../../../packages/types/src/payment/mutations.ts",
+		"13389": {
+			"sourceFileName": "../../../../packages/core/types/src/payment/mutations.ts",
 			"qualifiedName": "__type.headers"
 		},
-		"24361": {
-			"sourceFileName": "../../../packages/utils/src/payment/abstract-payment-provider.ts",
+		"13390": {
+			"sourceFileName": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts",
 			"qualifiedName": "AbstractPaymentProvider.TConfig"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/payment/abstract-payment-provider.ts"
+		},
+		"reflections": {
+			"1": 13332
 		}
 	}
 }

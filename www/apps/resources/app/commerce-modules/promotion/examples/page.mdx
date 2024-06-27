@@ -25,7 +25,7 @@ In this document, you’ll find common examples of how you can use the Promotion
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
-    const promotion = await promotionModuleService.create({
+    const promotion = await promotionModuleService.createPromotions({
       code: "10%OFF",
       type: "standard",
       application_method: {
@@ -55,7 +55,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       await initializePromotionModule()
     const body = await request.json()
 
-    const promotion = await promotionModuleService.create({
+    const promotion = await promotionModuleService.createPromotions({
       code: "10%OFF",
       type: "standard",
       application_method: {
@@ -155,7 +155,7 @@ In this document, you’ll find common examples of how you can use the Promotion
     const promotionModuleService: IPromotionModuleService =
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
-    const promotion = await promotionModuleService.create({
+    const promotion = await promotionModuleService.createPromotions({
       code: "10%OFF",
       type: "standard",
       application_method: {
@@ -191,7 +191,7 @@ In this document, you’ll find common examples of how you can use the Promotion
     const promotionModuleService =
       await initializePromotionModule()
 
-    const promotion = await promotionModuleService.create({
+    const promotion = await promotionModuleService.createPromotions({
       code: "10%OFF",
       type: "standard",
       application_method: {
@@ -236,7 +236,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       request.scope.resolve(ModuleRegistrationName.PROMOTION)
 
     res.json({
-      promotions: await promotionModuleService.list(),
+      promotions: await promotionModuleService.listPromotions(),
     })
   }
   ```
@@ -256,7 +256,7 @@ In this document, you’ll find common examples of how you can use the Promotion
       await initializePromotionModule()
 
     return NextResponse.json({
-      promotions: await promotionModuleService.list(),
+      promotions: await promotionModuleService.listPromotions(),
     })
   }
   ```

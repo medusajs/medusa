@@ -1,8 +1,11 @@
 export const IsDmlEntity = Symbol.for("isDmlEntity")
 
-export interface IDmlEntity<
-  Schema extends Record<string, PropertyType<any> | RelationshipType<any>>
-> {
+export type DMLSchema = Record<
+  string,
+  PropertyType<any> | RelationshipType<any>
+>
+
+export interface IDmlEntity<Schema extends DMLSchema> {
   [IsDmlEntity]: true
   schema: Schema
 }
@@ -17,6 +20,7 @@ export type KnownDataTypes =
   | "number"
   | "bigNumber"
   | "dateTime"
+  | "array"
   | "json"
   | "id"
 
@@ -102,12 +106,12 @@ export interface EntityConstructor<Props> extends Function {
  */
 export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
   ? {
-      [K in keyof Schema as Schema[K] extends RelationshipType<any>
-        ? Schema[K]["type"] extends "belongsTo"
+      [K in keyof Schema as Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
           ? `${K & string}_id`
           : K
-        : K]: Schema[K] extends RelationshipType<infer R>
-        ? Schema[K]["type"] extends "belongsTo"
+        : K]: Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
           ? string
           : Schema[K]
         : Schema[K]
@@ -162,3 +166,36 @@ export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
 export type InferEntityType<T extends any> = T extends IDmlEntity<any>
   ? InferTypeOf<T>
   : T
+
+/**
+ * Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
+ */
+export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
+  infer Schema
+>
+  ? {
+      [K in keyof Schema as Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
+          ? never
+          : K
+        : K]: string
+    } & InferForeignKeys<T>
+  : never)
+
+export type EntityIndex<
+  TSchema extends DMLSchema = DMLSchema,
+  TWhere = string
+> = {
+  name?: string
+  unique?: boolean
+  on: InferIndexableProperties<IDmlEntity<TSchema>>[]
+  where?: TWhere
+}
+
+export type SimpleQueryValue = string | number | boolean | null
+export type NeQueryValue = { $ne: SimpleQueryValue }
+export type QueryValue = SimpleQueryValue | NeQueryValue
+
+export interface QueryCondition {
+  [key: string]: QueryValue | QueryCondition | QueryCondition[]
+}

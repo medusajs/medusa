@@ -1,13 +1,48 @@
 import {
+  DMLSchema,
   EntityCascades,
+  EntityIndex,
   ExtractEntityRelations,
   IDmlEntity,
   IsDmlEntity,
-  PropertyType,
-  RelationshipType,
+  QueryCondition,
 } from "@medusajs/types"
-import { DMLSchema } from "./entity-builder"
+import { isObject, isString, toCamelCase } from "../common"
+import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
+
+type Config = string | { name?: string; tableName: string }
+
+function extractNameAndTableName(nameOrConfig: Config) {
+  const result = {
+    name: "",
+    tableName: "",
+  }
+
+  if (isString(nameOrConfig)) {
+    const [schema, ...rest] = nameOrConfig.split(".")
+    const name = rest.length ? rest.join(".") : schema
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig
+  }
+
+  if (isObject(nameOrConfig)) {
+    if (!nameOrConfig.tableName) {
+      throw new Error(
+        `Missing "tableName" property in the config object for "${nameOrConfig.name}" entity`
+      )
+    }
+
+    const potentialName = nameOrConfig.name ?? nameOrConfig.tableName
+    const [schema, ...rest] = potentialName.split(".")
+    const name = rest.length ? rest.join(".") : schema
+
+    result.name = toCamelCase(name)
+    result.tableName = nameOrConfig.tableName
+  }
+
+  return result
+}
 
 /**
  * Dml entity is a representation of a DML model with a unique
@@ -16,8 +51,17 @@ import { BelongsTo } from "./relations/belongs-to"
 export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   [IsDmlEntity]: true = true
 
+  name: string
+
+  readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
-  constructor(public name: string, public schema: Schema) {}
+  #indexes: EntityIndex<Schema>[] = []
+
+  constructor(nameOrConfig: Config, public schema: Schema) {
+    const { name, tableName } = extractNameAndTableName(nameOrConfig)
+    this.name = name
+    this.#tableName = tableName
+  }
 
   /**
    * A static method to check if an entity is an instance of DmlEntity.
@@ -27,11 +71,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * @param entity
    */
   static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
-    return (
-      !!entity &&
-      (entity instanceof DmlEntity ||
-        (typeof entity === "object" && entity[IsDmlEntity] === true))
-    )
+    return !!entity?.[IsDmlEntity]
   }
 
   /**
@@ -39,15 +79,17 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    */
   parse(): {
     name: string
-    schema: PropertyType<any> | RelationshipType<any>
+    tableName: string
+    schema: DMLSchema
     cascades: EntityCascades<string[]>
+    indexes: EntityIndex<Schema>[]
   } {
     return {
       name: this.name,
-      schema: this.schema as unknown as
-        | PropertyType<any>
-        | RelationshipType<any>,
+      tableName: this.#tableName,
+      schema: this.schema,
       cascades: this.#cascades,
+      indexes: this.#indexes,
     }
   }
 
@@ -63,7 +105,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     >
   ) {
     const childToParentCascades = options.delete?.filter((relationship) => {
-      return this.schema[relationship] instanceof BelongsTo
+      return BelongsTo.isBelongsTo(this.schema[relationship])
     })
 
     if (childToParentCascades?.length) {
@@ -77,6 +119,19 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
     }
 
     this.#cascades = options
+    return this
+  }
+
+  /**
+   * Adds indexes to be created at during model creation on the DML entity.
+   */
+  indexes(indexes: EntityIndex<Schema, string | QueryCondition>[]) {
+    for (const index of indexes) {
+      index.where = transformIndexWhere(index)
+      index.unique ??= false
+    }
+
+    this.#indexes = indexes as EntityIndex<Schema>[]
     return this
   }
 }

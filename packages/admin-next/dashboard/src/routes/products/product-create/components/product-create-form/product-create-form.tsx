@@ -9,6 +9,7 @@ import {
   useRouteModal,
 } from "../../../../../components/modals"
 import { useCreateProduct } from "../../../../../hooks/api/products"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { sdk } from "../../../../../lib/client"
 import { isFetchError } from "../../../../../lib/is-fetch-error"
 import {
@@ -62,10 +63,22 @@ export const ProductCreateForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
+  const { regions } = useRegions({ limit: 9999 })
+
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
+    }
+
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {})
+  }, regions)
 
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
-   * which is suboptimal when rereners are caused by bulk editor changes
+   * which is suboptimal when rerenders are caused by bulk editor changes
    */
 
   const watchedVariants = useWatch({
@@ -123,10 +136,10 @@ export const ProductCreateForm = ({
 
         const { product } = await mutateAsync(
           normalizeProductFormValues({
-            // TODO: workflow should handle inventory creation
             ...payload,
             media: uploadedMedia,
             status: (isDraftSubmission ? "draft" : "published") as any,
+            regionsCurrencyMap,
           })
         )
 

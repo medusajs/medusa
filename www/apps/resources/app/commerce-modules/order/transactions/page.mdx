@@ -18,7 +18,7 @@ The transaction’s main purpose is to ensure a correct balance between paid and
 
 ## Checking Outstanding Amount
 
-The order’s total is stored in the `OrderSummary`'s `total` field. To check the outstanding amount of the order, its transaction amounts are summed. Then, the following conditions are checked:
+The order’s total is stored in the `OrderSummary`'s `total` property. To check the outstanding amount of the order, its transaction amounts are summed. Then, the following conditions are checked:
 
 <Table>
   <Table.Header>
@@ -73,7 +73,7 @@ The order’s total is stored in the `OrderSummary`'s `total` field. To check th
 
 The Order Module doesn’t provide payment processing functionalities, so it doesn’t store payments that can be processed. For that, use the Payment Module or custom logic.
 
-The `Transaction` data model has two fields that determine which data model and record holds the actual payment’s details:
+The `Transaction` data model has two properties that determine which data model and record holds the actual payment’s details:
 
 - `reference`: indicates the table’s name in the database. For example, `payment` if you’re using the Payment Module.
 - `reference_id`: indicates the ID of the record in the table. For example, `pay_123`.

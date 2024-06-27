@@ -1,46 +1,45 @@
 {
-	"id": 7,
+	"id": 12966,
 	"name": "file",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 8,
+			"id": 12967,
 			"name": "AbstractFileProviderService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the module's options using the second parameter.\n\nIf you're creating a client or establishing a connection with a third-party service, do it in the constructor.\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { Logger } from \"@medusajs/types\"\nimport { AbstractFileProviderService } from \"@medusajs/utils\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyFileProviderService extends AbstractFileProviderService {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n}\n\nexport default MyFileProviderService\n```"
+					}
+				]
+			},
 			"children": [
 				{
-					"id": 9,
-					"name": "identifier",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10,
+					"id": 12969,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 11,
+							"id": 12970,
 							"name": "new AbstractFileProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 8,
+								"target": 12967,
 								"name": "AbstractFileProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -48,45 +47,61 @@
 					]
 				},
 				{
-					"id": 12,
-					"name": "getIdentifier",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 13,
-							"name": "getIdentifier",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "any"
-							}
-						}
-					]
-				},
-				{
-					"id": 14,
+					"id": 12973,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 15,
+							"id": 12974,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method uploads a file using your provider's custom logic."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The uploaded file's details."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyFileProviderService extends AbstractFileProviderService {\n  // ...\n  async upload(\n    file: ProviderUploadFileDTO\n  ): Promise<ProviderFileResultDTO> {\n    // TODO upload file to third-party provider\n    // or using custom logic\n\n    return {\n      url: \"some-url.com\",\n      key: \"file-name\"\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 16,
+									"id": 12975,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The file to upload"
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -132,25 +147,61 @@
 					}
 				},
 				{
-					"id": 17,
+					"id": 12976,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 18,
+							"id": 12977,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method deletes the file from storage."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the file is deleted."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyFileProviderService extends AbstractFileProviderService {\n  // ...\n  async delete(file: ProviderDeleteFileDTO): Promise<void> {\n    // TODO logic to remove the file from storage\n    // Use the `file.fileKey` to delete the file\n    // for example:\n    this.client.delete(file.fileKey)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 19,
+									"id": 12978,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file to delete."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -191,25 +242,61 @@
 					}
 				},
 				{
-					"id": 20,
+					"id": 12979,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 21,
+							"id": 12980,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve a download URL of the file. For some providers, \nsuch as S3, a presigned URL indicates a temporary URL to get access to a file.\n\nIf your provider doesn’t perform or offer a similar functionality, you can \nreturn the URL to download the file."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The file's presigned URL."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyFileProviderService extends AbstractFileProviderService {\n  // ...\n  async getPresignedDownloadUrl(\n    fileData: ProviderGetFileDTO\n  ): Promise<string> {\n    // TODO logic to get the presigned URL\n    // Use the `file.fileKey` to delete the file\n    // for example:\n    return this.client.getPresignedUrl(fileData.fileKey)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 22,
+									"id": 12981,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the file to get its \npresigned URL."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -254,22 +341,15 @@
 				{
 					"title": "Constructors",
 					"children": [
-						10
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						9
+						12969
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						12,
-						14,
-						17,
-						20
+						12973,
+						12976,
+						12979
 					]
 				}
 			],
@@ -290,67 +370,63 @@
 		{
 			"title": "Classes",
 			"children": [
-				8
+				12967
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"7": {
+		"12966": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": ""
 		},
-		"8": {
+		"12967": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService"
 		},
-		"9": {
-			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
-			"qualifiedName": "AbstractFileProviderService.identifier"
-		},
-		"12": {
-			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
-			"qualifiedName": "AbstractFileProviderService.getIdentifier"
-		},
-		"13": {
-			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
-			"qualifiedName": "AbstractFileProviderService.getIdentifier"
-		},
-		"14": {
+		"12973": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"15": {
+		"12974": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"16": {
+		"12975": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"17": {
+		"12976": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"18": {
+		"12977": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"19": {
+		"12978": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"20": {
+		"12979": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"21": {
+		"12980": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"22": {
+		"12981": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "fileData"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/file/abstract-file-provider.ts"
+		},
+		"reflections": {
+			"1": 12966
 		}
 	}
 }

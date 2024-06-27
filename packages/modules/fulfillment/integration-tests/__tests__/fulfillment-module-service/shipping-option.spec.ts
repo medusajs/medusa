@@ -1,20 +1,20 @@
 import {
   CreateShippingOptionDTO,
   IFulfillmentModuleService,
+  UpdateShippingOptionDTO,
 } from "@medusajs/types"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
+import { FulfillmentProviderService } from "@services"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
+import { resolve } from "path"
 import {
   buildExpectedEventMessageShape,
   generateCreateShippingOptionsData,
 } from "../../__fixtures__"
-import { resolve } from "path"
-import { FulfillmentProviderService } from "@services"
 import { FulfillmentProviderServiceFixtures } from "../../__fixtures__/providers"
-import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
-import { UpdateShippingOptionDTO } from "@medusajs/types/src"
 
 jest.setTimeout(100000)
 

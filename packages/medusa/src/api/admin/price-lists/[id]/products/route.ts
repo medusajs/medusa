@@ -1,10 +1,10 @@
+import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
+import { LinkMethodRequest } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-import { batchPriceListPricesWorkflow } from "@medusajs/core-flows"
-import { LinkMethodRequest } from "@medusajs/types/src"
 import { fetchPriceList, fetchPriceListPriceIdsForProduct } from "../../helpers"
 
 export const POST = async (
