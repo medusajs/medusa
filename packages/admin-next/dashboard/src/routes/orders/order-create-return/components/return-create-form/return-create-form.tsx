@@ -78,7 +78,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     control: form.control,
   })
 
-  const { mutateAsync, isPending } = useCreateOrderReturn(order.id)
+  const { mutateAsync, isPending } = useCreateOrderReturn()
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {

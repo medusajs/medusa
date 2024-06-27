@@ -65,13 +65,12 @@ export class Order {
   }
 
   async createReturn(
-    id: string,
     body: HttpTypes.AdminCreateOrderReturn,
     query?: SelectParams,
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
-      `/admin/orders/${id}/returns`,
+      `/admin/returns/create-return`,
       {
         method: "POST",
         headers,

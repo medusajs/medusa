@@ -48,7 +48,6 @@ export const useOrders = (
 }
 
 export const useCreateOrderReturn = (
-  orderId: string,
   options?: UseMutationOptions<
     HttpTypes.AdminOrderResponse,
     Error,
@@ -57,7 +56,7 @@ export const useCreateOrderReturn = (
 ) => {
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminCreateOrderReturn) =>
-      sdk.admin.order.createReturn(orderId, payload),
+      sdk.admin.order.createReturn(payload),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
