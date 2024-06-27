@@ -14,6 +14,7 @@ import {
   Property,
   Utils,
 } from "@mikro-orm/core"
+import { PrimaryKeyModifier } from "../../properties/primary-key"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -169,7 +170,7 @@ export function defineProperty(
    * Defining an id property
    */
   if (field.dataType.name === "id") {
-    const IdDecorator = field.dataType.options?.primaryKey
+    const IdDecorator = PrimaryKeyModifier.isPrimaryKeyModifier(field)
       ? PrimaryKey({
           columnType: "text",
           type: "string",

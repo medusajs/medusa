@@ -4,6 +4,8 @@ import {
   EntityIndex,
   ExtractEntityRelations,
   IDmlEntity,
+  IDmlEntityConfig,
+  InferDmlEntityNameFromConfig,
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
@@ -48,10 +50,14 @@ function extractNameAndTableName(nameOrConfig: Config) {
  * Dml entity is a representation of a DML model with a unique
  * name, its schema and relationships.
  */
-export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
+export class DmlEntity<
+  Schema extends DMLSchema,
+  TConfig extends IDmlEntityConfig = any
+> implements IDmlEntity<Schema>
+{
   [IsDmlEntity]: true = true
 
-  name: string
+  name: InferDmlEntityNameFromConfig<TConfig>
 
   readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
@@ -59,7 +65,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
 
   constructor(nameOrConfig: Config, public schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
-    this.name = name
+    this.name = name as InferDmlEntityNameFromConfig<TConfig>
     this.#tableName = tableName
   }
 
@@ -70,7 +76,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    *
    * @param entity
    */
-  static isDmlEntity(entity: unknown): entity is DmlEntity<any> {
+  static isDmlEntity(entity: unknown): entity is DmlEntity<any, any> {
     return !!entity?.[IsDmlEntity]
   }
 
@@ -78,7 +84,7 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
    * Parse entity to get its underlying information
    */
   parse(): {
-    name: string
+    name: InferDmlEntityNameFromConfig<TConfig>
     tableName: string
     schema: DMLSchema
     cascades: EntityCascades<string[]>

@@ -1,5 +1,7 @@
-import { DMLSchema } from "@medusajs/types"
+import { DMLSchema, PropertyMetadata } from "@medusajs/types"
 import { IdProperty } from "../../properties/id"
+import { BaseRelationship } from "../../relations/base"
+import { PrimaryKeyModifier } from "../../properties/primary-key"
 
 /*
   The id() property is an core opinionated property that will act as a primaryKey
@@ -41,7 +43,10 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
     }
 
     if (parsed.dataType.name === "id") {
-      ;(property as IdProperty).primaryKey(false)
+      // @ts-ignore
+      schema[field] = new IdProperty({
+        prefix: parsed.dataType.options?.prefix,
+      })
     }
   }
 
@@ -61,14 +66,16 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 */
 function getExplicitPrimaryKeyFields(schema: DMLSchema) {
   return Object.entries(schema).filter(([field, property]) => {
-    const parsed = property.parse(field)
-    const isRelationshipType = "type" in parsed
+    const parsed = property.parse(field) as PropertyMetadata
 
     // Return early if its a relationship property or an id property
-    if (isRelationshipType || parsed.dataType.name === "id") {
+    if (
+      BaseRelationship.isRelationship(property) ||
+      parsed.dataType.name === "id"
+    ) {
       return false
     }
 
-    return !!parsed.dataType.options?.primaryKey
+    return !!PrimaryKeyModifier.isPrimaryKeyModifier(property)
   })
 }

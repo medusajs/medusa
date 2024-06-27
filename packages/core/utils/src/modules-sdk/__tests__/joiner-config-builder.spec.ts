@@ -1,5 +1,11 @@
-import { defineJoinerConfig } from "../joiner-config-builder"
+import {
+  buildLinkableKeysFromDmlObjects,
+  buildLinkableKeysFromMikroOrmObjects,
+  defineJoinerConfig,
+} from "../joiner-config-builder"
 import { Modules } from "../definition"
+import { model } from "../../dml"
+import { expectTypeOf } from "expect-type"
 
 const FulfillmentSet = {
   name: "FulfillmentSet",
@@ -26,290 +32,333 @@ const ShippingOptionRule = {
   name: "ShippingOptionRule",
 }
 
-describe("defineJoiner", () => {
-  it("should return a full joiner configuration", () => {
-    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-      entityQueryingConfig: [
-        FulfillmentSet,
-        ShippingOption,
-        ShippingProfile,
-        Fulfillment,
-        FulfillmentProvider,
-        ServiceZone,
-        GeoZone,
-        ShippingOptionRule,
-      ],
+describe("joiner-config-builder", () => {
+  describe("defineJoiner", () => {
+    it("should return a full joiner configuration", () => {
+      const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+        dmlObjects: [
+          FulfillmentSet,
+          ShippingOption,
+          ShippingProfile,
+          Fulfillment,
+          FulfillmentProvider,
+          ServiceZone,
+          GeoZone,
+          ShippingOptionRule,
+        ],
+      })
+
+      expect(joinerConfig).toEqual({
+        serviceName: Modules.FULFILLMENT,
+        primaryKeys: ["id"],
+        schema: undefined,
+        linkableKeys: {
+          fulfillment_set_id: FulfillmentSet.name,
+          shipping_option_id: ShippingOption.name,
+          shipping_profile_id: ShippingProfile.name,
+          fulfillment_id: Fulfillment.name,
+          fulfillment_provider_id: FulfillmentProvider.name,
+          service_zone_id: ServiceZone.name,
+          geo_zone_id: GeoZone.name,
+          shipping_option_rule_id: ShippingOptionRule.name,
+        },
+        alias: [
+          {
+            name: ["fulfillment_set", "fulfillment_sets"],
+            args: {
+              entity: FulfillmentSet.name,
+              methodSuffix: "FulfillmentSets",
+            },
+          },
+          {
+            name: ["shipping_option", "shipping_options"],
+            args: {
+              entity: ShippingOption.name,
+              methodSuffix: "ShippingOptions",
+            },
+          },
+          {
+            name: ["shipping_profile", "shipping_profiles"],
+            args: {
+              entity: ShippingProfile.name,
+              methodSuffix: "ShippingProfiles",
+            },
+          },
+          {
+            name: ["fulfillment", "fulfillments"],
+            args: {
+              entity: Fulfillment.name,
+              methodSuffix: "Fulfillments",
+            },
+          },
+          {
+            name: ["fulfillment_provider", "fulfillment_providers"],
+            args: {
+              entity: FulfillmentProvider.name,
+              methodSuffix: "FulfillmentProviders",
+            },
+          },
+          {
+            name: ["service_zone", "service_zones"],
+            args: {
+              entity: ServiceZone.name,
+              methodSuffix: "ServiceZones",
+            },
+          },
+          {
+            name: ["geo_zone", "geo_zones"],
+            args: {
+              entity: GeoZone.name,
+              methodSuffix: "GeoZones",
+            },
+          },
+          {
+            name: ["shipping_option_rule", "shipping_option_rules"],
+            args: {
+              entity: ShippingOptionRule.name,
+              methodSuffix: "ShippingOptionRules",
+            },
+          },
+        ],
+      })
     })
 
-    expect(joinerConfig).toEqual({
-      serviceName: Modules.FULFILLMENT,
-      primaryKeys: ["id"],
-      schema: undefined,
-      linkableKeys: {
-        fulfillment_set_id: FulfillmentSet.name,
-        shipping_option_id: ShippingOption.name,
-        shipping_profile_id: ShippingProfile.name,
-        fulfillment_id: Fulfillment.name,
-        fulfillment_provider_id: FulfillmentProvider.name,
-        service_zone_id: ServiceZone.name,
-        geo_zone_id: GeoZone.name,
-        shipping_option_rule_id: ShippingOptionRule.name,
-      },
-      alias: [
-        {
-          name: ["fulfillment_set", "fulfillment_sets"],
-          args: {
-            entity: FulfillmentSet.name,
-            methodSuffix: "FulfillmentSets",
+    it("should return a full joiner configuration with custom aliases", () => {
+      const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+              methodSuffix: "Customs",
+            },
           },
-        },
-        {
-          name: ["shipping_option", "shipping_options"],
-          args: {
-            entity: ShippingOption.name,
-            methodSuffix: "ShippingOptions",
+        ],
+      })
+
+      expect(joinerConfig).toEqual({
+        serviceName: Modules.FULFILLMENT,
+        primaryKeys: ["id"],
+        schema: undefined,
+        linkableKeys: {},
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+              methodSuffix: "Customs",
+            },
           },
-        },
-        {
-          name: ["shipping_profile", "shipping_profiles"],
-          args: {
-            entity: ShippingProfile.name,
-            methodSuffix: "ShippingProfiles",
+        ],
+      })
+    })
+
+    it("should return a full joiner configuration with custom aliases and models", () => {
+      const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+        dmlObjects: [
+          FulfillmentSet,
+          ShippingOption,
+          ShippingProfile,
+          Fulfillment,
+          FulfillmentProvider,
+          ServiceZone,
+          GeoZone,
+          ShippingOptionRule,
+        ],
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+              methodSuffix: "Customs",
+            },
           },
+        ],
+      })
+
+      expect(joinerConfig).toEqual({
+        serviceName: Modules.FULFILLMENT,
+        primaryKeys: ["id"],
+        schema: undefined,
+        linkableKeys: {
+          fulfillment_set_id: FulfillmentSet.name,
+          shipping_option_id: ShippingOption.name,
+          shipping_profile_id: ShippingProfile.name,
+          fulfillment_id: Fulfillment.name,
+          fulfillment_provider_id: FulfillmentProvider.name,
+          service_zone_id: ServiceZone.name,
+          geo_zone_id: GeoZone.name,
+          shipping_option_rule_id: ShippingOptionRule.name,
         },
-        {
-          name: ["fulfillment", "fulfillments"],
-          args: {
-            entity: Fulfillment.name,
-            methodSuffix: "Fulfillments",
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+              methodSuffix: "Customs",
+            },
           },
-        },
-        {
-          name: ["fulfillment_provider", "fulfillment_providers"],
-          args: {
-            entity: FulfillmentProvider.name,
-            methodSuffix: "FulfillmentProviders",
+          {
+            name: ["fulfillment_set", "fulfillment_sets"],
+            args: {
+              entity: FulfillmentSet.name,
+              methodSuffix: "FulfillmentSets",
+            },
           },
-        },
-        {
-          name: ["service_zone", "service_zones"],
-          args: {
-            entity: ServiceZone.name,
-            methodSuffix: "ServiceZones",
+          {
+            name: ["shipping_option", "shipping_options"],
+            args: {
+              entity: ShippingOption.name,
+              methodSuffix: "ShippingOptions",
+            },
           },
-        },
-        {
-          name: ["geo_zone", "geo_zones"],
-          args: {
-            entity: GeoZone.name,
-            methodSuffix: "GeoZones",
+          {
+            name: ["shipping_profile", "shipping_profiles"],
+            args: {
+              entity: ShippingProfile.name,
+              methodSuffix: "ShippingProfiles",
+            },
           },
-        },
-        {
-          name: ["shipping_option_rule", "shipping_option_rules"],
-          args: {
-            entity: ShippingOptionRule.name,
-            methodSuffix: "ShippingOptionRules",
+          {
+            name: ["fulfillment", "fulfillments"],
+            args: {
+              entity: Fulfillment.name,
+              methodSuffix: "Fulfillments",
+            },
           },
+          {
+            name: ["fulfillment_provider", "fulfillment_providers"],
+            args: {
+              entity: FulfillmentProvider.name,
+              methodSuffix: "FulfillmentProviders",
+            },
+          },
+          {
+            name: ["service_zone", "service_zones"],
+            args: {
+              entity: ServiceZone.name,
+              methodSuffix: "ServiceZones",
+            },
+          },
+          {
+            name: ["geo_zone", "geo_zones"],
+            args: {
+              entity: GeoZone.name,
+              methodSuffix: "GeoZones",
+            },
+          },
+          {
+            name: ["shipping_option_rule", "shipping_option_rules"],
+            args: {
+              entity: ShippingOptionRule.name,
+              methodSuffix: "ShippingOptionRules",
+            },
+          },
+        ],
+      })
+    })
+
+    it("should return a full joiner configuration with custom aliases without method suffix", () => {
+      const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+            },
+          },
+        ],
+      })
+
+      expect(joinerConfig).toEqual({
+        serviceName: Modules.FULFILLMENT,
+        primaryKeys: ["id"],
+        schema: undefined,
+        linkableKeys: {},
+        alias: [
+          {
+            name: ["custom", "customs"],
+            args: {
+              entity: "Custom",
+              methodSuffix: "Customs",
+            },
+          },
+        ],
+      })
+    })
+
+    it("should return a full joiner configuration with custom aliases overriding defaults", () => {
+      const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
+        dmlObjects: [FulfillmentSet],
+        alias: [
+          {
+            name: ["fulfillment_set", "fulfillment_sets"],
+            args: {
+              entity: "FulfillmentSet",
+              methodSuffix: "fulfillmentSetCustom",
+            },
+          },
+        ],
+      })
+
+      expect(joinerConfig).toEqual({
+        serviceName: Modules.FULFILLMENT,
+        primaryKeys: ["id"],
+        schema: undefined,
+        linkableKeys: {
+          fulfillment_set_id: FulfillmentSet.name,
         },
-      ],
+        alias: [
+          {
+            name: ["fulfillment_set", "fulfillment_sets"],
+            args: {
+              entity: "FulfillmentSet",
+              methodSuffix: "fulfillmentSetCustom",
+            },
+          },
+        ],
+      })
     })
   })
 
-  it("should return a full joiner configuration with custom aliases", () => {
-    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-            methodSuffix: "Customs",
-          },
-        },
-      ],
-    })
+  describe("buildLinkableKeysFromDmlObjects", () => {
+    it("should return a linkableKeys object based on the DML's primary keys", () => {
+      const user = model.define("user", {
+        id: model.id(),
+        name: model.text(),
+      })
 
-    expect(joinerConfig).toEqual({
-      serviceName: Modules.FULFILLMENT,
-      primaryKeys: ["id"],
-      schema: undefined,
-      linkableKeys: {},
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-            methodSuffix: "Customs",
-          },
-        },
-      ],
+      const car = model.define("car", {
+        id: model.id(),
+        number_plate: model.text().primaryKey(),
+        test: model.text(),
+      })
+
+      const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
+      expectTypeOf(linkableKeys).toMatchTypeOf<{
+        user_id: "user"
+        car_id: "car" // TODO: explained the issue in the comment of the InferLinkableKeys type
+        car_number_plate: "car"
+      }>()
+
+      expect(linkableKeys).toEqual({
+        user_id: user.name,
+        car_number_plate: car.name,
+      })
     })
   })
 
-  it("should return a full joiner configuration with custom aliases and models", () => {
-    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-      entityQueryingConfig: [
-        FulfillmentSet,
-        ShippingOption,
-        ShippingProfile,
-        Fulfillment,
-        FulfillmentProvider,
-        ServiceZone,
-        GeoZone,
-        ShippingOptionRule,
-      ],
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-            methodSuffix: "Customs",
-          },
-        },
-      ],
-    })
+  describe("buildLinkableKeysFromMikroOrmObjects", () => {
+    it("should return a linkableKeys object based on the mikro orm models name", () => {
+      class User {}
+      class Car {}
 
-    expect(joinerConfig).toEqual({
-      serviceName: Modules.FULFILLMENT,
-      primaryKeys: ["id"],
-      schema: undefined,
-      linkableKeys: {
-        fulfillment_set_id: FulfillmentSet.name,
-        shipping_option_id: ShippingOption.name,
-        shipping_profile_id: ShippingProfile.name,
-        fulfillment_id: Fulfillment.name,
-        fulfillment_provider_id: FulfillmentProvider.name,
-        service_zone_id: ServiceZone.name,
-        geo_zone_id: GeoZone.name,
-        shipping_option_rule_id: ShippingOptionRule.name,
-      },
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-            methodSuffix: "Customs",
-          },
-        },
-        {
-          name: ["fulfillment_set", "fulfillment_sets"],
-          args: {
-            entity: FulfillmentSet.name,
-            methodSuffix: "FulfillmentSets",
-          },
-        },
-        {
-          name: ["shipping_option", "shipping_options"],
-          args: {
-            entity: ShippingOption.name,
-            methodSuffix: "ShippingOptions",
-          },
-        },
-        {
-          name: ["shipping_profile", "shipping_profiles"],
-          args: {
-            entity: ShippingProfile.name,
-            methodSuffix: "ShippingProfiles",
-          },
-        },
-        {
-          name: ["fulfillment", "fulfillments"],
-          args: {
-            entity: Fulfillment.name,
-            methodSuffix: "Fulfillments",
-          },
-        },
-        {
-          name: ["fulfillment_provider", "fulfillment_providers"],
-          args: {
-            entity: FulfillmentProvider.name,
-            methodSuffix: "FulfillmentProviders",
-          },
-        },
-        {
-          name: ["service_zone", "service_zones"],
-          args: {
-            entity: ServiceZone.name,
-            methodSuffix: "ServiceZones",
-          },
-        },
-        {
-          name: ["geo_zone", "geo_zones"],
-          args: {
-            entity: GeoZone.name,
-            methodSuffix: "GeoZones",
-          },
-        },
-        {
-          name: ["shipping_option_rule", "shipping_option_rules"],
-          args: {
-            entity: ShippingOptionRule.name,
-            methodSuffix: "ShippingOptionRules",
-          },
-        },
-      ],
-    })
-  })
+      const linkableKeys = buildLinkableKeysFromMikroOrmObjects([Car, User])
 
-  it("should return a full joiner configuration with custom aliases without method suffix", () => {
-    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-          },
-        },
-      ],
-    })
-
-    expect(joinerConfig).toEqual({
-      serviceName: Modules.FULFILLMENT,
-      primaryKeys: ["id"],
-      schema: undefined,
-      linkableKeys: {},
-      alias: [
-        {
-          name: ["custom", "customs"],
-          args: {
-            entity: "Custom",
-            methodSuffix: "Customs",
-          },
-        },
-      ],
-    })
-  })
-
-  it("should return a full joiner configuration with custom aliases overriding defaults", () => {
-    const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-      entityQueryingConfig: [FulfillmentSet],
-      alias: [
-        {
-          name: ["fulfillment_set", "fulfillment_sets"],
-          args: {
-            entity: "FulfillmentSet",
-            methodSuffix: "fulfillmentSetCustom",
-          },
-        },
-      ],
-    })
-
-    expect(joinerConfig).toEqual({
-      serviceName: Modules.FULFILLMENT,
-      primaryKeys: ["id"],
-      schema: undefined,
-      linkableKeys: {
-        fulfillment_set_id: FulfillmentSet.name,
-      },
-      alias: [
-        {
-          name: ["fulfillment_set", "fulfillment_sets"],
-          args: {
-            entity: "FulfillmentSet",
-            methodSuffix: "fulfillmentSetCustom",
-          },
-        },
-      ],
+      expect(linkableKeys).toEqual({
+        user_id: User.name,
+        car_id: Car.name,
+      })
     })
   })
 })

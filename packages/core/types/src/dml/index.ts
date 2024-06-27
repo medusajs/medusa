@@ -5,8 +5,23 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
-export interface IDmlEntity<Schema extends DMLSchema> {
+export type IDmlEntityConfig = string | { name?: string; tableName: string }
+
+export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
+  TConfig extends string
+    ? TConfig
+    : TConfig extends { name?: string; tableName: string }
+    ? TConfig["name"] extends never
+      ? TConfig["tableName"]
+      : TConfig["name"]
+    : never
+
+export interface IDmlEntity<
+  Schema extends DMLSchema,
+  Config extends IDmlEntityConfig = any
+> {
   [IsDmlEntity]: true
+  name: InferDmlEntityNameFromConfig<Config>
   schema: Schema
 }
 
@@ -49,6 +64,7 @@ export type PropertyMetadata = {
     type: "index" | "unique"
   }[]
   relationships: RelationshipMetadata[]
+  primaryKey?: boolean
 }
 
 /**

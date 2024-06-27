@@ -5,11 +5,15 @@ import {
   RelationshipTypes,
 } from "@medusajs/types"
 
+const IsRelationship = Symbol.for("isRelationship")
+
 /**
  * The BaseRelationship encapsulates the repetitive parts of defining
  * a relationship
  */
 export abstract class BaseRelationship<T> implements RelationshipType<T> {
+  [IsRelationship]: true = true
+
   #referencedEntity: T
 
   /**
@@ -27,6 +31,12 @@ export abstract class BaseRelationship<T> implements RelationshipType<T> {
    * of the relationship property
    */
   declare $dataType: T
+
+  static isRelationship<T>(
+    relationship: any
+  ): relationship is BaseRelationship<T> {
+    return !!relationship?.[IsRelationship]
+  }
 
   constructor(referencedEntity: T, options: RelationshipOptions) {
     this.#referencedEntity = referencedEntity

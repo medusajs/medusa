@@ -1,4 +1,5 @@
 import { BaseProperty } from "./base"
+import { PrimaryKeyModifier } from "./primary-key"
 
 /**
  * The NumberProperty is used to define a numeric/integer
@@ -13,9 +14,7 @@ export class NumberProperty extends BaseProperty<number> {
   }
 
   primaryKey() {
-    this.dataType.options.primaryKey = true
-
-    return this
+    return new PrimaryKeyModifier<number, NumberProperty>(this)
   }
 
   constructor(options?: { primaryKey?: boolean }) {

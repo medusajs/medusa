@@ -1,4 +1,8 @@
-import type { DMLSchema, RelationshipOptions } from "@medusajs/types"
+import {
+  DMLSchema,
+  IDmlEntityConfig,
+  RelationshipOptions,
+} from "@medusajs/types"
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
@@ -16,13 +20,12 @@ import { BelongsTo } from "./relations/belongs-to"
 import { HasMany } from "./relations/has-many"
 import { HasOne } from "./relations/has-one"
 import { ManyToMany } from "./relations/many-to-many"
+import { PrimaryKeyModifier } from "./properties/primary-key"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
  */
 const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
-
-type DefineOptions = string | { name?: string; tableName: string }
 
 /**
  * Entity builder exposes the API to create an entity and define its
@@ -47,14 +50,14 @@ export class EntityBuilder {
    * Define an entity or a model. The name should be unique across
    * all the entities.
    */
-  define<Schema extends DMLSchema>(
-    nameOrConfig: DefineOptions,
+  define<Schema extends DMLSchema, TConfig extends IDmlEntityConfig>(
+    nameOrConfig: TConfig,
     schema: Schema
   ) {
     this.#disallowImplicitProperties(schema)
     schema = inferPrimaryKeyProperties(schema)
 
-    return new DmlEntity(nameOrConfig, {
+    return new DmlEntity<Schema, TConfig>(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
@@ -65,8 +68,26 @@ export class EntityBuilder {
    * Define an id property. Id properties are marked
    * primary by default
    */
-  id(options?: ConstructorParameters<typeof IdProperty>[0]) {
-    return new IdProperty(options)
+  id<T extends { primaryKey?: boolean; prefix?: string } | undefined>(
+    options?: T
+  ): T extends undefined
+    ? PrimaryKeyModifier<string, IdProperty>
+    : T extends {
+        primaryKey: infer PrimaryKeyBoolean
+      }
+    ? PrimaryKeyBoolean extends undefined
+      ? PrimaryKeyModifier<string, IdProperty>
+      : PrimaryKeyBoolean extends true
+      ? PrimaryKeyModifier<string, IdProperty>
+      : IdProperty
+    : never {
+    const { primaryKey = true, ...rest } = options ?? {}
+
+    if (primaryKey) {
+      return new IdProperty(rest).primaryKey(true) as any
+    }
+
+    return new IdProperty(options) as any
   }
 
   /**
@@ -185,7 +206,7 @@ export class EntityBuilder {
           }
         | {
             pivotTable?: never
-            pivotEntity?: () => DmlEntity<any>
+            pivotEntity?: () => DmlEntity<any, any>
           }
       )
   ) {
