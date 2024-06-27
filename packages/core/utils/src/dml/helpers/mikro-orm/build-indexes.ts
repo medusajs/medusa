@@ -24,9 +24,9 @@ export function validateIndexFields<TSchema extends DMLSchema>(
 
   if (invalidFields.length) {
     throw new Error(
-      `Fields (${invalidFields.join(
-        ", "
-      )}) are not found when applying indexes from DML entity`
+      `Cannot apply indexes on fields (${invalidFields.join(", ")}) for model ${
+        MikroORMEntity.name
+      }`
     )
   }
 }
