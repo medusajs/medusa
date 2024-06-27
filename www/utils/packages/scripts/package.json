@@ -7,9 +7,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "generate:announcement": "ts-node ./doc-change-release.ts",
-    "check:freshness": "ts-node ./freshness-check.ts",
-    "generate:message": "ts-node ./get-generate-diff-message.ts",
+    "check:freshness": "node ./dist/freshness-check.js",
+    "generate:message": "node ./dist/get-generate-diff-message.js",
     "check:release-commit": "node ./dist/check-release-commit.js",
     "generate:changeset": "node ./dist/run-changeset.js",
     "check:pr-files-count": "node ./dist/check-pr-files-count.js"
@@ -25,7 +24,7 @@
     "glob": "^10.3.10",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.8"

@@ -5,8 +5,6 @@ import {
   RelationshipMetadata,
   RelationshipType,
 } from "@medusajs/types"
-import { DmlEntity } from "../../entity"
-import { parseEntityName } from "./parse-entity-name"
 import {
   BeforeCreate,
   ManyToMany,
@@ -17,9 +15,12 @@ import {
   Property,
 } from "@mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"
+import { ForeignKey } from "../../../dal/mikro-orm/decorators/foreign-key"
+import { DmlEntity } from "../../entity"
 import { HasMany } from "../../relations/has-many"
 import { HasOne } from "../../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"
+import { parseEntityName } from "./parse-entity-name"
 
 type Context = {
   MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean>
@@ -138,10 +139,11 @@ export function defineBelongsToRelationship(
       entity: relatedModelName,
       columnType: "text",
       mapToPk: true,
-      fieldName: camelToSnakeCase(`${relationship.name}Id`),
+      fieldName: foreignKeyName,
       nullable: relationship.nullable,
       onDelete: shouldCascade ? "cascade" : undefined,
-    })(MikroORMEntity.prototype, camelToSnakeCase(`${relationship.name}Id`))
+    })(MikroORMEntity.prototype, foreignKeyName)
+    ForeignKey()(MikroORMEntity.prototype, foreignKeyName)
 
     if (DmlManyToMany.isManyToMany(otherSideRelation)) {
       Property({
@@ -190,6 +192,7 @@ export function defineBelongsToRelationship(
       columnType: "text",
       nullable: relationship.nullable,
     })(MikroORMEntity.prototype, foreignKeyName)
+    ForeignKey()(MikroORMEntity.prototype, foreignKeyName)
 
     applyForeignKeyAssignationHooks(foreignKeyName)
     return

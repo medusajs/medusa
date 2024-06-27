@@ -94,7 +94,7 @@ export function registerPartials() {
 
 export function registerHelpers(theme: MarkdownTheme) {
   breadcrumbsHelper(theme)
-  commentHelper(theme)
+  commentHelper()
   commentsHelper()
   declarationTitleHelper(theme)
   escapeHelper()

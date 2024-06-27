@@ -60874,5 +60874,13 @@
 			"sourceFileName": "../../../packages/medusa-js/src/resources/admin/product-categories.ts",
 			"qualifiedName": "customHeaders"
 		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/medusa-js/src/resources"
+		},
+		"reflections": {
+			"1": 14610
+		}
 	}
 }
