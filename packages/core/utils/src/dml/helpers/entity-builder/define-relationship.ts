@@ -5,21 +5,21 @@ import {
   RelationshipMetadata,
   RelationshipType,
 } from "@medusajs/types"
-import { DmlEntity } from "../../entity"
-import { parseEntityName } from "./parse-entity-name"
 import {
   BeforeCreate,
   ManyToMany,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   Property,
 } from "@mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"
+import { DmlEntity } from "../../entity"
 import { HasMany } from "../../relations/has-many"
 import { HasOne } from "../../relations/has-one"
 import { ManyToMany as DmlManyToMany } from "../../relations/many-to-many"
+import { parseEntityName } from "./parse-entity-name"
 
 type Context = {
   MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean>
