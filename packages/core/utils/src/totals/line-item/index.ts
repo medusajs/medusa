@@ -1,4 +1,5 @@
-import { AdjustmentLineDTO, TaxLineDTO } from "@medusajs/types"
+import { AdjustmentLineDTO, BigNumberInput, TaxLineDTO } from "@medusajs/types"
+import { isDefined } from "../../common"
 import { calculateAdjustmentTotal } from "../adjustment"
 import { BigNumber } from "../big-number"
 import { MathBN } from "../math"
@@ -37,6 +38,9 @@ export interface GetItemTotalOutput {
   discount_total: BigNumber
   discount_tax_total: BigNumber
 
+  refundable_total?: BigNumber
+  refundable_total_per_unit?: BigNumber
+
   tax_total: BigNumber
   original_tax_total: BigNumber
 
@@ -64,6 +68,40 @@ export function getLineItemsTotals(
   }
 
   return itemsTotals
+}
+
+function setRefundableTotal(
+  item: GetItemTotalInput,
+  discountTotal: BigNumberInput,
+  totals: GetItemTotalOutput,
+  context: GetLineItemsTotalsContext
+) {
+  const totalReturnedQuantity = MathBN.sum(
+    item.return_requested_quantity ?? 0,
+    item.return_received_quantity ?? 0,
+    item.return_dismissed_quantity ?? 0
+  )
+  const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
+  const discountPerUnit = MathBN.div(discountTotal, item.quantity)
+
+  const refundableSubTotal = MathBN.sub(
+    MathBN.mult(currentQuantity, item.unit_price),
+    MathBN.mult(currentQuantity, discountPerUnit)
+  )
+
+  const taxTotal = calculateTaxTotal({
+    taxLines: item.tax_lines || [],
+    includesTax: context.includeTax,
+    taxableAmount: refundableSubTotal,
+  })
+  const refundableTotal = MathBN.add(refundableSubTotal, taxTotal)
+
+  totals.refundable_total_per_unit = new BigNumber(
+    MathBN.eq(currentQuantity, 0)
+      ? 0
+      : MathBN.div(refundableTotal, currentQuantity)
+  )
+  totals.refundable_total = new BigNumber(refundableTotal)
 }
 
 function getLineItemTotals(
@@ -113,6 +151,10 @@ function getLineItemTotals(
     setTotalField: "total",
   })
   totals.tax_total = new BigNumber(taxTotal)
+
+  if (isDefined(item.return_requested_quantity)) {
+    setRefundableTotal(item, discountTotal, totals, context)
+  }
 
   const originalTaxTotal = calculateTaxTotal({
     taxLines: item.tax_lines || [],
