@@ -21,6 +21,7 @@ export default function getModelOptions({
     resolveDmlRelations: true,
     generateDMLsDiagram: true,
     diagramDMLAddToFile: entryPath,
+    normalizeDmlTypes: true,
     ...typedocOptions,
   })
 }

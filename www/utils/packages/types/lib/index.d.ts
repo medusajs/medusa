@@ -248,5 +248,10 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     resolveDmlRelations: boolean
+    /**
+     * Whether to normalize DML types.
+     * @defaultValue false
+     */
+    normalizeDmlTypes: boolean
   }
 }
