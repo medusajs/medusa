@@ -69,9 +69,7 @@ export function createMikrORMEntity() {
       }
     })
 
-    if (entityIndexes?.length) {
-      applyEntityIndexes(MikroORMEntity, tableName, entityIndexes)
-    }
+    applyEntityIndexes(MikroORMEntity, tableName, entityIndexes)
 
     /**
      * Converting class to a MikroORM entity

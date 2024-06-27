@@ -36,7 +36,7 @@ export function applyIndexes(
 export function applyEntityIndexes(
   MikroORMEntity: EntityConstructor<any>,
   tableName: string,
-  entityIndexes: EntityIndex[]
+  entityIndexes: EntityIndex[] = []
 ) {
   const foreignKeyIndexes = applyForeignKeyIndexes(MikroORMEntity)
   const indexes = [...entityIndexes, ...foreignKeyIndexes]
