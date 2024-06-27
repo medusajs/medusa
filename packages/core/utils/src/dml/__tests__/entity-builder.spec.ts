@@ -2482,6 +2482,7 @@ describe("Entity builder", () => {
           reference: "scalar",
           setter: false,
           type: "string",
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -2598,6 +2599,7 @@ describe("Entity builder", () => {
           nullable: false,
           onDelete: undefined,
           reference: "m:1",
+          isForeignKey: true,
         },
         ...defaultColumnMetadata,
       })
@@ -2623,38 +2625,169 @@ describe("Entity builder", () => {
             'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
           name: "IDX_unique-name",
         },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_group_id" ON "user" (group_id) WHERE deleted_at IS NULL',
+          name: "IDX_user_group_id",
+        },
+      ])
+    })
+
+    test("should define indexes with a query builder", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+          is_owner: model.boolean(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
+        })
+        .indexes([
+          {
+            on: ["organization", "account"],
+            where: { email: { $ne: null } },
+          },
+          {
+            name: "IDX-email-account-special",
+            on: ["organization", "account"],
+            where: {
+              email: { $ne: null },
+              account: null,
+            },
+          },
+          {
+            name: "IDX_unique-name",
+            unique: true,
+            on: ["organization", "account", "group_id"],
+          },
+          {
+            on: ["organization", "group_id"],
+            where: { is_owner: false },
+          },
+          {
+            on: ["account", "group_id"],
+            where: { is_owner: true },
+          },
+        ])
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        toMikroORMEntity(user)
+      )
+
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_account" ON "user" (organization, account) WHERE email IS NOT NULL AND deleted_at IS NULL',
+          name: "IDX_user_organization_account",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX-email-account-special" ON "user" (organization, account) WHERE email IS NOT NULL AND account IS NULL AND deleted_at IS NULL',
+          name: "IDX-email-account-special",
+        },
+        {
+          expression:
+            'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_unique-name" ON "user" (organization, account, group_id) WHERE deleted_at IS NULL',
+          name: "IDX_unique-name",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_organization_group_id" ON "user" (organization, group_id) WHERE is_owner IS FALSE AND deleted_at IS NULL',
+          name: "IDX_user_organization_group_id",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_account_group_id" ON "user" (account, group_id) WHERE is_owner IS TRUE AND deleted_at IS NULL',
+          name: "IDX_user_account_group_id",
+        },
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_group_id" ON "user" (group_id) WHERE deleted_at IS NULL',
+          name: "IDX_user_group_id",
+        },
       ])
     })
 
     test("should throw an error if field is unknown for an index", () => {
-      try {
-        const group = model.define("group", {
-          id: model.number(),
-          name: model.text(),
-          users: model.hasMany(() => user),
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const user = model
+        .define("user", {
+          email: model.text(),
+          account: model.text(),
+          organization: model.text(),
+          group: model.belongsTo(() => group, { mappedBy: "users" }),
         })
+        .indexes([
+          {
+            on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
+          },
+        ])
 
-        const user = model
-          .define("user", {
-            email: model.text(),
-            account: model.text(),
-            organization: model.text(),
-            group: model.belongsTo(() => group, { mappedBy: "users" }),
-          })
-          .indexes([
-            {
-              on: ["email", "account", "doesnotexist", "anotherdoesnotexist"],
-            },
-          ])
+      let err: any
 
+      try {
         toMikroORMEntity(user)
-
-        throw "should not reach"
       } catch (e) {
-        expect(e.message).toEqual(
-          "Fields (doesnotexist, anotherdoesnotexist) are not found when applying indexes from DML entity"
-        )
+        err = e
       }
+
+      expect(err.message).toEqual(
+        `Cannot apply indexes on fields (doesnotexist, anotherdoesnotexist) for model User`
+      )
+    })
+
+    test("should define indexes for an entity", () => {
+      const group = model.define("group", {
+        id: model.number(),
+        name: model.text(),
+        users: model.hasMany(() => user),
+      })
+
+      const setting = model.define("setting", {
+        name: model.text(),
+        user: model.belongsTo(() => user),
+      })
+
+      const user = model.define("user", {
+        email: model.text(),
+        account: model.text(),
+        organization: model.text(),
+        group: model.belongsTo(() => group, { mappedBy: "users" }),
+        setting: model.hasOne(() => setting),
+      })
+
+      const User = toMikroORMEntity(user)
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+
+      expect(metaData.indexes).toEqual([
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_group_id" ON "user" (group_id) WHERE deleted_at IS NULL',
+          name: "IDX_user_group_id",
+        },
+      ])
+
+      const Setting = toMikroORMEntity(setting)
+      const settingMetadata = MetadataStorage.getMetadataFromDecorator(Setting)
+
+      expect(settingMetadata.indexes).toEqual([
+        {
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_setting_user_id" ON "setting" (user_id) WHERE deleted_at IS NULL',
+          name: "IDX_setting_user_id",
+        },
+      ])
     })
   })
 
@@ -3043,6 +3176,7 @@ describe("Entity builder", () => {
           nullable: false,
           onDelete: "cascade",
           reference: "m:1",
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3229,6 +3363,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3408,6 +3543,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3586,6 +3722,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -3764,6 +3901,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: true,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -4009,6 +4147,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -4196,6 +4335,7 @@ describe("Entity builder", () => {
           name: "user_id",
           getter: false,
           setter: false,
+          isForeignKey: true,
         },
         created_at: {
           reference: "scalar",
@@ -5566,6 +5706,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "user_id",
           nullable: false,
+          isForeignKey: true,
         },
         user: {
           reference: "scalar",
@@ -5584,6 +5725,7 @@ describe("Entity builder", () => {
           mapToPk: true,
           fieldName: "team_id",
           nullable: false,
+          isForeignKey: true,
         },
         team: {
           reference: "scalar",

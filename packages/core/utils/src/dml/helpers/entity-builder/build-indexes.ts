@@ -1,5 +1,6 @@
-import { DMLSchema, EntityIndex } from "@medusajs/types"
-import { isPresent } from "../../../common"
+import { DMLSchema, EntityIndex, QueryCondition } from "@medusajs/types"
+import { isObject, isPresent } from "../../../common"
+import { buildWhereQuery } from "./query-builder"
 
 /*
   The DML provides an opinionated soft deletable entity as a part of every model
@@ -8,9 +9,22 @@ import { isPresent } from "../../../common"
   this will need to be updated to include that case.
 */
 export function transformIndexWhere<TSchema extends DMLSchema>(
-  index: EntityIndex<TSchema>
-) {
-  let where = index.where
+  index: EntityIndex<TSchema, string | QueryCondition>
+): string {
+  return isObject(index.where)
+    ? transformWhereQb(index.where)
+    : transformWhere(index.where)
+}
+
+function transformWhereQb(where: QueryCondition): string {
+  if (!isPresent(where.deleted_at)) {
+    where.deleted_at = null
+  }
+
+  return buildWhereQuery(where)
+}
+
+function transformWhere(where?: string): string {
   const lowerCaseWhere = where?.toLowerCase()
   const whereIncludesDeleteable =
     lowerCaseWhere?.includes("deleted_at is null") ||
@@ -22,7 +36,7 @@ export function transformIndexWhere<TSchema extends DMLSchema>(
   }
 
   // If where scope isn't present, we will set an opinionated where scope to the index
-  if (!isPresent(where)) {
+  if (!where?.length) {
     where = "deleted_at IS NULL"
   }
 

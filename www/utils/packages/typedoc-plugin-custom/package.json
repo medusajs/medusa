@@ -19,12 +19,12 @@
     "lint": "eslint --ext .ts src"
   },
   "peerDependencies": {
-    "typedoc": "0.25.x"
+    "typedoc": "0.26.x"
   },
   "devDependencies": {
     "@types/eslint": "^8.56.6",
     "@types/node": "^16.11.10",
-    "typescript": "5.2"
+    "typescript": "5.5"
   },
   "keywords": [
     "typedocplugin",

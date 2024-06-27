@@ -21,16 +21,17 @@
     "dotenv": "^16.3.1",
     "randomcolor": "^0.6.2",
     "ts-node": "^10.9.1",
+    "typedoc": "^0.26.2",
     "typedoc-plugin-custom": "*",
     "typedoc-plugin-markdown-medusa": "*",
     "typedoc-plugin-rename-defaults": "^0.7.0",
     "types": "*",
-    "typescript": "5.2",
+    "typescript": "5.5",
     "utils": "*",
     "yaml": "^2.3.4"
   },
   "peerDependencies": {
-    "typedoc": "0.25.x"
+    "typedoc": "0.26.x"
   },
   "devDependencies": {
     "@types/node": "^20.9.4",

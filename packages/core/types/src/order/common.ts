@@ -479,6 +479,17 @@ export interface OrderLineItemTotalsDTO {
   discount_tax_total: BigNumberValue
 
   /**
+   * The refundable total of the order line item.
+   */
+  refundable_total: BigNumberValue
+
+  /**
+   * The refundable total per unit of the order line item.
+   */
+
+  refundable_total_per_unit: BigNumberValue
+
+  /**
    * The raw original total of the order line item.
    */
   raw_original_total: BigNumberRawValue
@@ -532,6 +543,16 @@ export interface OrderLineItemTotalsDTO {
    * The raw discount tax total of the order line item.
    */
   raw_discount_tax_total: BigNumberRawValue
+
+  /**
+   * The raw refundable total of the order line item..
+   */
+  raw_refundable_total: BigNumberRawValue
+
+  /**
+   * The raw  refundable total per unit of the order line item.
+   */
+  raw_refundable_total_per_unit: BigNumberRawValue
 }
 
 export interface OrderLineItemDTO extends OrderLineItemTotalsDTO {

@@ -158,6 +158,8 @@ export interface BaseOrderLineItem {
   tax_total: number
   discount_total: number
   discount_tax_total: number
+  refundable_total: number
+  refundable_total_per_unit: number
 }
 
 export interface BaseOrderItemDetail {
