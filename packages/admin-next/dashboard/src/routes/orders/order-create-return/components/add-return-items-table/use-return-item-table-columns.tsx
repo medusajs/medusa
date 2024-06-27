@@ -81,6 +81,9 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
           </div>
         ),
         cell: ({ getValue }) => {
+          /**
+           * TODO: what is equivalent of this in V2 ?
+           */
           const amount = getValue() || 0
 
           const stylized = getStylizedAmount(amount, currencyCode)
