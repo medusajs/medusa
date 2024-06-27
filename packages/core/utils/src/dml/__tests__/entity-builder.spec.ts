@@ -5,8 +5,8 @@ import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
 import {
   createMikrORMEntity,
-  toMikroOrmEntities,
   toMikroORMEntity,
+  toMikroOrmEntities,
 } from "../helpers/create-mikro-orm-entity"
 
 describe("Entity builder", () => {
@@ -1731,6 +1731,94 @@ describe("Entity builder", () => {
   })
 
   describe("Entity builder | indexes", () => {
+    test("define a default index on the deleted_at column", () => {
+      const user = model.define("user", {
+        id: model.number(),
+        username: model.text(),
+      })
+
+      const User = toMikroORMEntity(user)
+      expectTypeOf(new User()).toMatchTypeOf<{
+        id: number
+        username: string
+        deleted_at: Date | null
+      }>()
+
+      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      expect(metaData.className).toEqual("User")
+      expect(metaData.path).toEqual("User")
+
+      expect(metaData.indexes).toEqual([
+        {
+          name: "IDX_user_deleted_at",
+          expression:
+            'CREATE INDEX IF NOT EXISTS "IDX_user_deleted_at" ON "user" (deleted_at) WHERE deleted_at IS NOT NULL',
+        },
+      ])
+
+      expect(metaData.filters).toEqual({
+        softDeletable: {
+          name: "softDeletable",
+          cond: expect.any(Function),
+          default: true,
+          args: false,
+        },
+      })
+
+      expect(metaData.properties).toEqual({
+        id: {
+          reference: "scalar",
+          type: "number",
+          columnType: "integer",
+          name: "id",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        username: {
+          reference: "scalar",
+          type: "string",
+          columnType: "text",
+          name: "username",
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        created_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "created_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        updated_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "updated_at",
+          defaultRaw: "now()",
+          onCreate: expect.any(Function),
+          onUpdate: expect.any(Function),
+          nullable: false,
+          getter: false,
+          setter: false,
+        },
+        deleted_at: {
+          reference: "scalar",
+          type: "date",
+          columnType: "timestamptz",
+          name: "deleted_at",
+          nullable: true,
+          getter: false,
+          setter: false,
+        },
+      })
+    })
+
     test("define index on a field", () => {
       const user = model.define("user", {
         id: model.number().index(),

@@ -72,9 +72,15 @@ export function createMikrORMEntity() {
       }
     })
 
-    if (entityIndexes?.length) {
-      applyEntityIndexes(MikroORMEntity, tableName, entityIndexes)
-    }
+    /**
+     * DML entities are soft-deletable by default, so we always apply an index on the `deleted_at` column
+     * If we choose to add an opt-out mechanism for soft-deletable entities, this should be updated accordingly
+     */
+    entityIndexes.push({
+      on: ["deleted_at"],
+      where: "deleted_at IS NOT NULL",
+    })
+    applyEntityIndexes(MikroORMEntity, tableName, entityIndexes)
 
     /**
      * Converting class to a MikroORM entity
