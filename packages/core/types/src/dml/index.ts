@@ -180,9 +180,20 @@ export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
     } & InferForeignKeys<T>
   : never)
 
-export type EntityIndex<TSchema extends DMLSchema = DMLSchema> = {
+export type EntityIndex<
+  TSchema extends DMLSchema = DMLSchema,
+  TWhere = string
+> = {
   name?: string
   unique?: boolean
   on: InferIndexableProperties<IDmlEntity<TSchema>>[]
-  where?: string
+  where?: TWhere
+}
+
+export type SimpleQueryValue = string | number | boolean | null
+export type NeQueryValue = { $ne: SimpleQueryValue }
+export type QueryValue = SimpleQueryValue | NeQueryValue
+
+export interface QueryCondition {
+  [key: string]: QueryValue | QueryCondition | QueryCondition[]
 }

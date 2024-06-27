@@ -1,12 +1,12 @@
 {
-	"id": 185,
+	"id": 1856,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 186,
+			"id": 1857,
 			"name": "Currency",
 			"variant": "declaration",
 			"kind": 32,
@@ -14,7 +14,7 @@
 			"type": {
 				"type": "reference",
 				"target": {
-					"sourceFileName": "../../../../packages/core/utils/dist/dml/entity.d.ts",
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
 					"qualifiedName": "DmlEntity"
 				},
 				"typeArguments": [
@@ -24,14 +24,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 187,
+									"id": 1858,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 188,
+											"id": 1859,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -39,7 +39,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -48,7 +48,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 189,
+											"id": 1860,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -56,7 +56,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -65,7 +65,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 190,
+											"id": 1861,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -73,7 +73,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -82,7 +82,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 191,
+											"id": 1862,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -90,7 +90,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -99,7 +99,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 192,
+											"id": 1863,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -107,7 +107,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/number.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
 													"qualifiedName": "NumberProperty"
 												},
 												"name": "NumberProperty",
@@ -116,7 +116,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 193,
+											"id": 1864,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -124,7 +124,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/big-number.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
 													"qualifiedName": "BigNumberProperty"
 												},
 												"name": "BigNumberProperty",
@@ -137,12 +137,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												188,
-												189,
-												190,
-												191,
-												192,
-												193
+												1859,
+												1860,
+												1861,
+												1862,
+												1863,
+												1864
 											]
 										}
 									]
@@ -151,14 +151,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 194,
+									"id": 1865,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 195,
+											"id": 1866,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -166,7 +166,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -175,7 +175,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 196,
+											"id": 1867,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -183,7 +183,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -192,7 +192,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 197,
+											"id": 1868,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -200,7 +200,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -209,7 +209,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 198,
+											"id": 1869,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -217,7 +217,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/text.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
 													"qualifiedName": "TextProperty"
 												},
 												"name": "TextProperty",
@@ -226,7 +226,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 199,
+											"id": 1870,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -234,7 +234,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/number.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/number.ts",
 													"qualifiedName": "NumberProperty"
 												},
 												"name": "NumberProperty",
@@ -243,7 +243,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 200,
+											"id": 1871,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -251,7 +251,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/big-number.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/big-number.ts",
 													"qualifiedName": "BigNumberProperty"
 												},
 												"name": "BigNumberProperty",
@@ -264,12 +264,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												195,
-												196,
-												197,
-												198,
-												199,
-												200
+												1866,
+												1867,
+												1868,
+												1869,
+												1870,
+												1871
 											]
 										}
 									]
@@ -278,14 +278,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 201,
+									"id": 1872,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 202,
+											"id": 1873,
 											"name": "raw_rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -293,7 +293,7 @@
 											"type": {
 												"type": "reference",
 												"target": {
-													"sourceFileName": "../../../../packages/core/utils/dist/dml/properties/json.d.ts",
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
 													"qualifiedName": "JSONProperty"
 												},
 												"name": "JSONProperty",
@@ -305,7 +305,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												202
+												1873
 											]
 										}
 									]
@@ -314,7 +314,7 @@
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../../../packages/core/utils/dist/dml/helpers/entity-builder/create-default-properties.d.ts",
+									"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
 									"qualifiedName": "DMLSchemaDefaults"
 								},
 								"name": "DMLSchemaDefaults",
@@ -332,83 +332,91 @@
 		{
 			"title": "Variables",
 			"children": [
-				186
+				1857
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"185": {
+		"1856": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"186": {
+		"1857": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "default"
 		},
-		"187": {
+		"1858": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object"
 		},
-		"188": {
+		"1859": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.code"
 		},
-		"189": {
+		"1860": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol"
 		},
-		"190": {
+		"1861": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol_native"
 		},
-		"191": {
+		"1862": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.name"
 		},
-		"192": {
+		"1863": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.decimal_digits"
 		},
-		"193": {
+		"1864": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.rounding"
 		},
-		"194": {
-			"sourceFileName": "../../../../packages/core/utils/dist/dml/entity-builder.d.ts",
+		"1865": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
 			"qualifiedName": "__type"
 		},
-		"195": {
+		"1866": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "code"
 		},
-		"196": {
+		"1867": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol"
 		},
-		"197": {
+		"1868": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol_native"
 		},
-		"198": {
+		"1869": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "name"
 		},
-		"199": {
+		"1870": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "decimal_digits"
 		},
-		"200": {
+		"1871": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "rounding"
 		},
-		"201": {
-			"sourceFileName": "../../../../packages/core/utils/dist/dml/entity-builder.d.ts",
+		"1872": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
 			"qualifiedName": "__type"
 		},
-		"202": {
+		"1873": {
 			"sourceFileName": "",
 			"qualifiedName": "raw_rounding"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/currency/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 1856
 		}
 	}
 }
