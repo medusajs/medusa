@@ -2,14 +2,11 @@ import type { EntityConstructor, Infer } from "@medusajs/types"
 import { Entity, Filter } from "@mikro-orm/core"
 import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 import { DmlEntity } from "../entity"
-import {
-  applyEntityIndexes,
-  applyIndexes,
-} from "./entity-builder/apply-indexes"
 import { applySearchable } from "./entity-builder/apply-searchable"
 import { defineProperty } from "./entity-builder/define-property"
 import { defineRelationship } from "./entity-builder/define-relationship"
 import { parseEntityName } from "./entity-builder/parse-entity-name"
+import { applyEntityIndexes, applyIndexes } from "./mikro-orm/apply-indexes"
 
 /**
  * Factory function to create the mikro orm entity builder. The return
