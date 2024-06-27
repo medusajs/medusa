@@ -25,9 +25,14 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    const store = await storeModuleService.create({
+    const store = await storeModuleService.createStores({
       name: "My Store",
-      supported_currency_codes: ["usd"],
+      supported_currencies: [
+        {
+          currency_code: "usd",
+          is_default: true,
+        },
+      ],
     })
 
     res.json({
@@ -49,9 +54,14 @@ In this guide, you’ll find common examples of how you can use the Store Module
   export async function POST(request: Request) {
     const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.create({
+    const store = await storeModuleService.createStores({
       name: "My Store",
-      supported_currency_codes: ["usd"],
+      supported_currencies: [
+        {
+          currency_code: "usd",
+          is_default: true,
+        },
+      ],
     })
 
     res.json({
@@ -83,7 +93,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
       request.scope.resolve(ModuleRegistrationName.STORE)
 
     res.json({
-      stores: await storeModuleService.list(),
+      stores: await storeModuleService.listStores(),
     })
   }
   ```
@@ -101,7 +111,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
   export async function GET(request: Request) {
     const storeModuleService = await initializeStoreModule()
 
-    const salesChannels = await storeModuleService.list()
+    const salesChannels = await storeModuleService.listStores()
 
     return NextResponse.json({
       stores: await storeModuleService.list(),
@@ -131,7 +141,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    const store = await storeModuleService.retrieve(
+    const store = await storeModuleService.retrieveStore(
       "store_123"
     )
 
@@ -157,7 +167,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ) {
     const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.retrieve(
+    const store = await storeModuleService.retrieveStore(
       "store_123"
     )
 
@@ -187,9 +197,10 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    const store = await storeModuleService.update("store_123", {
-      name: "Change Store",
-    })
+    const store = await storeModuleService
+      .updateStores("store_123", {
+        name: "Change Store",
+      })
 
     res.json({
       store,
@@ -213,9 +224,10 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ) {
     const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.update("store_123", {
-      name: "Change Store",
-    })
+    const store = await storeModuleService
+      .updateStores("store_123", {
+        name: "Change Store",
+      })
 
     return NextResponse.json({ store })
   }
@@ -243,7 +255,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
     const storeModuleService: IStoreModuleService =
       request.scope.resolve(ModuleRegistrationName.STORE)
 
-    await storeModuleService.delete("store_123")
+    await storeModuleService.deleteStores("store_123")
 
     res.status(200)
   }
@@ -265,7 +277,7 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ) {
     const storeModuleService = await initializeStoreModule()
 
-    await storeModuleService.delete("store_123")
+    await storeModuleService.deleteStores("store_123")
   }
   ```
 

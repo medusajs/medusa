@@ -1,0 +1,198 @@
+export const metadata = {
+  title: `${pageNumber} Data Model Property Types`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about the types of properties in a data model’s schema.
+
+## id
+
+The `id` method defines an automatically generated string ID property.
+
+For example:
+
+export const idHighlights = [["4", ".id()", "Define an `id` property."]]
+
+```ts highlights={idHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id(),
+  // ...
+})
+
+export default MyCustom
+```
+
+By default, this property is considered to be the data model’s primary key.
+
+---
+
+## text
+
+The `text` method defines a string property.
+
+For example:
+
+export const textHighlights = [["4", "text", "Define a `text` property."]]
+
+```ts highlights={textHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  name: model.text(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## number
+
+The `number` method defines a number property.
+
+For example:
+
+export const numberHighlights = [["4", "number", "Define a `number` property."]]
+
+```ts highlights={numberHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  age: model.number(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## bigNumber
+
+The `bigNumber` method defines a number property that expects large numbers, such as prices.
+
+For example:
+
+export const bigNumberHighlights = [["4", "bigNumber", "Define a `bigNumber` property."]]
+
+```ts highlights={bigNumberHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  price: model.bigNumber(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## boolean
+
+The `boolean` method defines a boolean property.
+
+For example:
+
+export const booleanHighlights = [["4", "boolean", "Define a `boolean` property."]]
+
+```ts highlights={booleanHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  hasAccount: model.boolean(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+### enum
+
+The `enum` method defines a property whose value can only be one of the specified values.
+
+For example:
+
+export const enumHighlights = [["4", "enum", "Define a `enum` property."]]
+
+```ts highlights={enumHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  color: model.enum(["black", "white"]),
+  // ...
+})
+
+export default MyCustom
+```
+
+The `enum` method accepts an array of possible string values.
+
+---
+
+## dateTime
+
+The `dateTime` method defines a timestamp property.
+
+For example:
+
+export const dateTimeHighlights = [["4", "dateTime", "Define a `dateTime` property."]]
+
+```ts highlights={dateTimeHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  date_of_birth: model.dateTime(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## json
+
+The `json` method defines a property whose value is a stringified JSON object.
+
+For example:
+
+export const jsonHighlights = [["4", "json", "Define a `json` property."]]
+
+```ts highlights={jsonHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  metadata: model.json(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## array
+
+The `array` method defines an array or strings property.
+
+For example:
+
+export const arrHightlights = [["4", "array", "Define an `array` property."]]
+
+```ts highlights={arrHightlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  names: model.array(),
+  // ...
+})
+
+export default MyCustom
+```

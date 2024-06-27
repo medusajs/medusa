@@ -15,7 +15,9 @@ The Currency Module is the `@medusajs/currency` NPM package that provides curren
 List and retrieve currencies stored in your application.
 
 ```ts
-const currency = await currencyModuleService.retrieve("usd")
+const currency = await currencyModuleService.retrieveCurrency(
+  "usd"
+)
 ```
 
 ### Support Currencies in Modules
@@ -25,8 +27,10 @@ Other commerce modules use currency codes in their data models or operations. Yo
 An example with the Region Module:
 
 ```ts
-const region = await regionModuleService.retrieve("reg_123")
-const currency = await currencyModuleService.retrieve(
+const region = await regionModuleService.retrieveCurrency(
+  "reg_123"
+)
+const currency = await currencyModuleService.retrieveCurrency(
   region.currency_code
 )
 ```
@@ -55,7 +59,7 @@ For example:
       req.scope.resolve(ModuleRegistrationName.CURRENCY)
 
     res.json({
-      currencies: await currencyModuleService.list(),
+      currencies: await currencyModuleService.listCurrencies(),
     })
   }
   ```
@@ -74,7 +78,8 @@ For example:
     const currencyModuleService: ICurrencyModuleService =
       container.resolve(ModuleRegistrationName.CURRENCY)
 
-    const currencies = await currencyModuleService.list()
+    const currencies = await currencyModuleService
+      .listCurrencies()
   }
   ```
 
@@ -94,7 +99,8 @@ For example:
         ModuleRegistrationName.CURRENCY
       )
     
-    const currencies = await currencyModuleService.list()
+    const currencies = await currencyModuleService
+      .listCurrencies()
   })
   ```
 

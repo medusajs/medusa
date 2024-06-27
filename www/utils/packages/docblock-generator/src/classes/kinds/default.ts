@@ -4,6 +4,7 @@ import {
   DOCBLOCK_END_LINE,
   DOCBLOCK_DOUBLE_LINES,
   DOCBLOCK_NEW_LINE,
+  SUMMARY_PLACEHOLDER,
 } from "../../constants.js"
 import getSymbol from "../../utils/get-symbol.js"
 import KnowledgeBaseFactory, {
@@ -56,7 +57,6 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
   public name = "default"
   protected allowedKinds: ts.SyntaxKind[]
   protected checker: ts.TypeChecker
-  protected defaultSummary = "{summary}"
   protected knowledgeBaseFactory: KnowledgeBaseFactory
   protected generatorEventManager: GeneratorEventManager
   protected options: Pick<CommonCliOptions, "generateExamples">
@@ -186,7 +186,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       summary = this.getTypeDocBlock(nodeType, knowledgeBaseOptions)
     }
 
-    return summary.length > 0 ? summary : this.defaultSummary
+    return summary.length > 0 ? summary : SUMMARY_PLACEHOLDER
   }
 
   /**
@@ -234,7 +234,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       }
 
       // do some formatting if the encapsulating type is an array
-      return `The list of ${capitalize(typeArgumentDoc) || this.defaultSummary}`
+      return `The list of ${capitalize(typeArgumentDoc) || SUMMARY_PLACEHOLDER}`
     }
 
     return (
@@ -360,7 +360,7 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     }
 
     if (options.addDefaultSummary) {
-      tags.add(this.defaultSummary)
+      tags.add(SUMMARY_PLACEHOLDER)
     }
 
     // check for private or protected modifiers

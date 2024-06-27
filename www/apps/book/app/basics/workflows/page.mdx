@@ -228,11 +228,11 @@ Each step in the workflow receives as a second parameter a `context` object. The
 For example:
 
 export const highlights = [
-  ["14", "resolve", "Resolve the `IProductModuleService`."],
-  ["14", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["15", "resolve", "Resolve the Product Module's main service."],
+  ["15", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
 ]
 
-```ts title="src/workflows/product-count.ts" highlights={highlights}
+```ts title="src/workflows/product-count.ts" highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"
 import {
   createStep,
   StepResponse,
@@ -266,3 +266,5 @@ const myWorkflow = createWorkflow<unknown, WorkflowOutput>(
 
 export default myWorkflow
 ```
+
+In the step, you resolve the Product Module's main service and use it to retrieve the product count.

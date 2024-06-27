@@ -18,13 +18,13 @@ The `LineItemAdjustment` data model represents changes on a line item, and the `
 
 ![A diagram showcasing the relations between other data models and adjustment line models](https://res.cloudinary.com/dza7lstvk/image/upload/v1711534248/Medusa%20Resources/cart-adjustments_k4sttb.jpg)
 
-The `amount` field of the adjustment line indicates the amount to be discounted from the original amount. Also, the ID of the applied promotion is stored in the `promotion_id` field of the adjustment line.
+The `amount` property of the adjustment line indicates the amount to be discounted from the original amount. Also, the ID of the applied promotion is stored in the `promotion_id` property of the adjustment line.
 
 ---
 
 ## Discountable Option
 
-The `LineItem` data model has an `is_discountable` field that indicates whether promotions can be applied to the line item. It’s enabled by default.
+The `LineItem` data model has an `is_discountable` property that indicates whether promotions can be applied to the line item. It’s enabled by default.
 
 When disabled, a promotion can’t be applied to a line item. In the context of the Promotion Module, the promotion isn’t applied to the line item even if it matches its rules.
 
@@ -50,7 +50,7 @@ import {
 } from "@medusajs/types"
 
 // retrieve the cart
-const cart = await cartModuleService.retrieve("cart_123", {
+const cart = await cartModuleService.retrieveCart("cart_123", {
   relations: [
     "items.adjustments",
     "shipping_methods.adjustments",

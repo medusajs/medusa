@@ -15,7 +15,7 @@ The Store Module is the `@medusajs/store` NPM package that provides store-relate
 A store holds the main configurations of your commerce store, such as supported currencies, default region and sales channel, and more.
 
 ```ts
-const store = await storeModuleService.create({
+const store = await storeModuleService.createStores({
   name: "My Store",
   supported_currency_codes: ["usd"],
 })
@@ -26,7 +26,7 @@ const store = await storeModuleService.create({
 You can create multiple stores, each having its own configurations.
 
 ```ts
-const stores = await storeModuleService.create([
+const stores = await storeModuleService.createStores([
   {
     name: "USA Store",
     supported_currency_codes: ["usd"],
@@ -62,7 +62,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.STORE)
 
     res.json({
-      stores: await storeModuleService.list(),
+      stores: await storeModuleService.listStores(),
     })
   }
   ```
@@ -81,7 +81,7 @@ For example:
     const storeModuleService: IStoreModuleService =
       container.resolve(ModuleRegistrationName.STORE)
 
-    const stores = await storeModuleService.list()
+    const stores = await storeModuleService.listStores()
   }
   ```
 
@@ -101,7 +101,7 @@ For example:
         ModuleRegistrationName.STORE
       )
     
-    const stores = await storeModuleService.list()
+    const stores = await storeModuleService.listStores()
   })
   ```
 

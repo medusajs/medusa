@@ -185,6 +185,27 @@ export const useUpdateProductVariantsBatch = (
   })
 }
 
+export const useProductVariantsInventoryItemsBatch = (
+  productId: string,
+  options?: UseMutationOptions<any, Error, any>
+) => {
+  return useMutation({
+    mutationFn: (
+      payload: HttpTypes.AdminBatchProductVariantInventoryItemRequest
+    ) => sdk.admin.product.batchVariantInventoryItems(productId, payload),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.lists() })
+      queryClient.invalidateQueries({ queryKey: variantsQueryKeys.details() })
+      queryClient.invalidateQueries({
+        queryKey: productsQueryKeys.detail(productId),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useDeleteVariant = (
   productId: string,
   variantId: string,

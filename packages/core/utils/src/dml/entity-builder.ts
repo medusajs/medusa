@@ -1,11 +1,9 @@
-import type {
-  PropertyType,
-  RelationshipOptions,
-  RelationshipType,
-} from "@medusajs/types"
+import type { DMLSchema, RelationshipOptions } from "@medusajs/types"
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
+import { inferPrimaryKeyProperties } from "./helpers/entity-builder/infer-primary-key-properties"
+import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
 import { DateTimeProperty } from "./properties/date-time"
@@ -24,17 +22,14 @@ import { ManyToMany } from "./relations/many-to-many"
  */
 const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
 
-export type DMLSchema = Record<
-  string,
-  PropertyType<any> | RelationshipType<any>
->
+type DefineOptions = string | { name?: string; tableName: string }
 
 /**
  * Entity builder exposes the API to create an entity and define its
  * schema using the shorthand methods.
  */
 export class EntityBuilder {
-  #disallowImplicitProperties(schema: Record<string, any>) {
+  #disallowImplicitProperties(schema: DMLSchema) {
     const implicitProperties = Object.keys(schema).filter((fieldName) =>
       IMPLICIT_PROPERTIES.includes(fieldName)
     )
@@ -52,10 +47,14 @@ export class EntityBuilder {
    * Define an entity or a model. The name should be unique across
    * all the entities.
    */
-  define<Schema extends DMLSchema>(name: string, schema: Schema) {
+  define<Schema extends DMLSchema>(
+    nameOrConfig: DefineOptions,
+    schema: Schema
+  ) {
     this.#disallowImplicitProperties(schema)
+    schema = inferPrimaryKeyProperties(schema)
 
-    return new DmlEntity(name, {
+    return new DmlEntity(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
@@ -98,6 +97,13 @@ export class EntityBuilder {
    */
   bigNumber() {
     return new BigNumberProperty()
+  }
+
+  /**
+   * Define an array column
+   */
+  array() {
+    return new ArrayProperty()
   }
 
   /**

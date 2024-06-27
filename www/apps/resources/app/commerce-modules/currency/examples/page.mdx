@@ -26,7 +26,7 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
       req.scope.resolve(ModuleRegistrationName.CURRENCY)
 
     res.json({
-      currencies: await currencyModuleService.list(),
+      currencies: await currencyModuleService.listCurrencies(),
     })
   }
   ```
@@ -42,10 +42,11 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
   } from "@medusajs/currency"
 
   export async function GET(request: Request) {
-    const currencyModuleService = await initializeCurrencyModule()
+    const currencyModuleService = 
+      await initializeCurrencyModule()
 
     return NextResponse.json({
-      currencies: await currencyModuleService.list(),
+      currencies: await currencyModuleService.listCurrencies(),
     })
   }
   ```
@@ -72,7 +73,8 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
     const currencyModuleService: ICurrencyModuleService =
       req.scope.resolve(ModuleRegistrationName.CURRENCY)
 
-    const currency = await currencyModuleService.retrieve("usd")
+    const currency = await currencyModuleService
+      .retrieveCurrency("usd")
 
     res.json({
       currency,
@@ -95,7 +97,8 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
   ) {
     const currencyModuleService = await initializeCurrencyModule()
 
-    const currency = await currencyModuleService.retrieve("usd")
+    const currency = await currencyModuleService
+      .retrieveCurrency("usd")
 
     return NextResponse.json({ currency })
   }

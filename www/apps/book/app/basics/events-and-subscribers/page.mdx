@@ -81,9 +81,9 @@ For example:
 {/* TODO change how event names are loaded */}
 
 export const highlights = [
-  ["11"],
-  ["14", "resolve", "Resolve the `IProductModuleService`."],
-  ["14", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["10", "container", "Recieve the Medusa Container in the object parameter."],
+  ["13", "resolve", "Resolve the Product Module's main service."],
+  ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
@@ -111,4 +111,4 @@ export const config: SubscriberConfig = {
 }
 ```
 
-You use the container to resolve the `IProductModuleService`, then log the title of the created product.
+You use the container to resolve the Product Module's main service, then log the title of the created product.

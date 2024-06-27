@@ -8,6 +8,7 @@ export class TextProperty extends BaseProperty<string> {
     name: "text"
     options: {
       primaryKey: boolean
+      searchable: boolean
     }
   }
 
@@ -17,12 +18,18 @@ export class TextProperty extends BaseProperty<string> {
     return this
   }
 
-  constructor(options?: { primaryKey?: boolean }) {
+  searchable() {
+    this.dataType.options.searchable = true
+
+    return this
+  }
+
+  constructor(options?: { primaryKey?: boolean; searchable?: boolean }) {
     super()
 
     this.dataType = {
       name: "text",
-      options: { primaryKey: false, ...options },
+      options: { primaryKey: false, searchable: false, ...options },
     }
   }
 }

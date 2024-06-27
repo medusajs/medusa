@@ -45,6 +45,7 @@ export const ProductVariantDetail = () => {
                 variant,
               }
             })}
+            manageInventory={variant.manage_inventory}
           />
 
           <div className="hidden xl:block">
