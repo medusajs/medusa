@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -87,15 +89,10 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["deleted_at"],
-          "composite": false,
-          "keyName": "IDX_region_deleted_at",
-          "primary": false,
-          "unique": false
-        },
-        {
           "keyName": "region_pkey",
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -159,14 +156,65 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "region_country",
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_region_country_region_id_iso_2_unique",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_region_country_region_id_iso_2_unique\" ON \"region_country\" (region_id, iso_2) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "region_country_pkey",
-          "columnNames": ["iso_2"],
+          "columnNames": [
+            "iso_2"
+          ],
           "composite": false,
           "primary": true,
           "unique": true
@@ -176,9 +224,13 @@
       "foreignKeys": {
         "region_country_region_id_foreign": {
           "constraintName": "region_country_region_id_foreign",
-          "columnNames": ["region_id"],
+          "columnNames": [
+            "region_id"
+          ],
           "localTableName": "public.region_country",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "referencedTableName": "public.region",
           "deleteRule": "set null",
           "updateRule": "cascade"
