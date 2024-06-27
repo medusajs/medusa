@@ -76,12 +76,12 @@ function setRefundableTotal(
   totals: GetItemTotalOutput,
   context: GetLineItemsTotalsContext
 ) {
-  const totalReturned = MathBN.sum(
+  const totalReturnedQuantity = MathBN.sum(
     item.return_requested_quantity ?? 0,
     item.return_received_quantity ?? 0,
     item.return_dismissed_quantity ?? 0
   )
-  const currentQuantity = MathBN.sub(item.quantity, totalReturned)
+  const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
   const discountPerUnit = MathBN.div(discountTotal, item.quantity)
 
   const refundableSubTotal = MathBN.sub(

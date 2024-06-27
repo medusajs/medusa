@@ -1,5 +1,4 @@
 import { BigNumberInput, CartLikeWithTotals } from "@medusajs/types"
-import { isDefined } from "../../common"
 import { BigNumber } from "../big-number"
 import { GetItemTotalInput, getLineItemsTotals } from "../line-item"
 import { MathBN } from "../math"
@@ -97,8 +96,6 @@ export function decorateCartTotals(
   let shippingOriginalTaxTotal = MathBN.convert(0)
   let shippingOriginalTaxSubtotal = MathBN.convert(0)
 
-  let itemsRefundableTotal
-
   const cartItems = items.map((item, index) => {
     const itemTotals = Object.assign(item, itemsTotals[item.id ?? index] ?? {})
 
@@ -131,14 +128,6 @@ export function decorateCartTotals(
       itemsOriginalTaxTotal,
       itemOriginalTaxTotal
     )
-
-    if (isDefined(itemTotals.refundable_total)) {
-      itemsRefundableTotal ??= MathBN.convert(0)
-      itemsRefundableTotal = MathBN.add(
-        itemsRefundableTotal,
-        itemTotals.refundable_total
-      )
-    }
 
     for (const key of Object.values(optionalFields)) {
       if (key in itemTotals) {
@@ -243,10 +232,6 @@ export function decorateCartTotals(
     cart.original_item_total = new BigNumber(itemsOriginalTotal)
     cart.original_item_subtotal = new BigNumber(itemsOriginalSubtotal)
     cart.original_item_tax_total = new BigNumber(itemsOriginalTaxTotal)
-
-    if (itemsRefundableTotal) {
-      cart.items_refundable_total = new BigNumber(itemsRefundableTotal)
-    }
 
     for (const key of Object.keys(extraTotals)) {
       cart[key] = new BigNumber(extraTotals[key])

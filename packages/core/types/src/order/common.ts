@@ -478,12 +478,12 @@ export interface OrderLineItemTotalsDTO {
   discount_tax_total: BigNumberValue
 
   /**
-   * The total refundable total of the order line item.
+   * The refundable total of the order line item.
    */
   refundable_total: BigNumberValue
 
   /**
-   * The total refundable total per unit of the order line item
+   * The refundable total per unit of the order line item.
    */
 
   refundable_total_per_unit: BigNumberValue
@@ -544,12 +544,12 @@ export interface OrderLineItemTotalsDTO {
   raw_discount_tax_total: BigNumberRawValue
 
   /**
-   * The raw total refundable total of the order line item.
+   * The raw refundable total of the order line item..
    */
   raw_refundable_total: BigNumberRawValue
 
   /**
-   * The raw total refundable total per unit of the order line item
+   * The raw  refundable total per unit of the order line item.
    */
   raw_refundable_total_per_unit: BigNumberRawValue
 }
@@ -1020,11 +1020,6 @@ export interface OrderDTO {
   original_shipping_tax_total: BigNumberValue
 
   /**
-   * The refundable total of all order items.
-   */
-  item_refundable_total: BigNumberValue
-
-  /**
    * The raw original item total of the order.
    */
   raw_original_item_total: BigNumberRawValue
@@ -1133,11 +1128,6 @@ export interface OrderDTO {
    * The raw original shipping tax total of the order.
    */
   raw_original_shipping_tax_total: BigNumberRawValue
-
-  /**
-   * The raw refundable total of all order items.
-   */
-  raw_item_refundable_total: BigNumberRawValue
 }
 
 type ReturnStatus = "requested" | "received" | "partially_received" | "canceled"

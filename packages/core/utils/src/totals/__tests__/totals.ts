@@ -714,7 +714,6 @@ describe("Total calculation", function () {
       original_tax_total: 10,
       item_total: 88,
       item_subtotal: 100,
-      items_refundable_total: 0,
       item_tax_total: 8,
       original_item_total: 110,
       original_item_subtotal: 100,

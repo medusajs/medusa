@@ -24,5 +24,4 @@ export type CartLikeWithTotals = {
   original_shipping_total: BigNumberValue
   original_shipping_subtotal: BigNumberValue
   original_shipping_tax_total: BigNumberValue
-  item_refundable_total: BigNumberValue
 }
