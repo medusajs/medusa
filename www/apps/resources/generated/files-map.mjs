@@ -304,10 +304,6 @@ export const filesMap = [
     "pathname": "/commerce-modules/order/events"
   },
   {
-    "filePath": "/www/apps/resources/app/commerce-modules/order/order-change/page.mdx",
-    "pathname": "/commerce-modules/order/order-change"
-  },
-  {
     "filePath": "/www/apps/resources/app/commerce-modules/order/order-versioning/page.mdx",
     "pathname": "/commerce-modules/order/order-versioning"
   },
@@ -322,6 +318,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/relations-to-other-modules/page.mdx",
     "pathname": "/commerce-modules/order/relations-to-other-modules"
+  },
+  {
+    "filePath": "/www/apps/resources/app/commerce-modules/order/return/page.mdx",
+    "pathname": "/commerce-modules/order/return"
   },
   {
     "filePath": "/www/apps/resources/app/commerce-modules/order/tax-lines/page.mdx",

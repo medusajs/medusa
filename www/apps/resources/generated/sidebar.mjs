@@ -2320,15 +2320,15 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/order/order-change",
-                "title": "Order Change",
+                "path": "/commerce-modules/order/order-versioning",
+                "title": "Order Versioning",
                 "children": []
               },
               {
                 "loaded": true,
                 "isPathHref": true,
-                "path": "/commerce-modules/order/order-versioning",
-                "title": "Order Versioning",
+                "path": "/commerce-modules/order/return",
+                "title": "Return",
                 "children": []
               },
               {
@@ -7006,7 +7006,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/file-provider-module",
-                "title": "Create File Module",
+                "title": "Create File Provider",
                 "children": []
               }
             ]
@@ -7050,7 +7050,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/notification-provider-module",
-                "title": "Create Notification Module",
+                "title": "Create Notification Provider",
                 "children": []
               }
             ]
