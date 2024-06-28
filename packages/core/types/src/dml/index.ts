@@ -1,3 +1,5 @@
+import { CamelCase } from "../common"
+
 export const IsDmlEntity = Symbol.for("isDmlEntity")
 
 export type DMLSchema = Record<
@@ -9,11 +11,11 @@ export type IDmlEntityConfig = string | { name?: string; tableName: string }
 
 export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
   TConfig extends string
-    ? TConfig
-    : TConfig extends { name?: string; tableName: string }
-    ? TConfig["name"] extends never
-      ? TConfig["tableName"]
-      : TConfig["name"]
+    ? Capitalize<CamelCase<TConfig>>
+    : TConfig extends { name: string }
+    ? Capitalize<CamelCase<TConfig["name"] & string>>
+    : TConfig extends { tableName: string }
+    ? Capitalize<CamelCase<TConfig["tableName"]>>
     : never
 
 export interface IDmlEntity<

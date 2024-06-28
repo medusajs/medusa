@@ -1,9 +1,10 @@
 import {
-  IDmlEntity,
+  IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   PropertyType,
+  SnakeCase,
 } from "@medusajs/types"
 import { join } from "path"
 import {
@@ -18,6 +19,7 @@ import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
 import { inferPrimaryKeyProperties } from "../dml/helpers/entity-builder/infer-primary-key-properties"
+import { IdProperty } from "../dml/properties/id"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -108,22 +110,51 @@ export function defineJoinerConfig(
   }
 }
 
-type InferPrimaryKeys<T> = T extends IDmlEntity<infer Schema, infer Config>
-  ? {
-      [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
-        ? `${InferDmlEntityNameFromConfig<Config>}_${K & string}`
-        : never]: InferDmlEntityNameFromConfig<Config>
-    }
+type InferLinkableKeyName<
+  Key,
+  Property,
+  DmlConfig extends IDmlEntityConfig
+> = Property extends PrimaryKeyModifier<any, any>
+  ? `${Lowercase<SnakeCase<InferDmlEntityNameFromConfig<DmlConfig>>>}_${Key &
+      string}`
   : never
 
-type InferSchema<T> = T extends IDmlEntity<any> ? InferPrimaryKeys<T> : never
+export type InferDmlSchemaPrimaryKeys<
+  T,
+  OmitIdProperty = false
+> = T extends DmlEntity<infer Schema, infer Config>
+  ? {
+      [K in keyof Schema as OmitIdProperty extends true
+        ? Schema[K] extends PrimaryKeyModifier<any, infer PropertyType>
+          ? PropertyType extends IdProperty
+            ? never
+            : InferLinkableKeyName<K, Schema[K], Config>
+          : InferLinkableKeyName<K, Schema[K], Config>
+        : InferLinkableKeyName<
+            K,
+            Schema[K],
+            Config
+          >]: InferDmlEntityNameFromConfig<Config>
+    }
+  : {}
 
-type InferSchemas<T extends IDmlEntity<any>[]> = {
-  [K in keyof T]: InferSchema<T[K]>
+/**
+ * If not counting the ID property as a primary key return any results it implicitly means
+ * that other properties has been marked as primary keys and the ID property is then removed as automatic primary key.
+ * Therefor it returns all primary keys excluding the automatic ID property as primary keys if any explicit primary keys are defined.
+ */
+export type InferSchemaLinkableKeys<T> = T extends DmlEntity<any>
+  ? keyof InferDmlSchemaPrimaryKeys<T, true> extends keyof {}
+    ? InferDmlSchemaPrimaryKeys<T>
+    : InferDmlSchemaPrimaryKeys<T, true>
+  : never
+
+type InferSchemasLinkableKeys<T extends DmlEntity<any>[]> = {
+  [K in keyof T]: InferSchemaLinkableKeys<T[K]>
 }
 
-type AggregateSchemasPrimaryKeys<T extends IDmlEntity<any>[]> = {
-  [K in keyof InferSchemas<T>]: InferSchemas<T>[K]
+type AggregateSchemasLinkableKeys<T extends DmlEntity<any>[]> = {
+  [K in keyof InferSchemasLinkableKeys<T>]: InferSchemasLinkableKeys<T>[K]
 }
 
 type FlattenUnion<T> = T extends { [K in keyof T]: infer U }
@@ -155,9 +186,8 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
  * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'user', car_id: 'car', car_number_plate: 'car' }
  *
  */
-// TODO: I can't infer the final id primary key decision due to the fact that it can change at run time. One way to fix that would be to use the modifier on the id as well
-type InferLinkableKeys<T extends IDmlEntity<any>[]> = UnionToIntersection<
-  FlattenUnion<AggregateSchemasPrimaryKeys<T>>[0]
+type InferLinkableKeys<T extends DmlEntity<any>[]> = UnionToIntersection<
+  FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]
 >
 
 /**
@@ -165,7 +195,7 @@ type InferLinkableKeys<T extends IDmlEntity<any>[]> = UnionToIntersection<
  * @param dmlObjects
  */
 export function buildLinkableKeysFromDmlObjects<
-  T extends IDmlEntity<any>[],
+  T extends DmlEntity<any>[],
   LinkableKeys = InferLinkableKeys<T>
 >(dmlObjects: T): LinkableKeys {
   const linkableKeys = {} as LinkableKeys
