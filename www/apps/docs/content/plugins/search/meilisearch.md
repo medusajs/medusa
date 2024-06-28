@@ -127,25 +127,32 @@ const plugins = [
   {
     resolve: `medusa-plugin-meilisearch`,
     options: {
-      // other options...
+      config: {
+        host: process.env.MEILISEARCH_HOST,
+        apiKey: process.env.MEILISEARCH_API_KEY,
+      },
       settings: {
         products: {
           indexSettings: {
-            searchableAttributes: [
-              "title", 
+            searchableAttributes: ["title", "description", "variant_sku"],
+            displayedAttributes: [
+              "title",
               "description",
               "variant_sku",
-            ],
-            displayedAttributes: [
-              "id", 
-              "title", 
-              "description", 
-              "variant_sku", 
-              "thumbnail", 
+              "thumbnail",
               "handle",
             ],
           },
           primaryKey: "id",
+          transformer: (product) => ({
+            id: product.id,
+            title: product.title,
+            description: product.description,
+            variant_sku: product.variant_sku,
+            thumbnail: product.thumbnail,
+            handle: product.handle,
+            // include other attributes as needed
+          }),
         },
       },
     },
