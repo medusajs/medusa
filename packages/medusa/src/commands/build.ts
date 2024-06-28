@@ -36,7 +36,8 @@ async function findFiles(dir: string): Promise<string[]> {
     )
     return paths.flat()
   } catch (e) {
-    console.log(`Failed to read directory ${dir}`)
+    console.error(`Failed to read directory ${dir}`)
+    console.error(e)
     throw e
   }
 }
@@ -121,7 +122,8 @@ export default async function ({ directory }: BuildArgs) {
   )
 
   if (error) {
-    console.log(`Failed to load medusa-config.js`)
+    console.error(`Failed to load medusa-config.js`)
+    console.error(error)
     process.exit(1)
   }
 
@@ -158,7 +160,8 @@ export default async function ({ directory }: BuildArgs) {
 
       await buildProductionBuild(adminOptions)
     } catch (error) {
-      console.log("Failed to build admin")
+      console.error("Failed to build admin")
+      console.error(error)
     }
   }
 
