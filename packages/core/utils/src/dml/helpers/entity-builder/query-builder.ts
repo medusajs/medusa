@@ -17,10 +17,16 @@ export function buildWhereQuery(query: QueryCondition): string {
   const conditions: string[] = []
 
   for (const [key, value] of Object.entries(query)) {
+    if (!isDefined(value)) {
+      throw new Error(
+        `value cannot be undefined when building where query for an index`
+      )
+    }
+
     if (isQueryCondition(value)) {
       conditions.push(buildWhereQuery(value))
     } else {
-      conditions.push(buildCondition(key, value as QueryValue))
+      conditions.push(buildCondition(key, value))
     }
   }
 
