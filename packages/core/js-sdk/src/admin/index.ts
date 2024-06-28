@@ -19,6 +19,7 @@ import { StockLocation } from "./stock-location"
 import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
+import { ReturnReason } from "./return-reason"
 
 export class Admin {
   public invite: Invite
@@ -30,6 +31,7 @@ export class Admin {
   public productType: ProductType
   public upload: Upload
   public region: Region
+  public returnReason: ReturnReason
   public stockLocation: StockLocation
   public salesChannel: SalesChannel
   public fulfillmentSet: FulfillmentSet
@@ -52,6 +54,7 @@ export class Admin {
     this.productType = new ProductType(client)
     this.upload = new Upload(client)
     this.region = new Region(client)
+    this.returnReason = new ReturnReason(client)
     this.stockLocation = new StockLocation(client)
     this.salesChannel = new SalesChannel(client)
     this.fulfillmentSet = new FulfillmentSet(client)

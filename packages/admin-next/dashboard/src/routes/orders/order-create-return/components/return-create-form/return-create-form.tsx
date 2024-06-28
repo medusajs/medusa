@@ -30,6 +30,7 @@ import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { useCreateOrderReturn } from "../../../../../hooks/api/orders"
+import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 import { currencies } from "../../../../../lib/currencies"
 
 type ReturnCreateFormProps = {
@@ -47,6 +48,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
   const [showAddItemView, setShowAddItemView] = useState(false)
 
+  const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
   const { shipping_options = [] } = useShippingOptions({
     limit: 999,
@@ -60,7 +62,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     /**
      * TODO: reason selection once Return reason settings are added
      */
-    defaultValues: { items: [], reason_id: "todo" },
+    defaultValues: { items: [] },
     resolver: zodResolver(ReturnCreateSchema),
   })
 
@@ -218,20 +220,21 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   <Form.Field
                     control={form.control}
                     name="reason_id"
-                    render={({ field: { ref, onChange, ...field } }) => {
+                    render={({ field: { ref, value, onChange, ...field } }) => {
                       return (
                         <Form.Item>
                           <Form.Control>
-                            <Select {...field} onValueChange={onChange}>
-                              <Select.Trigger ref={ref}>
-                                <Select.Value />
-                              </Select.Trigger>
-                              <Select.Content>
-                                {/*<Select.Item value="active">*/}
-                                {/*  TODO*/}
-                                {/*</Select.Item>*/}
-                              </Select.Content>
-                            </Select>
+                            <Combobox
+                              value={value}
+                              onChange={(v) => {
+                                onChange(v)
+                              }}
+                              {...field}
+                              options={return_reasons.map((reason) => ({
+                                label: reason.label,
+                                value: reason.id,
+                              }))}
+                            />
                           </Form.Control>
                           <Form.ErrorMessage />
                         </Form.Item>
