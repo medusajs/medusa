@@ -74,16 +74,13 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
           return getReturnableQuantity(row.original)
         },
       }),
-      columnHelper.accessor("refundable", {
+      columnHelper.accessor("refundable_total", {
         header: () => (
           <div className="flex size-full items-center justify-end overflow-hidden text-right">
             <span className="truncate">{t("fields.price")}</span>
           </div>
         ),
         cell: ({ getValue }) => {
-          /**
-           * TODO: what is equivalent of this in V2 ?
-           */
           const amount = getValue() || 0
 
           const stylized = getStylizedAmount(amount, currencyCode)

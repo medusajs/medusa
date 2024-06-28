@@ -13,6 +13,7 @@ const DEFAULT_PROPERTIES = [
   "shipping_total",
   "shipping_tax_total",
   "tax_total",
+  "refundable_total",
 ]
 
 const DEFAULT_RELATIONS = [

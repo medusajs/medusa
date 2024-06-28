@@ -364,7 +364,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   {t("orders.returns.returnTotal")}
                 </span>
                 <span className="txt-small text-ui-fg-subtle">
-                  {getStylizedAmount(-1 * returnTotal, order.currency_code)}
+                  {getStylizedAmount(
+                    returnTotal ? -1 * returnTotal : returnTotal,
+                    order.currency_code
+                  )}
                 </span>
               </div>
 
@@ -409,7 +412,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                   {t("orders.returns.refundAmount")}
                 </span>
                 <span className="txt-small font-medium">
-                  {getStylizedAmount(-1 * refundAmount, order.currency_code)}
+                  {getStylizedAmount(
+                    refundAmount ? -1 * refundAmount : refundAmount,
+                    order.currency_code
+                  )}
                 </span>
               </div>
             </div>
