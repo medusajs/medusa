@@ -70,7 +70,7 @@ export class Order {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<{ order: HttpTypes.AdminOrder }>(
-      `/admin/returns/create-return`,
+      `/admin/returns`,
       {
         method: "POST",
         headers,

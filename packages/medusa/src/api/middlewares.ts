@@ -66,6 +66,7 @@ export const config: MiddlewaresConfig = {
     ...storeOrderRoutesMiddlewares,
     ...authRoutesMiddlewares,
     ...adminWorkflowsExecutionsMiddlewares,
+    ...adminReturnRoutesMiddlewares,
     ...storeRegionRoutesMiddlewares,
     ...adminRegionRoutesMiddlewares,
     ...adminUserRoutesMiddlewares,
@@ -100,6 +101,5 @@ export const config: MiddlewaresConfig = {
     ...storeProductRoutesMiddlewares,
     ...storeReturnReasonRoutesMiddlewares,
     ...adminReturnReasonRoutesMiddlewares,
-    ...adminReturnRoutesMiddlewares,
   ],
 }

@@ -31,7 +31,7 @@ export const adminReturnRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/returns/create-return",
+    matcher: "/admin/returns",
     middlewares: [
       validateAndTransformBody(AdminPostReturnsReqSchema),
       validateAndTransformQuery(
