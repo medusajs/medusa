@@ -7,11 +7,11 @@ import {
   useState,
 } from "react"
 
+import { Adjustments } from "@medusajs/icons"
 import { Button, DropdownMenu, clx } from "@medusajs/ui"
 import {
   CellContext,
   ColumnDef,
-  OnChangeFn,
   Row,
   VisibilityState,
   flexRender,
@@ -41,7 +41,7 @@ interface DataGridRootProps<
   data?: TData[]
   columns: ColumnDef<TData>[]
   state: UseFormReturn<TFieldValues>
-  getSubRows?: (row: TData) => TData[]
+  getSubRows?: (row: TData) => TData[] | undefined
 }
 
 const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
@@ -92,13 +92,6 @@ export const DataGridRoot = <
   const [isEditing, setIsEditing] = useState(false)
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-
-  const onColumnVisibilityChange: OnChangeFn<VisibilityState> = useCallback(
-    (next) => {
-      const update = typeof next === "function" ? next(columnVisibility) : next
-    },
-    [columnVisibility]
-  )
 
   const grid = useReactTable({
     data: data,
@@ -663,7 +656,8 @@ export const DataGridRoot = <
           <DropdownMenu>
             <DropdownMenu.Trigger asChild>
               <Button size="small" variant="secondary">
-                Columns
+                <Adjustments />
+                Edit columns
               </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
@@ -799,6 +793,7 @@ export const DataGridRoot = <
                             {flexRender(cell.column.columnDef.cell, {
                               ...cell.getContext(),
                               columnIndex,
+                              rowIndex: virtualRow.index,
                             } as CellContext<TData, any>)}
                             {isAnchor && (
                               <div

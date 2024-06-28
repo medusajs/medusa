@@ -1,7 +1,7 @@
 import { Heading } from "@medusajs/ui"
 
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useProductCategory } from "../../../hooks/api/categories"
 import { EditCategoryForm } from "./components/edit-category-form"
 

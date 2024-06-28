@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -9,14 +10,13 @@ import { Metadata } from "../../../../../components/forms/metadata/index.ts"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal/index.ts"
+} from "../../../../../components/modals/index.ts"
 import { useUpdateCustomer } from "../../../../../hooks/api/customers.tsx"
 import {
   formValuesToMetadata,
   metadataToFormValues,
 } from "../../../../../lib/metadata.ts"
 import { metadataFormSchema } from "../../../../../lib/validation.ts"
-import { HttpTypes } from "@medusajs/types"
 
 type EditCustomerFormProps = {
   customer: HttpTypes.AdminCustomer

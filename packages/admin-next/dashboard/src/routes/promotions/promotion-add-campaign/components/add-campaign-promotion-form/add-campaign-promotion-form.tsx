@@ -9,7 +9,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { CreateCampaignFormFields } from "../../../../campaigns/common/components/create-campaign-form-fields"
 import { CampaignDetails } from "./campaign-details"

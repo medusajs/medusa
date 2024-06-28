@@ -29,11 +29,14 @@ export const useDataGridCell = <TData, TValue>({
   field,
   context,
 }: UseDataGridCellProps<TData, TValue>) => {
-  const { row, columnIndex } = context as DataGridCellContext<TData, TValue>
+  const { rowIndex, columnIndex } = context as DataGridCellContext<
+    TData,
+    TValue
+  >
 
   const coords: CellCoords = useMemo(
-    () => ({ row: row.index, col: columnIndex }),
-    [row, columnIndex]
+    () => ({ row: rowIndex, col: columnIndex }),
+    [rowIndex, columnIndex]
   )
   const id = generateCellId(coords)
 

@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CampaignResponse, PromotionDTO } from "@medusajs/types"
-import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, Tooltip, toast } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
-  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
+  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -14,7 +14,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
+} from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useAddOrRemoveCampaignPromotions } from "../../../../hooks/api/campaigns"
 import { usePromotions } from "../../../../hooks/api/promotions"

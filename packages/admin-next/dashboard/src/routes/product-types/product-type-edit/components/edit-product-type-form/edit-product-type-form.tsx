@@ -8,7 +8,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateProductType } from "../../../../../hooks/api/product-types"
 
 const EditProductTypeSchema = z.object({

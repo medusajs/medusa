@@ -1,6 +1,6 @@
-import { CreateReservationForm } from "./components/create-reservation-form"
-import { RouteFocusModal } from "../../../../components/route-modal"
 import { useSearchParams } from "react-router-dom"
+import { RouteFocusModal } from "../../../../components/modals"
+import { CreateReservationForm } from "./components/create-reservation-form"
 
 export const CreateReservationModal = () => {
   const [params] = useSearchParams()

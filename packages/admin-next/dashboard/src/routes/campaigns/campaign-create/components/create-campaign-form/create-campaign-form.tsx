@@ -8,7 +8,7 @@ import { CampaignBudgetTypeValues } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateCampaign } from "../../../../../hooks/api/campaigns"
 import { CreateCampaignFormFields } from "../../../common/components/create-campaign-form-fields"
 
