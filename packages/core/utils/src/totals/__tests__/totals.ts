@@ -641,12 +641,14 @@ describe("Total calculation", function () {
         {
           unit_price: 50,
           quantity: 2,
-          fulfilled_quantity: 2,
-          shipped_quantity: 2,
-          return_requested_quantity: 0,
-          return_received_quantity: 1,
-          return_dismissed_quantity: 1,
-          written_off_quantity: 0,
+          detail: {
+            fulfilled_quantity: 2,
+            shipped_quantity: 2,
+            return_requested_quantity: 0,
+            return_received_quantity: 1,
+            return_dismissed_quantity: 1,
+            written_off_quantity: 0,
+          },
           tax_lines: [
             {
               rate: 10,
@@ -668,12 +670,6 @@ describe("Total calculation", function () {
         {
           unit_price: 50,
           quantity: 2,
-          fulfilled_quantity: 2,
-          shipped_quantity: 2,
-          return_requested_quantity: 0,
-          return_received_quantity: 1,
-          return_dismissed_quantity: 1,
-          written_off_quantity: 0,
           tax_lines: [
             {
               rate: 10,
@@ -688,6 +684,14 @@ describe("Total calculation", function () {
               total: 22,
             },
           ],
+          detail: {
+            fulfilled_quantity: 2,
+            return_dismissed_quantity: 1,
+            return_received_quantity: 1,
+            return_requested_quantity: 0,
+            shipped_quantity: 2,
+            written_off_quantity: 0,
+          },
           subtotal: 100,
           total: 88,
           original_total: 110,
