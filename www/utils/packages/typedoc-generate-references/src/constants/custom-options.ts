@@ -17,9 +17,14 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     parentIgnore: true,
   }),
   dml: getOptions({
-    entryPointPath: "packages/core/utils/src/dml/entity-builder.ts",
+    entryPointPath: [
+      "packages/core/utils/src/dml/entity-builder.ts",
+      "packages/core/utils/src/dml/entity.ts",
+      "packages/core/utils/src/dml/properties/base.ts",
+    ],
     tsConfigName: "utils.json",
     name: "dml",
+    generateNamespaces: true,
   }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",

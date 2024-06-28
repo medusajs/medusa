@@ -94,12 +94,27 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   }
 
   /**
-   * Delete actions to be performed when the entity is deleted. For example:
-   *
-   * You can configure relationship data to be deleted when the current
-   * entity is deleted.
+   * This method configures which related data models an operation, such as deletion,
+   * should be cascaded to.
    * 
-   * @group Configuration Methods
+   * For example, if a store is deleted, its product should also be deleted.
+   * 
+   * @param options - The cascades configurations. They object's keys are the names of
+   * the actions, such as `deleted`, and the value is an array of relations that the 
+   * action should be cascaded to.
+   * 
+   * @example
+   * import { model } from "@medusajs/utils"
+   * 
+   * const Store = model.define("store", {
+   *   id: model.id(),
+   *   products: model.hasMany(() => Product),
+   * })
+   * .cascades({
+   *   delete: ["products"],
+   * })
+   * 
+   * @customNamespace Model Methods
    */
   cascades(
     options: EntityCascades<
@@ -125,11 +140,77 @@ export class DmlEntity<Schema extends DMLSchema> implements IDmlEntity<Schema> {
   }
 
   /**
+   * This method defines indices on the data model. An index can be on multiple columns
+   * and have conditions.
    * 
-   * @param indexes 
-   * @returns 
+   * @param indexes - The index's configuration.
    * 
-   * @group Configuration Methods
+   * @example
+   * An example of a simple index:
+   * 
+   * ```ts
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   name: model.text(),
+   *   age: model.number()
+   * }).indexes([
+   *   {
+   *     on: ["name", "age"],
+   *   },
+   * ])
+   * 
+   * export default MyCustom
+   * ```
+   * 
+   * To add a condition on the index, use the `where` option:
+   * 
+   * ```ts
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   name: model.text(),
+   *   age: model.number()
+   * }).indexes([
+   *   {
+   *     on: ["name", "age"],
+   *     where: {
+   *       age: 30
+   *     }
+   *   },
+   * ])
+   * 
+   * export default MyCustom
+   * ```
+   * 
+   * The condition can also be a negation. For example:
+   * 
+   * ```ts
+   * import { model } from "@medusajs/utils"
+   * 
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   name: model.text(),
+   *   age: model.number()
+   * }).indexes([
+   *   {
+   *     on: ["name", "age"],
+   *     where: {
+   *       age: {
+   *         $ne: 30
+   *       }
+   *     }
+   *   },
+   * ])
+   * 
+   * export default MyCustom
+   * ```
+   * 
+   * In this example, the index is created when the value of `age` doesn't equal `30`.
+   * 
+   * @customNamespace Model Methods
    */
   indexes(indexes: EntityIndex<Schema, string | QueryCondition>[]) {
     for (const index of indexes) {
