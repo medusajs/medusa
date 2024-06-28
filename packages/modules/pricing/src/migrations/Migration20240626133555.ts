@@ -48,6 +48,11 @@ export class Migration20240626133555 extends Migration {
     )
     this.addSql('drop index if exists "IDX_price_rule_price_set_id";')
     this.addSql('drop index if exists "IDX_price_rule_rule_type_id";')
+    this.addSql('drop index if exists "IDX_price_rule_price_id_unique";')
+    this.addSql(
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_price_rule_price_id_attribute_unique" ON "price_rule" (price_id, attribute) WHERE deleted_at IS NULL;'
+    )
+
     this.addSql(
       'alter table if exists "price_rule" drop column if exists "price_set_id";'
     )

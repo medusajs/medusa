@@ -635,14 +635,14 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_price_rule_price_id_rule_type_id_unique",
+          "keyName": "IDX_price_rule_price_id_attribute_unique",
           "columnNames": [
             "price_id"
           ],
           "composite": false,
           "primary": false,
           "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_id_rule_type_id_unique\" ON \"price_rule\" (price_id, rule_type_id) WHERE deleted_at IS NULL"
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_price_rule_price_id_attribute_unique\" ON \"price_rule\" (price_id, attribute) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_price_rule_deleted_at",
