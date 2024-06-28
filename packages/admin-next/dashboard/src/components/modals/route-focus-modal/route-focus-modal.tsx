@@ -20,6 +20,11 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
    */
   useEffect(() => {
     setOpen(true)
+
+    return () => {
+      setOpen(false)
+      onStackedModalOpen(false)
+    }
   }, [])
 
   const handleOpenChange = (open: boolean) => {
@@ -38,7 +43,7 @@ const Root = ({ prev = "..", children }: RouteFocusModalProps) => {
         <StackedModalProvider onOpenChange={onStackedModalOpen}>
           <FocusModal.Content
             className={clx({
-              "!inset-x-5 !inset-y-3": stackedModalOpen,
+              "!bg-ui-bg-disabled !inset-x-5 !inset-y-3": stackedModalOpen,
             })}
           >
             {children}

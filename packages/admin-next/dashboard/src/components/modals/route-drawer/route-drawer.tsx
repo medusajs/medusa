@@ -20,6 +20,11 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
    */
   useEffect(() => {
     setOpen(true)
+
+    return () => {
+      setOpen(false)
+      onStackedModalOpen(false)
+    }
   }, [])
 
   const handleOpenChange = (open: boolean) => {
@@ -38,7 +43,7 @@ const Root = ({ prev = "..", children }: RouteDrawerProps) => {
         <StackedModalProvider onOpenChange={onStackedModalOpen}>
           <Drawer.Content
             className={clx({
-              "!right-5": stackedModalOpen,
+              "!bg-ui-bg-disabled !inset-y-5 !right-5": stackedModalOpen,
             })}
           >
             {children}
