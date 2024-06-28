@@ -129,15 +129,18 @@ export class Migration20240604100512 extends Migration {
         exchange_id
     )
     WHERE exchange_id IS NOT NULL AND deleted_at IS NOT NULL;
-    
-    
 
-    CREATE TYPE return_status_enum AS ENUM (
-        'requested',
-        'received',
-        'partially_received',
-        'canceled'
-    );
+
+    DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'return_status_enum') THEN
+            CREATE TYPE return_status_enum AS ENUM (
+            'requested',
+            'received',
+            'partially_received',
+            'canceled');
+        END IF;
+    END$$;
 
     CREATE TABLE IF NOT EXISTS "return" (
         "id" TEXT NOT NULL,
@@ -265,12 +268,15 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_exchange_item_item_id" ON "order_exchange_item" ("item_id")
     WHERE deleted_at IS NOT NULL;
 
-
-
-    CREATE TYPE order_claim_type_enum AS ENUM (
-        'refund',
-        'replace'
-    );
+    DO $$
+      BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_claim_type_enum') THEN
+          CREATE TYPE order_claim_type_enum AS ENUM (
+              'refund',
+              'replace'
+            );
+        END IF;
+    END$$;
 
     CREATE TABLE IF NOT EXISTS "order_claim" (
         "id" TEXT NOT NULL,
@@ -304,12 +310,19 @@ export class Migration20240604100512 extends Migration {
 
 
 
-    CREATE TYPE claim_reason_enum AS ENUM (
-        'missing_item',
-        'wrong_item',
-        'production_failure',
-        'other'
-    );
+
+
+    DO $$
+        BEGIN
+          IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'claim_reason_enum') THEN
+            CREATE TYPE claim_reason_enum AS ENUM (
+                'missing_item',
+                'wrong_item',
+                'production_failure',
+                'other'
+              );
+          END IF;
+        END$$;
 
     CREATE TABLE IF NOT EXISTS "order_claim_item" (
         "id" TEXT NOT NULL,
@@ -336,7 +349,6 @@ export class Migration20240604100512 extends Migration {
     CREATE INDEX IF NOT EXISTS "IDX_order_claim_item_item_id" ON "order_claim_item" ("item_id")
     WHERE deleted_at IS NOT NULL;
 
-    
     
     CREATE TABLE IF NOT EXISTS "order_claim_item_image" (
         "id" TEXT NOT NULL,
