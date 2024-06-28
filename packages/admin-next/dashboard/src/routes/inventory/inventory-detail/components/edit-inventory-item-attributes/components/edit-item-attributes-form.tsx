@@ -4,7 +4,7 @@ import { Button, Input, toast } from "@medusajs/ui"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"

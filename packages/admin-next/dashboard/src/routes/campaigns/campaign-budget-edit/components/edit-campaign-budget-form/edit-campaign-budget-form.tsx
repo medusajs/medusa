@@ -8,7 +8,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
 import { getCurrencySymbol } from "../../../../../lib/currencies"
 

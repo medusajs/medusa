@@ -1,5 +1,5 @@
 import * as zod from "zod"
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { TaxRegionCreateForm } from "../common/components/tax-region-create-form"
 
 const CreateTaxRegionForm = zod.object({

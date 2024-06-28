@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Fragment } from "react"
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
@@ -12,11 +13,10 @@ import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
-import { HttpTypes } from "@medusajs/types"
 
 type CreateProductVariantFormProps = {
   product: HttpTypes.AdminProduct

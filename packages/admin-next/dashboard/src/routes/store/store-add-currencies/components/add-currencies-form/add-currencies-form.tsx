@@ -1,9 +1,9 @@
 import { Currency } from "@medusajs/medusa"
 import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
+  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
-  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useUpdateStore } from "../../../../../hooks/api/store"
