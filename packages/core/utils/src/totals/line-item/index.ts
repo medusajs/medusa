@@ -1,5 +1,5 @@
 import { AdjustmentLineDTO, BigNumberInput, TaxLineDTO } from "@medusajs/types"
-import { isDefined } from "../../common"
+import { isDefined, pickValueFromObject } from "../../common"
 import { calculateAdjustmentTotal } from "../adjustment"
 import { BigNumber } from "../big-number"
 import { MathBN } from "../math"
@@ -17,13 +17,14 @@ export interface GetItemTotalInput {
   is_tax_inclusive?: boolean
   tax_lines?: Pick<TaxLineDTO, "rate">[]
   adjustments?: Pick<AdjustmentLineDTO, "amount">[]
-
-  fulfilled_quantity?: BigNumber
-  shipped_quantity?: BigNumber
-  return_requested_quantity?: BigNumber
-  return_received_quantity?: BigNumber
-  return_dismissed_quantity?: BigNumber
-  written_off_quantity?: BigNumber
+  detail?: {
+    fulfilled_quantity: BigNumber
+    shipped_quantity: BigNumber
+    return_requested_quantity: BigNumber
+    return_received_quantity: BigNumber
+    return_dismissed_quantity: BigNumber
+    written_off_quantity: BigNumber
+  }
 }
 
 export interface GetItemTotalOutput {
@@ -76,10 +77,11 @@ function setRefundableTotal(
   totals: GetItemTotalOutput,
   context: GetLineItemsTotalsContext
 ) {
+  const itemDetail = item.detail!
   const totalReturnedQuantity = MathBN.sum(
-    item.return_requested_quantity ?? 0,
-    item.return_received_quantity ?? 0,
-    item.return_dismissed_quantity ?? 0
+    itemDetail.return_requested_quantity ?? 0,
+    itemDetail.return_received_quantity ?? 0,
+    itemDetail.return_dismissed_quantity ?? 0
   )
   const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
   const discountPerUnit = MathBN.div(discountTotal, item.quantity)
@@ -152,7 +154,7 @@ function getLineItemTotals(
   })
   totals.tax_total = new BigNumber(taxTotal)
 
-  if (isDefined(item.return_requested_quantity)) {
+  if (isDefined(item.detail?.return_requested_quantity)) {
     setRefundableTotal(item, discountTotal, totals, context)
   }
 
@@ -186,10 +188,18 @@ function getLineItemTotals(
   }
 
   for (const field in optionalFields) {
-    if (field in item) {
-      const totalField = optionalFields[field]
-      totals[totalField] = new BigNumber(MathBN.mult(totalPerUnit, item[field]))
+    const totalField = optionalFields[field]
+
+    let target = item[totalField]
+    if (field.includes(".")) {
+      target = pickValueFromObject(field, item)
     }
+
+    if (!isDefined(target)) {
+      continue
+    }
+
+    totals[totalField] = new BigNumber(MathBN.mult(totalPerUnit, target))
   }
 
   return totals
