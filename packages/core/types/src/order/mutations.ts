@@ -424,7 +424,8 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderReturnDTO extends BaseOrderBundledActionsDTO {
+export interface CancelOrderReturnDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
   return_id: string
 }
 
@@ -450,7 +451,8 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderClaimDTO extends BaseOrderBundledActionsDTO {
+export interface CancelOrderClaimDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
   claim_id: string
 }
 
@@ -463,7 +465,8 @@ export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
-export interface CancelOrderExchangeDTO extends BaseOrderBundledActionsDTO {
+export interface CancelOrderExchangeDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
   exchange_id: string
 }
 
