@@ -661,6 +661,8 @@
       "reason": "Reason",
       "reasonHint": "Choose why the customer want to return items.",
       "note": "Note",
+      "noInventoryLevel": "No inventory level",
+      "noInventoryLevelDesc": "The selected location does not have an inventory level for the selected items. The return can be requested but can’t be received until an inventory level is created for the selected location.",
       "noteHint": "You can type freely if you want to specify something.",
       "location": "Location",
       "locationHint": "Choose which location you want to return the items to.",

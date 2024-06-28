@@ -1,18 +1,24 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
+  Alert,
   Button,
   CurrencyInput,
   Heading,
   IconButton,
   Input,
   Switch,
+  Text,
   toast,
 } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
-import { MagnifyingGlass, PencilSquare } from "@medusajs/icons"
+import {
+  AdminOrder,
+  AdminOrderLineItem,
+  InventoryLevelDTO,
+} from "@medusajs/types"
+import { PencilSquare } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
@@ -22,7 +28,6 @@ import {
 } from "../../../../../components/modals"
 
 import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
-import { LinkButton } from "../../../../../components/common/link-button"
 import { AddReturnItemsTable } from "../add-return-items-table"
 import { Form } from "../../../../../components/common/form"
 import { ReturnItem } from "./return-item"
@@ -33,6 +38,7 @@ import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { useCreateOrderReturn } from "../../../../../hooks/api/orders"
 import { useReturnReasons } from "../../../../../hooks/api/return-reasons"
 import { currencies } from "../../../../../lib/currencies"
+import { sdk } from "../../../../../lib/client"
 
 type ReturnCreateFormProps = {
   order: AdminOrder
@@ -48,6 +54,9 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
 
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
   const [customShippingAmount, setCustomShippingAmount] = useState(0)
+  const [inventoryMap, setInventoryMap] = useState<
+    Record<string, LevelWithAvailability[]>
+  >({})
 
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
@@ -80,6 +89,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     name: "items",
     control: form.control,
   })
+
+  const showPlaceholder = !items.length
+  const locationId = form.watch("location_id")
+  const shippingOptionId = form.watch("option_id")
 
   const { mutateAsync, isPending } = useCreateOrderReturn()
 
@@ -138,8 +151,72 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   }, [isShippingPriceEdit])
 
   const showLevelsWarning = useMemo(() => {
-    // TODO
-    return false
+    if (!locationId) {
+      return false
+    }
+
+    const allItemsHaveLocation = items
+      .map((_i) => {
+        const item = itemsMap.get(_i.item_id)
+        if (!item?.variant_id) {
+          return true
+        }
+
+        if (!item.variant.manage_inventory) {
+          return true
+        }
+
+        return inventoryMap[item.variant_id]?.find(
+          (l) => l.location_id === locationId
+        )
+      })
+      .every(Boolean)
+
+    return !allItemsHaveLocation
+  }, [items, inventoryMap, locationId])
+
+  useEffect(() => {
+    const getInventoryMap = async () => {
+      const ret: Record<string, InventoryLevelDTO[]> = {}
+
+      if (!items.length) {
+        return ret
+      }
+
+      ;(
+        await Promise.all(
+          items.map(async (_i) => {
+            const item = itemsMap.get(_i.item_id)
+
+            if (!item.variant_id) {
+              return undefined
+            }
+            return await sdk.admin.product.retrieveVariant(
+              item.variant.product.id,
+              item.variant_id,
+              { fields: "*inventory,*inventory.location_levels" }
+            )
+          })
+        )
+      )
+        .filter((it) => it?.variant)
+        .forEach((item) => {
+          const { variant } = item
+          const levels = variant.inventory[0]?.location_levels
+
+          if (!levels) {
+            return
+          }
+
+          ret[variant.id] = levels
+        })
+
+      return ret
+    }
+
+    getInventoryMap().then((map) => {
+      setInventoryMap(map)
+    })
   }, [items])
 
   const returnTotal = useMemo(() => {
@@ -158,10 +235,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   }, [items, customShippingAmount])
 
   const refundAmount = returnTotal - shippingTotal
-
-  const showPlaceholder = !items.length
-  const locationId = form.watch("location_id")
-  const shippingOptionId = form.watch("option_id")
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -400,6 +473,18 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
                 </div>
               </div>
             )}
+
+            {showLevelsWarning && (
+              <Alert variant="warning" dismissible className="mt-4 p-5">
+                <div className="text-ui-fg-subtle txt-small pb-2 font-medium leading-[20px]">
+                  {t("orders.returns.noInventoryLevel")}
+                </div>
+                <Text className="text-ui-fg-subtle txt-small leading-normal">
+                  {t("orders.returns.noInventoryLevelDesc")}
+                </Text>
+              </Alert>
+            )}
+
             {/*TOTALS SECTION*/}
             <div className="mt-8 border-y border-dotted py-4">
               <div className="mb-2 flex items-center justify-between">
