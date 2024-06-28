@@ -111,12 +111,12 @@ export interface EntityConstructor<Props> extends Function {
  */
 export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
   ? {
-      [K in keyof Schema as Schema[K] extends RelationshipType<any>
-        ? Schema[K]["type"] extends "belongsTo"
+      [K in keyof Schema as Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
           ? `${K & string}_id`
           : K
-        : K]: Schema[K] extends RelationshipType<infer R>
-        ? Schema[K]["type"] extends "belongsTo"
+        : K]: Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
           ? string
           : Schema[K]
         : Schema[K]
@@ -183,8 +183,10 @@ export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
   infer Schema
 >
   ? {
-      [K in keyof Schema as Schema[K] extends RelationshipType<any>
-        ? never
+      [K in keyof Schema as Schema[K] extends { type: infer Type }
+        ? Type extends RelationshipTypes
+          ? never
+          : K
         : K]: string
     } & InferForeignKeys<T>
   : never)
@@ -217,6 +219,8 @@ export type SimpleQueryValue = string | number | boolean | null
 export type NeQueryValue = { $ne: SimpleQueryValue }
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
-export interface QueryCondition {
-  [key: string]: QueryValue | QueryCondition | QueryCondition[]
+export type QueryCondition<T extends DMLSchema = DMLSchema> = {
+  [K in keyof IDmlEntity<T>["schema"]]?: T[K] extends object
+    ? QueryValue
+    : QueryCondition<T>
 }

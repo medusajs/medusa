@@ -1,5 +1,6 @@
 import { DMLSchema, EntityIndex, QueryCondition } from "@medusajs/types"
 import { isObject, isPresent } from "../../../common"
+import { DateTimeProperty } from "../../properties/date-time"
 import { buildWhereQuery } from "./query-builder"
 
 /*
@@ -9,14 +10,16 @@ import { buildWhereQuery } from "./query-builder"
   this will need to be updated to include that case.
 */
 export function transformIndexWhere<TSchema extends DMLSchema>(
-  index: EntityIndex<TSchema, string | QueryCondition>
+  index: EntityIndex<TSchema, string | QueryCondition<TSchema>>
 ): string {
   return isObject(index.where)
-    ? transformWhereQb(index.where)
+    ? transformWhereQb<TSchema>(index.where)
     : transformWhere(index.where)
 }
 
-function transformWhereQb(where: QueryCondition): string {
+function transformWhereQb<TSchema extends DMLSchema>(
+  where: QueryCondition<TSchema & { deleted_at: DateTimeProperty }>
+): string {
   if (!isPresent(where.deleted_at)) {
     where.deleted_at = null
   }
