@@ -143,11 +143,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     return items
       .map((i) => itemsMap.get(i.item_id))
       .reduce((acc: number, curr: AdminOrderLineItem, index): number => {
-        /**
-         * TODO: IMPORTANT! Change `curr.total` to `curr.refundable` once the filed is added on the BD
-         */
-        const totalPerItem = curr.total / curr.quantity
-        return acc + items[index].quantity * totalPerItem
+        return acc + items[index].quantity * curr.refundable_total_per_unit
       }, 0)
   }, [items])
 
