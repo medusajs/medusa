@@ -105,8 +105,10 @@
     "date-fns": "^2.30.0",
     "prism-react-renderer": "^2.0.6",
     "prismjs": "^1.29.0",
+    "react-aria": "^3.33.1",
     "react-currency-input-field": "^3.6.11",
     "react-day-picker": "^8.8.0",
+    "react-stately": "^3.31.1",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.1"
   },
