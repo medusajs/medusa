@@ -1,1 +1,1 @@
-export * from "./return-create-form.tsx"
+export * from "./return-create-form"

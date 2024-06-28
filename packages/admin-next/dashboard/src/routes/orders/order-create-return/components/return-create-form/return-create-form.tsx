@@ -6,25 +6,26 @@ import {
   Heading,
   IconButton,
   Input,
-  Select,
   Switch,
   toast,
 } from "@medusajs/ui"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { AdminOrder, AdminOrderLineItem } from "@medusajs/types"
-import { PencilSquare } from "@medusajs/icons"
+import { MagnifyingGlass, PencilSquare } from "@medusajs/icons"
 
 import {
   RouteFocusModal,
+  StackedFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+  useStackedModal,
+} from "../../../../../components/modals"
 
 import { ReturnCreateSchema, ReturnCreateSchemaType } from "./schema"
 import { LinkButton } from "../../../../../components/common/link-button"
 import { AddReturnItemsTable } from "../add-return-items-table"
 import { Form } from "../../../../../components/common/form"
-import { ReturnItem } from "./return-item.tsx"
+import { ReturnItem } from "./return-item"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { useShippingOptions } from "../../../../../hooks/api/shipping-options"
@@ -43,10 +44,10 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
 
+  const { setIsOpen } = useStackedModal()
+
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
   const [customShippingAmount, setCustomShippingAmount] = useState(0)
-
-  const [showAddItemView, setShowAddItemView] = useState(false)
 
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
   const { stock_locations = [] } = useStockLocations({ limit: 999 })
@@ -127,7 +128,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
       }
     })
 
-    setShowAddItemView(false)
+    setIsOpen("items", false)
   }
 
   useEffect(() => {
@@ -190,9 +191,50 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
             <Heading level="h1">{t("orders.returns.create")}</Heading>
             <div className="mt-8 flex items-center justify-between">
               <Heading level="h2">{t("orders.returns.inbound")}</Heading>
-              <LinkButton onClick={() => setShowAddItemView(true)}>
-                {t("actions.addItems")}
-              </LinkButton>
+              <StackedFocusModal id="items">
+                <StackedFocusModal.Trigger asChild>
+                  <LinkButton>{t("actions.addItems")}</LinkButton>
+                </StackedFocusModal.Trigger>
+                <StackedFocusModal.Content>
+                  <StackedFocusModal.Header>
+                    <div className="flex w-full items-center justify-end gap-x-4">
+                      <div className="flex items-center justify-end gap-x-2">
+                        <RouteFocusModal.Close
+                          asChild
+                          onClick={(e) => {
+                            e.stopPropagation()
+                          }}
+                        >
+                          <Button
+                            role="button"
+                            variant="secondary"
+                            size="small"
+                          >
+                            {t("actions.cancel")}
+                          </Button>
+                        </RouteFocusModal.Close>
+                        <Button
+                          key="submit-button"
+                          type="submit"
+                          variant="primary"
+                          size="small"
+                          role="button"
+                          onClick={() => onItemsSelected()}
+                        >
+                          {t("actions.save")}
+                        </Button>
+                      </div>
+                    </div>
+                  </StackedFocusModal.Header>
+
+                  <AddReturnItemsTable
+                    items={order.items!}
+                    selectedItems={items.map((i) => i.item_id)}
+                    currencyCode={order.currency_code}
+                    onSelectionChange={(s) => (selectedItems = s)}
+                  />
+                </StackedFocusModal.Content>
+              </StackedFocusModal>
             </div>
             {showPlaceholder && (
               <div className="bg-ui-bg-field mt-4 block h-[56px] w-full rounded-lg border border-dashed" />
@@ -454,17 +496,6 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
             </div>
           </div>
         </RouteFocusModal.Body>
-
-        {showAddItemView && (
-          <AddReturnItemsTable
-            items={order.items!}
-            selectedItems={items.map((i) => i.item_id)}
-            currencyCode={order.currency_code}
-            onSelectionChange={(s) => (selectedItems = s)}
-            onSave={onItemsSelected}
-            onCancel={() => setShowAddItemView(false)}
-          />
-        )}
       </form>
     </RouteFocusModal.Form>
   )

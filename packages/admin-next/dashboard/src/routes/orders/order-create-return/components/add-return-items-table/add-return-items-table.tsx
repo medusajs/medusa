@@ -15,15 +15,12 @@ import { useReturnItemTableQuery } from "./use-return-item-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { DataTable } from "../../../../../components/table/data-table"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
-import { RouteFocusModal } from "../../../../../components/route-modal"
 
 const PAGE_SIZE = 50
 const PREFIX = "rit"
 
 type AddReturnItemsTableProps = {
   onSelectionChange: (ids: string[]) => void
-  onSave: () => void
-  onCancel: () => void
   selectedItems: string[]
   items: AdminOrderLineItem[]
   currencyCode: string
@@ -34,11 +31,7 @@ export const AddReturnItemsTable = ({
   selectedItems,
   items,
   currencyCode,
-  onSave,
-  onCancel,
 }: AddReturnItemsTableProps) => {
-  const { t } = useTranslation()
-
   const [rowSelection, setRowSelection] = useState<RowSelectionState>(
     selectedItems.reduce((acc, id) => {
       acc[id] = true
@@ -139,57 +132,27 @@ export const AddReturnItemsTable = ({
   })
 
   return (
-    <RouteFocusModal className="-mx-2 translate-y-2">
-      <RouteFocusModal.Header>
-        <div className="flex w-full items-center justify-end gap-x-4">
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close
-              asChild
-              onClick={(e) => {
-                e.stopPropagation()
-                onCancel()
-              }}
-            >
-              <Button variant="secondary" size="small">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button
-              key="submit-button"
-              type="submit"
-              variant="primary"
-              size="small"
-              onClick={() => onSave()}
-            >
-              {t("actions.save")}
-            </Button>
-          </div>
-        </div>
-      </RouteFocusModal.Header>
-      <RouteFocusModal.Body className="flex size-full justify-center overflow-y-auto">
-        <div className="flex size-full flex-col overflow-hidden">
-          <DataTable
-            table={table}
-            columns={columns}
-            pageSize={PAGE_SIZE}
-            count={queriedItems.length}
-            filters={filters}
-            pagination
-            layout="fill"
-            search
-            orderBy={[
-              "product_title",
-              "variant_title",
-              "sku",
-              "returnable_quantity",
-              "refundable_amount",
-            ]}
-            prefix={PREFIX}
-            queryObject={raw}
-          />
-        </div>
-      </RouteFocusModal.Body>
-    </RouteFocusModal>
+    <div className="flex size-full flex-col overflow-hidden">
+      <DataTable
+        table={table}
+        columns={columns}
+        pageSize={PAGE_SIZE}
+        count={queriedItems.length}
+        filters={filters}
+        pagination
+        layout="fill"
+        search
+        orderBy={[
+          "product_title",
+          "variant_title",
+          "sku",
+          "returnable_quantity",
+          "refundable_amount",
+        ]}
+        prefix={PREFIX}
+        queryObject={raw}
+      />
+    </div>
   )
 }
 
