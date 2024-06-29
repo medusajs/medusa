@@ -1,12 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
-    Button,
-    clx,
-    DropdownMenu,
-    Heading,
-    Input,
-    Switch,
-    Text,
+  Button,
+  clx,
+  DropdownMenu,
+  Heading,
+  Input,
+  Switch,
+  Text,
 } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -19,9 +19,9 @@ import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import { SplitView } from "../../../../../components/layout/split-view"
 import {
-    RouteFocusModal,
-    useRouteModal,
-} from "../../../../../components/route-modal"
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { useUpdateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
 import { ConditionEntities, Operators } from "../../../common/constants"

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { useTaxRate } from "../../../hooks/api/tax-rates"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRateEditForm } from "./components"

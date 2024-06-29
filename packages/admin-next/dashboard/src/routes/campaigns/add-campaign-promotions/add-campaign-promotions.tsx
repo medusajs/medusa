@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { useCampaign } from "../../../hooks/api/campaigns"
 import { AddCampaignPromotionsForm } from "./components"
 

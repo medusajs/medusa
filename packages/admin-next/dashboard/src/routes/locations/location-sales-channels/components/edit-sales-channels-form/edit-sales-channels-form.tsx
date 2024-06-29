@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useUpdateStockLocationSalesChannels } from "../../../../../hooks/api/stock-locations"

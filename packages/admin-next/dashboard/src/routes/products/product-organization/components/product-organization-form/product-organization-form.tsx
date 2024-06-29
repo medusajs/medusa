@@ -9,7 +9,7 @@ import { Combobox } from "../../../../../components/inputs/combobox"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { client, sdk } from "../../../../../lib/client"

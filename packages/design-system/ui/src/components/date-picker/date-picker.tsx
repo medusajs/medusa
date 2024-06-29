@@ -25,8 +25,8 @@ const displayVariants = cva({
   ),
   variants: {
     size: {
-      base: "txt-compact-small h-8 px-2 py-1.5",
-      small: "txt-compact-small h-7 px-2 py-1",
+      base: "txt-compact-small h-8 pr-2 py-1.5",
+      small: "txt-compact-small h-7 pr-2 py-1",
     },
   },
   defaultVariants: {
@@ -63,7 +63,11 @@ const Display = React.forwardRef<HTMLButtonElement, DisplayProps>(
           className={clx(displayVariants({ size }), className)}
           {...props}
         >
+          <span className={clx("flex items-center justify-center size-8 border-r", {
+            "size-7": size === "small",
+          })}>
           <CalendarIcon className="text-ui-fg-muted" />
+          </span>
           <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left">
             {children ? (
               children

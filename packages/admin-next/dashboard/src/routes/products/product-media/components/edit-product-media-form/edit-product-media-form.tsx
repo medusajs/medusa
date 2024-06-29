@@ -5,20 +5,20 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Link } from "react-router-dom"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
 import { sdk } from "../../../../../lib/client"
+import { MediaGrid } from "../../../common/components/media-grid-view"
+import { UploadMediaFormItem } from "../../../common/components/upload-media-form-item"
 import {
   EditProductMediaSchema,
   MediaSchema,
 } from "../../../product-create/constants"
-import { HttpTypes } from "@medusajs/types"
-import { MediaGrid } from "../../../common/components/media-grid-view"
-import { UploadMediaFormItem } from "../../../common/components/upload-media-form-item"
 import { EditProductMediaSchemaType } from "../../../product-create/types"
 
 type ProductMediaViewProps = {

@@ -8,7 +8,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateCustomerGroup } from "../../../../../hooks/api/customer-groups"
 
 export const CreateCustomerGroupSchema = zod.object({

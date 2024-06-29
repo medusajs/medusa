@@ -1,4 +1,4 @@
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { CreateCampaignForm } from "./components/create-campaign-form"
 
 export const CampaignCreate = () => {
