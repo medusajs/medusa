@@ -4,6 +4,7 @@ import {
   defineJoinerConfig,
 } from "../joiner-config-builder"
 import { Modules } from "../definition"
+import { InfersLinksConfig } from "../types/linkable-keys"
 import { model } from "../../dml"
 import { expectTypeOf } from "expect-type"
 
@@ -333,6 +334,9 @@ describe("joiner-config-builder", () => {
         number_plate: model.text().primaryKey(),
         test: model.text(),
       })
+
+      // TODO add a separate test
+      type LinkConfig = InfersLinksConfig<[typeof user, typeof car]>
 
       const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
       expectTypeOf(linkableKeys).toMatchTypeOf<{
