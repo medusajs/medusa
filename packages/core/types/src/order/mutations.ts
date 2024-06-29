@@ -381,6 +381,7 @@ interface BaseOrderBundledItemActionsDTO {
   internal_note?: string | null
   note?: string | null
   metadata?: Record<string, unknown> | null
+  [key: string]: any
 }
 interface BaseOrderBundledActionsDTO {
   order_id: string

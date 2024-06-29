@@ -15,7 +15,7 @@ async function createOrderChange(
 ) {
   return await service.createOrderChange_(
     {
-      order_id: data.order_id,
+      order_id: returnRef.order_id,
       return_id: returnRef.id,
       reference: "return",
       reference_id: returnRef.id,
@@ -34,10 +34,19 @@ export async function cancelReturn(
   data: OrderTypes.CancelOrderReturnDTO,
   sharedContext?: Context
 ) {
-  const returnOrder = await this.orderService_.retrieveReturn(
+  const returnOrder = await this.retrieveReturn(
     data.return_id,
     {
-      select: ["id", "items.id", "items.quantity"],
+      select: [
+        "id",
+        "order_id",
+        "items.item_id",
+        "items.quantity",
+        "items.received_quantity",
+        "items.item.title",
+        "reason.id",
+      ],
+      relations: ["items"],
     },
     sharedContext
   )
@@ -47,11 +56,13 @@ export async function cancelReturn(
   returnOrder.items.forEach((item) => {
     actions.push({
       action: ChangeActionType.CANCEL_RETURN_ITEM,
+      order_id: returnOrder.order_id,
       return_id: returnOrder.id,
       reference: "return",
       reference_id: returnOrder.id,
       details: {
-        reference_id: item.id,
+        reference_id: item.item_id,
+        order_id: returnOrder.order_id,
         return_id: returnOrder.id,
         quantity: item.quantity,
       },
@@ -71,7 +82,7 @@ export async function cancelReturn(
       [
         {
           data: {
-            canceled_at: Date.now(),
+            canceled_at: new Date(),
           },
           selector: {
             id: returnOrder.id,

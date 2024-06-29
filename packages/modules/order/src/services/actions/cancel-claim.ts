@@ -15,7 +15,7 @@ async function createOrderChange(
 ) {
   return await service.createOrderChange_(
     {
-      order_id: data.order_id,
+      order_id: returnRef.order_id,
       claim_id: returnRef.id,
       reference: "return",
       reference_id: returnRef.id,
@@ -34,15 +34,16 @@ export async function cancelClaim(
   data: OrderTypes.CancelOrderClaimDTO,
   sharedContext?: Context
 ) {
-  const claimOrder = await this.orderService_.retrieveClaim(
+  const claimOrder = await this.retrieveClaim(
     data.claim_id,
     {
       select: [
         "id",
+        "order_id",
         "return.id",
         "return.items.id",
         "return.items.quantity",
-        "claim_items.id",
+        "claim_items.item_id",
         "claim_items.quantity",
         "additional_items.id",
         "additional_items.quantity",
@@ -56,12 +57,14 @@ export async function cancelClaim(
   claimOrder.return.items.forEach((item) => {
     actions.push({
       action: ChangeActionType.CANCEL_RETURN_ITEM,
+      order_id: claimOrder.order_id,
       claim_id: claimOrder.id,
       return_id: claimOrder.return.id,
       reference: "return",
       reference_id: claimOrder.return.id,
       details: {
         reference_id: item.id,
+        order_id: claimOrder.order_id,
         claim_id: claimOrder.id,
         return_id: claimOrder.return.id,
         quantity: item.quantity,
@@ -86,11 +89,13 @@ export async function cancelClaim(
   claimOrder.additional_items.forEach((item) => {
     actions.push({
       action: ChangeActionType.ITEM_REMOVE,
+      order_id: claimOrder.order_id,
       claim_id: claimOrder.id,
       reference: "claim",
       reference_id: claimOrder.id,
       details: {
         reference_id: item.id,
+        order_id: claimOrder.order_id,
         claim_id: claimOrder.id,
         quantity: item.quantity,
       },
@@ -110,7 +115,7 @@ export async function cancelClaim(
       [
         {
           data: {
-            canceled_at: Date.now(),
+            canceled_at: new Date(),
           },
           selector: {
             id: claimOrder.id,

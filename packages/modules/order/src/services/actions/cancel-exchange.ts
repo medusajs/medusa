@@ -15,7 +15,7 @@ async function createOrderChange(
 ) {
   return await service.createOrderChange_(
     {
-      order_id: data.order_id,
+      order_id: returnRef.order_id,
       exchange_id: returnRef.id,
       reference: "return",
       reference_id: returnRef.id,
@@ -34,13 +34,14 @@ export async function cancelExchange(
   data: OrderTypes.CancelOrderExchangeDTO,
   sharedContext?: Context
 ) {
-  const exchangeOrder = await this.orderService_.retrieveExchange(
+  const exchangeOrder = await this.retrieveExchange(
     data.exchange_id,
     {
       select: [
         "id",
+        "order_id",
         "return.id",
-        "return.items.id",
+        "return.items.item_id",
         "return.items.quantity",
         "additional_items.id",
         "additional_items.quantity",
@@ -54,12 +55,14 @@ export async function cancelExchange(
   exchangeOrder.return.items.forEach((item) => {
     actions.push({
       action: ChangeActionType.CANCEL_RETURN_ITEM,
+      order_id: exchangeOrder.order_id,
       exchange_id: exchangeOrder.id,
       return_id: exchangeOrder.return.id,
       reference: "return",
       reference_id: exchangeOrder.return.id,
       details: {
-        reference_id: item.id,
+        reference_id: item.item_id,
+        order_id: exchangeOrder.order_id,
         exchange_id: exchangeOrder.id,
         return_id: exchangeOrder.return.id,
         quantity: item.quantity,
@@ -70,11 +73,13 @@ export async function cancelExchange(
   exchangeOrder.additional_items.forEach((item) => {
     actions.push({
       action: ChangeActionType.ITEM_REMOVE,
+      order_id: exchangeOrder.order_id,
       exchange_id: exchangeOrder.id,
       reference: "exchange",
       reference_id: exchangeOrder.id,
       details: {
-        reference_id: item.id,
+        order_id: exchangeOrder.order_id,
+        reference_id: item.item_id,
         exchange_id: exchangeOrder.id,
         quantity: item.quantity,
       },
@@ -94,7 +99,7 @@ export async function cancelExchange(
       [
         {
           data: {
-            canceled_at: Date.now(),
+            canceled_at: new Date(),
           },
           selector: {
             id: exchangeOrder.id,

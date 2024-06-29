@@ -5,7 +5,6 @@ import {
   deduplicate,
   isDefined,
 } from "@medusajs/utils"
-import { Order, OrderClaim, OrderExchange, Return } from "@models"
 
 export function formatOrder(
   order,
@@ -20,7 +19,7 @@ export function formatOrder(
   orders.map((order) => {
     let mainOrder = order
 
-    const isRelatedEntity = options?.entity !== Order
+    const isRelatedEntity = options?.entity?.name !== "Order"
 
     if (isRelatedEntity) {
       if (!order.order) {
@@ -48,11 +47,12 @@ export function formatOrder(
         formatOrderReturn(order.return, mainOrder)
       }
 
-      if (options.entity === OrderClaim) {
+      const entityName = options.entity.name
+      if (entityName === "OrderClaim") {
         formatClaim(order)
-      } else if (options.entity === OrderExchange) {
+      } else if (entityName === "OrderExchange") {
         formatExchange(order)
-      } else if (options.entity === Return) {
+      } else if (entityName === "Return") {
         formatReturn(order)
       }
     }
@@ -85,9 +85,6 @@ export function formatOrder(
 }
 
 function formatOrderReturn(orderReturn, mainOrder) {
-  orderReturn.items = orderReturn.items.filter(
-    (item) => !item.is_additional_item
-  )
   orderReturn.items.forEach((orderItem) => {
     const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
 
@@ -155,6 +152,10 @@ function formatReturn(returnOrder) {
 }
 
 export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
+  if (isRelatedEntity) {
+    return mapRepositoryToRelatedEntity(config)
+  }
+
   const conf = { ...config }
 
   function replace(obj, type): string[] | undefined {
@@ -220,6 +221,38 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       }
     }
   }
+
+  return conf
+}
+
+function mapRepositoryToRelatedEntity(config) {
+  const conf = { ...config }
+
+  function replace(obj, type): string[] | undefined {
+    if (!isDefined(obj[type])) {
+      return
+    }
+
+    return deduplicate(
+      obj[type].sort().map((rel) => {
+        if (
+          rel.includes("shipping_methods") &&
+          !rel.includes("shipping_methods.shipping_method")
+        ) {
+          obj.populate.push("shipping_methods.shipping_method")
+
+          return rel.replace(
+            "shipping_methods",
+            "shipping_methods.shipping_method"
+          )
+        }
+        return rel
+      })
+    )
+  }
+
+  conf.options.fields = replace(config.options, "fields")
+  conf.options.populate = replace(config.options, "populate")
 
   return conf
 }
