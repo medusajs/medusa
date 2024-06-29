@@ -5,10 +5,10 @@ const Country = model
   .define(
     { name: "Country", tableName: "region_country" },
     {
-      iso_2: model.text().primaryKey(),
+      iso_2: model.text().searchable().primaryKey(),
       iso_3: model.text(),
       num_code: model.text(),
-      name: model.text(),
+      name: model.text().searchable(),
       display_name: model.text(),
       region: model
         .belongsTo(() => Region, { mappedBy: "countries" })
