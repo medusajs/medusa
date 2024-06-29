@@ -78,7 +78,7 @@ describe("Order Return - Actions", function () {
         actions,
       })
     }).toThrow(
-      "Cannot request to return more items than what was shipped for item 1."
+      "Cannot request to return more items than what was fulfilled for item 1."
     )
 
     expect(() => {
@@ -190,7 +190,7 @@ describe("Order Return - Actions", function () {
         ],
       })
     }).toThrow(
-      "Cannot request to return more items than what was shipped for item 3."
+      "Cannot request to return more items than what was fulfilled for item 3."
     )
 
     expect(() => {

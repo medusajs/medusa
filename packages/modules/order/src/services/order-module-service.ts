@@ -2917,7 +2917,7 @@ export default class OrderModuleService<
     data: OrderTypes.CancelOrderClaimDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<any> {
-    // return await BundledActions.cancelOrderClaim.bind(this)(data, sharedContext)
+    return await BundledActions.cancelClaim.bind(this)(data, sharedContext)
   }
 
   @InjectManager("baseRepository_")
@@ -2977,12 +2977,7 @@ export default class OrderModuleService<
     data: OrderTypes.CancelOrderExchangeDTO,
     @MedusaContext() sharedContext?: Context
   ): Promise<any> {
-    /*
-    return await BundledActions.cancelOrderExchange.bind(this)(
-      data,
-      sharedContext
-    )
-    */
+    return await BundledActions.cancelExchange.bind(this)(data, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")

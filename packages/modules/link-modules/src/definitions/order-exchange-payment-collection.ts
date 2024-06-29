@@ -1,30 +1,33 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS, Modules } from "@medusajs/utils"
 
-export const OrderPaymentCollection: ModuleJoinerConfig = {
-  serviceName: LINKS.OrderPaymentCollection,
+export const OrderExchangePaymentCollection: ModuleJoinerConfig = {
+  serviceName: LINKS.OrderExchangePaymentCollection,
   isLink: true,
   databaseConfig: {
-    tableName: "order_payment_collection",
-    idPrefix: "ordpay",
+    tableName: "order_exchange_payment_collection",
+    idPrefix: "excpay",
   },
   alias: [
     {
-      name: ["order_payment_collection", "order_payment_collections"],
+      name: [
+        "order_exchange_payment_collection",
+        "order_exchange_payment_collections",
+      ],
       args: {
-        entity: "LinkOrderPaymentCollection",
+        entity: "LinkOrderExchangePaymentCollection",
       },
     },
   ],
-  primaryKeys: ["id", "order_id", "payment_collection_id"],
+  primaryKeys: ["id", "exchange_id", "payment_collection_id"],
   relationships: [
     {
       serviceName: Modules.ORDER,
       primaryKey: "id",
-      foreignKey: "order_id",
+      foreignKey: "exchange_id",
       alias: "order",
       args: {
-        methodSuffix: "Orders",
+        methodSuffix: "OrderExchanges",
       },
     },
     {
@@ -41,28 +44,28 @@ export const OrderPaymentCollection: ModuleJoinerConfig = {
     {
       serviceName: Modules.ORDER,
       fieldAlias: {
-        payment_collections: {
-          path: "payment_collections_link.payment_collection",
+        exchange_payment_collections: {
+          path: "exchange_payment_collections_link.payment_collection",
           isList: true,
         },
       },
       relationship: {
-        serviceName: LINKS.OrderPaymentCollection,
-        primaryKey: "order_id",
+        serviceName: LINKS.OrderExchangePaymentCollection,
+        primaryKey: "exchange_id",
         foreignKey: "id",
-        alias: "payment_collections_link",
+        alias: "exchange_payment_collections_link",
       },
     },
     {
       serviceName: Modules.PAYMENT,
       fieldAlias: {
-        order: "order_link.order",
+        exchange: "order_exchange_link.order",
       },
       relationship: {
-        serviceName: LINKS.OrderPaymentCollection,
+        serviceName: LINKS.OrderExchangePaymentCollection,
         primaryKey: "payment_collection_id",
         foreignKey: "id",
-        alias: "order_link",
+        alias: "order_exchange_link",
       },
     },
   ],

@@ -16,7 +16,7 @@ async function createOrderChange(
   return await service.createOrderChange_(
     {
       order_id: data.order_id,
-      return_id: returnRef.id,
+      exchange_id: returnRef.id,
       reference: "return",
       reference_id: returnRef.id,
       description: data.description,
@@ -29,30 +29,53 @@ async function createOrderChange(
   )
 }
 
-export async function cancelReturn(
+export async function cancelExchange(
   this: any,
-  data: OrderTypes.CancelOrderReturnDTO,
+  data: OrderTypes.CancelOrderExchangeDTO,
   sharedContext?: Context
 ) {
-  const returnOrder = await this.orderService_.retrieveReturn(
-    data.return_id,
+  const exchangeOrder = await this.orderService_.retrieveExchange(
+    data.exchange_id,
     {
-      select: ["id", "items.id", "items.quantity"],
+      select: [
+        "id",
+        "return.id",
+        "return.items.id",
+        "return.items.quantity",
+        "additional_items.id",
+        "additional_items.quantity",
+      ],
     },
     sharedContext
   )
 
   const actions: CreateOrderChangeActionDTO[] = []
 
-  returnOrder.items.forEach((item) => {
+  exchangeOrder.return.items.forEach((item) => {
     actions.push({
       action: ChangeActionType.CANCEL_RETURN_ITEM,
-      return_id: returnOrder.id,
+      exchange_id: exchangeOrder.id,
+      return_id: exchangeOrder.return.id,
       reference: "return",
-      reference_id: returnOrder.id,
+      reference_id: exchangeOrder.return.id,
       details: {
         reference_id: item.id,
-        return_id: returnOrder.id,
+        exchange_id: exchangeOrder.id,
+        return_id: exchangeOrder.return.id,
+        quantity: item.quantity,
+      },
+    })
+  })
+
+  exchangeOrder.additional_items.forEach((item) => {
+    actions.push({
+      action: ChangeActionType.ITEM_REMOVE,
+      exchange_id: exchangeOrder.id,
+      reference: "exchange",
+      reference_id: exchangeOrder.id,
+      details: {
+        reference_id: item.id,
+        exchange_id: exchangeOrder.id,
         quantity: item.quantity,
       },
     })
@@ -61,20 +84,20 @@ export async function cancelReturn(
   const [change] = await createOrderChange(
     this,
     data,
-    returnOrder,
+    exchangeOrder,
     actions,
     sharedContext
   )
 
   await promiseAll([
-    this.updateReturns(
+    this.updateExchanges(
       [
         {
           data: {
             canceled_at: Date.now(),
           },
           selector: {
-            id: returnOrder.id,
+            id: exchangeOrder.id,
           },
         },
       ],
@@ -83,5 +106,5 @@ export async function cancelReturn(
     this.confirmOrderChange(change.id, sharedContext),
   ])
 
-  return returnOrder
+  return exchangeOrder
 }
