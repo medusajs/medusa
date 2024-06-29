@@ -1,4 +1,5 @@
-import { AdjustmentLineDTO, TaxLineDTO } from "@medusajs/types"
+import { AdjustmentLineDTO, BigNumberInput, TaxLineDTO } from "@medusajs/types"
+import { isDefined, pickValueFromObject } from "../../common"
 import { calculateAdjustmentTotal } from "../adjustment"
 import { BigNumber } from "../big-number"
 import { MathBN } from "../math"
@@ -16,13 +17,14 @@ export interface GetItemTotalInput {
   is_tax_inclusive?: boolean
   tax_lines?: Pick<TaxLineDTO, "rate">[]
   adjustments?: Pick<AdjustmentLineDTO, "amount">[]
-
-  fulfilled_quantity?: BigNumber
-  shipped_quantity?: BigNumber
-  return_requested_quantity?: BigNumber
-  return_received_quantity?: BigNumber
-  return_dismissed_quantity?: BigNumber
-  written_off_quantity?: BigNumber
+  detail?: {
+    fulfilled_quantity: BigNumber
+    shipped_quantity: BigNumber
+    return_requested_quantity: BigNumber
+    return_received_quantity: BigNumber
+    return_dismissed_quantity: BigNumber
+    written_off_quantity: BigNumber
+  }
 }
 
 export interface GetItemTotalOutput {
@@ -36,6 +38,9 @@ export interface GetItemTotalOutput {
 
   discount_total: BigNumber
   discount_tax_total: BigNumber
+
+  refundable_total?: BigNumber
+  refundable_total_per_unit?: BigNumber
 
   tax_total: BigNumber
   original_tax_total: BigNumber
@@ -64,6 +69,41 @@ export function getLineItemsTotals(
   }
 
   return itemsTotals
+}
+
+function setRefundableTotal(
+  item: GetItemTotalInput,
+  discountTotal: BigNumberInput,
+  totals: GetItemTotalOutput,
+  context: GetLineItemsTotalsContext
+) {
+  const itemDetail = item.detail!
+  const totalReturnedQuantity = MathBN.sum(
+    itemDetail.return_requested_quantity ?? 0,
+    itemDetail.return_received_quantity ?? 0,
+    itemDetail.return_dismissed_quantity ?? 0
+  )
+  const currentQuantity = MathBN.sub(item.quantity, totalReturnedQuantity)
+  const discountPerUnit = MathBN.div(discountTotal, item.quantity)
+
+  const refundableSubTotal = MathBN.sub(
+    MathBN.mult(currentQuantity, item.unit_price),
+    MathBN.mult(currentQuantity, discountPerUnit)
+  )
+
+  const taxTotal = calculateTaxTotal({
+    taxLines: item.tax_lines || [],
+    includesTax: context.includeTax,
+    taxableAmount: refundableSubTotal,
+  })
+  const refundableTotal = MathBN.add(refundableSubTotal, taxTotal)
+
+  totals.refundable_total_per_unit = new BigNumber(
+    MathBN.eq(currentQuantity, 0)
+      ? 0
+      : MathBN.div(refundableTotal, currentQuantity)
+  )
+  totals.refundable_total = new BigNumber(refundableTotal)
 }
 
 function getLineItemTotals(
@@ -114,6 +154,10 @@ function getLineItemTotals(
   })
   totals.tax_total = new BigNumber(taxTotal)
 
+  if (isDefined(item.detail?.return_requested_quantity)) {
+    setRefundableTotal(item, discountTotal, totals, context)
+  }
+
   const originalTaxTotal = calculateTaxTotal({
     taxLines: item.tax_lines || [],
     includesTax: context.includeTax,
@@ -144,10 +188,18 @@ function getLineItemTotals(
   }
 
   for (const field in optionalFields) {
-    if (field in item) {
-      const totalField = optionalFields[field]
-      totals[totalField] = new BigNumber(MathBN.mult(totalPerUnit, item[field]))
+    const totalField = optionalFields[field]
+
+    let target = item[totalField]
+    if (field.includes(".")) {
+      target = pickValueFromObject(field, item)
     }
+
+    if (!isDefined(target)) {
+      continue
+    }
+
+    totals[totalField] = new BigNumber(MathBN.mult(totalPerUnit, target))
   }
 
   return totals

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 
+import { RouteFocusModal } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
-import { RouteFocusModal } from "../../../components/route-modal"
 import { PricingEdit } from "./pricing-edit"
 
 export const ProductPrices = () => {

@@ -11,7 +11,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
   },
-  "include": ["src", "../typedoc-plugin-custom/src/types"],
+  "include": ["src"],
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node",

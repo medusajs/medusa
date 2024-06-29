@@ -1,3 +1,4 @@
+import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 import {
   QueryKey,
   UseMutationOptions,
@@ -12,7 +13,6 @@ import { queryKeysFactory } from "../../lib/query-key-factory"
 import { CreateCustomerGroupSchema } from "../../routes/customer-groups/customer-group-create/components/create-customer-group-form"
 import { EditCustomerGroupSchema } from "../../routes/customer-groups/customer-group-edit/components/edit-customer-group-form"
 import { customersQueryKeys } from "./customers"
-import { HttpTypes, PaginatedResponse } from "@medusajs/types"
 
 const CUSTOMER_GROUPS_QUERY_KEY = "customer_groups" as const
 export const customerGroupsQueryKeys = queryKeysFactory(
@@ -45,9 +45,9 @@ export const useCustomerGroups = (
   query?: Record<string, any>,
   options?: Omit<
     UseQueryOptions<
-      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
+      PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
       Error,
-      PaginatedResponse<HttpTypes.AdminCustomerGroup[]>,
+      PaginatedResponse<{ customer_groups: HttpTypes.AdminCustomerGroup[] }>,
       QueryKey
     >,
     "queryFn" | "queryKey"

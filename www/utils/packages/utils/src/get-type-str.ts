@@ -187,9 +187,9 @@ export function getDeclarationType({
 }: TypeOptions<DeclarationReflection>): string {
   escape = getShouldEscape(wrapBackticks, escape)
 
-  if (model.indexSignature || model.children) {
+  if (model.indexSignatures || model.children) {
     let indexSignature = ""
-    const declarationIndexSignature = model.indexSignature
+    const declarationIndexSignature = model.indexSignatures?.[0]
     if (declarationIndexSignature) {
       const key = declarationIndexSignature.parameters
         ? declarationIndexSignature.parameters.map(

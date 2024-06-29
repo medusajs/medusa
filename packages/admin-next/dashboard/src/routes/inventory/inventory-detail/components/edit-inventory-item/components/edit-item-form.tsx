@@ -4,15 +4,15 @@ import { Button, Input, toast } from "@medusajs/ui"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 
-import { Form } from "../../../../../../components/common/form"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { InventoryTypes } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { Form } from "../../../../../../components/common/form"
+import { useUpdateInventoryItem } from "../../../../../../hooks/api/inventory"
 
 type EditInventoryItemFormProps = {
   item: InventoryTypes.InventoryItemDTO

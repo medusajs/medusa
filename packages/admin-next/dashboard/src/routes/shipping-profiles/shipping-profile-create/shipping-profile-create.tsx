@@ -1,6 +1,5 @@
-import React from "react"
 
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { CreateShippingProfileForm } from "./components/create-shipping-profile-form"
 
 export function ShippingProfileCreate() {

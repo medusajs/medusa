@@ -1,20 +1,20 @@
-import { Button, Heading, IconButton, Input, Label, toast } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
-import { useFieldArray, useForm } from "react-hook-form"
-import { XMarkMini } from "@medusajs/icons"
-import * as zod from "zod"
-import i18next from "i18next"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { XMarkMini } from "@medusajs/icons"
 import { AdminInventoryItem, AdminProductVariant } from "@medusajs/types"
+import { Button, Heading, IconButton, Input, Label, toast } from "@medusajs/ui"
+import i18next from "i18next"
+import { useFieldArray, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import * as zod from "zod"
 
+import { Form } from "../../../../../components/common/form"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
-import { Form } from "../../../../../components/common/form"
-import { Combobox } from "../../../../../components/inputs/combobox"
-import { useComboboxData } from "../../../../../hooks/use-combobox-data"
+} from "../../../../../components/modals"
 import { useProductVariantsInventoryItemsBatch } from "../../../../../hooks/api/products"
+import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
 
 type ManageVariantInventoryItemsFormProps = {
