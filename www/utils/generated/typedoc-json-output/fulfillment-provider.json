@@ -1,19 +1,19 @@
 {
-	"id": 12982,
+	"id": 13422,
 	"name": "fulfillment-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 12983,
+			"id": 13423,
 			"name": "AbstractFulfillmentProviderService",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 12984,
+					"id": 13424,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -26,7 +26,7 @@
 					}
 				},
 				{
-					"id": 12985,
+					"id": 13425,
 					"name": "_isFulfillmentService",
 					"variant": "declaration",
 					"kind": 1024,
@@ -40,7 +40,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 12986,
+					"id": 13426,
 					"name": "isFulfillmentService",
 					"variant": "declaration",
 					"kind": 2048,
@@ -49,14 +49,14 @@
 					},
 					"signatures": [
 						{
-							"id": 12987,
+							"id": 13427,
 							"name": "isFulfillmentService",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 12988,
+									"id": 13428,
 									"name": "obj",
 									"variant": "param",
 									"kind": 32768,
@@ -75,21 +75,21 @@
 					]
 				},
 				{
-					"id": 12989,
+					"id": 13429,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12990,
+							"id": 13430,
 							"name": "new AbstractFulfillmentProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12983,
+								"target": 13423,
 								"name": "AbstractFulfillmentProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -101,20 +101,20 @@
 				{
 					"title": "Constructors",
 					"children": [
-						12989
+						13429
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						12984,
-						12985
+						13424,
+						13425
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						12986
+						13426
 					]
 				}
 			],
@@ -135,37 +135,37 @@
 		{
 			"title": "Classes",
 			"children": [
-				12983
+				13423
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"12982": {
+		"13422": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": ""
 		},
-		"12983": {
+		"13423": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService"
 		},
-		"12984": {
+		"13424": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.identifier"
 		},
-		"12985": {
+		"13425": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService._isFulfillmentService"
 		},
-		"12986": {
+		"13426": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"12987": {
+		"13427": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "AbstractFulfillmentProviderService.isFulfillmentService"
 		},
-		"12988": {
+		"13428": {
 			"sourceFileName": "../../../../packages/core/utils/src/fulfillment/provider.ts",
 			"qualifiedName": "obj"
 		}
@@ -175,7 +175,7 @@
 			"1": "../../../../packages/core/utils/src/fulfillment/provider.ts"
 		},
 		"reflections": {
-			"1": 12982
+			"1": 13422
 		}
 	}
 }

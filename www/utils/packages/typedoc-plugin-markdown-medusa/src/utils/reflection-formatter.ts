@@ -10,9 +10,11 @@ import * as Handlebars from "handlebars"
 import { stripCode } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import {
+  getDmlRelationProperties,
   getReflectionType,
   getType,
   getTypeChildren,
+  isDmlRelation,
   stripLineBreaks,
 } from "utils"
 import { MarkdownTheme } from "../theme"
@@ -153,6 +155,10 @@ export function reflectionComponentFormatter({
     children: [],
   }
 
+  if (level + 1 > (maxLevel || MarkdownTheme.MAX_LEVEL)) {
+    return componentItem
+  }
+
   const hasChildren = "children" in reflection && reflection.children?.length
 
   if (reflection.variant === "declaration" && isDmlEntity(reflection)) {
@@ -167,9 +173,20 @@ export function reflectionComponentFormatter({
       })
     )
   } else if (
-    (reflection.type || hasChildren) &&
-    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
+    reflection.variant === "declaration" &&
+    isDmlRelation(reflection)
   ) {
+    componentItem.children = getDmlRelationProperties(
+      reflection.type as ReferenceType
+    ).map((childItem) =>
+      reflectionComponentFormatter({
+        reflection: childItem,
+        level: level + 1,
+        maxLevel,
+        project,
+      })
+    )
+  } else if (reflection.type || hasChildren) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren({

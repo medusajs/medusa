@@ -1,0 +1,31 @@
+---
+slug: /references/data-model/model-methods/cascades
+sidebar_label: cascades
+---
+
+import { TypeList } from "docs-ui"
+
+# cascades Method - API Reference
+
+This method configures which related data models an operation, such as deletion,
+should be cascaded to.
+
+For example, if a store is deleted, its product should also be deleted.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+.cascades({
+  delete: ["products"],
+})
+```
+
+## Parameters
+
+<TypeList types={[{"name":"options","type":"[EntityCascades](../../../../types/DmlTypes/types/types.DmlTypes.EntityCascades/page.mdx)&#60;[ExtractEntityRelations](../../../../types/DmlTypes/types/types.DmlTypes.ExtractEntityRelations/page.mdx)&#60;Schema, \"hasOne\" \\| \"hasMany\"&#62;&#62;","description":"The cascades configurations. They object's keys are the names of\nthe actions, such as `deleted`, and the value is an array of relations that the \naction should be cascaded to.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"delete","type":"Relationships","description":"The related models to delete when a record of this data model\nis deleted.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="cascades"/>
