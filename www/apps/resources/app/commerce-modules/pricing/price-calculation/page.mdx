@@ -8,15 +8,17 @@ export const metadata = {
 
 In this document, you'll learn how prices are calculated when you use the `calculatePrices` method of the Pricing Module's main service.
 
-## Overview
+## calculatePrices Method
 
-The [calculatePrices method](/references/pricing/calculatePrices) accepts the ID of one or more price sets and a context. It returns a price object with the best matching price for each price set.
+The [calculatePrices method](/references/pricing/calculatePrices) accepts as parameters the ID of one or more price sets and a context.
+
+It returns a price object with the best matching price for each price set.
 
 ---
 
 ## Calculation Context
 
-The context is an object passed as a second parameter to the `calculatePrices` method. It must contain at least the `currency_code`. Only prices in the price sets with the same currency code are considered for the price selection.
+The calculation context is an optional object passed as a second parameter to the `calculatePrices` method. It accepts rules to restrict the selected prices in the price set.
 
 For example:
 
@@ -26,22 +28,7 @@ const price = await pricingModuleService.calculatePrices(
   {
     context: {
       currency_code: currencyCode,
-    },
-  }
-)
-```
-
-The context object can also contain any custom rules, with the key being the `rule_attribute` of a rule type and its value being the rule's value.
-
-For example:
-
-```ts
-const price = await pricingModuleService.calculatePrices(
-  { id: [priceSetId] },
-  {
-    context: {
-      currency_code: currencyCode,
-      region_id: "US",
+      region_id: "reg_123",
     },
   }
 )
@@ -53,12 +40,10 @@ const price = await pricingModuleService.calculatePrices(
 
 For each price set, the method selects two prices:
 
-- The calculated price: a price that belongs to a price list. If there are no prices associated with a price list, it’ll be the same as the original price.
-- The original price: If the calculated price's price list type is `override`, then the original price will be the same as the calculated price. Otheriwse, a price that doesn't belong to a price list.
+- The calculated price: Either the best context-matching price that belongs to a price list or the same as the original price.
+- The original price: Either the same as the calculated price if its price list is of type `override`, or the best context-matching price that doesn't belong to a price list.
 
-After the original and calculated prices are selected, the method will use them to create a price object for each price set.
-
-The price object has the following properties:
+Both prices are returned in an object along with the following properties:
 
 <TypeList
   types={[
@@ -70,7 +55,7 @@ The price object has the following properties:
     {
       name: "is_calculated_price_price_list",
       type: "`boolean`",
-      description: "Whether the calculated price belongs to a price list. As mentioned earlier, if no valid price list is found, the calculated price is set to the original price, which doesn't belong to a price list."
+      description: "Whether the calculated price belongs to a price list."
     },
     {
       name: "calculated_amount",
@@ -80,7 +65,7 @@ The price object has the following properties:
     {
       name: "is_original_price_price_list",
       type: "`boolean`",
-      description: "Whether the original price belongs to a price list. As mentioned earlier, if the price list of the calculated price is of type `override`, the original price will be the same as the calculated price."
+      description: "Whether the original price belongs to a price list."
     },
     {
       name: "original_amount",
@@ -95,10 +80,10 @@ The price object has the following properties:
     {
       name: "calculated_price",
       type: "`object`",
-      description: "The calculated price's price details and potentially its associated price list.",
+      description: "The calculated price's price details.",
       children: [
         {
-          name: "price_id",
+          name: "id",
           type: "`string`",
           description: "The ID of the price."
         },
@@ -127,10 +112,10 @@ The price object has the following properties:
     {
       name: "original_price",
       type: "`object`",
-      description: "The original price's price details and potentially its associated price list.",
+      description: "The original price's price details.",
       children: [
         {
-          name: "price_id",
+          name: "id",
           type: "`string`",
           description: "The ID of the price."
         },
@@ -162,29 +147,14 @@ The price object has the following properties:
 
 ---
 
-## Example
+## Examples
 
-Consider the following rule types and price sets:
+Consider the following price set:
 
 ```ts
-const ruleTypes = await pricingModuleService.createRuleTypes([
-  {
-    name: "Region",
-    rule_attribute: "region_id",
-  },
-  {
-    name: "City",
-    rule_attribute: "city",
-  },
-])
-
 const priceSet = await pricingModuleService.createPriceSets({
-  rules: [
-    { rule_attribute: "region_id" },
-    { rule_attribute: "city" },
-  ],
   prices: [
-    //default
+    // default price
     {
       amount: 500,
       currency_code: "EUR",
@@ -195,7 +165,7 @@ const priceSet = await pricingModuleService.createPriceSets({
       amount: 400,
       currency_code: "EUR",
       rules: {
-        region_id: "PL",
+        region_id: "reg_123",
       },
     },
     {
@@ -210,7 +180,7 @@ const priceSet = await pricingModuleService.createPriceSets({
       currency_code: "EUR",
       rules: {
         city: "warsaw",
-        region_id: "PL",
+        region_id: "reg_123",
       },
     },
   ],
@@ -279,7 +249,7 @@ const priceSet = await pricingModuleService.createPriceSets({
   </TabsContentWrapper>
 </Tabs>
 
-### Exact Match Rule in Context
+### Calculate Prices with Rules
 
 <Tabs defaultValue="code">
   <TabsList>
@@ -295,70 +265,7 @@ const priceSet = await pricingModuleService.createPriceSets({
       {
         context: {
           currency_code: "EUR",
-          region_id: "PL"
-        }
-      }
-    )
-    ```
-
-    </TabsContent>
-    <TabsContent value="result">
-
-    The returned price is:
-
-    ```ts
-    const price = {
-      id: "<PRICE_SET_ID>",
-      is_calculated_price_price_list: false,
-      calculated_amount: 400,
-
-      is_original_price_price_list: false,
-      original_amount: 400,
-
-      currency_code: "EUR",
-
-      calculated_price: {
-        price_id: "<SECOND_PRICE_ID>",
-        price_list_id: null,
-        price_list_type: null,
-        min_quantity: null,
-        max_quantity: null,
-      },
-
-      original_price: {
-        price_id: "<SECOND_PRICE_ID>",
-        price_list_id: null,
-        price_list_type: null,
-        min_quantity: null,
-        max_quantity: null,
-      },
-    }
-    ```
-
-    - Original price selection: Since the second price of the price set has the same context as the provided one, it's selected as the original price.
-    - Calculated price selection: since there are no associated price lists, the calculated price is set to the original price.
-
-    </TabsContent>
-  </TabsContentWrapper>
-</Tabs>
-
-### Context without Exact Matching Rules
-
-<Tabs defaultValue="code">
-  <TabsList>
-    <TabsTrigger value="code">Code</TabsTrigger>
-    <TabsTrigger value="result">Result</TabsTrigger>
-  </TabsList>
-  <TabsContentWrapper>
-    <TabsContent value="code">
-
-    ```ts
-    const price = await pricingModuleService.calculatePrices(
-      { id: [priceSet.id] },
-      {
-        context: {
-          currency_code: "EUR",
-          region_id: "PL",
+          region_id: "reg_123",
           city: "krakow"
         }
       }
@@ -399,12 +306,7 @@ const priceSet = await pricingModuleService.createPriceSets({
     }
     ```
 
-    - Original price selection: The fourth price in the price list is selected based on the following process:
-      - There are no prices having the same rules as the context.
-      - Retrieve all prices matching some combination of the rules in the context.
-      - Sort the prices in descending order by their number of rules, each rule type's default priority, and the priority of the rule values.
-        - All rule types, in this case, don't have a priority. So, the sorting depends on the number of rules each price has.
-      - The fourth price has two rules, and the second and third have one rule. So, the fourth price is selected as the original price.
+    - Original price selection: The fourth price in the price list is selected as the best price.
     - Calculated price selection: since there are no associated price lists, the calculated price is set to the original price.
 
     </TabsContent>
@@ -422,14 +324,15 @@ const priceSet = await pricingModuleService.createPriceSets({
     <TabsContent value="code">
 
     ```ts
-    const priceList = pricingModuleService.createPriceLists({
-      name: "Test Price List",
-      starts_at: Date.parse("01/10/2023"),
-      ends_at: Date.parse("31/10/2023"),
+    const priceList = pricingModuleService.createPriceLists([{
+      title: "Summer Price List",
+      description: "Price list for summer sale",
+      starts_at: Date.parse("01/10/2023").toString(),
+      ends_at: Date.parse("31/10/2023").toString(),
       rules: {
         region_id: ['PL']
       },
-      type: "sale"
+      type: "sale",
       prices: [
         {
           amount: 400,
@@ -442,7 +345,7 @@ const priceSet = await pricingModuleService.createPriceSets({
           price_set_id: priceSet.id,
         },
       ],
-    });
+    }]);
 
     const price = await pricingModuleService.calculatePrices(
       { id: [priceSet.id] },
@@ -490,10 +393,8 @@ const priceSet = await pricingModuleService.createPriceSets({
     }
     ```
 
-    - Original price selection: The process is explained in the Context without Exact Matching Rules section.
-    - Calculated price selection: The first price of the price list is selected based on the following process:
-      - The price set has a price list associated with it. So, retrieve its prices and sort them in ascending order by their amount.
-      - Since the first price of the price list has the lowest amount, it's selected as the calculated price.
+    - Original price selection: The fourth price in the price list is selected as the best price.
+    - Calculated price selection: The first price of the price list is selected as the best price.
 
     </TabsContent>
   </TabsContentWrapper>
