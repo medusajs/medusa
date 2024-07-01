@@ -10,6 +10,7 @@ import {
   ProgressTabs,
   RadioGroup,
   Text,
+  toast,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -131,11 +132,25 @@ export const CreatePromotionForm = () => {
           buy_rules: buildRulesData(buyRulesData),
         },
         is_automatic: is_automatic === "true",
-      }).then(() => handleSuccess())
+      })
+        .then(() => handleSuccess())
+        .catch((e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("general.close"),
+          })
+        })
     },
     async (error) => {
-      // TODO: showcase error when something goes wrong
-      // Wait for alert component and use it here
+      const { campaign, ...rest } = error || {}
+      const errorInPromotionTab = !!Object.keys(rest || {}).length
+
+      if (errorInPromotionTab) {
+        toast.error(t("general.error"), {
+          description: t("promotions.errors.promotionTabError"),
+          dismissLabel: t("general.close"),
+        })
+      }
     }
   )
 

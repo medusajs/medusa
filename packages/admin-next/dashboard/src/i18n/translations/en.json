@@ -1137,7 +1137,8 @@
       "campaignType": "Select the currency code in the promotion tab to enable it."
     },
     "errors": {
-      "requiredField": "Required field"
+      "requiredField": "Required field",
+      "promotionTabError": "Fix errors in Promotion Tab before proceeding"
     },
     "create": {},
     "edit": {
