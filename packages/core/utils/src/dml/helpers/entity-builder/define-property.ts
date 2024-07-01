@@ -3,8 +3,6 @@ import {
   KnownDataTypes,
   PropertyMetadata,
 } from "@medusajs/types"
-import { MikroOrmBigNumberProperty } from "../../../dal"
-import { generateEntityId, isDefined } from "../../../common"
 import {
   ArrayType,
   BeforeCreate,
@@ -14,6 +12,8 @@ import {
   Property,
   Utils,
 } from "@mikro-orm/core"
+import { generateEntityId, isDefined } from "../../../common"
+import { MikroOrmBigNumberProperty } from "../../../dal"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -93,17 +93,15 @@ export function defineProperty(
   MikroORMEntity: EntityConstructor<any>,
   field: PropertyMetadata
 ) {
-  /**
-   * Here we initialize nullable properties with a null value
-   */
-  if (field.nullable) {
-    Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
-      value: null,
-      configurable: true,
-      enumerable: true,
-      writable: true,
-    })
-  }
+  Object.defineProperty(MikroORMEntity.prototype, field.fieldName, {
+    /**
+     * Here we initialize nullable properties with a null value
+     */
+    value: field.nullable ? null : undefined,
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  })
 
   if (SPECIAL_PROPERTIES[field.fieldName]) {
     SPECIAL_PROPERTIES[field.fieldName](MikroORMEntity, field)

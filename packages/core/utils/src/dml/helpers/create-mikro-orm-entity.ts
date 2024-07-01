@@ -30,15 +30,18 @@ export function createMikrORMEntity() {
   // TODO: if we use the util toMikroOrmEntities then a new builder will be used each time, lets think about this. Currently if means that with many to many we need to use the same builder
   const MANY_TO_MANY_TRACKED_REALTIONS: Record<string, boolean> = {}
 
+  function createNamedClass(className: string) {
+    return Function(`return class ${className} {}`)()
+  }
+
   /**
    * A helper function to define a Mikro ORM entity from a
    * DML entity.
    */
   return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
-    class MikroORMEntity {}
-
     const { schema, cascades, indexes: entityIndexes = [] } = entity.parse()
     const { modelName, tableName } = parseEntityName(entity)
+    const MikroORMEntity = createNamedClass(modelName)
 
     /**
      * Assigning name to the class constructor, so that it matches
