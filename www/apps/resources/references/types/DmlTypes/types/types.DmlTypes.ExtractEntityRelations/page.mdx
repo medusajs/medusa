@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# ExtractEntityRelations
+
+ **ExtractEntityRelations**: &#123; [K in keyof Schema & string]: Schema[K] extends RelationshipType&#60;any&#62; ? Schema[K] extends Object ? K : never : never &#125;[keyof Schema & `string`][]
+
+Extracts names of relationships from a schema
+
+## Type Parameters
+
+<TypeList types={[{"name":"Schema","type":"`Record<string, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"OfType","type":"[RelationshipTypes](../types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ExtractEntityRelations"/>

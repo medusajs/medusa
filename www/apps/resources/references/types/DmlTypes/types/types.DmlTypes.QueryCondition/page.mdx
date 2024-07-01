@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# QueryCondition
+
+ **QueryCondition**: &#123; [K in keyof IDmlEntity&#60;T&#62;["schema"]]?: T[K] extends object ? QueryValue : QueryCondition&#60;T&#62; &#125;
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"[DMLSchema](../types.DmlTypes.DMLSchema/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[RelationshipTypes](../types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="QueryCondition"/>

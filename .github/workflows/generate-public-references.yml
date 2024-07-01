@@ -1,5 +1,6 @@
 name: Generate Public References
 on:
+  workflow_call:
   workflow_dispatch:
     inputs:
       referenceName:
@@ -12,7 +13,7 @@ on:
 jobs:
   api-v2:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_call' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -62,7 +63,7 @@ jobs:
           branch-suffix: "timestamp"
   ui:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_call' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0

@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminProductResponse
+required:
+  - product
+properties:
+  product:
+    $ref: ./AdminProduct.yaml

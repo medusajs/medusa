@@ -1,0 +1,8 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminProductVariantResponse
+required:
+  - variant
+properties:
+  variant:
+    $ref: ./AdminProductVariant.yaml
