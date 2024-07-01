@@ -26,7 +26,6 @@
  *   metadata:
  *     type: object
  *     description: The user's metadata.
- *     properties: {}
  * 
 */
 

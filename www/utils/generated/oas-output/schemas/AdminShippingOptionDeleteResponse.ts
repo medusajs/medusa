@@ -16,10 +16,14 @@
  *     type: string
  *     title: object
  *     description: The shipping option's object.
+ *     default: shipping_option
  *   deleted:
  *     type: boolean
  *     title: deleted
  *     description: The shipping option's deleted.
+ *   parent:
+ *     type: object
+ *     description: The shipping option's parent.
  * 
 */
 
