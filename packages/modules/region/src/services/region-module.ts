@@ -3,8 +3,9 @@ import {
   CreateRegionDTO,
   DAL,
   FilterableRegionProps,
-  InternalModuleDeclaration,
   IRegionModuleService,
+  InferEntityType,
+  InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
@@ -14,20 +15,18 @@ import {
   UpsertRegionDTO,
 } from "@medusajs/types"
 import {
-  arrayDifference,
-  getDuplicates,
   InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   MedusaError,
   MedusaService,
+  arrayDifference,
+  getDuplicates,
+  isString,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
-
-import { Country, Region } from "@models"
-
+import { RegionCountry as Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
@@ -49,8 +48,12 @@ export default class RegionModuleService
   implements IRegionModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<Region>
-  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<Country>
+  protected readonly regionService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Region
+  >
+  protected readonly countryService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Country
+  >
 
   constructor(
     { baseRepository, regionService, countryService }: InjectedDependencies,
@@ -67,7 +70,7 @@ export default class RegionModuleService
     return joinerConfig
   }
 
-  //@ts-expect-error
+  // @ts-expect-error
   async createRegions(
     data: CreateRegionDTO[],
     sharedContext?: Context
@@ -95,7 +98,7 @@ export default class RegionModuleService
   async createRegions_(
     data: CreateRegionDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Region[]> {
+  ): Promise<InferEntityType<typeof Region>[]> {
     let normalizedInput = RegionModuleService.normalizeInput(data)
 
     let normalizedDbRegions = normalizedInput.map((region) =>
@@ -172,7 +175,7 @@ export default class RegionModuleService
       (region): region is CreateRegionDTO => !region.id
     )
 
-    const operations: Promise<Region[]>[] = []
+    const operations: Promise<InferEntityType<typeof Region>[]>[] = []
 
     if (forCreate.length) {
       operations.push(this.createRegions_(forCreate, sharedContext))
@@ -187,7 +190,7 @@ export default class RegionModuleService
     )
   }
 
-  //@ts-expect-error
+  // @ts-expect-error
   async updateRegions(
     id: string,
     data: UpdateRegionDTO,
@@ -237,7 +240,7 @@ export default class RegionModuleService
   protected async updateRegions_(
     data: UpdateRegionInput[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Region[]> {
+  ): Promise<InferEntityType<typeof Region>[]> {
     const normalizedInput = RegionModuleService.normalizeInput(data)
 
     // If countries are being updated for a region, first make previously set countries' region to null to get to a clean slate.
@@ -306,7 +309,7 @@ export default class RegionModuleService
   private async validateCountries(
     countries: string[] | undefined,
     sharedContext: Context
-  ): Promise<Country[]> {
+  ): Promise<InferEntityType<typeof Country>[]> {
     if (!countries?.length) {
       return []
     }
@@ -343,6 +346,7 @@ export default class RegionModuleService
     }
 
     // Countries that already have a region already assigned to them
+    // @ts-ignore
     const countriesWithRegion = countriesInDb.filter((c) => !!c.region_id)
     if (countriesWithRegion.length) {
       throw new MedusaError(

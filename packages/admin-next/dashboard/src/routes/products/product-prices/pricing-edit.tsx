@@ -10,6 +10,7 @@ import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
 import { useRegions } from "../../../hooks/api/regions"
 import { castNumber } from "../../../lib/cast-number"
+import { VariantPricingForm } from "../common/variant-pricing-form"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(
