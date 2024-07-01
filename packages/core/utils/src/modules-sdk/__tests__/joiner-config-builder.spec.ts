@@ -1,10 +1,10 @@
 import {
   buildLinkableKeysFromDmlObjects,
   buildLinkableKeysFromMikroOrmObjects,
+  buildLinkConfigFromDmlObjects,
   defineJoinerConfig,
 } from "../joiner-config-builder"
 import { Modules } from "../definition"
-import { InfersLinksConfig } from "../types/links-config"
 import { model } from "../../dml"
 import { expectTypeOf } from "expect-type"
 
@@ -335,9 +335,6 @@ describe("joiner-config-builder", () => {
         test: model.text(),
       })
 
-      // TODO add a separate test
-      type LinkConfig = InfersLinksConfig<[typeof user, typeof car]>
-
       const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
       expectTypeOf(linkableKeys).toMatchTypeOf<{
         user_id: "User"
@@ -361,6 +358,32 @@ describe("joiner-config-builder", () => {
       expect(linkableKeys).toEqual({
         user_id: User.name,
         car_id: Car.name,
+      })
+    })
+  })
+
+  describe("buildLinkConfigFromDmlObjects", () => {
+    it("should return a link config object based on the DML's primary keys", () => {
+      const user = model.define("user", {
+        id: model.id(),
+        name: model.text(),
+      })
+
+      const car = model.define("car", {
+        id: model.id(),
+        number_plate: model.text().primaryKey(),
+        test: model.text(),
+      })
+
+      const linkConfig = buildLinkConfigFromDmlObjects([user, car])
+
+      expect(linkConfig).toEqual({
+        user: {
+          id: "user_id",
+        },
+        car: {
+          number_plate: "car_number_plate",
+        },
       })
     })
   })

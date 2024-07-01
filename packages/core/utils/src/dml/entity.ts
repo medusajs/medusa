@@ -63,7 +63,7 @@ export class DmlEntity<
   #cascades: EntityCascades<string[]> = {}
   #indexes: EntityIndex<Schema>[] = []
 
-  constructor(nameOrConfig: Config, public schema: Schema) {
+  constructor(nameOrConfig: TConfig, public schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
     this.name = name as InferDmlEntityNameFromConfig<TConfig>
     this.#tableName = tableName

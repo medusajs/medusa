@@ -16,7 +16,7 @@ import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
 import { inferPrimaryKeyProperties } from "../dml/helpers/entity-builder/infer-primary-key-properties"
-import { InferLinkableKeys } from "./types/links-config"
+import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -109,6 +109,25 @@ export function defineJoinerConfig(
 
 /**
  * From a set of DML objects, build the linkable keys
+ *
+ * @example
+ * const user = model.define("user", {
+ *   id: model.id(),
+ *   name: model.text(),
+ * })
+ *
+ * const car = model.define("car", {
+ *   id: model.id(),
+ *   number_plate: model.text().primaryKey(),
+ *   test: model.text(),
+ * })
+ *
+ * // output:
+ * // {
+ * //   user_id: 'User',
+ * //   car_number_plate: 'Car',
+ * // }
+ *
  * @param dmlObjects
  */
 export function buildLinkableKeysFromDmlObjects<
@@ -162,8 +181,59 @@ export function buildLinkableKeysFromMikroOrmObjects(
 
 /**
  * Build entities name to linkable keys map
- * @param linkableKeys
+ *
+ * @example
+ * const user = model.define("user", {
+ *   id: model.id(),
+ *   name: model.text(),
+ * })
+ *
+ * const car = model.define("car", {
+ *   id: model.id(),
+ *   number_plate: model.text().primaryKey(),
+ *   test: model.text(),
+ * })
+ *
+ * // output:
+ * // {
+ * //   user: {
+ * //     id: "user_id",
+ * //   },
+ * //   car: {
+ * //     number_plate: "car_number_plate",
+ * //   },
+ * // }
+ *
+ * @param dmlObjects
  */
+export function buildLinkConfigFromDmlObjects<T extends DmlEntity<any>[]>(
+  dmlObjects: T
+) {
+  const linkConfig = {} as InfersLinksConfig<T>
+
+  for (const dml of dmlObjects) {
+    dml.schema = inferPrimaryKeyProperties(dml.schema)
+    const schema = dml.schema
+    const dmlLinkConfig = (linkConfig[dml.name] ??= {})
+
+    for (const [property, value] of Object.entries(schema)) {
+      if (BaseRelationship.isRelationship(value)) {
+        continue
+      }
+
+      const parsedProperty = (value as PropertyType<any>).parse(property)
+      if (PrimaryKeyModifier.isPrimaryKeyModifier(value)) {
+        const linkableKeyName =
+          parsedProperty.dataType.options?.linkable ??
+          `${camelToSnakeCase(dml.name).toLowerCase()}_${property}`
+        dmlLinkConfig[property] = linkableKeyName
+      }
+    }
+  }
+
+  return linkConfig
+}
+
 export function buildEntitiesNameToLinkableKeysMap(
   linkableKeys: Record<string, string>
 ): MapToConfig {
