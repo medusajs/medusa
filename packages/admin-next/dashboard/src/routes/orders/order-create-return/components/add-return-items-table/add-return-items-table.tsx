@@ -5,8 +5,6 @@ import {
   DateComparisonOperator,
   NumericalComparisonOperator,
 } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
-import { useTranslation } from "react-i18next"
 import { AdminOrderLineItem } from "@medusajs/types"
 
 import { useReturnItemTableColumns } from "./use-return-item-table-columns"
@@ -15,6 +13,7 @@ import { useReturnItemTableQuery } from "./use-return-item-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { DataTable } from "../../../../../components/table/data-table"
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
+import { getReturnableQuantity } from "../../../../../lib/rma"
 
 const PAGE_SIZE = 50
 const PREFIX = "rit"
@@ -123,7 +122,7 @@ export const AddReturnItemsTable = ({
     getRowId: (row) => row.id,
     pageSize: PAGE_SIZE,
     enableRowSelection: (row) => {
-      return row.original.quantity - (row.original.returned_quantity || 0) > 0
+      return getReturnableQuantity(row.original) > 0
     },
     rowSelection: {
       state: rowSelection,
