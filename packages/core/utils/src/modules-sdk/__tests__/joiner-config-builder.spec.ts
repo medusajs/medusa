@@ -4,7 +4,7 @@ import {
   defineJoinerConfig,
 } from "../joiner-config-builder"
 import { Modules } from "../definition"
-import { InfersLinksConfig } from "../types/linkable-keys"
+import { InfersLinksConfig } from "../types/links-config"
 import { model } from "../../dml"
 import { expectTypeOf } from "expect-type"
 

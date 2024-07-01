@@ -16,7 +16,7 @@ import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
 import { inferPrimaryKeyProperties } from "../dml/helpers/entity-builder/infer-primary-key-properties"
-import { InferLinkableKeys } from "./types/linkable-keys"
+import { InferLinkableKeys } from "./types/links-config"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
