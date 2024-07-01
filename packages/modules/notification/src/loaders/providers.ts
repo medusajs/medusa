@@ -107,7 +107,7 @@ async function syncDatabaseProviders({
     const promises: Promise<any>[] = []
 
     if (normalizedProviders.length) {
-      promises.push(providerService.upsertWithReplace(normalizedProviders))
+      promises.push(providerService.upsert(normalizedProviders))
     }
 
     if (providersToDisable.length) {

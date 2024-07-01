@@ -28,6 +28,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
+import { DmlEntity, toMikroORMEntity } from "../dml"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -35,12 +36,16 @@ type SelectorAndData = {
 }
 
 export function MedusaInternalService<TContainer extends object = object>(
-  model: any
+  rawModel: any
 ): {
   new <TEntity extends object = any>(
     container: TContainer
   ): ModulesSdkTypes.IMedusaInternalService<TEntity, TContainer>
 } {
+  const model = DmlEntity.isDmlEntity(rawModel)
+    ? toMikroORMEntity(rawModel)
+    : rawModel
+
   const injectedRepositoryName = `${lowerCaseFirst(model.name)}Repository`
   const propertyRepositoryName = `__${injectedRepositoryName}__`
 
