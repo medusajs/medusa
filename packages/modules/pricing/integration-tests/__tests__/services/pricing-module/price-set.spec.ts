@@ -86,6 +86,52 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             },
           ])
         })
+
+        it("list priceSets should return only prices from a price set (and not the ones from a price list)", async () => {
+          const [priceList] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                  rules: {
+                    region_id: "DE",
+                  },
+                },
+                {
+                  amount: 600,
+                  currency_code: "EUR",
+                  price_set_id: "price-set-1",
+                },
+              ],
+            },
+          ])
+
+          const priceSetsResult = await service.listPriceSets(
+            {
+              id: ["price-set-1"],
+            },
+            {
+              relations: ["prices"],
+            }
+          )
+
+          expect(priceSetsResult).toHaveLength(1)
+          expect(priceSetsResult).toEqual([
+            expect.objectContaining({
+              id: "price-set-1",
+              prices: [
+                expect.objectContaining({
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
+                }),
+              ],
+            }),
+          ])
+        })
       })
 
       describe("listAndCount", () => {
@@ -229,6 +275,46 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           expect(serialized).toEqual({
             id,
           })
+        })
+
+        it("should return priceSet with only its own prices", async () => {
+          const [priceList] = await service.createPriceLists([
+            {
+              title: "test",
+              description: "test",
+              prices: [
+                {
+                  amount: 400,
+                  currency_code: "EUR",
+                  price_set_id: id,
+                  rules: {
+                    region_id: "DE",
+                  },
+                },
+                {
+                  amount: 600,
+                  currency_code: "EUR",
+                  price_set_id: id,
+                },
+              ],
+            },
+          ])
+
+          const priceSetResult = await service.retrievePriceSet(id, {
+            relations: ["prices"],
+          })
+
+          expect(priceSetResult).toEqual(
+            expect.objectContaining({
+              id: "price-set-1",
+              prices: [
+                expect.objectContaining({
+                  id: "price-set-money-amount-USD",
+                  amount: 500,
+                }),
+              ],
+            })
+          )
         })
       })
 
