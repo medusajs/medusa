@@ -22,7 +22,9 @@ export function ExportModule<
   }
     ? $DmlObjects
     : [],
-  Links = keyof DMLObjects extends never ? {} : InfersLinksConfig<DMLObjects>
+  Links = keyof DMLObjects extends never
+    ? Record<string, any>
+    : InfersLinksConfig<DMLObjects>
 >(
   moduleName: string,
   { service, loaders }: ModuleExports<Service>

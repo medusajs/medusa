@@ -223,3 +223,24 @@ export type AbstractModuleService<
     ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
   }
 }*/
+
+type InferDmlFromConfig<T> = {
+  [K in keyof T as T[K] extends { dml: any }
+    ? K
+    : K extends DmlEntity<any>
+    ? K
+    : never]: T[K] extends {
+    dml: infer DML
+  }
+    ? DML extends DmlEntity<any>
+      ? DML
+      : never
+    : T[K] extends DmlEntity<any>
+    ? T[K]
+    : never
+}
+
+export type MedusaServiceReturnType<EntitiesConfig extends Record<any, any>> = {
+  new (...args: any[]): AbstractModuleService<EntitiesConfig>
+  $dmlObjects: InferDmlFromConfig<EntitiesConfig>[keyof InferDmlFromConfig<EntitiesConfig>][]
+}
