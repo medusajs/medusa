@@ -28,7 +28,7 @@ const mergerOptions: Partial<TypeDocOptions> = {
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 3,
-  allReflectionsHaveOwnDocument: [...modules, "workflows"],
+  allReflectionsHaveOwnDocument: [...modules, "dml", "workflows"],
   allReflectionsHaveOwnDocumentInNamespace: ["Utilities"],
   formatting: {
     "*": {

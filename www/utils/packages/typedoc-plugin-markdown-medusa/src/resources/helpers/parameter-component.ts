@@ -17,13 +17,19 @@ export default function (theme: MarkdownTheme) {
       const parameters = this.reduce(
         (acc: ReflectionParameterType[], current) => parseParams(current, acc),
         []
-      ).map((parameter) =>
-        reflectionComponentFormatter({
-          reflection: parameter,
-          level: 1,
-          maxLevel,
-        })
       )
+        .filter((parameter) => {
+          // remove parameters that are supposed to be nested
+          return !parameter.name.includes(".")
+        })
+        .map((parameter) =>
+          reflectionComponentFormatter({
+            reflection: parameter,
+            level: 1,
+            maxLevel,
+            project: theme.project,
+          })
+        )
 
       return formatParameterComponent({
         parameterComponent,
