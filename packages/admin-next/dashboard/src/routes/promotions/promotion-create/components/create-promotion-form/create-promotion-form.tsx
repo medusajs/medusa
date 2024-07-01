@@ -122,24 +122,37 @@ export const CreatePromotionForm = () => {
           }))
       }
 
-      createPromotion({
-        ...promotionData,
-        rules: buildRulesData(rules),
-        application_method: {
-          ...applicationMethodData,
-          ...applicationMethodRuleData,
-          target_rules: buildRulesData(targetRulesData),
-          buy_rules: buildRulesData(buyRulesData),
+      createPromotion(
+        {
+          ...promotionData,
+          rules: buildRulesData(rules),
+          application_method: {
+            ...applicationMethodData,
+            ...applicationMethodRuleData,
+            target_rules: buildRulesData(targetRulesData),
+            buy_rules: buildRulesData(buyRulesData),
+          },
+          is_automatic: is_automatic === "true",
         },
-        is_automatic: is_automatic === "true",
-      })
-        .then(() => handleSuccess())
-        .catch((e) => {
-          toast.error(t("general.error"), {
-            description: e.message,
-            dismissLabel: t("general.close"),
-          })
-        })
+        {
+          onSuccess: ({ promotion }) => {
+            toast.success(t("general.success"), {
+              description: t("promotions.toasts.promotionCreateSuccess", {
+                code: promotion.code,
+              }),
+              dismissLabel: t("actions.close"),
+            })
+
+            handleSuccess()
+          },
+          onError: (e) => {
+            toast.error(t("general.error"), {
+              description: e.message,
+              dismissLabel: t("actions.close"),
+            })
+          },
+        }
+      )
     },
     async (error) => {
       const { campaign, ...rest } = error || {}

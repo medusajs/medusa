@@ -1140,6 +1140,9 @@
       "requiredField": "Required field",
       "promotionTabError": "Fix errors in Promotion Tab before proceeding"
     },
+    "toasts": {
+      "promotionCreateSuccess": "Promotion ({{code}}) was successfully created."
+    },
     "create": {},
     "edit": {
       "title": "Edit Promotion Details",
