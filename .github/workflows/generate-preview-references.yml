@@ -1,7 +1,7 @@
 name: Generate Preview Reference [Automated]
 on:
   schedule:
-    - cron: "0 */3 * * *"
+    - cron: "0 0 * * *"
 jobs:
   preview-references:
     uses: ./.github/workflows/generate-resources-reference.yml
