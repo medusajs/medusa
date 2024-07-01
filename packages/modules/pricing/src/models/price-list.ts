@@ -14,7 +14,6 @@ import {
   Entity,
   Enum,
   Filter,
-  ManyToMany,
   OneToMany,
   OnInit,
   OptionalProps,
@@ -24,7 +23,6 @@ import {
 } from "@mikro-orm/core"
 import Price from "./price"
 import PriceListRule from "./price-list-rule"
-import RuleType from "./rule-type"
 
 type OptionalFields =
   | "starts_at"
@@ -83,12 +81,6 @@ export default class PriceList {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
   price_list_rules = new Collection<Rel<PriceListRule>>(this)
-
-  @ManyToMany({
-    entity: () => RuleType,
-    pivotEntity: () => PriceListRule,
-  })
-  rule_types = new Collection<Rel<RuleType>>(this)
 
   @Property({ columnType: "integer", default: 0 })
   rules_count: number = 0

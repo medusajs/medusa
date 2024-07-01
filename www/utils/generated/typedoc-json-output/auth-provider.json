@@ -1,12 +1,12 @@
 {
-	"id": 12941,
+	"id": 13244,
 	"name": "auth-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 12942,
+			"id": 13245,
 			"name": "AbstractAuthModuleProvider",
 			"variant": "declaration",
 			"kind": 128,
@@ -59,7 +59,7 @@
 			},
 			"children": [
 				{
-					"id": 12958,
+					"id": 13261,
 					"name": "authenticate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -68,7 +68,7 @@
 					},
 					"signatures": [
 						{
-							"id": 12959,
+							"id": 13262,
 							"name": "authenticate",
 							"variant": "signature",
 							"kind": 4096,
@@ -115,7 +115,7 @@
 							},
 							"parameters": [
 								{
-									"id": 12960,
+									"id": 13263,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -139,7 +139,7 @@
 									}
 								},
 								{
-									"id": 12961,
+									"id": 13264,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -213,14 +213,14 @@
 					}
 				},
 				{
-					"id": 12962,
+					"id": 13265,
 					"name": "validateCallback",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12963,
+							"id": 13266,
 							"name": "validateCallback",
 							"variant": "signature",
 							"kind": 4096,
@@ -235,7 +235,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "authenticate",
-										"target": 12958,
+										"target": 13261,
 										"tsLinkText": ""
 									},
 									{
@@ -266,7 +266,7 @@
 							},
 							"parameters": [
 								{
-									"id": 12964,
+									"id": 13267,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -290,7 +290,7 @@
 									}
 								},
 								{
-									"id": 12965,
+									"id": 13268,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -368,8 +368,8 @@
 				{
 					"title": "Methods",
 					"children": [
-						12958,
-						12962
+						13261,
+						13265
 					]
 				}
 			],
@@ -390,49 +390,49 @@
 		{
 			"title": "Classes",
 			"children": [
-				12942
+				13245
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"12941": {
+		"13244": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": ""
 		},
-		"12942": {
+		"13245": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider"
 		},
-		"12958": {
+		"13261": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"12959": {
+		"13262": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"12960": {
+		"13263": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"12961": {
+		"13264": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		},
-		"12962": {
+		"13265": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"12963": {
+		"13266": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"12964": {
+		"13267": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"12965": {
+		"13268": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		}
@@ -442,7 +442,7 @@
 			"1": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts"
 		},
 		"reflections": {
-			"1": 12941
+			"1": 13244
 		}
 	}
 }

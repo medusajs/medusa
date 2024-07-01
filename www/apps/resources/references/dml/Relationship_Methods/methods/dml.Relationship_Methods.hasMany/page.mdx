@@ -1,0 +1,33 @@
+---
+slug: /references/data-model/relationship-methods/hasmany
+sidebar_label: hasMany
+---
+
+import { TypeList } from "docs-ui"
+
+# hasMany Relationship Method - API Reference
+
+This method defines a relationship between two data models,
+where the owner of the relationship has many records of the related
+data model, but the related data model only has one owner.
+
+For example, a store "hasMany" products.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"The type of the entity builder passed as a first parameter. By default, it's\na function returning the related model.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="hasMany"/>
+
+## Parameters
+
+<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined\nin the other data model. This is only required\nby the `belongsTo` relationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="hasMany"/>

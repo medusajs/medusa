@@ -23,7 +23,7 @@ export const defaultAdminProductsVariantFields = [
   "barcode",
   "*prices",
   "prices.price_rules.value",
-  "prices.price_rules.rule_type.rule_attribute",
+  "prices.price_rules.attribute",
   "*options",
 ]
 
@@ -85,7 +85,7 @@ export const defaultAdminProductFields = [
   "*variants",
   "*variants.prices",
   "variants.prices.price_rules.value",
-  "variants.prices.price_rules.rule_type.rule_attribute",
+  "variants.prices.price_rules.attribute",
   "*variants.options",
   "*sales_channels",
 ]

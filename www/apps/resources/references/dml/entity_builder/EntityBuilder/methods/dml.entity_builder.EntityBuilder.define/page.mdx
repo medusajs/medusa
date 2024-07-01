@@ -1,0 +1,30 @@
+---
+slug: /references/data-model/define
+---
+
+import { TypeList } from "docs-ui"
+
+# define Method - API Reference
+
+This method defines a data model.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id(),
+  name: model.text(),
+})
+
+export default MyCustom
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"Schema","type":"[DMLSchema](../../../../../types/DmlTypes/types/types.DmlTypes.DMLSchema/page.mdx)","description":"The type of the accepted schema in the second parameter of the method.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[RelationshipTypes](../../../../../types/DmlTypes/types/types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="define"/>
+
+## Parameters
+
+<TypeList types={[{"name":"nameOrConfig","type":"[DefineOptions](../../../types/dml.entity_builder.DefineOptions/page.mdx)","description":"Either the data model's name, or configurations to name the data model.\nThe data model's name must be unique.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"tableName","type":"`string`","description":"The name of the data model's table in the database.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The data model's name.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"schema","type":"Schema","description":"The schema of the data model's properties.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="define"/>

@@ -12,12 +12,6 @@ export const eventBuilders = {
     object: "price_set",
     eventsEnum: PricingEvents,
   }),
-  createdPriceSetRuleType: eventBuilderFactory({
-    source: Modules.PRICING,
-    action: CommonEvents.CREATED,
-    object: "price_set_rule_type",
-    eventsEnum: PricingEvents,
-  }),
   createdPrice: eventBuilderFactory({
     source: Modules.PRICING,
     action: CommonEvents.CREATED,

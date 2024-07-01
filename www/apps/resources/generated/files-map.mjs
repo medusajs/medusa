@@ -1068,36 +1068,36 @@ export const filesMap = [
     "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.authenticate"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.create/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.create"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.createApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.createApiKeys"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.delete/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.delete"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.deleteApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.deleteApiKeys"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.list/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.list"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCountApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCountApiKeys"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCount/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listApiKeys"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieve/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieveApiKey/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieveApiKey"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.revoke/page.mdx",
     "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.revoke"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.update/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.update"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.updateApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.updateApiKeys"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsert/page.mdx",
-    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsert"
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsertApiKeys/page.mdx",
+    "pathname": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsertApiKeys"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/IMessageAggregator/methods/api_key.IMessageAggregator.clearMessages/page.mdx",
@@ -1180,8 +1180,16 @@ export const filesMap = [
     "pathname": "/references/api_key/types/api_key.ApiKeyType"
   },
   {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.EventMetadata/page.mdx",
+    "pathname": "/references/api_key/types/api_key.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.JoinerRelationship/page.mdx",
     "pathname": "/references/api_key/types/api_key.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/api_key/types/api_key.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.Message/page.mdx",
@@ -1192,16 +1200,16 @@ export const filesMap = [
     "pathname": "/references/api_key/types/api_key.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/api_key/types/api_key.MessageFormat/page.mdx",
-    "pathname": "/references/api_key/types/api_key.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/api_key/types/api_key.ModuleJoinerConfig"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/types/api_key.ModuleJoinerRelationship/page.mdx",
     "pathname": "/references/api_key/types/api_key.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/api_key/types/api_key.RawMessageFormat/page.mdx",
+    "pathname": "/references/api_key/types/api_key.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/api_key_models/classes/api_key_models.ApiKey/page.mdx",
@@ -1212,28 +1220,28 @@ export const filesMap = [
     "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.create/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.create"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.delete/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.delete"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteAuthIdentities/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteAuthIdentities"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.list/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.list"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCount/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieve/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.update/page.mdx",
-    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.update"
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites/page.mdx",
+    "pathname": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites"
   },
   {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback/page.mdx",
@@ -1280,6 +1288,10 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.CreateAuthIdentityDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.CreateProviderIdentityDTO/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.CreateProviderIdentityDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/interfaces/auth.FilterableAuthIdentityProps/page.mdx",
     "pathname": "/references/auth/interfaces/auth.FilterableAuthIdentityProps"
   },
@@ -1312,12 +1324,24 @@ export const filesMap = [
     "pathname": "/references/auth/interfaces/auth.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/interfaces/auth.ProviderIdentityDTO/page.mdx",
+    "pathname": "/references/auth/interfaces/auth.ProviderIdentityDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/interfaces/auth.UpdateAuthIdentityDTO/page.mdx",
     "pathname": "/references/auth/interfaces/auth.UpdateAuthIdentityDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.EventMetadata/page.mdx",
+    "pathname": "/references/auth/types/auth.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/types/auth.JoinerRelationship/page.mdx",
     "pathname": "/references/auth/types/auth.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth/types/auth.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/auth/types/auth.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/auth/types/auth.Message/page.mdx",
@@ -1328,10 +1352,6 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/auth/types/auth.MessageFormat/page.mdx",
-    "pathname": "/references/auth/types/auth.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/auth/types/auth.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/auth/types/auth.ModuleJoinerConfig"
   },
@@ -1340,8 +1360,16 @@ export const filesMap = [
     "pathname": "/references/auth/types/auth.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/types/auth.RawMessageFormat/page.mdx",
+    "pathname": "/references/auth/types/auth.RawMessageFormat"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.AuthIdentity/page.mdx",
     "pathname": "/references/auth_models/classes/auth_models.AuthIdentity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.ProviderIdentity/page.mdx",
+    "pathname": "/references/auth_models/classes/auth_models.ProviderIdentity"
   },
   {
     "filePath": "/www/apps/resources/references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider/page.mdx",
@@ -1372,20 +1400,20 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.addShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.create/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.create"
-  },
-  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.createAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.createAddresses"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.delete/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.delete"
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.createCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.createCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteAddresses"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteLineItemAdjustments/page.mdx",
@@ -1412,16 +1440,16 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.list/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.list"
-  },
-  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAddresses"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCount/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCountCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCountCarts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listLineItemAdjustments/page.mdx",
@@ -1448,12 +1476,12 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restore/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restore"
-  },
-  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreAddresses"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreLineItemAdjustments/page.mdx",
@@ -1480,8 +1508,8 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieve/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveCart/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveCart"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveLineItem/page.mdx",
@@ -1504,12 +1532,12 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.setShippingMethodTaxLines"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDelete/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDelete"
-  },
-  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteAddresses"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteLineItemAdjustments/page.mdx",
@@ -1536,12 +1564,12 @@ export const filesMap = [
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.update/page.mdx",
-    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.update"
-  },
-  {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateAddresses/page.mdx",
     "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateAddresses"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateCarts/page.mdx",
+    "pathname": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateCarts"
   },
   {
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateLineItems/page.mdx",
@@ -1792,6 +1820,10 @@ export const filesMap = [
     "pathname": "/references/cart/types/cart.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/cart/types/cart.EventMetadata/page.mdx",
+    "pathname": "/references/cart/types/cart.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/cart/types/cart.ExpandScalar/page.mdx",
     "pathname": "/references/cart/types/cart.ExpandScalar"
   },
@@ -1812,16 +1844,16 @@ export const filesMap = [
     "pathname": "/references/cart/types/cart.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/cart/types/cart.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/cart/types/cart.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/cart/types/cart.Message/page.mdx",
     "pathname": "/references/cart/types/cart.Message"
   },
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.MessageBody/page.mdx",
     "pathname": "/references/cart/types/cart.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/cart/types/cart.MessageFormat/page.mdx",
-    "pathname": "/references/cart/types/cart.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.ModuleJoinerConfig/page.mdx",
@@ -1846,6 +1878,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.Query/page.mdx",
     "pathname": "/references/cart/types/cart.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/cart/types/cart.RawMessageFormat/page.mdx",
+    "pathname": "/references/cart/types/cart.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/cart/types/cart.ReadonlyPrimary/page.mdx",
@@ -1888,16 +1924,16 @@ export const filesMap = [
     "pathname": "/references/cart_models/classes/cart_models.ShippingMethodTaxLine"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve/page.mdx",
-    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency/page.mdx",
+    "pathname": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency"
   },
   {
     "filePath": "/www/apps/resources/references/currency/IMessageAggregator/methods/currency.IMessageAggregator.clearMessages/page.mdx",
@@ -1960,8 +1996,16 @@ export const filesMap = [
     "pathname": "/references/currency/interfaces/currency.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/currency/types/currency.EventMetadata/page.mdx",
+    "pathname": "/references/currency/types/currency.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/currency/types/currency.JoinerRelationship/page.mdx",
     "pathname": "/references/currency/types/currency.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/currency/types/currency.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/currency/types/currency.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/currency/types/currency.Message/page.mdx",
@@ -1972,10 +2016,6 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/currency/types/currency.MessageFormat/page.mdx",
-    "pathname": "/references/currency/types/currency.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/currency/types/currency.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/currency/types/currency.ModuleJoinerConfig"
   },
@@ -1984,28 +2024,28 @@ export const filesMap = [
     "pathname": "/references/currency/types/currency.ModuleJoinerRelationship"
   },
   {
-    "filePath": "/www/apps/resources/references/currency_models/classes/currency_models.Currency/page.mdx",
-    "pathname": "/references/currency_models/classes/currency_models.Currency"
+    "filePath": "/www/apps/resources/references/currency/types/currency.RawMessageFormat/page.mdx",
+    "pathname": "/references/currency/types/currency.RawMessageFormat"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses"
+    "filePath": "/www/apps/resources/references/currency_models/variables/currency_models.Currency/page.mdx",
+    "pathname": "/references/currency_models/variables/currency_models.Currency"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addCustomerToGroup/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addCustomerToGroup"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.create/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.create"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroup/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroup"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroups/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroups"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.delete/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.delete"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomers"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteAddresses/page.mdx",
@@ -2016,16 +2056,12 @@ export const filesMap = [
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomerGroups"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.list/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.list"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomers"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses"
-  },
-  {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCount/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCount"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountAddresses/page.mdx",
@@ -2036,6 +2072,10 @@ export const filesMap = [
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomerGroups"
   },
   {
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers"
+  },
+  {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroupCustomers/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroupCustomers"
   },
@@ -2044,36 +2084,36 @@ export const filesMap = [
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroups"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomers"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restore/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restore"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomerGroups/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomerGroups"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieve/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomers"
+  },
+  {
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomer/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomer"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomerGroup/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomerGroup"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDelete/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDelete"
-  },
-  {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomerGroups/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomerGroups"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.update/page.mdx",
-    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.update"
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomers"
   },
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateAddresses/page.mdx",
@@ -2082,6 +2122,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerGroups/page.mdx",
     "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerGroups"
+  },
+  {
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomers/page.mdx",
+    "pathname": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomers"
   },
   {
     "filePath": "/www/apps/resources/references/customer/IMessageAggregator/methods/customer.IMessageAggregator.clearMessages/page.mdx",
@@ -2204,6 +2248,10 @@ export const filesMap = [
     "pathname": "/references/customer/interfaces/customer.UpdateCustomerAddressDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/customer/types/customer.EventMetadata/page.mdx",
+    "pathname": "/references/customer/types/customer.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/customer/types/customer.ExpandScalar/page.mdx",
     "pathname": "/references/customer/types/customer.ExpandScalar"
   },
@@ -2224,6 +2272,10 @@ export const filesMap = [
     "pathname": "/references/customer/types/customer.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/customer/types/customer.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/customer/types/customer.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/customer/types/customer.Message/page.mdx",
     "pathname": "/references/customer/types/customer.Message"
   },
@@ -2232,8 +2284,8 @@ export const filesMap = [
     "pathname": "/references/customer/types/customer.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/customer/types/customer.MessageFormat/page.mdx",
-    "pathname": "/references/customer/types/customer.MessageFormat"
+    "filePath": "/www/apps/resources/references/customer/types/customer.MetadataType/page.mdx",
+    "pathname": "/references/customer/types/customer.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/customer/types/customer.ModuleJoinerConfig/page.mdx",
@@ -2260,6 +2312,10 @@ export const filesMap = [
     "pathname": "/references/customer/types/customer.Query"
   },
   {
+    "filePath": "/www/apps/resources/references/customer/types/customer.RawMessageFormat/page.mdx",
+    "pathname": "/references/customer/types/customer.RawMessageFormat"
+  },
+  {
     "filePath": "/www/apps/resources/references/customer/types/customer.ReadonlyPrimary/page.mdx",
     "pathname": "/references/customer/types/customer.ReadonlyPrimary"
   },
@@ -2284,6 +2340,150 @@ export const filesMap = [
     "pathname": "/references/customer_models/classes/customer_models.CustomerGroupCustomer"
   },
   {
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.cascades/page.mdx",
+    "pathname": "/references/dml/Model_Methods/methods/dml.Model_Methods.cascades"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.indexes/page.mdx",
+    "pathname": "/references/dml/Model_Methods/methods/dml.Model_Methods.indexes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.default/page.mdx",
+    "pathname": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.default"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.index/page.mdx",
+    "pathname": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.index"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.nullable/page.mdx",
+    "pathname": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.nullable"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.unique/page.mdx",
+    "pathname": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.unique"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.array/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.array"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.bigNumber/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.bigNumber"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.boolean/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.boolean"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.dateTime/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.dateTime"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.enum/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.enum"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.id/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.id"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.json/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.json"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.number/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.number"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.text/page.mdx",
+    "pathname": "/references/dml/Property_Types/methods/dml.Property_Types.text"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.belongsTo/page.mdx",
+    "pathname": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.belongsTo"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasMany/page.mdx",
+    "pathname": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasMany"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasOne/page.mdx",
+    "pathname": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasOne"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.manyToMany/page.mdx",
+    "pathname": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.manyToMany"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/dml.Model_Methods/page.mdx",
+    "pathname": "/references/dml/dml.Model_Methods"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/dml.Property_Configuration_Methods/page.mdx",
+    "pathname": "/references/dml/dml.Property_Configuration_Methods"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/dml.Property_Types/page.mdx",
+    "pathname": "/references/dml/dml.Property_Types"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/dml.Relationship_Methods/page.mdx",
+    "pathname": "/references/dml/dml.Relationship_Methods"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.isDmlEntity/page.mdx",
+    "pathname": "/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.isDmlEntity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.parse/page.mdx",
+    "pathname": "/references/dml/entity/DmlEntity/methods/dml.entity.DmlEntity.parse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity/classes/dml.entity.DmlEntity/page.mdx",
+    "pathname": "/references/dml/entity/classes/dml.entity.DmlEntity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity_builder/EntityBuilder/methods/dml.entity_builder.EntityBuilder.define/page.mdx",
+    "pathname": "/references/dml/entity_builder/EntityBuilder/methods/dml.entity_builder.EntityBuilder.define"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity_builder/classes/dml.entity_builder.EntityBuilder/page.mdx",
+    "pathname": "/references/dml/entity_builder/classes/dml.entity_builder.EntityBuilder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity_builder/types/dml.entity_builder.DefineOptions/page.mdx",
+    "pathname": "/references/dml/entity_builder/types/dml.entity_builder.DefineOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity_builder/types/dml.entity_builder.ManyToManyOptions/page.mdx",
+    "pathname": "/references/dml/entity_builder/types/dml.entity_builder.ManyToManyOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/entity_builder/variables/dml.entity_builder.model/page.mdx",
+    "pathname": "/references/dml/entity_builder/variables/dml.entity_builder.model"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/modules/dml.entity/page.mdx",
+    "pathname": "/references/dml/modules/dml.entity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/modules/dml.entity_builder/page.mdx",
+    "pathname": "/references/dml/modules/dml.entity_builder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/modules/dml.properties_base/page.mdx",
+    "pathname": "/references/dml/modules/dml.properties_base"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/properties_base/BaseProperty/methods/dml.properties_base.BaseProperty.parse/page.mdx",
+    "pathname": "/references/dml/properties_base/BaseProperty/methods/dml.properties_base.BaseProperty.parse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/dml/properties_base/classes/dml.properties_base.BaseProperty/page.mdx",
+    "pathname": "/references/dml/properties_base/classes/dml.properties_base.BaseProperty"
+  },
+  {
     "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileProviderService/page.mdx",
     "pathname": "/references/file/classes/file.AbstractFileProviderService"
   },
@@ -2292,16 +2492,20 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.create/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.create"
-  },
-  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillment/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillment"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillmentSets"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createGeoZones/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createGeoZones"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createReturnFulfillment/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createReturnFulfillment"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createServiceZones/page.mdx",
@@ -2320,8 +2524,8 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createShippingProfiles"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.delete/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.delete"
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteFulfillmentSets"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteGeoZones/page.mdx",
@@ -2348,12 +2552,8 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteShippingProfiles"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.list/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCount/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillmentSets"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillments/page.mdx",
@@ -2388,6 +2588,10 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentProviders"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentSets"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillments/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillments"
   },
@@ -2420,8 +2624,8 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listShippingProfiles"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restore/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restore"
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreFulfillmentSets"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreGeoZones/page.mdx",
@@ -2440,16 +2644,16 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreShippingProfiles"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieve/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieve"
-  },
-  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillment/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillment"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentOptions/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentSet/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentSet"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveGeoZone/page.mdx",
@@ -2476,8 +2680,8 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveShippingProfile"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDelete/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteFulfillmentSets"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteGeoZones/page.mdx",
@@ -2496,12 +2700,12 @@ export const filesMap = [
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteShippingProfiles"
   },
   {
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.update/page.mdx",
-    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.update"
-  },
-  {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillment/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillmentSets/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillmentSets"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateGeoZones/page.mdx",
@@ -2530,6 +2734,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingOptions/page.mdx",
     "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles/page.mdx",
+    "pathname": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentOption/page.mdx",
@@ -2586,10 +2794,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.CreateFulfillmentLabelDTO/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.CreateFulfillmentLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.CreateFulfillmentOrderDTO/page.mdx",
-    "pathname": "/references/fulfillment/interfaces/fulfillment.CreateFulfillmentOrderDTO"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.CreateFulfillmentSetDTO/page.mdx",
@@ -2724,6 +2928,58 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.MessageAggregatorFormat"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderAddressDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderAddressDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderAdjustmentLineDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderAdjustmentLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderItemDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderItemDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderLineItemAdjustmentDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemAdjustmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderLineItemDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderLineItemTaxLineDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemTaxLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderLineItemTotalsDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderLineItemTotalsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderShippingMethodAdjustmentDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderShippingMethodAdjustmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderShippingMethodDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderShippingMethodDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderShippingMethodTaxLineDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderShippingMethodTaxLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderTaxLineDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderTaxLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.OrderTransactionDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.OrderTransactionDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.RestoreReturn/page.mdx",
     "pathname": "/references/fulfillment/interfaces/fulfillment.RestoreReturn"
   },
@@ -2804,8 +3060,24 @@ export const filesMap = [
     "pathname": "/references/fulfillment/interfaces/fulfillment.UpsertShippingOptionDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/interfaces/fulfillment.UpsertShippingProfileDTO/page.mdx",
+    "pathname": "/references/fulfillment/interfaces/fulfillment.UpsertShippingProfileDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.BigNumberRawValue/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.BigNumberRawValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.BigNumberValue/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.BigNumberValue"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.CreateGeoZoneDTO/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.CreateGeoZoneDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.EventMetadata/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.EventMetadata"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ExpandScalar/page.mdx",
@@ -2832,16 +3104,16 @@ export const filesMap = [
     "pathname": "/references/fulfillment/types/fulfillment.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.Message/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.Message"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.MessageBody/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.MessageFormat/page.mdx",
-    "pathname": "/references/fulfillment/types/fulfillment.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ModuleJoinerConfig/page.mdx",
@@ -2856,6 +3128,14 @@ export const filesMap = [
     "pathname": "/references/fulfillment/types/fulfillment.OperatorMap"
   },
   {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.OrderStatus/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.OrderStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.OrderSummaryDTO/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.OrderSummaryDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.PrevLimit/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.PrevLimit"
   },
@@ -2866,6 +3146,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.Query/page.mdx",
     "pathname": "/references/fulfillment/types/fulfillment.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.RawMessageFormat/page.mdx",
+    "pathname": "/references/fulfillment/types/fulfillment.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/fulfillment/types/fulfillment.ReadonlyPrimary/page.mdx",
@@ -2940,140 +3224,144 @@ export const filesMap = [
     "pathname": "/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.adjustInventory/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.adjustInventory"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.confirmInventory/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.confirmInventory"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.confirmInventory/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.confirmInventory"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.create/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.create"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.delete/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.delete"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItemLevelByLocationId/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItemLevelByLocationId"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryItemLevelByLocationId/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryItemLevelByLocationId"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevel/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevel"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevel/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevel"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemByLocationId/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemByLocationId"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemByLocationId/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemByLocationId"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemsByLineItem/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemsByLineItem"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemsByLineItem/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemsByLineItem"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.list/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.list"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCount/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCount"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restore/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restore"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieve/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieve"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItemsByLineItem/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItemsByLineItem"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveAvailableQuantity/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveAvailableQuantity"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveAvailableQuantity/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveAvailableQuantity"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevel/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevel"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryItem/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryItem"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevelByItemAndLocation/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevelByItemAndLocation"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevel/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevel"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservationItem/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservationItem"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevelByItemAndLocation/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevelByItemAndLocation"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservedQuantity/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservedQuantity"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservationItem/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservationItem"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveStockedQuantity/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveStockedQuantity"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservedQuantity/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservedQuantity"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDelete/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDelete"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveStockedQuantity/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveStockedQuantity"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryLevels"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.update/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.update"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteReservationItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateInventoryLevels/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateInventoryLevels"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryItems"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateReservationItems/page.mdx",
-    "pathname": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateReservationItems"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryLevels/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryLevels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateReservationItems/page.mdx",
+    "pathname": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateReservationItems"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/IMessageAggregator/methods/inventory_next.IMessageAggregator.clearMessages/page.mdx",
@@ -3132,8 +3420,8 @@ export const filesMap = [
     "pathname": "/references/inventory_next/interfaces/inventory_next.FindConfig"
   },
   {
-    "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IInventoryServiceNext/page.mdx",
-    "pathname": "/references/inventory_next/interfaces/inventory_next.IInventoryServiceNext"
+    "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IInventoryService/page.mdx",
+    "pathname": "/references/inventory_next/interfaces/inventory_next.IInventoryService"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IMessageAggregator/page.mdx",
@@ -3192,6 +3480,10 @@ export const filesMap = [
     "pathname": "/references/inventory_next/interfaces/inventory_next.UpdateReservationItemInput"
   },
   {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.EventMetadata/page.mdx",
+    "pathname": "/references/inventory_next/types/inventory_next.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.ExpandScalar/page.mdx",
     "pathname": "/references/inventory_next/types/inventory_next.ExpandScalar"
   },
@@ -3212,16 +3504,16 @@ export const filesMap = [
     "pathname": "/references/inventory_next/types/inventory_next.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/inventory_next/types/inventory_next.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.Message/page.mdx",
     "pathname": "/references/inventory_next/types/inventory_next.Message"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.MessageBody/page.mdx",
     "pathname": "/references/inventory_next/types/inventory_next.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.MessageFormat/page.mdx",
-    "pathname": "/references/inventory_next/types/inventory_next.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.ModuleJoinerConfig/page.mdx",
@@ -3246,6 +3538,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.Query/page.mdx",
     "pathname": "/references/inventory_next/types/inventory_next.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.RawMessageFormat/page.mdx",
+    "pathname": "/references/inventory_next/types/inventory_next.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/inventory_next/types/inventory_next.ReadonlyPrimary/page.mdx",
@@ -3508,2084 +3804,40 @@ export const filesMap = [
     "pathname": "/references/js_client/classes/js_client.SwapsResource"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdditionalItem/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdditionalItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdditionalItem-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdditionalItem-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdditionalItem-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdditionalItem-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AddressCreatePayload/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AddressCreatePayload"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AddressPayload/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AddressPayload"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminCreateCondition/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminCreateCondition"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminCreateUserRequest/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminCreateUserRequest"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteCustomerGroupsGroupCustomerBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteCustomerGroupsGroupCustomerBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionBatchParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionBatchParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteDiscountsDiscountConditionsConditionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeletePriceListPricesPricesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeletePriceListPricesPricesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeletePriceListsPriceListProductsPricesBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeletePriceListsPriceListProductsPricesBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteProductCategoriesCategoryProductsBatchParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteProductCategoriesCategoryProductsBatchParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteProductCategoriesCategoryProductsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteProductCategoriesCategoryProductsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteProductsFromCollectionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteProductsFromCollectionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeletePublishableApiKeySalesChannelsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeletePublishableApiKeySalesChannelsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteSalesChannelsChannelProductsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteSalesChannelsChannelProductsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteSalesChannelsChannelStockLocationsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteSalesChannelsChannelStockLocationsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductTypesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductTypesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductTypesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductTypesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateProductsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateShippingOptionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateShippingOptionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateShippingOptionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteTaxRatesTaxRateShippingOptionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminDeleteUploadsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminDeleteUploadsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetBatchPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetBatchPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetBatchParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetBatchParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCollectionsPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCollectionsPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCollectionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCollectionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCurrenciesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCurrenciesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCustomerGroupsGroupParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCustomerGroupsGroupParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCustomerGroupsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCustomerGroupsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetCustomersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetCustomersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDiscountParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDiscountParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDiscountsDiscountCodeParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDiscountsDiscountCodeParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDiscountsDiscountConditionsConditionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDiscountsDiscountConditionsConditionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDiscountsDiscountRuleParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDiscountsDiscountRuleParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDiscountsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDiscountsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetDraftOrdersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetDraftOrdersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetGiftCardsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetGiftCardsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetInventoryItemsItemLocationLevelsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetInventoryItemsItemLocationLevelsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetInventoryItemsItemParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetInventoryItemsItemParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetInventoryItemsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetInventoryItemsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetNotesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetNotesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetNotificationsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetNotificationsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetOrdersOrderParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetOrdersOrderParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetOrdersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetOrdersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetPaymentCollectionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetPaymentCollectionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetPriceListPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetPriceListPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetPriceListsPriceListProductsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetPriceListsPriceListProductsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductCategoriesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductCategoriesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductCategoryParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductCategoryParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductTagsPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductTagsPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductTagsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductTagsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductTypesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductTypesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetProductsVariantsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetProductsVariantsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetRegionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetRegionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetRegionsRegionFulfillmentOptionsRes/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetRegionsRegionFulfillmentOptionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetRegionsRegionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetRegionsRegionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetReservationsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetReservationsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetReturnsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetReturnsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetSalesChannelsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetSalesChannelsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetShippingOptionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetShippingOptionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetStockLocationsLocationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetStockLocationsLocationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetStockLocationsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetStockLocationsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetSwapsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetSwapsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetTaxRatesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetTaxRatesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetTaxRatesTaxRateParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetTaxRatesTaxRateParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetUsersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetUsersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetVariantParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetVariantParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetVariantsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetVariantsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetWorkflowExecutionDetailsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetWorkflowExecutionDetailsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminGetWorkflowExecutionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminGetWorkflowExecutionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminListCustomerSelector/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminListCustomerSelector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminListOrdersSelector/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminListOrdersSelector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostAnalyticsConfigAnalyticsConfigReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostAnalyticsConfigAnalyticsConfigReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostAnalyticsConfigReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostAnalyticsConfigReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostAuthReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostAuthReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostBatchesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostBatchesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCollectionsCollectionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCollectionsCollectionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCollectionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCollectionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCurrenciesCurrencyReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCurrenciesCurrencyReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCustomerGroupsGroupCustomersBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCustomerGroupsGroupCustomersBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCustomerGroupsGroupReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCustomerGroupsGroupReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCustomerGroupsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCustomerGroupsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCustomersCustomerReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCustomersCustomerReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostCustomersReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostCustomersReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditions/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditions"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsCondition/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsCondition"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsConditionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountConditionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountDynamicCodesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountDynamicCodesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsDiscountRule/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsDiscountRule"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDiscountsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDiscountsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderLineItemsItemReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderLineItemsItemReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderLineItemsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderLineItemsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDraftOrdersDraftOrderReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostDraftOrdersReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostDraftOrdersReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostGiftCardsGiftCardReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostGiftCardsGiftCardReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostGiftCardsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostGiftCardsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsInventoryItemParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsInventoryItemParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsInventoryItemReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsInventoryItemReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsLevelParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsLevelParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsLevelReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsLevelReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsItemLocationLevelsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInventoryItemsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInventoryItemsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInvitesInviteAcceptReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInvitesInviteAcceptReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInvitesInviteAcceptUserReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInvitesInviteAcceptUserReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostInvitesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostInvitesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostNotesNoteReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostNotesNoteReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostNotesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostNotesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostNotificationsNotificationResendReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostNotificationsNotificationResendReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrderEditsEditLineItemsLineItemReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrderEditsEditLineItemsLineItemReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrderEditsEditLineItemsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrderEditsEditLineItemsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrderEditsOrderEditReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrderEditsOrderEditReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrderEditsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrderEditsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrderEditsRequestConfirmationReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrderEditsRequestConfirmationReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersClaimCancel/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersClaimCancel"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersClaimFulfillmentsCancelParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersClaimFulfillmentsCancelParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderArchiveParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderArchiveParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderCancel/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderCancel"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderCaptureParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderCaptureParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimFulfillmentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimFulfillmentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimFulfillmentsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimFulfillmentsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsClaimShipmentsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderClaimsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderCompleteParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderCompleteParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillementsCancelParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillementsCancelParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillmentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillmentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillmentsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderFulfillmentsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderRefundsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderRefundsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderRefundsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderRefundsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderReturnsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderReturnsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderReturnsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderReturnsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderShipmentParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderShipmentParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderShipmentReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderShipmentReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderShippingMethodsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderShippingMethodsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderShippingMethodsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderShippingMethodsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapFulfillementsCancelParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapFulfillementsCancelParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapFulfillmentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapFulfillmentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapFulfillmentsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapFulfillmentsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapProcessPaymentParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapProcessPaymentParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapShipmentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapShipmentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapShipmentsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersOrderSwapsSwapShipmentsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostOrdersSwapCancelParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostOrdersSwapCancelParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPaymentRefundsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPaymentRefundsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPriceListPricesPricesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPriceListPricesPricesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPriceListsPriceListPriceListReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPriceListsPriceListPriceListReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPriceListsPriceListReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPriceListsPriceListReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryProductsBatchParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryProductsBatchParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryProductsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryProductsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesCategoryReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductCategoriesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductCategoriesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductMetadataReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductMetadataReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductOptionsOption/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductOptionsOption"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductOptionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductOptionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductVariantsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductVariantsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsProductVariantsVariantReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsProductVariantsVariantReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostProductsToCollectionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostProductsToCollectionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPublishableApiKeySalesChannelsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPublishableApiKeySalesChannelsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPublishableApiKeysPublishableApiKeyReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPublishableApiKeysPublishableApiKeyReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostPublishableApiKeysReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostPublishableApiKeysReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostRegionsRegionCountriesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostRegionsRegionCountriesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostRegionsRegionFulfillmentProvidersReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostRegionsRegionFulfillmentProvidersReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostRegionsRegionPaymentProvidersReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostRegionsRegionPaymentProvidersReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostRegionsRegionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostRegionsRegionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostRegionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostRegionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostReservationsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostReservationsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostReservationsReservationReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostReservationsReservationReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostReturnReasonsReasonReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostReturnReasonsReasonReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostReturnReasonsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostReturnReasonsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostReturnsReturnReceiveReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostReturnsReturnReceiveReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostSalesChannelsChannelProductsBatchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostSalesChannelsChannelProductsBatchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostSalesChannelsChannelStockLocationsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostSalesChannelsChannelStockLocationsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostSalesChannelsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostSalesChannelsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostSalesChannelsSalesChannelReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostSalesChannelsSalesChannelReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostShippingOptionsOptionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostShippingOptionsOptionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostShippingOptionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostShippingOptionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostShippingProfilesProfileReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostShippingProfilesProfileReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostShippingProfilesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostShippingProfilesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostStockLocationsLocationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostStockLocationsLocationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostStockLocationsLocationReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostStockLocationsLocationReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostStockLocationsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostStockLocationsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostStockLocationsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostStockLocationsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostStoreReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostStoreReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductTypesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductTypesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductTypesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductTypesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateProductsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateShippingOptionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateShippingOptionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateShippingOptionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostTaxRatesTaxRateShippingOptionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostUploadsDownloadUrlReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostUploadsDownloadUrlReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostWorkflowsAsyncResponseReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostWorkflowsAsyncResponseReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPostWorkflowsRunReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPostWorkflowsRunReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPriceListPricesCreateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPriceListPricesCreateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPriceListPricesUpdateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPriceListPricesUpdateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminPriceSelectionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminPriceSelectionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminProductCategoriesReqBase/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminProductCategoriesReqBase"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminResetPasswordRequest/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminResetPasswordRequest"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminResetPasswordTokenRequest/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminResetPasswordTokenRequest"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminUpdateDiscountRule/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminUpdateDiscountRule"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminUpdatePaymentCollectionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminUpdatePaymentCollectionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminUpdateUserRequest/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminUpdateUserRequest"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminUpsertCondition/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminUpsertCondition"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.AdminUpsertConditionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.AdminUpsertConditionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.CustomShippingOption/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.CustomShippingOption"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.CustomerGroup/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.CustomerGroup"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.CustomerGroup-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.CustomerGroup-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.CustomerGroupsBatchCustomer/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.CustomerGroupsBatchCustomer"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.DateComparisonOperator/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.DateComparisonOperator"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Discount/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Discount"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Discount-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Discount-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Discount-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Discount-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.EmptyQueryParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.EmptyQueryParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FilterableBatchJobProps/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FilterableBatchJobProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FilterableCustomerGroupProps/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FilterableCustomerGroupProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FilterablePriceListProps/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FilterablePriceListProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FilterableProductProps/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FilterableProductProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FindPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FindPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FindParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FindParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.FulfillmentOption/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.FulfillmentOption"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GetOrderEditsOrderEditParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GetOrderEditsOrderEditParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GetOrderEditsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GetOrderEditsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GetPaymentsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GetPaymentsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GetPublishableApiKeySalesChannelsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GetPublishableApiKeySalesChannelsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GetPublishableApiKeysParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GetPublishableApiKeysParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.GiftCard/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.GiftCard"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Group/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Group"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.IAdminPostUploadsFileReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.IAdminPostUploadsFileReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Image/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Image"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-3/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-3"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-4/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-4"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-5/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-5"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-6/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-6"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Item-7/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Item-7"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.MedusaError/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.MedusaError"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.NumericalComparisonOperator/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.NumericalComparisonOperator"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.OptionRequirement/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.OptionRequirement"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.OptionRequirement-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.OptionRequirement-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.OrdersReturnItem/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.OrdersReturnItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.PaymentMethod/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.PaymentMethod"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.PriceSelectionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.PriceSelectionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductBatchProductCategory/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductBatchProductCategory"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductBatchSalesChannel/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductBatchSalesChannel"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductOptionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductOptionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductProductCategoryReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductProductCategoryReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductSalesChannelReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductSalesChannelReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductTagReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductTagReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductTypeReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductTypeReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantOptionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantOptionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantOptionReq-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantOptionReq-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantOptionReq-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantOptionReq-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantOptionReq-3/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantOptionReq-3"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantPricesCreateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantPricesCreateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantPricesUpdateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantPricesUpdateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ProductVariantReq-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ProductVariantReq-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ReturnItem/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ReturnItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ReturnShipping/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ReturnShipping"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ReturnShipping-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ReturnShipping-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ReturnShipping-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ReturnShipping-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ReturnShipping-3/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ReturnShipping-3"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ShippingAddressPayload/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ShippingAddressPayload"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ShippingMethod/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ShippingMethod"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ShippingMethod-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ShippingMethod-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ShippingMethod-2/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ShippingMethod-2"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.ShippingMethod-3/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.ShippingMethod-3"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StockLocationAddress/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StockLocationAddress"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StockLocationAddress-1/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StockLocationAddress-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetCollectionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetCollectionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetCustomersCustomerOrdersPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetCustomersCustomerOrdersPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetCustomersCustomerOrdersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetCustomersCustomerOrdersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetOrdersParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetOrdersParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetPaymentCollectionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetPaymentCollectionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductCategoriesCategoryParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductCategoriesCategoryParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductCategoriesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductCategoriesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductTagsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductTagsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductTypesParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductTypesParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductsPaginationParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductsPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetProductsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetProductsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetRegionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetRegionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetRegionsRegionParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetRegionsRegionParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetShippingOptionsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetShippingOptionsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetVariantsParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetVariantsParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StoreGetVariantsVariantParams/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StoreGetVariantsVariantParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePaymentCollectionSessionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePaymentCollectionSessionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostAuthReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostAuthReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartLineItemsItemReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartLineItemsItemReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartLineItemsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartLineItemsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartPaymentSessionReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartPaymentSessionReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartPaymentSessionUpdateReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartPaymentSessionUpdateReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCartsCartShippingMethodReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCartsCartShippingMethodReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerAcceptClaimReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerAcceptClaimReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerAddressesReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerAddressesReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerOrderClaimReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerOrderClaimReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerPasswordTokenReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerPasswordTokenReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersCustomerReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersCustomerReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostCustomersResetPasswordReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostCustomersResetPasswordReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostOrderEditsOrderEditDecline/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostOrderEditsOrderEditDecline"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsAuthorizeReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsAuthorizeReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostPaymentCollectionsBatchSessionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostPaymentCollectionsSessionsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostPaymentCollectionsSessionsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostReturnsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostReturnsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostSearchReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostSearchReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StorePostSwapsReq/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StorePostSwapsReq"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.StringComparisonOperator/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.StringComparisonOperator"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/classes/medusa.Tag/page.mdx",
-    "pathname": "/references/medusa/classes/medusa.Tag"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.BatchJobStatus/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.BatchJobStatus"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.MODULE_RESOURCE_TYPE/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.MODULE_RESOURCE_TYPE"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.PriceListStatus/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.PriceListStatus"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.PriceListStatus-1/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.PriceListStatus-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.PriceListType/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.PriceListType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.PriceListType-1/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.PriceListType-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.TransactionHandlerType/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.TransactionHandlerType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/enums/medusa.UserRole/page.mdx",
-    "pathname": "/references/medusa/enums/medusa.UserRole"
+    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.AuthContext/page.mdx",
+    "pathname": "/references/medusa/interfaces/medusa.AuthContext"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.AuthenticatedMedusaRequest/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.AuthenticatedMedusaRequest"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ConfigModule-1/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ConfigModule-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.CustomFindOptions/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.CustomFindOptions"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.DeleteResponse/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.DeleteResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FileServiceUploadResult/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FileServiceUploadResult"
-  },
-  {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FindConfig/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.FindConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentAddressDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentAddressDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentItemDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentItemDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentLabelDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentLabelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentProviderDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentProviderDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.FulfillmentSetDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.FulfillmentSetDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.GeoZoneDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.GeoZoneDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.HttpCompressionOptions/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.HttpCompressionOptions"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.Logger-1/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.Logger-1"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.MedusaRequest/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.MedusaRequest"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.PaginatedResponse/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.PaginatedResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.PaginatedResponse-1/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.PaginatedResponse-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ProjectConfigOptions/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ProjectConfigOptions"
-  },
-  {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RequestQueryFields/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.RequestQueryFields"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.RequestQueryFields-1/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.RequestQueryFields-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ServiceZoneDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ServiceZoneDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SessionOptions/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.SessionOptions"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ShippingOptionDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ShippingOptionDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ShippingOptionRuleDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ShippingOptionRuleDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ShippingOptionTypeDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ShippingOptionTypeDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.ShippingProfileDTO/page.mdx",
-    "pathname": "/references/medusa/interfaces/medusa.ShippingProfileDTO"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SubscriberContext/page.mdx",
     "pathname": "/references/medusa/interfaces/medusa.SubscriberContext"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminAnalyticsConfigDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminAnalyticsConfigDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminAnalyticsConfigRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminAnalyticsConfigRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminAuthRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminAuthRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminBatchJobListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminBatchJobListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminBatchJobRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminBatchJobRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminBearerAuthRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminBearerAuthRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCollectionsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCollectionsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCollectionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCollectionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCollectionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCollectionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCurrenciesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCurrenciesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCurrenciesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCurrenciesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCustomerGroupsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCustomerGroupsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCustomerGroupsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCustomerGroupsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCustomerGroupsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCustomerGroupsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCustomersListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCustomersListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminCustomersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminCustomersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDeleteProductsFromCollectionRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDeleteProductsFromCollectionRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDeleteShippingProfileRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDeleteShippingProfileRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDeleteUploadsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDeleteUploadsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDeleteUserRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDeleteUserRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDiscountConditionsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDiscountConditionsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDiscountConditionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDiscountConditionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDiscountsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDiscountsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDiscountsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDiscountsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDiscountsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDiscountsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDraftOrdersDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDraftOrdersDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDraftOrdersListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDraftOrdersListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminDraftOrdersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminDraftOrdersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminExtendedStoresRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminExtendedStoresRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminGetVariantsVariantInventoryRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminGetVariantsVariantInventoryRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminGiftCardsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminGiftCardsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminGiftCardsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminGiftCardsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminGiftCardsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminGiftCardsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInventoryItemsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInventoryItemsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInventoryItemsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInventoryItemsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInventoryItemsListWithVariantsAndLocationLevelsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInventoryItemsListWithVariantsAndLocationLevelsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInventoryItemsLocationLevelsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInventoryItemsLocationLevelsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInventoryItemsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInventoryItemsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminInviteDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminInviteDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminListInvitesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminListInvitesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminNotesDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminNotesDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminNotesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminNotesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminNotesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminNotesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminNotificationsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminNotificationsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminNotificationsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminNotificationsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrderEditDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrderEditDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrderEditItemChangeDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrderEditItemChangeDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrderEditsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrderEditsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrderEditsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrderEditsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrdersListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrdersListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminOrdersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminOrdersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPaymentCollectionDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPaymentCollectionDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPaymentCollectionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPaymentCollectionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPaymentProvidersList/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPaymentProvidersList"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPaymentRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPaymentRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPostDraftOrdersDraftOrderRegisterPaymentRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPostDraftOrdersDraftOrderRegisterPaymentRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListDeleteBatchRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListDeleteBatchRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListDeleteProductPricesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListDeleteProductPricesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListDeleteVariantPricesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListDeleteVariantPricesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPriceListsProductsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPriceListsProductsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductCategoriesCategoryDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductCategoriesCategoryDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductCategoriesCategoryRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductCategoriesCategoryRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductCategoriesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductCategoriesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductTagsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductTagsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductTypesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductTypesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsDeleteOptionRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsDeleteOptionRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsDeleteVariantRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsDeleteVariantRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsListTagsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsListTagsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsListTypesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsListTypesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsListVariantsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsListVariantsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminProductsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminProductsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPublishableApiKeyDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPublishableApiKeyDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPublishableApiKeysListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPublishableApiKeysListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPublishableApiKeysListSalesChannelsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPublishableApiKeysListSalesChannelsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminPublishableApiKeysRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminPublishableApiKeysRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminRefundRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminRefundRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminRegionsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminRegionsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminRegionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminRegionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminRegionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminRegionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReservationsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReservationsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReservationsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReservationsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReservationsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReservationsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnReasonsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnReasonsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnReasonsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnReasonsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnReasonsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnReasonsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnsCancelRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnsCancelRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminReturnsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminReturnsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSalesChannelsDeleteLocationRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSalesChannelsDeleteLocationRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSalesChannelsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSalesChannelsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSalesChannelsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSalesChannelsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSalesChannelsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSalesChannelsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminShippingOptionsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminShippingOptionsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminShippingOptionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminShippingOptionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminShippingOptionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminShippingOptionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminShippingProfilesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminShippingProfilesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminShippingProfilesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminShippingProfilesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminStockLocationsDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminStockLocationsDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminStockLocationsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminStockLocationsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminStockLocationsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminStockLocationsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminStoresRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminStoresRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSwapsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSwapsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminSwapsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminSwapsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminTaxProvidersList/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminTaxProvidersList"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminTaxRatesDeleteRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminTaxRatesDeleteRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminTaxRatesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminTaxRatesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminTaxRatesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminTaxRatesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminUploadsDownloadUrlRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminUploadsDownloadUrlRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminUploadsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminUploadsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminUserRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminUserRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminUsersListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminUsersListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminVariantsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminVariantsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.AdminVariantsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.AdminVariantsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.BatchJobCreateProps/page.mdx",
-    "pathname": "/references/medusa/types/medusa.BatchJobCreateProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.BatchJobResultError/page.mdx",
-    "pathname": "/references/medusa/types/medusa.BatchJobResultError"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.BatchJobResultStatDescriptor/page.mdx",
-    "pathname": "/references/medusa/types/medusa.BatchJobResultStatDescriptor"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.BatchJobUpdateProps/page.mdx",
-    "pathname": "/references/medusa/types/medusa.BatchJobUpdateProps"
-  },
-  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.ClassConstructor/page.mdx",
     "pathname": "/references/medusa/types/medusa.ClassConstructor"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ConfigModule/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ConfigModule"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Constructor/page.mdx",
     "pathname": "/references/medusa/types/medusa.Constructor"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.Constructor-1/page.mdx",
-    "pathname": "/references/medusa/types/medusa.Constructor-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.CreateBatchJobInput/page.mdx",
-    "pathname": "/references/medusa/types/medusa.CreateBatchJobInput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.CreatePriceListInput/page.mdx",
-    "pathname": "/references/medusa/types/medusa.CreatePriceListInput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DecoratedInventoryItemDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.DecoratedInventoryItemDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DeleteResponse-1/page.mdx",
-    "pathname": "/references/medusa/types/medusa.DeleteResponse-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.DraftOrderStatusValue/page.mdx",
-    "pathname": "/references/medusa/types/medusa.DraftOrderStatusValue"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExtendedFindConfig/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ExtendedFindConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExtendedRequest/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ExtendedRequest"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExtendedReservationItem/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ExtendedReservationItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExtendedStoreDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ExtendedStoreDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ExternalModuleDeclaration/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ExternalModuleDeclaration"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.FeatureFlagsResponse/page.mdx",
-    "pathname": "/references/medusa/types/medusa.FeatureFlagsResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.GeoZoneType/page.mdx",
-    "pathname": "/references/medusa/types/medusa.GeoZoneType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.InnerSelector/page.mdx",
-    "pathname": "/references/medusa/types/medusa.InnerSelector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.InternalModuleDeclaration/page.mdx",
-    "pathname": "/references/medusa/types/medusa.InternalModuleDeclaration"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.InventoryItemDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.InventoryItemDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.InventoryLevelDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.InventoryLevelDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.LevelWithAvailability/page.mdx",
-    "pathname": "/references/medusa/types/medusa.LevelWithAvailability"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.LoaderOptions/page.mdx",
-    "pathname": "/references/medusa/types/medusa.LoaderOptions"
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.EventMetadata/page.mdx",
+    "pathname": "/references/medusa/types/medusa.EventMetadata"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.Logger/page.mdx",
@@ -5600,12 +3852,12 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.MedusaContainer-1"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.MedusaContainer-2/page.mdx",
-    "pathname": "/references/medusa/types/medusa.MedusaContainer-2"
-  },
-  {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.MedusaNextFunction/page.mdx",
     "pathname": "/references/medusa/types/medusa.MedusaNextFunction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.MedusaPricingContext/page.mdx",
+    "pathname": "/references/medusa/types/medusa.MedusaPricingContext"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.MedusaRequestHandler/page.mdx",
@@ -5616,236 +3868,12 @@ export const filesMap = [
     "pathname": "/references/medusa/types/medusa.MedusaResponse"
   },
   {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ModuleDefinition/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ModuleDefinition"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ModuleExports/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ModuleExports"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ModuleLoaderFunction/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ModuleLoaderFunction"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ModulesResponse/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ModulesResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ModulesResponse-1/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ModulesResponse-1"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PartialPick/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PartialPick"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PriceListLoadConfig/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PriceListLoadConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PriceListPriceCreateInput/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PriceListPriceCreateInput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PriceListPriceUpdateInput/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PriceListPriceUpdateInput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PricedProduct/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PricedProduct"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PricedShippingOption/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PricedShippingOption"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.PricedVariant/page.mdx",
-    "pathname": "/references/medusa/types/medusa.PricedVariant"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ProductVariantPricing/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ProductVariantPricing"
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.MessageBody/page.mdx",
+    "pathname": "/references/medusa/types/medusa.MessageBody"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.QueryConfig/page.mdx",
     "pathname": "/references/medusa/types/medusa.QueryConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.QuerySelector/page.mdx",
-    "pathname": "/references/medusa/types/medusa.QuerySelector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ReservationItemDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ReservationItemDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ResponseInventoryItem/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ResponseInventoryItem"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ScheduledJobArgs/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ScheduledJobArgs"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ScheduledJobConfig/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ScheduledJobConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.Selector/page.mdx",
-    "pathname": "/references/medusa/types/medusa.Selector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ShippingOptionPriceType/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ShippingOptionPriceType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.ShippingOptionPricing/page.mdx",
-    "pathname": "/references/medusa/types/medusa.ShippingOptionPricing"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StockLocationAddressDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StockLocationAddressDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StockLocationDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StockLocationDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StockLocationExpandedDTO/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StockLocationExpandedDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreAuthRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreAuthRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreBearerAuthRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreBearerAuthRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCartShippingOptionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCartShippingOptionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCartsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCartsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCollectionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCollectionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCollectionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCollectionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCompleteCartRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCompleteCartRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCustomersListOrdersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCustomersListOrdersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCustomersListPaymentMethodsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCustomersListPaymentMethodsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCustomersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCustomersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreCustomersResetPasswordRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreCustomersResetPasswordRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreGetAuthEmailRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreGetAuthEmailRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreGetProductCategoriesCategoryRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreGetProductCategoriesCategoryRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreGetProductCategoriesRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreGetProductCategoriesRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreGiftCardsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreGiftCardsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreOrderEditsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreOrderEditsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreOrdersRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreOrdersRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StorePaymentCollectionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StorePaymentCollectionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StorePaymentCollectionsSessionRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StorePaymentCollectionsSessionRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StorePostSearchRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StorePostSearchRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreProductTagsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreProductTagsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreProductTypesListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreProductTypesListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreProductsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreProductsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreProductsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreProductsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreRegionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreRegionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreRegionsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreRegionsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreReturnReasonsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreReturnReasonsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreReturnReasonsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreReturnReasonsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreReturnsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreReturnsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreShippingOptionsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreShippingOptionsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreSwapsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreSwapsRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreVariantsListRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreVariantsListRes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.StoreVariantsRes/page.mdx",
-    "pathname": "/references/medusa/types/medusa.StoreVariantsRes"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.SubscriberArgs/page.mdx",
@@ -5854,46 +3882,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.SubscriberConfig/page.mdx",
     "pathname": "/references/medusa/types/medusa.SubscriberConfig"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.TaxServiceRate/page.mdx",
-    "pathname": "/references/medusa/types/medusa.TaxServiceRate"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.TaxedPricing/page.mdx",
-    "pathname": "/references/medusa/types/medusa.TaxedPricing"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.TotalField/page.mdx",
-    "pathname": "/references/medusa/types/medusa.TotalField"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.TreeQuerySelector/page.mdx",
-    "pathname": "/references/medusa/types/medusa.TreeQuerySelector"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.UpdatePriceListInput/page.mdx",
-    "pathname": "/references/medusa/types/medusa.UpdatePriceListInput"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.VariantInventory/page.mdx",
-    "pathname": "/references/medusa/types/medusa.VariantInventory"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.WithRequiredProperty/page.mdx",
-    "pathname": "/references/medusa/types/medusa.WithRequiredProperty"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.Writable/page.mdx",
-    "pathname": "/references/medusa/types/medusa.Writable"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.handler/page.mdx",
-    "pathname": "/references/medusa/types/medusa.handler"
-  },
-  {
-    "filePath": "/www/apps/resources/references/medusa/types/medusa.payload/page.mdx",
-    "pathname": "/references/medusa/types/medusa.payload"
   },
   {
     "filePath": "/www/apps/resources/references/medusa_config/interfaces/medusa_config.AdminOptions/page.mdx",
@@ -6372,6 +4360,10 @@ export const filesMap = [
     "pathname": "/references/modules/customer_models"
   },
   {
+    "filePath": "/www/apps/resources/references/modules/dml/page.mdx",
+    "pathname": "/references/modules/dml"
+  },
+  {
     "filePath": "/www/apps/resources/references/modules/file/page.mdx",
     "pathname": "/references/modules/file"
   },
@@ -6552,24 +4544,48 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderAction"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.applyPendingOrderActions/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.applyPendingOrderActions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.archive/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.archive"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.confirmOrderChange/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.confirmOrderChange"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.create/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.create"
-  },
-  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createExchange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createExchange"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemAdjustments/page.mdx",
@@ -6588,6 +4604,18 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments"
   },
@@ -6602,10 +4630,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange"
-  },
-  {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.delete/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.delete"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteAddresses/page.mdx",
@@ -6624,6 +4648,14 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments"
   },
@@ -6636,16 +4668,28 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.list/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.list"
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCount/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderClaims/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderClaims"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderExchanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderExchanges"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountReturns/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountReturns"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemAdjustments/page.mdx",
@@ -6660,6 +4704,26 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderClaims/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderClaims"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderExchanges/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderExchanges"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturnReasons"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments"
   },
@@ -6672,8 +4736,20 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restore/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restore"
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerFulfillment/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerFulfillment"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerShipment/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerShipment"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreAddresses/page.mdx",
@@ -6692,6 +4768,14 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturnReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments"
   },
@@ -6704,12 +4788,36 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieve/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderClaim/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderClaim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderExchange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderExchange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturnReason/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturnReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.revertLastVersion/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.revertLastVersion"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemAdjustments/page.mdx",
@@ -6728,10 +4836,6 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodTaxLines"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDelete/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDelete"
-  },
-  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses"
   },
@@ -6748,6 +4852,14 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturnReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments"
   },
@@ -6760,8 +4872,8 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethods"
   },
   {
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.update/page.mdx",
-    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.update"
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateAddresses/page.mdx",
@@ -6776,12 +4888,32 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderItem"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturnReasons/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturnReasons"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.BaseFilterable/page.mdx",
     "pathname": "/references/order/interfaces/order.BaseFilterable"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.BaseOrderBundledActionsDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.BaseOrderBundledActionsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.BaseOrderBundledItemActionsDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.BaseOrderBundledItemActionsDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderChangeDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CancelOrderChangeDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderFulfillmentDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderFulfillmentDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.ConfirmOrderChangeDTO/page.mdx",
@@ -6808,8 +4940,16 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CreateOrderChangeDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderClaimDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderClaimDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderExchangeDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderExchangeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderLineItemDTO/page.mdx",
@@ -6822,6 +4962,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderLineItemTaxLineDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CreateOrderLineItemTaxLineDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderReturnDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderReturnReasonDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CreateOrderReturnReasonDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CreateOrderShippingMethodAdjustmentDTO/page.mdx",
@@ -6868,6 +5016,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.FilterableOrderProps"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.FilterableOrderReturnReasonProps/page.mdx",
+    "pathname": "/references/order/interfaces/order.FilterableOrderReturnReasonProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.FilterableOrderShippingMethodAdjustmentProps/page.mdx",
     "pathname": "/references/order/interfaces/order.FilterableOrderShippingMethodAdjustmentProps"
   },
@@ -6878,6 +5030,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.FilterableOrderShippingMethodTaxLineProps/page.mdx",
     "pathname": "/references/order/interfaces/order.FilterableOrderShippingMethodTaxLineProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.FilterableOrderTransactionProps/page.mdx",
+    "pathname": "/references/order/interfaces/order.FilterableOrderTransactionProps"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.FindConfig/page.mdx",
@@ -6924,8 +5080,20 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.OrderChangeDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderChangeReturn/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderChangeReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderClaimDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderClaimDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderExchangeDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderExchangeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderItemDTO/page.mdx",
@@ -6948,6 +5116,10 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.OrderLineItemTotalsDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.OrderReturnReasonDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.OrderReturnReasonDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.OrderShippingMethodAdjustmentDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.OrderShippingMethodAdjustmentDTO"
   },
@@ -6968,8 +5140,24 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.OrderTransactionDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.ReceiveOrderReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.ReceiveOrderReturnDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.RegisterOrderFulfillmentDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.RegisterOrderFulfillmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.RegisterOrderShipmentDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.RegisterOrderShipmentDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.RestoreReturn/page.mdx",
     "pathname": "/references/order/interfaces/order.RestoreReturn"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.ReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.ReturnDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.SoftDeleteReturn/page.mdx",
@@ -7008,6 +5196,14 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.UpdateOrderLineItemWithSelectorDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderReturnReasonDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.UpdateOrderReturnReasonDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderReturnReasonWithSelectorDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.UpdateOrderReturnReasonWithSelectorDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.UpdateOrderShippingMethodAdjustmentDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.UpdateOrderShippingMethodAdjustmentDTO"
   },
@@ -7040,6 +5236,18 @@ export const filesMap = [
     "pathname": "/references/order/types/order.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/order/types/order.ChangeActionType/page.mdx",
+    "pathname": "/references/order/types/order.ChangeActionType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.ClaimReason/page.mdx",
+    "pathname": "/references/order/types/order.ClaimReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.EventMetadata/page.mdx",
+    "pathname": "/references/order/types/order.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/types/order.ExpandScalar/page.mdx",
     "pathname": "/references/order/types/order.ExpandScalar"
   },
@@ -7060,16 +5268,16 @@ export const filesMap = [
     "pathname": "/references/order/types/order.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/order/types/order.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/order/types/order.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/types/order.Message/page.mdx",
     "pathname": "/references/order/types/order.Message"
   },
   {
     "filePath": "/www/apps/resources/references/order/types/order.MessageBody/page.mdx",
     "pathname": "/references/order/types/order.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/order/types/order.MessageFormat/page.mdx",
-    "pathname": "/references/order/types/order.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/order/types/order.ModuleJoinerConfig/page.mdx",
@@ -7082,6 +5290,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order/types/order.OperatorMap/page.mdx",
     "pathname": "/references/order/types/order.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.OrderClaimType/page.mdx",
+    "pathname": "/references/order/types/order.OrderClaimType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.OrderStatus/page.mdx",
+    "pathname": "/references/order/types/order.OrderStatus"
   },
   {
     "filePath": "/www/apps/resources/references/order/types/order.OrderSummaryDTO/page.mdx",
@@ -7100,8 +5316,16 @@ export const filesMap = [
     "pathname": "/references/order/types/order.Query"
   },
   {
+    "filePath": "/www/apps/resources/references/order/types/order.RawMessageFormat/page.mdx",
+    "pathname": "/references/order/types/order.RawMessageFormat"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/types/order.ReadonlyPrimary/page.mdx",
     "pathname": "/references/order/types/order.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/types/order.ReturnStatus/page.mdx",
+    "pathname": "/references/order/types/order.ReturnStatus"
   },
   {
     "filePath": "/www/apps/resources/references/order/types/order.Scalar/page.mdx",
@@ -7110,6 +5334,18 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.Address/page.mdx",
     "pathname": "/references/order_models/classes/order_models.Address"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItem/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.ClaimItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItemImage/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.ClaimItemImage"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ExchangeItem/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.ExchangeItem"
   },
   {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.LineItem/page.mdx",
@@ -7136,12 +5372,36 @@ export const filesMap = [
     "pathname": "/references/order_models/classes/order_models.OrderChangeAction"
   },
   {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaim/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderClaim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchange/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderExchange"
+  },
+  {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderItem/page.mdx",
     "pathname": "/references/order_models/classes/order_models.OrderItem"
   },
   {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShippingMethod/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.OrderShippingMethod"
+  },
+  {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderSummary/page.mdx",
     "pathname": "/references/order_models/classes/order_models.OrderSummary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.Return/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.Return"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ReturnItem/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.ReturnItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ReturnReason/page.mdx",
+    "pathname": "/references/order_models/classes/order_models.ReturnReason"
   },
   {
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.ShippingMethod/page.mdx",
@@ -7252,6 +5512,10 @@ export const filesMap = [
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentCollection"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession/page.mdx",
+    "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePayment/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePayment"
   },
@@ -7266,14 +5530,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.upsertPaymentCollections/page.mdx",
     "pathname": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.upsertPaymentCollections"
-  },
-  {
-    "filePath": "/www/apps/resources/references/payment/enums/payment.PaymentCollectionStatus/page.mdx",
-    "pathname": "/references/payment/enums/payment.PaymentCollectionStatus"
-  },
-  {
-    "filePath": "/www/apps/resources/references/payment/enums/payment.PaymentSessionStatus/page.mdx",
-    "pathname": "/references/payment/enums/payment.PaymentSessionStatus"
   },
   {
     "filePath": "/www/apps/resources/references/payment/interfaces/payment.BaseFilterable/page.mdx",
@@ -7428,6 +5684,10 @@ export const filesMap = [
     "pathname": "/references/payment/types/payment.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/types/payment.EventMetadata/page.mdx",
+    "pathname": "/references/payment/types/payment.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/types/payment.ExpandScalar/page.mdx",
     "pathname": "/references/payment/types/payment.ExpandScalar"
   },
@@ -7448,16 +5708,16 @@ export const filesMap = [
     "pathname": "/references/payment/types/payment.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/types/payment.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/payment/types/payment.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/types/payment.Message/page.mdx",
     "pathname": "/references/payment/types/payment.Message"
   },
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.MessageBody/page.mdx",
     "pathname": "/references/payment/types/payment.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/payment/types/payment.MessageFormat/page.mdx",
-    "pathname": "/references/payment/types/payment.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.ModuleJoinerConfig/page.mdx",
@@ -7472,6 +5732,14 @@ export const filesMap = [
     "pathname": "/references/payment/types/payment.OperatorMap"
   },
   {
+    "filePath": "/www/apps/resources/references/payment/types/payment.PaymentCollectionStatus/page.mdx",
+    "pathname": "/references/payment/types/payment.PaymentCollectionStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/types/payment.PaymentSessionStatus/page.mdx",
+    "pathname": "/references/payment/types/payment.PaymentSessionStatus"
+  },
+  {
     "filePath": "/www/apps/resources/references/payment/types/payment.PrevLimit/page.mdx",
     "pathname": "/references/payment/types/payment.PrevLimit"
   },
@@ -7482,6 +5750,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.Query/page.mdx",
     "pathname": "/references/payment/types/payment.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/payment/types/payment.RawMessageFormat/page.mdx",
+    "pathname": "/references/payment/types/payment.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/payment/types/payment.ReadonlyPrimary/page.mdx",
@@ -7548,20 +5820,8 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addPrices"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addRules/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addRules"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.calculatePrices/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.calculatePrices"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.create/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.create"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceListRules/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceListRules"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceLists/page.mdx",
@@ -7572,12 +5832,8 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createRuleTypes/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createRuleTypes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.delete/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.delete"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceSets"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceListRules/page.mdx",
@@ -7592,16 +5848,8 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceRules"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deleteRuleTypes/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deleteRuleTypes"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.list/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCount/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceSets"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceListRules/page.mdx",
@@ -7616,12 +5864,12 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceRules"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceSets"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountRuleTypes/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountRuleTypes"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceListRules/page.mdx",
@@ -7636,12 +5884,12 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceSets"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listRuleTypes/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listRuleTypes"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removePriceListRules/page.mdx",
@@ -7652,20 +5900,12 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removePrices"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removeRules/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removeRules"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieve/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieve"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceList/page.mdx",
@@ -7680,8 +5920,8 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceRule"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieveRuleType/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieveRuleType"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceSet/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceSet"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.setPriceListRules/page.mdx",
@@ -7696,16 +5936,8 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.update/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.update"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListPrices/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListPrices"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListRules/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListRules"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceLists/page.mdx",
@@ -7716,20 +5948,12 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updateRuleTypes/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updateRuleTypes"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsert/page.mdx",
-    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsert"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/enums/pricing.PriceListStatus/page.mdx",
-    "pathname": "/references/pricing/enums/pricing.PriceListStatus"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/enums/pricing.PriceListType/page.mdx",
-    "pathname": "/references/pricing/enums/pricing.PriceListType"
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.AddPriceListPricesDTO/page.mdx",
@@ -7738,10 +5962,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.AddPricesDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.AddPricesDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.AddRulesDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.AddRulesDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.BaseFilterable/page.mdx",
@@ -7768,8 +5988,8 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.CreatePriceListPriceDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePriceListRuleDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.CreatePriceListRuleDTO"
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePriceListPriceRules/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.CreatePriceListPriceRules"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePriceListRules/page.mdx",
@@ -7790,10 +6010,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePricesDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.CreatePricesDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreateRuleTypeDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.CreateRuleTypeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterableMoneyAmountProps/page.mdx",
@@ -7818,10 +6034,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterablePriceSetProps/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.FilterablePriceSetProps"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterableRuleTypeProps/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.FilterableRuleTypeProps"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FindConfig/page.mdx",
@@ -7868,10 +6080,6 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.PriceListRuleDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.PriceListRuleValueDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.PriceListRuleValueDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.PriceRuleDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.PriceRuleDTO"
   },
@@ -7892,16 +6100,8 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.RemovePriceListRulesDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.RemovePriceSetRulesDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.RemovePriceSetRulesDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.RestoreReturn/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.RestoreReturn"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.RuleTypeDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.RuleTypeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.SetPriceListRulesDTO/page.mdx",
@@ -7928,20 +6128,12 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceListPricesDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePriceListRuleDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.UpdatePriceListRuleDTO"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePriceRuleDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceRuleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePriceSetDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceSetDTO"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdateRuleTypeDTO/page.mdx",
-    "pathname": "/references/pricing/interfaces/pricing.UpdateRuleTypeDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpsertPriceSetDTO/page.mdx",
@@ -7960,8 +6152,32 @@ export const filesMap = [
     "pathname": "/references/pricing/types/pricing.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.EventMetadata/page.mdx",
+    "pathname": "/references/pricing/types/pricing.EventMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.ExpandScalar/page.mdx",
+    "pathname": "/references/pricing/types/pricing.ExpandScalar"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.FilterQuery/page.mdx",
+    "pathname": "/references/pricing/types/pricing.FilterQuery"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.FilterValue/page.mdx",
+    "pathname": "/references/pricing/types/pricing.FilterValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.FilterValue2/page.mdx",
+    "pathname": "/references/pricing/types/pricing.FilterValue2"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.JoinerRelationship/page.mdx",
     "pathname": "/references/pricing/types/pricing.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/pricing/types/pricing.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.Message/page.mdx",
@@ -7972,16 +6188,48 @@ export const filesMap = [
     "pathname": "/references/pricing/types/pricing.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing/types/pricing.MessageFormat/page.mdx",
-    "pathname": "/references/pricing/types/pricing.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/pricing/types/pricing.ModuleJoinerConfig"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/types/pricing.ModuleJoinerRelationship/page.mdx",
     "pathname": "/references/pricing/types/pricing.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.OperatorMap/page.mdx",
+    "pathname": "/references/pricing/types/pricing.OperatorMap"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.PrevLimit/page.mdx",
+    "pathname": "/references/pricing/types/pricing.PrevLimit"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.PriceListStatus/page.mdx",
+    "pathname": "/references/pricing/types/pricing.PriceListStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.PriceListType/page.mdx",
+    "pathname": "/references/pricing/types/pricing.PriceListType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.Primary/page.mdx",
+    "pathname": "/references/pricing/types/pricing.Primary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.Query/page.mdx",
+    "pathname": "/references/pricing/types/pricing.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.RawMessageFormat/page.mdx",
+    "pathname": "/references/pricing/types/pricing.RawMessageFormat"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.ReadonlyPrimary/page.mdx",
+    "pathname": "/references/pricing/types/pricing.ReadonlyPrimary"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/types/pricing.Scalar/page.mdx",
+    "pathname": "/references/pricing/types/pricing.Scalar"
   },
   {
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.Price/page.mdx",
@@ -7996,24 +6244,12 @@ export const filesMap = [
     "pathname": "/references/pricing_models/classes/pricing_models.PriceListRule"
   },
   {
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceListRuleValue/page.mdx",
-    "pathname": "/references/pricing_models/classes/pricing_models.PriceListRuleValue"
-  },
-  {
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceRule/page.mdx",
     "pathname": "/references/pricing_models/classes/pricing_models.PriceRule"
   },
   {
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceSet/page.mdx",
     "pathname": "/references/pricing_models/classes/pricing_models.PriceSet"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceSetRuleType/page.mdx",
-    "pathname": "/references/pricing_models/classes/pricing_models.PriceSetRuleType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.RuleType/page.mdx",
-    "pathname": "/references/pricing_models/classes/pricing_models.RuleType"
   },
   {
     "filePath": "/www/apps/resources/references/product/IMessageAggregator/methods/product.IMessageAggregator.clearMessages/page.mdx",
@@ -8032,232 +6268,256 @@ export const filesMap = [
     "pathname": "/references/product/IMessageAggregator/methods/product.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.create/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.create"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createCategory/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createCategory"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createTags/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createTags"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.delete/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.delete"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCategory/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCategory"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTags/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTags"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.list/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.list"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCount/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCategories/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCategories"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTags/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTags"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listCategories/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listCategories"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listTags/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listTags"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restore/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restore"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieve/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCategory/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCategory"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCollection/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCollection"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProduct/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProduct"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveOption/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveOption"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCategory/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCategory"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveTag/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveTag"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCollection/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCollection"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveType/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveType"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductOption/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductOption"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveVariant/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveVariant"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductTag/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductTag"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDelete/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductType/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductType"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductVariant/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductVariant"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.update/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.update"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateCategory/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateCategory"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCategories"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsert/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsert"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertCollections/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertCollections"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTags"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertOptions/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertOptions"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertTypes/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertTypes"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductVariants"
   },
   {
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertVariants/page.mdx",
-    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertVariants"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProducts"
   },
   {
-    "filePath": "/www/apps/resources/references/product/enums/product.ProductStatus/page.mdx",
-    "pathname": "/references/product/enums/product.ProductStatus"
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCategories/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCategories"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCollections/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCollections"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductOptions/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTags/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTags"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTypes/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductVariants/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductVariants"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProducts/page.mdx",
+    "pathname": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProducts"
   },
   {
     "filePath": "/www/apps/resources/references/product/interfaces/product.BaseFilterable/page.mdx",
@@ -8428,6 +6688,10 @@ export const filesMap = [
     "pathname": "/references/product/interfaces/product.UpdateProductVariantDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/product/interfaces/product.UpsertProductCategoryDTO/page.mdx",
+    "pathname": "/references/product/interfaces/product.UpsertProductCategoryDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/interfaces/product.UpsertProductCollectionDTO/page.mdx",
     "pathname": "/references/product/interfaces/product.UpsertProductCollectionDTO"
   },
@@ -8456,6 +6720,10 @@ export const filesMap = [
     "pathname": "/references/product/interfaces/product.UpsertProductVariantDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/product/types/product.EventMetadata/page.mdx",
+    "pathname": "/references/product/types/product.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/types/product.ExpandScalar/page.mdx",
     "pathname": "/references/product/types/product.ExpandScalar"
   },
@@ -8476,6 +6744,10 @@ export const filesMap = [
     "pathname": "/references/product/types/product.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/product/types/product.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/product/types/product.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/types/product.Message/page.mdx",
     "pathname": "/references/product/types/product.Message"
   },
@@ -8484,8 +6756,8 @@ export const filesMap = [
     "pathname": "/references/product/types/product.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/product/types/product.MessageFormat/page.mdx",
-    "pathname": "/references/product/types/product.MessageFormat"
+    "filePath": "/www/apps/resources/references/product/types/product.MetadataType/page.mdx",
+    "pathname": "/references/product/types/product.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/product/types/product.ModuleJoinerConfig/page.mdx",
@@ -8508,8 +6780,16 @@ export const filesMap = [
     "pathname": "/references/product/types/product.Primary"
   },
   {
+    "filePath": "/www/apps/resources/references/product/types/product.ProductStatus/page.mdx",
+    "pathname": "/references/product/types/product.ProductStatus"
+  },
+  {
     "filePath": "/www/apps/resources/references/product/types/product.Query/page.mdx",
     "pathname": "/references/product/types/product.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/product/types/product.RawMessageFormat/page.mdx",
+    "pathname": "/references/product/types/product.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/product/types/product.ReadonlyPrimary/page.mdx",
@@ -8584,36 +6864,36 @@ export const filesMap = [
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionTargetRules"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionsToCampaign/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionsToCampaign"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.create/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.create"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createCampaigns/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createCampaigns"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.delete/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.delete"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createPromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createPromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deleteCampaigns/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deleteCampaigns"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.list/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCount/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deletePromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deletePromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountCampaigns/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountCampaigns"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountPromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountPromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listCampaigns/page.mdx",
@@ -8622,6 +6902,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotionRules/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotionRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.registerUsage/page.mdx",
@@ -8640,32 +6924,32 @@ export const filesMap = [
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionTargetRules"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restore/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restore"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionsFromCampaign/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionsFromCampaign"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restoreCampaigns/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restoreCampaigns"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieve/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restorePromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restorePromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieveCampaign/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieveCampaign"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDelete/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns/page.mdx",
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns"
   },
   {
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.update/page.mdx",
-    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.update"
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeletePromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeletePromotions"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updateCampaigns/page.mdx",
@@ -8676,8 +6960,16 @@ export const filesMap = [
     "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotionRules"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotions/page.mdx",
+    "pathname": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotions"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.AddItemAdjustmentAction/page.mdx",
     "pathname": "/references/promotion/interfaces/promotion.AddItemAdjustmentAction"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.AddPromotionsToCampaignDTO/page.mdx",
+    "pathname": "/references/promotion/interfaces/promotion.AddPromotionsToCampaignDTO"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.AddShippingMethodAdjustment/page.mdx",
@@ -8800,6 +7092,10 @@ export const filesMap = [
     "pathname": "/references/promotion/interfaces/promotion.RemoveItemAdjustmentAction"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.RemovePromotionsFromCampaignDTO/page.mdx",
+    "pathname": "/references/promotion/interfaces/promotion.RemovePromotionsFromCampaignDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/interfaces/promotion.RemoveShippingMethodAdjustment/page.mdx",
     "pathname": "/references/promotion/interfaces/promotion.RemoveShippingMethodAdjustment"
   },
@@ -8844,12 +7140,24 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.ApplicationMethodTypeValues"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.BigNumberInput/page.mdx",
+    "pathname": "/references/promotion/types/promotion.BigNumberInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.BigNumberRawValue/page.mdx",
+    "pathname": "/references/promotion/types/promotion.BigNumberRawValue"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.CampaignBudgetTypeValues/page.mdx",
     "pathname": "/references/promotion/types/promotion.CampaignBudgetTypeValues"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ComputeActions/page.mdx",
     "pathname": "/references/promotion/types/promotion.ComputeActions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.EventMetadata/page.mdx",
+    "pathname": "/references/promotion/types/promotion.EventMetadata"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ExpandScalar/page.mdx",
@@ -8872,16 +7180,16 @@ export const filesMap = [
     "pathname": "/references/promotion/types/promotion.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/promotion/types/promotion.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.Message/page.mdx",
     "pathname": "/references/promotion/types/promotion.Message"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.MessageBody/page.mdx",
     "pathname": "/references/promotion/types/promotion.MessageBody"
-  },
-  {
-    "filePath": "/www/apps/resources/references/promotion/types/promotion.MessageFormat/page.mdx",
-    "pathname": "/references/promotion/types/promotion.MessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ModuleJoinerConfig/page.mdx",
@@ -8914,6 +7222,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.Query/page.mdx",
     "pathname": "/references/promotion/types/promotion.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/promotion/types/promotion.RawMessageFormat/page.mdx",
+    "pathname": "/references/promotion/types/promotion.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/promotion/types/promotion.ReadonlyPrimary/page.mdx",
@@ -8964,52 +7276,52 @@ export const filesMap = [
     "pathname": "/references/region/IMessageAggregator/methods/region.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.create/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.create"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.createRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.createRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.delete/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.delete"
-  },
-  {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.list/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCount/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.deleteRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.deleteRegions"
   },
   {
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountCountries/page.mdx",
     "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountCountries"
   },
   {
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountRegions"
+  },
+  {
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listCountries/page.mdx",
     "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listCountries"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.restore/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.restore"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieve/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.restoreRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.restoreRegions"
   },
   {
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveCountry/page.mdx",
     "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveCountry"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDelete/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveRegion/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveRegion"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.update/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.update"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDeleteRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDeleteRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsert/page.mdx",
-    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsert"
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.updateRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.updateRegions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsertRegions/page.mdx",
+    "pathname": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsertRegions"
   },
   {
     "filePath": "/www/apps/resources/references/region/interfaces/region.BaseFilterable/page.mdx",
@@ -9088,6 +7400,10 @@ export const filesMap = [
     "pathname": "/references/region/interfaces/region.UpsertRegionDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/region/types/region.EventMetadata/page.mdx",
+    "pathname": "/references/region/types/region.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/region/types/region.ExpandScalar/page.mdx",
     "pathname": "/references/region/types/region.ExpandScalar"
   },
@@ -9108,6 +7424,10 @@ export const filesMap = [
     "pathname": "/references/region/types/region.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/region/types/region.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/region/types/region.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/region/types/region.Message/page.mdx",
     "pathname": "/references/region/types/region.Message"
   },
@@ -9116,8 +7436,8 @@ export const filesMap = [
     "pathname": "/references/region/types/region.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/region/types/region.MessageFormat/page.mdx",
-    "pathname": "/references/region/types/region.MessageFormat"
+    "filePath": "/www/apps/resources/references/region/types/region.MetadataType/page.mdx",
+    "pathname": "/references/region/types/region.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/region/types/region.ModuleJoinerConfig/page.mdx",
@@ -9144,6 +7464,10 @@ export const filesMap = [
     "pathname": "/references/region/types/region.Query"
   },
   {
+    "filePath": "/www/apps/resources/references/region/types/region.RawMessageFormat/page.mdx",
+    "pathname": "/references/region/types/region.RawMessageFormat"
+  },
+  {
     "filePath": "/www/apps/resources/references/region/types/region.ReadonlyPrimary/page.mdx",
     "pathname": "/references/region/types/region.ReadonlyPrimary"
   },
@@ -9152,12 +7476,12 @@ export const filesMap = [
     "pathname": "/references/region/types/region.Scalar"
   },
   {
-    "filePath": "/www/apps/resources/references/region_models/classes/region_models.Country/page.mdx",
-    "pathname": "/references/region_models/classes/region_models.Country"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Region/page.mdx",
+    "pathname": "/references/region_models/variables/region_models.Region"
   },
   {
-    "filePath": "/www/apps/resources/references/region_models/classes/region_models.Region/page.mdx",
-    "pathname": "/references/region_models/classes/region_models.Region"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.RegionCountry/page.mdx",
+    "pathname": "/references/region_models/variables/region_models.RegionCountry"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/IMessageAggregator/methods/sales_channel.IMessageAggregator.clearMessages/page.mdx",
@@ -9176,40 +7500,40 @@ export const filesMap = [
     "pathname": "/references/sales_channel/IMessageAggregator/methods/sales_channel.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.create/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.create"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.createSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.createSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.delete/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.delete"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.deleteSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.deleteSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.list/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.list"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCountSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCountSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCount/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restore/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restore"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restoreSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restoreSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieve/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieveSalesChannel/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieveSalesChannel"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDelete/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDeleteSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDeleteSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.update/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.update"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.updateSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.updateSalesChannels"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsert/page.mdx",
-    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsert"
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsertSalesChannels/page.mdx",
+    "pathname": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsertSalesChannels"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/interfaces/sales_channel.BaseFilterable/page.mdx",
@@ -9280,8 +7604,16 @@ export const filesMap = [
     "pathname": "/references/sales_channel/interfaces/sales_channel.UpsertSalesChannelDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.EventMetadata/page.mdx",
+    "pathname": "/references/sales_channel/types/sales_channel.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.JoinerRelationship/page.mdx",
     "pathname": "/references/sales_channel/types/sales_channel.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/sales_channel/types/sales_channel.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.Message/page.mdx",
@@ -9292,8 +7624,8 @@ export const filesMap = [
     "pathname": "/references/sales_channel/types/sales_channel.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.MessageFormat/page.mdx",
-    "pathname": "/references/sales_channel/types/sales_channel.MessageFormat"
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.MetadataType/page.mdx",
+    "pathname": "/references/sales_channel/types/sales_channel.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.ModuleJoinerConfig/page.mdx",
@@ -9302,6 +7634,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.ModuleJoinerRelationship/page.mdx",
     "pathname": "/references/sales_channel/types/sales_channel.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/sales_channel/types/sales_channel.RawMessageFormat/page.mdx",
+    "pathname": "/references/sales_channel/types/sales_channel.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel_models/classes/sales_channel_models.SalesChannel/page.mdx",
@@ -9328,40 +7664,40 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/IMessageAggregator/methods/stock_location_next.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.create/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.create"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.createStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.createStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.delete/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.delete"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.deleteStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.deleteStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.list/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.list"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listAndCountStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listAndCountStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.listAndCount/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.listAndCount"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.restore/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.restore"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.restoreStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.restoreStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.retrieve/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.retrieve"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.retrieveStockLocation/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.retrieveStockLocation"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.softDelete/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.softDelete"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.softDeleteStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.softDeleteStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.update/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.update"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.updateStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.updateStockLocations"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.upsert/page.mdx",
-    "pathname": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.upsert"
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.upsertStockLocations/page.mdx",
+    "pathname": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.upsertStockLocations"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.BaseFilterable/page.mdx",
@@ -9416,8 +7752,8 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/interfaces/stock_location_next.IModuleService"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.IStockLocationServiceNext/page.mdx",
-    "pathname": "/references/stock_location_next/interfaces/stock_location_next.IStockLocationServiceNext"
+    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.IStockLocationService/page.mdx",
+    "pathname": "/references/stock_location_next/interfaces/stock_location_next.IStockLocationService"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.JoinerServiceConfig/page.mdx",
@@ -9460,12 +7796,16 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/interfaces/stock_location_next.SoftDeleteReturn"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.UpdateStockLocationNextInput/page.mdx",
-    "pathname": "/references/stock_location_next/interfaces/stock_location_next.UpdateStockLocationNextInput"
+    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.UpsertStockLocationInput/page.mdx",
+    "pathname": "/references/stock_location_next/interfaces/stock_location_next.UpsertStockLocationInput"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.CreateStockLocationInput/page.mdx",
     "pathname": "/references/stock_location_next/types/stock_location_next.CreateStockLocationInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.EventMetadata/page.mdx",
+    "pathname": "/references/stock_location_next/types/stock_location_next.EventMetadata"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.ExpandScalar/page.mdx",
@@ -9492,6 +7832,10 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/types/stock_location_next.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/stock_location_next/types/stock_location_next.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.Message/page.mdx",
     "pathname": "/references/stock_location_next/types/stock_location_next.Message"
   },
@@ -9500,8 +7844,8 @@ export const filesMap = [
     "pathname": "/references/stock_location_next/types/stock_location_next.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.MessageFormat/page.mdx",
-    "pathname": "/references/stock_location_next/types/stock_location_next.MessageFormat"
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.MetadataType/page.mdx",
+    "pathname": "/references/stock_location_next/types/stock_location_next.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.ModuleJoinerConfig/page.mdx",
@@ -9526,6 +7870,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.Query/page.mdx",
     "pathname": "/references/stock_location_next/types/stock_location_next.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.RawMessageFormat/page.mdx",
+    "pathname": "/references/stock_location_next/types/stock_location_next.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/stock_location_next/types/stock_location_next.ReadonlyPrimary/page.mdx",
@@ -9580,40 +7928,40 @@ export const filesMap = [
     "pathname": "/references/store/IMessageAggregator/methods/store.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.create/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.create"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.createStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.createStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.delete/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.delete"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.deleteStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.deleteStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.list/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.list"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCountStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCountStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCount/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.restore/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.restore"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.restoreStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.restoreStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieve/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieveStore/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieveStore"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDelete/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDeleteStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDeleteStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.update/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.update"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.updateStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.updateStores"
   },
   {
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsert/page.mdx",
-    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsert"
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsertStores/page.mdx",
+    "pathname": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsertStores"
   },
   {
     "filePath": "/www/apps/resources/references/store/interfaces/store.BaseFilterable/page.mdx",
@@ -9622,6 +7970,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/store/interfaces/store.Context/page.mdx",
     "pathname": "/references/store/interfaces/store.Context"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store/interfaces/store.CreateStoreCurrencyDTO/page.mdx",
+    "pathname": "/references/store/interfaces/store.CreateStoreCurrencyDTO"
   },
   {
     "filePath": "/www/apps/resources/references/store/interfaces/store.CreateStoreDTO/page.mdx",
@@ -9668,6 +8020,10 @@ export const filesMap = [
     "pathname": "/references/store/interfaces/store.SoftDeleteReturn"
   },
   {
+    "filePath": "/www/apps/resources/references/store/interfaces/store.StoreCurrencyDTO/page.mdx",
+    "pathname": "/references/store/interfaces/store.StoreCurrencyDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/store/interfaces/store.StoreDTO/page.mdx",
     "pathname": "/references/store/interfaces/store.StoreDTO"
   },
@@ -9680,8 +8036,16 @@ export const filesMap = [
     "pathname": "/references/store/interfaces/store.UpsertStoreDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/store/types/store.EventMetadata/page.mdx",
+    "pathname": "/references/store/types/store.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/store/types/store.JoinerRelationship/page.mdx",
     "pathname": "/references/store/types/store.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store/types/store.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/store/types/store.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/store/types/store.Message/page.mdx",
@@ -9692,10 +8056,6 @@ export const filesMap = [
     "pathname": "/references/store/types/store.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/store/types/store.MessageFormat/page.mdx",
-    "pathname": "/references/store/types/store.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/store/types/store.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/store/types/store.ModuleJoinerConfig"
   },
@@ -9704,8 +8064,16 @@ export const filesMap = [
     "pathname": "/references/store/types/store.ModuleJoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/store/types/store.RawMessageFormat/page.mdx",
+    "pathname": "/references/store/types/store.RawMessageFormat"
+  },
+  {
     "filePath": "/www/apps/resources/references/store_models/classes/store_models.Store/page.mdx",
     "pathname": "/references/store_models/classes/store_models.Store"
+  },
+  {
+    "filePath": "/www/apps/resources/references/store_models/classes/store_models.StoreCurrency/page.mdx",
+    "pathname": "/references/store_models/classes/store_models.StoreCurrency"
   },
   {
     "filePath": "/www/apps/resources/references/tax/IMessageAggregator/methods/tax.IMessageAggregator.clearMessages/page.mdx",
@@ -9724,24 +8092,24 @@ export const filesMap = [
     "pathname": "/references/tax/IMessageAggregator/methods/tax.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.create/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.create"
-  },
-  {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRateRules/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRateRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRates"
   },
   {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRegions/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.delete/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.delete"
-  },
-  {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRateRules/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRateRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRates"
   },
   {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRegions/page.mdx",
@@ -9752,56 +8120,56 @@ export const filesMap = [
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.getTaxLines"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.list/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCount/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCountTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCountTaxRates"
   },
   {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRateRules/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRateRules"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRates"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restore/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restore"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions"
   },
   {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRateRules/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRateRules"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRates"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRegions/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieve/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieve"
-  },
-  {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDelete/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieveTaxRate/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieveTaxRate"
   },
   {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRateRules/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRateRules"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRates"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRegions/page.mdx",
     "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRegions"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.update/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.update"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.updateTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.updateTaxRates"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsert/page.mdx",
-    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsert"
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsertTaxRates/page.mdx",
+    "pathname": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsertTaxRates"
   },
   {
     "filePath": "/www/apps/resources/references/tax/interfaces/tax.BaseFilterable/page.mdx",
@@ -9924,6 +8292,10 @@ export const filesMap = [
     "pathname": "/references/tax/types/tax.BigNumberRawValue"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/types/tax.EventMetadata/page.mdx",
+    "pathname": "/references/tax/types/tax.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/types/tax.ExpandScalar/page.mdx",
     "pathname": "/references/tax/types/tax.ExpandScalar"
   },
@@ -9944,6 +8316,10 @@ export const filesMap = [
     "pathname": "/references/tax/types/tax.JoinerRelationship"
   },
   {
+    "filePath": "/www/apps/resources/references/tax/types/tax.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/tax/types/tax.LinkModulesExtraFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/tax/types/tax.Message/page.mdx",
     "pathname": "/references/tax/types/tax.Message"
   },
@@ -9952,8 +8328,8 @@ export const filesMap = [
     "pathname": "/references/tax/types/tax.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/tax/types/tax.MessageFormat/page.mdx",
-    "pathname": "/references/tax/types/tax.MessageFormat"
+    "filePath": "/www/apps/resources/references/tax/types/tax.MetadataType/page.mdx",
+    "pathname": "/references/tax/types/tax.MetadataType"
   },
   {
     "filePath": "/www/apps/resources/references/tax/types/tax.ModuleJoinerConfig/page.mdx",
@@ -9978,6 +8354,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/tax/types/tax.Query/page.mdx",
     "pathname": "/references/tax/types/tax.Query"
+  },
+  {
+    "filePath": "/www/apps/resources/references/tax/types/tax.RawMessageFormat/page.mdx",
+    "pathname": "/references/tax/types/tax.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/tax/types/tax.ReadonlyPrimary/page.mdx",
@@ -10020,12 +8400,8 @@ export const filesMap = [
     "pathname": "/references/types/CacheTypes/interfaces/types.CacheTypes.ICacheService"
   },
   {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.AddressCreatePayload/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.AddressCreatePayload"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.AddressPayload/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.AddressPayload"
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.AdminOptions/page.mdx",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.AdminOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.BaseEntity/page.mdx",
@@ -10048,24 +8424,16 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.FindConfig"
   },
   {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.FindPaginationParams/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.FindPaginationParams"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.FindParams/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.FindParams"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.HttpCompressionOptions/page.mdx",
     "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.HttpCompressionOptions"
   },
   {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.NumericalComparisonOperator/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.NumericalComparisonOperator"
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.ModuleImplementations/page.mdx",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.ModuleImplementations"
   },
   {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.PaginatedResponse/page.mdx",
-    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.PaginatedResponse"
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.NumericalComparisonOperator/page.mdx",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.NumericalComparisonOperator"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.ProjectConfigOptions/page.mdx",
@@ -10088,6 +8456,10 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.StringComparisonOperator"
   },
   {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/interfaces/types.CommonTypes.WithCalculatedPrice/page.mdx",
+    "pathname": "/references/types/CommonTypes/interfaces/types.CommonTypes.WithCalculatedPrice"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.BatchMethodRequest/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.BatchMethodRequest"
   },
@@ -10108,8 +8480,8 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.ContainerLike"
   },
   {
-    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.DeleteResponse/page.mdx",
-    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.DeleteResponse"
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.ExecArgs/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.ExecArgs"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.KebabCase/page.mdx",
@@ -10128,8 +8500,16 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.MedusaContainer"
   },
   {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.MetadataType/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.MetadataType"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.PluginDetails/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.PluginDetails"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.RawRounding/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.RawRounding"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.RuleOperatorType/page.mdx",
@@ -10188,8 +8568,100 @@ export const filesMap = [
     "pathname": "/references/types/DAL/types/types.DAL.OperatorMap"
   },
   {
+    "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.PerformedActions/page.mdx",
+    "pathname": "/references/types/DAL/types/types.DAL.PerformedActions"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns/page.mdx",
     "pathname": "/references/types/DAL/types/types.DAL.SoftDeletableEntityDateColumns"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/interfaces/types.DmlTypes.EntityConstructor/page.mdx",
+    "pathname": "/references/types/DmlTypes/interfaces/types.DmlTypes.EntityConstructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/interfaces/types.DmlTypes.IDmlEntity/page.mdx",
+    "pathname": "/references/types/DmlTypes/interfaces/types.DmlTypes.IDmlEntity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.DMLSchema/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.DMLSchema"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.EntityCascades/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.EntityCascades"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.EntityIndex/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.EntityIndex"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.ExtractEntityRelations/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.ExtractEntityRelations"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.Infer/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.Infer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferEntityType/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferEntityType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferForeignKeys/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferForeignKeys"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferTypeOf/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferTypeOf"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.KnownDataTypes/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.KnownDataTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.NeQueryValue/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.NeQueryValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.PropertyMetadata/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.PropertyMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.PropertyType/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.PropertyType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.QueryCondition/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.QueryCondition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.QueryValue/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.QueryValue"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.RelationshipMetadata/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.RelationshipMetadata"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.RelationshipOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.RelationshipType/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.RelationshipType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.RelationshipTypes/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.RelationshipTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.SimpleQueryValue/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.SimpleQueryValue"
   },
   {
     "filePath": "/www/apps/resources/references/types/EventBusTypes/interfaces/types.EventBusTypes.IEventBusModuleService/page.mdx",
@@ -10200,12 +8672,12 @@ export const filesMap = [
     "pathname": "/references/types/EventBusTypes/interfaces/types.EventBusTypes.IEventBusService"
   },
   {
-    "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.EmitData/page.mdx",
-    "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.EmitData"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.EventHandler/page.mdx",
     "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.EventHandler"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.EventMetadata/page.mdx",
+    "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.EventMetadata"
   },
   {
     "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.Message/page.mdx",
@@ -10216,8 +8688,8 @@ export const filesMap = [
     "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.MessageFormat/page.mdx",
-    "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.MessageFormat"
+    "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.RawMessageFormat/page.mdx",
+    "pathname": "/references/types/EventBusTypes/types/types.EventBusTypes.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/types/EventBusTypes/types/types.EventBusTypes.Subscriber/page.mdx",
@@ -10252,12 +8724,20 @@ export const filesMap = [
     "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.FileDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.FilterableFileProps/page.mdx",
+    "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.FilterableFileProps"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.IFileModuleService/page.mdx",
     "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.IFileModuleService"
   },
   {
     "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.IFileProvider/page.mdx",
     "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.IFileProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.LocalFileServiceOptions/page.mdx",
+    "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.LocalFileServiceOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.ProviderDeleteFileDTO/page.mdx",
@@ -10276,52 +8756,600 @@ export const filesMap = [
     "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.ProviderUploadFileDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCampaignListResponse/page.mdx",
-    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCampaignListResponse"
+    "filePath": "/www/apps/resources/references/types/FileTypes/interfaces/types.FileTypes.S3FileServiceOptions/page.mdx",
+    "pathname": "/references/types/FileTypes/interfaces/types.FileTypes.S3FileServiceOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchPriceListPrice/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchPriceListPrice"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchUpdateInventoryLevelLocation/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminBatchUpdateInventoryLevelLocation"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCampaignResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCampaignResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollection/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCollection/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateFulfillmentSetServiceZone/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateFulfillmentSetServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateInventoryItem/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateInventoryItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateInventoryLevel/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateInventoryLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreatePriceList/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreatePriceList"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreatePriceListPrice/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreatePriceListPrice"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductCategory/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductType/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateProductType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOption/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionPriceWithCurrency/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionPriceWithCurrency"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionPriceWithRegion/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionPriceWithRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionRule/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionType/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingOptionType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingProfile/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateShippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateStockLocation/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateStockLocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateStockLocationFulfillmentSet/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateStockLocationFulfillmentSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateTaxRate/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateTaxRate"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateTaxRegion/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateTaxRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFile/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProvider/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProviderListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProviderListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProviderListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentProviderListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSet"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminFulfillmentSetResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGeoZone/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItem/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItemParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItemParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItemResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryItemResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelFilters/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminInventoryLevelResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminLinkPriceListProducts/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminLinkPriceListProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceList/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceList"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListPrice/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListPrice"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminPriceListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategory/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryListParams"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryListResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryParams"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductCategoryResponse"
   },
   {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductType/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminProductTypeResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReservationResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminReservationResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminServiceZoneResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOption/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionPrice/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionPrice"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionPriceRule/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionPriceRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionRule/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionType/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingOptionType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfile/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminShippingProfileResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocation/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationAddress/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationAddress"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationListResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminStockLocationResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRate/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRate"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateRule/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRateRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegion/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionListParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCollection/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCollectionProducts/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCollectionProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateFulfillmentSetServiceZone/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateFulfillmentSetServiceZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateInventoryItem/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateInventoryItem"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateInventoryLevel/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateInventoryLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdatePriceList/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdatePriceList"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdatePriceListPrice/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdatePriceListPrice"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategory/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategoryProducts/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductCategoryProducts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductType/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateProductType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOption/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOption"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionPriceWithCurrency/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionPriceWithCurrency"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionPriceWithRegion/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionPriceWithRegion"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRule/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRules/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRules"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRulesResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingOptionRulesResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingProfile/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateShippingProfile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateStockLocation/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateStockLocation"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateStockLocationSalesChannels/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateStockLocationSalesChannels"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateTaxRate/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateTaxRate"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.CampaignResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.CampaignResponse"
   },
   {
-    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminStockLocationAddressResponse/page.mdx",
-    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminStockLocationAddressResponse"
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.FindParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.FindParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.InventoryLevel/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.InventoryLevel"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.SelectParams/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.SelectParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreCollection/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreCollectionFilters/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreCollectionFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.StoreFile/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.StoreFile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminAcceptInvite/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminAcceptInvite"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminCampaignListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminCampaignListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminCreateInvite/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminCreateInvite"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryItemDeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryItemDeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryItemListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryItemListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminInventoryLevelListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminInviteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminInviteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminReservationListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminReservationListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminShippingOptionListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminShippingOptionListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminShippingProfileListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminShippingProfileListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminTaxRateListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminTaxRateListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminTaxRegionListResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminTaxRegionListResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.AdminUploadFile/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.AdminUploadFile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.DeleteResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.DeleteResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/types/types.HttpTypes.PaginatedResponse/page.mdx",
+    "pathname": "/references/types/HttpTypes/types/types.HttpTypes.PaginatedResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.BulkUpdateInventoryLevelInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryItemInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryItemInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryLevelInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateInventoryLevelInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateReservationItemInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.CreateReservationItemInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableInventoryItemProps/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableInventoryItemProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableInventoryLevelProps/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableInventoryLevelProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableReservationItemProps/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.FilterableReservationItemProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.IInventoryService/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.IInventoryService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.InventoryItemDTO/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.InventoryItemDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.InventoryLevelDTO/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.InventoryLevelDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.ReservationItemDTO/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.ReservationItemDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.ReserveQuantityContext/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.ReserveQuantityContext"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateInventoryItemInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateInventoryItemInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateInventoryLevelInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateInventoryLevelInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateReservationItemInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/interfaces/types.InventoryTypes.UpdateReservationItemInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/InventoryTypes/types/types.InventoryTypes.BulkAdjustInventoryLevelInput/page.mdx",
+    "pathname": "/references/types/InventoryTypes/types/types.InventoryTypes.BulkAdjustInventoryLevelInput"
   },
   {
     "filePath": "/www/apps/resources/references/types/LoggerTypes/interfaces/types.LoggerTypes.Logger/page.mdx",
     "pathname": "/references/types/LoggerTypes/interfaces/types.LoggerTypes.Logger"
   },
   {
-    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/enums/types.ModulesSdkTypes.MODULE_RESOURCE_TYPE/page.mdx",
-    "pathname": "/references/types/ModulesSdkTypes/enums/types.ModulesSdkTypes.MODULE_RESOURCE_TYPE"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/enums/types.ModulesSdkTypes.MODULE_SCOPE/page.mdx",
-    "pathname": "/references/types/ModulesSdkTypes/enums/types.ModulesSdkTypes.MODULE_SCOPE"
+    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.IMedusaInternalService/page.mdx",
+    "pathname": "/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.IMedusaInternalService"
   },
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.IModuleService/page.mdx",
     "pathname": "/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.IModuleService"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.InternalModuleService/page.mdx",
-    "pathname": "/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.InternalModuleService"
   },
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/interfaces/types.ModulesSdkTypes.ModuleServiceInitializeOptions/page.mdx",
@@ -10330,6 +9358,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.Constructor/page.mdx",
     "pathname": "/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.Constructor"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.CustomModuleDefinition/page.mdx",
+    "pathname": "/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.CustomModuleDefinition"
   },
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.ExternalModuleDeclaration/page.mdx",
@@ -10342,6 +9374,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.LinkModuleDefinition/page.mdx",
     "pathname": "/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.LinkModuleDefinition"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.LoadedModule/page.mdx",
@@ -10412,8 +9448,44 @@ export const filesMap = [
     "pathname": "/references/types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFunction"
   },
   {
-    "filePath": "/www/apps/resources/references/types/RegionTypes/interfaces/types.RegionTypes.RegionDTO__legacy/page.mdx",
-    "pathname": "/references/types/RegionTypes/interfaces/types.RegionTypes.RegionDTO__legacy"
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.CreateNotificationDTO/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.CreateNotificationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.FilterableNotificationProps/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.FilterableNotificationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.INotificationModuleService/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.INotificationModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.INotificationProvider/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.INotificationProvider"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.LocalNotificationServiceOptions/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.LocalNotificationServiceOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationDTO/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationProviderDTO/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.NotificationProviderDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationDTO/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationResultsDTO/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.ProviderSendNotificationResultsDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/NotificationTypes/interfaces/types.NotificationTypes.SendgridNotificationServiceOptions/page.mdx",
+    "pathname": "/references/types/NotificationTypes/interfaces/types.NotificationTypes.SendgridNotificationServiceOptions"
   },
   {
     "filePath": "/www/apps/resources/references/types/SearchTypes/interfaces/types.SearchTypes.ISearchService/page.mdx",
@@ -10424,12 +9496,56 @@ export const filesMap = [
     "pathname": "/references/types/SearchTypes/types/types.SearchTypes.IndexSettings"
   },
   {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.FilterableStockLocationProps/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.FilterableStockLocationProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.IStockLocationService/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.IStockLocationService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.UpsertStockLocationInput/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/interfaces/types.StockLocationTypes.UpsertStockLocationInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.CreateStockLocationInput/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.CreateStockLocationInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationAddressDTO/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationAddressDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationAddressInput/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationAddressInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationExpandedDTO/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.StockLocationExpandedDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/StockLocationTypes/types/types.StockLocationTypes.UpdateStockLocationInput/page.mdx",
+    "pathname": "/references/types/StockLocationTypes/types/types.StockLocationTypes.UpdateStockLocationInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/TransactionBaseTypes/interfaces/types.TransactionBaseTypes.ITransactionBaseService/page.mdx",
     "pathname": "/references/types/TransactionBaseTypes/interfaces/types.TransactionBaseTypes.ITransactionBaseService"
   },
   {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/CommonWorkflow/interfaces/types.WorkflowTypes.CommonWorkflow.WorkflowInputConfig/page.mdx",
     "pathname": "/references/types/WorkflowTypes/CommonWorkflow/interfaces/types.WorkflowTypes.CommonWorkflow.WorkflowInputConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/InventoryWorkflow/interfaces/types.WorkflowTypes.InventoryWorkflow.CreateInventoryItemInputDTO/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/InventoryWorkflow/interfaces/types.WorkflowTypes.InventoryWorkflow.CreateInventoryItemInputDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/InventoryWorkflow/interfaces/types.WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/InventoryWorkflow/interfaces/types.WorkflowTypes.InventoryWorkflow.CreateInventoryItemsWorkflowInputDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/InviteWorkflow/interfaces/types.WorkflowTypes.InviteWorkflow.AcceptInviteWorkflowInputDTO/page.mdx",
@@ -10484,12 +9600,16 @@ export const filesMap = [
     "pathname": "/references/types/WorkflowTypes/PriceListWorkflow/interfaces/types.WorkflowTypes.PriceListWorkflow.RemovePriceListWorkflowInputDTO"
   },
   {
-    "filePath": "/www/apps/resources/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.CreateProductCategoryWorkflowInput/page.mdx",
-    "pathname": "/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.CreateProductCategoryWorkflowInput"
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.BatchUpdateProductsOnCategoryWorkflowInput/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.BatchUpdateProductsOnCategoryWorkflowInput"
   },
   {
-    "filePath": "/www/apps/resources/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.UpdateProductCategoryWorkflowInput/page.mdx",
-    "pathname": "/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.UpdateProductCategoryWorkflowInput"
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.CreateProductCategoriesWorkflowInput/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.CreateProductCategoriesWorkflowInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.UpdateProductCategoriesWorkflowInput/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/ProductCategoryWorkflow/interfaces/types.WorkflowTypes.ProductCategoryWorkflow.UpdateProductCategoriesWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/ReservationWorkflow/interfaces/types.WorkflowTypes.ReservationWorkflow.CreateReservationsWorkflowInput/page.mdx",
@@ -10512,6 +9632,10 @@ export const filesMap = [
     "pathname": "/references/types/WorkflowTypes/types.WorkflowTypes.CommonWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/types/WorkflowTypes/types.WorkflowTypes.InventoryWorkflow/page.mdx",
+    "pathname": "/references/types/WorkflowTypes/types.WorkflowTypes.InventoryWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/WorkflowTypes/types.WorkflowTypes.InviteWorkflow/page.mdx",
     "pathname": "/references/types/WorkflowTypes/types.WorkflowTypes.InviteWorkflow"
   },
@@ -10528,6 +9652,106 @@ export const filesMap = [
     "pathname": "/references/types/WorkflowTypes/types.WorkflowTypes.ReservationWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.FilterableWorkflowExecutionProps/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.FilterableWorkflowExecutionProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.IWorkflowEngineService/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.IWorkflowEngineService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.UpsertWorkflowExecutionDTO/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.UpsertWorkflowExecutionDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowExecutionDTO/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowExecutionDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowOrchestratorRunDTO/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/interfaces/types.WorkflowsSdkTypes.WorkflowOrchestratorRunDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/WorkflowsSdkTypes/types/types.WorkflowsSdkTypes.IdempotencyKeyParts/page.mdx",
+    "pathname": "/references/types/WorkflowsSdkTypes/types/types.WorkflowsSdkTypes.IdempotencyKeyParts"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminCreateTaxRateRule/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminCreateTaxRateRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneCity/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneCity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneCountry/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneCountry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneProvince/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneProvince"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneZip/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateFulfillmentSetServiceZoneZip"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpdateGeoZone/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpdateGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneCity/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneCity"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneCountry/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneCountry"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneProvince/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneProvince"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneZip/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertFulfillmentSetServiceZoneZip"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertGeoZone/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.AdminUpsertStockLocationAddress/page.mdx",
+    "pathname": "/references/types/interfaces/types.AdminUpsertStockLocationAddress"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseCollection/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseCollection"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseCollectionFilters/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseCollectionFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseFile/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseFile"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductCategory/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductCategory"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductCategoryListParams/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductCategoryListParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductCategoryParams/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductCategoryParams"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.BaseProductType/page.mdx",
+    "pathname": "/references/types/interfaces/types.BaseProductType"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.BaseRepositoryService/page.mdx",
     "pathname": "/references/types/interfaces/types.BaseRepositoryService"
   },
@@ -10542,6 +9766,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.DeleteFileType/page.mdx",
     "pathname": "/references/types/interfaces/types.DeleteFileType"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.DetailWidgetProps/page.mdx",
+    "pathname": "/references/types/interfaces/types.DetailWidgetProps"
   },
   {
     "filePath": "/www/apps/resources/references/types/interfaces/types.FileServiceGetUploadStreamResult/page.mdx",
@@ -10588,14 +9816,6 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.MessageAggregatorFormat"
   },
   {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.PaginatedResponse/page.mdx",
-    "pathname": "/references/types/interfaces/types.PaginatedResponse"
-  },
-  {
-    "filePath": "/www/apps/resources/references/types/interfaces/types.ProductCategoryResponse/page.mdx",
-    "pathname": "/references/types/interfaces/types.ProductCategoryResponse"
-  },
-  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.ProductCategoryTransformOptions/page.mdx",
     "pathname": "/references/types/interfaces/types.ProductCategoryTransformOptions"
   },
@@ -10616,6 +9836,10 @@ export const filesMap = [
     "pathname": "/references/types/interfaces/types.RemoteNestedExpands"
   },
   {
+    "filePath": "/www/apps/resources/references/types/interfaces/types.ReservationResponse/page.mdx",
+    "pathname": "/references/types/interfaces/types.ReservationResponse"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/interfaces/types.SessionOptions/page.mdx",
     "pathname": "/references/types/interfaces/types.SessionOptions"
   },
@@ -10630,6 +9854,18 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.AddressDTO/page.mdx",
     "pathname": "/references/types/types/types.AddressDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.AdminUpdateFulfillmentSetServiceZoneGeoZone/page.mdx",
+    "pathname": "/references/types/types/types.AdminUpdateFulfillmentSetServiceZoneGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone/page.mdx",
+    "pathname": "/references/types/types/types.AdminUpsertFulfillmentSetServiceZoneGeoZone"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.BaseUploadFile/page.mdx",
+    "pathname": "/references/types/types/types.BaseUploadFile"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.BigNumberInput/page.mdx",
@@ -10660,6 +9896,14 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Dictionary"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.EntityClassName/page.mdx",
+    "pathname": "/references/types/types/types.EntityClassName"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.EntityValues/page.mdx",
+    "pathname": "/references/types/types/types.EntityValues"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.ExpandScalar/page.mdx",
     "pathname": "/references/types/types/types.ExpandScalar"
   },
@@ -10670,6 +9914,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.FilterValue2/page.mdx",
     "pathname": "/references/types/types/types.FilterValue2"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.FlowRunOptions/page.mdx",
+    "pathname": "/references/types/types/types.FlowRunOptions"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.InternalJoinerServiceConfig/page.mdx",
+    "pathname": "/references/types/types/types.InternalJoinerServiceConfig"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.JoinerRelationship/page.mdx",
@@ -10712,6 +9964,10 @@ export const filesMap = [
     "pathname": "/references/types/types/types.UpdateProductWorkflowInputDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types.AdminTypes/page.mdx",
+    "pathname": "/references/types/types.AdminTypes"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types.CacheTypes/page.mdx",
     "pathname": "/references/types/types.CacheTypes"
   },
@@ -10722,6 +9978,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types.DAL/page.mdx",
     "pathname": "/references/types/types.DAL"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.DmlTypes/page.mdx",
+    "pathname": "/references/types/types.DmlTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.EventBusTypes/page.mdx",
@@ -10740,6 +10000,10 @@ export const filesMap = [
     "pathname": "/references/types/types.HttpTypes"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types.InventoryTypes/page.mdx",
+    "pathname": "/references/types/types.InventoryTypes"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types.LoggerTypes/page.mdx",
     "pathname": "/references/types/types.LoggerTypes"
   },
@@ -10748,12 +10012,16 @@ export const filesMap = [
     "pathname": "/references/types/types.ModulesSdkTypes"
   },
   {
-    "filePath": "/www/apps/resources/references/types/types.RegionTypes/page.mdx",
-    "pathname": "/references/types/types.RegionTypes"
+    "filePath": "/www/apps/resources/references/types/types.NotificationTypes/page.mdx",
+    "pathname": "/references/types/types.NotificationTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.SearchTypes/page.mdx",
     "pathname": "/references/types/types.SearchTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.StockLocationTypes/page.mdx",
+    "pathname": "/references/types/types.StockLocationTypes"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.TransactionBaseTypes/page.mdx",
@@ -10762,6 +10030,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types.WorkflowTypes/page.mdx",
     "pathname": "/references/types/types.WorkflowTypes"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types.WorkflowsSdkTypes/page.mdx",
+    "pathname": "/references/types/types.WorkflowsSdkTypes"
   },
   {
     "filePath": "/www/apps/resources/references/user/IMessageAggregator/methods/user.IMessageAggregator.clearMessages/page.mdx",
@@ -10780,72 +10052,72 @@ export const filesMap = [
     "pathname": "/references/user/IMessageAggregator/methods/user.IMessageAggregator.saveRawMessageData"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.create/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.create"
-  },
-  {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.createInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.createInvites"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.delete/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.delete"
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.createUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.createUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.deleteInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.deleteInvites"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.list/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.list"
-  },
-  {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCount/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCount"
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.deleteUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.deleteUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountInvites"
   },
   {
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountUsers"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.listInvites"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.listUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.refreshInviteTokens/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.refreshInviteTokens"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restore/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.restore"
-  },
-  {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restoreInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.restoreInvites"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieve/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieve"
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restoreUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.restoreUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveInvite/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveInvite"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDelete/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDelete"
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveUser/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveUser"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteInvites"
   },
   {
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.update/page.mdx",
-    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.update"
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.updateInvites/page.mdx",
     "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.updateInvites"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.updateUsers/page.mdx",
+    "pathname": "/references/user/IUserModuleService/methods/user.IUserModuleService.updateUsers"
   },
   {
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.validateInviteToken/page.mdx",
@@ -10924,8 +10196,16 @@ export const filesMap = [
     "pathname": "/references/user/interfaces/user.UserDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/user/types/user.EventMetadata/page.mdx",
+    "pathname": "/references/user/types/user.EventMetadata"
+  },
+  {
     "filePath": "/www/apps/resources/references/user/types/user.JoinerRelationship/page.mdx",
     "pathname": "/references/user/types/user.JoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.LinkModulesExtraFields/page.mdx",
+    "pathname": "/references/user/types/user.LinkModulesExtraFields"
   },
   {
     "filePath": "/www/apps/resources/references/user/types/user.Message/page.mdx",
@@ -10936,16 +10216,16 @@ export const filesMap = [
     "pathname": "/references/user/types/user.MessageBody"
   },
   {
-    "filePath": "/www/apps/resources/references/user/types/user.MessageFormat/page.mdx",
-    "pathname": "/references/user/types/user.MessageFormat"
-  },
-  {
     "filePath": "/www/apps/resources/references/user/types/user.ModuleJoinerConfig/page.mdx",
     "pathname": "/references/user/types/user.ModuleJoinerConfig"
   },
   {
     "filePath": "/www/apps/resources/references/user/types/user.ModuleJoinerRelationship/page.mdx",
     "pathname": "/references/user/types/user.ModuleJoinerRelationship"
+  },
+  {
+    "filePath": "/www/apps/resources/references/user/types/user.RawMessageFormat/page.mdx",
+    "pathname": "/references/user/types/user.RawMessageFormat"
   },
   {
     "filePath": "/www/apps/resources/references/user_models/classes/user_models.Invite/page.mdx",
@@ -10964,12 +10244,20 @@ export const filesMap = [
     "pathname": "/references/utils/FulfillmentUtils/enums/utils.FulfillmentUtils.ShippingOptionPriceType"
   },
   {
-    "filePath": "/www/apps/resources/references/utils/OrderUtils/enums/utils.OrderUtils.OrderChangeStatus/page.mdx",
-    "pathname": "/references/utils/OrderUtils/enums/utils.OrderUtils.OrderChangeStatus"
+    "filePath": "/www/apps/resources/references/utils/OrderUtils/enums/utils.OrderUtils.ClaimReason/page.mdx",
+    "pathname": "/references/utils/OrderUtils/enums/utils.OrderUtils.ClaimReason"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/OrderUtils/enums/utils.OrderUtils.ClaimType/page.mdx",
+    "pathname": "/references/utils/OrderUtils/enums/utils.OrderUtils.ClaimType"
   },
   {
     "filePath": "/www/apps/resources/references/utils/OrderUtils/enums/utils.OrderUtils.OrderStatus/page.mdx",
     "pathname": "/references/utils/OrderUtils/enums/utils.OrderUtils.OrderStatus"
+  },
+  {
+    "filePath": "/www/apps/resources/references/utils/OrderUtils/enums/utils.OrderUtils.ReturnStatus/page.mdx",
+    "pathname": "/references/utils/OrderUtils/enums/utils.OrderUtils.ReturnStatus"
   },
   {
     "filePath": "/www/apps/resources/references/utils/ProductUtils/enums/utils.ProductUtils.ProductStatus/page.mdx",
@@ -11038,10 +10326,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/utils/enums/utils.PriceListType/page.mdx",
     "pathname": "/references/utils/enums/utils.PriceListType"
-  },
-  {
-    "filePath": "/www/apps/resources/references/utils/types/utils.RuleAttributeInput/page.mdx",
-    "pathname": "/references/utils/types/utils.RuleAttributeInput"
   },
   {
     "filePath": "/www/apps/resources/references/utils/utils.FulfillmentUtils/page.mdx",

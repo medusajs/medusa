@@ -92,7 +92,7 @@ export const buildRules = (price: PriceDTO) => {
   const rules: Record<string, string> = {}
 
   for (const priceRule of price.price_rules || []) {
-    const ruleAttribute = priceRule.rule_type?.rule_attribute
+    const ruleAttribute = priceRule.attribute
 
     if (ruleAttribute) {
       rules[ruleAttribute] = priceRule.value
