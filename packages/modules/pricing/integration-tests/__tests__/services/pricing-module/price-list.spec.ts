@@ -927,7 +927,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                   currency_code: "EUR",
                 }),
               ]),
-              price_list_rules: [],
             })
           )
         })

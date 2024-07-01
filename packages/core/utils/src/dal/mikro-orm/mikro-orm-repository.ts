@@ -747,16 +747,22 @@ export function mikroOrmBaseRepositoryFactory<T extends object = object>(
       entityName: string,
       data: any
     ): Record<string, any> & { id: string } {
-      const created = manager.create(entityName, data, {
-        managed: false,
-        persist: false,
-      })
+      // We set the id to undefined to make sure the entity isn't fetched from the entity map if it is an update,
+      // giving us incorrect data for the bignumberdata field (I though managed: false and persist: false would already do this)
+      const created = manager.create(
+        entityName,
+        { ...data, id: undefined },
+        {
+          managed: false,
+          persist: false,
+        }
+      )
 
       const resp = {
         // `create` will omit non-existent fields, but we want to pass the data the user provided through so the correct errors get thrown
         ...data,
         ...(created as any).__helper.__bignumberdata,
-        id: (created as any).id,
+        id: data.id ?? (created as any).id,
       }
 
       // Non-persist relation columns should be removed before we do the upsert.
