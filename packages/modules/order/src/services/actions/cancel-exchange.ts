@@ -46,6 +46,7 @@ export async function cancelExchange(
         "additional_items.id",
         "additional_items.quantity",
       ],
+      relations: ["return.items", "additional_items", "shipping_methods"],
     },
     sharedContext
   )
@@ -83,6 +84,18 @@ export async function cancelExchange(
         exchange_id: exchangeOrder.id,
         quantity: item.quantity,
       },
+    })
+  })
+
+  exchangeOrder.shipping_methods?.forEach((shipping) => {
+    actions.push({
+      action: ChangeActionType.SHIPPING_REMOVE,
+      order_id: exchangeOrder.order_id,
+      exchange_id: exchangeOrder.id,
+      return_id: exchangeOrder.return.id,
+      reference: "exchange",
+      reference_id: shipping.id,
+      amount: shipping.price,
     })
   })
 

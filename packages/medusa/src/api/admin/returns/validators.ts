@@ -52,7 +52,7 @@ const ItemSchema = z.object({
 export const AdminPostReturnsReqSchema = z.object({
   order_id: z.string(),
   items: z.array(ItemSchema),
-  return_shipping: ReturnShippingSchema,
+  return_shipping: ReturnShippingSchema.optional(),
   internal_note: z.string().nullish(),
   receive_now: z.boolean().optional(),
   refund_amount: z.number().optional(),

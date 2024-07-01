@@ -6,6 +6,8 @@ import {
   isDefined,
 } from "@medusajs/utils"
 
+// Reshape the order object to match the OrderDTO
+// This function is used to format the order object before returning to the main module methods
 export function formatOrder(
   order,
   options: {
@@ -21,6 +23,7 @@ export function formatOrder(
 
     const isRelatedEntity = options?.entity?.name !== "Order"
 
+    // If the entity is a related entity, the original order is located in the order property
     if (isRelatedEntity) {
       if (!order.order) {
         return order
@@ -151,6 +154,10 @@ function formatReturn(returnOrder) {
   })
 }
 
+// Map the public order model to the repository model format
+// As the public responses have a different shape than the repository responses, this function is used to map the public properties to the internal db entities
+// e.g "items" is the relation between "line-item" and "order" + "version", The line item itself is in "items.item"
+// This helper maps to the correct repository to query the DB, and the function "formatOrder" remap the response to the public shape
 export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
   if (isRelatedEntity) {
     return mapRepositoryToRelatedEntity(config)
@@ -225,6 +232,7 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
   return conf
 }
 
+// This function has the same purpose as "mapRepositoryToOrderModel" but for returns, claims and exchanges
 function mapRepositoryToRelatedEntity(config) {
   const conf = { ...config }
 

@@ -207,6 +207,9 @@ export interface UpdateOrderLineItemDTO
 export interface CreateOrderShippingMethodDTO {
   name: string
   order_id: string
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
   version?: number
   amount: BigNumberInput
   shipping_option_id?: string
@@ -460,7 +463,7 @@ export interface CancelOrderClaimDTO
 export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   additional_items?: BaseOrderBundledItemActionsDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
-  return_shipping: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  return_shipping?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   difference_due?: BigNumberInput
   allow_backorder?: boolean
   no_notification?: boolean

@@ -15,6 +15,7 @@ export type ChangeActionType =
   | "RECEIVE_RETURN_ITEM"
   | "RETURN_ITEM"
   | "SHIPPING_ADD"
+  | "SHIPPING_REMOVE"
   | "SHIP_ITEM"
   | "WRITE_OFF_ITEM"
   | "REINSTATE_ITEM"

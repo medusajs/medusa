@@ -32,7 +32,7 @@ export type VirtualOrder = {
   }[]
 
   shipping_methods: {
-    shipping_method_id: string
+    id: string
     order_id: string
     return_id?: string
     claim_id?: string

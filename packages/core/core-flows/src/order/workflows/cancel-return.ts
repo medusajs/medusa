@@ -56,7 +56,7 @@ const validateOrder = createStep(
   }
 )
 
-export const cancelReturnWorkflowId = "cancel-return-return"
+export const cancelReturnWorkflowId = "cancel-return"
 export const cancelReturnWorkflow = createWorkflow(
   cancelReturnWorkflowId,
   (

@@ -43,10 +43,8 @@ export async function cancelReturn(
         "items.item_id",
         "items.quantity",
         "items.received_quantity",
-        "items.item.title",
-        "reason.id",
       ],
-      relations: ["items"],
+      relations: ["items", "shipping_methods"],
     },
     sharedContext
   )
@@ -66,6 +64,17 @@ export async function cancelReturn(
         return_id: returnOrder.id,
         quantity: item.quantity,
       },
+    })
+  })
+
+  returnOrder.shipping_methods?.forEach((shipping) => {
+    actions.push({
+      action: ChangeActionType.SHIPPING_REMOVE,
+      order_id: returnOrder.order_id,
+      return_id: returnOrder.id,
+      reference: "return",
+      reference_id: shipping.id,
+      amount: shipping.price,
     })
   })
 

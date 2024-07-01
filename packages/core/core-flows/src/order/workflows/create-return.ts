@@ -97,9 +97,13 @@ function prepareShippingMethodData({
   returnShippingOption,
 }: {
   orderId: string
-  inputShippingOption: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
+  inputShippingOption?: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
   returnShippingOption: ShippingOptionDTO & WithCalculatedPrice
 }) {
+  if (!inputShippingOption) {
+    return
+  }
+
   const obj: CreateOrderShippingMethodDTO = {
     name: returnShippingOption.name,
     order_id: orderId,
@@ -235,11 +239,15 @@ function prepareReturnShippingOptionQueryVariables({
     region_id?: string
   }
   input: {
-    return_shipping: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
+    return_shipping?: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
   }
 }) {
+  if (input.return_shipping) {
+    return
+  }
+
   const variables = {
-    id: input.return_shipping.option_id,
+    id: input.return_shipping!.option_id,
     calculated_price: {
       context: {
         currency_code: order.currency_code,

@@ -48,6 +48,7 @@ export async function cancelClaim(
         "additional_items.id",
         "additional_items.quantity",
       ],
+      relations: ["return.items", "additional_items", "shipping_methods"],
     },
     sharedContext
   )
@@ -99,6 +100,18 @@ export async function cancelClaim(
         claim_id: claimOrder.id,
         quantity: item.quantity,
       },
+    })
+  })
+
+  claimOrder.shipping_methods?.forEach((shipping) => {
+    actions.push({
+      action: ChangeActionType.SHIPPING_REMOVE,
+      order_id: claimOrder.order_id,
+      claim_id: claimOrder.id,
+      return_id: claimOrder.return.id,
+      reference: "claim",
+      reference_id: shipping.id,
+      amount: shipping.price,
     })
   })
 

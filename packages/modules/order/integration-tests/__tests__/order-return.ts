@@ -504,8 +504,8 @@ moduleIntegrationTestRunner<IOrderModuleService>({
           order_id: createdOrder.id,
           reference: Modules.FULFILLMENT,
           shipping_method: {
-            name: "Return method",
-            amount: 35,
+            name: "First return method",
+            amount: 10,
           },
           items: createdOrder.items!.map((item) => {
             return {
@@ -617,12 +617,14 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             "items.detail.fulfilled_quantity",
             "items.detail.return_requested_quantity",
             "items.detail.return_received_quantity",
+            "shipping_methods.id",
           ],
           relations: ["items", "items.detail"],
         })
 
         serializedOrder = JSON.parse(JSON.stringify(getOrder))
 
+        expect(serializedOrder.shipping_methods).toHaveLength(2)
         expect(serializedOrder).toEqual(
           expect.objectContaining({
             items: [
