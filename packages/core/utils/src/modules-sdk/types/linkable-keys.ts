@@ -80,9 +80,44 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
  *   test: model.text(),
  * })
  *
- * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'User', car_number_plate: 'Car' }
+ * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'user', car_number_plate: 'car' }
  *
  */
 export type InferLinkableKeys<T extends DmlEntity<any>[]> = UnionToIntersection<
   FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]
 >
+
+type InferSchemaPotentialLinksConfig<
+  T,
+  OmitIdProperty = false
+> = T extends DmlEntity<infer Schema, infer Config>
+  ? {
+      [K in keyof Schema as OmitIdProperty extends true
+        ? Schema[K] extends PrimaryKeyModifier<any, infer PropertyType>
+          ? PropertyType extends IdProperty
+            ? Schema[K] extends PrimaryKeyModifier<any, any>
+              ? K
+              : never
+            : Schema[K] extends PrimaryKeyModifier<any, any>
+            ? K
+            : never
+          : Schema[K] extends PrimaryKeyModifier<any, any>
+          ? K
+          : never
+        : Schema[K] extends PrimaryKeyModifier<any, any>
+        ? K
+        : never]: InferLinkableKeyName<K, Schema[K], Config>
+    }
+  : {}
+
+type InferSchemaLinksConfig<T> = T extends DmlEntity<any>
+  ? keyof InferSchemaPotentialLinksConfig<T, true> extends keyof {}
+    ? InferSchemaPotentialLinksConfig<T>
+    : InferSchemaPotentialLinksConfig<T, true>
+  : never
+
+export type InfersLinksConfig<T extends DmlEntity<any>[]> = {
+  [K in keyof T as T[K] extends DmlEntity<any, infer Config>
+    ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+    : never]: T[K] extends DmlEntity<any> ? InferSchemaLinksConfig<T[K]> : never
+}
