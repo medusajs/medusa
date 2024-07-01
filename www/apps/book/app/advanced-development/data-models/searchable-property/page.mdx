@@ -20,7 +20,11 @@ The `searchable` method of the `model` utility indicates that a `text` property 
 
 For example:
 
-```ts
+export const searchableHighlights = [
+  ["4", "searchable", "Define the `name` property as searchable."]
+]
+
+```ts highlights={searchableHighlights}
 import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {

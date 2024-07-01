@@ -92,22 +92,6 @@ medusaIntegrationTestRunner({
           adminHeaders
         )
       ).data.price_list
-
-      // BREAKING: You need to register rule types before you can use them
-      await api.post(
-        "/admin/pricing/rule-types",
-        { name: "Region ID", rule_attribute: "region_id", default_priority: 0 },
-        adminHeaders
-      )
-      await api.post(
-        "/admin/pricing/rule-types",
-        {
-          name: "Customer Group ID",
-          rule_attribute: "customer_group_id",
-          default_priority: 0,
-        },
-        adminHeaders
-      )
     })
 
     describe("/admin/price-lists", () => {

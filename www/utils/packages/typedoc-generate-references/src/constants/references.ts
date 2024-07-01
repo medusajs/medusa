@@ -22,6 +22,7 @@ export const modules = [
 const allReferences = [
   ...modules,
   "auth-provider",
+  "dml",
   "file",
   "fulfillment-provider",
   "medusa-config",

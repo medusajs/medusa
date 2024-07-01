@@ -27,10 +27,6 @@ export default function (theme: MarkdownTheme) {
         []
       ) as DeclarationReflection[]
 
-      // if (typeof options.hash.sectionTitle !== "string") {
-      //   console.log("here2")
-      // }
-
       let result = ""
       switch (theme.objectLiteralTypeDeclarationStyle) {
         case "list": {

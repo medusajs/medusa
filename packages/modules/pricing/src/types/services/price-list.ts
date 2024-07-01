@@ -1,13 +1,12 @@
-import { PriceListStatus, PriceListType } from "@medusajs/types"
+import { PriceListStatus, PricingTypes } from "@medusajs/types"
 
-export interface CreatePriceListDTO {
-  title: string
-  description: string
-  starts_at?: string | null
-  ends_at?: string | null
-  status?: PriceListStatus
-  type?: PriceListType
-  number_rules?: number
+export interface CreatePriceListDTO extends PricingTypes.CreatePriceListDTO {
+  rules_count?: number
+  price_list_rules?: {
+    attribute: string
+    value: string
+  }[]
+  prices?: PricingTypes.CreatePriceListPriceDTO[]
 }
 
 export interface UpdatePriceListDTO {

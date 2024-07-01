@@ -1,5 +1,11 @@
 import { moduleProviderLoader } from "@medusajs/modules-sdk"
-import { LoaderOptions, ModuleProvider, ModulesSdkTypes } from "@medusajs/types"
+import {
+  DAL,
+  InferEntityType,
+  LoaderOptions,
+  ModuleProvider,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   lowerCaseFirst,
@@ -62,8 +68,9 @@ async function syncDatabaseProviders({
   const providerServiceRegistrationKey = lowerCaseFirst(
     NotificationProviderService.name
   )
-  const providerService: ModulesSdkTypes.IMedusaInternalService<NotificationProvider> =
-    container.resolve(providerServiceRegistrationKey)
+  const providerService: ModulesSdkTypes.IMedusaInternalService<
+    typeof NotificationProvider
+  > = container.resolve(providerServiceRegistrationKey)
 
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER) ?? console
   const normalizedProviders = providers.map((provider) => {
@@ -106,7 +113,10 @@ async function syncDatabaseProviders({
     if (providersToDisable.length) {
       promises.push(
         providerService.update(
-          providersToDisable.map((p) => ({ id: p.id, is_enabled: false }))
+          providersToDisable.map((p) => ({
+            entity: p,
+            update: { is_enabled: false },
+          }))
         )
       )
     }

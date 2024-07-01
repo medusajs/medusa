@@ -359,7 +359,7 @@ const SingleDatePicker = React.forwardRef<HTMLButtonElement, SingleProps>(({
   placeholder,
   translations,
   ...props
-}, ref) => {
+}: SingleProps, ref) => {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(
     value ?? defaultValue ?? undefined
@@ -592,7 +592,7 @@ const RangeDatePicker = React.forwardRef<HTMLButtonElement, RangeProps>(({
   placeholder,
   translations,
   ...props
-}, ref) => {
+}: RangeProps, ref) => {
   const [open, setOpen] = React.useState(false)
   const [range, setRange] = React.useState<DateRange | undefined>(
     value ?? defaultValue ?? undefined
