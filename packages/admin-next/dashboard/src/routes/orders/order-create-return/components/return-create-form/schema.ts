@@ -8,7 +8,7 @@ export const ReturnCreateSchema = z.object({
     })
   ),
   location_id: z.string().optional(),
-  reason_id: z.string(),
+  reason_id: z.string().optional(),
   option_id: z.string(),
   note: z.string().optional(),
   // TODO: MISSING IN AS AN API PARAM

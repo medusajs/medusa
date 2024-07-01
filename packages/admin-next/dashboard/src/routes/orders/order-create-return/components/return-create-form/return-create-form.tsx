@@ -116,7 +116,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
         items: data.items.map((i) => ({
           id: i.item_id,
           quantity: i.quantity,
-          reason_id: data.reason_id,
+          reason_id: data.reason_id || null,
         })),
       })
 
