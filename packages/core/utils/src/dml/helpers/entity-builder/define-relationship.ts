@@ -9,9 +9,9 @@ import {
   BeforeCreate,
   ManyToMany,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   Property,
 } from "@mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"

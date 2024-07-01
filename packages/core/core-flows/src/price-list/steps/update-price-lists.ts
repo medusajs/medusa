@@ -44,7 +44,7 @@ export const updatePriceListsStep = createStep(
 
     await pricingModule.updatePriceLists(
       dataBeforeUpdate.map((data) => {
-        const { price_list_rules: priceListRules = [], rules, ...rest } = data
+        const { price_list_rules: priceListRules = [], ...rest } = data
 
         const updateData: UpdatePriceListDTO = {
           ...rest,
@@ -82,14 +82,8 @@ async function getDataBeforeUpdate(
       selectsClone.splice(index, 1)
     }
 
-    selectsClone.push(
-      "price_list_rules.price_list_rule_values.value",
-      "price_list_rules.rule_type.rule_attribute"
-    )
-    relationsClone.push(
-      "price_list_rules.price_list_rule_values",
-      "price_list_rules.rule_type"
-    )
+    selectsClone.push("price_list_rules.value", "price_list_rules.attribute")
+    relationsClone.push("price_list_rules")
   }
 
   const dataBeforeUpdate = await pricingModule.listPriceLists(

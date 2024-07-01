@@ -6,7 +6,7 @@ required:
   - variant_id
 properties:
   quantity:
-    type: number
+    type: string
     title: quantity
     description: The item's quantity.
   variant_id:
@@ -68,7 +68,6 @@ properties:
   variant_option_values:
     type: object
     description: The item's variant option values.
-    properties: {}
   requires_shipping:
     type: boolean
     title: requires_shipping
@@ -86,18 +85,13 @@ properties:
     title: is_giftcard
     description: The item's is giftcard.
   compare_at_unit_price:
-    type: number
+    type: string
     title: compare_at_unit_price
     description: The item's compare at unit price.
   unit_price:
-    oneOf:
-      - type: string
-        title: unit_price
-        description: The item's unit price.
-      - type: number
-        title: unit_price
-        description: The item's unit price.
+    type: string
+    title: unit_price
+    description: The item's unit price.
   metadata:
     type: object
     description: The item's metadata.
-    properties: {}

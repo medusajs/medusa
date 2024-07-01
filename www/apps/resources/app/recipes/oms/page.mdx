@@ -63,9 +63,9 @@ For example, you can support importing orders into Medusa through a custom API R
 
 ## Route Orders to Third-party Fulfillment Services
 
-To integrate third-party fulfillment providers with the Medusa application, create a fulfillment provider module.
+To integrate third-party fulfillment providers with the Medusa application, create a fulfillment module provider.
 
-Medusa uses the Fulfillment Module whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The module's main service's methods use the associated fulfillment provider module to handle the desired fulfillment actions.
+Medusa uses the Fulfillment Module whenever a fulfillment action is performed, such as when a fulfillment is created for items in an order. The module's main service's methods use the associated fulfillment module provider to handle the desired fulfillment actions.
 
 ![Fulfilling orders with Medusa OMS](https://res.cloudinary.com/dza7lstvk/image/upload/v1709032184/Medusa%20Book/oms-fulfillment_qfrpdd.jpg)
 
@@ -80,7 +80,7 @@ Emitting of event `order.fulfillment_created` isn't implemented yet.
 <CardList itemsPerRow={2} items={[
   {
     href: "/references/fulfillment/provider",
-    title: "Create a Fulfillment Provider Module",
+    title: "Create a Fulfillment Module Provider",
     text: "Learn how to create a fulfillment provider in Medusa.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
@@ -98,7 +98,7 @@ Emitting of event `order.fulfillment_created` isn't implemented yet.
 
 ## Process Payment with Third-Party Providers
 
-To integrate third-party payment providers with the Medusa application, create a payment provider module.
+To integrate third-party payment providers with the Medusa application, create a payment module provider.
 
 In addition, create a subscriber that listen to payment-related events, such as the `order.payment_captured` event, to perform actions in the third-party payment provider.
 
@@ -111,8 +111,8 @@ Emitting of event `order.payment_captured` isn't implemented yet.
 <CardList itemsPerRow={2} items={[
   {
     href: "/references/payment/provider",
-    title: "Create a Payment Provider Module",
-    text: "Learn how to create a payment provider module.",
+    title: "Create a Payment Module Provider",
+    text: "Learn how to create a payment module provider.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -171,7 +171,7 @@ All types of order changes are coming soon.
 
 In Medusa, items in an order can be returned or exchanged; these can be created by the merchant or requested by the customer. A merchant can also edit an order to add, update, or delete items.
 
-When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment provider modules are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
+When changes are made to an order by any of the mentioned actions, the changes are reflected on the order's totals and associated inventory. The integrated fulfillment and payment module providers are used if fulfillment or payment actions are required, such as fulfilling exchanged items.
 
 Medusa also emits events related to these actions, such as `order.return_requested`. So, you can create a subscriber that listens to these events and perform asynchronous actions, such as communicating with third-party services.
 

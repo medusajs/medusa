@@ -22,10 +22,6 @@ import { TypeList } from "docs-ui"
 - [PriceListStatus](../../utils/enums/utils.PriceListStatus/page.mdx)
 - [PriceListType](../../utils/enums/utils.PriceListType/page.mdx)
 
-## Type Aliases
-
-- [RuleAttributeInput](../../utils/types/utils.RuleAttributeInput/page.mdx)
-
 ___
 
 ## Variables
@@ -34,30 +30,28 @@ ___
 
  `Const` **MedusaModuleType**: typeof [MedusaModuleType](page.mdx#medusamoduletype)
 
-### ReservedPricingRuleAttributes
+### PaymentEvents
 
- `Const` **ReservedPricingRuleAttributes**: `string`[]
+ `Const` **PaymentEvents**: `Object`
+
+#### Properties
+
+<TypeList types={[{"name":"CAPTURED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment.captured\"","expandable":false,"children":[]},{"name":"REFUNDED","type":"`string`","description":"","optional":false,"defaultValue":"\"payment.refunded\"","expandable":false,"children":[]}]}  sectionTitle="PaymentEvents"/>
+
+### PricingEvents
+
+ `Const` **PricingEvents**: ReturnType&#60;["priceListRule", "priceList", "priceRule", "priceSet", "price"]&#62;
 
 ___
 
 ## Functions
 
-### getInvalidRuleAttributes
+### generateJwtToken
 
 #### Parameters
 
-<TypeList types={[{"name":"ruleAttributes","type":"[RuleAttributeInput](../../utils/types/utils.RuleAttributeInput/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getInvalidRuleAttributes"/>
+<TypeList types={[{"name":"tokenPayload","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"jwtConfig","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"secret","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"expiresIn","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="generateJwtToken"/>
 
 #### Returns
 
-<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getInvalidRuleAttributes"/>
-
-### validateRuleAttributes
-
-#### Parameters
-
-<TypeList types={[{"name":"ruleAttributes","type":"[RuleAttributeInput](../../utils/types/utils.RuleAttributeInput/page.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateRuleAttributes"/>
-
-#### Returns
-
-<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="validateRuleAttributes"/>
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="generateJwtToken"/>

@@ -8,7 +8,6 @@ export interface CreatePriceListDTO {
   starts_at?: string
   ends_at?: string
   status?: PriceListStatus
-  rules_count?: number
   rules?: PriceListRuleDTO[]
   prices?: {
     amount: number
@@ -23,7 +22,7 @@ export interface CreatePriceListDTO {
 }
 
 export interface CreatePriceListRuleDTO {
-  rule_attribute: string
+  attribute: string
   value: string[]
 }
 

@@ -294,7 +294,7 @@ export async function createExchange(
       order_id: data.order_id,
       exchange_id: exchangeReference.id,
       return_id: returnReference.id,
-      change_type: OrderChangeType.CLAIM,
+      change_type: OrderChangeType.EXCHANGE,
       reference: "exchange",
       reference_id: exchangeReference.id,
       description: data.description,

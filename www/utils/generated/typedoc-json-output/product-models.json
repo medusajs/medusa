@@ -1,5 +1,5 @@
 {
-	"id": 9745,
+	"id": 9834,
 	"name": "product-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 9782,
+			"id": 9871,
 			"name": "ProductCategory",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9783,
+					"id": 9872,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9784,
+							"id": 9873,
 							"name": "new ProductCategory",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9782,
+								"target": 9871,
 								"name": "ProductCategory",
 								"package": "@medusajs/product"
 							}
@@ -47,7 +47,7 @@
 					]
 				},
 				{
-					"id": 9785,
+					"id": 9874,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -58,7 +58,7 @@
 					}
 				},
 				{
-					"id": 9786,
+					"id": 9875,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -71,7 +71,7 @@
 					}
 				},
 				{
-					"id": 9787,
+					"id": 9876,
 					"name": "description",
 					"variant": "declaration",
 					"kind": 1024,
@@ -84,7 +84,7 @@
 					}
 				},
 				{
-					"id": 9788,
+					"id": 9877,
 					"name": "handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -97,7 +97,7 @@
 					}
 				},
 				{
-					"id": 9789,
+					"id": 9878,
 					"name": "mpath",
 					"variant": "declaration",
 					"kind": 1024,
@@ -110,7 +110,7 @@
 					}
 				},
 				{
-					"id": 9790,
+					"id": 9879,
 					"name": "is_active",
 					"variant": "declaration",
 					"kind": 1024,
@@ -123,7 +123,7 @@
 					}
 				},
 				{
-					"id": 9791,
+					"id": 9880,
 					"name": "is_internal",
 					"variant": "declaration",
 					"kind": 1024,
@@ -136,7 +136,7 @@
 					}
 				},
 				{
-					"id": 9792,
+					"id": 9881,
 					"name": "rank",
 					"variant": "declaration",
 					"kind": 1024,
@@ -147,7 +147,7 @@
 					}
 				},
 				{
-					"id": 9793,
+					"id": 9882,
 					"name": "parent_category_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -169,7 +169,7 @@
 					}
 				},
 				{
-					"id": 9794,
+					"id": 9883,
 					"name": "parent_category",
 					"variant": "declaration",
 					"kind": 1024,
@@ -178,13 +178,13 @@
 					},
 					"type": {
 						"type": "reference",
-						"target": 9782,
+						"target": 9871,
 						"name": "ProductCategory",
 						"package": "@medusajs/product"
 					}
 				},
 				{
-					"id": 9795,
+					"id": 9884,
 					"name": "category_children",
 					"variant": "declaration",
 					"kind": 1024,
@@ -198,7 +198,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9782,
+								"target": 9871,
 								"name": "ProductCategory",
 								"package": "@medusajs/product"
 							},
@@ -213,7 +213,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9796,
+					"id": 9885,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -231,7 +231,7 @@
 					}
 				},
 				{
-					"id": 9797,
+					"id": 9886,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -249,7 +249,7 @@
 					}
 				},
 				{
-					"id": 9798,
+					"id": 9887,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -267,7 +267,7 @@
 					}
 				},
 				{
-					"id": 9799,
+					"id": 9888,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -281,7 +281,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9746,
+								"target": 9835,
 								"name": "Product",
 								"package": "@medusajs/product"
 							},
@@ -296,14 +296,14 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9800,
+					"id": 9889,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9801,
+							"id": 9890,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -327,21 +327,21 @@
 					]
 				},
 				{
-					"id": 9802,
+					"id": 9891,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9803,
+							"id": 9892,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
 							"parameters": [
 								{
-									"id": 9804,
+									"id": 9893,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -355,7 +355,7 @@
 										"typeArguments": [
 											{
 												"type": "reference",
-												"target": 9782,
+												"target": 9871,
 												"name": "ProductCategory",
 												"package": "@medusajs/product"
 											}
@@ -388,61 +388,61 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9783
+						9872
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9785,
-						9786,
-						9787,
-						9788,
-						9789,
-						9790,
-						9791,
-						9792,
-						9793,
-						9794,
-						9795,
-						9796,
-						9797,
-						9798,
-						9799
+						9874,
+						9875,
+						9876,
+						9877,
+						9878,
+						9879,
+						9880,
+						9881,
+						9882,
+						9883,
+						9884,
+						9885,
+						9886,
+						9887,
+						9888
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9800,
-						9802
+						9889,
+						9891
 					]
 				}
 			]
 		},
 		{
-			"id": 9805,
+			"id": 9894,
 			"name": "ProductCollection",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9806,
+					"id": 9895,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9807,
+							"id": 9896,
 							"name": "new ProductCollection",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9805,
+								"target": 9894,
 								"name": "ProductCollection",
 								"package": "@medusajs/product"
 							}
@@ -450,7 +450,7 @@
 					]
 				},
 				{
-					"id": 9808,
+					"id": 9897,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -461,7 +461,7 @@
 					}
 				},
 				{
-					"id": 9809,
+					"id": 9898,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -472,7 +472,7 @@
 					}
 				},
 				{
-					"id": 9810,
+					"id": 9899,
 					"name": "handle",
 					"variant": "declaration",
 					"kind": 1024,
@@ -485,7 +485,7 @@
 					}
 				},
 				{
-					"id": 9811,
+					"id": 9900,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -499,7 +499,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9746,
+								"target": 9835,
 								"name": "Product",
 								"package": "@medusajs/product"
 							},
@@ -514,7 +514,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9812,
+					"id": 9901,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -551,7 +551,7 @@
 					}
 				},
 				{
-					"id": 9813,
+					"id": 9902,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -567,7 +567,7 @@
 					}
 				},
 				{
-					"id": 9814,
+					"id": 9903,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -583,7 +583,7 @@
 					}
 				},
 				{
-					"id": 9815,
+					"id": 9904,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -601,14 +601,14 @@
 					}
 				},
 				{
-					"id": 9816,
+					"id": 9905,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9817,
+							"id": 9906,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -625,53 +625,53 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9806
+						9895
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9808,
-						9809,
-						9810,
-						9811,
-						9812,
-						9813,
-						9814,
-						9815
+						9897,
+						9898,
+						9899,
+						9900,
+						9901,
+						9902,
+						9903,
+						9904
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9816
+						9905
 					]
 				}
 			]
 		},
 		{
-			"id": 9898,
+			"id": 9987,
 			"name": "Image",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9899,
+					"id": 9988,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9900,
+							"id": 9989,
 							"name": "new Image",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9898,
+								"target": 9987,
 								"name": "ProductImage",
 								"package": "@medusajs/product"
 							}
@@ -679,7 +679,7 @@
 					]
 				},
 				{
-					"id": 9901,
+					"id": 9990,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -690,7 +690,7 @@
 					}
 				},
 				{
-					"id": 9902,
+					"id": 9991,
 					"name": "url",
 					"variant": "declaration",
 					"kind": 1024,
@@ -701,7 +701,7 @@
 					}
 				},
 				{
-					"id": 9903,
+					"id": 9992,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -738,7 +738,7 @@
 					}
 				},
 				{
-					"id": 9904,
+					"id": 9993,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -754,7 +754,7 @@
 					}
 				},
 				{
-					"id": 9905,
+					"id": 9994,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -770,7 +770,7 @@
 					}
 				},
 				{
-					"id": 9906,
+					"id": 9995,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -788,7 +788,7 @@
 					}
 				},
 				{
-					"id": 9907,
+					"id": 9996,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -802,7 +802,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9746,
+								"target": 9835,
 								"name": "Product",
 								"package": "@medusajs/product"
 							},
@@ -817,14 +817,14 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9908,
+					"id": 9997,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9909,
+							"id": 9998,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -837,14 +837,14 @@
 					]
 				},
 				{
-					"id": 9910,
+					"id": 9999,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9911,
+							"id": 10000,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -861,53 +861,53 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9899
+						9988
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9901,
-						9902,
-						9903,
-						9904,
-						9905,
-						9906,
-						9907
+						9990,
+						9991,
+						9992,
+						9993,
+						9994,
+						9995,
+						9996
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9908,
-						9910
+						9997,
+						9999
 					]
 				}
 			]
 		},
 		{
-			"id": 9884,
+			"id": 9973,
 			"name": "ProductOptionValue",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9885,
+					"id": 9974,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9886,
+							"id": 9975,
 							"name": "new ProductOptionValue",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9884,
+								"target": 9973,
 								"name": "ProductOptionValue",
 								"package": "@medusajs/product"
 							}
@@ -915,7 +915,7 @@
 					]
 				},
 				{
-					"id": 9887,
+					"id": 9976,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -926,7 +926,7 @@
 					}
 				},
 				{
-					"id": 9888,
+					"id": 9977,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -937,7 +937,7 @@
 					}
 				},
 				{
-					"id": 9889,
+					"id": 9978,
 					"name": "option_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -957,7 +957,7 @@
 					}
 				},
 				{
-					"id": 9890,
+					"id": 9979,
 					"name": "option",
 					"variant": "declaration",
 					"kind": 1024,
@@ -971,7 +971,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 9870,
+								"target": 9959,
 								"name": "ProductOption",
 								"package": "@medusajs/product"
 							}
@@ -979,7 +979,7 @@
 					}
 				},
 				{
-					"id": 9891,
+					"id": 9980,
 					"name": "variants",
 					"variant": "declaration",
 					"kind": 1024,
@@ -993,7 +993,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9841,
+								"target": 9930,
 								"name": "ProductVariant",
 								"package": "@medusajs/product"
 							},
@@ -1008,7 +1008,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9892,
+					"id": 9981,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1045,7 +1045,7 @@
 					}
 				},
 				{
-					"id": 9893,
+					"id": 9982,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1061,7 +1061,7 @@
 					}
 				},
 				{
-					"id": 9894,
+					"id": 9983,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1077,7 +1077,7 @@
 					}
 				},
 				{
-					"id": 9895,
+					"id": 9984,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1095,14 +1095,14 @@
 					}
 				},
 				{
-					"id": 9896,
+					"id": 9985,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9897,
+							"id": 9986,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1119,54 +1119,54 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9885
+						9974
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9887,
-						9888,
-						9889,
-						9890,
-						9891,
-						9892,
-						9893,
-						9894,
-						9895
+						9976,
+						9977,
+						9978,
+						9979,
+						9980,
+						9981,
+						9982,
+						9983,
+						9984
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9896
+						9985
 					]
 				}
 			]
 		},
 		{
-			"id": 9870,
+			"id": 9959,
 			"name": "ProductOption",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9871,
+					"id": 9960,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9872,
+							"id": 9961,
 							"name": "new ProductOption",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9870,
+								"target": 9959,
 								"name": "ProductOption",
 								"package": "@medusajs/product"
 							}
@@ -1174,7 +1174,7 @@
 					]
 				},
 				{
-					"id": 9873,
+					"id": 9962,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1185,7 +1185,7 @@
 					}
 				},
 				{
-					"id": 9874,
+					"id": 9963,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1196,7 +1196,7 @@
 					}
 				},
 				{
-					"id": 9875,
+					"id": 9964,
 					"name": "product_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1216,7 +1216,7 @@
 					}
 				},
 				{
-					"id": 9876,
+					"id": 9965,
 					"name": "product",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1230,7 +1230,7 @@
 							},
 							{
 								"type": "reference",
-								"target": 9746,
+								"target": 9835,
 								"name": "Product",
 								"package": "@medusajs/product"
 							}
@@ -1238,7 +1238,7 @@
 					}
 				},
 				{
-					"id": 9877,
+					"id": 9966,
 					"name": "values",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1252,7 +1252,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9884,
+								"target": 9973,
 								"name": "ProductOptionValue",
 								"package": "@medusajs/product"
 							},
@@ -1267,7 +1267,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9878,
+					"id": 9967,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1304,7 +1304,7 @@
 					}
 				},
 				{
-					"id": 9879,
+					"id": 9968,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1320,7 +1320,7 @@
 					}
 				},
 				{
-					"id": 9880,
+					"id": 9969,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1336,7 +1336,7 @@
 					}
 				},
 				{
-					"id": 9881,
+					"id": 9970,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1354,14 +1354,14 @@
 					}
 				},
 				{
-					"id": 9882,
+					"id": 9971,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9883,
+							"id": 9972,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1378,54 +1378,54 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9871
+						9960
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9873,
-						9874,
-						9875,
-						9876,
-						9877,
-						9878,
-						9879,
-						9880,
-						9881
+						9962,
+						9963,
+						9964,
+						9965,
+						9966,
+						9967,
+						9968,
+						9969,
+						9970
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9882
+						9971
 					]
 				}
 			]
 		},
 		{
-			"id": 9818,
+			"id": 9907,
 			"name": "ProductTag",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9819,
+					"id": 9908,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9820,
+							"id": 9909,
 							"name": "new ProductTag",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9818,
+								"target": 9907,
 								"name": "ProductTag",
 								"package": "@medusajs/product"
 							}
@@ -1433,7 +1433,7 @@
 					]
 				},
 				{
-					"id": 9821,
+					"id": 9910,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1444,7 +1444,7 @@
 					}
 				},
 				{
-					"id": 9822,
+					"id": 9911,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1455,7 +1455,7 @@
 					}
 				},
 				{
-					"id": 9823,
+					"id": 9912,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1492,7 +1492,7 @@
 					}
 				},
 				{
-					"id": 9824,
+					"id": 9913,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1508,7 +1508,7 @@
 					}
 				},
 				{
-					"id": 9825,
+					"id": 9914,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1524,7 +1524,7 @@
 					}
 				},
 				{
-					"id": 9826,
+					"id": 9915,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1542,7 +1542,7 @@
 					}
 				},
 				{
-					"id": 9827,
+					"id": 9916,
 					"name": "products",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1556,7 +1556,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9746,
+								"target": 9835,
 								"name": "Product",
 								"package": "@medusajs/product"
 							},
@@ -1571,14 +1571,14 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 9828,
+					"id": 9917,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9829,
+							"id": 9918,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1595,52 +1595,52 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9819
+						9908
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9821,
-						9822,
-						9823,
-						9824,
-						9825,
-						9826,
-						9827
+						9910,
+						9911,
+						9912,
+						9913,
+						9914,
+						9915,
+						9916
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9828
+						9917
 					]
 				}
 			]
 		},
 		{
-			"id": 9830,
+			"id": 9919,
 			"name": "ProductType",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9831,
+					"id": 9920,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9832,
+							"id": 9921,
 							"name": "new ProductType",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9830,
+								"target": 9919,
 								"name": "ProductType",
 								"package": "@medusajs/product"
 							}
@@ -1648,7 +1648,7 @@
 					]
 				},
 				{
-					"id": 9833,
+					"id": 9922,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1659,7 +1659,7 @@
 					}
 				},
 				{
-					"id": 9834,
+					"id": 9923,
 					"name": "value",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1670,7 +1670,7 @@
 					}
 				},
 				{
-					"id": 9835,
+					"id": 9924,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1707,7 +1707,7 @@
 					}
 				},
 				{
-					"id": 9836,
+					"id": 9925,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1723,7 +1723,7 @@
 					}
 				},
 				{
-					"id": 9837,
+					"id": 9926,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1739,7 +1739,7 @@
 					}
 				},
 				{
-					"id": 9838,
+					"id": 9927,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1757,14 +1757,14 @@
 					}
 				},
 				{
-					"id": 9839,
+					"id": 9928,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9840,
+							"id": 9929,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1781,51 +1781,51 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9831
+						9920
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9833,
-						9834,
-						9835,
-						9836,
-						9837,
-						9838
+						9922,
+						9923,
+						9924,
+						9925,
+						9926,
+						9927
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9839
+						9928
 					]
 				}
 			]
 		},
 		{
-			"id": 9841,
+			"id": 9930,
 			"name": "ProductVariant",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 9842,
+					"id": 9931,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9843,
+							"id": 9932,
 							"name": "new ProductVariant",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 9841,
+								"target": 9930,
 								"name": "ProductVariant",
 								"package": "@medusajs/product"
 							}
@@ -1833,7 +1833,7 @@
 					]
 				},
 				{
-					"id": 9844,
+					"id": 9933,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1844,7 +1844,7 @@
 					}
 				},
 				{
-					"id": 9845,
+					"id": 9934,
 					"name": "title",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1855,7 +1855,7 @@
 					}
 				},
 				{
-					"id": 9846,
+					"id": 9935,
 					"name": "sku",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1877,7 +1877,7 @@
 					}
 				},
 				{
-					"id": 9847,
+					"id": 9936,
 					"name": "barcode",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1899,7 +1899,7 @@
 					}
 				},
 				{
-					"id": 9848,
+					"id": 9937,
 					"name": "ean",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1921,7 +1921,7 @@
 					}
 				},
 				{
-					"id": 9849,
+					"id": 9938,
 					"name": "upc",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1943,7 +1943,7 @@
 					}
 				},
 				{
-					"id": 9850,
+					"id": 9939,
 					"name": "allow_backorder",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1957,7 +1957,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 9851,
+					"id": 9940,
 					"name": "manage_inventory",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1971,7 +1971,7 @@
 					"defaultValue": "true"
 				},
 				{
-					"id": 9852,
+					"id": 9941,
 					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1993,8 +1993,732 @@
 					}
 				},
 				{
-					"id": 9853,
+					"id": 9942,
 					"name": "origin_country",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9943,
+					"name": "mid_code",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9944,
+					"name": "material",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9945,
+					"name": "weight",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9946,
+					"name": "length",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9947,
+					"name": "height",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9948,
+					"name": "width",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9949,
+					"name": "metadata",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Record"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									},
+									{
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								],
+								"name": "Record",
+								"package": "typescript"
+							}
+						]
+					}
+				},
+				{
+					"id": 9950,
+					"name": "variant_rank",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9951,
+					"name": "product_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9952,
+					"name": "product",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 9835,
+								"name": "Product",
+								"package": "@medusajs/product"
+							}
+						]
+					}
+				},
+				{
+					"id": 9953,
+					"name": "options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 9973,
+								"name": "ProductOptionValue",
+								"package": "@medusajs/product"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 9954,
+					"name": "created_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 9955,
+					"name": "updated_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 9956,
+					"name": "deleted_at",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Date"
+						},
+						"name": "Date",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 9957,
+					"name": "onInit",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 9958,
+							"name": "onInit",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"type": {
+								"type": "intrinsic",
+								"name": "void"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						9931
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						9933,
+						9934,
+						9935,
+						9936,
+						9937,
+						9938,
+						9939,
+						9940,
+						9941,
+						9942,
+						9943,
+						9944,
+						9945,
+						9946,
+						9947,
+						9948,
+						9949,
+						9950,
+						9951,
+						9952,
+						9953,
+						9954,
+						9955,
+						9956
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						9957
+					]
+				}
+			]
+		},
+		{
+			"id": 9835,
+			"name": "Product",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"children": [
+				{
+					"id": 9836,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 9837,
+							"name": "new Product",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 9835,
+								"name": "Product",
+								"package": "@medusajs/product"
+							}
+						}
+					]
+				},
+				{
+					"id": 9838,
+					"name": "id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 9839,
+					"name": "title",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 9840,
+					"name": "handle",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 9841,
+					"name": "subtitle",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9842,
+					"name": "description",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9843,
+					"name": "is_giftcard",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 9844,
+					"name": "status",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../packages/core/utils/src/product/index.ts",
+							"qualifiedName": "ProductStatus"
+						},
+						"name": "ProductStatus",
+						"package": "@medusajs/utils"
+					}
+				},
+				{
+					"id": 9845,
+					"name": "thumbnail",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9846,
+					"name": "options",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 9959,
+								"name": "ProductOption",
+								"package": "@medusajs/product"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 9847,
+					"name": "variants",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 9930,
+								"name": "ProductVariant",
+								"package": "@medusajs/product"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 9848,
+					"name": "weight",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9849,
+					"name": "length",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9850,
+					"name": "height",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9851,
+					"name": "width",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "number"
+							}
+						]
+					}
+				},
+				{
+					"id": 9852,
+					"name": "origin_country",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9853,
+					"name": "hs_code",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {
@@ -2060,154 +2784,7 @@
 				},
 				{
 					"id": 9856,
-					"name": "weight",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9857,
-					"name": "length",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9858,
-					"name": "height",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9859,
-					"name": "width",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9860,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
-								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
-							}
-						]
-					}
-				},
-				{
-					"id": 9861,
-					"name": "variant_rank",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9862,
-					"name": "product_id",
+					"name": "collection_id",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -2226,8 +2803,8 @@
 					}
 				},
 				{
-					"id": 9863,
-					"name": "product",
+					"id": 9857,
+					"name": "collection",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -2240,16 +2817,58 @@
 							},
 							{
 								"type": "reference",
-								"target": 9746,
-								"name": "Product",
+								"target": 9894,
+								"name": "ProductCollection",
 								"package": "@medusajs/product"
 							}
 						]
 					}
 				},
 				{
-					"id": 9864,
-					"name": "options",
+					"id": 9858,
+					"name": "type_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
+				},
+				{
+					"id": 9859,
+					"name": "type",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "reference",
+								"target": 9919,
+								"name": "ProductType",
+								"package": "@medusajs/product"
+							}
+						]
+					}
+				},
+				{
+					"id": 9860,
+					"name": "tags",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
@@ -2262,8 +2881,8 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 9884,
-								"name": "ProductOptionValue",
+								"target": 9907,
+								"name": "ProductTag",
 								"package": "@medusajs/product"
 							},
 							{
@@ -2275,6 +2894,97 @@
 						"package": "@mikro-orm/core"
 					},
 					"defaultValue": "..."
+				},
+				{
+					"id": 9861,
+					"name": "images",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 9987,
+								"name": "ProductImage",
+								"package": "@medusajs/product"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 9862,
+					"name": "categories",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
+							"qualifiedName": "Collection"
+						},
+						"typeArguments": [
+							{
+								"type": "reference",
+								"target": 9871,
+								"name": "ProductCategory",
+								"package": "@medusajs/product"
+							},
+							{
+								"type": "intrinsic",
+								"name": "object"
+							}
+						],
+						"name": "Collection",
+						"package": "@mikro-orm/core"
+					},
+					"defaultValue": "..."
+				},
+				{
+					"id": 9863,
+					"name": "discountable",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {},
+					"type": {
+						"type": "intrinsic",
+						"name": "boolean"
+					}
+				},
+				{
+					"id": 9864,
+					"name": "external_id",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"type": {
+						"type": "union",
+						"types": [
+							{
+								"type": "literal",
+								"value": null
+							},
+							{
+								"type": "intrinsic",
+								"name": "string"
+							}
+						]
+					}
 				},
 				{
 					"id": 9865,
@@ -2328,716 +3038,6 @@
 				},
 				{
 					"id": 9868,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 9869,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						9842
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						9844,
-						9845,
-						9846,
-						9847,
-						9848,
-						9849,
-						9850,
-						9851,
-						9852,
-						9853,
-						9854,
-						9855,
-						9856,
-						9857,
-						9858,
-						9859,
-						9860,
-						9861,
-						9862,
-						9863,
-						9864,
-						9865,
-						9866,
-						9867
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						9868
-					]
-				}
-			]
-		},
-		{
-			"id": 9746,
-			"name": "Product",
-			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 9747,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 9748,
-							"name": "new Product",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 9746,
-								"name": "Product",
-								"package": "@medusajs/product"
-							}
-						}
-					]
-				},
-				{
-					"id": 9749,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 9750,
-					"name": "title",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 9751,
-					"name": "handle",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 9752,
-					"name": "subtitle",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9753,
-					"name": "description",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9754,
-					"name": "is_giftcard",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					}
-				},
-				{
-					"id": 9755,
-					"name": "status",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../packages/core/utils/src/product/index.ts",
-							"qualifiedName": "ProductStatus"
-						},
-						"name": "ProductStatus",
-						"package": "@medusajs/utils"
-					}
-				},
-				{
-					"id": 9756,
-					"name": "thumbnail",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9757,
-					"name": "options",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 9870,
-								"name": "ProductOption",
-								"package": "@medusajs/product"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 9758,
-					"name": "variants",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 9841,
-								"name": "ProductVariant",
-								"package": "@medusajs/product"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 9759,
-					"name": "weight",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9760,
-					"name": "length",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9761,
-					"name": "height",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9762,
-					"name": "width",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "number"
-							}
-						]
-					}
-				},
-				{
-					"id": 9763,
-					"name": "origin_country",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9764,
-					"name": "hs_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9765,
-					"name": "mid_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9766,
-					"name": "material",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9767,
-					"name": "collection_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9768,
-					"name": "collection",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": 9805,
-								"name": "ProductCollection",
-								"package": "@medusajs/product"
-							}
-						]
-					}
-				},
-				{
-					"id": 9769,
-					"name": "type_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9770,
-					"name": "type",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": 9830,
-								"name": "ProductType",
-								"package": "@medusajs/product"
-							}
-						]
-					}
-				},
-				{
-					"id": 9771,
-					"name": "tags",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 9818,
-								"name": "ProductTag",
-								"package": "@medusajs/product"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 9772,
-					"name": "images",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 9898,
-								"name": "ProductImage",
-								"package": "@medusajs/product"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 9773,
-					"name": "categories",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 9782,
-								"name": "ProductCategory",
-								"package": "@medusajs/product"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 9774,
-					"name": "discountable",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					}
-				},
-				{
-					"id": 9775,
-					"name": "external_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					}
-				},
-				{
-					"id": 9776,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 9777,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 9778,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 9779,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -3074,14 +3074,14 @@
 					}
 				},
 				{
-					"id": 9780,
+					"id": 9869,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 9781,
+							"id": 9870,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -3098,49 +3098,49 @@
 				{
 					"title": "Constructors",
 					"children": [
-						9747
+						9836
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						9749,
-						9750,
-						9751,
-						9752,
-						9753,
-						9754,
-						9755,
-						9756,
-						9757,
-						9758,
-						9759,
-						9760,
-						9761,
-						9762,
-						9763,
-						9764,
-						9765,
-						9766,
-						9767,
-						9768,
-						9769,
-						9770,
-						9771,
-						9772,
-						9773,
-						9774,
-						9775,
-						9776,
-						9777,
-						9778,
-						9779
+						9838,
+						9839,
+						9840,
+						9841,
+						9842,
+						9843,
+						9844,
+						9845,
+						9846,
+						9847,
+						9848,
+						9849,
+						9850,
+						9851,
+						9852,
+						9853,
+						9854,
+						9855,
+						9856,
+						9857,
+						9858,
+						9859,
+						9860,
+						9861,
+						9862,
+						9863,
+						9864,
+						9865,
+						9866,
+						9867,
+						9868
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						9780
+						9869
 					]
 				}
 			]
@@ -3150,613 +3150,613 @@
 		{
 			"title": "Classes",
 			"children": [
-				9782,
-				9805,
-				9898,
-				9884,
-				9870,
-				9818,
-				9830,
-				9841,
-				9746
+				9871,
+				9894,
+				9987,
+				9973,
+				9959,
+				9907,
+				9919,
+				9930,
+				9835
 			]
 		}
 	],
 	"packageName": "@medusajs/product",
 	"symbolIdMap": {
-		"9745": {
+		"9834": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"9746": {
+		"9835": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product"
 		},
-		"9749": {
+		"9838": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.id"
 		},
-		"9750": {
+		"9839": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.title"
 		},
-		"9751": {
+		"9840": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.handle"
 		},
-		"9752": {
+		"9841": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.subtitle"
 		},
-		"9753": {
+		"9842": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.description"
 		},
-		"9754": {
+		"9843": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.is_giftcard"
 		},
-		"9755": {
+		"9844": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.status"
 		},
-		"9756": {
+		"9845": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.thumbnail"
 		},
-		"9757": {
+		"9846": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.options"
 		},
-		"9758": {
+		"9847": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.variants"
 		},
-		"9759": {
+		"9848": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.weight"
 		},
-		"9760": {
+		"9849": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.length"
 		},
-		"9761": {
+		"9850": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.height"
 		},
-		"9762": {
+		"9851": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.width"
 		},
-		"9763": {
+		"9852": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.origin_country"
 		},
-		"9764": {
+		"9853": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.hs_code"
 		},
-		"9765": {
+		"9854": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.mid_code"
 		},
-		"9766": {
+		"9855": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.material"
 		},
-		"9767": {
+		"9856": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.collection_id"
 		},
-		"9768": {
+		"9857": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.collection"
 		},
-		"9769": {
+		"9858": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.type_id"
 		},
-		"9770": {
+		"9859": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.type"
 		},
-		"9771": {
+		"9860": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.tags"
 		},
-		"9772": {
+		"9861": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.images"
 		},
-		"9773": {
+		"9862": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.categories"
 		},
-		"9774": {
+		"9863": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.discountable"
 		},
-		"9775": {
+		"9864": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.external_id"
 		},
-		"9776": {
+		"9865": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.created_at"
 		},
-		"9777": {
+		"9866": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.updated_at"
 		},
-		"9778": {
+		"9867": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.deleted_at"
 		},
-		"9779": {
+		"9868": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.metadata"
 		},
-		"9780": {
+		"9869": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.onInit"
 		},
-		"9781": {
+		"9870": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product.ts",
 			"qualifiedName": "Product.onInit"
 		},
-		"9782": {
+		"9871": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory"
 		},
-		"9785": {
+		"9874": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.id"
 		},
-		"9786": {
+		"9875": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.name"
 		},
-		"9787": {
+		"9876": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.description"
 		},
-		"9788": {
+		"9877": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.handle"
 		},
-		"9789": {
+		"9878": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.mpath"
 		},
-		"9790": {
+		"9879": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.is_active"
 		},
-		"9791": {
+		"9880": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.is_internal"
 		},
-		"9792": {
+		"9881": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.rank"
 		},
-		"9793": {
+		"9882": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.parent_category_id"
 		},
-		"9794": {
+		"9883": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.parent_category"
 		},
-		"9795": {
+		"9884": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.category_children"
 		},
-		"9796": {
+		"9885": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.created_at"
 		},
-		"9797": {
+		"9886": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.updated_at"
 		},
-		"9798": {
+		"9887": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.deleted_at"
 		},
-		"9799": {
+		"9888": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.products"
 		},
-		"9800": {
+		"9889": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.onInit"
 		},
-		"9801": {
+		"9890": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.onInit"
 		},
-		"9802": {
+		"9891": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.onCreate"
 		},
-		"9803": {
+		"9892": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "ProductCategory.onCreate"
 		},
-		"9804": {
+		"9893": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-category.ts",
 			"qualifiedName": "args"
 		},
-		"9805": {
+		"9894": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection"
 		},
-		"9808": {
+		"9897": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.id"
 		},
-		"9809": {
+		"9898": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.title"
 		},
-		"9810": {
+		"9899": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.handle"
 		},
-		"9811": {
+		"9900": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.products"
 		},
-		"9812": {
+		"9901": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.metadata"
 		},
-		"9813": {
+		"9902": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.created_at"
 		},
-		"9814": {
+		"9903": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.updated_at"
 		},
-		"9815": {
+		"9904": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.deleted_at"
 		},
-		"9816": {
+		"9905": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.onInit"
 		},
-		"9817": {
+		"9906": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-collection.ts",
 			"qualifiedName": "ProductCollection.onInit"
 		},
-		"9818": {
+		"9907": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag"
 		},
-		"9821": {
+		"9910": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.id"
 		},
-		"9822": {
+		"9911": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.value"
 		},
-		"9823": {
+		"9912": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.metadata"
 		},
-		"9824": {
+		"9913": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.created_at"
 		},
-		"9825": {
+		"9914": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.updated_at"
 		},
-		"9826": {
+		"9915": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.deleted_at"
 		},
-		"9827": {
+		"9916": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.products"
 		},
-		"9828": {
+		"9917": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.onInit"
 		},
-		"9829": {
+		"9918": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-tag.ts",
 			"qualifiedName": "ProductTag.onInit"
 		},
-		"9830": {
+		"9919": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType"
 		},
-		"9833": {
+		"9922": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.id"
 		},
-		"9834": {
+		"9923": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.value"
 		},
-		"9835": {
+		"9924": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.metadata"
 		},
-		"9836": {
+		"9925": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.created_at"
 		},
-		"9837": {
+		"9926": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.updated_at"
 		},
-		"9838": {
+		"9927": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.deleted_at"
 		},
-		"9839": {
+		"9928": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.onInit"
 		},
-		"9840": {
+		"9929": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-type.ts",
 			"qualifiedName": "ProductType.onInit"
 		},
-		"9841": {
+		"9930": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant"
 		},
-		"9844": {
+		"9933": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.id"
 		},
-		"9845": {
+		"9934": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.title"
 		},
-		"9846": {
+		"9935": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.sku"
 		},
-		"9847": {
+		"9936": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.barcode"
 		},
-		"9848": {
+		"9937": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.ean"
 		},
-		"9849": {
+		"9938": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.upc"
 		},
-		"9850": {
+		"9939": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.allow_backorder"
 		},
-		"9851": {
+		"9940": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.manage_inventory"
 		},
-		"9852": {
+		"9941": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.hs_code"
 		},
-		"9853": {
+		"9942": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.origin_country"
 		},
-		"9854": {
+		"9943": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.mid_code"
 		},
-		"9855": {
+		"9944": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.material"
 		},
-		"9856": {
+		"9945": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.weight"
 		},
-		"9857": {
+		"9946": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.length"
 		},
-		"9858": {
+		"9947": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.height"
 		},
-		"9859": {
+		"9948": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.width"
 		},
-		"9860": {
+		"9949": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.metadata"
 		},
-		"9861": {
+		"9950": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.variant_rank"
 		},
-		"9862": {
+		"9951": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.product_id"
 		},
-		"9863": {
+		"9952": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.product"
 		},
-		"9864": {
+		"9953": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.options"
 		},
-		"9865": {
+		"9954": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.created_at"
 		},
-		"9866": {
+		"9955": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.updated_at"
 		},
-		"9867": {
+		"9956": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.deleted_at"
 		},
-		"9868": {
+		"9957": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.onInit"
 		},
-		"9869": {
+		"9958": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-variant.ts",
 			"qualifiedName": "ProductVariant.onInit"
 		},
-		"9870": {
+		"9959": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption"
 		},
-		"9873": {
+		"9962": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.id"
 		},
-		"9874": {
+		"9963": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.title"
 		},
-		"9875": {
+		"9964": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.product_id"
 		},
-		"9876": {
+		"9965": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.product"
 		},
-		"9877": {
+		"9966": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.values"
 		},
-		"9878": {
+		"9967": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.metadata"
 		},
-		"9879": {
+		"9968": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.created_at"
 		},
-		"9880": {
+		"9969": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.updated_at"
 		},
-		"9881": {
+		"9970": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.deleted_at"
 		},
-		"9882": {
+		"9971": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.onInit"
 		},
-		"9883": {
+		"9972": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option.ts",
 			"qualifiedName": "ProductOption.onInit"
 		},
-		"9884": {
+		"9973": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue"
 		},
-		"9887": {
+		"9976": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.id"
 		},
-		"9888": {
+		"9977": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.value"
 		},
-		"9889": {
+		"9978": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.option_id"
 		},
-		"9890": {
+		"9979": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.option"
 		},
-		"9891": {
+		"9980": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.variants"
 		},
-		"9892": {
+		"9981": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.metadata"
 		},
-		"9893": {
+		"9982": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.created_at"
 		},
-		"9894": {
+		"9983": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.updated_at"
 		},
-		"9895": {
+		"9984": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.deleted_at"
 		},
-		"9896": {
+		"9985": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.onInit"
 		},
-		"9897": {
+		"9986": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-option-value.ts",
 			"qualifiedName": "ProductOptionValue.onInit"
 		},
-		"9898": {
+		"9987": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage"
 		},
-		"9901": {
+		"9990": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.id"
 		},
-		"9902": {
+		"9991": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.url"
 		},
-		"9903": {
+		"9992": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.metadata"
 		},
-		"9904": {
+		"9993": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.created_at"
 		},
-		"9905": {
+		"9994": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.updated_at"
 		},
-		"9906": {
+		"9995": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.deleted_at"
 		},
-		"9907": {
+		"9996": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.products"
 		},
-		"9908": {
+		"9997": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.onInit"
 		},
-		"9909": {
+		"9998": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.onInit"
 		},
-		"9910": {
+		"9999": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.onCreate"
 		},
-		"9911": {
+		"10000": {
 			"sourceFileName": "../../../../packages/modules/product/src/models/product-image.ts",
 			"qualifiedName": "ProductImage.onCreate"
 		}
@@ -3766,7 +3766,7 @@
 			"1": "../../../../packages/modules/product/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 9745
+			"1": 9834
 		}
 	}
 }

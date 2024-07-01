@@ -1,16 +1,16 @@
 import * as zod from "zod"
 
-import { Button, Text, toast } from "@medusajs/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { AdminInventoryItem, AdminStockLocation } from "@medusajs/types"
+import { Button, Text, toast } from "@medusajs/ui"
+import { useFieldArray, useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
-import { useFieldArray, useForm } from "react-hook-form"
 
 import { LocationItem } from "./location-item"
 import { useEffect, useMemo } from "react"

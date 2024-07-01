@@ -9,7 +9,7 @@ import { InlineTip } from "../../../../../components/common/inline-tip"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 
 type EditServiceZoneFormProps = {

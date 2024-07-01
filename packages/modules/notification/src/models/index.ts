@@ -1,3 +1,2 @@
-export { default as Notification } from "./notification"
-export { default as NotificationProvider } from "./notification-provider"
-
+export { Notification } from "./notification"
+export { NotificationProvider } from "./notification-provider"

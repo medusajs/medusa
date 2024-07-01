@@ -7,7 +7,7 @@ import { useState } from "react"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProductCategory } from "../../../../../hooks/api/categories"
 import { CreateCategoryDetails } from "./create-category-details"
 import { CreateCategoryNesting } from "./create-category-nesting"

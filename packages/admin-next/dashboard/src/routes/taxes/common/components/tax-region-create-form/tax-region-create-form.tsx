@@ -8,9 +8,9 @@ import { TaxRegionResponse } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-    RouteFocusModal,
-    useRouteModal,
-} from "../../../../../components/route-modal"
+  RouteFocusModal,
+  useRouteModal,
+} from "../../../../../components/modals"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
 import { countries } from "../../../../../lib/countries"
 

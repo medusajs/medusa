@@ -5,7 +5,7 @@ import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import { toast } from "@medusajs/ui"
 import { t } from "i18next"
-import { RouteFocusModal } from "../../../../../components/route-modal"
+import { RouteFocusModal } from "../../../../../components/modals"
 import {
   categoriesQueryKeys,
   useProductCategories,

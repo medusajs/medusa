@@ -14,7 +14,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal/index.ts"
+} from "../../../../../components/modals/index.ts"
 import { DataTable } from "../../../../../components/table/data-table/data-table.tsx"
 import { useUpdateCollectionProducts } from "../../../../../hooks/api/collections.tsx"
 import { useProducts } from "../../../../../hooks/api/products.tsx"

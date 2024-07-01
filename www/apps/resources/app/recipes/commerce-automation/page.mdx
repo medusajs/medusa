@@ -411,7 +411,7 @@ The [Events reference](../../events-reference/page.mdx) shows an extensive list 
 
 </Note> */}
 
-Medusa also provides Notification Provider Modules that integrate with third-party services, such as SendGrid.
+Medusa also provides Notification Module Providers that integrate with third-party services, such as SendGrid.
 
 <CardList items={[
   {
@@ -957,7 +957,7 @@ export const newsletterHighlights = [
   2. Retrieve products created since the last time a newsletter is sent. The last send date is stored in the store's `metadata` property.
   3. If the count of last created products is less than 10, stop execution.
   4. Retrieve all customers. Here, it's assumed that all customers are considered subscribed for simplicity.
-  5. Use the Notification Module to send a notification to the customer. This uses the Notification Provider Module configured for the `email` channel.
+  5. Use the Notification Module to send a notification to the customer. This uses the Notification Module Provider configured for the `email` channel.
   6. Update the store's `last_newsletter_send_date` with the current date.
 
 </Details>

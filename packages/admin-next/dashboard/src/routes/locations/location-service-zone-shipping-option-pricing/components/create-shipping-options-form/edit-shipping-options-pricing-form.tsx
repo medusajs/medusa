@@ -11,7 +11,7 @@ import { DataGridRoot } from "../../../../../components/data-grid/data-grid-root
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal/index"
+} from "../../../../../components/modals/index"
 import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateShippingOptions } from "../../../../../hooks/api/shipping-options"
 import { useStore } from "../../../../../hooks/api/store"

@@ -1,4 +1,4 @@
-import { CreateRuleTypeDTO, FulfillmentWorkflow } from "@medusajs/types"
+import { FulfillmentWorkflow } from "@medusajs/types"
 import {
   createWorkflow,
   transform,
@@ -9,7 +9,6 @@ import {
   upsertShippingOptionsStep,
 } from "../steps"
 import { setShippingOptionsPriceSetsStep } from "../steps/set-shipping-options-price-sets"
-import { createPricingRuleTypesStep } from "../../pricing"
 
 export const createShippingOptionsWorkflowId =
   "create-shipping-options-workflow"
@@ -45,18 +44,8 @@ export const createShippingOptionsWorkflow = createWorkflow(
         shippingOptionsIndexToPrices: data.shippingOptionsIndexToPrices,
       },
       (data) => {
-        const ruleTypes = new Set<CreateRuleTypeDTO>()
         const shippingOptionsPrices = data.shippingOptionsIndexToPrices.map(
           ({ shipping_option_index, prices }) => {
-            prices.forEach((price) => {
-              if ("region_id" in price) {
-                ruleTypes.add({
-                  name: "region_id",
-                  rule_attribute: "region_id",
-                })
-              }
-            })
-
             return {
               id: data.shippingOptions[shipping_option_index].id,
               prices,
@@ -66,12 +55,9 @@ export const createShippingOptionsWorkflow = createWorkflow(
 
         return {
           shippingOptionsPrices,
-          ruleTypes: Array.from(ruleTypes) as CreateRuleTypeDTO[],
         }
       }
     )
-
-    createPricingRuleTypesStep(normalizedShippingOptionsPrices.ruleTypes)
 
     const shippingOptionsPriceSetsLinkData = createShippingOptionsPriceSetsStep(
       normalizedShippingOptionsPrices.shippingOptionsPrices

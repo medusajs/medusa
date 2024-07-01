@@ -25,7 +25,7 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCreateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
