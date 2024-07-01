@@ -29,7 +29,7 @@ import { DeprecatedPercentageInput } from "../../../../../components/inputs/perc
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCampaigns } from "../../../../../hooks/api/campaigns"
 import { useCreatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"

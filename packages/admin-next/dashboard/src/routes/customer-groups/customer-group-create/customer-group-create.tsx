@@ -1,4 +1,4 @@
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { CreateCustomerGroupForm } from "./components/create-customer-group-form"
 
 export const CustomerGroupCreate = () => {

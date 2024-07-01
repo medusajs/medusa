@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/boolean
+sidebar_label: boolean
+---
+
+import { TypeList } from "docs-ui"
+
+# boolean Property Method - API Reference
+
+This method defines a boolean property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  hasAccount: model.boolean(),
+  // ...
+})
+
+export default MyCustom
+```

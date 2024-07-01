@@ -44,7 +44,6 @@
  *   metadata:
  *     type: object
  *     description: The cart's metadata.
- *     properties: {}
  * 
 */
 

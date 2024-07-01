@@ -1,16 +1,16 @@
-import * as zod from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import * as zod from "zod"
 
+import { HttpTypes, InventoryLevelDTO, StockLocationDTO } from "@medusajs/types"
 import { Button, Input, Text, toast } from "@medusajs/ui"
-import { InventoryLevelDTO, StockLocationDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 
-import { Form } from "../../../../../../components/common/form"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
+import { Form } from "../../../../../../components/common/form"
 import { useUpdateInventoryLevel } from "../../../../../../hooks/api/inventory"
 
 type AdjustInventoryFormProps = {

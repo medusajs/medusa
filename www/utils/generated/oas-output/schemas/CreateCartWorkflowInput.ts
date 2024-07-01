@@ -48,7 +48,6 @@
  *   metadata:
  *     type: object
  *     description: The cart's metadata.
- *     properties: {}
  *   items:
  *     type: array
  *     description: The cart's items.

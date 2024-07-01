@@ -7,11 +7,13 @@ module.exports = {
     "^@utils": "<rootDir>/src/utils",
   },
   transform: {
-    "^.+\\.[jt]s?$": [
-      "ts-jest",
+    "^.+\\.[jt]s$": [
+      "@swc/jest",
       {
-        tsconfig: "tsconfig.spec.json",
-        isolatedModules: true,
+        jsc: {
+          parser: { syntax: "typescript", decorators: true },
+          transform: { decoratorMetadata: true },
+        },
       },
     ],
   },

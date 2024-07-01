@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IApiKeyModuleService } from "@medusajs/types"
-import { ApiKeyType } from "@medusajs/utils"
+import { ApiKeyType, Modules } from "@medusajs/utils"
 import crypto from "crypto"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {

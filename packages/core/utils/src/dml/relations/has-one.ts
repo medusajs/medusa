@@ -1,6 +1,5 @@
 import { BaseRelationship } from "./base"
 import { NullableModifier } from "./nullable"
-import { RelationshipTypes } from "../types"
 
 /**
  * HasOne relationship defines a relationship between two entities
@@ -14,6 +13,10 @@ import { RelationshipTypes } from "../types"
  */
 export class HasOne<T> extends BaseRelationship<T> {
   type = "hasOne" as const
+
+  static isHasOne<T>(relationship: any): relationship is HasOne<T> {
+    return relationship?.type === "hasOne"
+  }
 
   /**
    * Apply nullable modifier on the schema

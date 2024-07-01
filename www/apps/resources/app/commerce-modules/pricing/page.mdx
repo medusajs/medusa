@@ -17,7 +17,7 @@ With the Pricing Module, store the prices of a resource and manage them through 
 Prices are grouped in a price set, allowing you to add more than one price for a resource based on different conditions, such as currency code.
 
 ```ts
-const priceSet = await pricingModuleService.create({
+const priceSet = await pricingModuleService.createPriceSets({
   rules: [],
   prices: [
    {
@@ -124,7 +124,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
     res.json({
-      price_sets: await pricingModuleService.list(),
+      price_sets: await pricingModuleService.listPriceSets(),
     })
   }
   ```
@@ -143,7 +143,7 @@ For example:
     const pricingModuleService: IPricingModuleService =
       container.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
   }
   ```
 
@@ -161,7 +161,7 @@ For example:
     const pricingModuleService: IPricingModuleService =
       container.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
   })
   ```
 

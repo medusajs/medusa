@@ -23,7 +23,6 @@ type CodeBlockLineProps = {
   showLineNumber: boolean
   lineNumberColorClassName: string
   lineNumberBgClassName: string
-  noLineNumbers?: boolean
 } & Pick<RenderProps, "getLineProps" | "getTokenProps">
 
 export const CodeBlockLine = ({

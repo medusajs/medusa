@@ -1,0 +1,36 @@
+---
+slug: /references/data-model/relationship-methods/hasone
+sidebar_label: hasOne
+---
+
+import { TypeList } from "docs-ui"
+
+# hasOne Relationship Method - API Reference
+
+This method defines a relationship between two data models,
+where the owner of the relationship has one record of the related
+data model.
+
+For example: A user "hasOne" email.
+
+Use the [belongsTo](../dml.Relationship_Methods.belongsTo/page.mdx) method to define the inverse of this relationship in 
+the other data model.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const User = model.define("user", {
+  id: model.id(),
+  email: model.hasOne(() => Email),
+})
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"The type of the entity builder passed as a first parameter. By default, it's\na function returning the related model.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="hasOne"/>
+
+## Parameters
+
+<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined\nin the other data model. This is only required\nby the `belongsTo` relationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="hasOne"/>

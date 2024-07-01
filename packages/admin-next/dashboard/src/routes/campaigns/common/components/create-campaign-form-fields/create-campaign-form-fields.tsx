@@ -248,10 +248,13 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
 
                       <Select.Content>
                         {Object.values(currencies)
-                          .filter((currency) =>
-                            store?.supported_currency_codes?.includes(
-                              currency.code.toLocaleLowerCase()
-                            )
+                          .filter(
+                            (currency) =>
+                              !!store?.supported_currencies?.find(
+                                (c) =>
+                                  c.currency_code ===
+                                  currency.code.toLocaleLowerCase()
+                              )
                           )
                           .map((currency) => (
                             <Select.Item

@@ -115,7 +115,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_token_generated,
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
         source: this.constructor.name,
         action: "token_generated",
         object: "invite",
@@ -198,7 +198,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       users.map((user) => ({
-        eventName: UserEvents.created,
+        eventName: UserEvents.USER_CREATED,
         source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "user",
@@ -238,7 +238,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       updatedUsers.map((user) => ({
-        eventName: UserEvents.updated,
+        eventName: UserEvents.USER_UPDATED,
         source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "user",
@@ -278,7 +278,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_created,
+        eventName: UserEvents.INVITE_CREATED,
         source: this.constructor.name,
         action: CommonEvents.CREATED,
         object: "invite",
@@ -289,7 +289,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       invites.map((invite) => ({
-        eventName: UserEvents.invite_token_generated,
+        eventName: UserEvents.INVITE_TOKEN_GENERATED,
         source: this.constructor.name,
         action: "token_generated",
         object: "invite",
@@ -360,7 +360,7 @@ export default class UserModuleService
 
     sharedContext.messageAggregator?.saveRawMessageData(
       serializedInvites.map((invite) => ({
-        eventName: UserEvents.invite_updated,
+        eventName: UserEvents.INVITE_UPDATED,
         source: this.constructor.name,
         action: CommonEvents.UPDATED,
         object: "invite",

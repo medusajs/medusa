@@ -1,5 +1,10 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  Searchable,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
@@ -11,7 +16,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
-  Unique,
+  Rel,
 } from "@mikro-orm/core"
 import CampaignBudget from "./campaign-budget"
 import Promotion from "./promotion"
@@ -23,7 +28,15 @@ type OptionalFields =
   | "ends_at"
   | DAL.SoftDeletableEntityDateColumns
 
-@Entity({ tableName: "promotion_campaign" })
+const tableName = "promotion_campaign"
+const CampaignUniqueCampaignIdentifier = createPsqlIndexStatementHelper({
+  tableName,
+  columns: ["campaign_identifier"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
+
+@Entity({ tableName })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Campaign {
   [OptionalProps]?: OptionalFields | OptionalRelations
@@ -40,10 +53,7 @@ export default class Campaign {
   description: string | null = null
 
   @Property({ columnType: "text" })
-  @Unique({
-    name: "IDX_campaign_identifier_unique",
-    properties: ["campaign_identifier"],
-  })
+  @CampaignUniqueCampaignIdentifier.MikroORMIndex()
   campaign_identifier: string
 
   @Property({
@@ -64,10 +74,10 @@ export default class Campaign {
     cascade: ["soft-remove"] as any,
     nullable: true,
   })
-  budget: CampaignBudget | null = null
+  budget: Rel<CampaignBudget> | null = null
 
   @OneToMany(() => Promotion, (promotion) => promotion.campaign)
-  promotions = new Collection<Promotion>(this)
+  promotions = new Collection<Rel<Promotion>>(this)
 
   @Property({
     onCreate: () => new Date(),

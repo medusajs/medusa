@@ -15,7 +15,7 @@ You use the Medusa container to resolve resources, such as services.
 For example, in a custom API route you can resolve any service registered in the Medusa application using the `scope.resolve` method of the `MedusaRequest` parameter:
 
 export const highlights = [
-  ["13", "resolve", "Resolve the `IProductModuleService`"],
+  ["13", "resolve", "Resolve the Product Module's main service."],
   ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
 ]
 
@@ -41,5 +41,3 @@ export const GET = async (
   })
 }
 ```
-
-You resolve the `IProductModuleService` and uses it to return the full count of products in the Medusa application.

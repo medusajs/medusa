@@ -5,15 +5,15 @@ import {
   generateEntityId,
 } from "@medusajs/utils"
 import {
-  Cascade,
+  BeforeCreate,
   Entity,
+  Filter,
   ManyToOne,
+  OnInit,
+  OptionalProps,
   PrimaryKey,
   Property,
-  Filter,
-  OptionalProps,
-  BeforeCreate,
-  OnInit,
+  Rel,
 } from "@mikro-orm/core"
 import TaxRate from "./tax-rate"
 
@@ -73,7 +73,7 @@ export default class TaxRateRule {
   reference: string
 
   @ManyToOne(() => TaxRate, { persist: false })
-  tax_rate: TaxRate
+  tax_rate: Rel<TaxRate>
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

@@ -1,14 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
-import { SalesChannelDTO, HttpTypes } from "@medusajs/types"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateProduct } from "../../../../../hooks/api/products"
+import { useRegions } from "../../../../../hooks/api/regions"
+import { sdk } from "../../../../../lib/client"
+import { isFetchError } from "../../../../../lib/is-fetch-error"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
   ProductCreateSchema,
@@ -16,11 +19,9 @@ import {
 import { ProductCreateSchemaType } from "../../types"
 import { normalizeProductFormValues } from "../../utils"
 import { ProductCreateDetailsForm } from "../product-create-details-form"
-import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateInventoryKitForm } from "../product-create-inventory-kit-form"
+import { ProductCreateOrganizeForm } from "../product-create-organize-form"
 import { ProductCreateVariantsForm } from "../product-create-variants-form"
-import { isFetchError } from "../../../../../lib/is-fetch-error"
-import { sdk } from "../../../../../lib/client"
 
 enum Tab {
   DETAILS = "details",
@@ -62,10 +63,22 @@ export const ProductCreateForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
+  const { regions } = useRegions({ limit: 9999 })
+
+  const regionsCurrencyMap = useMemo(() => {
+    if (!regions?.length) {
+      return {}
+    }
+
+    return regions.reduce((acc, reg) => {
+      acc[reg.id] = reg.currency_code
+      return acc
+    }, {})
+  }, regions)
 
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
-   * which is suboptimal when rereners are caused by bulk editor changes
+   * which is suboptimal when rerenders are caused by bulk editor changes
    */
 
   const watchedVariants = useWatch({
@@ -123,10 +136,10 @@ export const ProductCreateForm = ({
 
         const { product } = await mutateAsync(
           normalizeProductFormValues({
-            // TODO: workflow should handle inventory creation
             ...payload,
             media: uploadedMedia,
             status: (isDraftSubmission ? "draft" : "published") as any,
+            regionsCurrencyMap,
           })
         )
 

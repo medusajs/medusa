@@ -6,11 +6,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about what the service factory is and how to use it to create a service.
+In this chapter, you’ll learn about what the service factory is and how to use it.
 
 ## What is the Service Factory?
 
-Medusa provides a service factory that your module’s main service can extend. The service factory implements data management methods for your data models.
+Medusa provides a service factory that your module’s main service can extend.
+
+The service factory generates data management methods for your data models, so you don't have to implement them manually.
 
 <Note title="Use the service factory when" type="success">
 
@@ -22,34 +24,41 @@ Medusa provides a service factory that your module’s main service can extend. 
 
 ## How to Extend the Service Factory?
 
-Medusa provides the service factory as a function your service extends. The function creates and returns a service class with generated data-management methods.
+Medusa provides the service factory as a `MedusaService` function your service extends. The function creates and returns a service class with generated data-management methods.
 
 For example, create the file `src/modules/hello/service.ts` with the following content:
 
-```ts title="src/modules/hello/service.ts"
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { MyCustom } from "./models/my-custom"
+export const highlights = [
+  ["4", "MedusaService", "The service factory function."],
+  ["5", "MyCustom", "The data models to generate data-management methods for."]
+]
 
-class HelloModuleService extends ModulesSdkUtils
-  .abstractModuleServiceFactory(
-    MyCustom, []
-  ) {
-    // TODO implement custom methods
-  }
+```ts title="src/modules/hello/service.ts" highlights={highlights}
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
+
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  // TODO implement custom methods
+}
 
 export default HelloModuleService
 ```
 
-### abstractModuleServiceFactory Parameters
+### MedusaService Parameters
 
-The `abstractModuleServiceFactory` function accepts two parameters:
+The `MedusaService` function accepts one parameter, which is an object of data models to generate data-management methods for.
 
-1. The first parameter is the main data model this service is creating methods for. For example, `MyCustom`.
-2. The second parameter is an array of data models to generate methods for. If you have an `AnotherCustom` data model, this is where you add it.
+In the example above, the `HelloModuleService` now has methods to manage the `MyCustom` data model, such as `createMyCustoms`.
 
 ### Generated Methods
 
-The service factory generates the following methods for the main data model:
+The service factory generates data-management methods for each of the data models provided in the first parameter.
+
+The method's names are the operation's name, suffixed by the data model's name.
+
+For example, the following methods are generated for the code snippet above:
 
 <Table>
   <Table.Header>
@@ -62,7 +71,7 @@ The service factory generates the following methods for the main data model:
     <Table.Row>
       <Table.Cell>
       
-      `list`
+      `listMyCustoms`
 
       </Table.Cell>
       <Table.Cell>
@@ -74,7 +83,7 @@ The service factory generates the following methods for the main data model:
     <Table.Row>
       <Table.Cell>
       
-      `listAndCount`
+      `listAndCountMyCustoms`
 
       </Table.Cell>
       <Table.Cell>
@@ -86,7 +95,7 @@ The service factory generates the following methods for the main data model:
     <Table.Row>
       <Table.Cell>
       
-      `retrieve`
+      `retrieveMyCustom`
 
       </Table.Cell>
       <Table.Cell>
@@ -98,7 +107,31 @@ The service factory generates the following methods for the main data model:
     <Table.Row>
       <Table.Cell>
       
-      `delete`
+      `createMyCustoms`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Create and retrieve records of the data model.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `updateMyCustoms`
+
+      </Table.Cell>
+      <Table.Cell>
+      
+      Update and retrieve records of the data model.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `deleteMyCustoms`
 
       </Table.Cell>
       <Table.Cell>
@@ -110,77 +143,53 @@ The service factory generates the following methods for the main data model:
     <Table.Row>
       <Table.Cell>
       
-      `softDelete`
+      `softDeleteMyCustoms`
 
       </Table.Cell>
       <Table.Cell>
       
-      Soft-deletes a record by an ID or filter. This only applies if the data model has a `deleted_at` field.
+      Soft-deletes records using an array of IDs or an object of filters.
 
       </Table.Cell>
     </Table.Row>
     <Table.Row>
       <Table.Cell>
       
-      `restore`
+      `restoreMyCustoms`
 
       </Table.Cell>
       <Table.Cell>
       
-      Restores a soft-deleted record by an ID or filter. This only applies if the data model has a `deleted_at` field.
+      Restores soft-deleted records using an array of IDs or an object of filters.
 
       </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
 
-The same methods are generated for data models passed in the second parameter of the service factory. The methods' names end with the data model's name. For example, `listAnotherCustom`.
+<Note>
 
-### Type Arguments
+Except for the `retrieve` method, the suffixed data model's name is plural.
 
-For a better development experience and accurate typing of the generated methods, the `abstractModuleServiceFactory` function accepts three type arguments:
+</Note>
 
-export const typeArgsHighlights = [
-  ["25", "InjectedDependencies", "The type of dependencies resolved from the Module's container."],
-  ["26", "MyCustomDTO", "The expected input/output type of the main data model's generated methods."],
-  ["27", "AllModelsDTO", "The expected input/output type of the generated methods of every data model."],
-]
+### Using a Constructor
 
-```ts title="src/modules/hello/service.ts" highlights={typeArgsHighlights} collapsibleLines="1-22" expandButtonLabel="Show More"
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { MyCustom } from "./models/my-custom"
+If you implement the `constructor` of your service, make sure to call `super` passing it `...arguments`.
 
-// recommended to define type in another file
-type MyCustomDTO = {
-  id: string
-  name: string
-}
+For example:
 
-type InjectedDependencies = {
-  // TODO add dependencies
-}
+```ts highlights={[["8"]]}
+import { MedusaService } from "@medusajs/utils"
+import MyCustom from "./models/my-custom"
 
-type AllModelsDTO = {
-  MyCustom: {
-    dto: MyCustomDTO
+class HelloModuleService extends MedusaService({
+  MyCustom,
+}){
+  constructor() {
+    super(...arguments)
   }
 }
-
-// add other data models in your module here.
-const generateMethodsFor = []
-
-class HelloModuleService extends ModulesSdkUtils
-  .abstractModuleServiceFactory<
-    InjectedDependencies,
-    MyCustomDTO,
-    AllModelsDTO
-  >(MyCustom, generateMethodsFor) {
-    // TODO implement custom methods
-  }
 
 export default HelloModuleService
 ```
-
-1. The first one is the type of the dependencies to resolve from the module's container.
-2. The second one is the expected input and output type of the main data model’s methods.
-3. The third type is the expected input and output type of all data models that the service factory generates methods for.

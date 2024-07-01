@@ -13,10 +13,9 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Price from "./price"
-import PriceSet from "./price-set"
-import RuleType from "./rule-type"
 
 type OptionalFields = DAL.SoftDeletableEntityDateColumns
 
@@ -27,21 +26,9 @@ const PriceRuleDeletedAtIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
-const PriceRulePriceSetIdIndex = createPsqlIndexStatementHelper({
-  tableName: tableName,
-  columns: "price_set_id",
-  where: "deleted_at IS NULL",
-})
-
-const PriceRuleRuleTypeIdIndex = createPsqlIndexStatementHelper({
-  tableName: tableName,
-  columns: "rule_type_id",
-  where: "deleted_at IS NULL",
-})
-
 const PriceRulePriceIdIndex = createPsqlIndexStatementHelper({
   tableName: tableName,
-  columns: ["price_id", "rule_type_id"],
+  columns: ["price_id", "attribute"],
   where: "deleted_at IS NULL",
   unique: true,
 })
@@ -54,28 +41,8 @@ export default class PriceRule {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
-  @PriceRulePriceSetIdIndex.MikroORMIndex()
-  @ManyToOne(() => PriceSet, {
-    columnType: "text",
-    mapToPk: true,
-    fieldName: "price_set_id",
-    onDelete: "cascade",
-  })
-  price_set_id: string
-
-  @ManyToOne(() => PriceSet, { persist: false })
-  price_set: PriceSet
-
-  @PriceRuleRuleTypeIdIndex.MikroORMIndex()
-  @ManyToOne(() => RuleType, {
-    columnType: "text",
-    mapToPk: true,
-    fieldName: "rule_type_id",
-  })
-  rule_type_id: string
-
-  @ManyToOne(() => RuleType, { persist: false })
-  rule_type: RuleType
+  @Property({ columnType: "text" })
+  attribute: string
 
   @Property({ columnType: "text" })
   value: string
@@ -93,7 +60,7 @@ export default class PriceRule {
   price_id: string
 
   @ManyToOne(() => Price, { persist: false })
-  price: Price
+  price: Rel<Price>
 
   @Property({
     onCreate: () => new Date(),
@@ -117,16 +84,12 @@ export default class PriceRule {
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prule")
-    this.rule_type_id ??= this.rule_type?.id!
-    this.price_set_id ??= this.price_set?.id!
     this.price_id ??= this.price?.id!
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "prule")
-    this.rule_type_id ??= this.rule_type?.id!
-    this.price_set_id ??= this.price_set?.id!
     this.price_id ??= this.price?.id!
   }
 }

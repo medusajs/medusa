@@ -4,8 +4,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
-import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
-import { Modules } from "./definitions"
+import { isObject, Modules, promiseAll, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 import { convertRecordsToLinkDefinition } from "./utils/convert-data-to-link-definition"
 import { linkingErrorMessage } from "./utils/linking-error"
@@ -63,7 +62,7 @@ export class RemoteLink {
       )
     }
 
-    for (const mod of modulesLoaded) {
+    for (const mod of modulesLoaded || []) {
       this.addModule(mod)
     }
   }

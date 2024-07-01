@@ -119,7 +119,7 @@ export const RulesFormField = ({
         {t(`promotions.fields.conditions.${ruleType}.title`)}
       </Heading>
 
-      <Text className="text-ui-fg-subtle txt-small mb-10">
+      <Text className="text-ui-fg-subtle txt-small mb-6">
         {t(`promotions.fields.conditions.${ruleType}.description`)}
       </Text>
 
@@ -296,7 +296,7 @@ export const RulesFormField = ({
         )
       })}
 
-      <div className="mt-8">
+      <div className={!!fields.length ? "mt-6" : ""}>
         <Button
           type="button"
           variant="secondary"
@@ -313,22 +313,24 @@ export const RulesFormField = ({
           {t("promotions.fields.addCondition")}
         </Button>
 
-        <Button
-          type="button"
-          variant="transparent"
-          className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
-          onClick={() => {
-            const indicesToRemove = fields
-              .map((field: any, index) => (field.required ? null : index))
-              .filter((f) => f !== null)
+        {!!fields.length && (
+          <Button
+            type="button"
+            variant="transparent"
+            className="text-ui-fg-muted hover:text-ui-fg-subtle ml-2 inline-block"
+            onClick={() => {
+              const indicesToRemove = fields
+                .map((field: any, index) => (field.required ? null : index))
+                .filter((f) => f !== null)
 
-            setRulesToRemove &&
-              setRulesToRemove(fields.filter((field: any) => !field.required))
-            remove(indicesToRemove)
-          }}
-        >
-          {t("promotions.fields.clearAll")}
-        </Button>
+              setRulesToRemove &&
+                setRulesToRemove(fields.filter((field: any) => !field.required))
+              remove(indicesToRemove)
+            }}
+          >
+            {t("promotions.fields.clearAll")}
+          </Button>
+        )}
       </div>
     </div>
   )

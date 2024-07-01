@@ -14,7 +14,7 @@ import { Button, Checkbox, toast } from "@medusajs/ui"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useUpdateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"

@@ -17,7 +17,7 @@ import { DeprecatedPercentageInput } from "../../../../../components/inputs/perc
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdatePromotion } from "../../../../../hooks/api/promotions"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 

@@ -1,12 +1,11 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { FulfillmentDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, Modules } from "@medusajs/utils"
 import {
-  WorkflowData,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
 } from "@medusajs/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"

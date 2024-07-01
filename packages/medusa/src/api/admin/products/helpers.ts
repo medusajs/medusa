@@ -3,6 +3,7 @@ import {
   BatchMethodResponse,
   HttpTypes,
   MedusaContainer,
+  PriceDTO,
   ProductDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
@@ -25,6 +26,7 @@ export const remapKeysForProduct = (selectFields: string[]) => {
   const productFields = selectFields.filter(
     (fieldName: string) => !isPricing(fieldName)
   )
+
   const pricingFields = selectFields
     .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
@@ -38,6 +40,7 @@ export const remapKeysForVariant = (selectFields: string[]) => {
   const variantFields = selectFields.filter(
     (fieldName: string) => !isPricing(fieldName)
   )
+
   const pricingFields = selectFields
     .filter((fieldName: string) => isPricing(fieldName))
     .map((fieldName: string) =>
@@ -75,12 +78,28 @@ export const remapVariantResponse = (
       variant_id: variant.id,
       created_at: price.created_at,
       updated_at: price.updated_at,
+      rules: buildRules(price),
     })),
   }
 
   delete (resp as any).price_set
+
   // TODO: Remove any once all typings are cleaned up
   return resp as any
+}
+
+export const buildRules = (price: PriceDTO) => {
+  const rules: Record<string, string> = {}
+
+  for (const priceRule of price.price_rules || []) {
+    const ruleAttribute = priceRule.attribute
+
+    if (ruleAttribute) {
+      rules[ruleAttribute] = priceRule.value
+    }
+  }
+
+  return rules
 }
 
 export const refetchVariant = async (

@@ -35,7 +35,7 @@ Each of these actions is represented by the [OrderChangeAction data model](/refe
 
 ### Action Name
 
-The `action` field of the `OrderChangeAction` holds the name of the action to perform. Based on the action, additional details are stored in the `details` object field of the data model.
+The `action` property of the `OrderChangeAction` holds the name of the action to perform. Based on the action, additional details are stored in the `details` object property of the data model.
 
 <Table>
   <Table.Header>
@@ -162,7 +162,7 @@ The `action` field of the `OrderChangeAction` holds the name of the action to pe
       
       Mark as received an item whose return was previously requested, but consider the items damaged.
       
-      This changes the order item’s `return_dismissed_quantity` field rather than its `return_received_quantity` field.
+      This changes the order item’s `return_dismissed_quantity` property rather than its `return_received_quantity` property.
       
       </Table.Cell>
       <Table.Cell>
@@ -223,7 +223,7 @@ The `action` field of the `OrderChangeAction` holds the name of the action to pe
       </Table.Cell>
       <Table.Cell>
       
-      Mark a quantity of an item as shipped. This modifies the shipped_quantity field of an order item.
+      Mark a quantity of an item as shipped. This modifies the `shipped_quantity` property of an order item.
       
       </Table.Cell>
       <Table.Cell>
@@ -243,7 +243,7 @@ The `action` field of the `OrderChangeAction` holds the name of the action to pe
       </Table.Cell>
       <Table.Cell>
       
-      Mark a quantity of an item as fulfilled. This modifies the fulfilled_quantity field of an order item.
+      Mark a quantity of an item as fulfilled. This modifies the `fulfilled_quantity` property of an order item.
       
       </Table.Cell>
       <Table.Cell>
@@ -277,7 +277,7 @@ The `action` field of the `OrderChangeAction` holds the name of the action to pe
 
 ## Order Change Confirmation
 
-The `OrderChange` data model has a `status` field that indicates its current status. By default, it’s pending. At this point, the order change’s actions aren’t applied to the order yet.
+The `OrderChange` data model has a `status` property that indicates its current status. By default, it’s pending. At this point, the order change’s actions aren’t applied to the order yet.
 
 To apply these changes to the order, you confirm the order change. When the order change is confirmed:
 

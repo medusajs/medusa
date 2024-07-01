@@ -8,11 +8,10 @@ import {
   createProductVariants,
 } from "../__fixtures__/product"
 
-import { Modules } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductDTO } from "@medusajs/types"
-import { kebabCase, ProductStatus } from "@medusajs/utils"
+import { kebabCase, Modules, ProductStatus } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductService, ProductCategoryService } from "@services"
+import { ProductCategoryService, ProductService } from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   categoriesData,

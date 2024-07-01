@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import Payment from "./payment"
 import PaymentCollection from "./payment-collection"
@@ -60,7 +61,7 @@ export default class PaymentSession {
   @ManyToOne(() => PaymentCollection, {
     persist: false,
   })
-  payment_collection: PaymentCollection
+  payment_collection: Rel<PaymentCollection>
 
   @ManyToOne({
     entity: () => PaymentCollection,
@@ -76,7 +77,7 @@ export default class PaymentSession {
     nullable: true,
     mappedBy: "payment_session",
   })
-  payment?: Payment | null
+  payment?: Rel<Payment> | null
 
   @Property({
     onCreate: () => new Date(),

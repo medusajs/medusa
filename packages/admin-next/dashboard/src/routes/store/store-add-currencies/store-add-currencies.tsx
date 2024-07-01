@@ -1,4 +1,4 @@
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { useStore } from "../../../hooks/api/store"
 import { AddCurrenciesForm } from "./components/add-currencies-form/add-currencies-form"
 

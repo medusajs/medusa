@@ -15,6 +15,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Rel,
 } from "@mikro-orm/core"
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
@@ -92,13 +93,13 @@ export default class LineItem {
   variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
-  requires_shipping = true
+  requires_shipping: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_discountable = true
+  is_discountable: boolean = true
 
   @Property({ columnType: "boolean" })
-  is_tax_inclusive = false
+  is_tax_inclusive: boolean = false
 
   @MikroOrmBigNumberProperty({
     nullable: true,
@@ -119,12 +120,12 @@ export default class LineItem {
   @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  tax_lines = new Collection<LineItemTaxLine>(this)
+  tax_lines = new Collection<Rel<LineItemTaxLine>>(this)
 
   @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
     cascade: [Cascade.PERSIST, "soft-remove" as Cascade],
   })
-  adjustments = new Collection<LineItemAdjustment>(this)
+  adjustments = new Collection<Rel<LineItemAdjustment>>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

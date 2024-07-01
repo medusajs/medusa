@@ -17,8 +17,8 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
   const { t } = useTranslation()
 
   const prices = variant.prices
-    .filter((p) => !p.rules?.length)
-    .sort((p1, p2) => p1.currency_code?.localeCompare(p2.currency_code)) // display just currency prices
+    .filter((p) => !Object.keys(p.rules || {}).length) // display just currency prices
+    .sort((p1, p2) => p1.currency_code?.localeCompare(p2.currency_code))
 
   const [current, setCurrent] = useState(Math.min(prices.length, 3))
 

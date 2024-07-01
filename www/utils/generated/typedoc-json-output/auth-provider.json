@@ -1,196 +1,65 @@
 {
-	"id": 0,
+	"id": 13244,
 	"name": "auth-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 1,
+			"id": 13245,
 			"name": "AbstractAuthModuleProvider",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {
 				"isAbstract": true
 			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the module's options using the second parameter.\n\nIf you're creating a client or establishing a connection with a third-party service, do it in the constructor.\n\nIn the constructor, you must pass to the parent constructor two parameters:\n\n1. The first one is an empty object.\n2. The second is an object having two properties:\n   - "
+					},
+					{
+						"kind": "code",
+						"text": "`provider`"
+					},
+					{
+						"kind": "text",
+						"text": ": The ID of the provider. For example, "
+					},
+					{
+						"kind": "code",
+						"text": "`emailpass`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n   - "
+					},
+					{
+						"kind": "code",
+						"text": "`displayName`"
+					},
+					{
+						"kind": "text",
+						"text": ": The label or displayable name of the provider. For example, "
+					},
+					{
+						"kind": "code",
+						"text": "`Email and Password Authentication`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { AbstractAuthModuleProvider } from \"@medusajs/utils\"\nimport { Logger } from \"@medusajs/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  apiKey: string\n}\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  protected logger_: Logger\n  protected options_: Options\n  // assuming you're initializing a client\n  protected client\n\n  constructor (\n    { logger }: InjectedDependencies,\n    options: Options\n  ) {\n    super(\n      {},\n      {\n        provider: \"my-auth\",\n        displayName: \"My Custom Authentication\"\n      }\n    )\n\n    this.logger_ = logger\n    this.options_ = options\n\n    // assuming you're initializing a client\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n\nexport default MyAuthProviderService\n```"
+					}
+				]
+			},
 			"children": [
 				{
-					"id": 2,
-					"name": "PROVIDER",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isPrivate": true,
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 3,
-					"name": "DISPLAY_NAME",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isPrivate": true,
-						"isStatic": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 12,
-					"name": "container_",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isProtected": true,
-						"isReadonly": true
-					},
-					"type": {
-						"type": "intrinsic",
-						"name": "any"
-					}
-				},
-				{
-					"id": 13,
-					"name": "provider",
-					"variant": "declaration",
-					"kind": 262144,
-					"flags": {
-						"isPublic": true
-					},
-					"getSignature": {
-						"id": 14,
-						"name": "provider",
-						"variant": "signature",
-						"kind": 524288,
-						"flags": {},
-						"type": {
-							"type": "intrinsic",
-							"name": "string"
-						}
-					}
-				},
-				{
-					"id": 15,
-					"name": "displayName",
-					"variant": "declaration",
-					"kind": 262144,
-					"flags": {
-						"isPublic": true
-					},
-					"getSignature": {
-						"id": 16,
-						"name": "displayName",
-						"variant": "signature",
-						"kind": 524288,
-						"flags": {},
-						"type": {
-							"type": "intrinsic",
-							"name": "string"
-						}
-					}
-				},
-				{
-					"id": 4,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {
-						"isProtected": true
-					},
-					"signatures": [
-						{
-							"id": 5,
-							"name": "new AbstractAuthModuleProvider",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"parameters": [
-								{
-									"id": 6,
-									"name": "__namedParameters",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 7,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {}
-										}
-									}
-								},
-								{
-									"id": 8,
-									"name": "config",
-									"variant": "param",
-									"kind": 32768,
-									"flags": {},
-									"type": {
-										"type": "reflection",
-										"declaration": {
-											"id": 9,
-											"name": "__type",
-											"variant": "declaration",
-											"kind": 65536,
-											"flags": {},
-											"children": [
-												{
-													"id": 10,
-													"name": "provider",
-													"variant": "declaration",
-													"kind": 1024,
-													"flags": {},
-													"type": {
-														"type": "intrinsic",
-														"name": "string"
-													}
-												},
-												{
-													"id": 11,
-													"name": "displayName",
-													"variant": "declaration",
-													"kind": 1024,
-													"flags": {},
-													"type": {
-														"type": "intrinsic",
-														"name": "string"
-													}
-												}
-											],
-											"groups": [
-												{
-													"title": "Properties",
-													"children": [
-														10,
-														11
-													]
-												}
-											]
-										}
-									}
-								}
-							],
-							"type": {
-								"type": "reference",
-								"target": 1,
-								"name": "AbstractAuthModuleProvider",
-								"package": "@medusajs/utils"
-							}
-						}
-					]
-				},
-				{
-					"id": 17,
+					"id": 13261,
 					"name": "authenticate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -199,18 +68,66 @@
 					},
 					"signatures": [
 						{
-							"id": 18,
+							"id": 13262,
 							"name": "authenticate",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method authenticates the user.\n\nThe authentication happens either by directly authenticating or returning a redirect URL to continue \nthe authentication with a third party provider."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authentication response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "For example, if your authentication provider doesn't require validating a callback:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  AuthIdentityProviderService, \n  AuthenticationInput, \n  AuthenticationResponse\n} from \"@medusajs/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async authenticate(\n    data: AuthenticationInput, \n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // ...\n    \n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Incorrect credentials\"\n      }\n    }\n\n    // authentication is successful, create an auth identity\n    // if doesn't exist\n    let authIdentity\n\n    try {\n      authIdentity = await authIdentityProviderService.retrieve({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider\n      })\n    } catch (e) {\n      // The auth identity doesn't exist so create it\n      authIdentity = await authIdentityProviderService.create({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider,\n        provider_metadata: {\n          // can include password or any other relevant information\n        }\n      })\n    }\n\n    return {\n      success: true,\n      authIdentity\n    }\n  }\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nIf your authentication provider requires validating callback:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  AuthIdentityProviderService, \n  AuthenticationInput, \n  AuthenticationResponse\n} from \"@medusajs/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async authenticate(\n    data: AuthenticationInput, \n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // ...\n    \n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Incorrect credentials\"\n      }\n    }\n\n    return {\n      success: true,\n      location: \"some-url.com\"\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 19,
+									"id": 13263,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the authentication request."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -222,11 +139,35 @@
 									}
 								},
 								{
-									"id": 20,
+									"id": 13264,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or \ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -272,25 +213,72 @@
 					}
 				},
 				{
-					"id": 21,
+					"id": 13265,
 					"name": "validateCallback",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 22,
+							"id": 13266,
 							"name": "validateCallback",
 							"variant": "signature",
 							"kind": 4096,
 							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method validates the callback of an authentication request.\n\nIn an authentication flow that requires performing an action with a third-party service, such as login\nwith a social account, the "
+									},
+									{
+										"kind": "inline-tag",
+										"tag": "@link",
+										"text": "authenticate",
+										"target": 13261,
+										"tsLinkText": ""
+									},
+									{
+										"kind": "text",
+										"text": " method is called first.\n\nThen, the third-party service redirects to the Medusa application's validate callback API route. \nThat route uses this method to authenticate the user."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The authentication response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nimport { \n  AuthIdentityProviderService, \n  AuthenticationInput, \n  AuthenticationResponse\n} from \"@medusajs/types\"\n// ...\n\nclass MyAuthProviderService extends AbstractAuthModuleProvider {\n  // ...\n  async validateCallback(\n    data: AuthenticationInput, \n    authIdentityProviderService: AuthIdentityProviderService\n  ): Promise<AuthenticationResponse> {\n    const isAuthenticated = false\n    // TODO perform custom logic to authenticate the user\n    // ...\n\n    if (!isAuthenticated) {\n      // if the authentication didn't succeed, return\n      // an object of the following format\n      return {\n        success: false,\n        error: \"Something went wrong\"\n      }\n    }\n\n    // authentication is successful, create an auth identity\n    // if doesn't exist\n    let authIdentity\n\n    try {\n      authIdentity = await authIdentityProviderService.retrieve({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider\n      })\n    } catch (e) {\n      // The auth identity doesn't exist so create it\n      authIdentity = await authIdentityProviderService.create({\n        entity_id: data.body.email, // email or some ID\n        provider: this.provider,\n        provider_metadata: {\n          // can include password or any other relevant information\n        }\n      })\n    }\n\n    return {\n      success: true,\n      authIdentity\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
 							"parameters": [
 								{
-									"id": 23,
+									"id": 13267,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The details of the authentication request."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -302,11 +290,35 @@
 									}
 								},
 								{
-									"id": 24,
+									"id": 13268,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
 									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The service used to retrieve or \ncreate an auth identity. It has two methods: "
+											},
+											{
+												"kind": "code",
+												"text": "`create`"
+											},
+											{
+												"kind": "text",
+												"text": " to create an auth identity,\nand "
+											},
+											{
+												"kind": "code",
+												"text": "`retrieve`"
+											},
+											{
+												"kind": "text",
+												"text": " to retrieve an auth identity. When you authenticate the user, you can create an auth identity\nusing this service."
+											}
+										]
+									},
 									"type": {
 										"type": "reference",
 										"target": {
@@ -354,31 +366,10 @@
 			],
 			"groups": [
 				{
-					"title": "Constructors",
-					"children": [
-						4
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						2,
-						3,
-						12
-					]
-				},
-				{
-					"title": "Accessors",
-					"children": [
-						13,
-						15
-					]
-				},
-				{
 					"title": "Methods",
 					"children": [
-						17,
-						21
+						13261,
+						13265
 					]
 				}
 			],
@@ -399,107 +390,59 @@
 		{
 			"title": "Classes",
 			"children": [
-				1
+				13245
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"0": {
+		"13244": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": ""
 		},
-		"1": {
+		"13245": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider"
 		},
-		"2": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.PROVIDER"
-		},
-		"3": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.DISPLAY_NAME"
-		},
-		"4": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.__constructor"
-		},
-		"5": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider"
-		},
-		"6": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "__0"
-		},
-		"8": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "config"
-		},
-		"9": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "__type"
-		},
-		"10": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "__type.provider"
-		},
-		"11": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "__type.displayName"
-		},
-		"12": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.container_"
-		},
-		"13": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.provider"
-		},
-		"14": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.provider"
-		},
-		"15": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.displayName"
-		},
-		"16": {
-			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
-			"qualifiedName": "AbstractAuthModuleProvider.displayName"
-		},
-		"17": {
+		"13261": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"18": {
+		"13262": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"19": {
+		"13263": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"20": {
+		"13264": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		},
-		"21": {
+		"13265": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"22": {
+		"13266": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"23": {
+		"13267": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"24": {
+		"13268": {
 			"sourceFileName": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts"
+		},
+		"reflections": {
+			"1": 13244
 		}
 	}
 }

@@ -85,7 +85,46 @@
     "clearAll": "Clear all",
     "apply": "Apply",
     "add": "Add",
-    "select": "Select"
+    "select": "Select",
+    "browse": "Browse",
+    "logout": "Logout"
+  },
+  "operators": {
+    "in": "In"
+  },
+  "app": {
+    "search": {
+      "allAreas": "All areas",
+      "navigation": "Navigation",
+      "openResult": "Open result",
+      "placeholder": "Jump to or find anything..."
+    },
+    "keyboardShortcuts": {
+      "pageShortcut": "Jump to",
+      "settingShortcut": "Settings",
+      "commandShortcut": "Commands",
+      "goToOrders": "Go to orders",
+      "goToProducts": "Go to products",
+      "goToCollections": "Go to collections",
+      "goToCategories": "Go to categories",
+      "goToCustomers": "Go to customers",
+      "goToCustomerGroups": "Go to customer groups",
+      "goToInventory": "Go to inventory",
+      "goToReservations": "Go to reservations",
+      "goToPriceLists": "Go to price lists",
+      "goToPromotions": "Go to promotions",
+      "goToCampaigns": "Go to campaigns",
+      "goToStore": "Go to store",
+      "goToUsers": "Go to users",
+      "goToRegions": "Go to regions",
+      "goToTaxRegions": "Go to tax region",
+      "goToSalesChannels": "Go to sales channels",
+      "goToProductTypes": "Go to product types",
+      "goToLocations": "Go to locations",
+      "goToPublishableApiKeys": "Go to publishable API keys",
+      "goToSecretApiKeys": "Go to secret API keys",
+      "goToWorkflows": "Go to workflows"
+    }
   },
   "filters": {
     "date": {
@@ -332,9 +371,16 @@
       "tableItem_other": "{{availableCount}} available at {{locationCount}} locations",
       "inventory": {
         "notManaged": "Not managed",
+        "manageItems": "Manage inventory items",
+        "manageKit": "Manage inventory kit",
+        "navigateToItem": "Go to inventory item",
         "actions": {
           "inventoryItems": "Go to inventory item",
           "inventoryKit": "Show inventory items"
+        },
+        "validation": {
+          "itemId": "Please select inventory item.",
+          "quantity": "Quantity is required. Please input a positive number."
         },
         "header": "Stock & Inventory",
         "editItemDetails": "Edit item details",
@@ -344,8 +390,9 @@
         "allowBackordersHint": "When enabled the variant can be sold even if the inventory level is below zero.",
         "toast": {
           "levelsBatch": "Inventory levels updated.",
-          "update": "Inventory item updated successfully",
-          "updateLevel": "Inventory level updated successfully"
+          "update": "Inventory item updated successfully.",
+          "updateLevel": "Inventory level updated successfully.",
+          "itemsManageSuccess": "Inventory items sucessfully updated."
         }
       }
     },
@@ -481,6 +528,9 @@
       "successToast": "Reservation was successfully created.",
       "updateSuccessToast": "Reservation was successfully updated.",
       "deleteSuccessToast": "Reservation was successfully deleted."
+    },
+    "toast": {
+      "updateLocations": "Locations updated successfully."
     }
   },
   "giftCards": {
@@ -1280,61 +1330,96 @@
     "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
     "totalSpend": "<0>{{amount}}</0> <1>{{currency}}</1>"
   },
-  "pricing": {
-    "domain": "Pricing",
+  "priceLists": {
+    "domain": "Price Lists",
+    "delete": {
+      "confirmation": "You are about to delete the price list {{title}}. This action cannot be undone.",
+      "successToast": "Price list {{title}} was successfully deleted."
+    },
     "create": {
       "header": "Create Price List",
-      "hint": "Create a new price list to manage the prices of your products."
+      "subheader": "Create a new price list to manage the prices of your products.",
+      "tabs": {
+        "details": "Details",
+        "products": "Products",
+        "prices": "Prices"
+      },
+      "successToast": "Price list {{title}} was successfully created."
     },
     "edit": {
-      "header": "Edit Price List"
+      "header": "Edit Price List",
+      "successToast": "Price list {{title}} was successfully updated."
     },
     "configuration": {
       "header": "Configuration",
-      "editHeader": "Edit Price List Configuration"
-    },
-    "warnings": {
-      "delete": "You are about to delete the price list {{name}}. This action cannot be undone."
-    },
-    "status": {
-      "draft": "Draft",
-      "expired": "Expired",
-      "active": "Active",
-      "scheduled": "Scheduled"
-    },
-    "type": {
-      "sale": "Sale",
-      "override": "Override"
+      "edit": {
+        "header": "Edit Price List Configuration",
+        "description": "Edit the configuration of the price list.",
+        "successToast": "Price list configuration was successfully updated."
+      }
     },
     "products": {
-      "deleteProductsPricesWarning": "You are about to delete all prices of {{count}} product(s). This action cannot be undone."
-    },
-    "prices": {
-      "addPrices": "Add prices",
-      "editPrices": "Edit prices"
-    },
-    "table": {
-      "pricesHeader": "Prices"
+      "header": "Products",
+      "actions": {
+        "addProducts": "Add products",
+        "editPrices": "Edit prices"
+      },
+      "delete": {
+        "confirmation_one": "You are about to delete the prices for {{count}} product in the price list. This action cannot be undone.",
+        "confirmation_other": "You are about to delete the prices for {{count}} products in the price list. This action cannot be undone.",
+        "successToast_one": "Successfully deleted prices for {{count}} product.",
+        "successToast_other": "Successfully deleted prices for {{count}} products."
+      },
+      "add": {
+        "successToast": "Prices were successfully added to the price list."
+      },
+      "edit": {
+        "successToast": "Prices were successfully updated."
+      }
     },
     "fields": {
-      "statusTooltip": "Status can also be expired or scheduled depending on the start and end date.",
-      "typeHint": "Choose the type of price you want to create.",
-      "statusHint": "Choose if price should be published to users",
-      "draftTypeHint": "Prices will not be visible to users in a draft state",
-      "activeTypeHint": "Prices are visibile to users in an active state",
-      "saleTypeHint": "Sale prices are temporary price changes for products.",
-      "overrideTypeHint": "Overrides are usually used to create customer-specific prices.",
-      "startDateLabel": "Price list has a start date?",
-      "startDateHint": "Schedule the price list to activate in the future.",
-      "endDateLabel": "Price list has an expiry date?",
-      "endDateHint": "Schedule the price list to deactivate in the future.",
-      "customerAvailabilityLabel": "Customer availability",
-      "customerAvailabilityHint": "Choose which customer groups the price list should be applied to.",
-      "customerAvailabilityNoSelectionLabel": "No customer groups selected",
-      "priceOverridesLabel": "Price overrides"
-    },
-    "actions": {
-      "addCustomerGroups": "Add customer groups"
+      "priceOverrides": {
+        "label": "Price overrides",
+        "header": "Price Overrides"
+      },
+      "status": {
+        "label": "Status",
+        "options": {
+          "active": "Active",
+          "draft": "Draft",
+          "expired": "Expired",
+          "scheduled": "Scheduled"
+        }
+      },
+      "type": {
+        "label": "Type",
+        "hint": "Choose the type of price list you want to create.",
+        "options": {
+          "sale": {
+            "label": "Sale",
+            "description": "Sale prices are temporary price changes for products."
+          },
+          "override": {
+            "label": "Override",
+            "description": "Overrides are usually used to create customer-specific prices."
+          }
+        }
+      },
+      "startsAt": {
+        "label": "Price list has a start date?",
+        "hint": "Schedule the price list to activate in the future."
+      },
+      "endsAt": {
+        "label": "Price list has an expiry date?",
+        "hint": "Schedule the price list to deactivate in the future."
+      },
+      "customerAvailability": {
+        "header": "Choose customer groups",
+        "label": "Customer availability",
+        "hint": "Choose which customer groups the price list should be applied to.",
+        "placeholder": "Search for customer groups",
+        "attribute": "Customer groups"
+      }
     }
   },
   "profile": {
@@ -1414,6 +1499,7 @@
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
+    "automaticTaxesHint": "When enabled taxes will only be calculated at checkout based on the shipping address.",
     "taxInclusiveHint": "When enabled prices in the region will be tax inclusive.",
     "providersHint": " Add which payment providers should be available in this region.",
     "shippingOptions": "Shipping Options",
@@ -1733,6 +1819,7 @@
     "manageInventory": "Manage inventory",
     "inventoryKit": "Inventory kit",
     "inventoryItems": "Inventory items",
+    "inventoryItem": "Inventory item",
     "requiredQuantity": "Required quantity",
     "description": "Description",
     "email": "Email",
@@ -1783,6 +1870,7 @@
     "inventory": "Inventory",
     "optional": "Optional",
     "note": "Note",
+    "automaticTaxes": "Automatic Taxes",
     "taxInclusivePricing": "Tax inclusive pricing",
     "currency": "Currency",
     "address": "Address",

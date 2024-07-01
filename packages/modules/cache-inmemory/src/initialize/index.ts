@@ -2,10 +2,10 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaModule,
-  Modules,
 } from "@medusajs/modules-sdk"
 import { ICacheService } from "@medusajs/types"
 import { InMemoryCacheModuleOptions } from "../types"
+import { Modules } from "@medusajs/utils"
 
 export const initialize = async (
   options?: InMemoryCacheModuleOptions | ExternalModuleDeclaration

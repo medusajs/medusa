@@ -10,7 +10,7 @@ import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 type EditLocationFormProps = {

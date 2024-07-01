@@ -1,0 +1,84 @@
+export const metadata = {
+  title: `${pageNumber} Configure Data Model Properties`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to configure data model properties, such as setting their default value.
+
+## Property’s Default Value
+
+Use the `default` method of the `model` utility to specify the default value of a property.
+
+For example:
+
+export const defaultHighlights = [
+  ["6", "default", "Set the default value to `black`."],
+  ["9", "default", "Set the default value to `0`."]
+]
+
+```ts highlights={defaultHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  color: model
+    .enum(["black", "white"])
+    .default("black"),
+  age: model
+    .number()
+    .default(0),
+  // ...
+})
+
+export default MyCustom
+```
+
+In this example, you set the default value of the `color` enum property to `black`, and that of the `age` number property to `0`.
+
+---
+
+## Nullable Property
+
+Use the `nullable` method to indicate that a property’s value can be `null`.
+
+For example:
+
+export const nullableHighlights = [
+  ["4", "nullable", "Configure the `price` property to allow `null` values."]
+]
+
+```ts highlights={nullableHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  price: model.bigNumber().nullable(),
+  // ...
+})
+
+export default MyCustom
+```
+
+---
+
+## Unique Property
+
+The `unique` method indicates that a property’s value must be unique in the database.
+
+For example:
+
+export const uniqueHighlights = [
+  ["4", "unique", "Configure the `email` property to allow unique values only."]
+]
+
+```ts highlights={uniqueHighlights}
+import { model } from "@medusajs/utils"
+
+const User = model.define("user", {
+  email: model.text().unique(),
+  // ...
+})
+
+export default User
+```
+
+In this example, multiple users can’t have the same email.

@@ -10,7 +10,7 @@ import { DeprecatedPercentageInput } from "../../../../../components/inputs/perc
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
 import { countries } from "../../../../../lib/data/countries"
 

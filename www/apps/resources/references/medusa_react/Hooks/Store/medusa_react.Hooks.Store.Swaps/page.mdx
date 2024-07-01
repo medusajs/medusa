@@ -73,11 +73,11 @@ export default CreateSwap
 
 #### Mutation Function Parameters
 
-<TypeList types={[{"name":"StorePostSwapsReq","type":"[StorePostSwapsReq](../../../../medusa/classes/medusa.StorePostSwapsReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the swap to create.","expandable":false,"children":[{"name":"order_id","type":"`string`","description":"The ID of the Order to create the Swap for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_items","type":"[Item](../../../../medusa/classes/medusa.Item-7/page.mdx)[]","description":"The items to include in the Return.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the order's line item to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity to return.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reason_id","type":"`string`","description":"The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons API Route.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"note","type":"`string`","description":"The note to add to the item being swapped.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"additional_items","type":"[AdditionalItem](../../../../medusa/classes/medusa.AdditionalItem-2/page.mdx)[]","description":"The items to exchange the returned items with.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"variant_id","type":"`string`","description":"The ID of the Product Variant.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the variant.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"return_shipping_option","type":"`string`","description":"The ID of the Shipping Option to create the Shipping Method from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
+<TypeList types={[{"name":"StorePostSwapsReq","type":"`StorePostSwapsReq`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"StoreSwapsRes","type":"[StoreSwapsRes](../../../../medusa/types/medusa.StoreSwapsRes/page.mdx)","optional":false,"defaultValue":"","description":"The swap's details.","expandable":false,"children":[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
+<TypeList types={[{"name":"StoreSwapsRes","type":"`StoreSwapsRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCreateSwap"/>
 
 ___
 
@@ -121,4 +121,4 @@ export default Swap
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"swap","type":"`Swap`","description":"Swap details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartSwap"/>
+<TypeList types={[{"name":"StoreSwapsRes","type":"`StoreSwapsRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartSwap"/>

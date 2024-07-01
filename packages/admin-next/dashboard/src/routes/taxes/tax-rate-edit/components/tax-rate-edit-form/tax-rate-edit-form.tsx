@@ -21,7 +21,7 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { ConditionsDrawer } from "../../../common/components/conditions-drawer"
 import { ConditionEntities, Operators } from "../../../common/constants"

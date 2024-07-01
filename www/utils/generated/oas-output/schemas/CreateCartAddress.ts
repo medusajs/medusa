@@ -47,7 +47,6 @@
  *   metadata:
  *     type: object
  *     description: The billing address's metadata.
- *     properties: {}
  * 
 */
 

@@ -2,7 +2,7 @@ import { TypeList } from "docs-ui"
 
 # ReturnWorkflow
 
- **ReturnWorkflow**: `<TDataOverride, TResultOverride>`(`container?`: [MedusaContainer](../../../medusa/types/medusa.MedusaContainer-2/page.mdx) \| ``{ __joinerConfig: [ModuleJoinerConfig](../../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.ModuleJoinerConfig/page.mdx) ; __definition: [ModuleDefinition](../../../medusa/types/medusa.ModuleDefinition/page.mdx)  }``[]) => Omit&#60;LocalWorkflow, "run" \| "registerStepSuccess" \| "registerStepFailure" \| "cancel"&#62; & ExportedWorkflow&#60;TData, TResult, TDataOverride, TResultOverride&#62; & THooks & `object` & `object`
+ **ReturnWorkflow**: `<TDataOverride, TResultOverride>`(`container?`: [MedusaContainer](../../../medusa/types/medusa.MedusaContainer/page.mdx) \| ``{ __joinerConfig: [ModuleJoinerConfig](../../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.ModuleJoinerConfig/page.mdx) ; __definition: [ModuleDefinition](../../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.ModuleDefinition/page.mdx)  }``[]) => Omit&#60;LocalWorkflow, "run" \| "registerStepSuccess" \| "registerStepFailure" \| "cancel"&#62; & ExportedWorkflow&#60;TData, TResult, TDataOverride, TResultOverride&#62; & THooks & `object`
 
 An exported workflow, which is the type of a workflow constructed by the [createWorkflow](../../functions/workflows.createWorkflow/page.mdx) function. The exported workflow can be invoked to create
 an executable workflow, optionally within a specified container. So, to execute the workflow, you must invoke the exported workflow, then run the

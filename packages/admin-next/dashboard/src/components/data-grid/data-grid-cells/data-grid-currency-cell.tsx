@@ -37,7 +37,7 @@ export const DataGridCurrencyCell = <TData, TValue = any>({
               <CurrencyInput
                 {...field}
                 {...attributes}
-                className="txt-compact-small flex-1 appearance-none bg-transparent text-right outline-none"
+                className="txt-compact-small w-full flex-1 appearance-none bg-transparent text-right outline-none"
                 value={value}
                 onValueChange={(_value, _name, values) =>
                   onChange(values?.value)

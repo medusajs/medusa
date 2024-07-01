@@ -17,7 +17,7 @@ The [ApplicationMethod data model](/references/promotion/models/ApplicationMetho
     <Table.Row>
       <Table.HeaderCell>
       
-      Field
+      Property
       
       </Table.HeaderCell>
       <Table.HeaderCell>
@@ -71,7 +71,7 @@ The [ApplicationMethod data model](/references/promotion/models/ApplicationMetho
 
 When the promotion is applied to a cart item or a shipping method, you can restrict which items/shipping methods the promotion is applied to.
 
-The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` field represents this relation. 
+The `ApplicationMethod` data model has a collection of `PromotionRule` records to restrict which items or shipping methods the promotion applies to. The `target_rules` property represents this relation. 
 
 ![A diagram showcasing the target_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898273/Medusa%20Resources/application-method-target-rules_hqaymz.jpg)
 
@@ -83,7 +83,7 @@ In this example, the promotion is only applied on products in the cart having th
 
 When the promotion’s type is `buyget`, you must specify the “buy X” condition. For example, a cart must have two shirts before the promotion can be applied.
 
-The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` field represents this relation. 
+The application method has a collection of `PromotionRule` items to define the “buy X” rule. The `buy_rules` property represents this relation. 
 
 ![A diagram showcasing the buy_rules relation between the ApplicationMethod and PromotionRule data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709898453/Medusa%20Resources/application-method-buy-rules_djjuhw.jpg)
 

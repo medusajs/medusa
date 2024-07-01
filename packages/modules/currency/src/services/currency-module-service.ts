@@ -11,13 +11,13 @@ import {
   ModulesSdkTypes,
 } from "@medusajs/types"
 
+import { MedusaService } from "@medusajs/utils"
 import { Currency } from "@models"
 import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
-import { MedusaService } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  currencyService: ModulesSdkTypes.IMedusaInternalService<any>
+  currencyService: ModulesSdkTypes.IMedusaInternalService<typeof Currency>
 }
 
 export default class CurrencyModuleService
@@ -27,7 +27,9 @@ export default class CurrencyModuleService
   implements ICurrencyModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly currencyService_: ModulesSdkTypes.IMedusaInternalService<Currency>
+  protected readonly currencyService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Currency
+  >
 
   constructor(
     { baseRepository, currencyService }: InjectedDependencies,

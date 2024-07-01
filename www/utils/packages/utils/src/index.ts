@@ -1,3 +1,4 @@
+export * from "./dml-utils"
 export * from "./get-type-children"
 export * from "./get-project-child"
 export * from "./get-type-str"

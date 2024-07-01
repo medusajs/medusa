@@ -7,6 +7,7 @@ import {
   Converter,
   DeclarationReflection,
   ParameterType,
+  Reflection,
   ReflectionCategory,
   ReflectionKind,
 } from "typedoc"
@@ -31,7 +32,7 @@ export class GenerateNamespacePlugin {
     this.declareOptions()
 
     this.app.converter.on(
-      Converter.EVENT_CREATE_DECLARATION,
+      Converter.EVENT_RESOLVE,
       this.handleCreateDeclarationEvent.bind(this)
     )
     this.app.converter.on(
@@ -145,14 +146,17 @@ export class GenerateNamespacePlugin {
    * create categories in the last namespace if the
    * reflection has a category
    */
-  attachCategories(reflection: DeclarationReflection) {
+  attachCategories(
+    reflection: DeclarationReflection,
+    comments: Comment | undefined
+  ) {
     if (!this.currentNamespaceHeirarchy.length) {
       return
     }
 
     const parentNamespace =
       this.currentNamespaceHeirarchy[this.currentNamespaceHeirarchy.length - 1]
-    reflection.comment?.blockTags
+    comments?.blockTags
       .filter((tag) => tag.tag === "@category")
       .forEach((tag) => {
         const categoryName = tag.content[0].text
@@ -170,10 +174,10 @@ export class GenerateNamespacePlugin {
       })
   }
 
-  handleCreateDeclarationEvent(
-    context: Context,
-    reflection: DeclarationReflection
-  ) {
+  handleCreateDeclarationEvent(context: Context, reflection: Reflection) {
+    if (!(reflection instanceof DeclarationReflection)) {
+      return
+    }
     this.readOptions()
     if (this.options?.parentNamespace && !this.parentNamespace) {
       this.parentNamespace =
@@ -185,7 +189,8 @@ export class GenerateNamespacePlugin {
       this.currentNamespaceHeirarchy.push(this.parentNamespace)
     }
     this.currentContext = context
-    reflection.comment?.blockTags
+    const comments = this.getReflectionComments(reflection)
+    comments?.blockTags
       .filter((tag) => tag.tag === "@customNamespace")
       .forEach((tag) => {
         this.generateNamespaceFromTag({
@@ -202,8 +207,8 @@ export class GenerateNamespacePlugin {
         this.currentContext?.addChild(reflection)
       })
 
-    reflection.comment?.removeTags("@customNamespace")
-    this.attachCategories(reflection)
+    comments?.removeTags("@customNamespace")
+    this.attachCategories(reflection, comments)
     this.currentContext = undefined
     this.currentNamespaceHeirarchy = []
   }
@@ -249,6 +254,20 @@ export class GenerateNamespacePlugin {
     })
 
     this.scannedComments = true
+  }
+
+  getReflectionComments(
+    reflection: DeclarationReflection
+  ): Comment | undefined {
+    if (reflection.comment) {
+      return reflection.comment
+    }
+
+    // try to retrieve comment from signature
+    if (!reflection.signatures?.length) {
+      return
+    }
+    return reflection.signatures.find((signature) => signature.comment)?.comment
   }
 
   // for debugging

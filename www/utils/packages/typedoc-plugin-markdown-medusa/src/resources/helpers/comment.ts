@@ -1,11 +1,9 @@
 import * as fs from "fs"
 import * as Handlebars from "handlebars"
-import * as Path from "path"
 import { CommentDisplayPart } from "typedoc/dist/lib/models/comments/comment"
-import { MarkdownTheme } from "../../theme"
 import { escapeChars } from "utils"
 
-export default function (theme: MarkdownTheme) {
+export default function () {
   Handlebars.registerHelper("comment", function (parts: CommentDisplayPart[]) {
     const result: string[] = []
     for (const part of parts) {
@@ -51,41 +49,8 @@ export default function (theme: MarkdownTheme) {
       }
     }
 
-    return parseMarkdown(result.join(""), theme)
+    return result.join("")
   })
-}
-
-function parseMarkdown(text: string, theme: MarkdownTheme) {
-  const includePattern = /\[\[include:([^\]]+?)\]\]/g
-  const mediaPattern = /media:\/\/([^ ")\]}]+)/g
-
-  if (theme.includes) {
-    text = text.replace(includePattern, (_match, path) => {
-      path = Path.join(theme.includes!, path.trim())
-      if (fs.existsSync(path) && fs.statSync(path).isFile()) {
-        const contents = readFile(path)
-        return contents
-      } else {
-        theme.application.logger.warn("Could not find file to include: " + path)
-        return ""
-      }
-    })
-  }
-
-  if (theme.mediaDirectory) {
-    text = text.replace(mediaPattern, (match: string, path: string) => {
-      const fileName = Path.join(theme.mediaDirectory!, path)
-
-      if (fs.existsSync(fileName) && fs.statSync(fileName).isFile()) {
-        return Handlebars.helpers.relativeURL("media") + "/" + path
-      } else {
-        theme.application.logger.warn("Could not find media file: " + fileName)
-        return match
-      }
-    })
-  }
-
-  return text
 }
 
 /**

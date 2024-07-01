@@ -20,4 +20,19 @@ describe("ManyToMany relationship", () => {
       entity: entityRef,
     })
   })
+
+  test("should identify many to many relationship", () => {
+    const user = {
+      username: new TextProperty(),
+    }
+
+    const entityRef = () => user
+    let relationship = new ManyToMany(entityRef, {})
+
+    expect(ManyToMany.isManyToMany(relationship)).toEqual(true)
+
+    relationship = {} as any
+
+    expect(ManyToMany.isManyToMany(relationship)).toEqual(false)
+  })
 })

@@ -1,5 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(30000)
@@ -355,6 +355,28 @@ moduleIntegrationTestRunner<IRegionModuleService>({
         })
 
         await service.deleteRegions(createdRegion.id)
+
+        const newRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        const resp = await service.retrieveRegion(newRegion.id, {
+          relations: ["countries"],
+        })
+
+        expect(resp.countries).toHaveLength(2)
+      })
+
+      it("should unset the region ID on the country when soft deleting a region", async () => {
+        const createdRegion = await service.createRegions({
+          name: "North America",
+          currency_code: "USD",
+          countries: ["us", "ca"],
+        })
+
+        await service.softDeleteRegions([createdRegion.id])
 
         const newRegion = await service.createRegions({
           name: "North America",

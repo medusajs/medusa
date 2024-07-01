@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
-import { RouteFocusModal } from "../../../components/route-modal"
-import { ProductMediaView } from "./components/product-media-view"
+import { RouteFocusModal } from "../../../components/modals"
 import { useProduct } from "../../../hooks/api/products"
+import { ProductMediaView } from "./components/product-media-view"
 
 export const ProductMedia = () => {
   const { id } = useParams()

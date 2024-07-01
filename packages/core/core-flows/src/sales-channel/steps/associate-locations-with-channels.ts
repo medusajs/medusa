@@ -1,7 +1,6 @@
-import { StepResponse, createStep } from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { Modules } from "@medusajs/modules-sdk"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 
 interface StepInput {
   links: {

@@ -1,5 +1,5 @@
 import { Plus, Trash } from "@medusajs/icons"
-import { CurrencyDTO } from "@medusajs/types"
+import { CurrencyDTO, StoreCurrencyDTO } from "@medusajs/types"
 import {
   Checkbox,
   CommandBar,
@@ -32,19 +32,14 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const {
-    currencies,
-    count,
-    isPending: isLoading,
-    isError,
-    error,
-  } = useCurrencies(
+  const { currencies, count, isPending, isError, error } = useCurrencies(
     {
-      code: store.supported_currency_codes,
+      code: store.supported_currencies?.map((c) => c.currency_code),
       ...searchParams,
     },
     {
       placeholderData: keepPreviousData,
+      enabled: !!store.supported_currencies?.length,
     }
   )
 
@@ -64,8 +59,9 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     pageSize: PAGE_SIZE,
     meta: {
       storeId: store.id,
-      currencyCodes: store.supported_currency_codes,
-      defaultCurrencyCode: store.default_currency_code,
+      supportedCurrencies: store.supported_currencies,
+      defaultCurrencyCode: store.supported_currencies?.find((c) => c.is_default)
+        ?.currency_code,
     },
   })
 
@@ -91,9 +87,10 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
     try {
       await mutateAsync({
-        supported_currency_codes: store.supported_currency_codes.filter(
-          (c) => !ids.includes(c)
-        ),
+        supported_currencies:
+          store.supported_currencies?.filter(
+            (c) => !ids.includes(c.currency_code)
+          ) ?? [],
       })
       setRowSelection({})
 
@@ -138,8 +135,8 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
         table={table}
         pageSize={PAGE_SIZE}
         columns={columns}
-        count={count}
-        isLoading={isLoading}
+        count={!store.supported_currencies?.length ? 0 : count}
+        isLoading={!store.supported_currencies?.length ? false : isPending}
         queryObject={raw}
       />
       <CommandBar open={!!Object.keys(rowSelection).length}>
@@ -164,12 +161,12 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 const CurrencyActions = ({
   storeId,
   currency,
-  currencyCodes,
+  supportedCurrencies,
   defaultCurrencyCode,
 }: {
   storeId: string
   currency: CurrencyDTO
-  currencyCodes: string[]
+  supportedCurrencies: StoreCurrencyDTO[]
   defaultCurrencyCode: string
 }) => {
   const { mutateAsync } = useUpdateStore(storeId)
@@ -195,8 +192,8 @@ const CurrencyActions = ({
 
     try {
       await mutateAsync({
-        supported_currency_codes: currencyCodes.filter(
-          (c) => c !== currency.code
+        supported_currencies: supportedCurrencies.filter(
+          (c) => c.currency_code !== currency.code
         ),
       })
 
@@ -269,9 +266,9 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { currencyCodes, storeId, defaultCurrencyCode } = table.options
-            .meta as {
-            currencyCodes: string[]
+          const { supportedCurrencies, storeId, defaultCurrencyCode } = table
+            .options.meta as {
+            supportedCurrencies: StoreCurrencyDTO[]
             storeId: string
             defaultCurrencyCode: string
           }
@@ -280,7 +277,7 @@ const useColumns = () => {
             <CurrencyActions
               storeId={storeId}
               currency={row.original}
-              currencyCodes={currencyCodes}
+              supportedCurrencies={supportedCurrencies}
               defaultCurrencyCode={defaultCurrencyCode}
             />
           )

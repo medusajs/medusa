@@ -114,6 +114,21 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         ],
       },
     },
+    [Modules.NOTIFICATION]: {
+      resolve: "@medusajs/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/notification-local",
+            options: {
+              config: {
+                local: {},
+              },
+            },
+          },
+        ],
+      },
+    },
     ...config.modules,
   }
 

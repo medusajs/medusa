@@ -1,9 +1,9 @@
 import { Currency } from "@medusajs/medusa"
 import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
+  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
-  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useCurrencies } from "../../../../../hooks/api/currencies"
 import { useUpdateStore } from "../../../../../hooks/api/store"
@@ -78,7 +78,8 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     placeholderData: keepPreviousData,
   })
 
-  const preSelectedRows = store.supported_currency_codes.map((c) => c)
+  const preSelectedRows =
+    store.supported_currencies?.map((c) => c.currency_code) ?? []
 
   const columns = useColumns()
 
@@ -104,9 +105,20 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
       new Set([...data.currencies, ...preSelectedRows])
     ) as string[]
 
+    let defaultCurrency = store.supported_currencies?.find(
+      (c) => c.is_default
+    )?.currency_code
+
+    if (!currencies.includes(defaultCurrency ?? "")) {
+      defaultCurrency = currencies?.[0]
+    }
+
     try {
       await mutateAsync({
-        supported_currency_codes: currencies,
+        supported_currencies: currencies.map((c) => ({
+          currency_code: c,
+          is_default: c === defaultCurrency,
+        })),
       })
       toast.success(t("general.success"), {
         description: t("store.toast.currenciesUpdated"),

@@ -1,4 +1,3 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
@@ -6,7 +5,7 @@ import { Price } from "../../../../src/models"
 import { createPrices } from "../../../__fixtures__/price"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -19,7 +18,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
         testManager = await MikroOrmWrapper.forkManager()
 
         await createPriceSets(testManager)
-        await createRuleTypes(testManager)
         await createPrices(testManager)
         await createPriceRules(testManager)
       })
@@ -57,8 +55,8 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               id: ["price-rule-1"],
             },
             {
-              select: ["id", "price_set.id"],
-              relations: ["price_set"],
+              select: ["id", "price.id"],
+              relations: ["price"],
             }
           )
 
@@ -67,10 +65,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           expect(serialized).toEqual([
             {
               id: "price-rule-1",
-              price_set: {
-                id: "price-set-1",
+              price: {
+                id: "price-set-money-amount-USD",
               },
-              price_set_id: "price-set-1",
+              price_id: "price-set-money-amount-USD",
             },
           ])
         })
@@ -112,8 +110,8 @@ moduleIntegrationTestRunner<IPricingModuleService>({
                   id: ["price-rule-1"],
                 },
                 {
-                  select: ["id", "price_set.id"],
-                  relations: ["price_set"],
+                  select: ["id", "price.id"],
+                  relations: ["price"],
                 }
               )
 
@@ -123,10 +121,10 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             expect(serialized).toEqual([
               {
                 id: "price-rule-1",
-                price_set: {
-                  id: "price-set-1",
+                price: {
+                  id: "price-set-money-amount-USD",
                 },
-                price_set_id: "price-set-1",
+                price_id: "price-set-money-amount-USD",
               },
             ])
           })
@@ -283,7 +281,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             await service.createPriceRules({
               id: "price-rule-new",
               price_set_id: "price-set-1",
-              rule_type_id: "rule-type-1",
+              attribute: "region_id",
               value: "region_1",
               price_list_id: "test",
               price_id: price.id,

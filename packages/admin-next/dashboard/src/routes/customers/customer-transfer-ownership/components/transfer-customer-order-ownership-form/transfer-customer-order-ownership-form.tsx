@@ -8,7 +8,7 @@ import { TransferOwnerShipForm } from "../../../../../components/forms/transfer-
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { TransferOwnershipSchema } from "../../../../../lib/schemas"
 
 type TransferCustomerOrderOwnershipFormProps = {

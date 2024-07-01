@@ -22,6 +22,7 @@ import {
 } from "../common"
 import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
+import { DmlEntity } from "../dml"
 
 type BaseMethods =
   | "retrieve"
@@ -67,8 +68,10 @@ type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
     create: any
     update: any
-    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : string
-    plural: T[Key] extends { plural: string } ? T[Key]["plural"] : string
+    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
+    plural: T[Key] extends { plural: string }
+      ? T[Key]["plural"]
+      : Pluralize<Key & string>
   }
 }
 
@@ -83,16 +86,20 @@ type ExtractSingularName<T extends Record<any, any>, K = keyof T> = Capitalize<
  * @deprecated should all notion of singular and plural be removed once all modules are aligned with the convention
  * The pluralize will move to where it should be used instead
  */
-type ExtractPluralName<T extends Record<any, any>, K = keyof T> = T[K] extends {
-  plural?: string
-}
-  ? T[K]["plural"] & string
-  : Pluralize<K & string>
+type ExtractPluralName<T extends Record<any, any>, K = keyof T> = Capitalize<
+  T[K] extends {
+    plural?: string
+  }
+    ? T[K]["plural"] & string
+    : Pluralize<K & string>
+>
 
 // TODO: The future expected entry will be a DML object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
 type TEntityEntries<Keys = string> = Record<
   Keys & string,
-  Constructor<any> | { name?: string; singular?: string; plural?: string }
+  | Constructor<any>
+  | DmlEntity<any>
+  | { name?: string; singular?: string; plural?: string }
 >
 
 type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
@@ -102,7 +109,7 @@ type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
   : keyof EntitiesConfig
 
 export type AbstractModuleService<
-  TEntitiesDtoConfig extends EntitiesConfigTemplate
+  TEntitiesDtoConfig extends Record<string, any>
 > = {
   [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
     TEntitiesDtoConfig,

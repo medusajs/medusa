@@ -6,19 +6,19 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
 import { useSalesChannelTableColumns } from "../../../../../hooks/table/columns/use-sales-channel-table-columns"
 import { useSalesChannelTableFilters } from "../../../../../hooks/table/filters/use-sales-channel-table-filters"
 import { useSalesChannelTableQuery } from "../../../../../hooks/table/query/use-sales-channel-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
-import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
 
 type EditSalesChannelsFormProps = {
   product: HttpTypes.AdminProduct
