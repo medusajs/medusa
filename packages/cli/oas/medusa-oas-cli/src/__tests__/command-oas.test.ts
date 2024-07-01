@@ -11,7 +11,7 @@ import execa from "execa"
 /**
  * OAS output directory
  * 
- * @privateRemark
+ * @privateRemarks
  * This should be the only directory OAS is loaded from for Medusa V2.
  * For now, we only use it if the --v2 flag it passed to the CLI tool.
  */
