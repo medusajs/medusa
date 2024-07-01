@@ -80,36 +80,36 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/create",
-                        "title": "create",
+                        "path": "/references/api-key/createApiKeys",
+                        "title": "createApiKeys",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/delete",
-                        "title": "delete",
+                        "path": "/references/api-key/deleteApiKeys",
+                        "title": "deleteApiKeys",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/list",
-                        "title": "list",
+                        "path": "/references/api-key/listAndCountApiKeys",
+                        "title": "listAndCountApiKeys",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/api-key/listApiKeys",
+                        "title": "listApiKeys",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/api-key/retrieveApiKey",
+                        "title": "retrieveApiKey",
                         "children": []
                       },
                       {
@@ -122,15 +122,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/update",
-                        "title": "update",
+                        "path": "/references/api-key/updateApiKeys",
+                        "title": "updateApiKeys",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/api-key/upsert",
-                        "title": "upsert",
+                        "path": "/references/api-key/upsertApiKeys",
+                        "title": "upsertApiKeys",
                         "children": []
                       }
                     ]
@@ -289,43 +289,43 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/create",
-                        "title": "create",
+                        "path": "/references/auth/createAuthIdentities",
+                        "title": "createAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/delete",
-                        "title": "delete",
+                        "path": "/references/auth/deleteAuthIdentities",
+                        "title": "deleteAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/list",
-                        "title": "list",
+                        "path": "/references/auth/listAndCountAuthIdentities",
+                        "title": "listAndCountAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/auth/listAuthIdentities",
+                        "title": "listAuthIdentities",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/auth/retrieveAuthIdentity",
+                        "title": "retrieveAuthIdentity",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/auth/update",
-                        "title": "update",
+                        "path": "/references/auth/updateAuthIdentites",
+                        "title": "updateAuthIdentites",
                         "children": []
                       },
                       {
@@ -359,6 +359,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/auth/models/AuthIdentity",
                         "title": "AuthIdentity",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/auth/models/ProviderIdentity",
+                        "title": "ProviderIdentity",
                         "children": []
                       }
                     ]
@@ -490,13 +497,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/create",
-                        "title": "create",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/cart/createAddresses",
                         "title": "createAddresses",
                         "children": []
@@ -504,8 +504,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/delete",
-                        "title": "delete",
+                        "path": "/references/cart/createCarts",
+                        "title": "createCarts",
                         "children": []
                       },
                       {
@@ -513,6 +513,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/cart/deleteAddresses",
                         "title": "deleteAddresses",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/cart/deleteCarts",
+                        "title": "deleteCarts",
                         "children": []
                       },
                       {
@@ -560,13 +567,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/cart/listAddresses",
                         "title": "listAddresses",
                         "children": []
@@ -574,8 +574,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/cart/listAndCountCarts",
+                        "title": "listAndCountCarts",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/cart/listCarts",
+                        "title": "listCarts",
                         "children": []
                       },
                       {
@@ -623,15 +630,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/restore",
-                        "title": "restore",
+                        "path": "/references/cart/restoreAddresses",
+                        "title": "restoreAddresses",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/restoreAddresses",
-                        "title": "restoreAddresses",
+                        "path": "/references/cart/restoreCarts",
+                        "title": "restoreCarts",
                         "children": []
                       },
                       {
@@ -679,8 +686,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/cart/retrieveCart",
+                        "title": "retrieveCart",
                         "children": []
                       },
                       {
@@ -721,15 +728,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/cart/softDeleteAddresses",
+                        "title": "softDeleteAddresses",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/softDeleteAddresses",
-                        "title": "softDeleteAddresses",
+                        "path": "/references/cart/softDeleteCarts",
+                        "title": "softDeleteCarts",
                         "children": []
                       },
                       {
@@ -777,15 +784,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/update",
-                        "title": "update",
+                        "path": "/references/cart/updateAddresses",
+                        "title": "updateAddresses",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/cart/updateAddresses",
-                        "title": "updateAddresses",
+                        "path": "/references/cart/updateCarts",
+                        "title": "updateCarts",
                         "children": []
                       },
                       {
@@ -1053,13 +1060,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/addAddresses",
-                        "title": "addAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/customer/addCustomerToGroup",
                         "title": "addCustomerToGroup",
                         "children": []
@@ -1067,22 +1067,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/create",
-                        "title": "create",
+                        "path": "/references/customer/createAddresses",
+                        "title": "createAddresses",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/createCustomerGroup",
-                        "title": "createCustomerGroup",
+                        "path": "/references/customer/createCustomerGroups",
+                        "title": "createCustomerGroups",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/delete",
-                        "title": "delete",
+                        "path": "/references/customer/createCustomers",
+                        "title": "createCustomers",
                         "children": []
                       },
                       {
@@ -1102,8 +1102,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/list",
-                        "title": "list",
+                        "path": "/references/customer/deleteCustomers",
+                        "title": "deleteCustomers",
                         "children": []
                       },
                       {
@@ -1111,13 +1111,6 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/customer/listAddresses",
                         "title": "listAddresses",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/customer/listAndCount",
-                        "title": "listAndCount",
                         "children": []
                       },
                       {
@@ -1137,6 +1130,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/customer/listAndCountCustomers",
+                        "title": "listAndCountCustomers",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/customer/listCustomerGroupCustomers",
                         "title": "listCustomerGroupCustomers",
                         "children": []
@@ -1151,15 +1151,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/removeCustomerFromGroup",
-                        "title": "removeCustomerFromGroup",
+                        "path": "/references/customer/listCustomers",
+                        "title": "listCustomers",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/restore",
-                        "title": "restore",
+                        "path": "/references/customer/removeCustomerFromGroup",
+                        "title": "removeCustomerFromGroup",
                         "children": []
                       },
                       {
@@ -1172,8 +1172,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/customer/restoreCustomers",
+                        "title": "restoreCustomers",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/customer/retrieveCustomer",
+                        "title": "retrieveCustomer",
                         "children": []
                       },
                       {
@@ -1186,13 +1193,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/softDelete",
-                        "title": "softDelete",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/customer/softDeleteCustomerGroups",
                         "title": "softDeleteCustomerGroups",
                         "children": []
@@ -1200,8 +1200,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/customer/update",
-                        "title": "update",
+                        "path": "/references/customer/softDeleteCustomers",
+                        "title": "softDeleteCustomers",
                         "children": []
                       },
                       {
@@ -1216,6 +1216,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/customer/updateCustomerGroups",
                         "title": "updateCustomerGroups",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/customer/updateCustomers",
+                        "title": "updateCustomers",
                         "children": []
                       }
                     ]
@@ -1373,13 +1380,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/create",
-                        "title": "create",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/fulfillment/createFulfillment",
                         "title": "createFulfillment",
                         "children": []
@@ -1387,8 +1387,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/fulfillment/createFulfillmentSets",
+                        "title": "createFulfillmentSets",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/fulfillment/createGeoZones",
                         "title": "createGeoZones",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/fulfillment/createReturnFulfillment",
+                        "title": "createReturnFulfillment",
                         "children": []
                       },
                       {
@@ -1422,8 +1436,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/delete",
-                        "title": "delete",
+                        "path": "/references/fulfillment/deleteFulfillmentSets",
+                        "title": "deleteFulfillmentSets",
                         "children": []
                       },
                       {
@@ -1471,15 +1485,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/fulfillment/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/fulfillment/listAndCountFulfillmentSets",
+                        "title": "listAndCountFulfillmentSets",
                         "children": []
                       },
                       {
@@ -1541,6 +1548,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/fulfillment/listFulfillmentSets",
+                        "title": "listFulfillmentSets",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/fulfillment/listFulfillments",
                         "title": "listFulfillments",
                         "children": []
@@ -1597,8 +1611,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/restore",
-                        "title": "restore",
+                        "path": "/references/fulfillment/restoreFulfillmentSets",
+                        "title": "restoreFulfillmentSets",
                         "children": []
                       },
                       {
@@ -1632,13 +1646,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/retrieve",
-                        "title": "retrieve",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/fulfillment/retrieveFulfillment",
                         "title": "retrieveFulfillment",
                         "children": []
@@ -1648,6 +1655,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/fulfillment/retrieveFulfillmentOptions",
                         "title": "retrieveFulfillmentOptions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/fulfillment/retrieveFulfillmentSet",
+                        "title": "retrieveFulfillmentSet",
                         "children": []
                       },
                       {
@@ -1695,8 +1709,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/fulfillment/softDeleteFulfillmentSets",
+                        "title": "softDeleteFulfillmentSets",
                         "children": []
                       },
                       {
@@ -1730,15 +1744,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/update",
-                        "title": "update",
+                        "path": "/references/fulfillment/updateFulfillment",
+                        "title": "updateFulfillment",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/fulfillment/updateFulfillment",
-                        "title": "updateFulfillment",
+                        "path": "/references/fulfillment/updateFulfillmentSets",
+                        "title": "updateFulfillmentSets",
                         "children": []
                       },
                       {
@@ -1788,6 +1802,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/fulfillment/upsertShippingOptions",
                         "title": "upsertShippingOptions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/fulfillment/upsertShippingProfiles",
+                        "title": "upsertShippingProfiles",
                         "children": []
                       },
                       {
@@ -1982,7 +2003,7 @@ export const generatedSidebar = [
                     "isPathHref": true,
                     "title": "Methods",
                     "hasTitleStyling": true,
-                    "autogenerate_path": "/references/inventory_next/IInventoryServiceNext/methods",
+                    "autogenerate_path": "/references/inventory_next/IInventoryService/methods",
                     "children": [
                       {
                         "loaded": true,
@@ -2001,8 +2022,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/create",
-                        "title": "create",
+                        "path": "/references/inventory-next/createInventoryItems",
+                        "title": "createInventoryItems",
                         "children": []
                       },
                       {
@@ -2022,15 +2043,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/delete",
-                        "title": "delete",
+                        "path": "/references/inventory-next/deleteInventoryItemLevelByLocationId",
+                        "title": "deleteInventoryItemLevelByLocationId",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/deleteInventoryItemLevelByLocationId",
-                        "title": "deleteInventoryItemLevelByLocationId",
+                        "path": "/references/inventory-next/deleteInventoryItems",
+                        "title": "deleteInventoryItems",
                         "children": []
                       },
                       {
@@ -2071,15 +2092,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/inventory-next/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/inventory-next/listAndCountInventoryItems",
+                        "title": "listAndCountInventoryItems",
                         "children": []
                       },
                       {
@@ -2099,6 +2113,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/inventory-next/listInventoryItems",
+                        "title": "listInventoryItems",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/inventory-next/listInventoryLevels",
                         "title": "listInventoryLevels",
                         "children": []
@@ -2113,8 +2134,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/restore",
-                        "title": "restore",
+                        "path": "/references/inventory-next/restoreInventoryItems",
+                        "title": "restoreInventoryItems",
                         "children": []
                       },
                       {
@@ -2134,8 +2155,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/inventory-next/restoreReservationItemsByLineItem",
+                        "title": "restoreReservationItemsByLineItem",
                         "children": []
                       },
                       {
@@ -2143,6 +2164,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/inventory-next/retrieveAvailableQuantity",
                         "title": "retrieveAvailableQuantity",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/inventory-next/retrieveInventoryItem",
+                        "title": "retrieveInventoryItem",
                         "children": []
                       },
                       {
@@ -2183,8 +2211,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/inventory-next/softDeleteInventoryItems",
+                        "title": "softDeleteInventoryItems",
                         "children": []
                       },
                       {
@@ -2204,8 +2232,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/inventory-next/update",
-                        "title": "update",
+                        "path": "/references/inventory-next/updateInventoryItems",
+                        "title": "updateInventoryItems",
                         "children": []
                       },
                       {
@@ -2370,8 +2398,36 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/addTransactions",
+                        "title": "addTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/applyPendingOrderActions",
                         "title": "applyPendingOrderActions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/archive",
+                        "title": "archive",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancel",
+                        "title": "cancel",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelFulfillment",
+                        "title": "cancelFulfillment",
                         "children": []
                       },
                       {
@@ -2384,6 +2440,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/completeOrder",
+                        "title": "completeOrder",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/confirmOrderChange",
                         "title": "confirmOrderChange",
                         "children": []
@@ -2391,15 +2454,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/create",
-                        "title": "create",
+                        "path": "/references/order/createAddresses",
+                        "title": "createAddresses",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/createAddresses",
-                        "title": "createAddresses",
+                        "path": "/references/order/createClaim",
+                        "title": "createClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createExchange",
+                        "title": "createExchange",
                         "children": []
                       },
                       {
@@ -2433,6 +2503,27 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/createOrders",
+                        "title": "createOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createReturn",
+                        "title": "createReturn",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/createReturnReasons",
+                        "title": "createReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/createShippingMethodAdjustments",
                         "title": "createShippingMethodAdjustments",
                         "children": []
@@ -2456,13 +2547,6 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/declineOrderChange",
                         "title": "declineOrderChange",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/order/delete",
-                        "title": "delete",
                         "children": []
                       },
                       {
@@ -2496,6 +2580,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/deleteOrders",
+                        "title": "deleteOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/deleteReturnReasons",
+                        "title": "deleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/deleteShippingMethodAdjustments",
                         "title": "deleteShippingMethodAdjustments",
                         "children": []
@@ -2517,8 +2615,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/list",
-                        "title": "list",
+                        "path": "/references/order/deleteTransactions",
+                        "title": "deleteTransactions",
                         "children": []
                       },
                       {
@@ -2531,8 +2629,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/order/listAndCountOrderClaims",
+                        "title": "listAndCountOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listAndCountOrderExchanges",
+                        "title": "listAndCountOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listAndCountOrders",
+                        "title": "listAndCountOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listAndCountReturns",
+                        "title": "listAndCountReturns",
                         "children": []
                       },
                       {
@@ -2559,6 +2678,41 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/listOrderClaims",
+                        "title": "listOrderClaims",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listOrderExchanges",
+                        "title": "listOrderExchanges",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listOrders",
+                        "title": "listOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listReturnReasons",
+                        "title": "listReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/listReturns",
+                        "title": "listReturns",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/listShippingMethodAdjustments",
                         "title": "listShippingMethodAdjustments",
                         "children": []
@@ -2580,8 +2734,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/restore",
-                        "title": "restore",
+                        "path": "/references/order/listTransactions",
+                        "title": "listTransactions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/receiveReturn",
+                        "title": "receiveReturn",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/registerFulfillment",
+                        "title": "registerFulfillment",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/registerShipment",
+                        "title": "registerShipment",
                         "children": []
                       },
                       {
@@ -2615,6 +2790,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/restoreOrders",
+                        "title": "restoreOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/restoreReturnReasons",
+                        "title": "restoreReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/restoreShippingMethodAdjustments",
                         "title": "restoreShippingMethodAdjustments",
                         "children": []
@@ -2636,8 +2825,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/order/restoreTransactions",
+                        "title": "restoreTransactions",
                         "children": []
                       },
                       {
@@ -2645,6 +2834,48 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/retrieveLineItem",
                         "title": "retrieveLineItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrder",
+                        "title": "retrieveOrder",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrderClaim",
+                        "title": "retrieveOrderClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveOrderExchange",
+                        "title": "retrieveOrderExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveReturn",
+                        "title": "retrieveReturn",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/retrieveReturnReason",
+                        "title": "retrieveReturnReason",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/revertLastVersion",
+                        "title": "revertLastVersion",
                         "children": []
                       },
                       {
@@ -2678,13 +2909,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/softDelete",
-                        "title": "softDelete",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/order/softDeleteAddresses",
                         "title": "softDeleteAddresses",
                         "children": []
@@ -2713,6 +2937,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/softDeleteOrders",
+                        "title": "softDeleteOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/softDeleteReturnReasons",
+                        "title": "softDeleteReturnReasons",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/softDeleteShippingMethodAdjustments",
                         "title": "softDeleteShippingMethodAdjustments",
                         "children": []
@@ -2734,8 +2972,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/order/update",
-                        "title": "update",
+                        "path": "/references/order/softDeleteTransactions",
+                        "title": "softDeleteTransactions",
                         "children": []
                       },
                       {
@@ -2757,6 +2995,20 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/updateOrderItem",
                         "title": "updateOrderItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateOrders",
+                        "title": "updateOrders",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/updateReturnReasons",
+                        "title": "updateReturnReasons",
                         "children": []
                       }
                     ]
@@ -2783,6 +3035,27 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/models/Address",
                         "title": "Address",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/ClaimItem",
+                        "title": "ClaimItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/ClaimItemImage",
+                        "title": "ClaimItemImage",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/ExchangeItem",
+                        "title": "ExchangeItem",
                         "children": []
                       },
                       {
@@ -2830,6 +3103,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/models/OrderClaim",
+                        "title": "OrderClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/OrderExchange",
+                        "title": "OrderExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/models/OrderItem",
                         "title": "OrderItem",
                         "children": []
@@ -2837,8 +3124,36 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/models/OrderShippingMethod",
+                        "title": "OrderShippingMethod",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/models/OrderSummary",
                         "title": "OrderSummary",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/Return",
+                        "title": "Return",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/ReturnItem",
+                        "title": "ReturnItem",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/models/ReturnReason",
+                        "title": "ReturnReason",
                         "children": []
                       },
                       {
@@ -3139,6 +3454,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/payment/retrievePaymentSession",
+                        "title": "retrievePaymentSession",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/payment/updatePayment",
                         "title": "updatePayment",
                         "children": []
@@ -3333,29 +3655,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/addRules",
-                        "title": "addRules",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/pricing/calculatePrices",
                         "title": "calculatePrices",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/create",
-                        "title": "create",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/createPriceListRules",
-                        "title": "createPriceListRules",
                         "children": []
                       },
                       {
@@ -3375,15 +3676,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/createRuleTypes",
-                        "title": "createRuleTypes",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/delete",
-                        "title": "delete",
+                        "path": "/references/pricing/createPriceSets",
+                        "title": "createPriceSets",
                         "children": []
                       },
                       {
@@ -3410,22 +3704,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/deleteRuleTypes",
-                        "title": "deleteRuleTypes",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/pricing/deletePriceSets",
+                        "title": "deletePriceSets",
                         "children": []
                       },
                       {
@@ -3452,15 +3732,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/listAndCountPrices",
-                        "title": "listAndCountPrices",
+                        "path": "/references/pricing/listAndCountPriceSets",
+                        "title": "listAndCountPriceSets",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/listAndCountRuleTypes",
-                        "title": "listAndCountRuleTypes",
+                        "path": "/references/pricing/listAndCountPrices",
+                        "title": "listAndCountPrices",
                         "children": []
                       },
                       {
@@ -3487,15 +3767,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/listPrices",
-                        "title": "listPrices",
+                        "path": "/references/pricing/listPriceSets",
+                        "title": "listPriceSets",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/listRuleTypes",
-                        "title": "listRuleTypes",
+                        "path": "/references/pricing/listPrices",
+                        "title": "listPrices",
                         "children": []
                       },
                       {
@@ -3515,13 +3795,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/removeRules",
-                        "title": "removeRules",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/pricing/restorePriceLists",
                         "title": "restorePriceLists",
                         "children": []
@@ -3531,13 +3804,6 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/restorePrices",
                         "title": "restorePrices",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/retrieve",
-                        "title": "retrieve",
                         "children": []
                       },
                       {
@@ -3564,8 +3830,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/retrieveRuleType",
-                        "title": "retrieveRuleType",
+                        "path": "/references/pricing/retrievePriceSet",
+                        "title": "retrievePriceSet",
                         "children": []
                       },
                       {
@@ -3592,22 +3858,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/update",
-                        "title": "update",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/pricing/updatePriceListPrices",
                         "title": "updatePriceListPrices",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/updatePriceListRules",
-                        "title": "updatePriceListRules",
                         "children": []
                       },
                       {
@@ -3627,15 +3879,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/updateRuleTypes",
-                        "title": "updateRuleTypes",
+                        "path": "/references/pricing/updatePriceSets",
+                        "title": "updatePriceSets",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/upsert",
-                        "title": "upsert",
+                        "path": "/references/pricing/upsertPriceSets",
+                        "title": "upsertPriceSets",
                         "children": []
                       }
                     ]
@@ -3681,13 +3933,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/pricing/models/PriceListRuleValue",
-                        "title": "PriceListRuleValue",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/pricing/models/PriceRule",
                         "title": "PriceRule",
                         "children": []
@@ -3697,20 +3942,6 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/models/PriceSet",
                         "title": "PriceSet",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/models/PriceSetRuleType",
-                        "title": "PriceSetRuleType",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/pricing/models/RuleType",
-                        "title": "RuleType",
                         "children": []
                       }
                     ]
@@ -3779,393 +4010,442 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/create",
-                        "title": "create",
+                        "path": "/references/product/createProductCategories",
+                        "title": "createProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createCategory",
-                        "title": "createCategory",
+                        "path": "/references/product/createProductCollections",
+                        "title": "createProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createCollections",
-                        "title": "createCollections",
+                        "path": "/references/product/createProductOptions",
+                        "title": "createProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createOptions",
-                        "title": "createOptions",
+                        "path": "/references/product/createProductTags",
+                        "title": "createProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createTags",
-                        "title": "createTags",
+                        "path": "/references/product/createProductTypes",
+                        "title": "createProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createTypes",
-                        "title": "createTypes",
+                        "path": "/references/product/createProductVariants",
+                        "title": "createProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/createVariants",
-                        "title": "createVariants",
+                        "path": "/references/product/createProducts",
+                        "title": "createProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/delete",
-                        "title": "delete",
+                        "path": "/references/product/deleteProductCategories",
+                        "title": "deleteProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteCategory",
-                        "title": "deleteCategory",
+                        "path": "/references/product/deleteProductCollections",
+                        "title": "deleteProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteCollections",
-                        "title": "deleteCollections",
+                        "path": "/references/product/deleteProductOptions",
+                        "title": "deleteProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteOptions",
-                        "title": "deleteOptions",
+                        "path": "/references/product/deleteProductTags",
+                        "title": "deleteProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteTags",
-                        "title": "deleteTags",
+                        "path": "/references/product/deleteProductTypes",
+                        "title": "deleteProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteTypes",
-                        "title": "deleteTypes",
+                        "path": "/references/product/deleteProductVariants",
+                        "title": "deleteProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/deleteVariants",
-                        "title": "deleteVariants",
+                        "path": "/references/product/deleteProducts",
+                        "title": "deleteProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/list",
-                        "title": "list",
+                        "path": "/references/product/listAndCountProductCategories",
+                        "title": "listAndCountProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/product/listAndCountProductCollections",
+                        "title": "listAndCountProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountCategories",
-                        "title": "listAndCountCategories",
+                        "path": "/references/product/listAndCountProductOptions",
+                        "title": "listAndCountProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountCollections",
-                        "title": "listAndCountCollections",
+                        "path": "/references/product/listAndCountProductTags",
+                        "title": "listAndCountProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountOptions",
-                        "title": "listAndCountOptions",
+                        "path": "/references/product/listAndCountProductTypes",
+                        "title": "listAndCountProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountTags",
-                        "title": "listAndCountTags",
+                        "path": "/references/product/listAndCountProductVariants",
+                        "title": "listAndCountProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountTypes",
-                        "title": "listAndCountTypes",
+                        "path": "/references/product/listAndCountProducts",
+                        "title": "listAndCountProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listAndCountVariants",
-                        "title": "listAndCountVariants",
+                        "path": "/references/product/listProductCategories",
+                        "title": "listProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listCategories",
-                        "title": "listCategories",
+                        "path": "/references/product/listProductCollections",
+                        "title": "listProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listCollections",
-                        "title": "listCollections",
+                        "path": "/references/product/listProductOptions",
+                        "title": "listProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listOptions",
-                        "title": "listOptions",
+                        "path": "/references/product/listProductTags",
+                        "title": "listProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listTags",
-                        "title": "listTags",
+                        "path": "/references/product/listProductTypes",
+                        "title": "listProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listTypes",
-                        "title": "listTypes",
+                        "path": "/references/product/listProductVariants",
+                        "title": "listProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/listVariants",
-                        "title": "listVariants",
+                        "path": "/references/product/listProducts",
+                        "title": "listProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/restore",
-                        "title": "restore",
+                        "path": "/references/product/restoreProductCategories",
+                        "title": "restoreProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/restoreCollections",
-                        "title": "restoreCollections",
+                        "path": "/references/product/restoreProductCollections",
+                        "title": "restoreProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/restoreOptions",
-                        "title": "restoreOptions",
+                        "path": "/references/product/restoreProductOptions",
+                        "title": "restoreProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/restoreTypes",
-                        "title": "restoreTypes",
+                        "path": "/references/product/restoreProductTags",
+                        "title": "restoreProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/restoreVariants",
-                        "title": "restoreVariants",
+                        "path": "/references/product/restoreProductTypes",
+                        "title": "restoreProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/product/restoreProductVariants",
+                        "title": "restoreProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveCategory",
-                        "title": "retrieveCategory",
+                        "path": "/references/product/restoreProducts",
+                        "title": "restoreProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveCollection",
-                        "title": "retrieveCollection",
+                        "path": "/references/product/retrieveProduct",
+                        "title": "retrieveProduct",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveOption",
-                        "title": "retrieveOption",
+                        "path": "/references/product/retrieveProductCategory",
+                        "title": "retrieveProductCategory",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveTag",
-                        "title": "retrieveTag",
+                        "path": "/references/product/retrieveProductCollection",
+                        "title": "retrieveProductCollection",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveType",
-                        "title": "retrieveType",
+                        "path": "/references/product/retrieveProductOption",
+                        "title": "retrieveProductOption",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/retrieveVariant",
-                        "title": "retrieveVariant",
+                        "path": "/references/product/retrieveProductTag",
+                        "title": "retrieveProductTag",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/product/retrieveProductType",
+                        "title": "retrieveProductType",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/softDeleteCollections",
-                        "title": "softDeleteCollections",
+                        "path": "/references/product/retrieveProductVariant",
+                        "title": "retrieveProductVariant",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/softDeleteOptions",
-                        "title": "softDeleteOptions",
+                        "path": "/references/product/softDeleteProductCategories",
+                        "title": "softDeleteProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/softDeleteTypes",
-                        "title": "softDeleteTypes",
+                        "path": "/references/product/softDeleteProductCollections",
+                        "title": "softDeleteProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/softDeleteVariants",
-                        "title": "softDeleteVariants",
+                        "path": "/references/product/softDeleteProductOptions",
+                        "title": "softDeleteProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/update",
-                        "title": "update",
+                        "path": "/references/product/softDeleteProductTags",
+                        "title": "softDeleteProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/updateCategory",
-                        "title": "updateCategory",
+                        "path": "/references/product/softDeleteProductTypes",
+                        "title": "softDeleteProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/updateCollections",
-                        "title": "updateCollections",
+                        "path": "/references/product/softDeleteProductVariants",
+                        "title": "softDeleteProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/updateOptions",
-                        "title": "updateOptions",
+                        "path": "/references/product/softDeleteProducts",
+                        "title": "softDeleteProducts",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/updateTypes",
-                        "title": "updateTypes",
+                        "path": "/references/product/updateProductCategories",
+                        "title": "updateProductCategories",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/updateVariants",
-                        "title": "updateVariants",
+                        "path": "/references/product/updateProductCollections",
+                        "title": "updateProductCollections",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/upsert",
-                        "title": "upsert",
+                        "path": "/references/product/updateProductOptions",
+                        "title": "updateProductOptions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/upsertCollections",
-                        "title": "upsertCollections",
+                        "path": "/references/product/updateProductTags",
+                        "title": "updateProductTags",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/upsertOptions",
-                        "title": "upsertOptions",
+                        "path": "/references/product/updateProductTypes",
+                        "title": "updateProductTypes",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/upsertTypes",
-                        "title": "upsertTypes",
+                        "path": "/references/product/updateProductVariants",
+                        "title": "updateProductVariants",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/product/upsertVariants",
-                        "title": "upsertVariants",
+                        "path": "/references/product/updateProducts",
+                        "title": "updateProducts",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductCategories",
+                        "title": "upsertProductCategories",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductCollections",
+                        "title": "upsertProductCollections",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductOptions",
+                        "title": "upsertProductOptions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductTags",
+                        "title": "upsertProductTags",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductTypes",
+                        "title": "upsertProductTypes",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProductVariants",
+                        "title": "upsertProductVariants",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/product/upsertProducts",
+                        "title": "upsertProducts",
                         "children": []
                       }
                     ]
@@ -4365,15 +4645,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/computeActions",
-                        "title": "computeActions",
+                        "path": "/references/promotion/addPromotionsToCampaign",
+                        "title": "addPromotionsToCampaign",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/create",
-                        "title": "create",
+                        "path": "/references/promotion/computeActions",
+                        "title": "computeActions",
                         "children": []
                       },
                       {
@@ -4386,8 +4666,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/delete",
-                        "title": "delete",
+                        "path": "/references/promotion/createPromotions",
+                        "title": "createPromotions",
                         "children": []
                       },
                       {
@@ -4400,15 +4680,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/promotion/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/promotion/deletePromotions",
+                        "title": "deletePromotions",
                         "children": []
                       },
                       {
@@ -4416,6 +4689,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/promotion/listAndCountCampaigns",
                         "title": "listAndCountCampaigns",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/promotion/listAndCountPromotions",
+                        "title": "listAndCountPromotions",
                         "children": []
                       },
                       {
@@ -4430,6 +4710,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/promotion/listPromotionRules",
                         "title": "listPromotionRules",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/promotion/listPromotions",
+                        "title": "listPromotions",
                         "children": []
                       },
                       {
@@ -4463,8 +4750,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/restore",
-                        "title": "restore",
+                        "path": "/references/promotion/removePromotionsFromCampaign",
+                        "title": "removePromotionsFromCampaign",
                         "children": []
                       },
                       {
@@ -4477,8 +4764,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/promotion/restorePromotions",
+                        "title": "restorePromotions",
                         "children": []
                       },
                       {
@@ -4491,8 +4778,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/promotion/retrievePromotion",
+                        "title": "retrievePromotion",
                         "children": []
                       },
                       {
@@ -4505,8 +4792,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/promotion/update",
-                        "title": "update",
+                        "path": "/references/promotion/softDeletePromotions",
+                        "title": "softDeletePromotions",
                         "children": []
                       },
                       {
@@ -4521,6 +4808,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/promotion/updatePromotionRules",
                         "title": "updatePromotionRules",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/promotion/updatePromotions",
+                        "title": "updatePromotions",
                         "children": []
                       }
                     ]
@@ -4650,29 +4944,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/create",
-                        "title": "create",
+                        "path": "/references/region/createRegions",
+                        "title": "createRegions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/delete",
-                        "title": "delete",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/region/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/region/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/region/deleteRegions",
+                        "title": "deleteRegions",
                         "children": []
                       },
                       {
@@ -4685,6 +4965,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/region/listAndCountRegions",
+                        "title": "listAndCountRegions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/region/listCountries",
                         "title": "listCountries",
                         "children": []
@@ -4692,15 +4979,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/restore",
-                        "title": "restore",
+                        "path": "/references/region/listRegions",
+                        "title": "listRegions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/region/restoreRegions",
+                        "title": "restoreRegions",
                         "children": []
                       },
                       {
@@ -4713,22 +5000,29 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/region/retrieveRegion",
+                        "title": "retrieveRegion",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/update",
-                        "title": "update",
+                        "path": "/references/region/softDeleteRegions",
+                        "title": "softDeleteRegions",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/upsert",
-                        "title": "upsert",
+                        "path": "/references/region/updateRegions",
+                        "title": "updateRegions",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/region/upsertRegions",
+                        "title": "upsertRegions",
                         "children": []
                       }
                     ]
@@ -4748,20 +5042,20 @@ export const generatedSidebar = [
                     "isPathHref": true,
                     "title": "Data Models",
                     "hasTitleStyling": true,
-                    "autogenerate_path": "/references/region_models/classes",
+                    "autogenerate_path": "/references/region_models/variables",
                     "children": [
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/region/models/Country",
-                        "title": "Country",
-                        "children": []
-                      },
                       {
                         "loaded": true,
                         "isPathHref": true,
                         "path": "/references/region/models/Region",
                         "title": "Region",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/region/models/RegionCountry",
+                        "title": "RegionCountry",
                         "children": []
                       }
                     ]
@@ -4837,64 +5131,64 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/create",
-                        "title": "create",
+                        "path": "/references/sales-channel/createSalesChannels",
+                        "title": "createSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/delete",
-                        "title": "delete",
+                        "path": "/references/sales-channel/deleteSalesChannels",
+                        "title": "deleteSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/list",
-                        "title": "list",
+                        "path": "/references/sales-channel/listAndCountSalesChannels",
+                        "title": "listAndCountSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/sales-channel/listSalesChannels",
+                        "title": "listSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/restore",
-                        "title": "restore",
+                        "path": "/references/sales-channel/restoreSalesChannels",
+                        "title": "restoreSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/sales-channel/retrieveSalesChannel",
+                        "title": "retrieveSalesChannel",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/sales-channel/softDeleteSalesChannels",
+                        "title": "softDeleteSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/update",
-                        "title": "update",
+                        "path": "/references/sales-channel/updateSalesChannels",
+                        "title": "updateSalesChannels",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/sales-channel/upsert",
-                        "title": "upsert",
+                        "path": "/references/sales-channel/upsertSalesChannels",
+                        "title": "upsertSalesChannels",
                         "children": []
                       }
                     ]
@@ -4991,69 +5285,69 @@ export const generatedSidebar = [
                     "isPathHref": true,
                     "title": "Methods",
                     "hasTitleStyling": true,
-                    "autogenerate_path": "/references/stock_location_next/IStockLocationServiceNext/methods",
+                    "autogenerate_path": "/references/stock_location_next/IStockLocationService/methods",
                     "children": [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/create",
-                        "title": "create",
+                        "path": "/references/stock-location-next/createStockLocations",
+                        "title": "createStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/delete",
-                        "title": "delete",
+                        "path": "/references/stock-location-next/deleteStockLocations",
+                        "title": "deleteStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/list",
-                        "title": "list",
+                        "path": "/references/stock-location-next/listAndCountStockLocations",
+                        "title": "listAndCountStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/stock-location-next/listStockLocations",
+                        "title": "listStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/restore",
-                        "title": "restore",
+                        "path": "/references/stock-location-next/restoreStockLocations",
+                        "title": "restoreStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/stock-location-next/retrieveStockLocation",
+                        "title": "retrieveStockLocation",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/stock-location-next/softDeleteStockLocations",
+                        "title": "softDeleteStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/update",
-                        "title": "update",
+                        "path": "/references/stock-location-next/updateStockLocations",
+                        "title": "updateStockLocations",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/stock-location-next/upsert",
-                        "title": "upsert",
+                        "path": "/references/stock-location-next/upsertStockLocations",
+                        "title": "upsertStockLocations",
                         "children": []
                       }
                     ]
@@ -5155,64 +5449,64 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/create",
-                        "title": "create",
+                        "path": "/references/store/createStores",
+                        "title": "createStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/delete",
-                        "title": "delete",
+                        "path": "/references/store/deleteStores",
+                        "title": "deleteStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/list",
-                        "title": "list",
+                        "path": "/references/store/listAndCountStores",
+                        "title": "listAndCountStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/store/listStores",
+                        "title": "listStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/restore",
-                        "title": "restore",
+                        "path": "/references/store/restoreStores",
+                        "title": "restoreStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/store/retrieveStore",
+                        "title": "retrieveStore",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/store/softDeleteStores",
+                        "title": "softDeleteStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/update",
-                        "title": "update",
+                        "path": "/references/store/updateStores",
+                        "title": "updateStores",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/store/upsert",
-                        "title": "upsert",
+                        "path": "/references/store/upsertStores",
+                        "title": "upsertStores",
                         "children": []
                       }
                     ]
@@ -5239,6 +5533,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/store/models/Store",
                         "title": "Store",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/store/models/StoreCurrency",
+                        "title": "StoreCurrency",
                         "children": []
                       }
                     ]
@@ -5313,6 +5614,13 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/references/tax/provider",
+                "title": "Tax Provider Reference",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/references/tax",
                 "title": "Main Service Reference",
                 "isChildSidebar": true,
@@ -5328,15 +5636,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/create",
-                        "title": "create",
+                        "path": "/references/tax/createTaxRateRules",
+                        "title": "createTaxRateRules",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/createTaxRateRules",
-                        "title": "createTaxRateRules",
+                        "path": "/references/tax/createTaxRates",
+                        "title": "createTaxRates",
                         "children": []
                       },
                       {
@@ -5349,15 +5657,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/delete",
-                        "title": "delete",
+                        "path": "/references/tax/deleteTaxRateRules",
+                        "title": "deleteTaxRateRules",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/deleteTaxRateRules",
-                        "title": "deleteTaxRateRules",
+                        "path": "/references/tax/deleteTaxRates",
+                        "title": "deleteTaxRates",
                         "children": []
                       },
                       {
@@ -5377,15 +5685,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/tax/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/tax/listAndCountTaxRates",
+                        "title": "listAndCountTaxRates",
                         "children": []
                       },
                       {
@@ -5398,15 +5699,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/listTaxRegions",
-                        "title": "listTaxRegions",
+                        "path": "/references/tax/listTaxRates",
+                        "title": "listTaxRates",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/restore",
-                        "title": "restore",
+                        "path": "/references/tax/listTaxRegions",
+                        "title": "listTaxRegions",
                         "children": []
                       },
                       {
@@ -5419,6 +5720,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/tax/restoreTaxRates",
+                        "title": "restoreTaxRates",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/tax/restoreTaxRegions",
                         "title": "restoreTaxRegions",
                         "children": []
@@ -5426,15 +5734,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/retrieve",
-                        "title": "retrieve",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/tax/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/tax/retrieveTaxRate",
+                        "title": "retrieveTaxRate",
                         "children": []
                       },
                       {
@@ -5447,6 +5748,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/tax/softDeleteTaxRates",
+                        "title": "softDeleteTaxRates",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/tax/softDeleteTaxRegions",
                         "title": "softDeleteTaxRegions",
                         "children": []
@@ -5454,15 +5762,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/update",
-                        "title": "update",
+                        "path": "/references/tax/updateTaxRates",
+                        "title": "updateTaxRates",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/tax/upsert",
-                        "title": "upsert",
+                        "path": "/references/tax/upsertTaxRates",
+                        "title": "upsertTaxRates",
                         "children": []
                       }
                     ]
@@ -5585,13 +5893,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/create",
-                        "title": "create",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/user/createInvites",
                         "title": "createInvites",
                         "children": []
@@ -5599,8 +5900,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/delete",
-                        "title": "delete",
+                        "path": "/references/user/createUsers",
+                        "title": "createUsers",
                         "children": []
                       },
                       {
@@ -5613,15 +5914,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/list",
-                        "title": "list",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
-                        "path": "/references/user/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/user/deleteUsers",
+                        "title": "deleteUsers",
                         "children": []
                       },
                       {
@@ -5634,8 +5928,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/user/listAndCountUsers",
+                        "title": "listAndCountUsers",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/user/listInvites",
                         "title": "listInvites",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/user/listUsers",
+                        "title": "listUsers",
                         "children": []
                       },
                       {
@@ -5648,13 +5956,6 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/restore",
-                        "title": "restore",
-                        "children": []
-                      },
-                      {
-                        "loaded": true,
-                        "isPathHref": true,
                         "path": "/references/user/restoreInvites",
                         "title": "restoreInvites",
                         "children": []
@@ -5662,8 +5963,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/user/restoreUsers",
+                        "title": "restoreUsers",
                         "children": []
                       },
                       {
@@ -5676,8 +5977,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/softDelete",
-                        "title": "softDelete",
+                        "path": "/references/user/retrieveUser",
+                        "title": "retrieveUser",
                         "children": []
                       },
                       {
@@ -5690,8 +5991,8 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/user/update",
-                        "title": "update",
+                        "path": "/references/user/softDeleteUsers",
+                        "title": "softDeleteUsers",
                         "children": []
                       },
                       {
@@ -5699,6 +6000,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/user/updateInvites",
                         "title": "updateInvites",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/user/updateUsers",
+                        "title": "updateUsers",
                         "children": []
                       },
                       {
@@ -7006,7 +7314,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/file-provider-module",
-                "title": "Create File Module",
+                "title": "Create File Provider",
                 "children": []
               }
             ]
@@ -7050,7 +7358,7 @@ export const generatedSidebar = [
                 "loaded": true,
                 "isPathHref": true,
                 "path": "/references/notification-provider-module",
-                "title": "Create Notification Module",
+                "title": "Create Notification Provider",
                 "children": []
               }
             ]
@@ -7671,6 +7979,197 @@ export const generatedSidebar = [
                 "isPathHref": true,
                 "path": "/references/workflows/transform",
                 "title": "transform",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "isPathHref": true,
+        "path": "/references/data-model",
+        "title": "Data Model API",
+        "childSidebarTitle": "Data Model API Reference",
+        "isChildSidebar": true,
+        "children": [
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/data-model/define",
+            "title": "Define Method",
+            "hasTitleStyling": true,
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/data-model/property-types",
+            "title": "Property Types",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/references/dml/Property_Types/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/array",
+                "title": "array",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/bignumber",
+                "title": "bigNumber",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/boolean",
+                "title": "boolean",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/datetime",
+                "title": "dateTime",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/enum",
+                "title": "enum",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/id",
+                "title": "id",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/json",
+                "title": "json",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/number",
+                "title": "number",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-types/text",
+                "title": "text",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/data-model/relationship-methods",
+            "title": "Relationship Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/references/dml/Relationship_Methods/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/relationship-methods/belongsto",
+                "title": "belongsTo",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/relationship-methods/hasmany",
+                "title": "hasMany",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/relationship-methods/hasone",
+                "title": "hasOne",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/relationship-methods/manytomany",
+                "title": "manyToMany",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/data-model/model-methods",
+            "title": "Model Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/references/dml/Model_Methods/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/model-methods/cascades",
+                "title": "cascades",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/model-methods/indexes",
+                "title": "indexes",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "path": "/references/data-model/property-configuration",
+            "title": "Property Configuration Methods",
+            "hasTitleStyling": true,
+            "autogenerate_path": "/references/dml/Property_Configuration_Methods/methods",
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-configuration/default",
+                "title": "default",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-configuration/index",
+                "title": "index",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-configuration/nullable",
+                "title": "nullable",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/data-model/property-configuration/unique",
+                "title": "unique",
                 "children": []
               }
             ]

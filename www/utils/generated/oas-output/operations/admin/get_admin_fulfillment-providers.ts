@@ -17,12 +17,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -41,42 +47,61 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: The fulfillment provider's ID.
+ *         - type: array
+ *           description: The fulfillment provider's ID.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: The id's ID.
+ *   - name: is_enabled
+ *     in: query
+ *     description: The fulfillment provider's is enabled.
+ *     required: true
+ *     schema:
+ *       type: boolean
+ *       title: is_enabled
+ *       description: The fulfillment provider's is enabled.
+ *   - name: q
+ *     in: query
+ *     description: The fulfillment provider's q.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: The fulfillment provider's q.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  *   - jwt_token: []
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - fields
- *         properties:
- *           fields:
- *             type: string
- *             title: fields
- *             description: The fulfillment provider's fields.
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/fulfillment-providers' \
- *       -H 'x-medusa-access-token: {api_token}' \
- *       -H 'Content-Type: application/json' \
- *       --data-raw '{
- *         "fields": "{value}"
- *       }'
+ *       -H 'x-medusa-access-token: {api_token}'
  * tags:
  *   - Fulfillment Providers
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

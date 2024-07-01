@@ -1,0 +1,13 @@
+import { TypeList } from "docs-ui"
+
+# EntityIndex
+
+ **EntityIndex**: `Object`
+
+## Type Parameters
+
+<TypeList types={[{"name":"TSchema","type":"[DMLSchema](../types.DmlTypes.DMLSchema/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"$dataType","type":"T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"[RelationshipTypes](../types.DmlTypes.RelationshipTypes/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"TWhere","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="EntityIndex"/>
+
+## Properties
+
+<TypeList types={[{"name":"on","type":"[InferIndexableProperties](../types.DmlTypes.InferIndexableProperties/page.mdx)&#60;[IDmlEntity](../../interfaces/types.DmlTypes.IDmlEntity/page.mdx)&#60;TSchema&#62;&#62;[]","description":"The list of properties to create the index on.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the index. If not provided,\nMedusa generates the name.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"unique","type":"`boolean`","description":"When enabled, a unique index is created on the specified\nproperties.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"where","type":"TWhere","description":"Conditions to restrict which records are indexed.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="EntityIndex"/>

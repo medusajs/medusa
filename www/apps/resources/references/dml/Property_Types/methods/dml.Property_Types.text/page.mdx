@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/text
+sidebar_label: text
+---
+
+import { TypeList } from "docs-ui"
+
+# text Property Method - API Reference
+
+This method defines a string property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  name: model.text(),
+  // ...
+})
+
+export default MyCustom
+```

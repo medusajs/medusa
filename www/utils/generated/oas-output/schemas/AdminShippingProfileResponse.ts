@@ -7,7 +7,7 @@
  *   - shipping_profile
  * properties:
  *   shipping_profile:
- *     $ref: "#/components/schemas/ShippingProfileResponse"
+ *     $ref: "#/components/schemas/AdminShippingProfile"
  * 
 */
 

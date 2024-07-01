@@ -284,5 +284,5 @@ export interface FilterablePriceSetProps
   /**
    * Filters to apply on a price set's associated money amounts.
    */
-  money_amounts?: FilterableMoneyAmountProps
+  prices?: FilterableMoneyAmountProps
 }

@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -53,86 +63,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - title
- *           - description
- *           - starts_at
- *           - ends_at
- *           - status
- *           - type
- *           - rules
- *           - prices
- *         properties:
- *           title:
- *             type: string
- *             title: title
- *             description: The price list's title.
- *           description:
- *             type: string
- *             title: description
- *             description: The price list's description.
- *           starts_at:
- *             type: string
- *             title: starts_at
- *             description: The price list's starts at.
- *           ends_at:
- *             type: string
- *             title: ends_at
- *             description: The price list's ends at.
- *           status:
- *             enum:
- *               - active
- *               - draft
- *             type: string
- *           type:
- *             enum:
- *               - sale
- *               - override
- *             type: string
- *           prices:
- *             type: array
- *             description: The price list's prices.
- *             items:
- *               type: object
- *               description: The price's prices.
- *               required:
- *                 - currency_code
- *                 - amount
- *                 - variant_id
- *                 - min_quantity
- *                 - max_quantity
- *                 - rules
- *               properties:
- *                 currency_code:
- *                   type: string
- *                   title: currency_code
- *                   description: The price's currency code.
- *                 amount:
- *                   type: number
- *                   title: amount
- *                   description: The price's amount.
- *                 variant_id:
- *                   type: string
- *                   title: variant_id
- *                   description: The price's variant id.
- *                 min_quantity:
- *                   type: number
- *                   title: min_quantity
- *                   description: The price's min quantity.
- *                 max_quantity:
- *                   type: number
- *                   title: max_quantity
- *                   description: The price's max quantity.
- *                 rules:
- *                   type: object
- *                   description: The price's rules.
- *                   properties: {}
- *           rules:
- *             type: object
- *             description: The price list's rules.
- *             properties: {}
+ *         $ref: "#/components/schemas/AdminCreatePriceList"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -143,17 +74,14 @@
  *       --data-raw '{
  *         "title": "{value}",
  *         "description": "{value}",
- *         "prices": [
- *           {
- *             "currency_code": "{value}",
- *             "amount": 1270314195484672,
- *             "variant_id": "{value}"
- *           }
- *         ]
+ *         "starts_at": "{value}",
+ *         "ends_at": "{value}"
  *       }'
  * tags:
  *   - Price Lists
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

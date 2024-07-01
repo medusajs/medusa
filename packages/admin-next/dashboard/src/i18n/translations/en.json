@@ -1101,6 +1101,11 @@
     "sections": {
       "details": "Promotion Details"
     },
+    "tabs": {
+      "template": "Template",
+      "promotion": "Promotion",
+      "campaign": "Campaign"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -1127,6 +1132,9 @@
           "description": "If these conditions match, we enable the promotion on the target items."
         }
       }
+    },
+    "tooltips": {
+      "campaignType": "Select the currency code in the promotion tab to enable it."
     },
     "errors": {
       "requiredField": "Required field"

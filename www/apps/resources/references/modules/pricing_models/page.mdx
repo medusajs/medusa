@@ -17,22 +17,13 @@ erDiagram
 	Price ||--|| PriceRule : price_rules
 	Price }|--|{ PriceList : price_list
 	PriceList ||--|| PriceListRule : price_list_rules
-	PriceList }|--|{ RuleType : rule_types
-	PriceListRule }|--|{ RuleType : rule_type
-	PriceListRule ||--|| PriceListRuleValue : price_list_rule_values
-	PriceRule }|--|{ PriceSet : price_set
-	PriceRule }|--|{ RuleType : rule_type
-	PriceSet }|--|{ RuleType : rule_types
 
 ```
 
 ## Classes
 
-- [PriceListRuleValue](../../pricing_models/classes/pricing_models.PriceListRuleValue/page.mdx)
 - [PriceListRule](../../pricing_models/classes/pricing_models.PriceListRule/page.mdx)
 - [PriceList](../../pricing_models/classes/pricing_models.PriceList/page.mdx)
 - [PriceRule](../../pricing_models/classes/pricing_models.PriceRule/page.mdx)
-- [PriceSetRuleType](../../pricing_models/classes/pricing_models.PriceSetRuleType/page.mdx)
 - [PriceSet](../../pricing_models/classes/pricing_models.PriceSet/page.mdx)
 - [Price](../../pricing_models/classes/pricing_models.Price/page.mdx)
-- [RuleType](../../pricing_models/classes/pricing_models.RuleType/page.mdx)
