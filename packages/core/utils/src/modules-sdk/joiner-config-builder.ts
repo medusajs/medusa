@@ -6,6 +6,7 @@ import {
 import { join } from "path"
 import {
   camelToSnakeCase,
+  deduplicate,
   getCallerFilePath,
   lowerCaseFirst,
   MapToConfig,
@@ -99,6 +100,22 @@ export function defineJoinerConfig(
     }
   }
 
+  if (!primaryKeys && dmlDefinitions.size) {
+    const linkConfig = buildLinkConfigFromDmlObjects([
+      ...dmlDefinitions.values(),
+    ])
+
+    primaryKeys = deduplicate(
+      Object.values(linkConfig).flatMap((entityLinkConfig) => {
+        return Object.values(entityLinkConfig).map((linkableConfig) => {
+          return (linkableConfig as { primaryKey: string }).primaryKey
+        })
+      })
+    )
+  }
+
+  // TODO: In the context of DML add a validation on primary keys and linkable keys if the consumer provide them manually. follow up pr
+
   return {
     serviceName: moduleName,
     primaryKeys: primaryKeys ?? ["id"],
@@ -164,6 +181,10 @@ export function buildLinkableKeysFromDmlObjects<
   const linkableKeys = {} as LinkableKeys
 
   for (const dml of dmlObjects) {
+    if (!DmlEntity.isDmlEntity(dml)) {
+      continue
+    }
+
     dml.schema = inferPrimaryKeyProperties(dml.schema)
     const schema = dml.schema
     const primaryKeys: string[] = []
@@ -235,10 +256,14 @@ export function buildLinkableKeysFromMikroOrmObjects(
  */
 export function buildLinkConfigFromDmlObjects<const T extends DmlEntity<any>[]>(
   dmlObjects: T
-): InfersLinksConfig<T> {
+): InfersLinksConfig<T> & Record<any, any> {
   const linkConfig = {} as InfersLinksConfig<T>
 
   for (const dml of dmlObjects) {
+    if (!DmlEntity.isDmlEntity(dml)) {
+      continue
+    }
+
     dml.schema = inferPrimaryKeyProperties(dml.schema)
     const schema = dml.schema
     const dmlLinkConfig = (linkConfig[lowerCaseFirst(dml.name)] ??= {})
@@ -253,7 +278,10 @@ export function buildLinkConfigFromDmlObjects<const T extends DmlEntity<any>[]>(
         const linkableKeyName =
           parsedProperty.dataType.options?.linkable ??
           `${camelToSnakeCase(dml.name).toLowerCase()}_${property}`
-        dmlLinkConfig[property] = linkableKeyName
+        dmlLinkConfig[property] = {
+          linkable: linkableKeyName,
+          primaryKey: property,
+        }
       }
     }
   }

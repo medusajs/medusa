@@ -6,6 +6,7 @@ import {
 } from "@medusajs/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.PRODUCT, {
+  primaryKeys: ["id", "handle"],
   // This module provides more alias than the default config builder
   alias: [
     {

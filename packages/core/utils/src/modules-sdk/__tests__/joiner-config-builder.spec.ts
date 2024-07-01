@@ -463,19 +463,31 @@ describe("joiner-config-builder", () => {
 
       expectTypeOf(linkConfig).toMatchTypeOf<{
         user: {
-          id: "user_id"
+          id: {
+            linkable: "user_id"
+            primaryKey: "id"
+          }
         }
         car: {
-          number_plate: "car_number_plate"
+          number_plate: {
+            linkable: "car_number_plate"
+            primaryKey: "number_plate"
+          }
         }
       }>()
 
       expect(linkConfig).toEqual({
         user: {
-          id: "user_id",
+          id: {
+            linkable: "user_id",
+            primaryKey: "id",
+          },
         },
         car: {
-          number_plate: "car_number_plate",
+          number_plate: {
+            linkable: "car_number_plate",
+            primaryKey: "number_plate",
+          },
         },
       })
     })

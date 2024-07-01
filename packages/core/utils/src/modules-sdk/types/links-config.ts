@@ -104,11 +104,10 @@ type InferSchemaPotentialLinksConfig<
         ? PropertyType extends IdProperty
           ? never
           : InferPrimaryKeyNameOrNever<Schema, K>
-        : InferPrimaryKeyNameOrNever<Schema, K>]: InferLinkableKeyName<
-        K,
-        Schema[K],
-        Config
-      >
+        : InferPrimaryKeyNameOrNever<Schema, K>]: {
+        linkable: InferLinkableKeyName<K, Schema[K], Config>
+        primaryKey: K
+      }
     }
   : {}
 
