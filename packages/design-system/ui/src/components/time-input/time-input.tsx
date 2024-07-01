@@ -1,9 +1,11 @@
+"use client"
+
 import * as React from "react"
 import {
-    AriaTimeFieldProps,
-    TimeValue,
-    useLocale,
-    useTimeField,
+  AriaTimeFieldProps,
+  TimeValue,
+  useLocale,
+  useTimeField,
 } from "react-aria"
 import { useTimeFieldState } from "react-stately"
 
@@ -18,14 +20,13 @@ const TimeInput = (props: AriaTimeFieldProps<TimeValue>) => {
     ...props,
     locale,
   })
-  const {
-    fieldProps: { ...fieldProps },
-  } = useTimeField(props, state, ref)
+  const { fieldProps } = useTimeField(props, state, ref)
 
   return (
     <div
       ref={ref}
       {...fieldProps}
+      aria-label="Time input"
       className={clx(
         "bg-ui-bg-field shadow-borders-base txt-compact-small flex items-center rounded-md px-2 py-1",
         {

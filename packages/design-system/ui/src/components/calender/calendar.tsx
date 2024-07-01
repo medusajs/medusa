@@ -1,7 +1,7 @@
 import {
   CalendarDate,
   createCalendar,
-  getLocalTimeZone,
+  getLocalTimeZone
 } from "@internationalized/date"
 import { TriangleLeftMini, TriangleRightMini } from "@medusajs/icons"
 import * as React from "react"
@@ -13,7 +13,7 @@ import {
 } from "react-aria"
 import { useCalendarState } from "react-stately"
 
-import { createCalendarDate, getDefaultValue, updateCalendarDate } from "@/utils/calendar"
+import { createCalendarDate, getDefaultCalendarDate, updateCalendarDate } from "@/utils/calendar"
 
 import { CalendarButton } from "./calendar-button"
 import { CalendarGrid } from "./calendar-grid"
@@ -32,8 +32,8 @@ interface CalendarProps
     CalendarValueProps {}
 
 const Calendar = (props: CalendarProps) => {
-  const [value, setValue] = React.useState<CalendarDate | null | undefined>(
-    () => getDefaultValue(props.value, props.defaultValue)
+  const [value, setValue] = React.useState<CalendarDate  | null | undefined>(
+    () => getDefaultCalendarDate(props.value, props.defaultValue)
   )
 
   const { locale } = useLocale()

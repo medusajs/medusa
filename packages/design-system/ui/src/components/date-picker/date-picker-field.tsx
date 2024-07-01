@@ -1,10 +1,12 @@
+"use client"
+
 import { createCalendar } from "@internationalized/date"
 import * as React from "react"
 import {
-    AriaDatePickerProps,
-    DateValue,
-    useDateField,
-    useLocale,
+  AriaDatePickerProps,
+  DateValue,
+  useDateField,
+  useLocale,
 } from "react-aria"
 import { useDateFieldState } from "react-stately"
 
@@ -30,6 +32,9 @@ const datePickerFieldStyles = cva({
 
 const DatePickerField = ({ size = "base", ...props }: DatePickerFieldProps) => {
   const { locale } = useLocale()
+
+  console.log("locale: ", locale) // locale:  en-US
+
   const state = useDateFieldState({
     ...props,
     locale,
@@ -40,7 +45,7 @@ const DatePickerField = ({ size = "base", ...props }: DatePickerFieldProps) => {
   const { fieldProps } = useDateField(props, state, ref)
 
   return (
-    <div ref={ref} className={datePickerFieldStyles({ size })} {...fieldProps}>
+    <div ref={ref} aria-label="Date input" className={datePickerFieldStyles({ size })} {...fieldProps}>
       {state.segments.map((segment, index) => {
         return <DateSegment key={index} segment={segment} state={state} />
       })}

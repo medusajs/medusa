@@ -24,11 +24,12 @@ export const DatePickerClearButton = React.forwardRef<
       ref={ref}
       type={type}
       className={clx(
-        "text-ui-fg-muted rounded-sm outline-none transition-fg",
-        "hover:bg-ui-bg-base-hover",
-        "focus-visible:shadow-borders-interactive-with-active",
+        "text-ui-fg-muted transition-fg flex size-full items-center justify-center outline-none",
+        "hover:bg-ui-button-transparent-hover",
+        "focus-visible:bg-ui-bg-interactive focus-visible:text-ui-fg-on-color",
         className
       )}
+      aria-label="Clear date"
       onKeyDown={stopPropagation}
       {...props}
     >

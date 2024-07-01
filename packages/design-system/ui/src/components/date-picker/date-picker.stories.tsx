@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 import { ComponentPropsWithoutRef } from "react"
+import { Button } from "../button"
+import { Drawer } from "../drawer"
 import { Label } from "../label"
 import { DatePicker } from "./date-picker"
 
@@ -22,16 +24,20 @@ export const Default: Story = {
   },
 }
 
+const today = new Date() // Today
+const oneWeekFromToday = new Date(new Date(today as Date).setDate(today.getDate() + 7)) // Today + 7 days
+
 const ControlledDemo = (args: ComponentPropsWithoutRef<typeof DatePicker>) => {
-  const [startDate, setStartDate] = React.useState<Date | null>(null)
-  const [endDate, setEndDate] = React.useState<Date | null>(null)
+  const [startDate, setStartDate] = React.useState<Date | null>(today)
+  const [endDate, setEndDate] = React.useState<Date | null>(oneWeekFromToday)
 
   return (
-    <div className="grid max-w-[576px] gap-4 md:grid-cols-2 text-ui-fg-subtle">
+    <div className="text-ui-fg-subtle grid max-w-[576px] gap-4 md:grid-cols-2">
       <fieldset className="flex flex-col gap-y-0.5">
-        <Label htmlFor="starts_at">Starts at</Label>
+        <Label id="starts_at:r1:label" htmlFor="starts_at:r1">Starts at</Label>
         <DatePicker
-          name="starts_at"
+          id="starts_at:r1"
+          aria-labelledby="starts_at:r1:label"
           {...args}
           maxValue={endDate || undefined}
           value={startDate}
@@ -39,9 +45,11 @@ const ControlledDemo = (args: ComponentPropsWithoutRef<typeof DatePicker>) => {
         />
       </fieldset>
       <fieldset className="flex flex-col gap-y-0.5">
-        <Label htmlFor="ends_at">Ends at</Label>
+        <Label id="ends_at:r1:label" htmlFor="ends_at:r1">Ends at</Label>
         <DatePicker
+          id="ends_at:r1"
           name="ends_at"
+          aria-labelledby="ends_at:r1:label"
           minValue={startDate || undefined}
           {...args}
           value={endDate}
@@ -55,7 +63,6 @@ const ControlledDemo = (args: ComponentPropsWithoutRef<typeof DatePicker>) => {
 export const Controlled: Story = {
   render: ControlledDemo,
   args: {
-    "aria-label": "Select a date",
     className: "w-[230px]",
   },
 }
@@ -93,6 +100,7 @@ export const WithTime: Story = {
     granularity: "minute",
     "aria-label": "Select a date",
     className: "w-[230px]",
+    value: new Date(),
   },
 }
 
@@ -102,4 +110,28 @@ export const Small: Story = {
     "aria-label": "Select a date",
     className: "w-[230px]",
   },
+}
+
+const InDrawerDemo = (args: ComponentPropsWithoutRef<typeof DatePicker>) => {
+  return (
+    <Drawer>
+      <Drawer.Trigger asChild>
+        <Button size="small">Open Drawer</Button>
+      </Drawer.Trigger>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>Select a date</Drawer.Title>
+        </Drawer.Header>
+        <Drawer.Body>
+          <div className="p-4">
+            <DatePicker {...args} />
+          </div>
+        </Drawer.Body>
+      </Drawer.Content>
+    </Drawer>
+  )
+}
+
+export const InDrawer: Story = {
+  render: InDrawerDemo,
 }

@@ -133,18 +133,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         <Form.Field
           control={form.control}
           name={`${fieldScope}starts_at`}
-          render={({ field: { value, onChange, ref: _ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label>{t("campaigns.fields.start_date")}</Form.Label>
 
                 <Form.Control>
                   <DatePicker
-                    showTimePicker
-                    value={value ?? undefined}
-                    onChange={(v) => {
-                      onChange(v ?? null)
-                    }}
+                    granularity="minute"
+                    shouldCloseOnSelect={false}
                     {...field}
                   />
                 </Form.Control>
@@ -158,16 +155,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         <Form.Field
           control={form.control}
           name={`${fieldScope}ends_at`}
-          render={({ field: { value, onChange, ref: _ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label>{t("campaigns.fields.end_date")}</Form.Label>
 
                 <Form.Control>
                   <DatePicker
-                    showTimePicker
-                    value={value ?? undefined}
-                    onChange={(v) => onChange(v ?? null)}
+                    granularity="minute"
+                    shouldCloseOnSelect={false}
                     {...field}
                   />
                 </Form.Control>

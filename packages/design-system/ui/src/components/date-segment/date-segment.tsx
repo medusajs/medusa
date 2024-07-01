@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { useDateSegment } from "react-aria"
 import { DateFieldState, DateSegment as Segment } from "react-stately"
@@ -27,14 +29,14 @@ const DateSegment = ({ segment, state }: DateSegmentProps) => {
     /**
      * We wrap the segment in a span to prevent the segment from being
      * focused when the user clicks outside of the component.
-     * 
+     *
      * See: https://github.com/adobe/react-spectrum/issues/3164
      */
     <span>
       <div
         ref={ref}
         className={clx(
-          "transition-fg rounded-sm outline-none",
+          "transition-fg outline-none",
           "focus-visible:bg-ui-bg-interactive focus-visible:text-ui-fg-on-color",
           {
             "text-ui-fg-muted uppercase": segment.isPlaceholder,
