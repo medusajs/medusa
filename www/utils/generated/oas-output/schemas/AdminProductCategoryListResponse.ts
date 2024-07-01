@@ -4,16 +4,11 @@
  * description: SUMMARY
  * x-schemaName: AdminProductCategoryListResponse
  * required:
- *   - product_categories
  *   - limit
  *   - offset
  *   - count
+ *   - product_categories
  * properties:
- *   product_categories:
- *     type: array
- *     description: The product category's product categories.
- *     items:
- *       $ref: "#/components/schemas/ProductCategoryResponse"
  *   limit:
  *     type: number
  *     title: limit
@@ -26,6 +21,11 @@
  *     type: number
  *     title: count
  *     description: The product category's count.
+ *   product_categories:
+ *     type: array
+ *     description: The product category's product categories.
+ *     items:
+ *       $ref: "#/components/schemas/AdminProductCategory"
  * 
 */
 

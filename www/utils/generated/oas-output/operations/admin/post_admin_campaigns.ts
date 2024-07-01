@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,11 +69,8 @@
  *           - name
  *           - campaign_identifier
  *           - description
- *           - currency
- *           - budget
  *           - starts_at
  *           - ends_at
- *           - promotions
  *         properties:
  *           name:
  *             type: string
@@ -77,16 +84,12 @@
  *             type: string
  *             title: description
  *             description: The campaign's description.
- *           currency:
- *             type: string
- *             title: currency
- *             description: The campaign's currency.
  *           budget:
  *             type: object
  *             description: The campaign's budget.
  *             required:
  *               - type
- *               - limit
+ *               - currency_code
  *             properties:
  *               type:
  *                 type: string
@@ -97,6 +100,10 @@
  *                 type: number
  *                 title: limit
  *                 description: The budget's limit.
+ *               currency_code:
+ *                 type: string
+ *                 title: currency_code
+ *                 description: The budget's currency code.
  *           starts_at:
  *             type: string
  *             title: starts_at
@@ -128,25 +135,17 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Rafael",
+ *         "name": "Gunner",
  *         "campaign_identifier": "{value}",
  *         "description": "{value}",
- *         "currency": "NZD",
- *         "budget": {
- *           "type": "{value}",
- *           "limit": 1649671080509440
- *         },
- *         "starts_at": "2024-12-08T08:39:28.574Z",
- *         "ends_at": "2024-11-29T15:05:33.749Z",
- *         "promotions": [
- *           {
- *             "id": "id_HXbttvFHpooW0"
- *           }
- *         ]
+ *         "starts_at": "2024-08-24T00:19:14.144Z",
+ *         "ends_at": "2024-10-01T06:47:50.133Z"
  *       }'
  * tags:
  *   - Campaigns
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

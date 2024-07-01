@@ -6,6 +6,7 @@ on:
       - develop
     types:
       - closed
+  workflow_call:
   workflow_dispatch:
     inputs:
       referenceName:
@@ -16,7 +17,7 @@ on:
 jobs:
   references:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'chore/generate-tsdocs') && github.event.pull_request.merged == true)
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' || (startsWith(github.head_ref, 'chore/generate-tsdocs') && github.event.pull_request.merged == true)
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -59,12 +60,12 @@ jobs:
         working-directory: www/utils
 
       - name: Generate References
-        if: ${{ github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' }}
         run: "yarn start generate ${{ github.event.inputs.referenceName }} --merge"
         working-directory: www/utils/packages/typedoc-generate-references
 
       - name: Generate References
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event_name == 'workflow_call' }}
         run: "yarn generate:references"
         working-directory: www/utils
 

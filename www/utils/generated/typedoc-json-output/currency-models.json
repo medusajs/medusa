@@ -1,12 +1,12 @@
 {
-	"id": 185,
+	"id": 2051,
 	"name": "currency-models",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 186,
+			"id": 2052,
 			"name": "Currency",
 			"variant": "declaration",
 			"kind": 32,
@@ -24,14 +24,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 187,
+									"id": 2053,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 188,
+											"id": 2054,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -48,7 +48,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 189,
+											"id": 2055,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -65,7 +65,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 190,
+											"id": 2056,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -82,7 +82,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 191,
+											"id": 2057,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -99,7 +99,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 192,
+											"id": 2058,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -116,7 +116,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 193,
+											"id": 2059,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -137,12 +137,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												188,
-												189,
-												190,
-												191,
-												192,
-												193
+												2054,
+												2055,
+												2056,
+												2057,
+												2058,
+												2059
 											]
 										}
 									]
@@ -151,14 +151,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 194,
+									"id": 2060,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 195,
+											"id": 2061,
 											"name": "code",
 											"variant": "declaration",
 											"kind": 1024,
@@ -175,7 +175,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 196,
+											"id": 2062,
 											"name": "symbol",
 											"variant": "declaration",
 											"kind": 1024,
@@ -192,7 +192,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 197,
+											"id": 2063,
 											"name": "symbol_native",
 											"variant": "declaration",
 											"kind": 1024,
@@ -209,7 +209,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 198,
+											"id": 2064,
 											"name": "name",
 											"variant": "declaration",
 											"kind": 1024,
@@ -226,7 +226,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 199,
+											"id": 2065,
 											"name": "decimal_digits",
 											"variant": "declaration",
 											"kind": 1024,
@@ -243,7 +243,7 @@
 											"defaultValue": "..."
 										},
 										{
-											"id": 200,
+											"id": 2066,
 											"name": "rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -264,12 +264,12 @@
 										{
 											"title": "Properties",
 											"children": [
-												195,
-												196,
-												197,
-												198,
-												199,
-												200
+												2061,
+												2062,
+												2063,
+												2064,
+												2065,
+												2066
 											]
 										}
 									]
@@ -278,14 +278,14 @@
 							{
 								"type": "reflection",
 								"declaration": {
-									"id": 201,
+									"id": 2067,
 									"name": "__type",
 									"variant": "declaration",
 									"kind": 65536,
 									"flags": {},
 									"children": [
 										{
-											"id": 202,
+											"id": 2068,
 											"name": "raw_rounding",
 											"variant": "declaration",
 											"kind": 1024,
@@ -305,7 +305,7 @@
 										{
 											"title": "Properties",
 											"children": [
-												202
+												2068
 											]
 										}
 									]
@@ -332,81 +332,81 @@
 		{
 			"title": "Variables",
 			"children": [
-				186
+				2052
 			]
 		}
 	],
 	"packageName": "@medusajs/currency",
 	"symbolIdMap": {
-		"185": {
+		"2051": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"186": {
+		"2052": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "default"
 		},
-		"187": {
+		"2053": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object"
 		},
-		"188": {
+		"2054": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.code"
 		},
-		"189": {
+		"2055": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol"
 		},
-		"190": {
+		"2056": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.symbol_native"
 		},
-		"191": {
+		"2057": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.name"
 		},
-		"192": {
+		"2058": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.decimal_digits"
 		},
-		"193": {
+		"2059": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "__object.rounding"
 		},
-		"194": {
+		"2060": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
 			"qualifiedName": "__type"
 		},
-		"195": {
+		"2061": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "code"
 		},
-		"196": {
+		"2062": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol"
 		},
-		"197": {
+		"2063": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "symbol_native"
 		},
-		"198": {
+		"2064": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "name"
 		},
-		"199": {
+		"2065": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "decimal_digits"
 		},
-		"200": {
+		"2066": {
 			"sourceFileName": "../../../../packages/modules/currency/src/models/currency.ts",
 			"qualifiedName": "rounding"
 		},
-		"201": {
+		"2067": {
 			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
 			"qualifiedName": "__type"
 		},
-		"202": {
+		"2068": {
 			"sourceFileName": "",
 			"qualifiedName": "raw_rounding"
 		}
@@ -416,7 +416,7 @@
 			"1": "../../../../packages/modules/currency/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 185
+			"1": 2051
 		}
 	}
 }

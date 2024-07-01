@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/number
+sidebar_label: number
+---
+
+import { TypeList } from "docs-ui"
+
+# number Property Method - API Reference
+
+This method defines a number property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  age: model.number(),
+  // ...
+})
+
+export default MyCustom
+```
