@@ -1,12 +1,12 @@
 import { Table } from "docs-ui"
 
 export const metadata = {
-  title: `SendGrid Notification Provider Module`,
+  title: `SendGrid Notification Module Provider`,
 }
 
 # {metadata.title}
 
-The SendGrid Notification Provider Module integrates [SendGrid](https://sendgrid.com) to send emails to users and customers.
+The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid.com) to send emails to users and customers.
 
 ---
 
@@ -20,7 +20,7 @@ The SendGrid Notification Provider Module integrates [SendGrid](https://sendgrid
 
 </Note>
 
-To install the SendGrid Notification Provider Module, run the following command in the directory of your Medusa application:
+To install the SendGrid Notification Module Provider, run the following command in the directory of your Medusa application:
 
 ```bash npm2yarn
 npm install @medusajs/notification-sendgrid
@@ -180,7 +180,7 @@ In this subscriber:
 
 - Resolve the Notification Module's main service. 
 - Use the `create` method of the main service to create a notification to be sent to the specified email.
-- By specifying the `email` channel, the SendGrid Notification Provider Module is used to send the notification.
+- By specifying the `email` channel, the SendGrid Notification Module Provider is used to send the notification.
 - The `template` property of the `create` method's parameter specifies the ID of the template defined in SendGrid.
 - The `data` property allows you to pass data to the template in SendGrid.
 
