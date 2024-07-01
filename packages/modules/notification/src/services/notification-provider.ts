@@ -1,10 +1,12 @@
-import { DAL, NotificationTypes } from "@medusajs/types"
+import { DAL, InferEntityType, NotificationTypes } from "@medusajs/types"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 import { NotificationProvider } from "@models"
 import { NotificationProviderRegistrationPrefix } from "@types"
 
 type InjectedDependencies = {
-  notificationProviderRepository: DAL.RepositoryService
+  notificationProviderRepository: DAL.RepositoryService<
+    InferEntityType<typeof NotificationProvider>
+  >
   [
     key: `${typeof NotificationProviderRegistrationPrefix}${string}`
   ]: NotificationTypes.INotificationProvider
@@ -13,9 +15,14 @@ type InjectedDependencies = {
 export default class NotificationProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
   NotificationProvider
 ) {
-  protected readonly notificationProviderRepository_: DAL.RepositoryService<NotificationProvider>
+  protected readonly notificationProviderRepository_: DAL.RepositoryService<
+    InferEntityType<typeof NotificationProvider>
+  >
   // We can store the providers in a memory since they can only be registered on startup and not changed during runtime
-  protected providersCache: Map<string, NotificationProvider>
+  protected providersCache: Map<
+    string,
+    InferEntityType<typeof NotificationProvider>
+  >
 
   constructor(container: InjectedDependencies) {
     super(container)
@@ -40,7 +47,7 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
 
   async getProviderForChannel(
     channel: string
-  ): Promise<NotificationProvider | undefined> {
+  ): Promise<InferEntityType<typeof NotificationProvider> | undefined> {
     if (!this.providersCache) {
       const providers = await this.notificationProviderRepository_.find()
       this.providersCache = new Map(
@@ -54,7 +61,7 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
   }
 
   async send(
-    provider: NotificationProvider,
+    provider: InferEntityType<typeof NotificationProvider>,
     notification: NotificationTypes.ProviderSendNotificationDTO
   ): Promise<NotificationTypes.ProviderSendNotificationResultsDTO> {
     const providerHandler = this.retrieveProviderRegistration(provider.id)
