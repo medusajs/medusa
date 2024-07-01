@@ -118,8 +118,9 @@ type InferSchemaLinksConfig<T> = T extends DmlEntity<any>
     : InferSchemaPotentialLinksConfig<T, true>
   : never
 
-export type InfersLinksConfig<T extends DmlEntity<any>[]> = {
-  [K in keyof T as T[K] extends DmlEntity<any, infer Config>
-    ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
-    : never]: InferSchemaLinksConfig<T[K]>
-}
+export type InfersLinksConfig<T extends DmlEntity<any>[] = DmlEntity<any>[]> =
+  UnionToIntersection<{
+    [K in keyof T as T[K] extends DmlEntity<any, infer Config>
+      ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+      : never]: InferSchemaLinksConfig<T[K]>
+  }>

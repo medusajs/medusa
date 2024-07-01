@@ -9,7 +9,7 @@ import {
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
-import { isObject, isString, toCamelCase } from "../common"
+import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
@@ -24,7 +24,7 @@ function extractNameAndTableName(nameOrConfig: Config) {
   if (isString(nameOrConfig)) {
     const [schema, ...rest] = nameOrConfig.split(".")
     const name = rest.length ? rest.join(".") : schema
-    result.name = toCamelCase(name)
+    result.name = upperCaseFirst(toCamelCase(name))
     result.tableName = nameOrConfig
   }
 
@@ -39,7 +39,7 @@ function extractNameAndTableName(nameOrConfig: Config) {
     const [schema, ...rest] = potentialName.split(".")
     const name = rest.length ? rest.join(".") : schema
 
-    result.name = toCamelCase(name)
+    result.name = upperCaseFirst(toCamelCase(name))
     result.tableName = nameOrConfig.tableName
   }
 
