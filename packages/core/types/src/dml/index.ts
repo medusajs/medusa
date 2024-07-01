@@ -65,6 +65,11 @@ export type PropertyType<T> = {
  * Options accepted by all the relationships
  */
 export type RelationshipOptions = {
+  /**
+   * The name of the relationship as defined
+   * in the other data model. This is only required
+   * by the `belongsTo` relationship method.
+   */
   mappedBy?: string
 } & Record<string, any>
 
@@ -152,6 +157,10 @@ export type ExtractEntityRelations<
  * relationship.
  */
 export type EntityCascades<Relationships> = {
+  /**
+   * The related models to delete when a record of this data model
+   * is deleted.
+   */
   delete?: Relationships
 }
 
@@ -186,9 +195,23 @@ export type EntityIndex<
   TSchema extends DMLSchema = DMLSchema,
   TWhere = string
 > = {
+  /**
+   * The name of the index. If not provided,
+   * Medusa generates the name.
+   */
   name?: string
+  /**
+   * When enabled, a unique index is created on the specified
+   * properties.
+   */
   unique?: boolean
+  /**
+   * The list of properties to create the index on.
+   */
   on: InferIndexableProperties<IDmlEntity<TSchema>>[]
+  /**
+   * Conditions to restrict which records are indexed.
+   */
   where?: TWhere
 }
 
