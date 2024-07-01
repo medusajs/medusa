@@ -14,7 +14,7 @@ export default function (theme: MarkdownTheme) {
       const md: string[] = []
 
       const { hideInPageTOC } = theme
-      const { reflectionGroupRename = {} } =
+      const { hideTocHeaders, reflectionGroupRename = {} } =
         theme.getFormattingOptionsForLocation()
 
       const isVisible = this.groups?.some((group) =>
@@ -48,7 +48,9 @@ export default function (theme: MarkdownTheme) {
             })
           } else {
             if (!hideInPageTOC || group.allChildrenHaveOwnDocument()) {
-              md.push(`${headingLevel} ${groupTitle}\n\n`)
+              if (!hideTocHeaders) {
+                md.push(`${headingLevel} ${groupTitle}\n\n`)
+              }
               pushGroup(group, md)
               md.push("\n")
             }

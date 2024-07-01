@@ -29,6 +29,7 @@ export type SectionKey =
   | "member_sources_definedIn"
   | "members_group_categories"
   | "members_categories"
+  | "member_returns"
   | "title_reflectionPath"
   | "reflection_comment"
   | "reflection_typeParameters"
@@ -81,6 +82,7 @@ export type FormattingOptionType = {
   startSections?: string[]
   endSections?: string[]
   shouldIncrementAfterStartSections?: boolean
+  hideTocHeaders?: boolean
 }
 
 export declare module "typedoc" {

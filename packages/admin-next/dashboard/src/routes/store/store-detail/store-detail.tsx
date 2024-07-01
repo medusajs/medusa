@@ -17,7 +17,7 @@ export const StoreDetail = () => {
     isPending: isLoading,
     isError,
     error,
-  } = useStore({
+  } = useStore(undefined, {
     initialData,
   })
 

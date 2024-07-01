@@ -25,26 +25,26 @@ You can create a Digital Product Module that introduces the concept of a digital
 
 ---
 
-## Install a File Provider Module
+## Install a File Module Provider
 
-A file provider module handles storage functionalities in Medusa. This includes uploading, retrieving, and downloading files, among other features.
+A file module provider handles storage functionalities in Medusa. This includes uploading, retrieving, and downloading files, among other features.
 
-Use a file provider module to manage your stored digital products.
+Use a file module provider to manage your stored digital products.
 
-During development, you can use the Local File Provider Module, which is installed by default in your store. For production, check out available file provider modules or create your own.
+During development, you can use the Local File Module Provider, which is installed by default in your store. For production, check out available file module providers or create your own.
 
 <CardList items={[
   {
     href: "/architectural-modules/file",
-    title: "File Provider Modules",
-    text: "Check out available file provider modules.",
+    title: "File Module Providers",
+    text: "Check out available file module providers.",
     startIcon: <PuzzleSolid />,
     showLinkIcon: false
   },
   {
     href: "/references/file-provider-module",
-    title: "Create a File Provider Module",
-    text: "Learn how to create a file provider module.",
+    title: "Create a File Module Provider",
+    text: "Learn how to create a file module provider.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -52,27 +52,27 @@ During development, you can use the Local File Provider Module, which is install
 
 ---
 
-## Install a Notification Provider Module
+## Install a Notification Module Provider
 
-A notification provider module handles sending notifications to users and customers.
+A notification module provider handles sending notifications to users and customers.
 
-For digital products, a notification provider module allows you to send the customer an email or another form of notification with a link to download the file they purchased.
+For digital products, a notification module provider allows you to send the customer an email or another form of notification with a link to download the file they purchased.
 
-You can use one of Medusa’s notification provider modules or create your own.
+You can use one of Medusa’s notification module providers or create your own.
 
 {/* TODO add links */}
 
 <CardList items={[
   {
     href: "/architectural-modules/notification",
-    title: "Notification Provider Modules",
-    text: "Check out available official notification provider modules.",
+    title: "Notification Module Providers",
+    text: "Check out available official notification module providers.",
     startIcon: <PuzzleSolid />,
     showLinkIcon: false
   },
   {
     href: "/references/notification-provider-module",
-    title: "Create a Notification Provider Module",
+    title: "Create a Notification Module Provider",
     text: "Learn how to create a custom notification service.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false,
@@ -1057,7 +1057,7 @@ In your customizations, you send requests to the API routes you created to creat
 
 When a customer purchases a digital product, they should receive a link to download it.
 
-You can create a subscriber that listens to the `order.placed` event. In the subscriber, you check for the digital products in the order and obtain the download URLs using the file provider module’s `getPresignedDownloadUrl` method.
+You can create a subscriber that listens to the `order.placed` event. In the subscriber, you check for the digital products in the order and obtain the download URLs using the file module provider’s `getPresignedDownloadUrl` method.
 
 <Note type="soon">
 
@@ -1067,11 +1067,11 @@ The `order.placed` event isn't currently emitted.
 
 <Note>
 
-Following this approach assumes the file provider module you're using handles creating secure pre-signed URLs with an expiration mechanism. Alternatively, create a token on purchase using the API Key Module and create an API route that validates that token.
+Following this approach assumes the file module provider you're using handles creating secure pre-signed URLs with an expiration mechanism. Alternatively, create a token on purchase using the API Key Module and create an API route that validates that token.
 
 </Note>
 
-In the subscriber, you can send a notification, such as an email, to the customer using the notification provider module of your choice. That notification would hold the download links to the products the customer purchased.
+In the subscriber, you can send a notification, such as an email, to the customer using the notification module provider of your choice. That notification would hold the download links to the products the customer purchased.
 
 <Card
   href="!docs!/basics/events-and-subscribers"
@@ -1089,7 +1089,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
 
   </Note>
 
-  Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the installed notification provider module:
+  Here’s an example of a subscriber that retrieves the download links and sends them to the customer using the installed notification module provider:
       
   ```ts title="src/subscribers/handle-order.ts" badgeLabel="Medusa Application" collapsibleLines="1-15" expandButtonLabel="Show Imports"
   import { 
@@ -1168,7 +1168,7 @@ In the subscriber, you can send a notification, such as an email, to the custome
   }
   ```
     
-  The `handleOrderPlaced` subscriber function retrieves the order, loops over its items to find digital products and retrieve their download links, then uses the installed notification provider module to send the email, passing the URLs as a data payload. You can customize the sent data based on your template and your use case.
+  The `handleOrderPlaced` subscriber function retrieves the order, loops over its items to find digital products and retrieve their download links, then uses the installed notification module provider to send the email, passing the URLs as a data payload. You can customize the sent data based on your template and your use case.
 
 </Details> */}
 

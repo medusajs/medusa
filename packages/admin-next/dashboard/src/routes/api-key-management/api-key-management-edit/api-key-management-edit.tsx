@@ -1,7 +1,7 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useApiKey } from "../../../hooks/api/api-keys"
 import { EditApiKeyForm } from "./components/edit-api-key-form"
 

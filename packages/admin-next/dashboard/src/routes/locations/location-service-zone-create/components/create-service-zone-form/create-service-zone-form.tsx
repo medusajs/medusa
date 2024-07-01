@@ -12,7 +12,7 @@ import { SplitView } from "../../../../../components/layout/split-view"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateFulfillmentSetServiceZone } from "../../../../../hooks/api/fulfillment-sets"
 import { GeoZoneForm } from "../../../common/components/geo-zone-form"
 import { FulfillmentSetType } from "../../../common/constants"

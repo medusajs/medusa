@@ -175,7 +175,7 @@ export function reflectionComponentFormatter({
       : getTypeChildren({
           reflectionType: reflection.type!,
           project: project || reflection.project,
-          maxLevel,
+          maxLevel: maxLevel || MarkdownTheme.MAX_LEVEL,
         })
 
     children

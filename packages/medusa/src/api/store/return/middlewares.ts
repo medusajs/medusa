@@ -7,7 +7,7 @@ import { ReturnsParams, StorePostReturnsReqSchema } from "./validators"
 export const storeRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
-    matcher: "/store/returns/create-return",
+    matcher: "/store/returns",
     middlewares: [
       validateAndTransformBody(StorePostReturnsReqSchema),
       validateAndTransformQuery(
