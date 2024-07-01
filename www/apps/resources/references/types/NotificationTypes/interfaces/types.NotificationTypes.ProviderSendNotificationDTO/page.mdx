@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# ProviderSendNotificationDTO
+
+The details of the notification to send.
+
+## Properties
+
+<TypeList types={[{"name":"to","type":"`string`","description":"The recipient of the notification. It can be email, phone number, or username, depending on the channel.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"channel","type":"`string`","description":"The channel through which the notification is sent, such as 'email' or 'sms'","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"template","type":"`string`","description":"The template name in the provider's system.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`null` \\| `Record<string, unknown>`","description":"The data that gets passed over to the provider for rendering the notification.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="ProviderSendNotificationDTO"/>

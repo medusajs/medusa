@@ -7,7 +7,7 @@
  *   - service_zone
  * properties:
  *   service_zone:
- *     $ref: "#/components/schemas/ServiceZoneResponse"
+ *     $ref: "#/components/schemas/AdminServiceZone"
  * 
 */
 

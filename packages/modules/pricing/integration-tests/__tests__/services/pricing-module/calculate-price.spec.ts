@@ -288,6 +288,25 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
         })
 
+        it("calculating prices when listing price sets should return null when there are no prices", async () => {
+          const [newSet] = await service.createPriceSets([{}])
+          const calculatePricesResult = await service.calculatePrices(
+            { id: [newSet.id] },
+            { context: { currency_code: "PLN" } }
+          )
+
+          const priceSetsResult = await service.listPriceSets(
+            {
+              id: [newSet.id],
+              context: { currency_code: "PLN" },
+            },
+            { relations: ["calculated_price"] }
+          )
+
+          expect(calculatePricesResult).toEqual([])
+          expect(priceSetsResult[0].calculated_price).toEqual(null)
+        })
+
         it("should return filled prices when 1 context is present and price is setup for PLN", async () => {
           const priceSetsResult = await service.calculatePrices(
             { id: ["price-set-EUR", "price-set-PLN"] },
@@ -297,28 +316,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
@@ -354,28 +351,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
               calculated_amount: 300,
@@ -410,28 +385,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
               calculated_amount: 1000,
@@ -464,52 +417,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             }
           )
 
-          expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
-              id: "price-set-PLN",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-          ])
+          expect(priceSetsResult).toEqual([])
         })
 
         it("should return filled prices when 2 contexts are present and price is setup", async () => {
@@ -521,28 +429,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
@@ -577,28 +463,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
@@ -673,28 +537,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
           expect(priceSetsResult).toEqual([
             {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
               calculated_amount: 300,
@@ -733,28 +575,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // Currency Code + Region value + customer group id
             {
               id: "price-set-PLN",
@@ -795,28 +615,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // PLN price set is not setup for EUR currency_code so it will default to a null set
             {
               id: "price-set-PLN",
@@ -857,28 +655,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             // PLN price set is not setup for EUR currency_code so it will default to a null set
             {
               id: "price-set-PLN",
@@ -913,52 +689,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             }
           )
 
-          expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-            {
-              id: "price-set-PLN",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
-          ])
+          expect(priceSetsResult).toEqual([])
         })
 
         it("should return filled prices when 2 context is present and prices are setup, but only for one of the contexts", async () => {
@@ -974,28 +705,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceSetsResult).toEqual([
-            {
-              id: "price-set-EUR",
-              is_calculated_price_price_list: false,
-              calculated_amount: null,
-              is_original_price_price_list: false,
-              original_amount: null,
-              currency_code: null,
-              calculated_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-              original_price: {
-                id: null,
-                price_list_id: null,
-                price_list_type: null,
-                min_quantity: null,
-                max_quantity: null,
-              },
-            },
             {
               id: "price-set-PLN",
               is_calculated_price_price_list: false,
@@ -1038,28 +747,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
@@ -1110,28 +797,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
                 calculated_amount: 116,
@@ -1173,28 +838,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
                 calculated_amount: 232,
@@ -1232,28 +875,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
@@ -1296,28 +917,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
                 calculated_amount: 232,
@@ -1358,28 +957,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
                 calculated_amount: 300,
@@ -1419,28 +996,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
@@ -1494,28 +1049,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
@@ -1571,28 +1104,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
                 calculated_amount: 400,
@@ -1645,28 +1156,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: false,
@@ -1774,28 +1263,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
             expect(priceSetsResult).toEqual([
               {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
-              {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
                 calculated_amount: 111,
@@ -1846,28 +1313,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
             )
 
             expect(priceSetsResult).toEqual([
-              {
-                id: "price-set-EUR",
-                is_calculated_price_price_list: false,
-                calculated_amount: null,
-                is_original_price_price_list: false,
-                original_amount: null,
-                currency_code: null,
-                calculated_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-                original_price: {
-                  id: null,
-                  price_list_id: null,
-                  price_list_type: null,
-                  min_quantity: null,
-                  max_quantity: null,
-                },
-              },
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
