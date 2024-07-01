@@ -120,6 +120,7 @@ export function OrderCreateShipmentForm({
                   ))}
 
                   <Button
+                    type="button"
                     onClick={() => append({ tracking_number: "" })}
                     className="self-end"
                     variant="secondary"
