@@ -21,7 +21,7 @@ const DatePickerButton = React.forwardRef<
     <button
       type="button"
       className={clx(
-        "text-ui-fg-muted flex items-center justify-center",
+        "text-ui-fg-muted flex items-center justify-center border-r outline-none transition-fg",
         "disabled:text-ui-fg-disabled",
         {
           "size-7": size === "small",

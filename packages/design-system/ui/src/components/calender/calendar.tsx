@@ -13,6 +13,8 @@ import {
 } from "react-aria"
 import { useCalendarState } from "react-stately"
 
+import { createCalendarDate, getDefaultValue, updateCalendarDate } from "@/utils/calendar"
+
 import { CalendarButton } from "./calendar-button"
 import { CalendarGrid } from "./calendar-grid"
 
@@ -31,11 +33,11 @@ interface CalendarProps
 
 const Calendar = (props: CalendarProps) => {
   const [value, setValue] = React.useState<CalendarDate | null | undefined>(
-    getDefaultValue(props.value, props.defaultValue)
+    () => getDefaultValue(props.value, props.defaultValue)
   )
 
   const { locale } = useLocale()
-  const _props = convertProps(props, setValue)
+  const _props = React.useMemo(() => convertProps(props, setValue), [props])
 
   const state = useCalendarState({
     ..._props,
@@ -49,7 +51,7 @@ const Calendar = (props: CalendarProps) => {
   }, [props.value])
 
   const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useCalendar({ value, ..._props}, state)
+    useCalendar({ value, ..._props }, state)
 
   return (
     <div {...calendarProps} className="flex flex-col gap-y-2">
@@ -103,44 +105,6 @@ function convertProps(
     minValue: minValue ? createCalendarDate(minValue) : minValue,
     maxValue: maxValue ? createCalendarDate(maxValue) : maxValue,
   }
-}
-
-function getDefaultValue(
-  value: Date | null | undefined,
-  defaultValue: Date | null | undefined
-) {
-  if (value) {
-    return createCalendarDate(value)
-  }
-
-  if (defaultValue) {
-    return createCalendarDate(defaultValue)
-  }
-
-  return null
-}
-
-/**
- * Create a CalendarDate object from a Date object. The month is using a 1-based index in CalendarDate,
- * while Date object uses a 0-based index.
- * @returns The created CalendarDate object.
- */
-function createCalendarDate(date: Date) {
-  return new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate())
-}
-
-function updateCalendarDate(date: CalendarDate | null | undefined, value: Date) {
-  if (!date) {
-    return createCalendarDate(value)
-  }
-
-  date.set({
-    day: value.getDate(),
-    month: value.getMonth() + 1,
-    year: value.getFullYear(),
-  })
-
-  return date
 }
 
 export { Calendar }

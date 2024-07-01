@@ -21,11 +21,11 @@ export const Default: Story = {
 }
 
 const ControlledDemo = (args: ComponentPropsWithoutRef<typeof Calendar>) => {
-  const [date, setDate] = React.useState<Date | null>(null)
+  const [date, setDate] = React.useState<Date | null>(new Date())
 
   return (
     <div>
-      <Calendar value={date} onChange={setDate} {...args} />
+      <Calendar {...args} value={date} onChange={setDate} />
       <div className="flex items-center justify-between">
         <pre className="font-mono txt-compact-small">{date ? date.toDateString() : "null"}</pre>
         <Button variant="secondary" size="small" onClick={() => setDate(null)}>Reset</Button>

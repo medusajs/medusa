@@ -97,8 +97,6 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.6",
-    "@react-aria/datepicker": "^3.5.0",
-    "@react-stately/datepicker": "^3.5.0",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.3",
     "cva": "1.0.0-beta.1",
@@ -107,7 +105,6 @@
     "prismjs": "^1.29.0",
     "react-aria": "^3.33.1",
     "react-currency-input-field": "^3.6.11",
-    "react-day-picker": "^8.8.0",
     "react-stately": "^3.31.1",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.1"
