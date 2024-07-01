@@ -4,11 +4,6 @@ curl -X POST '{backend_url}/admin/price-lists' \
 --data-raw '{
   "title": "{value}",
   "description": "{value}",
-  "prices": [
-    {
-      "currency_code": "{value}",
-      "amount": 1270314195484672,
-      "variant_id": "{value}"
-    }
-  ]
+  "starts_at": "{value}",
+  "ends_at": "{value}"
 }'

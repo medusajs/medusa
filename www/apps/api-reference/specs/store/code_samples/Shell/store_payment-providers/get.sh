@@ -1,0 +1,1 @@
+curl '{backend_url}/store/payment-providers'

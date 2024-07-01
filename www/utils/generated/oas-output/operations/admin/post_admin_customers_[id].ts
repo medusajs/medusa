@@ -21,12 +21,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -45,12 +51,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,41 +69,7 @@
  *   content:
  *     application/json:
  *       schema:
- *         type: object
- *         description: SUMMARY
- *         required:
- *           - email
- *           - company_name
- *           - first_name
- *           - last_name
- *           - phone
- *           - metadata
- *         properties:
- *           email:
- *             type: string
- *             title: email
- *             description: The customer's email.
- *             format: email
- *           company_name:
- *             type: string
- *             title: company_name
- *             description: The customer's company name.
- *           first_name:
- *             type: string
- *             title: first_name
- *             description: The customer's first name.
- *           last_name:
- *             type: string
- *             title: last_name
- *             description: The customer's last name.
- *           phone:
- *             type: string
- *             title: phone
- *             description: The customer's phone.
- *           metadata:
- *             type: object
- *             description: The customer's metadata.
- *             properties: {}
+ *         $ref: "#/components/schemas/AdminUpdateCustomer"
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -102,7 +78,7 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "email": "Esteban24@hotmail.com",
+ *         "email": "Daren_Rodriguez-Rutherford93@gmail.com",
  *         "company_name": "{value}",
  *         "first_name": "{value}",
  *         "last_name": "{value}",
@@ -117,7 +93,13 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminCustomerResponse"
+ *           type: object
+ *           description: SUMMARY
+ *           required:
+ *             - customer
+ *           properties:
+ *             customer:
+ *               $ref: "#/components/schemas/AdminCustomer"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
