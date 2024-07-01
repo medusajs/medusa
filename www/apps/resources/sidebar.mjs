@@ -276,7 +276,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   {
                     title: "Data Models",
                     hasTitleStyling: true,
-                    autogenerate_path: "/references/currency_models/classes",
+                    autogenerate_path: "/references/currency_models/variables",
                   },
                 ],
               },
@@ -2130,6 +2130,44 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
+      // {
+      //   path: "/references/data-model",
+      //   title: "Data Model API",
+      //   childSidebarTitle: "Data Model API Reference",
+      //   isChildSidebar: true,
+      //   children: [
+      //     {
+      //       path: "/references/data-model/define",
+      //       title: "Define Method",
+      //       hasTitleStyling: true,
+      //     },
+      //     {
+      //       path: "/references/data-model/property-types",
+      //       title: "Property Types",
+      //       hasTitleStyling: true,
+      //       autogenerate_path: "/references/dml/Property_Types/methods",
+      //     },
+      //     {
+      //       path: "/references/data-model/relationship-methods",
+      //       title: "Relationship Methods",
+      //       hasTitleStyling: true,
+      //       autogenerate_path: "/references/dml/Relationship_Methods/methods",
+      //     },
+      //     {
+      //       path: "/references/data-model/model-methods",
+      //       title: "Model Methods",
+      //       hasTitleStyling: true,
+      //       autogenerate_path: "/references/dml/Model_Methods/methods",
+      //     },
+      //     {
+      //       path: "/references/data-model/property-configuration",
+      //       title: "Property Configuration Methods",
+      //       hasTitleStyling: true,
+      //       autogenerate_path:
+      //         "/references/dml/Property_Configuration_Methods/methods",
+      //     },
+      //   ],
+      // },
     ],
   },
   {

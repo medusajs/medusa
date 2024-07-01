@@ -9,13 +9,11 @@ import {
   CreatePriceListDTO,
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
-  CreateRuleTypeDTO,
   FilterablePriceListProps,
   FilterablePriceListRuleProps,
   FilterablePriceProps,
   FilterablePriceRuleProps,
   FilterablePriceSetProps,
-  FilterableRuleTypeProps,
   PriceDTO,
   PriceListDTO,
   PriceListRuleDTO,
@@ -24,13 +22,11 @@ import {
   PricingContext,
   PricingFilters,
   RemovePriceListRulesDTO,
-  RuleTypeDTO,
   SetPriceListRulesDTO,
   UpdatePriceListDTO,
   UpdatePriceListPricesDTO,
   UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
-  UpdateRuleTypeDTO,
   UpsertPriceSetDTO,
 } from "./common"
 
@@ -284,10 +280,6 @@ export interface IPricingModuleService extends IModuleService {
    *
    * ```ts
    * const priceSet = await pricingModuleService.createPriceSets({
-   *   rules: [
-   *     { rule_attribute: "region_id" },
-   *     { rule_attribute: "city" },
-   *   ],
    *   prices: [
    *     {
    *       amount: 300,
@@ -351,10 +343,6 @@ export interface IPricingModuleService extends IModuleService {
    *   },
    *   // price set with rules
    *   {
-   *     rules: [
-   *       { rule_attribute: "region_id" },
-   *       { rule_attribute: "city" },
-   *     ],
    *     prices: [
    *       {
    *         amount: 300,
@@ -404,10 +392,6 @@ export interface IPricingModuleService extends IModuleService {
    *       },
    *     ],
    *   },
-   *   {
-   *     id: "pset_123",
-   *     rules: [{ rule_attribute: "region_id" }],
-   *   },
    * ])
    */
   upsertPriceSets(
@@ -425,7 +409,7 @@ export interface IPricingModuleService extends IModuleService {
    * @example
    * const priceSet = await pricingModuleService.upsertPriceSets({
    *   id: "pset_123",
-   *   rules: [{ rule_attribute: "region_id" }],
+   *   prices: [{ amount: 100, currency_code: "USD" }],
    * })
    */
   upsertPriceSets(
@@ -445,7 +429,7 @@ export interface IPricingModuleService extends IModuleService {
    * const priceSet = await pricingModuleService.updatePriceSets(
    *   "pset_123",
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *      prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
@@ -469,7 +453,7 @@ export interface IPricingModuleService extends IModuleService {
    *     id: ["pset_123", "pset_321"],
    *   },
    *   {
-   *     rules: [{ rule_attribute: "region_id" }],
+   *     prices: [{ amount: 100, currency_code: "USD" }],
    *   }
    * )
    */
@@ -592,215 +576,6 @@ export interface IPricingModuleService extends IModuleService {
     data: AddPricesDTO[],
     sharedContext?: Context
   ): Promise<PriceSetDTO[]>
-
-  /**
-   * This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
-   *
-   * @param {string} id - The ID of the rule type to retrieve.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO>} The retrieved rule type.
-   *
-   * @example
-   * A simple example that retrieves a rule type by its code:
-   *
-   * ```ts
-   * const ruleType =
-   *   await pricingModuleService.retrieveRuleType("rul-typ_123")
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * const ruleType = await pricingModuleService.retrieveRuleType(
-   *   "rul-typ_123",
-   *   {
-   *     relations: ["price_sets"],
-   *   }
-   * )
-   * ```
-   */
-  retrieveRuleType(
-    id: string,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO>
-
-  /**
-   * This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
-   *
-   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of rule types.
-   *
-   * @example
-   *
-   * To retrieve a list of rule types using their IDs:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes({
-   *   id: ["rul-typ_123", "rul-typ_321"],
-   * })
-   * ```
-   *
-   * To specify relations that should be retrieved:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes(
-   *   {
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   },
-   *   {
-   *     relations: ["price_sets"],
-   *   }
-   * )
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * const ruleTypes = await pricingModuleService.listRuleTypes(
-   *   {
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   },
-   *   {
-   *     relations: ["price_sets"],
-   *     take: 20,
-   *     skip: 2,
-   *   }
-   * )
-   * ```
-   */
-  listRuleTypes(
-    filters?: FilterableRuleTypeProps,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
-   *
-   * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config -
-   * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<[RuleTypeDTO[], number]>} The list of rule types along with their total count.
-   *
-   * @example
-   *
-   * To retrieve a list of rule types using their IDs:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes({
-   *     id: ["rul-typ_123", "rul-typ_321"],
-   *   })
-   * ```
-   *
-   * To specify attributes that should be retrieved within the rule types:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes(
-   *     {
-   *       id: ["rul-typ_123", "rul-typ_321"],
-   *     },
-   *     {
-   *       relations: ["price_sets"],
-   *     }
-   *   )
-   * ```
-   *
-   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   *
-   * ```ts
-   * const [ruleTypes, count] =
-   *   await pricingModuleService.listAndCountRuleTypes(
-   *     {
-   *       id: ["rul-typ_123", "rul-typ_321"],
-   *     },
-   *     {
-   *       relations: ["price_sets"],
-   *       take: 20,
-   *       skip: 2,
-   *     }
-   *   )
-   * ```
-   */
-  listAndCountRuleTypes(
-    filters?: FilterableRuleTypeProps,
-    config?: FindConfig<RuleTypeDTO>,
-    sharedContext?: Context
-  ): Promise<[RuleTypeDTO[], number]>
-
-  /**
-   * This method is used to create new rule types.
-   *
-   * @param {CreateRuleTypeDTO[]} data - The rule types to create.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of created rule types.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.createRuleTypes([
-   *   {
-   *     name: "Region",
-   *     rule_attribute: "region_id",
-   *   },
-   *   {
-   *     name: "Customer Group",
-   *     rule_attribute: "customer_group_id",
-   *   },
-   * ])
-   */
-  createRuleTypes(
-    data: CreateRuleTypeDTO[],
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to update existing rule types with the provided data.
-   *
-   * @param {UpdateRuleTypeDTO[]} data - The rule types to update, each having the attributes that should be updated in a rule type.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<RuleTypeDTO[]>} The list of updated rule types.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.updateRuleTypes([
-   *   {
-   *     id: "rul-typ_123",
-   *     name: "Region",
-   *   },
-   *   {
-   *     id: "rul-typ_321",
-   *     name: "Customer Group",
-   *   },
-   * ])
-   */
-  updateRuleTypes(
-    data: UpdateRuleTypeDTO[],
-    sharedContext?: Context
-  ): Promise<RuleTypeDTO[]>
-
-  /**
-   * This method is used to delete rule types based on the provided IDs.
-   *
-   * @param {string[]} ruleTypeIds - The IDs of the rule types to delete.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves once the rule types are deleted.
-   *
-   * @example
-   * const ruleTypes = await pricingModuleService.deleteRuleTypes([
-   *   "rul-typ_123",
-   *   "rul-typ_321",
-   * ])
-   */
-  deleteRuleTypes(ruleTypeIds: string[], sharedContext?: Context): Promise<void>
 
   /**
    * This method is used to retrieve a paginated list of prices based on optional filters and configuration.
@@ -1119,7 +894,7 @@ export interface IPricingModuleService extends IModuleService {
    *   await pricingModuleService.createPriceRules([
    *     {
    *       value: "VIP",
-   *       rule_type_id: "rul-typ_123",
+   *       attribute: "customer_group",
    *       price_set_id: "pset_123",
    *     },
    *   ])
