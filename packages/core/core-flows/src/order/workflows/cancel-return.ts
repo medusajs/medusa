@@ -56,9 +56,9 @@ const validateOrder = createStep(
   }
 )
 
-export const cancelOrderWorkflowId = "cancel-order-return"
-export const cancelOrderWorkflow = createWorkflow(
-  cancelOrderWorkflowId,
+export const cancelReturnWorkflowId = "cancel-return-return"
+export const cancelReturnWorkflow = createWorkflow(
+  cancelReturnWorkflowId,
   (
     input: WorkflowData<OrderWorkflow.CancelReturnWorkflowInput>
   ): WorkflowData<void> => {

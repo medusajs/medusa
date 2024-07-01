@@ -1,31 +1,20 @@
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { cancelReturnWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
+import { AdminPostCancelReturnReqSchemaType } from "../../validators"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const input = req.validatedBody as AdminPostCancelReturnReqSchemaType
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "return",
-    variables: {
-      filters: {
-        ...req.filterableFields,
-      },
-    },
-    fields: req.remoteQueryConfig.fields,
+  const workflow = cancelReturnWorkflow(req.scope)
+  const { result } = await workflow.run({
+    input,
   })
 
-  const [orderReturn] = await remoteQuery(queryObject)
-
-  res.json({
-    return: orderReturn,
-  })
+  res.status(200).json({ return: result })
 }

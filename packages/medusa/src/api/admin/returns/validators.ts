@@ -70,3 +70,12 @@ export const AdminPostReceiveReturnsReqSchema = z.object({
 export type AdminPostReceiveReturnsReqSchemaType = z.infer<
   typeof AdminPostReceiveReturnsReqSchema
 >
+
+export const AdminPostCancelReturnReqSchema = z.object({
+  return_id: z.string(),
+  no_notification: z.boolean().optional(),
+  internal_note: z.string().nullish(),
+})
+export type AdminPostCancelReturnReqSchemaType = z.infer<
+  typeof AdminPostReceiveReturnsReqSchema
+>
