@@ -80,7 +80,7 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
  *   test: model.text(),
  * })
  *
- * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'user', car_id: 'car', car_number_plate: 'car' }
+ * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'User', car_number_plate: 'Car' }
  *
  */
 export type InferLinkableKeys<T extends DmlEntity<any>[]> = UnionToIntersection<
