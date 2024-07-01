@@ -808,12 +808,6 @@ medusaIntegrationTestRunner({
           //   },
           //   async () => {
           //     const variantId = baseProduct.variants[0].id
-          //     await pricingService.createRuleTypes([
-          //       {
-          //         name: "Region ID",
-          //         rule_attribute: "region_id",
-          //       },
-          //     ])
           //     const priceSet = await createVariantPriceSet({
           //       container,
           //       variantId,
@@ -1228,16 +1222,6 @@ medusaIntegrationTestRunner({
         })
 
         it("creates a product variant with price rules", async () => {
-          await api.post(
-            `/admin/pricing/rule-types`,
-            {
-              name: "Region",
-              rule_attribute: "region_id",
-              default_priority: 1,
-            },
-            adminHeaders
-          )
-
           const response = await api.post(
             "/admin/products",
             {
