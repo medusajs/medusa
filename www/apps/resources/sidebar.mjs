@@ -276,7 +276,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   {
                     title: "Data Models",
                     hasTitleStyling: true,
-                    autogenerate_path: "/references/currency_models/classes",
+                    autogenerate_path: "/references/currency_models/variables",
                   },
                 ],
               },
