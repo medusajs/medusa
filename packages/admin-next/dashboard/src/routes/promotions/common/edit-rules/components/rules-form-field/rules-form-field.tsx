@@ -78,39 +78,30 @@ export const RulesFormField = ({
     }
 
     if (ruleType === "rules" && !fields.length) {
+      form.resetField("rules")
+
       replace(generateRuleAttributes(rules) as any)
     }
 
-    if (ruleType === "rules" && promotionType === "standard") {
+    if (ruleType === "buy-rules" && !fields.length) {
       form.resetField("application_method.buy_rules")
-      form.resetField("application_method.target_rules")
-    }
-
-    if (
-      ["buy-rules", "target-rules"].includes(ruleType) &&
-      promotionType === "standard"
-    ) {
-      form.resetField(scope)
-      replace([])
-    }
-
-    if (
-      ["buy-rules", "target-rules"].includes(ruleType) &&
-      promotionType === "buyget"
-    ) {
-      form.resetField(scope)
-      const rulesToAppend = promotion?.id
-        ? rules
-        : [...rules, requiredProductRule]
+      const rulesToAppend =
+        promotion?.id || promotionType === "standard"
+          ? rules
+          : [...rules, requiredProductRule]
 
       replace(generateRuleAttributes(rulesToAppend) as any)
-
-      return
     }
 
-    form.resetField(scope)
+    if (ruleType === "target-rules" && !fields.length) {
+      form.resetField("application_method.target_rules")
+      const rulesToAppend =
+        promotion?.id || promotionType === "standard"
+          ? rules
+          : [...rules, requiredProductRule]
 
-    replace(generateRuleAttributes(rules) as any)
+      replace(generateRuleAttributes(rulesToAppend) as any)
+    }
   }, [promotionType, isLoading])
 
   return (
