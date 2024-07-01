@@ -25,10 +25,10 @@ import {
   BaseMethods,
   EntitiesConfigTemplate,
   ExtractKeysFromConfig,
-  MedusaServiceReturnType,
   ModelConfigurationsToConfigTemplate,
   TEntityEntries,
 } from "./types/medusa-service"
+import { DmlEntity } from "../dml"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -77,8 +77,31 @@ export const MedusaServiceSymbol = Symbol.for("MedusaServiceSymbol")
  */
 export function isMedusaService(
   value: any
-): value is AbstractModuleService<any> {
+): value is MedusaServiceReturnType<any> {
   return value && value?.prototype[MedusaServiceSymbol]
+}
+
+// TODO: rework that so the links are properly typed and used in the module exports.
+// For now lets focus on the runtime part, please do not touch too much this part :)
+type InferDmlFromConfig<T> = {
+  [K in keyof T as T[K] extends { dml: any }
+    ? K
+    : K extends DmlEntity<any>
+    ? K
+    : never]: T[K] extends {
+    dml: infer DML
+  }
+    ? DML extends DmlEntity<any>
+      ? DML
+      : never
+    : T[K] extends DmlEntity<any>
+    ? T[K]
+    : never
+}
+
+export type MedusaServiceReturnType<EntitiesConfig extends Record<any, any>> = {
+  new (...args: any[]): AbstractModuleService<EntitiesConfig>
+  $dmlObjects: InferDmlFromConfig<EntitiesConfig>[keyof InferDmlFromConfig<EntitiesConfig>][]
 }
 
 /**
@@ -105,8 +128,8 @@ export function isMedusaService(
  * @param entityNameToLinkableKeysMap
  */
 export function MedusaService<
-  EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
-  TEntities extends TEntityEntries<
+  const EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
+  const TEntities extends TEntityEntries<
     ExtractKeysFromConfig<EntitiesConfig>
   > = TEntityEntries<ExtractKeysFromConfig<EntitiesConfig>>
 >(
@@ -338,12 +361,6 @@ export function MedusaService<
   }
 
   class AbstractModuleService_ {
-    declare $dmlObjects: MedusaServiceReturnType<
-      EntitiesConfig extends { __empty: any }
-        ? ModelConfigurationsToConfigTemplate<TEntities>
-        : EntitiesConfig
-    >["$dmlObjects"];
-
     [MedusaServiceSymbol] = true
 
     static [MedusaServiceDmlObjectSymbolFunction] = Object.values(

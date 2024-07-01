@@ -22,7 +22,7 @@ type InjectedDependencies = {
 
 export default class CurrencyModuleService
   extends MedusaService<{
-    Currency: { dto: CurrencyTypes.CurrencyDTO }
+    Currency: { dto: CurrencyTypes.CurrencyDTO; dml: typeof Currency }
   }>({ Currency }, entityNameToLinkableKeysMap)
   implements ICurrencyModuleService
 {

@@ -40,7 +40,11 @@ export type EntitiesConfigTemplate = { [key: string]: ModelDTOConfig }
 export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
   [Key in keyof T]: {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
-    dml: T[Key] extends { dml: infer DML } ? DML : never
+    dml: T[Key] extends { dml: infer DML }
+      ? DML
+      : T[Key] extends DmlEntity<any>
+      ? T[Key]
+      : never
     create: any
     update: any
     singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
@@ -219,28 +223,3 @@ export type AbstractModuleService<
     ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
   }
 }*/
-
-// TODO: rework that so the links are properly typed and used in the module exports.
-// For now lets focus on the runtime part, please do not touch too much this part :)
-type InferDmlFromConfig<T> = {
-  [K in keyof T as T[K] extends { dml: any }
-    ? K
-    : K extends DmlEntity<any>
-    ? K
-    : never]: T[K] extends {
-    dml: infer DML
-  }
-    ? DML extends DmlEntity<infer Schema>
-      ? DmlEntity<Schema>
-      : never
-    : T[K] extends DmlEntity<any>
-    ? T[K]
-    : never
-}
-
-export type MedusaServiceReturnType<
-  EntitiesConfig extends Record<string, any>
-> = {
-  new (...args: any[]): AbstractModuleService<EntitiesConfig>
-  $dmlObjects: InferDmlFromConfig<EntitiesConfig>[keyof InferDmlFromConfig<EntitiesConfig>]
-}

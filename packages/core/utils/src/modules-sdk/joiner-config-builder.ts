@@ -256,7 +256,7 @@ export function buildLinkableKeysFromMikroOrmObjects(
  */
 export function buildLinkConfigFromDmlObjects<const T extends DmlEntity<any>[]>(
   dmlObjects: T = [] as unknown as T
-): InfersLinksConfig<T> & Record<any, any> {
+): InfersLinksConfig<T> {
   const linkConfig = {} as InfersLinksConfig<T>
 
   for (const dml of dmlObjects) {
