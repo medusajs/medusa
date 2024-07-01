@@ -1328,10 +1328,10 @@ export default class PricingModuleService
     config: FindConfig<PricingTypes.PriceSetDTO> | undefined
   ) {
     return {
-      ...config,
       options: {
         populateWhere: { prices: { price_list_id: null } },
       },
+      ...config,
     }
   }
 }
