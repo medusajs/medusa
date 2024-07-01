@@ -64,6 +64,14 @@ async function serveProductionBuild(app: Express, options: IntializedOptions) {
 
   const adminRoute = await serve(options)
 
+  app.get("/", (req, res, next) => {
+    if (req.get("accept")?.includes("text/html")) {
+      res.redirect(options.path)
+      return
+    }
+    next()
+  })
+
   app.use(options.path, adminRoute)
 
   return app
