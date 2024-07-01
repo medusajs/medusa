@@ -523,6 +523,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                 title: "Return",
               },
               {
+                path: "/commerce-modules/order/exchange",
+                title: "Exchange",
+              },
+              {
+                path: "/commerce-modules/order/claim",
+                title: "Claim",
+              },
+              {
                 path: "/commerce-modules/order/relations-to-other-modules",
                 title: "Relations to Other Modules",
               },

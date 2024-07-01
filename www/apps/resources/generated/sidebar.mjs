@@ -2362,6 +2362,20 @@ export const generatedSidebar = [
               {
                 "loaded": true,
                 "isPathHref": true,
+                "path": "/commerce-modules/order/exchange",
+                "title": "Exchange",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/commerce-modules/order/claim",
+                "title": "Claim",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
                 "path": "/commerce-modules/order/relations-to-other-modules",
                 "title": "Relations to Other Modules",
                 "children": []
