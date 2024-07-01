@@ -37,11 +37,7 @@ const Navbar = () => {
         setMobileSidebarOpen,
         mobileSidebarOpen,
       }}
-      additionalActionsBefore={
-        <>
-          {process.env.NEXT_PUBLIC_VERSIONING === "true" && <VersionSwitcher />}
-        </>
-      }
+      additionalActionsBefore={<VersionSwitcher />}
       additionalActionsAfter={<FeedbackModal />}
       isLoading={isLoading}
     />
