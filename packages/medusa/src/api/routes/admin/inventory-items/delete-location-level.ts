@@ -6,12 +6,12 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "DeleteInventoryItemsInventoryIteLocationLevelsLocation"
- * summary: "Delete a Location Level"
- * description: "Delete a location level of an Inventory Item."
+ * summary: "Delete a Inventory Level"
+ * description: "Delete a inventory level of an Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (path) location_id=* {string} The ID of the location.
+ *   - (path) location_id=* {string} The ID of the inventory level.
  * x-codegen:
  *   method: deleteLocationLevel
  * x-codeSamples:

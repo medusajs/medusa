@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostInventoryItemsItemLocationLevelsLevelReq {
   /**
-   * the total stock quantity of an inventory item at the given location ID
+   * the total stock quantity of an inventory item at the specified inventory level
    */
   stocked_quantity?: number
   /**
-   * the incoming stock quantity of an inventory item at the given location ID
+   * the incoming stock quantity of an inventory item at the specified inventory level
    */
   incoming_quantity?: number
 }
