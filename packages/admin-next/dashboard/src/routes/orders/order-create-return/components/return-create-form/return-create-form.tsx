@@ -55,7 +55,7 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
   const [isShippingPriceEdit, setIsShippingPriceEdit] = useState(false)
   const [customShippingAmount, setCustomShippingAmount] = useState(0)
   const [inventoryMap, setInventoryMap] = useState<
-    Record<string, LevelWithAvailability[]>
+    Record<string, InventoryLevelDTO[]>
   >({})
 
   const { return_reasons = [] } = useReturnReasons({ fields: "+label" })
@@ -72,7 +72,14 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
     /**
      * TODO: reason selection once Return reason settings are added
      */
-    defaultValues: { items: [] },
+    defaultValues: {
+      items: [],
+      note: "",
+      option_id: "",
+      location_id: "",
+      reason_id: "",
+      send_notification: false,
+    },
     resolver: zodResolver(ReturnCreateSchema),
   })
 
@@ -112,6 +119,8 @@ export const ReturnCreateForm = ({ order }: ReturnCreateFormProps) => {
           reason_id: data.reason_id,
         })),
       })
+
+      handleSuccess()
     } catch (e) {
       toast.error(t("general.error"), {
         description: e.message,
