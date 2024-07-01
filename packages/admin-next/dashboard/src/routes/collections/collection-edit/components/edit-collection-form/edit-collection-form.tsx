@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
+import { HttpTypes } from "@medusajs/types"
 import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateCollection } from "../../../../../hooks/api/collections"
-import { HttpTypes } from "@medusajs/types"
 
 type EditCollectionFormProps = {
   collection: HttpTypes.AdminCollection

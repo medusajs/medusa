@@ -46,16 +46,8 @@ medusaIntegrationTestRunner({
           },
         ])
 
-        await pricingModule.createRuleTypes([
-          {
-            name: "customer_group_id",
-            rule_attribute: "customer_group_id",
-          },
-        ])
-
         const [priceSet1, priceSet2] = await pricingModule.createPriceSets([
           {
-            rules: [{ rule_attribute: "customer_group_id" }],
             prices: [
               {
                 amount: 3000,
@@ -71,7 +63,6 @@ medusaIntegrationTestRunner({
             ],
           },
           {
-            rules: [{ rule_attribute: "customer_group_id" }],
             prices: [
               {
                 amount: 400,

@@ -46,6 +46,7 @@ export const DataTableSearch = ({
 
   return (
     <Input
+      autoComplete="off"
       name="q"
       type="search"
       size="small"

@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button, Input } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -8,9 +9,8 @@ import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
-import { HttpTypes } from "@medusajs/types"
 
 type ProductAttributesFormProps = {
   product: HttpTypes.AdminProduct

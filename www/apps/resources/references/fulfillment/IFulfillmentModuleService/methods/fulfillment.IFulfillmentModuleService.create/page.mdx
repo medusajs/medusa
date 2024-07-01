@@ -17,7 +17,7 @@ This method creates fulfillment sets.
 ### Example
 
 ```ts
-const fulfillmentSets = await fulfillmentModuleService.createFulfillmentSets(
+const fulfillmentSets = await fulfillmentModuleService.create(
   [
     {
       name: "Shipping",
@@ -46,7 +46,7 @@ This method creates a fulfillment set.
 ### Example
 
 ```ts
-const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
+const fulfillmentSet = await fulfillmentModuleService.create({
   name: "Shipping",
   type: "default",
 })

@@ -2,7 +2,7 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useCampaigns } from "../../../hooks/api/campaigns"
 import { usePromotion } from "../../../hooks/api/promotions"
 import { AddCampaignPromotionForm } from "./components/add-campaign-promotion-form"

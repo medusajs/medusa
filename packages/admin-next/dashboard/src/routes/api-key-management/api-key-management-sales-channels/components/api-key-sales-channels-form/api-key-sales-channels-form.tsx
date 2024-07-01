@@ -14,7 +14,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useBatchAddSalesChannelsToApiKey } from "../../../../../hooks/api/api-keys"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"

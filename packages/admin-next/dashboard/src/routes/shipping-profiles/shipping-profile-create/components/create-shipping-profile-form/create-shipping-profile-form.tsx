@@ -8,7 +8,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateShippingProfile } from "../../../../../hooks/api/shipping-profiles"
 
 const CreateShippingOptionsSchema = zod.object({

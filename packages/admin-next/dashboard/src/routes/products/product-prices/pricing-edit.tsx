@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HttpTypes } from "@medusajs/types"
 import { Button } from "@medusajs/ui"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import { HttpTypes } from "@medusajs/types"
 
-import { RouteFocusModal, useRouteModal } from "../../../components/route-modal"
+import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { useUpdateProductVariantsBatch } from "../../../hooks/api/products"
-import { VariantPricingForm } from "../common/variant-pricing-form"
+import { useRegions } from "../../../hooks/api/regions"
 import { castNumber } from "../../../lib/cast-number"
-import { useRegions } from "../../../hooks/api/regions.tsx"
-import { useMemo } from "react"
+import { VariantPricingForm } from "../common/variant-pricing-form"
 
 export const UpdateVariantPricesSchema = zod.object({
   variants: zod.array(

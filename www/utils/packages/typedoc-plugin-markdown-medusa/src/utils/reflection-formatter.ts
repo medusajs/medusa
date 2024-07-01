@@ -2,6 +2,7 @@ import {
   Comment,
   DeclarationReflection,
   ProjectReflection,
+  ReferenceType,
   ReflectionKind,
   ReflectionType,
 } from "typedoc"
@@ -15,6 +16,7 @@ import {
   stripLineBreaks,
 } from "utils"
 import { MarkdownTheme } from "../theme"
+import { getDmlProperties, isDmlEntity } from "utils"
 
 const ALLOWED_KINDS: ReflectionKind[] = [
   ReflectionKind.EnumMember,
@@ -153,7 +155,18 @@ export function reflectionComponentFormatter({
 
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if (
+  if (reflection.variant === "declaration" && isDmlEntity(reflection)) {
+    componentItem.children = getDmlProperties(
+      reflection.type as ReferenceType
+    ).map((childItem) =>
+      reflectionComponentFormatter({
+        reflection: childItem,
+        level: level + 1,
+        maxLevel,
+        project,
+      })
+    )
+  } else if (
     (reflection.type || hasChildren) &&
     level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
@@ -162,7 +175,7 @@ export function reflectionComponentFormatter({
       : getTypeChildren({
           reflectionType: reflection.type!,
           project: project || reflection.project,
-          maxLevel,
+          maxLevel: maxLevel || MarkdownTheme.MAX_LEVEL,
         })
 
     children

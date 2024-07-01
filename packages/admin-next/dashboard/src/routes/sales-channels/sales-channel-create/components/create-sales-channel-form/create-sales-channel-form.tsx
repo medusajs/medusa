@@ -16,7 +16,7 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateSalesChannel } from "../../../../../hooks/api/sales-channels"
 
 const CreateSalesChannelSchema = zod.object({

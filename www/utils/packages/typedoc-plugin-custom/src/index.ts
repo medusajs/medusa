@@ -8,6 +8,9 @@ import { load as signatureModifierPlugin } from "./signature-modifier"
 import { MermaidDiagramGenerator } from "./mermaid-diagram-generator"
 import { load as parentIgnorePlugin } from "./parent-ignore"
 import { GenerateNamespacePlugin } from "./generate-namespace"
+import { DmlRelationsResolver } from "./dml-relations-resolver"
+import { load as dmlTypesNormalizer } from "./dml-types-normalizer"
+import { MermaidDiagramDMLGenerator } from "./mermaid-diagram-dml-generator"
 
 export function load(app: Application) {
   resolveReferencesPluginLoad(app)
@@ -17,7 +20,10 @@ export function load(app: Application) {
   eslintExamplePlugin(app)
   signatureModifierPlugin(app)
   parentIgnorePlugin(app)
+  dmlTypesNormalizer(app)
 
   new GenerateNamespacePlugin(app)
   new MermaidDiagramGenerator(app)
+  new DmlRelationsResolver(app)
+  new MermaidDiagramDMLGenerator(app)
 }

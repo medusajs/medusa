@@ -936,22 +936,22 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/currency/list",
-                        "title": "list",
+                        "path": "/references/currency/listAndCountCurrencies",
+                        "title": "listAndCountCurrencies",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/currency/listAndCount",
-                        "title": "listAndCount",
+                        "path": "/references/currency/listCurrencies",
+                        "title": "listCurrencies",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/currency/retrieve",
-                        "title": "retrieve",
+                        "path": "/references/currency/retrieveCurrency",
+                        "title": "retrieveCurrency",
                         "children": []
                       }
                     ]
@@ -971,7 +971,7 @@ export const generatedSidebar = [
                     "isPathHref": true,
                     "title": "Data Models",
                     "hasTitleStyling": true,
-                    "autogenerate_path": "/references/currency_models/classes",
+                    "autogenerate_path": "/references/currency_models/variables",
                     "children": [
                       {
                         "loaded": true,

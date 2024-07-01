@@ -6,7 +6,6 @@ import {
   simpleRegionFactory,
 } from "../../../../factories"
 import { createAdminUser } from "../../../../helpers/create-admin-user"
-import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
 
 jest.setTimeout(50000)
@@ -37,7 +36,6 @@ medusaIntegrationTestRunner({
 
       beforeEach(async () => {
         await createAdminUser(dbConnection, adminHeaders, appContainer)
-        await createDefaultRuleTypes(appContainer)
 
         await simpleRegionFactory(dbConnection, {
           id: "test-region",

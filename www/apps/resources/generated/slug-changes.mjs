@@ -405,19 +405,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart_models/classes/cart_models.ShippingMethodTaxLine/page.mdx"
   },
   {
-    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list",
-    "newSlug": "/references/currency/list",
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.list/page.mdx"
+    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies",
+    "newSlug": "/references/currency/listAndCountCurrencies",
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCountCurrencies/page.mdx"
   },
   {
-    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount",
-    "newSlug": "/references/currency/listAndCount",
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies",
+    "newSlug": "/references/currency/listCurrencies",
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.listCurrencies/page.mdx"
   },
   {
-    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve",
-    "newSlug": "/references/currency/retrieve",
-    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieve/page.mdx"
+    "origSlug": "/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency",
+    "newSlug": "/references/currency/retrieveCurrency",
+    "filePath": "/www/apps/resources/references/currency/ICurrencyModuleService/methods/currency.ICurrencyModuleService.retrieveCurrency/page.mdx"
   },
   {
     "origSlug": "/references/currency/interfaces/currency.ICurrencyModuleService",
@@ -425,9 +425,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/currency/interfaces/currency.ICurrencyModuleService/page.mdx"
   },
   {
-    "origSlug": "/references/currency_models/classes/currency_models.Currency",
+    "origSlug": "/references/currency_models/variables/currency_models.Currency",
     "newSlug": "/references/currency/models/Currency",
-    "filePath": "/www/apps/resources/references/currency_models/classes/currency_models.Currency/page.mdx"
+    "filePath": "/www/apps/resources/references/currency_models/variables/currency_models.Currency/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses",

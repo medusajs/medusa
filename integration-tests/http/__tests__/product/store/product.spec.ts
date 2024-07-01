@@ -10,7 +10,6 @@ import {
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
-import { createDefaultRuleTypes } from "../../../../modules/helpers/create-default-rule-types"
 
 jest.setTimeout(30000)
 
@@ -83,7 +82,6 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
-      await createDefaultRuleTypes(appContainer)
 
       const storeModule: IStoreModuleService = appContainer.resolve(
         ModuleRegistrationName.STORE

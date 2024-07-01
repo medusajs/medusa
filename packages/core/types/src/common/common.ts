@@ -363,3 +363,8 @@ export type KebabCase<S extends string> =
     : S
 
 export type MetadataType = Record<string, unknown> | null
+
+export type RawRounding = {
+  value: string
+  precision: number
+}

@@ -107,8 +107,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Service Factory",
             },
             {
-              path: "/advanced-development/modules/options",
-              title: "Module Options",
+              path: "/advanced-development/modules/isolation",
+              title: "Module Isolation",
             },
             {
               path: "/advanced-development/modules/remote-query",
@@ -121,6 +121,10 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/modules/remote-link",
               title: "Remote Link",
+            },
+            {
+              path: "/advanced-development/modules/options",
+              title: "Module Options",
             },
           ],
         },
@@ -142,10 +146,6 @@ export const sidebar = sidebarAttachHrefCommonOptions(
             {
               path: "/advanced-development/data-models/relationships",
               title: "Relationships",
-            },
-            {
-              path: "/advanced-development/data-models/relationship-cascades",
-              title: "Relationship Cascades",
             },
             {
               path: "/advanced-development/data-models/indexes",
