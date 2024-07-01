@@ -1,0 +1,38 @@
+---
+slug: /references/data-model/relationship-methods/manytomany
+sidebar_label: manyToMany
+---
+
+import { TypeList } from "docs-ui"
+
+# manyToMany Relationship Method - API Reference
+
+This method defines a relationship between two data models,
+where both data models have many related records.
+
+For example, an order is associated with many products, and a product
+is associated with many orders.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const Order = model.define("order", {
+  id: model.id(),
+  products: model.manyToMany(() => Product),
+})
+
+const Product = model.define("product", {
+  id: model.id(),
+  order: model.manyToMany(() => Order),
+})
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"The type of the entity builder passed as a first parameter. By default, it's\na function returning the related model.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="manyToMany"/>
+
+## Parameters
+
+<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[ManyToManyOptions](../../../entity_builder/types/dml.entity_builder.ManyToManyOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined\nin the other data model. This is only required\nby the `belongsTo` relationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"pivotTable","type":"`string`","description":"The name of the pivot table\ncreated in the database for this relationship.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"pivotEntity","type":"() => [DmlEntity](../../../entity/classes/dml.entity.DmlEntity/page.mdx)&#60;any&#62;","description":"A function that returns the data model \nrepresenting the pivot table created in the\ndatabase for this relationship.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="manyToMany"/>
