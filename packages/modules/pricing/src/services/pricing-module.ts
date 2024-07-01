@@ -144,21 +144,20 @@ export default class PricingModuleService
       return priceSets
     }
 
-    const priceSetIds: string[] = []
-    const priceSetMap = new Map()
-    for (const priceSet of priceSets) {
-      priceSetIds.push(priceSet.id)
-      priceSetMap.set(priceSet.id, priceSet)
-    }
-
     const calculatedPrices = await this.calculatePrices(
-      { id: priceSetIds },
+      { id: priceSets.map((p) => p.id) },
       { context: pricingContext },
       sharedContext
     )
+
+    const calculatedPricesMap = new Map()
     for (const calculatedPrice of calculatedPrices) {
-      const priceSet = priceSetMap.get(calculatedPrice.id)
-      priceSet.calculated_price = calculatedPrice
+      calculatedPricesMap.set(calculatedPrice.id, calculatedPrice)
+    }
+
+    for (const priceSet of priceSets) {
+      const calculatedPrice = calculatedPricesMap.get(priceSet.id)
+      priceSet.calculated_price = calculatedPrice ?? null
     }
 
     return priceSets
@@ -182,21 +181,20 @@ export default class PricingModuleService
       return [priceSets, count]
     }
 
-    const priceSetIds: string[] = []
-    const priceSetMap = new Map()
-    for (const priceSet of priceSets) {
-      priceSetIds.push(priceSet.id)
-      priceSetMap.set(priceSet.id, priceSet)
-    }
-
     const calculatedPrices = await this.calculatePrices(
-      { id: priceSetIds },
+      { id: priceSets.map((p) => p.id) },
       { context: pricingContext },
       sharedContext
     )
+
+    const calculatedPricesMap = new Map()
     for (const calculatedPrice of calculatedPrices) {
-      const priceSet = priceSetMap.get(calculatedPrice.id)
-      priceSet.calculated_price = calculatedPrice
+      calculatedPricesMap.set(calculatedPrice.id, calculatedPrice)
+    }
+
+    for (const priceSet of priceSets) {
+      const calculatedPrice = calculatedPricesMap.get(priceSet.id)
+      priceSet.calculated_price = calculatedPrice ?? null
     }
 
     return [priceSets, count]
@@ -217,14 +215,18 @@ export default class PricingModuleService
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
-      pricingFilters.id.map(
-        (priceSetId: string): PricingTypes.CalculatedPriceSet => {
+      pricingFilters.id
+        .map((priceSetId: string): PricingTypes.CalculatedPriceSet | null => {
           // This is where we select prices, for now we just do a first match based on the database results
           // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
 
           // TODO: inject custom price selection here
 
           const prices = pricesSetPricesMap.get(priceSetId) || []
+          if (!prices.length) {
+            return null
+          }
+
           const priceListPrice = prices.find((p) => p.price_list_id)
 
           const defaultPrice = prices?.find((p) => !p.price_list_id)
@@ -268,8 +270,8 @@ export default class PricingModuleService
               max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
             },
           }
-        }
-      )
+        })
+        .filter(Boolean) as PricingTypes.CalculatedPriceSet[]
 
     return JSON.parse(JSON.stringify(calculatedPrices))
   }
