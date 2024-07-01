@@ -1,5 +1,6 @@
 name: Generate Public References
 on:
+  workflow_call:
   workflow_dispatch:
     inputs:
       referenceName:

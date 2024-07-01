@@ -1,0 +1,9 @@
+name: Generate Preview Reference [Automated]
+on:
+  schedule:
+    - cron: "0 */3 * * *"
+jobs:
+  preview-references:
+    uses: ./.github/workflows/generate-resources-reference.yml
+  preview-api-ui:
+    uses: ./.github/workflows/generate-public-references.yml
