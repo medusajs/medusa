@@ -1,25 +1,25 @@
 import { PropsWithChildren, createContext } from "react"
 
-type ConditionOperator =
-  | "eq"
-  | "ne"
-  | "gt"
-  | "lt"
-  | "gte"
-  | "lte"
-  | "in"
-  | "nin"
+type ConditionOperatorValue = "eq" | "in" | "nin"
 
 type ConditionBlockValue<TValue> = {
   attribute: string
-  operator: ConditionOperator
+  operator: ConditionOperatorValue
   value: TValue
+}
+
+export type ConditionAttribute = {
+  label: string
+  value: string
 }
 
 type ConditionBlockState<TValue> = {
   defaultValue?: ConditionBlockValue<TValue>
   value?: ConditionBlockValue<TValue>
-  onChange: (value: ConditionBlockValue<TValue>) => void
+  onChange?: (value: ConditionBlockValue<TValue>) => void
+  onRemove?: () => void
+  attributes: ConditionAttribute | ConditionAttribute[]
+  disableAttributes?: boolean
 }
 
 const ConditionBlockContext = createContext<ConditionBlockState<any> | null>(
@@ -48,12 +48,23 @@ const Root = <TValue,>({ children, ...props }: ConditionBlockProps<TValue>) => {
   )
 }
 
-const Divider = () => {}
+const Attribute = () => {}
 
 const Operator = () => {}
 
+const List = () => {}
+
 const Item = () => {}
 
+const Browse = () => {}
+
+const Select = () => {}
+
 export const ConditionBlock = Object.assign(Root, {
-  Divider,
+  Attribute,
+  List,
+  Item,
+  Operator
+  Browse,
+  Select,
 })

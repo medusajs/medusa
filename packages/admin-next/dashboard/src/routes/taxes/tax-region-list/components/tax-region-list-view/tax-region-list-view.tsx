@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
 import { useTaxRegions } from "../../../../../hooks/api/tax-regions"
-import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query copy"
+import { useTaxRegionTableQuery } from "../../../../../hooks/table/query/use-tax-region-table-query"
 import { TaxRegionCard } from "../../../common/components/tax-region-card"
 
 const PAGE_SIZE = 20

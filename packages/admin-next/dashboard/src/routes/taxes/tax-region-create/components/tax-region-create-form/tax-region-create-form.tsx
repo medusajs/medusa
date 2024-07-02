@@ -12,7 +12,7 @@ import { PercentageInput } from "../../../../../components/inputs/percentage-inp
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { i18n } from "../../../../../components/utilities/i18n"
 import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
 
