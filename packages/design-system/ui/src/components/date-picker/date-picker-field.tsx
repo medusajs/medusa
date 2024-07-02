@@ -33,7 +33,6 @@ const datePickerFieldStyles = cva({
 const DatePickerField = ({ size = "base", ...props }: DatePickerFieldProps) => {
   const { locale } = useLocale()
 
-  console.log("locale: ", locale) // locale:  en-US
 
   const state = useDateFieldState({
     ...props,
