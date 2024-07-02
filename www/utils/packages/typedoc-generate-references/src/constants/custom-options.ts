@@ -16,6 +16,16 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "auth-provider",
     parentIgnore: true,
   }),
+  dml: getOptions({
+    entryPointPath: [
+      "packages/core/utils/src/dml/entity-builder.ts",
+      "packages/core/utils/src/dml/entity.ts",
+      "packages/core/utils/src/dml/properties/base.ts",
+    ],
+    tsConfigName: "utils.json",
+    name: "dml",
+    generateNamespaces: true,
+  }),
   file: getOptions({
     entryPointPath: "packages/core/utils/src/file/abstract-file-provider.ts",
     tsConfigName: "utils.json",
@@ -28,28 +38,10 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     name: "fulfillment-provider",
     parentIgnore: true,
   }),
-  "js-client": getOptions({
-    entryPointPath: "packages/medusa-js/src/resources",
-    tsConfigName: "js-client.json",
-    name: "js-client",
-    plugin: ["typedoc-plugin-rename-defaults"],
-    exclude: [
-      ...(baseOptions.exclude || []),
-      path.join(rootPathPrefix, "packages/medusa-js/src/resources/base.ts"),
-    ],
-    ignoreApi: true,
-  }),
   "medusa-config": getOptions({
     entryPointPath: "packages/core/types/src/common/config-module.ts",
     tsConfigName: "types.json",
     name: "medusa-config",
-  }),
-  "medusa-react": getOptions({
-    entryPointPath: "packages/medusa-react/src/index.ts",
-    tsConfigName: "medusa-react.json",
-    name: "medusa-react",
-    generateNamespaces: true,
-    ignoreApi: true,
   }),
   medusa: getOptions({
     entryPointPath: "packages/medusa/src/index.js",
@@ -96,11 +88,6 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "utils.json",
     name: "search",
   }),
-  services: getOptions({
-    entryPointPath: "packages/medusa/src/services/index.ts",
-    tsConfigName: "medusa.json",
-    name: "services",
-  }),
   "tax-provider": getOptions({
     entryPointPath: "packages/core/types/src/tax/provider.ts",
     tsConfigName: "types.json",
@@ -116,11 +103,6 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       ...(baseOptions.exclude || []),
       ...modules.map((moduleName) => `**/${moduleName}/**/*.ts`),
     ],
-  }),
-  workflows: getOptions({
-    entryPointPath: "packages/core/workflows-sdk/src/utils/composer/index.ts",
-    tsConfigName: "workflows.json",
-    name: "workflows",
   }),
   utils: getOptions({
     entryPointPath: "packages/core/utils/src/index.ts",
@@ -144,7 +126,13 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       "**/pricing/builders.ts",
       "**/search/**",
       "**/totals/**",
+      "**/dml/**",
     ],
+  }),
+  workflows: getOptions({
+    entryPointPath: "packages/core/workflows-sdk/src/utils/composer/index.ts",
+    tsConfigName: "workflows.json",
+    name: "workflows",
   }),
 }
 

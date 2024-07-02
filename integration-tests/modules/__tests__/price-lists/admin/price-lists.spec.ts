@@ -66,11 +66,6 @@ medusaIntegrationTestRunner({
 
         variant = product.variants[0]
         variant2 = product.variants[1]
-
-        await pricingModule.createRuleTypes([
-          { name: "Customer Group ID", rule_attribute: "customer_group_id" },
-          { name: "Region ID", rule_attribute: "region_id" },
-        ])
       })
 
       describe("GET /admin/price-lists", () => {

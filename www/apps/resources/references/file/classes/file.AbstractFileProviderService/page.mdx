@@ -32,41 +32,138 @@ export default MyFileProviderService
 
 ### constructor
 
-### getIdentifier
+The constructor allows you to access resources from the module's container using the first parameter,
+and the module's options using the second parameter.
 
-#### Returns
+If you're creating a client or establishing a connection with a third-party service, do it in the constructor.
 
-<TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getIdentifier"/>
+#### Example
+
+```ts
+import { Logger } from "@medusajs/types"
+import { AbstractFileProviderService } from "@medusajs/utils"
+
+type InjectedDependencies = {
+  logger: Logger
+}
+
+type Options = {
+  apiKey: string
+}
+
+class MyFileProviderService extends AbstractFileProviderService {
+  protected logger_: Logger
+  protected options_: Options
+  // assuming you're initializing a client
+  protected client
+
+  constructor (
+    { logger }: InjectedDependencies,
+    options: Options
+  ) {
+    super()
+
+    this.logger_ = logger
+    this.options_ = options
+
+    // assuming you're initializing a client
+    this.client = new Client(options)
+  }
+}
+
+export default MyFileProviderService
+```
+
+### constructor
 
 ### upload
 
+This method uploads a file using your provider's custom logic.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async upload(
+    file: ProviderUploadFileDTO
+  ): Promise<ProviderFileResultDTO> {
+    // TODO upload file to third-party provider
+    // or using custom logic
+
+    return {
+      url: "some-url.com",
+      key: "file-name"
+    }
+  }
+}
+```
+
 #### Parameters
 
-<TypeList types={[{"name":"file","type":"`ProviderUploadFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"file","type":"[ProviderUploadFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderUploadFileDTO/page.mdx)","description":"The file to upload","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"filename","type":"`string`","description":"The filename of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"mimeType","type":"`string`","description":"The mimetype of the uploaded file","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"content","type":"`string`","description":"The file content as a binary-encoded string","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;ProviderFileResultDTO&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProviderFileResultDTO","type":"`ProviderFileResultDTO`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="upload"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ProviderFileResultDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderFileResultDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The uploaded file's details.","expandable":false,"children":[{"name":"ProviderFileResultDTO","type":"[ProviderFileResultDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderFileResultDTO/page.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upload"/>
 
 ### delete
 
+This method deletes the file from storage.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async delete(file: ProviderDeleteFileDTO): Promise<void> {
+    // TODO logic to remove the file from storage
+    // Use the `file.fileKey` to delete the file
+    // for example:
+    this.client.delete(file.fileKey)
+  }
+}
+```
+
 #### Parameters
 
-<TypeList types={[{"name":"file","type":"`ProviderDeleteFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"file","type":"[ProviderDeleteFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderDeleteFileDTO/page.mdx)","description":"The details of the file to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key. When uploading a file, the\nreturned key is used here.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the file is deleted.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 ### getPresignedDownloadUrl
 
+This method is used to retrieve a download URL of the file. For some providers, 
+such as S3, a presigned URL indicates a temporary URL to get access to a file.
+
+If your provider doesn’t perform or offer a similar functionality, you can 
+return the URL to download the file.
+
+#### Example
+
+```ts
+class MyFileProviderService extends AbstractFileProviderService {
+  // ...
+  async getPresignedDownloadUrl(
+    fileData: ProviderGetFileDTO
+  ): Promise<string> {
+    // TODO logic to get the presigned URL
+    // Use the `file.fileKey` to delete the file
+    // for example:
+    return this.client.getPresignedUrl(fileData.fileKey)
+  }
+}
+```
+
 #### Parameters
 
-<TypeList types={[{"name":"fileData","type":"`ProviderGetFileDTO`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"fileData","type":"[ProviderGetFileDTO](../../../types/FileTypes/interfaces/types.FileTypes.ProviderGetFileDTO/page.mdx)","description":"The details of the file to get its \npresigned URL.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"fileKey","type":"`string`","description":"The file's key.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isPrivate","type":"`boolean`","description":"Whether the file is private.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"The file's presigned URL.","expandable":false,"children":[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="getPresignedDownloadUrl"/>
 
 ---
 
@@ -101,24 +198,26 @@ const { Modules } = require("@medusajs/modules-sdk")
 
 // ...
 
-const modules = {
+module.exports = defineConfig({
   // ...
-  [Modules.FILE]: {
-    resolve: "@medusajs/file",
-    options: {
-      providers: [
-        {
-          resolve: "./dist/modules/my-file",
-          options: {
-            config: {
-              "my-file": {
-                // provider options...
+  modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            resolve: "./modules/my-file",
+            options: {
+              config: {
+                "my-file": {
+                  // provider options...
+                },
               },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-}
+  }
+})
 ```

@@ -27,6 +27,46 @@ import { PrimaryKeyModifier } from "./properties/primary-key"
  */
 const IMPLICIT_PROPERTIES = ["created_at", "updated_at", "deleted_at"]
 
+export type DefineOptions =
+  | string
+  | {
+      /**
+       * The data model's name.
+       */
+      name?: string
+      /**
+       * The name of the data model's table in the database.
+       */
+      tableName: string
+    }
+
+export type ManyToManyOptions = RelationshipOptions &
+  (
+    | {
+        /**
+         * The name of the pivot table
+         * created in the database for this relationship.
+         */
+        pivotTable?: string
+        /**
+         * @ignore
+         */
+        pivotEntity?: never
+      }
+    | {
+        /**
+         * @ignore
+         */
+        pivotTable?: never
+        /**
+         * A function that returns the data model
+         * representing the pivot table created in the
+         * database for this relationship.
+         */
+        pivotEntity?: () => DmlEntity<any>
+      }
+  )
+
 /**
  * Entity builder exposes the API to create an entity and define its
  * schema using the shorthand methods.
@@ -47,8 +87,23 @@ export class EntityBuilder {
   }
 
   /**
-   * Define an entity or a model. The name should be unique across
-   * all the entities.
+   * This method defines a data model.
+   *
+   * @typeParam Schema - The type of the accepted schema in the second parameter of the method.
+   *
+   * @param {DefineOptions} nameOrConfig - Either the data model's name, or configurations to name the data model.
+   * The data model's name must be unique.
+   * @param {Schema} schema - The schema of the data model's properties.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   name: model.text(),
+   * })
+   *
+   * export default MyCustom
    */
   define<Schema extends DMLSchema, TConfig extends IDmlEntityConfig>(
     nameOrConfig: TConfig,
@@ -65,8 +120,23 @@ export class EntityBuilder {
   }
 
   /**
-   * Define an id property. Id properties are marked
-   * primary by default
+   * This method defines an automatically generated string ID property.
+   *
+   * By default, this property is considered to be the data model’s primary key.
+   *
+   * @param {ConstructorParameters<typeof IdProperty>[0]} options - The ID's options.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   id: model.id(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   id<T extends { primaryKey?: boolean; prefix?: string } | undefined>(
     options?: T
@@ -91,28 +161,79 @@ export class EntityBuilder {
   }
 
   /**
-   * Define a text/string based column
+   * This method defines a string property.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   name: model.text(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   text() {
     return new TextProperty()
   }
 
   /**
-   * Define a boolean column
+   * This method defines a boolean property.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   hasAccount: model.boolean(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   boolean() {
     return new BooleanProperty()
   }
 
   /**
-   * Define an integer column
+   * This method defines a number property.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   age: model.number(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   number() {
     return new NumberProperty()
   }
 
   /**
-   * Define a numeric column. This property produces an additional
+   * This method defines a number property that expects large numbers, such as prices.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   price: model.bigNumber(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
+   *
+   * @privateRemarks
+   * This property produces an additional
    * column - raw_{{ property_name }}, which stores the configuration
    * of bignumber (https://github.com/MikeMcl/bignumber.js)
    */
@@ -121,95 +242,196 @@ export class EntityBuilder {
   }
 
   /**
-   * Define an array column
+   * This method defines an array of strings property.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   names: model.array(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   array() {
     return new ArrayProperty()
   }
 
   /**
-   * Define a timestampz column
+   * This method defines a timestamp property.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   date_of_birth: model.dateTime(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   dateTime() {
     return new DateTimeProperty()
   }
 
   /**
-   * Define a JSON column to store data as a
-   * JSON string
+   * This method defines a property whose value is a stringified JSON object.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   metadata: model.json(),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   json() {
     return new JSONProperty()
   }
 
   /**
-   * Define an enum column where only a pre-defined set
-   * of values are allowed.
+   * This method defines a property whose value can only be one of the specified values.
+   *
+   * @typeParam Values - The type of possible values. By default, it's `string`.
+   *
+   * @param {Values[]} values - An array of possible values.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const MyCustom = model.define("my_custom", {
+   *   color: model.enum(["black", "white"]),
+   *   // ...
+   * })
+   *
+   * export default MyCustom
+   *
+   * @customNamespace Property Types
    */
   enum<const Values extends unknown>(values: Values[]) {
     return new EnumProperty<Values>(values)
   }
 
   /**
-   * Has one relationship defines a relationship between two entities
-   * where the owner of the relationship has exactly one instance
-   * of the related entity.
+   * This method defines a relationship between two data models,
+   * where the owner of the relationship has one record of the related
+   * data model.
    *
-   * For example: A user "hasOne" profile
+   * For example: A user "hasOne" email.
    *
-   * You may use the "belongsTo" relationship to define the inverse
-   * of the "hasOne" relationship
+   * Use the {@link belongsTo} method to define the inverse of this relationship in
+   * the other data model.
+   *
+   * @typeParam T - The type of the entity builder passed as a first parameter. By default, it's
+   * a function returning the related model.
+   *
+   * @param {T} entityBuilder - A function that returns the data model this model is related to.
+   * @param {RelationshipOptions} options - The relationship's options.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const User = model.define("user", {
+   *   id: model.id(),
+   *   email: model.hasOne(() => Email),
+   * })
+   *
+   * @customNamespace Relationship Methods
    */
   hasOne<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new HasOne<T>(entityBuilder, options || {})
   }
 
   /**
-   * Define inverse of "hasOne" and "hasMany" relationship.
+   * This method defines the inverse of the {@link hasOne} or {@link hasMany} relationship.
+   *
+   * For example, a product "belongsTo" a store.
+   *
+   * @typeParam T - The type of the entity builder passed as a first parameter. By default, it's
+   * a function returning the related model.
+   *
+   * @param {T} entityBuilder - A function that returns the data model this model is related to.
+   * @param {RelationshipOptions} options - The relationship's options.
+   *
+   * @example
+   * const Product = model.define("product", {
+   *   id: model.id(),
+   *   store: model.belongsTo(() => Store, {
+   *     mappedBy: "products",
+   *   }),
+   * })
+   *
+   * @customNamespace Relationship Methods
    */
   belongsTo<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new BelongsTo<T>(entityBuilder, options || {})
   }
 
   /**
-   * Has many relationship defines a relationship between two entities
-   * where the owner of the relationship has many instance of the
-   * related entity.
+   * This method defines a relationship between two data models,
+   * where the owner of the relationship has many records of the related
+   * data model, but the related data model only has one owner.
    *
-   * For example:
+   * For example, a store "hasMany" products.
    *
-   * - A user "hasMany" books
-   * - A user "hasMany" addresses
+   * @typeParam T - The type of the entity builder passed as a first parameter. By default, it's
+   * a function returning the related model.
+   *
+   * @param {T} entityBuilder - A function that returns the data model this model is related to.
+   * @param {RelationshipOptions} options - The relationship's options.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const Store = model.define("store", {
+   *   id: model.id(),
+   *   products: model.hasMany(() => Product),
+   * })
+   *
+   * @customNamespace Relationship Methods
    */
   hasMany<T>(entityBuilder: T, options?: RelationshipOptions) {
     return new HasMany<T>(entityBuilder, options || {})
   }
 
   /**
-   * ManyToMany relationship defines a relationship between two entities
-   * where the owner of the relationship has many instance of the
-   * related entity via a pivot table.
+   * This method defines a relationship between two data models,
+   * where both data models have many related records.
    *
-   * For example:
+   * For example, an order is associated with many products, and a product
+   * is associated with many orders.
    *
-   * - A user has many teams. But a team has many users as well. So this
-   *   relationship requires a pivot table to establish a many to many
-   *   relationship between two entities
+   * @typeParam T - The type of the entity builder passed as a first parameter. By default, it's
+   * a function returning the related model.
+   *
+   * @param {T} entityBuilder - A function that returns the data model this model is related to.
+   * @param {RelationshipOptions} options - The relationship's options.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const Order = model.define("order", {
+   *   id: model.id(),
+   *   products: model.manyToMany(() => Product),
+   * })
+   *
+   * const Product = model.define("product", {
+   *   id: model.id(),
+   *   order: model.manyToMany(() => Order),
+   * })
+   *
+   * @customNamespace Relationship Methods
    */
-  manyToMany<T>(
-    entityBuilder: T,
-    options?: RelationshipOptions &
-      (
-        | {
-            pivotTable?: string
-            pivotEntity?: never
-          }
-        | {
-            pivotTable?: never
-            pivotEntity?: () => DmlEntity<any, any>
-          }
-      )
-  ) {
+  manyToMany<T>(entityBuilder: T, options?: ManyToManyOptions) {
     return new ManyToMany<T>(entityBuilder, options || {})
   }
 }

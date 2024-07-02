@@ -6,6 +6,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
   NotificationTypes,
+  InferEntityType,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -21,7 +22,9 @@ import NotificationProviderService from "./notification-provider"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  notificationService: ModulesSdkTypes.IMedusaInternalService<any>
+  notificationService: ModulesSdkTypes.IMedusaInternalService<
+    typeof Notification
+  >
   notificationProviderService: NotificationProviderService
 }
 
@@ -32,7 +35,9 @@ export default class NotificationModuleService
   implements INotificationModuleService
 {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<Notification>
+  protected readonly notificationService_: ModulesSdkTypes.IMedusaInternalService<
+    typeof Notification
+  >
   protected readonly notificationProviderService_: NotificationProviderService
 
   constructor(
@@ -91,7 +96,7 @@ export default class NotificationModuleService
   protected async createNotifications_(
     data: NotificationTypes.CreateNotificationDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Notification[]> {
+  ): Promise<InferEntityType<typeof Notification>[]> {
     if (!data.length) {
       return []
     }
@@ -108,12 +113,13 @@ export default class NotificationModuleService
       { take: null },
       sharedContext
     )
+
     const existsMap = new Map(
-      alreadySentNotifications.map((n) => [n.idempotency_key, true])
+      alreadySentNotifications.map((n) => [n.idempotency_key as string, true])
     )
 
     const notificationsToProcess = data.filter(
-      (entry) => !existsMap.has(entry.idempotency_key)
+      (entry) => !entry.idempotency_key || !existsMap.has(entry.idempotency_key)
     )
 
     const notificationsToCreate = await promiseAll(

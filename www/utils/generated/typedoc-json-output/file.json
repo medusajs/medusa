@@ -1,12 +1,12 @@
 {
-	"id": 12966,
+	"id": 13406,
 	"name": "file",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 12967,
+			"id": 13407,
 			"name": "AbstractFileProviderService",
 			"variant": "declaration",
 			"kind": 128,
@@ -25,21 +25,21 @@
 			},
 			"children": [
 				{
-					"id": 12969,
+					"id": 13409,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12970,
+							"id": 13410,
 							"name": "new AbstractFileProviderService",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 12967,
+								"target": 13407,
 								"name": "AbstractFileProviderService",
 								"package": "@medusajs/utils"
 							}
@@ -47,14 +47,14 @@
 					]
 				},
 				{
-					"id": 12973,
+					"id": 13413,
 					"name": "upload",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12974,
+							"id": 13414,
 							"name": "upload",
 							"variant": "signature",
 							"kind": 4096,
@@ -89,7 +89,7 @@
 							},
 							"parameters": [
 								{
-									"id": 12975,
+									"id": 13415,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -147,14 +147,14 @@
 					}
 				},
 				{
-					"id": 12976,
+					"id": 13416,
 					"name": "delete",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12977,
+							"id": 13417,
 							"name": "delete",
 							"variant": "signature",
 							"kind": 4096,
@@ -189,7 +189,7 @@
 							},
 							"parameters": [
 								{
-									"id": 12978,
+									"id": 13418,
 									"name": "file",
 									"variant": "param",
 									"kind": 32768,
@@ -242,14 +242,14 @@
 					}
 				},
 				{
-					"id": 12979,
+					"id": 13419,
 					"name": "getPresignedDownloadUrl",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 12980,
+							"id": 13420,
 							"name": "getPresignedDownloadUrl",
 							"variant": "signature",
 							"kind": 4096,
@@ -284,7 +284,7 @@
 							},
 							"parameters": [
 								{
-									"id": 12981,
+									"id": 13421,
 									"name": "fileData",
 									"variant": "param",
 									"kind": 32768,
@@ -341,15 +341,15 @@
 				{
 					"title": "Constructors",
 					"children": [
-						12969
+						13409
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						12973,
-						12976,
-						12979
+						13413,
+						13416,
+						13419
 					]
 				}
 			],
@@ -370,53 +370,53 @@
 		{
 			"title": "Classes",
 			"children": [
-				12967
+				13407
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"12966": {
+		"13406": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": ""
 		},
-		"12967": {
+		"13407": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService"
 		},
-		"12973": {
+		"13413": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"12974": {
+		"13414": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.upload"
 		},
-		"12975": {
+		"13415": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"12976": {
+		"13416": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"12977": {
+		"13417": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.delete"
 		},
-		"12978": {
+		"13418": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "file"
 		},
-		"12979": {
+		"13419": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"12980": {
+		"13420": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "AbstractFileProviderService.getPresignedDownloadUrl"
 		},
-		"12981": {
+		"13421": {
 			"sourceFileName": "../../../../packages/core/utils/src/file/abstract-file-provider.ts",
 			"qualifiedName": "fileData"
 		}
@@ -426,7 +426,7 @@
 			"1": "../../../../packages/core/utils/src/file/abstract-file-provider.ts"
 		},
 		"reflections": {
-			"1": 12966
+			"1": 13406
 		}
 	}
 }

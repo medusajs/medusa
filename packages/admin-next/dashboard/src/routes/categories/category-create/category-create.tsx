@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { CreateCategoryForm } from "./components/create-category-form/create-category-form"
 
 export const CategoryCreate = () => {

@@ -6,8 +6,6 @@ import {
   FilterableMoneyAmountProps,
   MoneyAmountDTO,
 } from "./money-amount"
-import { CreatePriceSetPriceRules } from "./price-list"
-import { RuleTypeDTO } from "./rule-type"
 
 export interface PricingRepositoryService {
   calculatePrices(
@@ -63,11 +61,6 @@ export interface PriceSetDTO {
    * The calculated price based on the context.
    */
   calculated_price?: CalculatedPriceSet
-
-  /**
-   * The rule types applied on this price set.
-   */
-  rule_types?: RuleTypeDTO[]
 }
 
 /**
@@ -204,23 +197,12 @@ export interface CalculatedPriceSet {
 /**
  * @interface
  *
- * The rules to add to a price set.
+ * The price rules to be set for each price in the price set.
+ *
+ * Each key of the object is a the attribute, and its value
+ * is the values of the rule.
  */
-export interface AddRulesDTO {
-  /**
-   * The ID of the price set to add the rules to.
-   */
-  priceSetId: string
-  /**
-   * The rules to add to a price set.
-   */
-  rules: {
-    /**
-     * The value of the rule's `rule_attribute` attribute.
-     */
-    attribute: string
-  }[]
-}
+export interface CreatePriceSetPriceRules extends Record<string, string> {}
 
 /**
  * @interface
@@ -229,7 +211,7 @@ export interface AddRulesDTO {
  */
 export interface CreatePricesDTO extends CreateMoneyAmountDTO {
   /**
-   * The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.
+   * The rules to add to the price. The object's keys are the attribute, and values are the value of that rule associated with this price.
    */
   rules?: CreatePriceSetPriceRules
 }
@@ -253,34 +235,9 @@ export interface AddPricesDTO {
 /**
  * @interface
  *
- * The rules to remove from a price set.
- */
-export interface RemovePriceSetRulesDTO {
-  /**
-   * The ID of the price set.
-   */
-  id: string
-  /**
-   * The rules to remove. Each string is the `rule_attribute` of a rule to remove.
-   */
-  rules: string[]
-}
-
-/**
- * @interface
- *
  * A price set to create.
  */
 export interface CreatePriceSetDTO {
-  /**
-   * The rules to associate with the price set.
-   */
-  rules?: {
-    /**
-     * the value of the rule's `rule_attribute` attribute.
-     */
-    rule_attribute: string
-  }[]
   /**
    * The prices to create and add to this price set.
    */
@@ -307,15 +264,6 @@ export interface UpsertPriceSetDTO extends UpdatePriceSetDTO {
  */
 export interface UpdatePriceSetDTO {
   /**
-   * The rules to associate with the price set.
-   */
-  rules?: {
-    /**
-     * the value of the rule's `rule_attribute` attribute.
-     */
-    rule_attribute: string
-  }[]
-  /**
    * The prices to create and add to this price set.
    */
   prices?: CreatePricesDTO[]
@@ -336,5 +284,5 @@ export interface FilterablePriceSetProps
   /**
    * Filters to apply on a price set's associated money amounts.
    */
-  money_amounts?: FilterableMoneyAmountProps
+  prices?: FilterableMoneyAmountProps
 }

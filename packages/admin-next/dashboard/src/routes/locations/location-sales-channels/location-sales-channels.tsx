@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { LocationEditSalesChannelsForm } from "./components/edit-sales-channels-form"
 

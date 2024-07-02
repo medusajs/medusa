@@ -8,7 +8,7 @@ import { CountrySelect } from "../../../../../components/inputs/country-select"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
 
 const CreateLocationSchema = zod.object({

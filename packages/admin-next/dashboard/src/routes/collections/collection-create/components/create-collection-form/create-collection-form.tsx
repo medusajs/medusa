@@ -9,7 +9,7 @@ import { HandleInput } from "../../../../../components/inputs/handle-input"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
 import { useCreateCollection } from "../../../../../hooks/api/collections"
 
 const CreateCollectionSchema = zod.object({

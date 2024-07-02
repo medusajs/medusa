@@ -16,6 +16,7 @@ import { SalesChannel } from "./sales-channel"
 import { ShippingOption } from "./shipping-option"
 import { ShippingProfile } from "./shipping-profile"
 import { StockLocation } from "./stock-location"
+import { Store } from "./store"
 import { TaxRate } from "./tax-rate"
 import { TaxRegion } from "./tax-region"
 import { Upload } from "./upload"
@@ -41,6 +42,7 @@ export class Admin {
   public order: Order
   public taxRate: TaxRate
   public taxRegion: TaxRegion
+  public store: Store
 
   constructor(client: Client) {
     this.invite = new Invite(client)
@@ -63,5 +65,6 @@ export class Admin {
     this.order = new Order(client)
     this.taxRate = new TaxRate(client)
     this.taxRegion = new TaxRegion(client)
+    this.store = new Store(client)
   }
 }

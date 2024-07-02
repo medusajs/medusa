@@ -11,9 +11,11 @@ import paymentProviderOptions from "./payment-provider.js"
 import searchOptions from "./search.js"
 import taxProviderOptions from "./tax-provider.js"
 import workflowsOptions from "./workflows.js"
+import dmlOptions from "./dml.js"
 
 const mergerCustomOptions: FormattingOptionsType = {
   ...authProviderOptions,
+  ...dmlOptions,
   ...fileOptions,
   ...fulfillmentProviderOptions,
   ...jsClientOptions,

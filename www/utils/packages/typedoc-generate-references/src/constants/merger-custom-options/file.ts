@@ -4,7 +4,6 @@ const fileOptions: FormattingOptionsType = {
   "^file/.*AbstractFileProviderService": {
     reflectionGroups: {
       Properties: false,
-      Constructors: false,
     },
     reflectionDescription: `In this document, you’ll learn how to create a file provider module and the methods you must implement in its main service.`,
     frontmatterData: {

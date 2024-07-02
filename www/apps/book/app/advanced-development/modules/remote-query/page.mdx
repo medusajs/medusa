@@ -73,7 +73,7 @@ export async function GET(
 
   const query = remoteQueryObjectFromString({
     entryPoint: "my_custom",
-    fields: ["id", "test"],
+    fields: ["id", "name"],
   })
 
   res.json({

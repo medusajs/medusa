@@ -3,13 +3,13 @@ import {
   ModuleJoinerConfig,
   PropertyType,
 } from "@medusajs/types"
-import { join } from "path"
+import { dirname, join } from "path"
 import {
+  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   lowerCaseFirst,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -59,10 +59,17 @@ export function defineJoinerConfig(
       "serviceName" | "primaryKeys" | "linkableKeys" | "alias"
     >
   > {
-  let basePath = getCallerFilePath()
-  basePath = basePath.includes("dist")
-    ? basePath.split("dist")[0] + "dist"
-    : basePath.split("src")[0] + "src"
+  const fullPath = getCallerFilePath()
+  const srcDir = fullPath.includes("dist") ? "dist" : "src"
+  const splitPath = fullPath.split(srcDir)
+
+  let basePath = splitPath[0] + srcDir
+
+  const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
+  if (isMedusaProject) {
+    basePath = dirname(fullPath)
+  }
+
   basePath = join(basePath, "models")
 
   let models = dmlObjects ?? loadModels(basePath)

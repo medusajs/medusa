@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import * as zod from "zod"
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionCreateForm } from "../common/components/tax-region-create-form"
 

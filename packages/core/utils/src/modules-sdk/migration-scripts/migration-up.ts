@@ -1,9 +1,9 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { upperCaseFirst } from "../../common"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
 import { DmlEntity, toMikroORMEntity } from "../../dml"
+import { loadDatabaseConfig } from "../load-module-database-config"
 
 /**
  * Utility function to build a migration script that will run the migrations.
@@ -65,7 +65,7 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
       logger.error(
         `${upperCaseFirst(
           moduleName
-        )} module migration failed to run - Error: ${error}`
+        )} module migration failed to run - Error: ${error.errros ?? error}`
       )
     }
 

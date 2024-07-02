@@ -14,7 +14,7 @@ In this document, you'll learn about the options of the Auth Module.
 
 ## providers
 
-The `providers` option is an array of auth provider modules.
+The `providers` option is an array of auth module providers.
 
 When the Medusa application starts, these providers are registered and can be used to handle authentication.
 
@@ -49,9 +49,9 @@ module.exports = defineConfig({
 
 The `providers` option is an array of objects that accept the following properties:
 
-- `resolve`: A string indicating the package name of the auth provider module or the path to it.
-- `options`: An optional object of the auth provider module's options. The object must have the following property:
-  - `config`: An object whose key is the ID of the auth provider, and its value is an object of options to pass to the provider module.
+- `resolve`: A string indicating the package name of the module provider or the path to it.
+- `options`: An optional object of the module provider's options. The object must have the following property:
+  - `config`: An object whose key is the ID of the auth provider, and its value is an object of options to pass to the module provider.
 
 ---
 

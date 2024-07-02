@@ -52,11 +52,11 @@ export default ShippingOptions
 
 #### Hook Parameters
 
-<TypeList types={[{"name":"query","type":"[StoreGetShippingOptionsParams](../../../../medusa/classes/medusa.StoreGetShippingOptionsParams/page.mdx)","description":"The filters to apply on the shipping options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"product_ids","type":"`string`","description":"Product ID that is used to filter shipping options by whether they can be used to ship that product.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"region_id","type":"`string`","description":"Filter the shipping options by the ID of their associated region.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_return","type":"`string`","description":"Filter the shipping options by whether they're return shipping options.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useShippingOptions"/>
+<TypeList types={[{"name":"query","type":"`StoreGetShippingOptionsParams`","description":"The filters to apply on the shipping options.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useShippingOptions"/>
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"shipping_options","type":"[PricedShippingOption](../../../../medusa/types/medusa.PricedShippingOption/page.mdx)[]","description":"An array of shipping options details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useShippingOptions"/>
+<TypeList types={[{"name":"StoreShippingOptionsListRes","type":"`StoreShippingOptionsListRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useShippingOptions"/>
 
 ### useCartShippingOptions
 
@@ -106,4 +106,4 @@ export default ShippingOptions
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"shipping_options","type":"[PricedShippingOption](../../../../medusa/types/medusa.PricedShippingOption/page.mdx)[]","description":"An array of shipping options details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartShippingOptions"/>
+<TypeList types={[{"name":"StoreShippingOptionsListRes","type":"`StoreShippingOptionsListRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useCartShippingOptions"/>

@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# CreateReservationItemInput
+
+The details of the reservation item to be created.
+
+## Properties
+
+<TypeList types={[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The reserved quantity.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"line_item_id","type":"`null` \\| `string`","description":"The ID of the associated line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"allow_backorder","type":"`boolean`","description":"Allow backorder of the item. If true, it won't check inventory levels before reserving it.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"The description of the reservation.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"created_by","type":"`null` \\| `string`","description":"The user or system that created the reservation. Can be any form of identification string.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"external_id","type":"`null` \\| `string`","description":"An ID associated with an external third-party system that the reservation item is connected to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`null` \\| `Record<string, unknown>`","description":"Holds custom data in key-value pairs.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CreateReservationItemInput"/>

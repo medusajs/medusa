@@ -96,12 +96,6 @@ medusaIntegrationTestRunner({
 
     describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
       it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
-        await api.post(
-          `/admin/pricing/rule-types`,
-          { name: "Region", rule_attribute: "region_id", default_priority: 1 },
-          adminHeaders
-        )
-
         const data = {
           prices: [
             {

@@ -8,10 +8,10 @@ import { Form } from "../../../../../components/common/form"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../components/route-modal"
+} from "../../../../../components/modals"
+import { useRegions } from "../../../../../hooks/api/regions"
 import { useUpdateStore } from "../../../../../hooks/api/store"
 import { ExtendedStoreDTO } from "../../../../../types/api-responses"
-import { useRegions } from "../../../../../hooks/api/regions"
 
 type EditStoreFormProps = {
   store: ExtendedStoreDTO

@@ -1,0 +1,29 @@
+---
+slug: /references/data-model/property-types/id
+sidebar_label: id
+---
+
+import { TypeList } from "docs-ui"
+
+# id Property Method - API Reference
+
+This method defines an automatically generated string ID property.
+
+By default, this property is considered to be the data model’s primary key.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id(),
+  // ...
+})
+
+export default MyCustom
+```
+
+## Parameters
+
+<TypeList types={[{"name":"options","type":"`object`","description":"The ID's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"primaryKey","type":"`boolean`","description":"Whether the ID is the data model's primary key.","optional":true,"defaultValue":"true","expandable":false,"children":[]},{"name":"prefix","type":"`string`","description":"By default, Medusa shortens the data model's name and uses it as the \nprefix of all IDs. For example, `cm_123`.\n\nUse this option to specify the prefix to use instead.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="id"/>
