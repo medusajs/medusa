@@ -26,28 +26,28 @@ export const ShippingOptionRule = {
 }
 
 export const dmlFulfillmentSet = model.define(FulfillmentSet.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 export const dmlShippingOption = model.define(ShippingOption.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 export const dmlShippingProfile = model.define(ShippingProfile.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 export const dmlFulfillment = model.define(Fulfillment.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 export const dmlFulfillmentProvider = model.define(FulfillmentProvider.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 export const dmlServiceZone = model.define(ServiceZone.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 
 export const dmlGeoZone = model.define(GeoZone.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })
 
 export const dmlShippingOptionRule = model.define(ShippingOptionRule.name, {
-  id: model.id(),
+  id: model.id().primaryKey(),
 })

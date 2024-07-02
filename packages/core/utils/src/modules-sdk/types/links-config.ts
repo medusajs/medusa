@@ -72,20 +72,63 @@ type InferPrimaryKeyNameOrNever<
   Key extends keyof Schema
 > = Schema[Key] extends PrimaryKeyModifier<any, any> ? Key : never
 
+export type InferLinkObject<
+  Schema,
+  Key extends keyof Schema,
+  Config extends IDmlEntityConfig
+> = {
+  linkable: InferLinkableKeyName<Key, Schema[Key], Config>
+  primaryKey: Key
+}
+
 type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
   ? {
       [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferPrimaryKeyNameOrNever<Schema, K>
-        : never]: {
-        linkable: InferLinkableKeyName<K, Schema[K], Config>
-        primaryKey: K
-      }
+        : never]: InferLinkObject<Schema, K, Config>
     }
   : {}
 
+/**
+ * From an array of DmlEntity, returns a formatted object with the linkable keys
+ *
+ * @example:
+ *
+ * const user = model.define("user", {
+ *   id: model.id(),
+ *   name: model.text(),
+ * })
+ *
+ * const car = model.define("car", {
+ *   id: model.id(),
+ *   number_plate: model.text().primaryKey(),
+ *   test: model.text(),
+ * })
+ *
+ * const linkConfig = buildLinkConfigFromDmlObjects([user, car])
+ * // {
+ * //   user: {
+ * //     id: {
+ * //       linkable: 'user_id',
+ * //       primaryKey: 'id'
+ * //     },
+ * //     toJSON() { ... }
+ * //   },
+ * //   car: {
+ * //     number_plate: {
+ * //       linkable: 'car_number_plate',
+ * //       primaryKey: 'number_plate'
+ * //     },
+ * //     toJSON() { ... }
+ * //   }
+ * // }
+ *
+ */
 export type InfersLinksConfig<T extends DmlEntity<any, any>[]> =
   UnionToIntersection<{
     [K in keyof T as T[K] extends DmlEntity<any, infer Config>
       ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
-      : never]: InferSchemaLinksConfig<T[K]>
+      : never]: InferSchemaLinksConfig<T[K]> & {
+      toJSON: () => InferLinkObject<any, any, any>
+    }
   }>

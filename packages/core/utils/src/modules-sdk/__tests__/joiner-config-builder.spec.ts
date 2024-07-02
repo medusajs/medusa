@@ -456,7 +456,6 @@ describe("joiner-config-builder", () => {
       const car = model.define("car", {
         id: model.id(),
         number_plate: model.text().primaryKey(),
-        test: model.text(),
       })
 
       const linkConfig = buildLinkConfigFromDmlObjects([user, car])
@@ -467,28 +466,39 @@ describe("joiner-config-builder", () => {
             linkable: "user_id"
             primaryKey: "id"
           }
+          toJSON: () => {
+            linkable: string
+            primaryKey: string
+          }
         }
         car: {
           number_plate: {
             linkable: "car_number_plate"
             primaryKey: "number_plate"
           }
+          toJSON: () => {
+            linkable: string
+            primaryKey: string
+          }
         }
       }>()
 
-      expect(linkConfig).toEqual({
-        user: {
-          id: {
-            linkable: "user_id",
-            primaryKey: "id",
-          },
-        },
-        car: {
-          number_plate: {
-            linkable: "car_number_plate",
-            primaryKey: "number_plate",
-          },
-        },
+      expect(linkConfig.user.id).toEqual({
+        linkable: "user_id",
+        primaryKey: "id",
+      })
+      expect(linkConfig.car.number_plate).toEqual({
+        linkable: "car_number_plate",
+        primaryKey: "number_plate",
+      })
+
+      expect(linkConfig.car.toJSON()).toEqual({
+        linkable: "car_number_plate",
+        primaryKey: "number_plate",
+      })
+      expect(linkConfig.user.toJSON()).toEqual({
+        linkable: "user_id",
+        primaryKey: "id",
       })
     })
   })

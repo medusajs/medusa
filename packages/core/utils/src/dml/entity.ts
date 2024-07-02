@@ -6,14 +6,12 @@ import {
   IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
-  InferEntityType,
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
-import { model } from "./entity-builder"
 
 function extractNameAndTableName<Config extends IDmlEntityConfig>(
   nameOrConfig: Config
@@ -238,14 +236,4 @@ export class DmlEntity<
     this.#indexes = indexes as EntityIndex<Schema>[]
     return this
   }
-}
-
-const User = model.define("user", {
-  name: model.text(),
-})
-
-type inferredType = InferEntityType<typeof User>
-
-const obj: inferredType = {
-  name: "test",
 }

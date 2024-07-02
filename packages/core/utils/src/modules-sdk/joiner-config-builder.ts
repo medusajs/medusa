@@ -8,6 +8,7 @@ import {
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
+  isObject,
   lowerCaseFirst,
   MapToConfig,
   pluralize,
@@ -17,7 +18,11 @@ import { loadModels } from "./loaders/load-models"
 import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
-import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
+import {
+  InferLinkableKeys,
+  InferLinkObject,
+  InfersLinksConfig,
+} from "./types/links-config"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -113,9 +118,21 @@ export function defineJoinerConfig(
 
     primaryKeys = deduplicate(
       Object.values(linkConfig).flatMap((entityLinkConfig) => {
-        return Object.values(entityLinkConfig).map((linkableConfig) => {
-          return (linkableConfig as { primaryKey: string }).primaryKey
-        })
+        return (
+          Object.values(entityLinkConfig) as (
+            | Function
+            | InferLinkObject<any, any, any>
+          )[]
+        )
+          .filter(
+            (
+              linkableConfig
+            ): linkableConfig is InferLinkObject<any, any, any> =>
+              isObject(linkableConfig)
+          )
+          .map((linkableConfig) => {
+            return linkableConfig.primaryKey
+          })
       })
     )
   }
@@ -249,6 +266,7 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *
  * // output:
  * // {
+ * //   toJSON: function () {  },
  * //   user: {
  * //     id: "user_id",
  * //   },
@@ -270,7 +288,15 @@ export function buildLinkConfigFromDmlObjects<
     }
 
     const schema = dml.schema
-    const dmlLinkConfig = (linkConfig[lowerCaseFirst(dml.name)] ??= {})
+    const dmlLinkConfig = (linkConfig[lowerCaseFirst(dml.name)] ??= {
+      toJSON: function () {
+        const linkables = Object.entries(this)
+          .filter(([name]) => name !== "toJSON")
+          .map(([, object]) => object)
+        const lastIndex = linkables.length - 1
+        return linkables[lastIndex]
+      },
+    })
 
     for (const [property, value] of Object.entries(schema)) {
       if (BaseRelationship.isRelationship(value)) {
