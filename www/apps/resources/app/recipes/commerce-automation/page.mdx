@@ -436,19 +436,13 @@ Medusa also provides Notification Module Providers that integrate with third-par
 
 As your commerce store grows, you'll likely need to synchronize data across different systems. For example, you need to synchronize data with an ERP system or a data warehouse.
 
-You can do that by:
+To implement that:
 
-- Creating a workflow that implements the synchronization steps, along with retry and rollback logic.
-- Creating a scheduled job that executes the workflow automatically at the specified time pattern.
-
-<Note type="soon">
-
-Scheduled jobs are coming soon.
-
-</Note>
+- Create a workflow that implements the synchronization steps, along with retry and rollback logic.
+- Create a scheduled job that executes the workflow automatically at the specified time pattern.
 
 <Card
-  href="#"
+  href="!docs!/basics/scheduled-jobs"
   title="Create a Scheduled Job"
   text="Learn how to create a scheduled job in Medusa."
   startIcon={<AcademicCapSolid />}
@@ -632,6 +626,33 @@ export const syncProductsWorkflowHighlight = [
   2. Retrieve products to update based on the last date and time the products were synced. The last sync date is retrieved from the store's `metadata` property.
   3. Sync the retrieved products with a third-party service. It's assumed that the connection to the third-party service is implemented within a custom module's main service.
   4. Update the last sync date of the store to the current date.
+
+  Then, create a scheduled job at `src/jobs/sync-products.ts` that executes the workflow at the specified interval:
+
+  ```ts
+  import { MedusaContainer } from "@medusajs/types"
+  import { 
+    syncProductsWorkflow
+  } from "../workflows/sync-products"
+
+  export default async function syncProductsJob(
+    container: MedusaContainer
+  ) {
+    await syncProductsWorkflow(container)
+    .run({
+      input: {
+        name: "John",
+      },
+    })
+  }
+
+  export const config = {
+    name: "sync-products",
+    // execute every minute
+    schedule: "0 0 * * *",
+    numberOfExecutions: 3
+  };
+  ```
 
 </Details>
 
@@ -841,12 +862,6 @@ In your commerce store, you may utilize marketing strategies that encourage cust
 To do that, create a subscriber that listens to the `product.created`, and send an email to subscribed customers with tools like SendGrid or Mailchimp.
 
 You can also create a scheduled job that checks whether the number of new products has exceeded a set threshold, then sends out the newsletter.
-
-<Note type="soon">
-
-Scheduled jobs are coming soon.
-
-</Note>
 
 <CardList items={[
   {
