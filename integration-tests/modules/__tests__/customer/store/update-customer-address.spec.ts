@@ -1,7 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ICustomerModuleService } from "@medusajs/types"
-import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import { createAuthenticatedCustomer } from "../../../helpers/create-authenticated-customer"
 
 jest.setTimeout(50000)
 

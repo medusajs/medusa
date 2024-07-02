@@ -1,10 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   RemoveFulfillmentShippingOptionRulesWorkflowDTO,
   RuleOperatorType,
 } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const deleteShippingOptionRulesStepId = "delete-shipping-option-rules"
 export const deleteShippingOptionRulesStep = createStep(

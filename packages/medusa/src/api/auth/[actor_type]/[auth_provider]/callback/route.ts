@@ -1,12 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AuthenticationInput,
-  IAuthModuleService,
   ConfigModule,
+  IAuthModuleService,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ModuleRegistrationName,
   generateJwtToken,
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"

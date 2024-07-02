@@ -1,6 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { ContainerRegistrationKeys, defaultCurrencies } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  defaultCurrencies,
+} from "@medusajs/utils"
 import { Currency } from "@models"
 
 export default async ({
