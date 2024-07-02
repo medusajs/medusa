@@ -9,7 +9,7 @@ describe("register jobs", () => {
     await registerJobs([
       { resolve: path.join(__dirname, "../__fixtures__/plugin") },
     ])
-    const workflow = WorkflowManager.getWorkflow("summarize-orders-job")
+    const workflow = WorkflowManager.getWorkflow("job-summarize-orders")
     expect(workflow).toBeDefined()
     expect(workflow?.options.schedule).toEqual({
       cron: "* * * * * *",
