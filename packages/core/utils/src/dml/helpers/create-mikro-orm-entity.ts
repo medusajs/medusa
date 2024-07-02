@@ -1,4 +1,4 @@
-import type { EntityConstructor, Infer } from "@medusajs/types"
+import type { EntityConstructor, Infer, PropertyType } from "@medusajs/types"
 import { Entity, Filter } from "@mikro-orm/core"
 import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 import { DmlEntity } from "../entity"
@@ -63,7 +63,7 @@ export function createMikrORMEntity() {
       const field = property.parse(name)
 
       if ("fieldName" in field) {
-        defineProperty(MikroORMEntity, field)
+        defineProperty(MikroORMEntity, name, property as PropertyType<any>)
         applyIndexes(MikroORMEntity, tableName, field)
         applySearchable(MikroORMEntity, field)
       } else {

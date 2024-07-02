@@ -4,8 +4,14 @@ import {
   RelationshipOptions,
 } from "@medusajs/types"
 import { DmlEntity } from "./entity"
-import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
-import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
+import {
+  createBigNumberProperties,
+  DMLSchemaWithBigNumber,
+} from "./helpers/entity-builder/create-big-number-properties"
+import {
+  createDefaultProperties,
+  DMLSchemaDefaults,
+} from "./helpers/entity-builder/create-default-properties"
 import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
@@ -106,14 +112,20 @@ export class EntityBuilder {
   define<Schema extends DMLSchema, TConfig extends IDmlEntityConfig>(
     nameOrConfig: TConfig,
     schema: Schema
-  ) {
+  ): DmlEntity<
+    Schema & DMLSchemaWithBigNumber<Schema> & DMLSchemaDefaults,
+    TConfig
+  > {
     this.#disallowImplicitProperties(schema)
 
     return new DmlEntity<Schema, TConfig>(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
-    })
+    }) as unknown as DmlEntity<
+      Schema & DMLSchemaWithBigNumber<Schema> & DMLSchemaDefaults,
+      TConfig
+    >
   }
 
   /**

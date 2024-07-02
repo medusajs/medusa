@@ -1,5 +1,5 @@
 import { EntityConstructor } from "@medusajs/types"
-import { ArrayType, MetadataStorage } from "@mikro-orm/core"
+import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
@@ -1249,7 +1249,7 @@ describe("Entity builder", () => {
   })
 
   describe("Entity builder | id", () => {
-    test.failing("define an entity with id property", () => {
+    test("define an entity with id property", () => {
       const user = model.define("user", {
         id: model.id(),
         username: model.text(),
@@ -1560,9 +1560,10 @@ describe("Entity builder", () => {
         account_id: model.number(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const User = toMikroORMEntity(user)
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        User
+      ) as unknown as EntityMetadata<InstanceType<typeof User>>
 
       expect(metaData.properties.id).toEqual({
         columnType: "text",
