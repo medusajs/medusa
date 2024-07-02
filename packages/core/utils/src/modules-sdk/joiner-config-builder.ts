@@ -18,11 +18,7 @@ import { loadModels } from "./loaders/load-models"
 import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
-import {
-  InferLinkableKeys,
-  InferLinkObject,
-  InfersLinksConfig,
-} from "./types/links-config"
+import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -118,18 +114,8 @@ export function defineJoinerConfig(
 
     primaryKeys = deduplicate(
       Object.values(linkConfig).flatMap((entityLinkConfig) => {
-        return (
-          Object.values(entityLinkConfig) as (
-            | Function
-            | InferLinkObject<any, any, any>
-          )[]
-        )
-          .filter(
-            (
-              linkableConfig
-            ): linkableConfig is InferLinkObject<any, any, any> =>
-              isObject(linkableConfig)
-          )
+        return (Object.values(entityLinkConfig) as any[])
+          .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
             return linkableConfig.primaryKey
           })

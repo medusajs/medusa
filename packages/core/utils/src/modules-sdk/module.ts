@@ -8,14 +8,14 @@ import { InfersLinksConfig } from "./types/links-config"
 import { DmlEntity } from "../dml"
 
 /**
- * Build the module export and auto generate the joiner config if needed as well as
+ * Wrapper to build the module export and auto generate the joiner config if needed as well as
  * return a links object based on the DML objects
  * @param moduleName
  * @param service
  * @param loaders
  * @constructor
  */
-export function ExportModule<
+export function Module<
   const Service extends Constructor<any>,
   const ModelObjects extends DmlEntity<any, any>[] = Service extends {
     $modelObjects: infer $DmlObjects

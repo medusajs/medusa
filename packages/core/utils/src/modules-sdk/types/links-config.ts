@@ -72,20 +72,14 @@ type InferPrimaryKeyNameOrNever<
   Key extends keyof Schema
 > = Schema[Key] extends PrimaryKeyModifier<any, any> ? Key : never
 
-export type InferLinkObject<
-  Schema,
-  Key extends keyof Schema,
-  Config extends IDmlEntityConfig
-> = {
-  linkable: InferLinkableKeyName<Key, Schema[Key], Config>
-  primaryKey: Key
-}
-
 type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
   ? {
       [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferPrimaryKeyNameOrNever<Schema, K>
-        : never]: InferLinkObject<Schema, K, Config>
+        : never]: {
+        linkable: InferLinkableKeyName<K, Schema[K], Config>
+        primaryKey: K
+      }
     }
   : {}
 
@@ -129,6 +123,9 @@ export type InfersLinksConfig<T extends DmlEntity<any, any>[]> =
     [K in keyof T as T[K] extends DmlEntity<any, infer Config>
       ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
       : never]: InferSchemaLinksConfig<T[K]> & {
-      toJSON: () => InferLinkObject<any, any, any>
+      toJSON: () => {
+        linkable: string
+        primaryKey: string
+      }
     }
   }>

@@ -45,9 +45,18 @@ export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
       : T[Key] extends DmlEntity<any, any>
       ? T[Key]
       : never
+    /**
+     * @deprecated
+     */
     create: any
     update: any
+    /**
+     * @deprecated
+     */
     singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
+    /**
+     * @deprecated
+     */
     plural: T[Key] extends { plural: string }
       ? T[Key]["plural"]
       : Pluralize<Key & string>
@@ -82,8 +91,14 @@ export type ExtractPluralName<
 // TODO: The future expected entry will be a MODEL object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
 export type TEntityEntries<Keys = string> = Record<
   Keys & string,
-  | Constructor<any>
   | DmlEntity<any, any>
+  /**
+   * @deprecated
+   */
+  | Constructor<any>
+  /**
+   * @deprecated
+   */
   | { name?: string; singular?: string; plural?: string }
 >
 
@@ -240,7 +255,7 @@ type InferModelFromConfig<T> = {
     : never
 }
 
-export type MedusaServiceReturnType<EntitiesConfig extends Record<any, any>> = {
-  new (...args: any[]): AbstractModuleService<EntitiesConfig>
-  $modelObjects: InferModelFromConfig<EntitiesConfig>[keyof InferModelFromConfig<EntitiesConfig>][]
+export type MedusaServiceReturnType<ModelsConfig extends Record<any, any>> = {
+  new (...args: any[]): AbstractModuleService<ModelsConfig>
+  $modelObjects: InferModelFromConfig<ModelsConfig>[keyof InferModelFromConfig<ModelsConfig>][]
 }
