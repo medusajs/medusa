@@ -5,19 +5,14 @@ import { InventoryItemRes } from "../../../../types/api-responses"
 import { PencilSquare } from "@medusajs/icons"
 import { SectionRow } from "../../../../components/common/section"
 import { useTranslation } from "react-i18next"
-import { HttpTypes } from "@medusajs/types"
 
 type InventoryItemGeneralSectionProps = {
-  inventoryItem: InventoryItemRes["inventory_item"] & {
-    variants: HttpTypes.AdminProductVariant[]
-  }
+  inventoryItem: InventoryItemRes["inventory_item"]
 }
 export const InventoryItemGeneralSection = ({
   inventoryItem,
 }: InventoryItemGeneralSectionProps) => {
   const { t } = useTranslation()
-  const variantTitles = inventoryItem.variants?.map((v) => v.title)
-
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -37,10 +32,6 @@ export const InventoryItemGeneralSection = ({
         />
       </div>
       <SectionRow title={t("fields.sku")} value={inventoryItem.sku ?? "-"} />
-      <SectionRow
-        title={t("inventory.associatedVariants")}
-        value={variantTitles?.length ? variantTitles.join(", ") : "-"}
-      />
       <SectionRow
         title={t("fields.inStock")}
         value={getQuantityFormat(
