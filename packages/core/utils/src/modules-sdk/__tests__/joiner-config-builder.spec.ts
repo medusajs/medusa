@@ -409,7 +409,7 @@ describe("joiner-config-builder", () => {
   describe("buildLinkableKeysFromDmlObjects", () => {
     it("should return a linkableKeys object based on the DML's primary keys", () => {
       const user = model.define("user", {
-        id: model.id(),
+        id: model.id().primaryKey(),
         name: model.text(),
       })
 
@@ -449,7 +449,7 @@ describe("joiner-config-builder", () => {
   describe("buildLinkConfigFromDmlObjects", () => {
     it("should return a link config object based on the DML's primary keys", () => {
       const user = model.define("user", {
-        id: model.id(),
+        id: model.id().primaryKey(),
         name: model.text(),
       })
 

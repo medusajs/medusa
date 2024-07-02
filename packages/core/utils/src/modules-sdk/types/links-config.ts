@@ -6,7 +6,6 @@ import {
 } from "@medusajs/types"
 import { DmlEntity } from "../../dml"
 import { PrimaryKeyModifier } from "../../dml/properties/primary-key"
-import { IdProperty } from "../../dml/properties/id"
 
 type FlattenUnion<T> = T extends { [K in keyof T]: infer U }
   ? { [K in keyof T]: U }
@@ -27,35 +26,16 @@ type InferLinkableKeyName<
       string}`
   : never
 
-type InferSchemaPotentialLinkableKeys<
-  T,
-  OmitIdProperty = false
-> = T extends DmlEntity<infer Schema, infer Config>
+type InferSchemaLinkableKeys<T> = T extends DmlEntity<
+  infer Schema,
+  infer Config
+>
   ? {
-      [K in keyof Schema as OmitIdProperty extends false
+      [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferLinkableKeyName<K, Schema[K], Config>
-        : Schema[K] extends PrimaryKeyModifier<any, infer PropertyType>
-        ? PropertyType extends IdProperty
-          ? never
-          : InferLinkableKeyName<K, Schema[K], Config>
-        : InferLinkableKeyName<
-            K,
-            Schema[K],
-            Config
-          >]: InferDmlEntityNameFromConfig<Config>
+        : never]: InferDmlEntityNameFromConfig<Config>
     }
   : {}
-
-/**
- * If not counting the ID property as a primary key return any results it implicitly means
- * that other properties has been marked as primary keys and the ID property is then removed as automatic primary key.
- * Therefor it returns all primary keys excluding the automatic ID property as primary keys if any explicit primary keys are defined.
- */
-type InferSchemaLinkableKeys<T> = T extends DmlEntity<any, any>
-  ? keyof InferSchemaPotentialLinkableKeys<T, true> extends keyof {}
-    ? InferSchemaPotentialLinkableKeys<T>
-    : InferSchemaPotentialLinkableKeys<T, true>
-  : never
 
 type InferSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
   [K in keyof T]: InferSchemaLinkableKeys<T[K]>
@@ -92,29 +72,16 @@ type InferPrimaryKeyNameOrNever<
   Key extends keyof Schema
 > = Schema[Key] extends PrimaryKeyModifier<any, any> ? Key : never
 
-type InferSchemaPotentialLinksConfig<
-  T,
-  OmitIdProperty = false
-> = T extends DmlEntity<infer Schema, infer Config>
+type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
   ? {
-      [K in keyof Schema as OmitIdProperty extends false
+      [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferPrimaryKeyNameOrNever<Schema, K>
-        : Schema[K] extends PrimaryKeyModifier<any, infer PropertyType>
-        ? PropertyType extends IdProperty
-          ? never
-          : InferPrimaryKeyNameOrNever<Schema, K>
-        : InferPrimaryKeyNameOrNever<Schema, K>]: {
+        : never]: {
         linkable: InferLinkableKeyName<K, Schema[K], Config>
         primaryKey: K
       }
     }
   : {}
-
-type InferSchemaLinksConfig<T> = T extends DmlEntity<any, any>
-  ? keyof InferSchemaPotentialLinksConfig<T, true> extends keyof {}
-    ? InferSchemaPotentialLinksConfig<T>
-    : InferSchemaPotentialLinksConfig<T, true>
-  : never
 
 export type InfersLinksConfig<T extends DmlEntity<any, any>[]> =
   UnionToIntersection<{
