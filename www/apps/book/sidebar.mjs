@@ -180,6 +180,15 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          title: "Scheduled Jobs",
+          children: [
+            {
+              path: "/advanced-development/scheduled-jobs/execution-number",
+              title: "Execution Number",
+            },
+          ],
+        },
+        {
           title: "Workflows",
           children: [
             {
