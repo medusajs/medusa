@@ -48,11 +48,11 @@ export default CreateNote
 
 #### Mutation Function Parameters
 
-<TypeList types={[{"name":"AdminPostNotesReq","type":"[AdminPostNotesReq](../../../../medusa/classes/medusa.AdminPostNotesReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the note to be created.","expandable":false,"children":[{"name":"resource_id","type":"`string`","description":"The ID of the resource which the Note relates to. For example, an order ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_type","type":"`string`","description":"The type of resource which the Note relates to. For example, `order`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string`","description":"The content of the Note to create.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
+<TypeList types={[{"name":"AdminPostNotesReq","type":"`AdminPostNotesReq`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"AdminNotesRes","type":"[AdminNotesRes](../../../../medusa/types/medusa.AdminNotesRes/page.mdx)","optional":false,"defaultValue":"","description":"The note's details.","expandable":false,"children":[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
+<TypeList types={[{"name":"AdminNotesRes","type":"`AdminNotesRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreateNote"/>
 
 ### useAdminUpdateNote
 
@@ -96,11 +96,11 @@ export default Note
 
 #### Mutation Function Parameters
 
-<TypeList types={[{"name":"AdminPostNotesNoteReq","type":"[AdminPostNotesNoteReq](../../../../medusa/classes/medusa.AdminPostNotesNoteReq/page.mdx)","optional":false,"defaultValue":"","description":"The details to update of the note.","expandable":false,"children":[{"name":"value","type":"`string`","description":"The description of the Note.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
+<TypeList types={[{"name":"AdminPostNotesNoteReq","type":"`AdminPostNotesNoteReq`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"AdminNotesRes","type":"[AdminNotesRes](../../../../medusa/types/medusa.AdminNotesRes/page.mdx)","optional":false,"defaultValue":"","description":"The note's details.","expandable":false,"children":[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
+<TypeList types={[{"name":"AdminNotesRes","type":"`AdminNotesRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUpdateNote"/>
 
 ### useAdminDeleteNote
 
@@ -136,7 +136,7 @@ export default Note
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../../medusa/interfaces/medusa.DeleteResponse/page.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteNote"/>
+<TypeList types={[{"name":"DeleteResponse","type":"`DeleteResponse`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteNote"/>
 
 ___
 
@@ -213,11 +213,11 @@ export default Notes
 
 #### Hook Parameters
 
-<TypeList types={[{"name":"query","type":"[AdminGetNotesParams](../../../../medusa/classes/medusa.AdminGetNotesParams/page.mdx)","description":"Filters and pagination configurations applied on retrieved notes.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"limit","type":"`number`","description":"Limit the number of items returned in the list.","optional":false,"defaultValue":"50","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items to skip when retrieving a list.","optional":false,"defaultValue":"0","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"Resource ID to filter notes by.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
+<TypeList types={[{"name":"query","type":"`AdminGetNotesParams`","description":"Filters and pagination configurations applied on retrieved notes.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"notes","type":"`Note`[]","description":"An array of notes","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
+<TypeList types={[{"name":"AdminNotesListRes","type":"`AdminNotesListRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNotes"/>
 
 ### useAdminNote
 
@@ -253,4 +253,4 @@ export default Note
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"note","type":"`Note`","description":"Note details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNote"/>
+<TypeList types={[{"name":"AdminNotesRes","type":"`AdminNotesRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminNote"/>

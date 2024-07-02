@@ -10,6 +10,7 @@ import {
   ProgressTabs,
   RadioGroup,
   Text,
+  toast,
 } from "@medusajs/ui"
 import { useEffect, useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
@@ -121,21 +122,48 @@ export const CreatePromotionForm = () => {
           }))
       }
 
-      createPromotion({
-        ...promotionData,
-        rules: buildRulesData(rules),
-        application_method: {
-          ...applicationMethodData,
-          ...applicationMethodRuleData,
-          target_rules: buildRulesData(targetRulesData),
-          buy_rules: buildRulesData(buyRulesData),
+      createPromotion(
+        {
+          ...promotionData,
+          rules: buildRulesData(rules),
+          application_method: {
+            ...applicationMethodData,
+            ...applicationMethodRuleData,
+            target_rules: buildRulesData(targetRulesData),
+            buy_rules: buildRulesData(buyRulesData),
+          },
+          is_automatic: is_automatic === "true",
         },
-        is_automatic: is_automatic === "true",
-      }).then(() => handleSuccess())
+        {
+          onSuccess: ({ promotion }) => {
+            toast.success(t("general.success"), {
+              description: t("promotions.toasts.promotionCreateSuccess", {
+                code: promotion.code,
+              }),
+              dismissLabel: t("actions.close"),
+            })
+
+            handleSuccess()
+          },
+          onError: (e) => {
+            toast.error(t("general.error"), {
+              description: e.message,
+              dismissLabel: t("actions.close"),
+            })
+          },
+        }
+      )
     },
     async (error) => {
-      // TODO: showcase error when something goes wrong
-      // Wait for alert component and use it here
+      const { campaign, ...rest } = error || {}
+      const errorInPromotionTab = !!Object.keys(rest || {}).length
+
+      if (errorInPromotionTab) {
+        toast.error(t("general.error"), {
+          description: t("promotions.errors.promotionTabError"),
+          dismissLabel: t("general.close"),
+        })
+      }
     }
   )
 
@@ -322,18 +350,18 @@ export const CreatePromotionForm = () => {
                     value={Tab.TYPE}
                     status={detailsProgress}
                   >
-                    {t("fields.type")}
+                    {t("promotions.tabs.template")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger
                     className="w-full"
                     value={Tab.PROMOTION}
                   >
-                    {t("fields.details")}
+                    {t("promotions.tabs.promotion")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger className="w-full" value={Tab.CAMPAIGN}>
-                    {t("promotions.fields.campaign")}
+                    {t("promotions.tabs.campaign")}
                   </ProgressTabs.Trigger>
                 </ProgressTabs.List>
               </div>

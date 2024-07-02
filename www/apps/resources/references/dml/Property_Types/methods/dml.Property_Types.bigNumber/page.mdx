@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/bignumber
+sidebar_label: bigNumber
+---
+
+import { TypeList } from "docs-ui"
+
+# bigNumber Property Method - API Reference
+
+This method defines a number property that expects large numbers, such as prices.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  price: model.bigNumber(),
+  // ...
+})
+
+export default MyCustom
+```

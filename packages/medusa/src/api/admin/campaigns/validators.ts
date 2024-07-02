@@ -29,7 +29,7 @@ export const AdminGetCampaignsParams = createFindParams({
 export const CreateCampaignBudget = z
   .object({
     type: z.nativeEnum(CampaignBudgetType),
-    limit: z.number().optional(),
+    limit: z.number().nullish(),
     currency_code: z.string().nullish(),
   })
   .strict()
@@ -52,7 +52,7 @@ export const CreateCampaignBudget = z
 
 export const UpdateCampaignBudget = z
   .object({
-    limit: z.number().optional(),
+    limit: z.number().nullish(),
   })
   .strict()
 
@@ -62,7 +62,7 @@ export const AdminCreateCampaign = z
     name: z.string(),
     campaign_identifier: z.string(),
     description: z.string().nullish(),
-    budget: CreateCampaignBudget.optional(),
+    budget: CreateCampaignBudget.nullish(),
     starts_at: z.coerce.date().nullish(),
     ends_at: z.coerce.date().nullish(),
     promotions: z.array(z.object({ id: z.string() })).optional(),

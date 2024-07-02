@@ -7,7 +7,7 @@
  *   - fulfillment_set
  * properties:
  *   fulfillment_set:
- *     $ref: "#/components/schemas/FulfillmentSetResponse"
+ *     $ref: "#/components/schemas/AdminFulfillmentSet"
  * 
 */
 

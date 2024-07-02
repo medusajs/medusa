@@ -16,10 +16,14 @@
  *     type: string
  *     title: object
  *     description: The shipping profile's object.
+ *     default: shipping_profile
  *   deleted:
  *     type: boolean
  *     title: deleted
  *     description: The shipping profile's deleted.
+ *   parent:
+ *     type: object
+ *     description: The shipping profile's parent.
  * 
 */
 

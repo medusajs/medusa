@@ -29,7 +29,6 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  PriceListStatus,
   PriceListType,
   promiseAll,
   removeNullish,
@@ -132,33 +131,56 @@ export default class PricingModuleService
 
   @InjectManager("baseRepository_")
   // @ts-expect-error
+  async retrievePriceSet(
+    id: string,
+    config?: FindConfig<PriceSetDTO> | undefined,
+    sharedContext?: Context | undefined
+  ): Promise<PriceSetDTO> {
+    const priceSet = await this.priceSetService_.retrieve(
+      id,
+      this.normalizePriceSetConfig(config),
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PriceSetDTO>(priceSet)
+  }
+
+  @InjectManager("baseRepository_")
+  // @ts-expect-error
   async listPriceSets(
     filters: PricingTypes.FilterablePriceSetProps = {},
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PriceSetDTO[]> {
-    const pricingContext = this.setupCalculatedPriceConfig_(filters, config)
+    const normalizedConfig = this.normalizePriceSetConfig(config)
+    const pricingContext = this.setupCalculatedPriceConfig_(
+      filters,
+      normalizedConfig
+    )
 
-    const priceSets = await super.listPriceSets(filters, config, sharedContext)
+    const priceSets = await super.listPriceSets(
+      filters,
+      normalizedConfig,
+      sharedContext
+    )
     if (!pricingContext || !priceSets.length) {
       return priceSets
     }
 
-    const priceSetIds: string[] = []
-    const priceSetMap = new Map()
-    for (const priceSet of priceSets) {
-      priceSetIds.push(priceSet.id)
-      priceSetMap.set(priceSet.id, priceSet)
-    }
-
     const calculatedPrices = await this.calculatePrices(
-      { id: priceSetIds },
+      { id: priceSets.map((p) => p.id) },
       { context: pricingContext },
       sharedContext
     )
+
+    const calculatedPricesMap = new Map()
     for (const calculatedPrice of calculatedPrices) {
-      const priceSet = priceSetMap.get(calculatedPrice.id)
-      priceSet.calculated_price = calculatedPrice
+      calculatedPricesMap.set(calculatedPrice.id, calculatedPrice)
+    }
+
+    for (const priceSet of priceSets) {
+      const calculatedPrice = calculatedPricesMap.get(priceSet.id)
+      priceSet.calculated_price = calculatedPrice ?? null
     }
 
     return priceSets
@@ -171,32 +193,35 @@ export default class PricingModuleService
     config: FindConfig<PricingTypes.PriceSetDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[PriceSetDTO[], number]> {
-    const pricingContext = this.setupCalculatedPriceConfig_(filters, config)
+    const normalizedConfig = this.normalizePriceSetConfig(config)
+    const pricingContext = this.setupCalculatedPriceConfig_(
+      filters,
+      normalizedConfig
+    )
 
     const [priceSets, count] = await super.listAndCountPriceSets(
       filters,
-      config,
+      normalizedConfig,
       sharedContext
     )
     if (!pricingContext || !priceSets.length) {
       return [priceSets, count]
     }
 
-    const priceSetIds: string[] = []
-    const priceSetMap = new Map()
-    for (const priceSet of priceSets) {
-      priceSetIds.push(priceSet.id)
-      priceSetMap.set(priceSet.id, priceSet)
-    }
-
     const calculatedPrices = await this.calculatePrices(
-      { id: priceSetIds },
+      { id: priceSets.map((p) => p.id) },
       { context: pricingContext },
       sharedContext
     )
+
+    const calculatedPricesMap = new Map()
     for (const calculatedPrice of calculatedPrices) {
-      const priceSet = priceSetMap.get(calculatedPrice.id)
-      priceSet.calculated_price = calculatedPrice
+      calculatedPricesMap.set(calculatedPrice.id, calculatedPrice)
+    }
+
+    for (const priceSet of priceSets) {
+      const calculatedPrice = calculatedPricesMap.get(priceSet.id)
+      priceSet.calculated_price = calculatedPrice ?? null
     }
 
     return [priceSets, count]
@@ -217,14 +242,18 @@ export default class PricingModuleService
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
-      pricingFilters.id.map(
-        (priceSetId: string): PricingTypes.CalculatedPriceSet => {
+      pricingFilters.id
+        .map((priceSetId: string): PricingTypes.CalculatedPriceSet | null => {
           // This is where we select prices, for now we just do a first match based on the database results
           // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
 
           // TODO: inject custom price selection here
 
           const prices = pricesSetPricesMap.get(priceSetId) || []
+          if (!prices.length) {
+            return null
+          }
+
           const priceListPrice = prices.find((p) => p.price_list_id)
 
           const defaultPrice = prices?.find((p) => !p.price_list_id)
@@ -268,8 +297,8 @@ export default class PricingModuleService
               max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
             },
           }
-        }
-      )
+        })
+        .filter(Boolean) as PricingTypes.CalculatedPriceSet[]
 
     return JSON.parse(JSON.stringify(calculatedPrices))
   }
@@ -297,9 +326,9 @@ export default class PricingModuleService
     // TODO: Remove the need to refetch the data here
     const dbPriceSets = await this.listPriceSets(
       { id: priceSets.map((p) => p.id) },
-      {
+      this.normalizePriceSetConfig({
         relations: ["prices", "prices.price_rules"],
-      },
+      }),
       sharedContext
     )
 
@@ -1293,5 +1322,16 @@ export default class PricingModuleService
 
       return priceListData
     })
+  }
+
+  protected normalizePriceSetConfig(
+    config: FindConfig<PricingTypes.PriceSetDTO> | undefined
+  ) {
+    return {
+      options: {
+        populateWhere: { prices: { price_list_id: null } },
+      },
+      ...config,
+    }
   }
 }

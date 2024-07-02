@@ -1,0 +1,103 @@
+post:
+  operationId: PostOrdersIdFulfillmentsFulfillment_idShipment
+  summary: Add Shipments to Order
+  description: Add a list of shipments to a order.
+  x-authenticated: true
+  parameters:
+    - name: id
+      in: path
+      description: The order's ID.
+      required: true
+      schema:
+        type: string
+    - name: fulfillment_id
+      in: path
+      description: The order's fulfillment id.
+      required: true
+      schema:
+        type: string
+    - name: expand
+      in: query
+      description: Comma-separated relations that should be expanded in the returned data.
+      required: false
+      schema:
+        type: string
+        title: expand
+        description: >-
+          Comma-separated relations that should be expanded in the returned
+          data.
+    - name: fields
+      in: query
+      description: |-
+        Comma-separated fields that should be included in the returned data.
+         * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+         * without prefix it will replace the entire default fields.
+      required: false
+      schema:
+        type: string
+        title: fields
+        description: |-
+          Comma-separated fields that should be included in the returned data.
+           * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+           * without prefix it will replace the entire default fields.
+    - name: offset
+      in: query
+      description: The number of items to skip when retrieving a list.
+      required: false
+      schema:
+        type: number
+        title: offset
+        description: The number of items to skip when retrieving a list.
+    - name: limit
+      in: query
+      description: Limit the number of items returned in the list.
+      required: false
+      schema:
+        type: number
+        title: limit
+        description: Limit the number of items returned in the list.
+    - name: order
+      in: query
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      required: false
+      schema:
+        type: string
+        title: order
+        description: >-
+          The field to sort the data by. By default, the sort order is
+          ascending. To change the order to descending, prefix the field name
+          with `-`.
+  security:
+    - api_token: []
+    - cookie_auth: []
+    - jwt_token: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminOrderCreateShipment.yaml
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_orders_{id}_fulfillments_{fulfillment_id}_shipment/post.sh
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
