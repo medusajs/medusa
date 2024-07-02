@@ -6,7 +6,7 @@ import {
 } from "@medusajs/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.NOTIFICATION, {
-  entityQueryingConfig: [{ name: "Notification" }],
+  dmlObjects: [{ name: "Notification" }],
 })
 
 export const entityNameToLinkableKeysMap: MapToConfig =

@@ -5,7 +5,7 @@ import {
   RelationshipTypes,
 } from "@medusajs/types"
 
-const IsRelationship = Symbol.for("isRelationship")
+export const IsRelationship = Symbol.for("isRelationship")
 
 /**
  * The BaseRelationship encapsulates the repetitive parts of defining

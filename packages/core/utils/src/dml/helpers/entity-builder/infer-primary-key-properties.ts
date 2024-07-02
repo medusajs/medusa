@@ -6,9 +6,9 @@ import { PrimaryKeyModifier } from "../../properties/primary-key"
 /*
   The id() property is an core opinionated property that will act as a primaryKey
   by default and come with built-in logic when converted to a mikroorm entity. If no other
-  primaryKey() properties are found within the schema, we continue treating the id() property 
-  as a primaryKey. When other fields are set as explicit primaryKey fields, we convert the 
-  id() property to no longer be a primaryKey. 
+  primaryKey() properties are found within the schema, we continue treating the id() property
+  as a primaryKey. When other fields are set as explicit primaryKey fields, we convert the
+  id() property to no longer be a primaryKey.
 
   Example:
   Model 1:
@@ -55,7 +55,7 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 
 /*
   Gets all explicit primary key fields from a schema, except id properties.
-  
+
   eg: model.define('test', {
     id: model.id(), -> implicit primaryKey field,
     text: model.text(),
@@ -67,6 +67,11 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 function getExplicitPrimaryKeyFields(schema: DMLSchema) {
   return Object.entries(schema).filter(([field, property]) => {
     const parsed = property.parse(field) as PropertyMetadata
+    console.log({
+      property,
+      parsed,
+      isRelationship: BaseRelationship.isRelationship(property),
+    })
 
     // Return early if its a relationship property or an id property
     if (

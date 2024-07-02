@@ -1,4 +1,5 @@
 import { RelationshipType } from "@medusajs/types"
+import { IsRelationship } from "./base"
 
 const IsNullableModifier = Symbol.for("isNullableModifier")
 
@@ -8,7 +9,8 @@ const IsNullableModifier = Symbol.for("isNullableModifier")
 export class NullableModifier<T, Relation extends RelationshipType<T>>
   implements RelationshipType<T | null>
 {
-  [IsNullableModifier]: true = true
+  [IsNullableModifier]: true = true;
+  [IsRelationship]: true = true
 
   static isNullableModifier<T>(
     modifier: any

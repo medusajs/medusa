@@ -112,7 +112,7 @@ export class EntityBuilder {
     this.#disallowImplicitProperties(schema)
     schema = inferPrimaryKeyProperties(schema)
 
-    return new DmlEntity<Schema, TConfig>(nameOrConfig, {
+    return new DmlEntity(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),

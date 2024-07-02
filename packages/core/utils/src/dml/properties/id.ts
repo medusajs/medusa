@@ -40,7 +40,9 @@ export class IdProperty extends BaseProperty<string> {
 
     this.dataType = {
       name: "id",
-      options,
+      options: {
+        prefix: options?.prefix,
+      },
     }
   }
 

@@ -441,7 +441,7 @@ function generateJoinerConfigIfNecessary({
 
   service.prototype.__joinerConfig = function () {
     return defineJoinerConfig(moduleResolution.definition.key, {
-      entityQueryingConfig: models,
+      dmlObjects: models,
     })
   }
 }

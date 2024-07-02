@@ -12,12 +12,7 @@ import {
 } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.PAYMENT, {
-  entityQueryingConfig: [
-    Payment,
-    PaymentCollection,
-    PaymentProvider,
-    PaymentSession,
-  ],
+  dmlObjects: [Payment, PaymentCollection, PaymentProvider, PaymentSession],
   linkableKeys: {
     payment_id: Payment.name,
     payment_collection_id: PaymentCollection.name,
