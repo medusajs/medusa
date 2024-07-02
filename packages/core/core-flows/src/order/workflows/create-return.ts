@@ -242,12 +242,8 @@ function prepareReturnShippingOptionQueryVariables({
     return_shipping?: OrderWorkflow.CreateOrderReturnWorkflowInput["return_shipping"]
   }
 }) {
-  if (input.return_shipping) {
-    return
-  }
-
   const variables = {
-    id: input.return_shipping!.option_id,
+    id: input.return_shipping?.option_id,
     calculated_price: {
       context: {
         currency_code: order.currency_code,
