@@ -229,7 +229,7 @@ Module Relationships is coming soon.
   import { model } from "@medusajs/utils"
 
   const Company = model.define("company", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     name: model.text(),
     city: model.text(),
     country_code: model.text(),
