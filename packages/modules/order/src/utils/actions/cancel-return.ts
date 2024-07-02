@@ -3,7 +3,7 @@ import { ChangeActionType } from "../action-key"
 import { OrderChangeProcessing } from "../calculate-order-change"
 import { setActionReference } from "../set-action-reference"
 
-OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN, {
+OrderChangeProcessing.registerActionType(ChangeActionType.CANCEL_RETURN_ITEM, {
   operation({ action, currentOrder }) {
     const existing = currentOrder.items.find(
       (item) => item.id === action.details.reference_id

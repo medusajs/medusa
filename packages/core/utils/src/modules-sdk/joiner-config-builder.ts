@@ -17,7 +17,6 @@ import { loadModels } from "./loaders/load-models"
 import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
-import { inferPrimaryKeyProperties } from "../dml/helpers/entity-builder/infer-primary-key-properties"
 import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
 
 /**
@@ -192,7 +191,6 @@ export function buildLinkableKeysFromDmlObjects<
       continue
     }
 
-    dml.schema = inferPrimaryKeyProperties(dml.schema)
     const schema = dml.schema
     const primaryKeys: string[] = []
 
@@ -271,7 +269,6 @@ export function buildLinkConfigFromDmlObjects<
       continue
     }
 
-    dml.schema = inferPrimaryKeyProperties(dml.schema)
     const schema = dml.schema
     const dmlLinkConfig = (linkConfig[lowerCaseFirst(dml.name)] ??= {})
 

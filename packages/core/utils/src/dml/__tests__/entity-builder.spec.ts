@@ -1291,7 +1291,8 @@ describe("Entity builder", () => {
           columnType: "text",
           name: "id",
           nullable: false,
-          primary: true,
+          getter: false,
+          setter: false,
         },
         username: {
           reference: "scalar",
@@ -1346,9 +1347,9 @@ describe("Entity builder", () => {
       })
     })
 
-    test("mark id as non-primary", () => {
+    test("mark id as primary", () => {
       const user = model.define("user", {
-        id: model.id({ primaryKey: false }),
+        id: model.id().primaryKey(),
         username: model.text(),
         email: model.text(),
       })
@@ -1391,8 +1392,7 @@ describe("Entity builder", () => {
           columnType: "text",
           name: "id",
           nullable: false,
-          getter: false,
-          setter: false,
+          primary: true,
         },
         username: {
           reference: "scalar",
@@ -1451,7 +1451,7 @@ describe("Entity builder", () => {
 
     test("define prefix for the id", () => {
       const user = model.define("user", {
-        id: model.id({ primaryKey: false, prefix: "us" }),
+        id: model.id({ prefix: "us" }).primaryKey(),
         username: model.text(),
         email: model.text(),
       })
@@ -1494,8 +1494,7 @@ describe("Entity builder", () => {
           columnType: "text",
           name: "id",
           nullable: false,
-          getter: false,
-          setter: false,
+          primary: true,
         },
         username: {
           reference: "scalar",
@@ -1554,177 +1553,31 @@ describe("Entity builder", () => {
   })
 
   describe("Entity builder | primaryKey", () => {
-    test.failing("should create both id fields and primaryKey fields", () => {
+    test("should infer primaryKeys from a model", () => {
       const user = model.define("user", {
-        id: model.id(),
+        id: model.id().primaryKey(),
         email: model.text().primaryKey(),
-        account_id: model.number().primaryKey(),
+        account_id: model.number(),
       })
 
       const entityBuilder = createMikrORMEntity()
       const User = entityBuilder(user)
-
-      expectTypeOf(new User()).toMatchTypeOf<{
-        id: string
-        email: string
-        account_id: number
-      }>()
-
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
 
-      expect(metaData.properties).toEqual({
-        id: {
-          reference: "scalar",
-          type: "string",
-          columnType: "text",
-          name: "id",
-          nullable: false,
-          getter: false,
-          setter: false,
-        },
-        email: {
-          columnType: "text",
-          name: "email",
-          nullable: false,
-          primary: true,
-          reference: "scalar",
-          type: "string",
-        },
-        account_id: {
-          columnType: "integer",
-          name: "account_id",
-          nullable: false,
-          primary: true,
-          reference: "scalar",
-          type: "number",
-        },
-        created_at: {
-          reference: "scalar",
-          type: "date",
-          columnType: "timestamptz",
-          name: "created_at",
-          defaultRaw: "now()",
-          onCreate: expect.any(Function),
-          nullable: false,
-          getter: false,
-          setter: false,
-        },
-        updated_at: {
-          reference: "scalar",
-          type: "date",
-          columnType: "timestamptz",
-          name: "updated_at",
-          defaultRaw: "now()",
-          onCreate: expect.any(Function),
-          onUpdate: expect.any(Function),
-          nullable: false,
-          getter: false,
-          setter: false,
-        },
-        deleted_at: {
-          reference: "scalar",
-          type: "date",
-          columnType: "timestamptz",
-          name: "deleted_at",
-          nullable: true,
-          getter: false,
-          setter: false,
-        },
-      })
-    })
-
-    test.failing("should infer primaryKeys from a model", () => {
-      let user = model.define("user", {
-        id: model.id(),
-        email: model.text(),
-        account_id: model.number(),
-      })
-
-      const entityBuilder = createMikrORMEntity()
-      let User = entityBuilder(user)
-      let metaData = MetadataStorage.getMetadataFromDecorator(User)
-
       expect(metaData.properties.id).toEqual({
         columnType: "text",
         name: "id",
         nullable: false,
+        reference: "scalar",
+        type: "string",
         primary: true,
-        reference: "scalar",
-        type: "string",
       })
-
-      user = model.define("user", {
-        id: model.id(),
-        email: model.text().primaryKey(),
-        account_id: model.number(),
-      })
-
-      User = entityBuilder(user)
-      metaData = MetadataStorage.getMetadataFromDecorator(User)
-
-      expect(metaData.properties.id).toEqual({
-        columnType: "text",
-        name: "id",
-        nullable: false,
-        reference: "scalar",
-        type: "string",
-        getter: false,
-        setter: false,
-      })
-
       expect(metaData.properties.email).toEqual({
         columnType: "text",
         name: "email",
         nullable: false,
         reference: "scalar",
         type: "string",
-        primary: true,
-      })
-
-      expect(metaData.properties.account_id).toEqual({
-        columnType: "integer",
-        name: "account_id",
-        nullable: false,
-        reference: "scalar",
-        type: "number",
-        getter: false,
-        setter: false,
-      })
-
-      user = model.define("user", {
-        id: model.id(),
-        email: model.text().primaryKey(),
-        account_id: model.number().primaryKey(),
-      })
-
-      User = entityBuilder(user)
-      metaData = MetadataStorage.getMetadataFromDecorator(User)
-
-      expect(metaData.properties.id).toEqual({
-        columnType: "text",
-        name: "id",
-        nullable: false,
-        reference: "scalar",
-        type: "string",
-        getter: false,
-        setter: false,
-      })
-
-      expect(metaData.properties.email).toEqual({
-        columnType: "text",
-        name: "email",
-        nullable: false,
-        reference: "scalar",
-        type: "string",
-        primary: true,
-      })
-
-      expect(metaData.properties.account_id).toEqual({
-        columnType: "integer",
-        name: "account_id",
-        nullable: false,
-        reference: "scalar",
-        type: "number",
         primary: true,
       })
     })

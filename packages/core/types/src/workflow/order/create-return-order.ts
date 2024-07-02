@@ -13,7 +13,7 @@ export interface CreateOrderReturnWorkflowInput {
   order_id: string
   created_by?: string | null // The id of the authenticated user
   items: CreateReturnItem[]
-  return_shipping: {
+  return_shipping?: {
     option_id: string
     price?: number
   }

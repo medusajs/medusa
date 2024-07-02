@@ -57,7 +57,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
     }
 
     const quantityAvailable = MathBN.sub(
-      existing!.detail?.shipped_quantity ?? 0,
+      existing!.detail?.fulfilled_quantity ?? 0,
       existing!.detail?.return_requested_quantity ?? 0
     )
 
@@ -65,7 +65,7 @@ OrderChangeProcessing.registerActionType(ChangeActionType.RETURN_ITEM, {
     if (greater) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `Cannot request to return more items than what was shipped for item ${refId}.`
+        `Cannot request to return more items than what was fulfilled for item ${refId}.`
       )
     }
   },

@@ -33,7 +33,10 @@ import {
 } from "./common"
 import {
   CancelOrderChangeDTO,
+  CancelOrderClaimDTO,
+  CancelOrderExchangeDTO,
   CancelOrderFulfillmentDTO,
+  CancelOrderReturnDTO,
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
@@ -1582,12 +1585,10 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<ReturnDTO>
 
-  /*
   cancelReturn(
-    returnData: CancelOrderReturnDTO,
+    data: CancelOrderReturnDTO,
     sharedContext?: Context
-  ): Promise<void>
-  */
+  ): Promise<ReturnDTO>
 
   receiveReturn(
     returnData: ReceiveOrderReturnDTO,
@@ -1599,8 +1600,18 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderClaimDTO>
 
+  cancelClaim(
+    data: CancelOrderClaimDTO,
+    sharedContext?: Context
+  ): Promise<OrderClaimDTO>
+
   createExchange(
     exchangeData: CreateOrderExchangeDTO,
+    sharedContext?: Context
+  ): Promise<OrderExchangeDTO>
+
+  cancelExchange(
+    data: CancelOrderExchangeDTO,
     sharedContext?: Context
   ): Promise<OrderExchangeDTO>
 }

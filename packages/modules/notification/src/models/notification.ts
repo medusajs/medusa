@@ -3,7 +3,7 @@ import { NotificationProvider } from "./notification-provider"
 
 // We probably want to have a TTL for each entry, so we don't bloat the DB (and also for GDPR reasons if TTL < 30 days).
 export const Notification = model.define("notification", {
-  id: model.id({ prefix: "noti" }),
+  id: model.id({ prefix: "noti" }).primaryKey(),
   // This can be an email, phone number, or username, depending on the channel.
   to: model.text(),
   channel: model.text(),

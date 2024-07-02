@@ -19,38 +19,32 @@ export class IdProperty extends BaseProperty<string> {
     options: {
       prefix?: string
     }
+  } = {
+    name: "id",
+    options: {},
   }
 
-  constructor(options?: {
-    /**
-     * Whether the ID is the data model's primary key.
-     *
-     * @defaultValue true
-     */
-    primaryKey?: boolean
-    /**
-     * By default, Medusa shortens the data model's name and uses it as the
-     * prefix of all IDs. For example, `cm_123`.
-     *
-     * Use this option to specify the prefix to use instead.
-     */
-    prefix?: string
-  }) {
+  constructor(options?: { prefix?: string }) {
     super()
-
-    this.dataType = {
-      name: "id",
-      options: {
-        prefix: options?.prefix,
-      },
-    }
+    this.dataType.options.prefix = options?.prefix
   }
 
-  primaryKey(decision: boolean) {
-    if (decision) {
-      return new PrimaryKeyModifier<string, IdProperty>(this)
-    }
-
-    return this
+  /**
+   * This method indicates that the property is the data model's primary key.
+   *
+   * @example
+   * import { model } from "@medusajs/utils"
+   *
+   * const Product = model.define("Product", {
+   *   id: model.id().primaryKey(),
+   *   // ...
+   * })
+   *
+   * export default Product
+   *
+   * @customNamespace Property Configuration Methods
+   */
+  primaryKey() {
+    return new PrimaryKeyModifier<string, IdProperty>(this)
   }
 }

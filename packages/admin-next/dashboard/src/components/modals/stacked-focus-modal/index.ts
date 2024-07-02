@@ -1,1 +1,1 @@
-export * from "./stacked-foucs-modal"
+export * from "./stacked-focus-modal"

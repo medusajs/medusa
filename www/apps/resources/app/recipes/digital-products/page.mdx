@@ -182,7 +182,7 @@ Module Relationships is coming soon.
   import { MediaType } from "../../../types/digital-product/product-media"
 
   const ProductMedia = model.define("product_media", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     name: model.text(),
     type: model.enum(Object.values(MediaType)),
     fileKey: model.text(),

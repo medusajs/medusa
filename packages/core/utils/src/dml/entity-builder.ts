@@ -6,12 +6,11 @@ import {
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
-import { inferPrimaryKeyProperties } from "./helpers/entity-builder/infer-primary-key-properties"
 import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
 import { DateTimeProperty } from "./properties/date-time"
-import { EnumProperty } from "./properties/enum"
+import { EnumLike, EnumProperty } from "./properties/enum"
 import { IdProperty } from "./properties/id"
 import { JSONProperty } from "./properties/json"
 import { NumberProperty } from "./properties/number"
@@ -20,7 +19,6 @@ import { BelongsTo } from "./relations/belongs-to"
 import { HasMany } from "./relations/has-many"
 import { HasOne } from "./relations/has-one"
 import { ManyToMany } from "./relations/many-to-many"
-import { PrimaryKeyModifier } from "./properties/primary-key"
 
 /**
  * The implicit properties added by EntityBuilder in every schema
@@ -110,7 +108,6 @@ export class EntityBuilder {
     schema: Schema
   ) {
     this.#disallowImplicitProperties(schema)
-    schema = inferPrimaryKeyProperties(schema)
 
     return new DmlEntity<Schema, TConfig>(nameOrConfig, {
       ...schema,
@@ -122,42 +119,23 @@ export class EntityBuilder {
   /**
    * This method defines an automatically generated string ID property.
    *
-   * By default, this property is considered to be the data model’s primary key.
-   *
-   * @param {ConstructorParameters<typeof IdProperty>[0]} options - The ID's options.
+   * You must use the "primaryKey" modifier to mark the property as the
+   * primary key.
    *
    * @example
    * import { model } from "@medusajs/utils"
    *
-   * const MyCustom = model.define("my_custom", {
-   *   id: model.id(),
+   * const User = model.define("User", {
+   *   id: model.id().primaryKey(),
    *   // ...
    * })
    *
-   * export default MyCustom
+   * export default User
    *
    * @customNamespace Property Types
    */
-  id<T extends { primaryKey?: boolean; prefix?: string } | undefined>(
-    options?: T
-  ): T extends undefined
-    ? PrimaryKeyModifier<string, IdProperty>
-    : T extends {
-        primaryKey: infer PrimaryKeyBoolean
-      }
-    ? PrimaryKeyBoolean extends undefined
-      ? PrimaryKeyModifier<string, IdProperty>
-      : PrimaryKeyBoolean extends true
-      ? PrimaryKeyModifier<string, IdProperty>
-      : IdProperty
-    : never {
-    const { primaryKey = true, ...rest } = options ?? {}
-
-    if (primaryKey) {
-      return new IdProperty(rest).primaryKey(true) as any
-    }
-
-    return new IdProperty(options) as any
+  id(options?: { prefix?: string }) {
+    return new IdProperty(options)
   }
 
   /**
@@ -317,7 +295,7 @@ export class EntityBuilder {
    *
    * @customNamespace Property Types
    */
-  enum<const Values extends unknown>(values: Values[]) {
+  enum<const Values extends unknown[] | EnumLike>(values: Values) {
     return new EnumProperty<Values>(values)
   }
 

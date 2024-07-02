@@ -1,0 +1,160 @@
+export const metadata = {
+  title: `${pageNumber} Data Model Index`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to define indices on a data model.
+
+## Define Index on Property
+
+Define an index on a property using the `model` utility's `index` method.
+
+For example:
+
+export const highlights = [
+  ["5", "index", "Define an index on the `name` property."],
+  ["6", '"IDX_MY_CUSTOM_NAME"', "Index name is optional."]
+]
+
+```ts highlights={highlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text().index(
+    "IDX_MY_CUSTOM_NAME"
+  ),
+})
+
+export default MyCustom
+```
+
+The `index` method optionally accepts the name of the index as a parameter.
+
+In this example, you define an index on the `name` property.
+
+---
+
+## Define Index on Data Model
+
+A data model has an `indexes` method that defines indices on the data model.
+
+The index can be on multiple columns (composite index). For example:
+
+export const dataModelIndexHighlights = [
+  ["7", "indexes", "Define indices on the data model."],
+  ["9", "on", "Specify the properties to define the index on."]
+]
+
+```ts highlights={dataModelIndexHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  age: model.number()
+}).indexes([
+  {
+    on: ["name", "age"],
+  },
+])
+
+export default MyCustom
+```
+
+The `indexes` method receives an array of indices as a parameter. Each index is an object with a required `on` property indicating the properties to apply the index on.
+
+In the above example, you define a composite index on the `name` and `age` properties.
+
+### Index Conditions
+
+An index can have conditions. For example:
+
+export const conditionHighlights = [
+  ["10", "where", "Specify conditions on properties."],
+  ["11", "", "Create the index when `age` is `30`."]
+]
+
+```ts highlights={conditionHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  age: model.number()
+}).indexes([
+  {
+    on: ["name", "age"],
+    where: {
+      age: 30
+    }
+  },
+])
+
+export default MyCustom
+```
+
+The index object passed to `indexes` accepts a `where` property that is an object of conditions. The object's key is a property's name, and its value is the condition on that property.
+
+In the example above, the composite index is created on the `name` and `age` properties when the `age`'s value is `30`.
+
+A property's condition can be a negation. For example:
+
+export const negationHighlights = [
+  ["12", "", "Create the index when `age` is not `null`."]
+]
+
+```ts highlights={negationHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  age: model.number().nullable()
+}).indexes([
+  {
+    on: ["name", "age"],
+    where: {
+      age: {
+        $ne: null
+      }
+    }
+  },
+])
+
+export default MyCustom
+```
+
+A property's value in `where` can be an object having a `$ne` property. `$ne`'s value indicates what the specified property's value shouldn't be.
+
+In the example above, the composite index is created on the `name` and `age` properties when `age`'s value is not `null`.
+
+### Unique Data Model Index
+
+The object passed to `indexes` accepts a `unique` property indicating that the created index must be a unique index.
+
+For example:
+
+export const uniqueHighlights = [
+  ["10", "unique", "Specify if the index is a unique index."]
+]
+
+```ts highlights={uniqueHighlights}
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  id: model.id().primaryKey(),
+  name: model.text(),
+  age: model.number()
+}).indexes([
+  {
+    on: ["name", "age"],
+    unique: true
+  },
+])
+
+export default MyCustom
+```
+
+This creates a unique composite index on the `name` and `age` properties.

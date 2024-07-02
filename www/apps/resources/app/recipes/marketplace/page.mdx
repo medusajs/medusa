@@ -69,7 +69,7 @@ Module Relationships is coming soon.
   import { model } from "@medusajs/utils"
 
   const StoreUser = model.define("store_user", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     store_id: model.text(),
     user_id: model.text(),
   })
@@ -87,7 +87,7 @@ Module Relationships is coming soon.
   import { model } from "@medusajs/utils"
 
   const StoreProduct = model.define("store_user", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     store_id: model.text(),
     product_id: model.text(),
   })
@@ -105,7 +105,7 @@ Module Relationships is coming soon.
   import { model } from "@medusajs/utils"
 
   const StoreOrder = model.define("store_user", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     store_id: model.text(),
     order_id: model.text(),
     parent_order_id: model.text(),

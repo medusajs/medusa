@@ -173,7 +173,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
         <Form.Field
           control={form.control}
           name="starts_at"
-          render={({ field: { value, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -186,11 +186,10 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                     </Form.Hint>
                   </div>
                   <Form.Control>
-                    {/* TODO: Add timepicker see CORE-2382 */}
                     <DatePicker
-                      mode="single"
+                      granularity="minute"
+                      shouldCloseOnSelect={false}
                       {...field}
-                      value={value ?? undefined}
                     />
                   </Form.Control>
                 </div>
@@ -203,7 +202,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
         <Form.Field
           control={form.control}
           name="ends_at"
-          render={({ field: { value, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -215,9 +214,9 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                   </div>
                   <Form.Control>
                     <DatePicker
-                      mode="single"
+                      granularity="minute"
+                      shouldCloseOnSelect={false}
                       {...field}
-                      value={value ?? undefined}
                     />
                   </Form.Control>
                 </div>

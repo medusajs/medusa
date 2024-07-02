@@ -4,6 +4,9 @@ export interface CreateOrderShippingMethodDTO {
   name: string
   shipping_option_id?: string
   order_id: string
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
   version?: number
   amount: BigNumberInput
   data?: Record<string, unknown>
