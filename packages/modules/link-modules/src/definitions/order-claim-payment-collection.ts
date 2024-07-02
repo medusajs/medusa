@@ -1,30 +1,33 @@
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { LINKS, Modules } from "@medusajs/utils"
 
-export const OrderPaymentCollection: ModuleJoinerConfig = {
-  serviceName: LINKS.OrderPaymentCollection,
+export const OrderClaimPaymentCollection: ModuleJoinerConfig = {
+  serviceName: LINKS.OrderClaimPaymentCollection,
   isLink: true,
   databaseConfig: {
-    tableName: "order_payment_collection",
-    idPrefix: "ordpay",
+    tableName: "order_claim_payment_collection",
+    idPrefix: "claimpay",
   },
   alias: [
     {
-      name: ["order_payment_collection", "order_payment_collections"],
+      name: [
+        "order_claim_payment_collection",
+        "order_claim_payment_collections",
+      ],
       args: {
-        entity: "LinkOrderPaymentCollection",
+        entity: "LinkOrderClaimPaymentCollection",
       },
     },
   ],
-  primaryKeys: ["id", "order_id", "payment_collection_id"],
+  primaryKeys: ["id", "claim_id", "payment_collection_id"],
   relationships: [
     {
       serviceName: Modules.ORDER,
       primaryKey: "id",
-      foreignKey: "order_id",
+      foreignKey: "claim_id",
       alias: "order",
       args: {
-        methodSuffix: "Orders",
+        methodSuffix: "OrderClaims",
       },
     },
     {
@@ -41,28 +44,28 @@ export const OrderPaymentCollection: ModuleJoinerConfig = {
     {
       serviceName: Modules.ORDER,
       fieldAlias: {
-        payment_collections: {
-          path: "payment_collections_link.payment_collection",
+        claim_payment_collections: {
+          path: "claim_payment_collections_link.payment_collection",
           isList: true,
         },
       },
       relationship: {
-        serviceName: LINKS.OrderPaymentCollection,
-        primaryKey: "order_id",
+        serviceName: LINKS.OrderClaimPaymentCollection,
+        primaryKey: "claim_id",
         foreignKey: "id",
-        alias: "payment_collections_link",
+        alias: "claim_payment_collections_link",
       },
     },
     {
       serviceName: Modules.PAYMENT,
       fieldAlias: {
-        order: "order_link.order",
+        claim: "order_claim_link.order",
       },
       relationship: {
-        serviceName: LINKS.OrderPaymentCollection,
+        serviceName: LINKS.OrderClaimPaymentCollection,
         primaryKey: "payment_collection_id",
         foreignKey: "id",
-        alias: "order_link",
+        alias: "order_claim_link",
       },
     },
   ],

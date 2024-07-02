@@ -60,7 +60,7 @@ const validateOrder = createStep(
       pred: (obj: any) => boolean,
       type: string
     ) => {
-      if (arr?.filter(pred).length) {
+      if (arr?.some(pred)) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           `All ${type} must be canceled before canceling an order`

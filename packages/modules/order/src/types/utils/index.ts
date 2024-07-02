@@ -32,7 +32,7 @@ export type VirtualOrder = {
   }[]
 
   shipping_methods: {
-    shipping_method_id: string
+    id: string
     order_id: string
     return_id?: string
     claim_id?: string
@@ -89,14 +89,14 @@ export interface OrderChangeEvent {
   claim_id?: string
   exchange_id?: string
 
-  group_id?: string
+  change_id?: string
 
   evaluationOnly?: boolean
 
   details?: any
 
   resolve?: {
-    group_id?: string
+    change_id?: string
     reference_id?: string
     amount?: BigNumberInput
   }
