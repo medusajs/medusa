@@ -42,4 +42,28 @@ export const eventBuilders = {
     object: "price_list_rule",
     eventsEnum: PricingEvents,
   }),
+  updatedPrice: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.UPDATED,
+    object: "price",
+    eventsEnum: PricingEvents,
+  }),
+  updatedPriceRule: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.UPDATED,
+    object: "price_rule",
+    eventsEnum: PricingEvents,
+  }),
+  deletedPrice: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.DELETED,
+    object: "price",
+    eventsEnum: PricingEvents,
+  }),
+  deletedPriceRule: eventBuilderFactory({
+    source: Modules.PRICING,
+    action: CommonEvents.DELETED,
+    object: "price_rule",
+    eventsEnum: PricingEvents,
+  }),
 }
