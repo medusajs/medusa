@@ -1,10 +1,9 @@
-import { Modules } from "@medusajs/modules-sdk"
 import {
   CreateGeoZoneDTO,
   IFulfillmentModuleService,
   UpdateGeoZoneDTO,
 } from "@medusajs/types"
-import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType, Modules } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -110,7 +109,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
             expect(eventBusEmitSpy.mock.calls[0][0]).toHaveLength(1)
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_created,
+                eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                 action: "created",
                 object: "geo_zone",
                 data: { id: geoZone.id },
@@ -161,7 +160,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_created,
+                    eventName: FulfillmentEvents.GEO_ZONE_CREATED,
                     action: "created",
                     object: "geo_zone",
                     data: { id: geoZones[i].id },
@@ -268,7 +267,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
 
             expect(eventBusEmitSpy).toHaveBeenCalledWith([
               buildExpectedEventMessageShape({
-                eventName: FulfillmentEvents.geo_zone_updated,
+                eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
                 action: "updated",
                 object: "geo_zone",
                 data: { id: updatedGeoZone.id },
@@ -333,7 +332,7 @@ moduleIntegrationTestRunner<IFulfillmentModuleService>({
               expect(eventBusEmitSpy).toHaveBeenCalledWith(
                 expect.arrayContaining([
                   buildExpectedEventMessageShape({
-                    eventName: FulfillmentEvents.geo_zone_updated,
+                    eventName: FulfillmentEvents.GEO_ZONE_UPDATED,
                     action: "updated",
                     object: "geo_zone",
                     data: { id: expectedGeoZone.id },

@@ -3,7 +3,7 @@ import {
   RelationshipOptions,
   RelationshipType,
   RelationshipTypes,
-} from "../types"
+} from "@medusajs/types"
 
 /**
  * The BaseRelationship encapsulates the repetitive parts of defining

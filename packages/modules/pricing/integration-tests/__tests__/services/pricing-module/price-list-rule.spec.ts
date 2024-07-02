@@ -1,10 +1,9 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createPriceLists } from "../../../__fixtures__/price-list"
 import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
+import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -15,7 +14,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
       let testManager: SqlEntityManager
       beforeEach(async () => {
         testManager = await MikroOrmWrapper.forkManager()
-        await createRuleTypes(testManager)
         await createPriceLists(testManager)
         await createPriceListRules(testManager)
       })
@@ -166,14 +164,6 @@ moduleIntegrationTestRunner<IPricingModuleService>({
 
       describe("setPriceListRules", () => {
         it("should add a price list rule to a price list", async () => {
-          await createRuleTypes(testManager, [
-            {
-              id: "rule-type-3",
-              name: "test",
-              rule_attribute: "sales_channel",
-            },
-          ])
-
           await service.setPriceListRules({
             price_list_id: "price-list-1",
             rules: {
@@ -184,34 +174,21 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           const [priceList] = await service.listPriceLists(
             { id: ["price-list-1"] },
             {
-              relations: [
-                "price_list_rules",
-                "price_list_rules.price_list_rule_values",
-              ],
+              relations: ["price_list_rules"],
             }
           )
 
           expect(priceList.price_list_rules).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                rule_type: { id: "rule-type-3" },
-                price_list_rule_values: [
-                  expect.objectContaining({ value: "sc-1" }),
-                ],
+                attribute: "sales_channel",
+                value: "sc-1",
               }),
             ])
           )
         })
 
         it("should multiple priceListRules to a priceList", async () => {
-          await createRuleTypes(testManager, [
-            {
-              id: "rule-type-3",
-              name: "test",
-              rule_attribute: "sales_channel",
-            },
-          ])
-
           await service.setPriceListRules({
             price_list_id: "price-list-1",
             rules: {
@@ -224,21 +201,15 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               id: ["price-list-1"],
             },
             {
-              relations: [
-                "price_list_rules",
-                "price_list_rules.price_list_rule_values",
-              ],
+              relations: ["price_list_rules"],
             }
           )
 
           expect(priceList.price_list_rules).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                rule_type: { id: "rule-type-3" },
-                price_list_rule_values: expect.arrayContaining([
-                  expect.objectContaining({ value: "sc-1" }),
-                  expect.objectContaining({ value: "sc-2" }),
-                ]),
+                attribute: "sales_channel",
+                value: ["sc-1", "sc-2"],
               }),
             ])
           )
@@ -262,7 +233,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
           )
 
           expect(priceList.price_list_rules).toEqual([
-            expect.objectContaining({ rule_type: { id: "rule-type-2" } }),
+            expect.objectContaining({ attribute: "region_id" }),
           ])
         })
       })

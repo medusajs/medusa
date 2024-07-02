@@ -1,0 +1,32 @@
+---
+slug: /references/data-model/property-configuration/default
+sidebar_label: default
+---
+
+import { TypeList } from "docs-ui"
+
+# default Method - API Reference
+
+This method defines the default value of a property.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  color: model
+    .enum(["black", "white"])
+    .default("black"),
+  age: model
+    .number()
+    .default(0),
+  // ...
+})
+
+export default MyCustom
+```
+
+## Parameters
+
+<TypeList types={[{"name":"value","type":"T","description":"The default value.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="default"/>

@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# Infer
+
+ **Infer**: T extends [IDmlEntity](../../interfaces/types.DmlTypes.IDmlEntity/page.mdx)&#60;infer Schema&#62; ? [EntityConstructor](../../interfaces/types.DmlTypes.EntityConstructor/page.mdx)&#60;&#123; [K in keyof Schema]: Schema[K]["$dataType"] extends Function ? Infer&#60;R&#62; : Schema[K]["$dataType"] extends Function \| null ? Infer&#60;R&#62; \| null : Schema[K]["$dataType"] &#125; & [InferForeignKeys](../types.DmlTypes.InferForeignKeys/page.mdx)&#60;T&#62;&#62; : `never`
+
+Helper to infer the schema type of a DmlEntity
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="Infer"/>

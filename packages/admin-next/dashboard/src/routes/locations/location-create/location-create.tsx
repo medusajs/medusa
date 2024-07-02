@@ -1,4 +1,4 @@
-import { RouteFocusModal } from "../../../components/route-modal"
+import { RouteFocusModal } from "../../../components/modals"
 import { CreateLocationForm } from "./components/create-location-form"
 
 export const LocationCreate = () => {

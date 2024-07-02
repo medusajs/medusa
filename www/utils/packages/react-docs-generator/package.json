@@ -23,9 +23,9 @@
     "react-docgen": "^7.0.1",
     "resolve": "^1.22.8",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.25.12",
+    "typedoc": "^0.26.2",
     "typedoc-plugin-custom": "*",
-    "typescript": "5.2",
+    "typescript": "5.5",
     "utils": "*"
   },
   "devDependencies": {

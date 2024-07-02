@@ -16,6 +16,8 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
     enabled: !!store.default_region_id,
   })
 
+  const defaultCurrency = store.supported_currencies?.find((c) => c.is_default)
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
@@ -51,13 +53,13 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         <Text size="small" leading="compact" weight="plus">
           {t("store.defaultCurrency")}
         </Text>
-        {store.default_currency ? (
+        {defaultCurrency ? (
           <div className="flex items-center gap-x-2">
             <Badge size="2xsmall">
-              {store.default_currency.code.toUpperCase()}
+              {defaultCurrency.currency_code.toUpperCase()}
             </Badge>
             <Text size="small" leading="compact">
-              {store.default_currency.name}
+              {defaultCurrency.currency.name}
             </Text>
           </div>
         ) : (

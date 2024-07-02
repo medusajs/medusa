@@ -1,5 +1,36 @@
 import { BaseFilterable } from "../../dal"
 
+export interface StoreCurrencyDTO {
+  /**
+   * The ID of the store currency.
+   */
+  id: string
+  /**
+   * The currency code of the store currency.
+   */
+  currency_code: string
+  /**
+   * Whether the currency is the default one for the store.
+   */
+  is_default: boolean
+  /**
+   * The store ID associated with the currency.
+   */
+  store_id: string
+  /**
+   * The created date of the currency
+   */
+  created_at: string
+  /**
+   * The updated date of the currency
+   */
+  updated_at: string
+  /**
+   * The deleted date of the currency
+   */
+  deleted_at: string | null
+}
+
 /**
  * The store details.
  */
@@ -17,12 +48,7 @@ export interface StoreDTO {
   /**
    * The supported currency codes of the store.
    */
-  supported_currency_codes: string[]
-
-  /**
-   * The default currency code of the store.
-   */
-  default_currency_code?: string
+  supported_currencies?: StoreCurrencyDTO[]
 
   /**
    * The associated default sales channel's ID.

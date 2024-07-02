@@ -2,7 +2,7 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { json, useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { EditServiceZoneForm } from "./components/edit-region-form"
 

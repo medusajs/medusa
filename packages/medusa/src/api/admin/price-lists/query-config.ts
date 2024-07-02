@@ -13,7 +13,7 @@ export const adminPriceListPriceRemoteQueryFields = [
   "updated_at",
   "price_set.variant.id",
   "price_rules.value",
-  "price_rules.rule_type.rule_attribute",
+  "price_rules.attribute",
 ]
 
 export const adminPriceListRemoteQueryFields = [
@@ -27,8 +27,8 @@ export const adminPriceListRemoteQueryFields = [
   "created_at",
   "updated_at",
   "deleted_at",
-  "price_list_rules.price_list_rule_values.value",
-  "price_list_rules.rule_type.rule_attribute",
+  "price_list_rules.value",
+  "price_list_rules.attribute",
   ...adminPriceListPriceRemoteQueryFields.map((field) => `prices.${field}`),
 ]
 

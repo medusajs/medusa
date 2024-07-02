@@ -55,8 +55,8 @@ export type AdminUpdatePriceListPriceType = z.infer<
 export const AdminCreatePriceList = z.object({
   title: z.string(),
   description: z.string(),
-  starts_at: z.union([z.string(), z.null()]).nullish(),
-  ends_at: z.union([z.string(), z.null()]).nullish(),
+  starts_at: z.string().nullish(),
+  ends_at: z.string().nullish(),
   status: z.nativeEnum(PriceListStatus).optional(),
   type: z.nativeEnum(PriceListType).optional(),
   rules: z.record(z.string(), z.array(z.string())).optional(),

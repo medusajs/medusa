@@ -91,7 +91,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     )
 
     res.json({
-      tax_regions: await taxModuleService.list(),
+      tax_regions: await taxModuleService.listTaxRegions(),
     })
   }
   ```
@@ -110,7 +110,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     const taxModuleService = await initializeTaxModule()
 
     return NextResponse.json({
-      tax_regions: await taxModuleService.list(),
+      tax_regions: await taxModuleService.listTaxRegions(),
     })
   }
   ```
@@ -138,7 +138,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
       ModuleRegistrationName.TAX
     )
 
-    const taxRate = await taxModuleService.create({
+    const taxRate = await taxModuleService.createTaxRates({
       tax_region_id: "txreg_123",
       name: "Custom rate",
       rate: 15,
@@ -175,7 +175,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
   ) {
     const taxModuleService = await initializeTaxModule()
 
-    const taxRate = await taxModuleService.create({
+    const taxRate = await taxModuleService.createTaxRates({
       tax_region_id: "txreg_123",
       name: "Custom rate",
       rate: 15,
@@ -221,7 +221,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     )
 
     res.json({
-      tax_rates: await taxModuleService.list(),
+      tax_rates: await taxModuleService.listTaxRates(),
     })
   }
   ```
@@ -242,7 +242,7 @@ In this guide, you’ll find common examples of how you can use the Tax Module i
     const taxModuleService = await initializeTaxModule()
 
     return NextResponse.json({
-      tax_rates: await taxModuleService.list(),
+      tax_rates: await taxModuleService.listTaxRates(),
     })
   }
   ```

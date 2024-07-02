@@ -10,9 +10,12 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  createMedusaContainer,
+  createMikrORMEntity,
+  defineJoinerConfig,
+  DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
-  createMedusaContainer,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
@@ -78,9 +81,9 @@ export async function loadInternalModule(
 
   if (resolution.resolutionPath) {
     moduleResources = await loadResources(
-      loadedModule?.loaders ?? [],
       resolution,
-      logger
+      logger,
+      loadedModule?.loaders ?? []
     )
   }
 
@@ -180,9 +183,9 @@ export async function loadModuleMigrations(
     // Generate migration scripts if they are not present
     if (!runMigrations || !revertMigration) {
       const moduleResources = await loadResources(
-        loadedModule?.loaders ?? [],
         resolution,
-        console as unknown as Logger
+        console as unknown as Logger,
+        loadedModule?.loaders ?? []
       )
 
       const migrationScriptOptions = {
@@ -240,10 +243,10 @@ async function importAllFromDir(path: string) {
   })
 }
 
-async function loadResources(
-  loadedModuleLoaders: ModuleLoaderFunction[],
+export async function loadResources(
   moduleResolution: ModuleResolution,
-  logger: Logger
+  logger: Logger = console as unknown as Logger,
+  loadedModuleLoaders?: ModuleLoaderFunction[]
 ): Promise<ModuleResource> {
   let modulePath = moduleResolution.resolutionPath as string
   let normalizedPath = modulePath
@@ -267,12 +270,21 @@ async function loadResources(
       ),
     ])
 
+    const entityBuilder = createMikrORMEntity()
     const cleanupResources = (resources) => {
-      return Object.values(resources).filter(
-        (resource): resource is Function => {
-          return typeof resource === "function"
-        }
-      )
+      return Object.values(resources)
+        .map((resource) => {
+          if (DmlEntity.isDmlEntity(resource)) {
+            return entityBuilder(resource as DmlEntity<any>)
+          }
+
+          if (typeof resource === "function") {
+            return resource
+          }
+
+          return null
+        })
+        .filter((v): v is Function => !!v)
     }
 
     const potentialServices = [...new Set(cleanupResources(services))]
@@ -286,6 +298,12 @@ async function loadResources(
       services: potentialServices,
       moduleResolution,
       migrationPath: normalizedPath + "/migrations",
+    })
+
+    generateJoinerConfigIfNecessary({
+      moduleResolution,
+      service: moduleService,
+      models: potentialModels,
     })
 
     return {
@@ -342,7 +360,7 @@ async function runLoaders(
 }
 
 function prepareLoaders({
-  loadedModuleLoaders,
+  loadedModuleLoaders = [] as ModuleLoaderFunction[],
   models,
   repositories,
   services,
@@ -406,4 +424,24 @@ function prepareLoaders({
   )
 
   return finalLoaders
+}
+
+function generateJoinerConfigIfNecessary({
+  moduleResolution,
+  service,
+  models,
+}: {
+  moduleResolution: ModuleResolution
+  service: Constructor<IModuleService>
+  models: Function[]
+}) {
+  if (service.prototype.__joinerConfig) {
+    return
+  }
+
+  service.prototype.__joinerConfig = function () {
+    return defineJoinerConfig(moduleResolution.definition.key, {
+      entityQueryingConfig: models,
+    })
+  }
 }

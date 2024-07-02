@@ -41,8 +41,8 @@ To create an API route that accepts multiple path parameters, create within the 
 For example, create an API route at `src/api/store/hello-world/[id]/name/[name]/route.ts`:
 
 export const multiplePathHighlights = [
-  ["11", "req.params.id", "Access the path parameter `id`"],
-  ["11", "req.params.name", "Access the path parameter `name`"]
+  ["12", "req.params.id", "Access the path parameter `id`"],
+  ["13", "req.params.name", "Access the path parameter `name`"]
 ]
 
 ```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights}
@@ -56,7 +56,9 @@ export const GET = (
   res: MedusaResponse
 ) => {
   res.json({
-    message: `[GET] Hello ${req.params.id} - ${req.params.name}!`,
+    message: `[GET] Hello ${
+      req.params.id
+    } - ${req.params.name}!`,
   })
 }
 ```

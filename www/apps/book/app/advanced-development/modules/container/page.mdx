@@ -4,24 +4,15 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn about the module's container and how to register resources in that container.
+In this chapter, you'll learn about the module's container and how to resolve resources in that container.
 
 ## Module's Container
 
 Each module has a local container only used by the resources of that module.
 
-So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container.
+So, resources in the module, such as services or loaders, can only resolve other resources registered in the module's container, such as:
 
----
-
-## Resources Registered in the Module's Container
-
-Some resources registered in the module's container are:
-
-- The module's main service.
-- A generated service for each data model in your module. The registration name is the camel-case data model name suffixed by `Service`. For example, `myCustomService`.
-
-![Example of registered resources in the container](https://res.cloudinary.com/dza7lstvk/image/upload/v1714400573/Medusa%20Book/modules-container_mkcbaq.jpg)
+- `logger`: A utility to log message in the Medusa application's logs.
 
 ---
 
@@ -33,23 +24,25 @@ A service's constructor accepts as a first parameter an object used to resolve r
 
 For example:
 
-```ts highlights={[["5"], ["12"]]}
-import { ModulesSdkTypes } from "@medusajs/types"
-import { MyCustom } from "./models/my-custom"
+```ts highlights={[["4"], ["10"]]}
+import { Logger } from "@medusajs/medusa"
 
 type InjectedDependencies = {
-  myCustomService: ModulesSdkTypes.InternalModuleService<any>
+  logger: Logger
 }
 
 export default class HelloModuleService {
-  protected myCustomService_: 
-    ModulesSdkTypes.InternalModuleService<MyCustom>
-  constructor({ myCustomService }: InjectedDependencies) {
-    this.myCustomService_ = myCustomService
+  protected logger_: Logger
+
+  constructor({ logger }: InjectedDependencies) {
+    this.logger_ = logger
+
+    this.logger_.info("[HelloModuleService]: Hello World!")
   }
 
   // ...
 }
+
 ```
 
 ### Loader
@@ -58,16 +51,18 @@ A loader function in a module accepts as a parameter an object having the proper
 
 For example:
 
-```ts highlights={[["8"]]}
+```ts highlights={[["9"]]}
 import {
   LoaderOptions,
 } from "@medusajs/modules-sdk"
+import { Logger } from "@medusajs/medusa"
 
 export default function helloWorldLoader({
   container,
 }: LoaderOptions) {
-  const myCustomService = container.resolve("myCustomService")
-  
-  // ...
+  const logger: Logger = container.resolve("logger")
+
+  logger.info("[helloWorldLoader]: Hello, World!")
 }
+
 ```

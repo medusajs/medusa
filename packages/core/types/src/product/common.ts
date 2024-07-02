@@ -703,6 +703,12 @@ export interface FilterableProductProps
     value?: string[]
   }
   /**
+   * Filters on a product's variant properties.
+   */
+  variants?: {
+    options: { value: string; option_id: string }
+  }
+  /**
    * Filter a product by the ID of the associated type
    */
   type_id?: string | string[]

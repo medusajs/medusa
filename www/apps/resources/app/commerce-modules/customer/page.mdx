@@ -15,7 +15,7 @@ The Customer Module is the `@medusajs/customer` NPM package that provides custom
 With the Customer Module, store and manage customers in your store.
 
 ```ts
-const customer = await customerModuleService.create({
+const customer = await customerModuleService.createCustomers({
   first_name: "Peter",
   last_name: "Hayes",
   email: "peter.hayes@example.com",
@@ -28,7 +28,7 @@ You can organize customers into groups. This has a lot of benefits and supports 
 
 ```ts
 const customerGroup =
-  await customerModuleService.createCustomerGroup({
+  await customerModuleService.createCustomerGroups({
     name: "VIP",
   })
 
@@ -62,7 +62,7 @@ For example:
       request.scope.resolve(ModuleRegistrationName.CUSTOMER)
 
     res.json({
-      customers: await customerModuleService.list(),
+      customers: await customerModuleService.listCustomers(),
     })
   }
   ```
@@ -81,7 +81,7 @@ For example:
     const customerModuleService: ICustomerModuleService =
       container.resolve(ModuleRegistrationName.CUSTOMER)
 
-    const customers = await customerModuleService.list()
+    const customers = await customerModuleService.listCustomers()
   }
   ```
 
@@ -99,7 +99,7 @@ For example:
     const customerModuleService: ICustomerModuleService =
       container.resolve(ModuleRegistrationName.CUSTOMER)
 
-    const customers = await customerModuleService.list()
+    const customers = await customerModuleService.listCustomers()
   })
   ```
 

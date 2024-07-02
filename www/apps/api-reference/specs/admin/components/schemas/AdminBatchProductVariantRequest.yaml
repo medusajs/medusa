@@ -1,0 +1,21 @@
+type: object
+description: SUMMARY
+x-schemaName: AdminBatchProductVariantRequest
+properties:
+  create:
+    type: array
+    description: The product's create.
+    items:
+      $ref: ./AdminCreateProductVariant.yaml
+  update:
+    type: array
+    description: The product's update.
+    items:
+      $ref: ./AdminUpdateProductVariant.yaml
+  delete:
+    type: array
+    description: The product's delete.
+    items:
+      type: string
+      title: delete
+      description: The delete's details.

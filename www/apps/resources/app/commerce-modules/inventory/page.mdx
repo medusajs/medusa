@@ -18,7 +18,7 @@ Inventory items hold details of the underlying stock-kept item, as well as inven
 
 ```ts
 const inventoryItem =
-  await inventoryModuleService.create({
+  await inventoryModuleService.createInventoryItems({
     sku: "SHIRT",
     title: "Green Medusa Shirt",
     requires_shipping: true,
@@ -89,7 +89,7 @@ For example:
 
     res.json({
       inventory_items:
-        await inventoryModuleService.list({}),
+        await inventoryModuleService.listInventoryItems({}),
     })
   }
   ```
@@ -109,7 +109,7 @@ For example:
       container.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.list({})
+      await inventoryModuleService.listInventoryItems({})
   }
   ```
 
@@ -128,7 +128,7 @@ For example:
       container.resolve(ModuleRegistrationName.INVENTORY)
 
     const inventoryItems =
-      await inventoryModuleService.list({})
+      await inventoryModuleService.listInventoryItems({})
   })
   ```
 

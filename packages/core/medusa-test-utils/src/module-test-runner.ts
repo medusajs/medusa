@@ -1,8 +1,11 @@
+import {
+  ContainerRegistrationKeys,
+  ModulesSdkUtils,
+  toMikroOrmEntities,
+} from "@medusajs/utils"
+import { MockEventBusService } from "."
 import { getDatabaseURL, getMikroOrmWrapper, TestDatabase } from "./database"
 import { initModules, InitModulesOptions } from "./init-modules"
-
-import { ContainerRegistrationKeys, ModulesSdkUtils } from "@medusajs/utils"
-import { MockEventBusService } from "."
 
 export interface SuiteOptions<TService = unknown> {
   MikroOrmWrapper: TestDatabase
@@ -41,7 +44,7 @@ export function moduleIntegrationTestRunner<TService = any>({
   process.env.LOG_LEVEL = "error"
 
   moduleModels ??= Object.values(require(`${process.cwd()}/src/models`))
-  // migrationPath ??= process.cwd() + "/src/migrations/!(*.d).{js,ts,cjs}"
+  moduleModels = toMikroOrmEntities(moduleModels)
 
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
   const dbName = `medusa-${moduleName.toLowerCase()}-integration-${tempName}`

@@ -25,17 +25,14 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    // A rule type with \`rule_field=region_id\` should
-    // already be present in the database
-    const priceSet = await pricingModuleService.create([
+    const priceSet = await pricingModuleService.createPriceSets([
       {
-        rules: [{ rule_field: "region_id" }],
         prices: [
           {
-            currency_code: request.body.currency_code,
-            amount: request.body.amount,
+            currency_code: "eur",
+            amount: 10,
             rules: {
-              region_id: request.body.region_id,
+              region_id: "reg_123",
             },
           },
         ],
@@ -60,17 +57,14 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService = await initializePricingModule()
     const body = await request.json()
 
-    // A rule type with \`rule_field=region_i\` should 
-    // already be present in the database
-    const priceSet = await pricingModuleService.create([
+    const priceSet = await pricingModuleService.createPriceSets([
       {
-        rules: [{ rule_field: "region_id" }],
         prices: [
           {
-            currency_code: body.currency_code,
-            amount: body.amount,
+            currency_code: "eur",
+            amount: 10,
             rules: {
-              region_id: body.region_id,
+              region_id: "reg_123",
             },
           },
         ],
@@ -103,7 +97,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
 
     res.json({ price_sets: priceSets })
   }
@@ -122,7 +116,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
   export async function GET(request: Request) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSets = await pricingModuleService.list()
+    const priceSets = await pricingModuleService.listPriceSets()
 
     return NextResponse.json({ price_sets: priceSets })
   }
@@ -150,8 +144,8 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const pricingModuleService: IPricingModuleService =
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
-    const priceSet = await pricingModuleService.retrieve(
-      request.params.id
+    const priceSet = await pricingModuleService.retrievePriceSet(
+      "pset_123"
     )
 
     res.json({ price_set: priceSet })
@@ -168,78 +162,16 @@ In this document, you’ll find common examples of how you can use the Pricing M
     initialize as initializePricingModule,
   } from "@medusajs/pricing"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
-  }
-
   export async function GET(
     request: Request,
-    { params }: ContextType
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceSet = await pricingModuleService.retrieve(
-      params.id
+    const priceSet = await pricingModuleService.retrievePriceSet(
+      "pset_123"
     )
 
     return NextResponse.json({ price_set: priceSet })
-  }
-  ```
-
-  </CodeTab>
-</CodeTabs>
-
----
-
-## Create a Rule Type
-
-<CodeTabs groupId="app-type">
-  <CodeTab value="medusa" label="Medusa API Router">
-
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IPricingModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const pricingModuleService: IPricingModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRICING)
-
-    const ruleType = await pricingModuleService.createRuleTypes([{
-      name: "Customer Group",
-      rule_attribute: "customer_group_id",
-    }])
-
-    res.json({ rule_type: ruleType })
-  }
-  ```
-
-  </CodeTab>
-  <CodeTab value="nextjs" label="Next.js App Router">
-
-  ```ts
-  import { NextResponse } from "next/server"
-
-  import {
-    initialize as initializePricingModule,
-  } from "@medusajs/pricing"
-
-  export async function POST(
-    request: Request
-  ) {
-    const pricingModuleService = await initializePricingModule()
-
-    const ruleType = await pricingModuleService.createRuleTypes([{
-      name: "Customer Group",
-      rule_attribute: "customer_group_id",
-    }])
-
-    return NextResponse.json({ rule_type: ruleType })
   }
   ```
 
@@ -266,13 +198,13 @@ In this document, you’ll find common examples of how you can use the Pricing M
       request.scope.resolve(ModuleRegistrationName.PRICING)
 
     const priceSet = await pricingModuleService.addPrices({
-      priceSetId: request.body.price_set_id,
+      priceSetId: "pset_123",
       prices: [
         {
           amount: 500,
           currency_code: "USD",
           rules: {
-            region_id: request.body.region_id,
+            region_id: "reg_123",
           },
         },
       ],
@@ -297,13 +229,13 @@ In this document, you’ll find common examples of how you can use the Pricing M
     const body = await request.json()
 
     const priceSet = await pricingModuleService.addPrices({
-      priceSetId: body.price_set_id,
+      priceSetId: "pset_123",
       prices: [
-      {
+        {
           amount: 500,
           currency_code: "USD",
           rules: {
-            region_id: body.region_id,
+            region_id: "reg_123",
           },
         },
       ],
@@ -325,10 +257,8 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
   ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import {
-    IPricingModuleService,
-    PriceListType,
-  } from "@medusajs/types"
+  import { IPricingModuleService } from "@medusajs/types"
+  import { PriceListType } from "@medusajs/utils"
   import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
   export async function POST(
@@ -347,7 +277,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
           starts_at: Date.parse("01/10/2023").toString(),
           ends_at: Date.parse("31/10/2023").toString(),
           rules: {
-            region_id: ["DE", "DK"],
+            region_id: ["reg_123", "reg_321"],
           },
           prices: [
             {
@@ -373,11 +303,12 @@ In this document, you’ll find common examples of how you can use the Pricing M
   import {
     initialize as initializePricingModule,
   } from "@medusajs/pricing"
+  import { PriceListType } from "@medusajs/utils"
 
   export async function POST(request: Request) {
     const pricingModuleService = await initializePricingModule()
 
-    const priceLists = 
+    const priceLists =
       await pricingModuleService.createPriceLists([
         {
           title: "My Sale",
@@ -386,7 +317,7 @@ In this document, you’ll find common examples of how you can use the Pricing M
           starts_at: Date.parse("01/10/2023").toString(),
           ends_at: Date.parse("31/10/2023").toString(),
           rules: {
-            region_id: ["DE", "DK"],
+            region_id: ["reg_123", "reg_321"],
           },
           prices: [
             {
@@ -426,11 +357,11 @@ In this document, you’ll find common examples of how you can use the Pricing M
 
     const price = await pricingModuleService.calculatePrices(
       {
-        id: [request.params.id],
+        id: ["pset_123"],
       },
       {
         context: {
-          currency_code: request.params.currency_code,
+          currency_code: "eur",
         },
       }
     )
@@ -449,26 +380,21 @@ In this document, you’ll find common examples of how you can use the Pricing M
     initialize as initializePricingModule,
   } from "@medusajs/pricing"
 
-  type ContextType = {
-    params: {
-      id: string
-      currency_code: string
-    }
-  }
-
   export async function GET(
     request: Request,
-    { params }: ContextType
   ) {
     const pricingModuleService = await initializePricingModule()
 
-    const price = await pricingModuleService.calculatePrices({
-      id: [params.id],
-    }, {
-      context: {
-        currency_code: params.currency_code,
+    const price = await pricingModuleService.calculatePrices(
+      {
+        id: ["pset_123"],
       },
-    })
+      {
+        context: {
+          currency_code: "eur",
+        },
+      }
+    )
 
     return NextResponse.json({ price })
   }

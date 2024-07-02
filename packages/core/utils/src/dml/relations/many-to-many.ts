@@ -1,5 +1,4 @@
 import { BaseRelationship } from "./base"
-import { RelationshipTypes } from "../types"
 
 /**
  * ManyToMany relationship defines a relationship between two entities
@@ -14,4 +13,8 @@ import { RelationshipTypes } from "../types"
  */
 export class ManyToMany<T> extends BaseRelationship<T> {
   type = "manyToMany" as const
+
+  static isManyToMany<T>(relationship: any): relationship is ManyToMany<T> {
+    return relationship?.type === "manyToMany"
+  }
 }

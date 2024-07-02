@@ -1,9 +1,6 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { INotificationModuleService } from "@medusajs/types"
-import {
-  moduleIntegrationTestRunner,
-  SuiteOptions,
-} from "medusa-test-utils/dist"
+import { Modules } from "@medusajs/utils"
+import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { resolve } from "path"
 
 let moduleOptions = {

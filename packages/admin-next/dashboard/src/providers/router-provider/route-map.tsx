@@ -130,6 +130,13 @@ export const RouteMap: RouteObject[] = [
                     path: "prices",
                     lazy: () => import("../../routes/products/product-prices"),
                   },
+                  {
+                    path: "manage-items",
+                    lazy: () =>
+                      import(
+                        "../../routes/product-variants/product-variant-manage-inventory-items"
+                      ),
+                  },
                 ],
               },
             ],
@@ -325,45 +332,51 @@ export const RouteMap: RouteObject[] = [
             ],
           },
           {
-            path: "/pricing",
+            path: "/price-lists",
             handle: {
-              crumb: () => "Pricing",
+              crumb: () => "Price Lists",
             },
             children: [
               {
                 path: "",
-                lazy: () => import("../../routes/pricing/pricing-list"),
+                lazy: () => import("../../routes/price-lists/price-list-list"),
                 children: [
                   {
                     path: "create",
-                    lazy: () => import("../../routes/pricing/pricing-create"),
+                    lazy: () =>
+                      import("../../routes/price-lists/price-list-create"),
                   },
                 ],
               },
               {
                 path: ":id",
-                lazy: () => import("../../routes/pricing/pricing-detail"),
+                lazy: () =>
+                  import("../../routes/price-lists/price-list-detail"),
                 handle: {
                   crumb: (data: PriceListRes) => data.price_list.title,
                 },
                 children: [
                   {
                     path: "edit",
-                    lazy: () => import("../../routes/pricing/pricing-edit"),
+                    lazy: () =>
+                      import("../../routes/price-lists/price-list-edit"),
                   },
                   {
                     path: "configuration",
                     lazy: () =>
-                      import("../../routes/pricing/pricing-configuration"),
+                      import(
+                        "../../routes/price-lists/price-list-configuration"
+                      ),
                   },
                   {
                     path: "products/add",
-                    lazy: () => import("../../routes/pricing/pricing-products"),
+                    lazy: () =>
+                      import("../../routes/price-lists/price-list-prices-add"),
                   },
                   {
                     path: "products/edit",
                     lazy: () =>
-                      import("../../routes/pricing/pricing-products-prices"),
+                      import("../../routes/price-lists/price-list-prices-edit"),
                   },
                 ],
               },
@@ -773,7 +786,8 @@ export const RouteMap: RouteObject[] = [
                   {
                     path: ":id",
                     handle: {
-                      crumb: (data) => data.shipping_profile.name,
+                      crumb: (data: HttpTypes.AdminShippingProfileResponse) =>
+                        data.shipping_profile.name,
                     },
                     lazy: () =>
                       import(

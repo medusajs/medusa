@@ -1,6 +1,6 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useStore } from "../../../hooks/api/store"
 import { EditStoreForm } from "./components/edit-store-form/edit-store-form"
 

@@ -2,12 +2,12 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/route-modal"
-import { EditRegionForm } from "./components/edit-region-form"
-import { currencies } from "../../../lib/currencies"
-import { useRegion } from "../../../hooks/api/regions"
+import { RouteDrawer } from "../../../components/modals"
 import { usePaymentProviders } from "../../../hooks/api/payments"
+import { useRegion } from "../../../hooks/api/regions"
 import { useStore } from "../../../hooks/api/store"
+import { currencies } from "../../../lib/currencies"
+import { EditRegionForm } from "./components/edit-region-form"
 
 export const RegionEdit = () => {
   const { t } = useTranslation()
@@ -29,8 +29,8 @@ export const RegionEdit = () => {
 
   const isLoading = isRegionLoading || isStoreLoading
 
-  const storeCurrencies = (store?.supported_currency_codes ?? []).map(
-    (code) => currencies[code.toUpperCase()]
+  const storeCurrencies = (store?.supported_currencies ?? []).map(
+    (c) => currencies[c.currency_code.toUpperCase()]
   )
   const { payment_providers: paymentProviders = [] } = usePaymentProviders({
     limit: 999,

@@ -1,8 +1,8 @@
-import { Modules } from "@medusajs/modules-sdk"
 import { IPromotionModuleService } from "@medusajs/types"
 import {
   ApplicationMethodType,
   CampaignBudgetType,
+  Modules,
   PromotionType,
 } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"

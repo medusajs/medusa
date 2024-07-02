@@ -33,6 +33,7 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.3"
+    "@medusajs/modules-sdk": "^1.12.3",
+    "@medusajs/utils": "^1.11.9"
   }
 }

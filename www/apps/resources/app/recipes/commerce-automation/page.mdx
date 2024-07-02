@@ -9,6 +9,12 @@ export const metadata = {
 
 This recipe provides the general steps to implement a B2B store with Medusa.
 
+<Note type="soon" title="In Development">
+
+This recipe is a work in progress, as some features are not ready yet in Medusa V2.
+
+</Note>
+
 ## Overview
 
 Commerce automation is essential for businesses to save costs, provide a better user experience, and avoid manual, repetitive tasks that lead to human errors. Businesses utilize automation in different domains, including marketing, customer support, and order management.
@@ -49,13 +55,6 @@ The `inventory-item.updated` event is currently not emitted.
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
-  {
-    href: "!docs!/advanced-development/modules/module-relationships",
-    title: "Module Relationships",
-    text: "Learn how to create module relationships.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
 ]} />
 
 <CardList items={[
@@ -86,37 +85,27 @@ The `inventory-item.updated` event is currently not emitted.
   Then, create the file `src/modules/restock-notification/models/restock-notification.ts` with the following content:
 
 export const restockModelHighlights = [
-  ["14", "email", "The email of the customer to send the notification to when the item is restocked."],
-  ["17", "variant_id", "The ID of the variant the customer is subscribed to."],
-  ["20", "sales_channel_id", "The ID of the sales channel the customer is viewing the product variant from."]
+  ["5", "email", "The email of the customer to send the notification to when the item is restocked."],
+  ["6", "variant_id", "The ID of the variant the customer is subscribed to."],
+  ["7", "sales_channel_id", "The ID of the sales channel the customer is viewing the product variant from."]
 ]
 
-  ```ts title="src/modules/restock-notification/models/restock-notification.ts" highlights={restockModelHighlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-  import { BaseEntity } from "@medusajs/utils"
-  import { 
-    Entity, 
-    PrimaryKey, 
-    Property,
-  } from "@mikro-orm/core"
-  
-  @Entity()
-  export class RestockNotification extends BaseEntity {
-    @PrimaryKey({ columnType: "text" })
-    id!: string
+  ```ts title="src/modules/restock-notification/models/restock-notification.ts" highlights={restockModelHighlights}
+  import { model } from "@medusajs/utils"
 
-    @Property({ columnType: "text" })
-    email: string
+  const RestockNotification = model.define("restock_notification", {
+    id: model.id(),
+    email: model.text(),
+    variant_id: model.text(),
+    sales_channel_id: model.text(),
+  })
 
-    @Property({ columnType: "text" })
-    variant_id: string
-
-    @Property({ columnType: "text" })
-    sales_channel_id: string
-  }
+  export default RestockNotification
   ```
 
-  This creates a `RestockNotification` data model with the following fields:
+  This creates a `RestockNotification` data model with the following properties:
 
+  - `id`: An automatically generated ID.
   - `email`: The email of the customer to send the notification to when the item is restocked.
   - `variant_id`: The ID of the variant the customer is subscribed to. This will later be used to form a relationship with the `ProductVariant` data model of the Product Module.
   - `sales_channel_id`: The ID of the sales channel the customer is viewing the product variant from. This will later be used to form a relationship with the `SalesChannel` data model of the Sales Channel Module.
@@ -142,117 +131,23 @@ export const restockModelHighlights = [
   ```
 
   You'll run the migration to reflect the changes on the database after finishing the module's definition.
-  
-  Now, create the file `src/types/restock-notification/index.ts` that holds common types to be used in the module's main service:
-
-  ```ts title="src/types/restock-notification/index.ts"
-  import { ProductVariantDTO, SalesChannelDTO } from "@medusajs/types"
-
-  export type RestockNotificationDTO = {
-    id: string
-    email: string
-    variant_id: string
-    sales_channel_id: string
-    variant?: ProductVariantDTO
-    sales_channel?: SalesChannelDTO
-  }
-
-  export type CreateRestockNotificationDTO = {
-    email: string
-    variant_id: string
-    sales_channel_id: string
-  }
-
-  ```
 
   Then, create the module's main service at `src/modules/restock-notification/service.ts` with the following content:
 
-export const restockModuleService = [
-  ["17", "abstractModuleServiceFactory", "Extend the service factory to have basic data management features."],
-  ["43", "", "Define a relationship to the `ProductVariant` data model of the Product Module."],
-  ["52", "", "Define a relationship to the `SalesChannel` data model of the Sales Channel Module."],
-  ["61", "create", "Implement the method to create a restock notification."]
-]
+  ```ts title="src/modules/restock-notification/service.ts"
+  import { MedusaService } from "@medusajs/utils"
+  import RestockNotification from "./models/restock-notification"
 
-  ```ts title="src/modules/restock-notification/service.ts" highlights={restockModuleService} collapsibleLines="1-5" expandButtonLabel="Show Imports"
-  import { Modules, ModulesSdkUtils } from "@medusajs/utils"
-  import { RestockNotification } from "./models/restock-notification"
-  import { ModuleJoinerConfig, ModulesSdkTypes } from "@medusajs/types"
-  import { CreateRestockNotificationDTO, RestockNotificationDTO } from "../../types/restock-notification"
-
-  type InjectedDependencies = {
-    restockNotificationService: ModulesSdkTypes.InternalModuleService<any>
+  class RestockNotificationModuleService extends MedusaService({
+    RestockNotification,
+  }){
+    // TODO add custom methods
   }
-
-  type AllModelDTOs = {
-    RestockNotification: {
-      dto: RestockNotificationDTO
-    }
-  }
-
-  class RestockNotificationModuleService extends ModulesSdkUtils
-    .abstractModuleServiceFactory<
-      InjectedDependencies,
-      RestockNotificationDTO,
-      AllModelDTOs
-    >(RestockNotification, []) {
-      restockNotificationService_: ModulesSdkTypes.InternalModuleService<RestockNotification>
-
-      constructor({ restockNotificationService }: InjectedDependencies) {
-        // @ts-ignore
-        super(...arguments)
-        this.restockNotificationService_ = restockNotificationService
-      }
-
-      __joinerConfig(): ModuleJoinerConfig {
-        return {
-          serviceName: "restockNotificationModuleService",
-          alias: [
-            {
-              name: "restock_notification",
-              args: {
-                entity: RestockNotification.name,
-              },
-            },
-          ],
-          relationships: [
-            {
-              serviceName: Modules.PRODUCT,
-              alias: "variant",
-              primaryKey: "id",
-              foreignKey: "variant_id",
-              args: {
-                methodSuffix: "Variants",
-              },
-            },
-            {
-              serviceName: Modules.SALES_CHANNEL,
-              alias: "sales_channel",
-              primaryKey: "id",
-              foreignKey: "sales_channel_id",
-            },
-          ],
-        }
-      }
-
-      async create(data: CreateRestockNotificationDTO): Promise<RestockNotificationDTO> {
-        const restockNotification = await this.restockNotificationService_.create(
-          data
-        )
-
-        return restockNotification
-      }
-    }
 
   export default RestockNotificationModuleService
   ```
 
-  In the module's main service, you:
-
-  - Extend the service factory to have basic data management features.
-  - Define a relationship to the `ProductVariant` data model of the Product Module.
-  - Define a relationship to the `SalesChannel` data model of the Sales Channel Module.
-  - Implement the `create` method to create a restock notification.
+  The module's main service extends the service factory which generates basic management features for the `RestockNotification` data model.
 
   Next, create the module's definition file `src/modules/restock-notification/index.ts` with the following content:
 
@@ -290,18 +185,19 @@ export const restockModuleService = [
 
   Create the file `src/api/store/restock-notification/route.ts` with the following content:
 
-  ```ts title="src/api/store/restock-notification/route.ts" collapsibleLines="1-10" expandButtonLabel="Show Imports"
+  ```ts title="src/api/store/restock-notification/route.ts" collapsibleLines="1-13" expandButtonLabel="Show Imports"
   import type { 
     MedusaRequest, 
     MedusaResponse,
   } from "@medusajs/medusa"
   import RestockNotificationModuleService 
     from "../../../modules/restock-notification/service"
-  import { 
-    CreateRestockNotificationDTO,
-  } from "../../../types/restock-notification"
-  
-  type RestockNotificationReq = CreateRestockNotificationDTO
+
+  type RestockNotificationReq = {
+    email: string
+    variant_id: string
+    sales_channel_id: string
+  }
 
   export async function POST(
     req: MedusaRequest<RestockNotificationReq>, 
@@ -312,7 +208,7 @@ export const restockModuleService = [
         "restockNotificationModuleService"
       )
 
-    await restockNotificationModuleService.create(
+    await restockNotificationModuleService.createRestockNotifications(
       req.body
     )
 
@@ -326,13 +222,15 @@ export const restockModuleService = [
 
   ### Create Inventory Item Updated Subscriber
 
+  To handle the sending of the restock notifications, create a subscriber that listens to the `inventory-item.updated` event, then sends a notification using the Notification Module to subscribed emails.
+
   <Note type="soon">
 
-  The `inventory-item.updated` event is currently not emitted. The subscriber will only work once the event is emitted.
+  The `inventory-item.updated` event is currently not emitted.
 
   </Note>
 
-  To handle the sending of the restock notifications, create the file `src/subscribers/inventory-item-update.ts` with the following content:
+  {/* To handle the sending of the restock notifications, create the file `src/subscribers/inventory-item-update.ts` with the following content: */}
 
 export const subscriberHighlights = [
   ["48", "inventoryVariantLinkService", "Retrieve an instance of the link service for the product-variant-inventory-item link module."],
@@ -343,19 +241,19 @@ export const subscriberHighlights = [
   ["93", "salesChannelLocations", "Retrieve the stock locations linked to the restock notification's sales channel."],
   ["107", "availableQuantity", "Retrieve the available quantity of the variant in the retrieved stock locations."],
   ["116", "continue", "Only send the notification if the available quantity is greater than `0`"],
-  ["119", "create", "Send the notification to the customer using the Notification Module."],
+  ["119", "createNotifications", "Send the notification to the customer using the Notification Module."],
   ["122", '"test_template"', "Replace with the actual template used for sending the email."],
   ["123", "data", "The data to send along to the third-party service sending the notification."],
-  ["131", "delete", "Delete the restock notification to not send the notification again."]
+  ["131", "deleteRestockNotifications", "Delete the restock notification to not send the notification again."]
 ]
 
-  ```ts title="src/subscribers/inventory-item-update.ts" highlights={subscriberHighlights} collapsibleLines="1-23" expandButtonLabel="Show Imports"
+  {/* ```ts title="src/subscribers/inventory-item-update.ts" highlights={subscriberHighlights} collapsibleLines="1-20" expandButtonLabel="Show Imports"
   import type {
     SubscriberArgs,
     SubscriberConfig,
   } from "@medusajs/medusa"
   import { 
-    IInventoryServiceNext, 
+    IInventoryService, 
     INotificationModuleService, 
     RemoteQueryFunction,
   } from "@medusajs/types"
@@ -364,9 +262,6 @@ export const subscriberHighlights = [
     Modules, 
     remoteQueryObjectFromString,
   } from "@medusajs/utils"
-  import { 
-    RestockNotificationDTO,
-  } from "../types/restock-notification"
   import { 
     RemoteLink,
   } from "@medusajs/modules-sdk"
@@ -388,7 +283,7 @@ export const subscriberHighlights = [
       RestockNotificationModuleService = container.resolve(
         "restockNotificationModuleService"
       )
-    const inventoryModuleService: IInventoryServiceNext = 
+    const inventoryModuleService: IInventoryService = 
       container.resolve(Modules.INVENTORY)
     const notificationModuleService: INotificationModuleService =
       container.resolve(
@@ -430,7 +325,7 @@ export const subscriberHighlights = [
       },
     })
 
-    const restockNotifications: RestockNotificationDTO[] = 
+    const restockNotifications = 
       await remoteQuery(restockQuery)
 
     const salesChannelLocationService = remoteLink.getLinkModule(
@@ -468,7 +363,7 @@ export const subscriberHighlights = [
         continue
       }
       
-      notificationModuleService.create({
+      notificationModuleService.createNotifications({
         to: restockNotification.email,
         channel: "email",
         template: "test_template",
@@ -480,7 +375,8 @@ export const subscriberHighlights = [
       })
 
       // delete the restock notification
-      await restockNotificationModuleService.delete(restockNotification.id)
+      await restockNotificationModuleService
+        .deleteRestockNotifications(restockNotification.id)
     }
   }
 
@@ -497,7 +393,7 @@ export const subscriberHighlights = [
   - Retrieve the restock notifications of those variants.
   - For each restock notification, you:
       - Retrieve its quantity based on the stock location associated with the restock notification's sales channel.
-      - If the quantity is greater than `0`, you send a notification using the Notification Module and delete the restock notification.
+      - If the quantity is greater than `0`, you send a notification using the Notification Module and delete the restock notification. */}
 
 </Details>
 
@@ -509,13 +405,13 @@ Customer support is essential to build a store's brand and customer loyalty. Thi
 
 You can use the Notification Module to send notifications when an action is triggered, such as when a customer or their order is updated.
 
-<Note title="Tip">
+{/* <Note title="Tip">
 
 The [Events reference](../../events-reference/page.mdx) shows an extensive list of events triggered by the each commerce module.
 
-</Note>
+</Note> */}
 
-Medusa also provides Notification Provider Modules that integrate with third-party services, such as SendGrid.
+Medusa also provides Notification Module Providers that integrate with third-party services, such as SendGrid.
 
 <CardList items={[
   {
@@ -564,28 +460,39 @@ Scheduled jobs are coming soon.
   For example, create the file `src/workflows/sync-products.ts` with the following content:
 
 export const syncProductsWorkflowHighlight = [
-  ["9", "retrieveStoreStep", "A step that retrieves the store by its ID."],
-  ["25", "retrieveProductsToUpdateStep", "A step that retrieves the products to update based on a last update date."],
-  ["45", "syncProductsStep", "A step to sync the product with a third-party service."],
-  ["48", "productSyncModuleService", "Assuming this is a custom module's main service that provides connection to the third-party service."],
-  ["52", "productsBeforeSync", "Retrieve old product data from third-party service for compensation function."],
-  ["57", "sync", "Sync the product data in the third-party service."],
-  ["61", "", "Pass products data before sync to compensation function."],
-  ["64", "", "A compensation function to revert the sync when an error occurs."],
-  ["70", "sync", "Revert the product's data in the third-party service to its old data before the synchronization."],
-  ["79", "updateStoreLastSyncStep", "A step to update the `last_sync_data` of the store."],
-  ["85", "prevLastSyncDate", "Retrieve the previous value of `last_sync_date` to pass it to compensation function."],
-  ["87", "update", "Update the `last_sync_date` of the store."],
-  ["95", "", "Pass previous last sync date to compensation function."],
-  ["98", "", "A compensation function to revert the update of `last_sync_data` if an error occurs."],
-  ["114", "syncProductsWorkflow", "Define the workflow that uses the above steps."]
+  ["20", "retrieveStoreStep", "A step that retrieves the store by its ID."],
+  ["36", "retrieveProductsToUpdateStep", "A step that retrieves the products to update based on a last update date."],
+  ["56", "syncProductsStep", "A step to sync the product with a third-party service."],
+  ["59", "productSyncModuleService", "Assuming this is a custom module's main service that provides connection to the third-party service."],
+  ["63", "productsBeforeSync", "Retrieve old product data from third-party service for compensation function."],
+  ["68", "sync", "Sync the product data in the third-party service."],
+  ["72", "", "Pass products data before sync to compensation function."],
+  ["75", "", "A compensation function to revert the sync when an error occurs."],
+  ["81", "sync", "Revert the product's data in the third-party service to its old data before the synchronization."],
+  ["90", "updateStoreLastSyncStep", "A step to update the `last_sync_data` of the store."],
+  ["96", "prevLastSyncDate", "Retrieve the previous value of `last_sync_date` to pass it to compensation function."],
+  ["98", "update", "Update the `last_sync_date` of the store."],
+  ["106", "", "Pass previous last sync date to compensation function."],
+  ["109", "", "A compensation function to revert the update of `last_sync_data` if an error occurs."],
+  ["125", "syncProductsWorkflow", "Define the workflow that uses the above steps."]
 ]
 
-  ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight}
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-  import { IProductModuleService, IStoreModuleService, ProductDTO, StoreDTO } from "@medusajs/types"
-  import { StepResponse, createStep, createWorkflow } from "@medusajs/workflows-sdk"
-  
+  ```ts title="src/workflows/sync-products.ts" highlights={syncProductsWorkflowHighlight} collapsibleLines="1-16" expandButtonLabel="Show Imports"
+  import { 
+    ModuleRegistrationName
+  } from "@medusajs/modules-sdk"
+  import { 
+    IProductModuleService, 
+    IStoreModuleService, 
+    ProductDTO, 
+    StoreDTO
+  } from "@medusajs/types"
+  import { 
+    StepResponse, 
+    createStep, 
+    createWorkflow
+  } from "@medusajs/workflows-sdk"
+
   type RetrieveStoreStepInput = {
     id: string
   }
@@ -596,7 +503,7 @@ export const syncProductsWorkflowHighlight = [
       const storeModuleService: IStoreModuleService = 
         container.resolve(ModuleRegistrationName.STORE)
 
-      const store = await storeModuleService.retrieve(id)
+      const store = await storeModuleService.retrieveStore(id)
 
       return new StepResponse({ store })
     }
@@ -612,7 +519,7 @@ export const syncProductsWorkflowHighlight = [
       const productModuleService: IProductModuleService = 
         container.resolve(ModuleRegistrationName.PRODUCT)
 
-      const products = await productModuleService.list({
+      const products = await productModuleService.listProducts({
         updated_at: {
           $gt: last_sync_date,
         },
@@ -633,7 +540,7 @@ export const syncProductsWorkflowHighlight = [
         "productSyncModuleService"
       )
 
-      const productsBeforeSync = await productSyncModuleService.list({
+      const productsBeforeSync = await productSyncModuleService.listProductSyncs({
         id: products.map((product) => product.id),
       })
 
@@ -668,7 +575,7 @@ export const syncProductsWorkflowHighlight = [
 
       const prevLastSyncDate = store.metadata.last_sync_date
 
-      await storeModuleService.update(store.id, {
+      await storeModuleService.updateStores(store.id, {
         metadata: {
           last_sync_date: (new Date()).toString(),
         },
@@ -683,7 +590,7 @@ export const syncProductsWorkflowHighlight = [
       const storeModuleService: IStoreModuleService = 
         container.resolve(ModuleRegistrationName.STORE)
 
-      await storeModuleService.update(id, {
+      await storeModuleService.updateStores(id, {
         metadata: {
           last_sync_date,
         },
@@ -722,7 +629,7 @@ export const syncProductsWorkflowHighlight = [
   This creates a workflow with the following steps:
 
   1. Retrieve the store by its ID.
-  2. Retrieve products to update based on the last date and time the products were synced. The last sync date is retrieved from the store's `metadata` field.
+  2. Retrieve products to update based on the last date and time the products were synced. The last sync date is retrieved from the store's `metadata` property.
   3. Sync the retrieved products with a third-party service. It's assumed that the connection to the third-party service is implemented within a custom module's main service.
   4. Update the last sync date of the store to the current date.
 
@@ -742,7 +649,15 @@ The `order.placed` event is currently not emitted.
 
 </Note>
 
-<CardList items={[
+<Card
+  href="!docs!/basics/events-and-subscribers"
+  title="Create a Subscriber"
+  text="Learn how to create a subscriber in Medusa."
+  startIcon={<AcademicCapSolid />}
+  showLinkIcon={false}
+/>
+
+{/* <CardList items={[
   {
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
@@ -757,7 +672,7 @@ The `order.placed` event is currently not emitted.
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
-]} />
+]} /> */}
 
 ---
 
@@ -783,13 +698,6 @@ Medusa's commerce features are geared towards automating RMA flows and ensuring 
     href: "!docs!/basics/events-and-subscribers",
     title: "Create a Subscriber",
     text: "Learn how to create a subscriber in Medusa.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
-    href: "/events-reference",
-    title: "Events Reference",
-    text: "Check out triggered events by each commerce module.",
     startIcon: <AcademicCapSolid />,
     showLinkIcon: false
   },
@@ -891,7 +799,7 @@ The `order.placed` event is currently not emitted.
     }
 
     // retrieve the order
-    const order = await orderModuleService.retrieve(orderId)
+    const order = await orderModuleService.retrieveOrder(orderId)
 
     if (!order || 
       !order.customer_id || 
@@ -901,7 +809,7 @@ The `order.placed` event is currently not emitted.
       return
     }
 
-    const [, count] = await orderModuleService.listAndCount({
+    const [, count] = await orderModuleService.listAndCountOrders({
       customer_id: order.customer_id,
     })
 
@@ -949,13 +857,6 @@ Scheduled jobs are coming soon.
     showLinkIcon: false
   },
   {
-    href: "/events-reference",
-    title: "Events Reference",
-    text: "Check out triggered events in each commerce module.",
-    startIcon: <AcademicCapSolid />,
-    showLinkIcon: false
-  },
-  {
     href: "!docs!/basics/scheduled-jobs",
     title: "Scheduled Jobs",
     text: "Learn how to create a scheduled job in Medusa.",
@@ -969,18 +870,18 @@ Scheduled jobs are coming soon.
   For example, create the file `src/subscribers/send-products-newsletter.ts` with the following content:
 
 export const newsletterHighlights = [
-  ["35", "store", "Retrieve the first store in the application."],
-  ["37", "products", "Retrieve the products created since the last newsletter send date."],
-  ["43", "", "Check whether more than 10 products have been created before proceeding."],
-  ["47", "customers", "Retrieve all customers, assuming they're considered subscribed."],
-  ["49", "create", "Send a notification (newsletter) to each customer using the Notification Module."],
-  ["52", '"email"', "Send the notification through the email channel."],
-  ["53", '"newsletter_template"', "Specify the template name in the third-party service (for example, SendGrid)."],
-  ["55", "products", "Pass the created products to the template."],
-  ["60", "update", "Update the store's `last_newsletter_send_date` field with the current date."]
+  ["33", "store", "Retrieve the first store in the application."],
+  ["35", "products", "Retrieve the products created since the last newsletter send date."],
+  ["41", "", "Check whether more than 10 products have been created before proceeding."],
+  ["45", "customers", "Retrieve all customers, assuming they're considered subscribed."],
+  ["47", "createNotifications", "Send a notification (newsletter) to each customer using the Notification Module."],
+  ["50", '"email"', "Send the notification through the email channel."],
+  ["51", '"newsletter_template"', "Specify the template name in the third-party service (for example, SendGrid)."],
+  ["53", "products", "Pass the created products to the template."],
+  ["58", "updateStores", "Update the store's `last_newsletter_send_date` property with the current date."]
 ]
 
-  ```ts title="src/subscribers/send-products-newsletter.ts" highlights={newsletterHighlights} collapsibleLines="1-16" expandButtonLabel="Show Imports"
+  ```ts title="src/subscribers/send-products-newsletter.ts" highlights={newsletterHighlights} collapsibleLines="1-14" expandButtonLabel="Show Imports"
   import type {
     SubscriberArgs,
     SubscriberConfig,
@@ -989,12 +890,10 @@ export const newsletterHighlights = [
     ModuleRegistrationName,
   } from "@medusajs/modules-sdk"
   import { 
-    NotificationModuleService,
-  } from "@medusajs/notification"
-  import { 
     ICustomerModuleService, 
     IProductModuleService, 
     IStoreModuleService,
+    INotificationModuleService,
   } from "@medusajs/types"
 
   export default async function productCreateHandler({
@@ -1011,13 +910,13 @@ export const newsletterHighlights = [
       container.resolve(ModuleRegistrationName.CUSTOMER)
 
     const notificationModuleService:
-      NotificationModuleService = container.resolve(
+    INotificationModuleService = container.resolve(
         ModuleRegistrationName.NOTIFICATION
       )
 
-    const store = (await storeModuleService.list())[0]
+    const store = (await storeModuleService.listStores())[0]
 
-    const products = await productModuleService.list({
+    const products = await productModuleService.listProducts({
       created_at: {
         $gt: store.metadata.last_newsletter_send_date,
       },
@@ -1027,9 +926,9 @@ export const newsletterHighlights = [
       return
     }
 
-    const customers = await customerModuleService.list()
+    const customers = await customerModuleService.listCustomers()
 
-    await notificationModuleService.create(
+    await notificationModuleService.createNotifications(
       customers.map((customer) => ({
         to: customer.email,
         channel: "email",
@@ -1040,7 +939,7 @@ export const newsletterHighlights = [
       }))
     )
 
-    await storeModuleService.update(store.id, {
+    await storeModuleService.updateStores(store.id, {
       metadata: {
         last_newsletter_send_date: (new Date()).toString(),
       },
@@ -1055,10 +954,10 @@ export const newsletterHighlights = [
   In the subscriber function, you:
 
   1. Retrieve the first store in our application.
-  2. Retrieve products created since the last time a newsletter is sent. The last send date is stored in the store's `metadata` field.
+  2. Retrieve products created since the last time a newsletter is sent. The last send date is stored in the store's `metadata` property.
   3. If the count of last created products is less than 10, stop execution.
   4. Retrieve all customers. Here, it's assumed that all customers are considered subscribed for simplicity.
-  5. Use the Notification Module to send a notification to the customer. This uses the Notification Provider Module configured for the `email` channel.
+  5. Use the Notification Module to send a notification to the customer. This uses the Notification Module Provider configured for the `email` channel.
   6. Update the store's `last_newsletter_send_date` with the current date.
 
 </Details>

@@ -1,14 +1,14 @@
-import { ModuleJoinerConfig } from "@medusajs/types"
+import { JoinerServiceConfigAlias, ModuleJoinerConfig } from "@medusajs/types"
+import { dirname, join } from "path"
 import {
+  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
-  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
-import { join } from "path"
-import { readdirSync, statSync } from "fs"
+import { loadModels } from "./loaders/load-models"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -33,7 +33,7 @@ export function defineJoinerConfig(
     linkableKeys,
     primaryKeys,
   }: {
-    alias?: ModuleJoinerConfig["alias"]
+    alias?: JoinerServiceConfigAlias[]
     schema?: string
     entityQueryingConfig?: { name: string }[]
     linkableKeys?: Record<string, string>
@@ -49,10 +49,17 @@ export function defineJoinerConfig(
       "serviceName" | "primaryKeys" | "linkableKeys" | "alias"
     >
   > {
-  let basePath = getCallerFilePath()
-  basePath = basePath.includes("dist")
-    ? basePath.split("dist")[0] + "dist"
-    : basePath.split("src")[0] + "src"
+  const fullPath = getCallerFilePath()
+  const srcDir = fullPath.includes("dist") ? "dist" : "src"
+  const splitPath = fullPath.split(srcDir)
+
+  let basePath = splitPath[0] + srcDir
+
+  const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
+  if (isMedusaProject) {
+    basePath = dirname(fullPath)
+  }
+
   basePath = join(basePath, "models")
 
   const models = deduplicate(
@@ -79,16 +86,22 @@ export function defineJoinerConfig(
             pluralize(upperCaseFirst(alias.args.entity)),
         },
       })),
-      ...models.map((entity, i) => ({
-        name: [
-          `${camelToSnakeCase(entity.name).toLowerCase()}`,
-          `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
-        ],
-        args: {
-          entity: entity.name,
-          methodSuffix: pluralize(upperCaseFirst(entity.name)),
-        },
-      })),
+      ...models
+        .filter((model) => {
+          return (
+            !alias || !alias.some((alias) => alias.args?.entity === model.name)
+          )
+        })
+        .map((entity, i) => ({
+          name: [
+            `${camelToSnakeCase(entity.name).toLowerCase()}`,
+            `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
+          ],
+          args: {
+            entity: entity.name,
+            methodSuffix: pluralize(upperCaseFirst(entity.name)),
+          },
+        })),
     ],
   }
 }
@@ -110,38 +123,4 @@ export function buildEntitiesNameToLinkableKeysMap(
   })
 
   return entityLinkableKeysMap
-}
-
-function loadModels(basePath: string) {
-  const excludedExtensions = [".ts.map", ".js.map", ".d.ts"]
-
-  let modelsFiles: any[] = []
-  try {
-    modelsFiles = readdirSync(basePath)
-  } catch (e) {}
-
-  return modelsFiles
-    .flatMap((file) => {
-      if (
-        file.startsWith("index.") ||
-        excludedExtensions.some((ext) => file.endsWith(ext))
-      ) {
-        return
-      }
-
-      const filePath = join(basePath, file)
-      const stats = statSync(filePath)
-
-      if (stats.isFile()) {
-        try {
-          const required = require(filePath)
-          return Object.values(required).filter(
-            (resource) => typeof resource === "function" && !!resource.name
-          )
-        } catch (e) {}
-      }
-
-      return
-    })
-    .filter(Boolean) as { name: string }[]
 }

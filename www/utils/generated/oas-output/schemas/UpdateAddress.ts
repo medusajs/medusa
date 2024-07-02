@@ -57,7 +57,6 @@
  *   metadata:
  *     type: object
  *     description: The shipping address's metadata.
- *     properties: {}
  * 
 */
 

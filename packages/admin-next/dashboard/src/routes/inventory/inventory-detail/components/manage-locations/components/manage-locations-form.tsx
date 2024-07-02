@@ -1,23 +1,23 @@
 import * as zod from "zod"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AdminInventoryItem, AdminStockLocation } from "@medusajs/types"
 import { Button, Text, toast } from "@medusajs/ui"
+import { useFieldArray, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import { z } from "zod"
 import {
   RouteDrawer,
   useRouteModal,
-} from "../../../../../../components/route-modal"
+} from "../../../../../../components/modals"
 import { useBatchUpdateInventoryLevels } from "../../../../../../hooks/api/inventory"
-import { useFieldArray, useForm } from "react-hook-form"
 
-import { InventoryItemRes } from "../../../../../../types/api-responses"
 import { LocationItem } from "./location-item"
-import { StockLocationDTO } from "@medusajs/types"
-import { useTranslation } from "react-i18next"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useMemo } from "react"
 
 type EditInventoryItemAttributeFormProps = {
-  item: InventoryItemRes["inventory_item"]
-  locations: StockLocationDTO[]
+  item: AdminInventoryItem
+  locations: AdminStockLocation[]
 }
 
 const EditInventoryItemAttributesSchema = z.object({
@@ -31,7 +31,7 @@ const EditInventoryItemAttributesSchema = z.object({
 })
 
 const getDefaultValues = (
-  allLocations: StockLocationDTO[],
+  allLocations: AdminStockLocation[],
   existingLevels: Set<string>
 ) => {
   return {
@@ -47,8 +47,9 @@ export const ManageLocationsForm = ({
   item,
   locations,
 }: EditInventoryItemAttributeFormProps) => {
-  const existingLocationLevels = new Set(
-    item.location_levels?.map((l) => l.location_id) ?? []
+  const existingLocationLevels = useMemo(
+    () => new Set(item.location_levels?.map((l) => l.location_id) ?? []),
+    item.location_levels
   )
 
   const { t } = useTranslation()
@@ -63,6 +64,13 @@ export const ManageLocationsForm = ({
     control: form.control,
     name: "locations",
   })
+
+  useEffect(() => {
+    form.setValue(
+      "locations",
+      getDefaultValues(locations, existingLocationLevels).locations
+    )
+  }, [existingLocationLevels, locations])
 
   const { mutateAsync } = useBatchUpdateInventoryLevels(item.id)
 
@@ -105,7 +113,7 @@ export const ManageLocationsForm = ({
       handleSuccess()
 
       toast.success(t("general.success"), {
-        description: t("inventory.toast.update"),
+        description: t("inventory.toast.updateLocations"),
         dismissLabel: t("actions.close"),
       })
     } catch (e) {

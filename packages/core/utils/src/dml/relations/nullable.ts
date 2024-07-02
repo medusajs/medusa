@@ -1,4 +1,6 @@
-import { RelationshipType, PropertyType } from "../types"
+import { RelationshipType } from "@medusajs/types"
+
+const IsNullableModifier = Symbol.for("isNullableModifier")
 
 /**
  * Nullable modifier marks a schema node as nullable
@@ -6,6 +8,14 @@ import { RelationshipType, PropertyType } from "../types"
 export class NullableModifier<T, Relation extends RelationshipType<T>>
   implements RelationshipType<T | null>
 {
+  [IsNullableModifier]: true = true
+
+  static isNullableModifier<T>(
+    modifier: any
+  ): modifier is NullableModifier<T, any> {
+    return !!modifier?.[IsNullableModifier]
+  }
+
   declare type: RelationshipType<T>["type"]
 
   /**

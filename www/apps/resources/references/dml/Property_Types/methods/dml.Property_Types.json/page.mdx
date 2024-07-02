@@ -1,0 +1,23 @@
+---
+slug: /references/data-model/property-types/json
+sidebar_label: json
+---
+
+import { TypeList } from "docs-ui"
+
+# json Property Method - API Reference
+
+This method defines a property whose value is a stringified JSON object.
+
+## Example
+
+```ts
+import { model } from "@medusajs/utils"
+
+const MyCustom = model.define("my_custom", {
+  metadata: model.json(),
+  // ...
+})
+
+export default MyCustom
+```

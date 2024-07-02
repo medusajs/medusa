@@ -334,7 +334,8 @@ export const CodeBlock = ({
                     !hasInnerCodeBlock &&
                       tokens.length <= 1 &&
                       "px-docs_0.5 py-[6px]",
-                    !title.length && "xs:max-w-[83%]",
+                    !title.length && (!noCopy || !noReport) && "xs:max-w-[83%]",
+                    noLineNumbers && "pl-docs_1",
                     preClassName
                   )}
                 >

@@ -2,7 +2,7 @@ import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 
-import { RouteDrawer } from "../../../components/route-modal"
+import { RouteDrawer } from "../../../components/modals"
 import { useSalesChannel } from "../../../hooks/api/sales-channels"
 import { EditSalesChannelForm } from "./components/edit-sales-channel-form"
 

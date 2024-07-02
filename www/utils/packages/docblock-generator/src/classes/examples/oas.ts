@@ -1,8 +1,9 @@
 import { faker } from "@faker-js/faker"
 import { OpenAPIV3 } from "openapi-types"
-import { API_ROUTE_PARAM_REGEX, OasArea } from "../kinds/oas.js"
+import { OasArea } from "../kinds/oas.js"
 import { CodeSample } from "../../types/index.js"
 import { capitalize, kebabToCamel, wordsToCamel, wordsToKebab } from "utils"
+import { API_ROUTE_PARAM_REGEX } from "../../constants.js"
 
 type CodeSampleData = Omit<CodeSample, "source">
 

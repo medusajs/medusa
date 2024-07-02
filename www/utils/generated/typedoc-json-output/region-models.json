@@ -1,5 +1,5 @@
 {
-	"id": 10294,
+	"id": 11038,
 	"name": "region-models",
 	"variant": "project",
 	"kind": 1,
@@ -11,559 +11,2151 @@
 				"kind": "text"
 			},
 			{
-				"text": "```mermaid\nerDiagram\n\tCountry }|--|{ Region : region\n\n```",
+				"text": "```mermaid\nerDiagram\n\tRegion ||--|| RegionCountry : countries\n\n```",
 				"kind": "code"
 			}
 		]
 	},
 	"children": [
 		{
-			"id": 10295,
-			"name": "Country",
+			"id": 11039,
+			"name": "RegionCountry",
 			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 10296,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10297,
-							"name": "new Country",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 10295,
-								"name": "default",
-								"package": "@medusajs/region"
-							}
-						}
-					]
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"type": {
+				"type": "reference",
+				"target": {
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
 				},
-				{
-					"id": 10298,
-					"name": "iso_2",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10299,
-					"name": "iso_3",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10300,
-					"name": "num_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "number"
-					}
-				},
-				{
-					"id": 10301,
-					"name": "name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10302,
-					"name": "display_name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10303,
-					"name": "region_id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
+				"typeArguments": [
+					{
+						"type": "intersection",
 						"types": [
 							{
-								"type": "literal",
-								"value": null
+								"type": "reflection",
+								"declaration": {
+									"id": 11040,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11041,
+											"name": "iso_2",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11042,
+											"name": "iso_3",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11043,
+											"name": "num_code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11044,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11045,
+											"name": "display_name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11046,
+											"name": "region",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+													"qualifiedName": "BelongsTo"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 11141,
+														"name": "Region"
+													}
+												],
+												"name": "BelongsTo",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11089,
+											"name": "metadata",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11041,
+												11042,
+												11043,
+												11044,
+												11045,
+												11046,
+												11089
+											]
+										}
+									]
+								}
 							},
 							{
-								"type": "intrinsic",
-								"name": "string"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 10304,
-					"name": "region",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "union",
-						"types": [
+								"type": "reflection",
+								"declaration": {
+									"id": 11090,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11091,
+											"name": "iso_2",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11092,
+											"name": "iso_3",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11093,
+											"name": "num_code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11094,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11095,
+											"name": "display_name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11096,
+											"name": "region",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+													"qualifiedName": "BelongsTo"
+												},
+												"typeArguments": [
+													{
+														"type": "reflection",
+														"declaration": {
+															"id": 11118,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"signatures": [
+																{
+																	"id": 11119,
+																	"name": "__type",
+																	"variant": "signature",
+																	"kind": 4096,
+																	"flags": {},
+																	"type": {
+																		"type": "reference",
+																		"target": {
+																			"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+																			"qualifiedName": "DmlEntity"
+																		},
+																		"typeArguments": [
+																			{
+																				"type": "intersection",
+																				"types": [
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11120,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {},
+																							"children": [
+																								{
+																									"id": 11121,
+																									"name": "id",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+																											"qualifiedName": "IdProperty"
+																										},
+																										"name": "IdProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11122,
+																									"name": "name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11123,
+																									"name": "currency_code",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11124,
+																									"name": "automatic_taxes",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+																											"qualifiedName": "BooleanProperty"
+																										},
+																										"name": "BooleanProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11125,
+																									"name": "countries",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/relations/has-many.ts",
+																											"qualifiedName": "HasMany"
+																										},
+																										"typeArguments": [
+																											{
+																												"type": "reflection",
+																												"declaration": {
+																													"id": 11126,
+																													"name": "__type",
+																													"variant": "declaration",
+																													"kind": 65536,
+																													"flags": {},
+																													"signatures": [
+																														{
+																															"id": 11127,
+																															"name": "__type",
+																															"variant": "signature",
+																															"kind": 4096,
+																															"flags": {},
+																															"type": {
+																																"type": "unknown",
+																																"name": "..."
+																															}
+																														}
+																													]
+																												}
+																											}
+																										],
+																										"name": "HasMany",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11128,
+																									"name": "metadata",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+																											"qualifiedName": "JSONProperty"
+																										},
+																										"name": "JSONProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								}
+																							],
+																							"groups": [
+																								{
+																									"title": "Properties",
+																									"children": [
+																										11121,
+																										11122,
+																										11123,
+																										11124,
+																										11125,
+																										11128
+																									]
+																								}
+																							]
+																						}
+																					},
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11129,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {},
+																							"children": [
+																								{
+																									"id": 11130,
+																									"name": "id",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+																											"qualifiedName": "IdProperty"
+																										},
+																										"name": "IdProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11131,
+																									"name": "name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11132,
+																									"name": "currency_code",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11133,
+																									"name": "automatic_taxes",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+																											"qualifiedName": "BooleanProperty"
+																										},
+																										"name": "BooleanProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11134,
+																									"name": "countries",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/relations/has-many.ts",
+																											"qualifiedName": "HasMany"
+																										},
+																										"typeArguments": [
+																											{
+																												"type": "reflection",
+																												"declaration": {
+																													"id": 11135,
+																													"name": "__type",
+																													"variant": "declaration",
+																													"kind": 65536,
+																													"flags": {},
+																													"signatures": [
+																														{
+																															"id": 11136,
+																															"name": "__type",
+																															"variant": "signature",
+																															"kind": 4096,
+																															"flags": {},
+																															"type": {
+																																"type": "unknown",
+																																"name": "..."
+																															}
+																														}
+																													]
+																												}
+																											}
+																										],
+																										"name": "HasMany",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11137,
+																									"name": "metadata",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+																											"qualifiedName": "JSONProperty"
+																										},
+																										"name": "JSONProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								}
+																							],
+																							"groups": [
+																								{
+																									"title": "Properties",
+																									"children": [
+																										11130,
+																										11131,
+																										11132,
+																										11133,
+																										11134,
+																										11137
+																									]
+																								}
+																							]
+																						}
+																					},
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11138,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {}
+																						}
+																					},
+																					{
+																						"type": "reference",
+																						"target": {
+																							"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
+																							"qualifiedName": "DMLSchemaDefaults"
+																						},
+																						"name": "DMLSchemaDefaults",
+																						"package": "@medusajs/utils"
+																					}
+																				]
+																			}
+																		],
+																		"name": "DmlEntity",
+																		"package": "@medusajs/utils"
+																	}
+																}
+															]
+														}
+													}
+												],
+												"name": "BelongsTo",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11139,
+											"name": "metadata",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11091,
+												11092,
+												11093,
+												11094,
+												11095,
+												11096,
+												11139
+											]
+										}
+									]
+								}
+							},
 							{
-								"type": "literal",
-								"value": null
+								"type": "reflection",
+								"declaration": {
+									"id": 11140,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {}
+								}
 							},
 							{
 								"type": "reference",
-								"target": 10305,
-								"name": "default",
-								"package": "@medusajs/region"
+								"target": {
+									"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
+									"qualifiedName": "DMLSchemaDefaults"
+								},
+								"name": "DMLSchemaDefaults",
+								"package": "@medusajs/utils"
 							}
 						]
 					}
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						10296
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						10298,
-						10299,
-						10300,
-						10301,
-						10302,
-						10303,
-						10304
-					]
-				}
-			]
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			},
+			"defaultValue": "..."
 		},
 		{
-			"id": 10305,
+			"id": 11141,
 			"name": "Region",
 			"variant": "declaration",
-			"kind": 128,
-			"flags": {},
-			"children": [
-				{
-					"id": 10306,
-					"name": "constructor",
-					"variant": "declaration",
-					"kind": 512,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10307,
-							"name": "new Region",
-							"variant": "signature",
-							"kind": 16384,
-							"flags": {},
-							"type": {
-								"type": "reference",
-								"target": 10305,
-								"name": "default",
-								"package": "@medusajs/region"
-							}
-						}
-					]
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"type": {
+				"type": "reference",
+				"target": {
+					"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
 				},
-				{
-					"id": 10321,
-					"name": "[OptionalProps]",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {
-						"isOptional": true
-					},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../packages/region/src/models/region.ts",
-							"qualifiedName": "RegionOptionalProps"
-						},
-						"name": "RegionOptionalProps",
-						"package": "@medusajs/region"
-					}
-				},
-				{
-					"id": 10308,
-					"name": "id",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10309,
-					"name": "name",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10310,
-					"name": "currency_code",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "string"
-					}
-				},
-				{
-					"id": 10311,
-					"name": "automatic_taxes",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "intrinsic",
-						"name": "boolean"
-					},
-					"defaultValue": "true"
-				},
-				{
-					"id": 10312,
-					"name": "countries",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../../node_modules/@mikro-orm/core/entity/Collection.d.ts",
-							"qualifiedName": "Collection"
-						},
-						"typeArguments": [
-							{
-								"type": "reference",
-								"target": 10295,
-								"name": "default",
-								"package": "@medusajs/region"
-							},
-							{
-								"type": "intrinsic",
-								"name": "object"
-							}
-						],
-						"name": "Collection",
-						"package": "@mikro-orm/core"
-					},
-					"defaultValue": "..."
-				},
-				{
-					"id": 10313,
-					"name": "metadata",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
+				"typeArguments": [
+					{
+						"type": "intersection",
 						"types": [
 							{
-								"type": "literal",
-								"value": null
+								"type": "reflection",
+								"declaration": {
+									"id": 11142,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11143,
+											"name": "id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+													"qualifiedName": "IdProperty"
+												},
+												"name": "IdProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11144,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11145,
+											"name": "currency_code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11146,
+											"name": "automatic_taxes",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"qualifiedName": "BooleanProperty"
+												},
+												"name": "BooleanProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11147,
+											"name": "countries",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/has-many.ts",
+													"qualifiedName": "HasMany"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": 11039,
+														"name": "RegionCountry"
+													}
+												],
+												"name": "HasMany",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11175,
+											"name": "metadata",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11143,
+												11144,
+												11145,
+												11146,
+												11147,
+												11175
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 11176,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 11177,
+											"name": "id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/id.ts",
+													"qualifiedName": "IdProperty"
+												},
+												"name": "IdProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11178,
+											"name": "name",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11179,
+											"name": "currency_code",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11180,
+											"name": "automatic_taxes",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/boolean.ts",
+													"qualifiedName": "BooleanProperty"
+												},
+												"name": "BooleanProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11181,
+											"name": "countries",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/relations/has-many.ts",
+													"qualifiedName": "HasMany"
+												},
+												"typeArguments": [
+													{
+														"type": "reflection",
+														"declaration": {
+															"id": 11182,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"signatures": [
+																{
+																	"id": 11183,
+																	"name": "__type",
+																	"variant": "signature",
+																	"kind": 4096,
+																	"flags": {},
+																	"type": {
+																		"type": "reference",
+																		"target": {
+																			"sourceFileName": "../../../../packages/core/utils/src/dml/entity.ts",
+																			"qualifiedName": "DmlEntity"
+																		},
+																		"typeArguments": [
+																			{
+																				"type": "intersection",
+																				"types": [
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11184,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {},
+																							"children": [
+																								{
+																									"id": 11185,
+																									"name": "iso_2",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11186,
+																									"name": "iso_3",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11187,
+																									"name": "num_code",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11188,
+																									"name": "name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11189,
+																									"name": "display_name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11190,
+																									"name": "region",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+																											"qualifiedName": "BelongsTo"
+																										},
+																										"typeArguments": [
+																											{
+																												"type": "reflection",
+																												"declaration": {
+																													"id": 11193,
+																													"name": "__type",
+																													"variant": "declaration",
+																													"kind": 65536,
+																													"flags": {},
+																													"signatures": [
+																														{
+																															"id": 11194,
+																															"name": "__type",
+																															"variant": "signature",
+																															"kind": 4096,
+																															"flags": {},
+																															"type": {
+																																"type": "unknown",
+																																"name": "..."
+																															}
+																														}
+																													]
+																												}
+																											}
+																										],
+																										"name": "BelongsTo",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11195,
+																									"name": "metadata",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+																											"qualifiedName": "JSONProperty"
+																										},
+																										"name": "JSONProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								}
+																							],
+																							"groups": [
+																								{
+																									"title": "Properties",
+																									"children": [
+																										11185,
+																										11186,
+																										11187,
+																										11188,
+																										11189,
+																										11190,
+																										11195
+																									]
+																								}
+																							]
+																						}
+																					},
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11196,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {},
+																							"children": [
+																								{
+																									"id": 11197,
+																									"name": "iso_2",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11198,
+																									"name": "iso_3",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11199,
+																									"name": "num_code",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11200,
+																									"name": "name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11201,
+																									"name": "display_name",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/text.ts",
+																											"qualifiedName": "TextProperty"
+																										},
+																										"name": "TextProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11202,
+																									"name": "region",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/relations/belongs-to.ts",
+																											"qualifiedName": "BelongsTo"
+																										},
+																										"typeArguments": [
+																											{
+																												"type": "reflection",
+																												"declaration": {
+																													"id": 11205,
+																													"name": "__type",
+																													"variant": "declaration",
+																													"kind": 65536,
+																													"flags": {},
+																													"signatures": [
+																														{
+																															"id": 11206,
+																															"name": "__type",
+																															"variant": "signature",
+																															"kind": 4096,
+																															"flags": {},
+																															"type": {
+																																"type": "unknown",
+																																"name": "..."
+																															}
+																														}
+																													]
+																												}
+																											}
+																										],
+																										"name": "BelongsTo",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								},
+																								{
+																									"id": 11207,
+																									"name": "metadata",
+																									"variant": "declaration",
+																									"kind": 1024,
+																									"flags": {
+																										"isOptional": true
+																									},
+																									"type": {
+																										"type": "reference",
+																										"target": {
+																											"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+																											"qualifiedName": "JSONProperty"
+																										},
+																										"name": "JSONProperty",
+																										"package": "@medusajs/utils"
+																									},
+																									"defaultValue": "..."
+																								}
+																							],
+																							"groups": [
+																								{
+																									"title": "Properties",
+																									"children": [
+																										11197,
+																										11198,
+																										11199,
+																										11200,
+																										11201,
+																										11202,
+																										11207
+																									]
+																								}
+																							]
+																						}
+																					},
+																					{
+																						"type": "reflection",
+																						"declaration": {
+																							"id": 11208,
+																							"name": "__type",
+																							"variant": "declaration",
+																							"kind": 65536,
+																							"flags": {}
+																						}
+																					},
+																					{
+																						"type": "reference",
+																						"target": {
+																							"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
+																							"qualifiedName": "DMLSchemaDefaults"
+																						},
+																						"name": "DMLSchemaDefaults",
+																						"package": "@medusajs/utils"
+																					}
+																				]
+																			}
+																		],
+																		"name": "DmlEntity",
+																		"package": "@medusajs/utils"
+																	}
+																}
+															]
+														}
+													}
+												],
+												"name": "HasMany",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 11209,
+											"name": "metadata",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"type": {
+												"type": "reference",
+												"target": {
+													"sourceFileName": "../../../../packages/core/utils/src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												11177,
+												11178,
+												11179,
+												11180,
+												11181,
+												11209
+											]
+										}
+									]
+								}
+							},
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 11210,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {}
+								}
 							},
 							{
 								"type": "reference",
 								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Record"
+									"sourceFileName": "../../../../packages/core/utils/src/dml/helpers/entity-builder/create-default-properties.ts",
+									"qualifiedName": "DMLSchemaDefaults"
 								},
-								"typeArguments": [
-									{
-										"type": "intrinsic",
-										"name": "string"
-									},
-									{
-										"type": "intrinsic",
-										"name": "unknown"
-									}
-								],
-								"name": "Record",
-								"package": "typescript"
+								"name": "DMLSchemaDefaults",
+								"package": "@medusajs/utils"
 							}
 						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 10314,
-					"name": "created_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
 					}
-				},
-				{
-					"id": 10315,
-					"name": "updated_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "reference",
-						"target": {
-							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-							"qualifiedName": "Date"
-						},
-						"name": "Date",
-						"package": "typescript"
-					}
-				},
-				{
-					"id": 10316,
-					"name": "deleted_at",
-					"variant": "declaration",
-					"kind": 1024,
-					"flags": {},
-					"type": {
-						"type": "union",
-						"types": [
-							{
-								"type": "literal",
-								"value": null
-							},
-							{
-								"type": "reference",
-								"target": {
-									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
-									"qualifiedName": "Date"
-								},
-								"name": "Date",
-								"package": "typescript"
-							}
-						]
-					},
-					"defaultValue": "null"
-				},
-				{
-					"id": 10317,
-					"name": "onCreate",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10318,
-							"name": "onCreate",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				},
-				{
-					"id": 10319,
-					"name": "onInit",
-					"variant": "declaration",
-					"kind": 2048,
-					"flags": {},
-					"signatures": [
-						{
-							"id": 10320,
-							"name": "onInit",
-							"variant": "signature",
-							"kind": 4096,
-							"flags": {},
-							"type": {
-								"type": "intrinsic",
-								"name": "void"
-							}
-						}
-					]
-				}
-			],
-			"groups": [
-				{
-					"title": "Constructors",
-					"children": [
-						10306
-					]
-				},
-				{
-					"title": "Properties",
-					"children": [
-						10321,
-						10308,
-						10309,
-						10310,
-						10311,
-						10312,
-						10313,
-						10314,
-						10315,
-						10316
-					]
-				},
-				{
-					"title": "Methods",
-					"children": [
-						10317,
-						10319
-					]
-				}
-			]
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			},
+			"defaultValue": "..."
 		}
 	],
 	"groups": [
 		{
-			"title": "Classes",
+			"title": "Variables",
 			"children": [
-				10295,
-				10305
+				11039,
+				11141
 			]
 		}
 	],
 	"packageName": "@medusajs/region",
 	"symbolIdMap": {
-		"10294": {
-			"sourceFileName": "../../../packages/region/src/models/index.ts",
+		"11038": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"10295": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default"
+		"11039": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "Country"
 		},
-		"10298": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.iso_2"
+		"11040": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
 		},
-		"10299": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.iso_3"
+		"11041": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_2"
 		},
-		"10300": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.num_code"
+		"11042": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_3"
 		},
-		"10301": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.name"
+		"11043": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.num_code"
 		},
-		"10302": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.display_name"
+		"11044": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
 		},
-		"10303": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.region_id"
+		"11045": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.display_name"
 		},
-		"10304": {
-			"sourceFileName": "../../../packages/region/src/models/country.ts",
-			"qualifiedName": "default.region"
+		"11046": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.region"
 		},
-		"10305": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default"
+		"11047": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
 		},
-		"10308": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.id"
+		"11048": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
 		},
-		"10309": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.name"
+		"11049": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
 		},
-		"10310": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.currency_code"
+		"11050": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
 		},
-		"10311": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.automatic_taxes"
+		"11051": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
 		},
-		"10312": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.countries"
+		"11052": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
 		},
-		"10313": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.metadata"
+		"11053": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
 		},
-		"10314": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.created_at"
+		"11054": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
 		},
-		"10315": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.updated_at"
+		"11055": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
 		},
-		"10316": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.deleted_at"
+		"11056": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
 		},
-		"10317": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.onCreate"
+		"11057": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
 		},
-		"10318": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.onCreate"
+		"11058": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
 		},
-		"10319": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.onInit"
+		"11059": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
 		},
-		"10320": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.onInit"
+		"11060": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
 		},
-		"10321": {
-			"sourceFileName": "../../../packages/region/src/models/region.ts",
-			"qualifiedName": "default.[OptionalProps]"
+		"11061": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11062": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11063": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11064": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11065": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11066": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11067": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11068": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11069": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11070": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11071": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11072": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11073": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11074": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11075": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11076": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11077": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11078": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11079": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11080": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11081": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11082": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11083": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11084": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11085": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11086": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11087": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11088": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11089": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11090": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11091": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11092": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11093": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
+		"11094": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11095": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11096": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11097": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11098": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11099": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11100": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11101": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11102": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11103": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11104": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11105": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11106": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11107": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11108": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11109": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11110": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11111": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11112": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11113": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11114": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11115": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11116": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11117": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11118": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11119": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11120": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11121": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11122": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11123": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11124": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11125": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11126": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11127": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11128": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11129": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11130": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11131": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11132": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11133": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11134": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11135": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11136": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11137": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11138": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11139": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11140": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11141": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "Region"
+		},
+		"11142": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object"
+		},
+		"11143": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.id"
+		},
+		"11144": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11145": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.currency_code"
+		},
+		"11146": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.automatic_taxes"
+		},
+		"11147": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.countries"
+		},
+		"11148": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11149": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11150": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11151": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_2"
+		},
+		"11152": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_3"
+		},
+		"11153": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.num_code"
+		},
+		"11154": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11155": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.display_name"
+		},
+		"11156": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.region"
+		},
+		"11157": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11158": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11159": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11160": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11161": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11162": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11163": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11164": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11165": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
+		"11166": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11167": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11168": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11169": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11170": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11171": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11172": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11173": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11174": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11175": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11176": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11177": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "id"
+		},
+		"11178": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "name"
+		},
+		"11179": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "currency_code"
+		},
+		"11180": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "automatic_taxes"
+		},
+		"11181": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "countries"
+		},
+		"11182": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11183": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "__function"
+		},
+		"11184": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object"
+		},
+		"11185": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_2"
+		},
+		"11186": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.iso_3"
+		},
+		"11187": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.num_code"
+		},
+		"11188": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.name"
+		},
+		"11189": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.display_name"
+		},
+		"11190": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.region"
+		},
+		"11191": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11192": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11193": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11194": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11195": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__object.metadata"
+		},
+		"11196": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11197": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_2"
+		},
+		"11198": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "iso_3"
+		},
+		"11199": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "num_code"
+		},
+		"11200": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "name"
+		},
+		"11201": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "display_name"
+		},
+		"11202": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "region"
+		},
+		"11203": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11204": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11205": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11206": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "__function"
+		},
+		"11207": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/country.ts",
+			"qualifiedName": "metadata"
+		},
+		"11208": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		},
+		"11209": {
+			"sourceFileName": "../../../../packages/modules/region/src/models/region.ts",
+			"qualifiedName": "metadata"
+		},
+		"11210": {
+			"sourceFileName": "../../../../packages/core/utils/src/dml/entity-builder.ts",
+			"qualifiedName": "__type"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/region/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 11038
 		}
 	}
 }

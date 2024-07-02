@@ -1,7 +1,11 @@
-import { Modules, RemoteQueryFunction } from "@medusajs/modules-sdk"
 import { WorkflowManager } from "@medusajs/orchestration"
-import { Context, IWorkflowEngineService } from "@medusajs/types"
-import { TransactionHandlerType } from "@medusajs/utils"
+import {
+  Context,
+  IWorkflowEngineService,
+  RemoteQueryFunction,
+} from "@medusajs/types"
+import { Modules, TransactionHandlerType } from "@medusajs/utils"
+import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
 import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
@@ -11,7 +15,6 @@ import {
   workflowEventGroupIdStep2Mock,
 } from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
-import { moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -232,6 +235,10 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
       })
 
       describe("Scheduled workflows", () => {
+        beforeEach(() => {
+          jest.clearAllMocks()
+        })
+
         beforeAll(() => {
           jest.useFakeTimers()
           jest.spyOn(global, "setTimeout")
@@ -243,8 +250,6 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
 
         it("should execute a scheduled workflow", async () => {
           const spy = createScheduled("standard")
-
-          jest.clearAllMocks()
 
           await jest.runOnlyPendingTimersAsync()
           expect(setTimeout).toHaveBeenCalledTimes(2)
@@ -287,6 +292,46 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(logSpy).toHaveBeenCalledWith(
             "Tried to execute a scheduled workflow with ID remove-scheduled that does not exist, removing it from the scheduler."
           )
+        })
+
+        it("should fetch an idempotent workflow after its completion", async () => {
+          const { transaction: firstRun } = await workflowOrcModule.run(
+            "workflow_idempotent",
+            {
+              input: {
+                value: "123",
+              },
+              throwOnError: true,
+              transactionId: "transaction_1",
+            }
+          )
+
+          let executionsList = await query({
+            workflow_executions: {
+              fields: ["id"],
+            },
+          })
+
+          const { transaction: secondRun } = await workflowOrcModule.run(
+            "workflow_idempotent",
+            {
+              input: {
+                value: "123",
+              },
+              throwOnError: true,
+              transactionId: "transaction_1",
+            }
+          )
+
+          const executionsListAfter = await query({
+            workflow_executions: {
+              fields: ["id"],
+            },
+          })
+
+          expect(secondRun.flow.startedAt).toEqual(firstRun.flow.startedAt)
+          expect(executionsList).toHaveLength(1)
+          expect(executionsListAfter).toHaveLength(1)
         })
       })
     })

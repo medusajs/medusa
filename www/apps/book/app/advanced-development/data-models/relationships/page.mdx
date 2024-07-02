@@ -1,0 +1,190 @@
+export const metadata = {
+  title: `${pageNumber} Data Model Relationships`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn how to define relationships between data models in your module.
+
+## What is a Relationship Property?
+
+A relationship property is defined using relation methods, such as `hasOne` or `belongsTo`. It represents a relationship between two data models in a module. 
+
+---
+
+## One-to-One Relationship
+
+To define a one-to-one relationship, create relationship properties in the data models using the following methods:
+
+1. `hasOne`: indicates that the model has one record of the specified model.
+2. `belongsTo`: indicates that the model belongs to one record of the specified model.
+
+For example:
+
+export const oneToOneHighlights = [
+  ["5", "hasOne", "A user has one email."],
+  ["10", "belongsTo", "An email belongs to a user."],
+  ["11", `"email"`, "The relationship's name in the `User` data model."]
+]
+
+```ts highlights={oneToOneHighlights}
+import { model } from "@medusajs/utils"
+
+const User = model.define("user", {
+  id: model.id(),
+  email: model.hasOne(() => Email),
+})
+
+const Email = model.define("email", {
+  id: model.id(),
+  user: model.belongsTo(() => User, {
+    mappedBy: "email",
+  }),
+})
+```
+
+The `hasOne` and `belongsTo` methods accept a function as a first parameter. The function returns the associated data model.
+
+The `belongsTo` method also requires passing as a second parameter an object with the property `mappedBy`. Its value is the name of the relationship property in the other data model.
+
+In the example above, a user has one email, and an email belongs to one user.
+
+---
+
+## One-to-Many Relationship
+
+To define a one-to-many relationship, create relationship properties in the data models using the following methods:
+
+1. `hasMany`: indicates that the model has more than one records of the specified model.
+2. `belongsTo`: indicates that the model belongs to one record of the specified model.
+
+For example:
+
+export const oneToManyHighlights = [
+  ["5", "hasMany", "A store has many products"],
+  ["10", "belongsTo", "A product has one store."],
+  ["11", `"products"`, "The relationship's name in the `Store` data model."]
+]
+
+```ts highlights={oneToManyHighlights}
+import { model } from "@medusajs/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+
+const Product = model.define("product", {
+  id: model.id(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+In this example, a store has many products, but a product belongs to one store.
+
+---
+
+## Many-to-Many Relationship
+
+To define a many-to-many relationship, create relationship properties in the data models using the `manyToMany` method.
+
+For example:
+
+export const manyToManyHighlights = [
+  ["5", "manyToMany", "An order is associated with many products."],
+  ["10", "manyToMany", "A product is associated with many orders."]
+]
+
+```ts highlights={manyToManyHighlights}
+import { model } from "@medusajs/utils"
+
+const Order = model.define("order", {
+  id: model.id(),
+  products: model.manyToMany(() => Product),
+})
+
+const Product = model.define("product", {
+  id: model.id(),
+  order: model.manyToMany(() => Order),
+})
+```
+
+In this example, an order is associated with many products, and a product is associated with many orders.
+
+---
+
+## Configure Relationship Property Name
+
+The relationship property methods accept as a second parameter an object of options. The `mappedBy` property defines the name of the relationship in the other data model.
+
+As seen in previous examples, the `mappedBy` option is required for the `belongsTo` method.
+
+For example:
+
+export const relationNameHighlights = [
+  ["6", `"owner"`, "The relationship's name in the `Email` data model."],
+  ["13", `"email"`, "The relationship's name in the `User` data model."]
+]
+
+```ts highlights={relationNameHighlights}
+import { model } from "@medusajs/utils"
+
+const User = model.define("user", {
+  id: model.id(),
+  email: model.hasOne(() => Email, {
+    mappedBy: "owner",
+  }),
+})
+
+const Email = model.define("email", {
+  id: model.id(),
+  owner: model.belongsTo(() => User, {
+    mappedBy: "email",
+  }),
+})
+```
+
+In this example, you specify in the `User` data model’s relationship property that the name of the relationship in the `Email` data model is `owner`.
+
+This is useful if the relationship property’s name is different than that of the associated data model.
+
+---
+
+## Cascades
+
+When an operation is performed on a data model, such as record deletion, the relationship cascade specifies what related data model records should be affected by it.
+
+For example, if a store is deleted, its products should also be deleted.
+
+The `cascades` method used on a data model configures which child records an operation is cascaded to.
+
+For example:
+
+export const highlights = [
+  ["8", "", "When a store is deleted, delete its associated products."]
+]
+
+```ts highlights={highlights}
+import { model } from "@medusajs/utils"
+
+const Store = model.define("store", {
+  id: model.id(),
+  products: model.hasMany(() => Product),
+})
+.cascades({
+  delete: ["products"],
+})
+
+const Product = model.define("product", {
+  id: model.id(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+The `cascades` method accepts an object. Its key is the operation’s name, such as `delete`. The value is an array of relationship property names that the operation is cascaded to.
+
+In the example above, when a store is deleted, its associated products are also deleted.

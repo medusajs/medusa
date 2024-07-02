@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { SalesChannelDTO } from "@medusajs/types"
+import { HttpTypes, SalesChannelDTO } from "@medusajs/types"
 import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import {
+  createColumnHelper,
   OnChangeFn,
   RowSelectionState,
-  createColumnHelper,
 } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -14,7 +14,7 @@ import * as zod from "zod"
 import {
   RouteFocusModal,
   useRouteModal,
-} from "../../../../components/route-modal"
+} from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useProducts } from "../../../../hooks/api/products"
 import { useSalesChannelAddProducts } from "../../../../hooks/api/sales-channels"
@@ -22,7 +22,6 @@ import { useProductTableColumns } from "../../../../hooks/table/columns/use-prod
 import { useProductTableFilters } from "../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../hooks/use-data-table"
-import { HttpTypes } from "@medusajs/types"
 
 type AddProductsToSalesChannelFormProps = {
   salesChannel: SalesChannelDTO

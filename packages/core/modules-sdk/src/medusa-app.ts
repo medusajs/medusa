@@ -18,19 +18,16 @@ import type {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
+  Modules,
+  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import type { Knex } from "knex"
-import {
-  MODULE_PACKAGE_NAMES,
-  ModuleRegistrationName,
-  Modules,
-} from "./definitions"
+import { MODULE_PACKAGE_NAMES, ModuleRegistrationName } from "./definitions"
 import { MedusaModule, RegisterModuleJoinerConfig } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
@@ -229,6 +226,7 @@ export type MedusaAppOutput = {
   revertMigrations: RunMigrationFn
   onApplicationShutdown: () => Promise<void>
   onApplicationPrepareShutdown: () => Promise<void>
+  sharedContainer?: MedusaContainer
 }
 
 export type MedusaAppOptions = {
@@ -473,6 +471,7 @@ async function MedusaApp_({
     notFound,
     runMigrations,
     revertMigrations,
+    sharedContainer: sharedContainer_,
   }
 }
 

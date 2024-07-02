@@ -1,6 +1,5 @@
-import { Modules } from "@medusajs/modules-sdk"
-import { IUserModuleService } from "@medusajs/types/dist/user"
-import { UserEvents } from "@medusajs/utils"
+import { IUserModuleService } from "@medusajs/types"
+import { Modules, UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
@@ -189,7 +188,7 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.updated,
+              eventName: UserEvents.USER_UPDATED,
             }),
           ])
         })
@@ -219,11 +218,11 @@ moduleIntegrationTestRunner<IUserModuleService>({
           expect(eventBusSpy).toHaveBeenCalledWith([
             expect.objectContaining({
               data: { id: "1" },
-              eventName: UserEvents.created,
+              eventName: UserEvents.USER_CREATED,
             }),
             expect.objectContaining({
               data: { id: "2" },
-              eventName: UserEvents.created,
+              eventName: UserEvents.USER_CREATED,
             }),
           ])
         })

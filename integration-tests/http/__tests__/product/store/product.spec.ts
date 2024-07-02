@@ -10,7 +10,6 @@ import {
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
 import { getProductFixture } from "../../../../helpers/fixtures"
-import { createDefaultRuleTypes } from "../../../../modules/helpers/create-default-rule-types"
 
 jest.setTimeout(30000)
 
@@ -18,6 +17,7 @@ medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer }) => {
     let store
     let appContainer
+    let collection
     let product
     let product1
     let product2
@@ -82,7 +82,6 @@ medusaIntegrationTestRunner({
     beforeEach(async () => {
       appContainer = getContainer()
       await createAdminUser(dbConnection, adminHeaders, appContainer)
-      await createDefaultRuleTypes(appContainer)
 
       const storeModule: IStoreModuleService = appContainer.resolve(
         ModuleRegistrationName.STORE
@@ -96,8 +95,10 @@ medusaIntegrationTestRunner({
 
       store = await storeModule.createStores({
         name: "New store",
-        supported_currency_codes: ["usd", "dkk"],
-        default_currency_code: "usd",
+        supported_currencies: [
+          { currency_code: "usd", is_default: true },
+          { currency_code: "dkk" },
+        ],
       })
     })
 
@@ -487,13 +488,31 @@ medusaIntegrationTestRunner({
             adminHeaders
           )
         ).data.inventory_item
+
+        collection = (
+          await api.post(
+            "/admin/collections",
+            { title: "base-collection" },
+            adminHeaders
+          )
+        ).data.collection
         ;[product, [variant]] = await createProducts({
           title: "test product 1",
+          collection_id: collection.id,
           status: ProductStatus.PUBLISHED,
+          options: [
+            { title: "size", values: ["large", "small"] },
+            { title: "color", values: ["green"] },
+          ],
+          tags: [{ value: "tag1" }],
           variants: [
             {
               title: "test variant 1",
               manage_inventory: true,
+              options: {
+                size: "large",
+                color: "green",
+              },
               inventory_items: [
                 {
                   inventory_item_id: inventoryItem1.id,
@@ -511,8 +530,20 @@ medusaIntegrationTestRunner({
         ;[product2, [variant2]] = await createProducts({
           title: "test product 2 uniquely",
           status: ProductStatus.PUBLISHED,
+          options: [
+            { title: "size", values: ["large", "small"] },
+            { title: "material", values: ["cotton", "polyester"] },
+          ],
           variants: [
-            { title: "test variant 2", manage_inventory: false, prices: [] },
+            {
+              title: "test variant 2",
+              options: {
+                size: "large",
+                material: "cotton",
+              },
+              manage_inventory: false,
+              prices: [],
+            },
           ],
         })
         ;[product3, [variant3]] = await createProducts({
@@ -539,8 +570,10 @@ medusaIntegrationTestRunner({
         }
 
         await service.createStores({
-          supported_currency_codes: ["usd", "dkk"],
-          default_currency_code: "usd",
+          supported_currencies: [
+            { currency_code: "usd", is_default: true },
+            { currency_code: "dkk" },
+          ],
           default_sales_channel_id: defaultSalesChannel.id,
         })
       })
@@ -615,6 +648,138 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: product.id,
           }),
+        ])
+      })
+
+      it("returns a list of ordered products by id ASC", async () => {
+        const response = await api.get("/store/products?order=id")
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toEqual(
+          [product.id, product2.id, product3.id]
+            .sort((p1, p2) => p1.localeCompare(p2))
+            .map((id) => expect.objectContaining({ id }))
+        )
+      })
+
+      it("returns a list of ordered products by id DESC", async () => {
+        const response = await api.get("/store/products?order=-id")
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toEqual(
+          [product.id, product2.id, product3.id]
+            .sort((p1, p2) => p2.localeCompare(p1))
+            .map((id) => expect.objectContaining({ id }))
+        )
+      })
+
+      // TODO: This doesn't work currently, but worked in v1
+      it.skip("returns a list of ordered products by variants title DESC", async () => {
+        const response = await api.get("/store/products?order=-variants.title")
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product3.id }),
+          expect.objectContaining({ id: product2.id }),
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      // TODO: This doesn't work currently, but worked in v1
+      it.skip("returns a list of ordered products by variants title ASC", async () => {
+        const response = await api.get("/store/products?order=variants.title")
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product3.id }),
+          expect.objectContaining({ id: product2.id }),
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      // TODO: This doesn't work currently, but worked in v1
+      it.skip("returns a list of ordered products by variants prices DESC", async () => {
+        let response = await api.get(
+          "/store/products?order=-variants.prices.amount"
+        )
+      })
+
+      // TODO: This doesn't work currently, but worked in v1
+      it.skip("returns a list of ordered products by variants prices ASC", async () => {})
+
+      // BREAKING: It seems `id` and `created_at` is always returned, even if not in the fields params
+      it("products contain only fields defined with `fields` param", async () => {
+        const response = await api.get("/store/products?fields=handle")
+        expect(response.status).toEqual(200)
+        expect(Object.keys(response.data.products[0])).toEqual([
+          "handle",
+          "created_at",
+          "id",
+        ])
+      })
+
+      it("returns a list of products in collection", async () => {
+        const response = await api.get(
+          `/store/products?collection_id[]=${collection.id}`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("returns a list of products with a given tag", async () => {
+        const response = await api.get(
+          `/store/products?tags[]=${product.tags[0].id}`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      // TODO: Not implemented yet
+      it.skip("returns gift card product", async () => {
+        const response = await api
+          .get("/store/products?is_giftcard=true")
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+
+      // TODO: Not implemented yet
+      it.skip("returns non gift card products", async () => {
+        const response = await api
+          .get("/store/products?is_giftcard=false")
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+
+      it("returns a list of products in with a given handle", async () => {
+        const response = await api.get(
+          `/store/products?handle=${product.handle}`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
+        ])
+      })
+
+      it("returns a list of products filtered by variant options", async () => {
+        const response = await api.get(
+          `/store/products?variants.options[option_id]=${product.options[1].id}&variants.options[value]=large`
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.count).toEqual(1)
+        expect(response.data.products).toEqual([
+          expect.objectContaining({ id: product.id }),
         ])
       })
 
@@ -976,8 +1141,10 @@ medusaIntegrationTestRunner({
         }
 
         await service.createStores({
-          supported_currency_codes: ["usd", "dkk"],
-          default_currency_code: "usd",
+          supported_currencies: [
+            { currency_code: "usd", is_default: true },
+            { currency_code: "dkk" },
+          ],
           default_sales_channel_id: defaultSalesChannel.id,
         })
       })

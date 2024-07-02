@@ -115,7 +115,7 @@ The scheduled job function receives an object parameter that has a `container` p
 For example:
 
 export const highlights = [
-  ["12", "resolve", "Resolve the `IProductModuleService`."],
+  ["12", "resolve", "Resolve the Product Module's main service."],
   ["12", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
 ]
 
@@ -147,4 +147,4 @@ export const config: ScheduledJobConfig = {
 }
 ```
 
-In the scheduled job function, you resolve the `IProductModuleService` and retrieve the number of products in the store, then log the number in the terminal.
+In the scheduled job function, you resolve the Product Module's main service and retrieve the number of products in the store, then log the number in the terminal.
