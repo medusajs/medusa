@@ -6,25 +6,32 @@ import {
   IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
+  InferEntityType,
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
 import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
+import { model } from "./entity-builder"
 
-type Config = string | { name?: string; tableName: string }
-
-function extractNameAndTableName(nameOrConfig: Config) {
+function extractNameAndTableName<Config extends IDmlEntityConfig>(
+  nameOrConfig: Config
+) {
   const result = {
     name: "",
     tableName: "",
+  } as {
+    name: InferDmlEntityNameFromConfig<Config>
+    tableName: string
   }
 
   if (isString(nameOrConfig)) {
     const [schema, ...rest] = nameOrConfig.split(".")
     const name = rest.length ? rest.join(".") : schema
-    result.name = upperCaseFirst(toCamelCase(name))
+    result.name = upperCaseFirst(
+      toCamelCase(name)
+    ) as InferDmlEntityNameFromConfig<Config>
     result.tableName = nameOrConfig
   }
 
@@ -39,7 +46,9 @@ function extractNameAndTableName(nameOrConfig: Config) {
     const [schema, ...rest] = potentialName.split(".")
     const name = rest.length ? rest.join(".") : schema
 
-    result.name = upperCaseFirst(toCamelCase(name))
+    result.name = upperCaseFirst(
+      toCamelCase(name)
+    ) as InferDmlEntityNameFromConfig<Config>
     result.tableName = nameOrConfig.tableName
   }
 
@@ -52,20 +61,22 @@ function extractNameAndTableName(nameOrConfig: Config) {
  */
 export class DmlEntity<
   Schema extends DMLSchema,
-  TConfig extends IDmlEntityConfig = any
-> implements IDmlEntity<Schema>
+  TConfig extends IDmlEntityConfig
+> implements IDmlEntity<Schema, TConfig>
 {
   [IsDmlEntity]: true = true
 
   name: InferDmlEntityNameFromConfig<TConfig>
+  schema: Schema
 
   readonly #tableName: string
   #cascades: EntityCascades<string[]> = {}
   #indexes: EntityIndex<Schema>[] = []
 
-  constructor(nameOrConfig: TConfig, public schema: Schema) {
+  constructor(nameOrConfig: TConfig, schema: Schema) {
     const { name, tableName } = extractNameAndTableName(nameOrConfig)
-    this.name = name as InferDmlEntityNameFromConfig<TConfig>
+    this.schema = schema
+    this.name = name
     this.#tableName = tableName
   }
 
@@ -102,16 +113,16 @@ export class DmlEntity<
   /**
    * This method configures which related data models an operation, such as deletion,
    * should be cascaded to.
-   * 
+   *
    * For example, if a store is deleted, its product should also be deleted.
-   * 
+   *
    * @param options - The cascades configurations. They object's keys are the names of
-   * the actions, such as `deleted`, and the value is an array of relations that the 
+   * the actions, such as `deleted`, and the value is an array of relations that the
    * action should be cascaded to.
-   * 
+   *
    * @example
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const Store = model.define("store", {
    *   id: model.id(),
    *   products: model.hasMany(() => Product),
@@ -119,7 +130,7 @@ export class DmlEntity<
    * .cascades({
    *   delete: ["products"],
    * })
-   * 
+   *
    * @customNamespace Model Methods
    */
   cascades(
@@ -148,15 +159,15 @@ export class DmlEntity<
   /**
    * This method defines indices on the data model. An index can be on multiple columns
    * and have conditions.
-   * 
+   *
    * @param indexes - The index's configuration.
-   * 
+   *
    * @example
    * An example of a simple index:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -166,15 +177,15 @@ export class DmlEntity<
    *     on: ["name", "age"],
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * To add a condition on the index, use the `where` option:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -187,15 +198,15 @@ export class DmlEntity<
    *     }
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * The condition can also be a negation. For example:
-   * 
+   *
    * ```ts
    * import { model } from "@medusajs/utils"
-   * 
+   *
    * const MyCustom = model.define("my_custom", {
    *   id: model.id(),
    *   name: model.text(),
@@ -210,12 +221,12 @@ export class DmlEntity<
    *     }
    *   },
    * ])
-   * 
+   *
    * export default MyCustom
    * ```
-   * 
+   *
    * In this example, the index is created when the value of `age` doesn't equal `30`.
-   * 
+   *
    * @customNamespace Model Methods
    */
   indexes(indexes: EntityIndex<Schema, string | QueryCondition<Schema>>[]) {
@@ -227,4 +238,14 @@ export class DmlEntity<
     this.#indexes = indexes as EntityIndex<Schema>[]
     return this
   }
+}
+
+const User = model.define("user", {
+  name: model.text(),
+})
+
+type inferredType = InferEntityType<typeof User>
+
+const obj: inferredType = {
+  name: "test",
 }

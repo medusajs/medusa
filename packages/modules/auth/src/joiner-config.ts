@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.AUTH, {
-  entityQueryingConfig: [AuthIdentity],
+  dmlObjects: [AuthIdentity],
 })
 
 export const entityNameToLinkableKeysMap: MapToConfig =

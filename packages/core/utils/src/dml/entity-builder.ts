@@ -63,7 +63,7 @@ export type ManyToManyOptions = RelationshipOptions &
          * representing the pivot table created in the
          * database for this relationship.
          */
-        pivotEntity?: () => DmlEntity<any>
+        pivotEntity?: () => DmlEntity<any, any>
       }
   )
 
@@ -112,7 +112,7 @@ export class EntityBuilder {
     this.#disallowImplicitProperties(schema)
     schema = inferPrimaryKeyProperties(schema)
 
-    return new DmlEntity(nameOrConfig, {
+    return new DmlEntity<Schema, TConfig>(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),

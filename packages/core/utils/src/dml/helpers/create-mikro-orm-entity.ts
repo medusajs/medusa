@@ -34,7 +34,9 @@ export function createMikrORMEntity() {
    * A helper function to define a Mikro ORM entity from a
    * DML entity.
    */
-  return function createEntity<T extends DmlEntity<any>>(entity: T): Infer<T> {
+  return function createEntity<T extends DmlEntity<any, any>>(
+    entity: T
+  ): Infer<T> {
     class MikroORMEntity {}
 
     const { schema, cascades, indexes: entityIndexes = [] } = entity.parse()
@@ -87,14 +89,14 @@ export function createMikrORMEntity() {
  */
 export const toMikroORMEntity = <T>(
   entity: T
-): T extends DmlEntity<infer Schema> ? Infer<T> : T => {
+): T extends DmlEntity<infer Schema, any> ? Infer<T> : T => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<infer Schema> ? Infer<T> : T
+  return mikroOrmEntity as T extends DmlEntity<infer Schema, any> ? Infer<T> : T
 }
 
 /**
@@ -112,6 +114,6 @@ export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
 
     return entity
   }) as {
-    [K in keyof T]: T[K] extends DmlEntity<any> ? Infer<T[K]> : T[K]
+    [K in keyof T]: T[K] extends DmlEntity<any, any> ? Infer<T[K]> : T[K]
   }
 }

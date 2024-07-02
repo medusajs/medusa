@@ -275,7 +275,7 @@ export async function loadResources(
       return Object.values(resources)
         .map((resource) => {
           if (DmlEntity.isDmlEntity(resource)) {
-            return entityBuilder(resource as DmlEntity<any>)
+            return entityBuilder(resource as DmlEntity<any, any>)
           }
 
           if (typeof resource === "function") {

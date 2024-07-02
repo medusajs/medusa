@@ -15,12 +15,16 @@ export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
     : TConfig extends { name: string }
     ? Capitalize<CamelCase<TConfig["name"] & string>>
     : TConfig extends { tableName: string }
-    ? Capitalize<CamelCase<TConfig["tableName"]>>
+    ? Capitalize<CamelCase<TConfig["tableName"] & string>>
     : never
+
+type value = InferDmlEntityNameFromConfig<{
+  tableName: "notification_provider"
+}>
 
 export interface IDmlEntity<
   Schema extends DMLSchema,
-  Config extends IDmlEntityConfig = any
+  Config extends IDmlEntityConfig
 > {
   [IsDmlEntity]: true
   name: InferDmlEntityNameFromConfig<Config>
@@ -127,24 +131,24 @@ export interface EntityConstructor<Props> extends Function {
 /**
  * From a IDmlEntity, infer the foreign keys name and type for belongsTo relation meaning hasOne and ManyToOne
  */
-export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
+export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema, any>
   ? {
       [K in keyof Schema as Schema[K] extends { type: infer Type }
         ? Type extends RelationshipTypes
           ? `${K & string}_id`
           : K
-        : K]: Schema[K] extends { type: infer Type }
+        : never]: Schema[K] extends { type: infer Type }
         ? Type extends RelationshipTypes
           ? string
           : Schema[K]
-        : Schema[K]
+        : never
     }
   : never
 
 /**
  * Helper to infer the schema type of a DmlEntity
  */
-export type Infer<T> = T extends IDmlEntity<infer Schema>
+export type Infer<T> = T extends IDmlEntity<infer Schema, any>
   ? EntityConstructor<
       {
         [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
@@ -185,12 +189,12 @@ export type EntityCascades<Relationships> = {
 /**
  * Helper to infer the instance type of a IDmlEntity once converted as an Entity
  */
-export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
+export type InferTypeOf<T extends IDmlEntity<any, any>> = InstanceType<Infer<T>>
 
 /**
  * Used in the module sdk internal service to infer propert entity typings from DML
  */
-export type InferEntityType<T extends any> = T extends IDmlEntity<any>
+export type InferEntityType<T> = T extends IDmlEntity<any, any>
   ? InferTypeOf<T>
   : T
 
@@ -198,7 +202,8 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
  * Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
  */
 export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
-  infer Schema
+  infer Schema,
+  any
 >
   ? {
       [K in keyof Schema as Schema[K] extends { type: infer Type }
@@ -226,7 +231,7 @@ export type EntityIndex<
   /**
    * The list of properties to create the index on.
    */
-  on: InferIndexableProperties<IDmlEntity<TSchema>>[]
+  on: InferIndexableProperties<IDmlEntity<TSchema, any>>[]
   /**
    * Conditions to restrict which records are indexed.
    */
@@ -238,7 +243,7 @@ export type NeQueryValue = { $ne: SimpleQueryValue }
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
 export type QueryCondition<T extends DMLSchema = DMLSchema> = {
-  [K in keyof IDmlEntity<T>["schema"]]?: T[K] extends object
+  [K in keyof IDmlEntity<T, any>["schema"]]?: T[K] extends object
     ? QueryValue
     : QueryCondition<T>
 }

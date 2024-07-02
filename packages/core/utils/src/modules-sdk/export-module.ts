@@ -17,7 +17,7 @@ import { DmlEntity } from "../dml"
  */
 export function ExportModule<
   const Service extends Constructor<any>,
-  const DMLObjects extends DmlEntity<any>[] = Service extends {
+  const DMLObjects extends DmlEntity<any, any>[] = Service extends {
     $dmlObjects: infer $DmlObjects
   }
     ? $DmlObjects

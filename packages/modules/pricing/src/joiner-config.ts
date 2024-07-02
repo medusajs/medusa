@@ -7,7 +7,7 @@ import {
 import { Price, PriceList, PriceSet } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.PRICING, {
-  entityQueryingConfig: [PriceSet, PriceList, Price],
+  dmlObjects: [PriceSet, PriceList, Price],
   linkableKeys: {
     price_set_id: PriceSet.name,
     price_list_id: PriceList.name,

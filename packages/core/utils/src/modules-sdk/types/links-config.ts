@@ -51,17 +51,17 @@ type InferSchemaPotentialLinkableKeys<
  * that other properties has been marked as primary keys and the ID property is then removed as automatic primary key.
  * Therefor it returns all primary keys excluding the automatic ID property as primary keys if any explicit primary keys are defined.
  */
-type InferSchemaLinkableKeys<T> = T extends DmlEntity<any>
+type InferSchemaLinkableKeys<T> = T extends DmlEntity<any, any>
   ? keyof InferSchemaPotentialLinkableKeys<T, true> extends keyof {}
     ? InferSchemaPotentialLinkableKeys<T>
     : InferSchemaPotentialLinkableKeys<T, true>
   : never
 
-type InferSchemasLinkableKeys<T extends DmlEntity<any>[]> = {
+type InferSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
   [K in keyof T]: InferSchemaLinkableKeys<T[K]>
 }
 
-type AggregateSchemasLinkableKeys<T extends DmlEntity<any>[]> = {
+type AggregateSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
   [K in keyof InferSchemasLinkableKeys<T>]: InferSchemasLinkableKeys<T>[K]
 }
 
@@ -84,9 +84,8 @@ type AggregateSchemasLinkableKeys<T extends DmlEntity<any>[]> = {
  * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'user', car_number_plate: 'car' }
  *
  */
-export type InferLinkableKeys<T extends DmlEntity<any>[]> = UnionToIntersection<
-  FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]
->
+export type InferLinkableKeys<T extends DmlEntity<any, any>[]> =
+  UnionToIntersection<FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]>
 
 type InferPrimaryKeyNameOrNever<
   Schema extends DMLSchema,
@@ -111,13 +110,13 @@ type InferSchemaPotentialLinksConfig<
     }
   : {}
 
-type InferSchemaLinksConfig<T> = T extends DmlEntity<any>
+type InferSchemaLinksConfig<T> = T extends DmlEntity<any, any>
   ? keyof InferSchemaPotentialLinksConfig<T, true> extends keyof {}
     ? InferSchemaPotentialLinksConfig<T>
     : InferSchemaPotentialLinksConfig<T, true>
   : never
 
-export type InfersLinksConfig<T extends DmlEntity<any>[]> =
+export type InfersLinksConfig<T extends DmlEntity<any, any>[]> =
   UnionToIntersection<{
     [K in keyof T as T[K] extends DmlEntity<any, infer Config>
       ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>

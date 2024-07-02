@@ -20,7 +20,7 @@ export type BaseMethods =
 
 export type ModelDTOConfig = {
   dto: object
-  dml?: DmlEntity<any>
+  dml?: DmlEntity<any, any>
   create?: any
   update?: any
   /**
@@ -42,7 +42,7 @@ export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
     dml: T[Key] extends { dml: infer DML }
       ? DML
-      : T[Key] extends DmlEntity<any>
+      : T[Key] extends DmlEntity<any, any>
       ? T[Key]
       : never
     create: any
@@ -83,7 +83,7 @@ export type ExtractPluralName<
 export type TEntityEntries<Keys = string> = Record<
   Keys & string,
   | Constructor<any>
-  | DmlEntity<any>
+  | DmlEntity<any, any>
   | { name?: string; singular?: string; plural?: string }
 >
 
@@ -227,15 +227,15 @@ export type AbstractModuleService<
 type InferDmlFromConfig<T> = {
   [K in keyof T as T[K] extends { dml: any }
     ? K
-    : K extends DmlEntity<any>
+    : K extends DmlEntity<any, any>
     ? K
     : never]: T[K] extends {
     dml: infer DML
   }
-    ? DML extends DmlEntity<any>
+    ? DML extends DmlEntity<any, any>
       ? DML
       : never
-    : T[K] extends DmlEntity<any>
+    : T[K] extends DmlEntity<any, any>
     ? T[K]
     : never
 }

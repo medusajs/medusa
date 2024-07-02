@@ -5,11 +5,11 @@ import {
 } from "@medusajs/types"
 import { dirname, join } from "path"
 import {
-  MapToConfig,
   camelToSnakeCase,
   deduplicate,
   getCallerFilePath,
   lowerCaseFirst,
+  MapToConfig,
   pluralize,
   upperCaseFirst,
 } from "../common"
@@ -45,7 +45,7 @@ export function defineJoinerConfig(
   }: {
     alias?: JoinerServiceConfigAlias[]
     schema?: string
-    dmlObjects?: DmlEntity<any>[] | { name: string }[]
+    dmlObjects?: DmlEntity<any, any>[] | { name: string }[]
     linkableKeys?: Record<string, string>
     primaryKeys?: string[]
   } = {}
@@ -182,7 +182,7 @@ export function defineJoinerConfig(
  * @param dmlObjects
  */
 export function buildLinkableKeysFromDmlObjects<
-  const T extends DmlEntity<any>[],
+  const T extends DmlEntity<any, any>[],
   LinkableKeys = InferLinkableKeys<T>
 >(dmlObjects: T): LinkableKeys {
   const linkableKeys = {} as LinkableKeys
@@ -261,9 +261,9 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *
  * @param dmlObjects
  */
-export function buildLinkConfigFromDmlObjects<const T extends DmlEntity<any>[]>(
-  dmlObjects: T = [] as unknown as T
-): InfersLinksConfig<T> {
+export function buildLinkConfigFromDmlObjects<
+  const T extends DmlEntity<any, any>[]
+>(dmlObjects: T = [] as unknown as T): InfersLinksConfig<T> {
   const linkConfig = {} as InfersLinksConfig<T>
 
   for (const dml of dmlObjects) {

@@ -5,7 +5,7 @@ const IsPrimaryKeyModifier = Symbol.for("isPrimaryKeyModifier")
  * PrimaryKey modifier marks a schema node as primaryKey
  */
 export class PrimaryKeyModifier<T, Schema extends PropertyType<T>>
-  implements PropertyType<T | null>
+  implements PropertyType<T>
 {
   [IsPrimaryKeyModifier]: true = true
 
@@ -16,7 +16,7 @@ export class PrimaryKeyModifier<T, Schema extends PropertyType<T>>
    * A type-only property to infer the JavScript data-type
    * of the schema property
    */
-  declare $dataType: T | null
+  declare $dataType: T
 
   /**
    * The parent schema on which the primaryKey modifier is
