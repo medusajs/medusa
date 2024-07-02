@@ -8,9 +8,7 @@ import { PrimaryKeyModifier } from "./primary-key"
 export class NumberProperty extends BaseProperty<number> {
   protected dataType: {
     name: "number"
-    options: {
-      primaryKey: boolean
-    }
+    options: {}
   }
 
   primaryKey() {
@@ -22,7 +20,7 @@ export class NumberProperty extends BaseProperty<number> {
 
     this.dataType = {
       name: "number",
-      options: { primaryKey: false, ...options },
+      options: { ...options },
     }
   }
 }

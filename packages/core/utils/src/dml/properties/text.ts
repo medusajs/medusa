@@ -8,14 +8,12 @@ export class TextProperty extends BaseProperty<string> {
   protected dataType: {
     name: "text"
     options: {
-      primaryKey: boolean
       prefix?: string
       searchable: boolean
     }
   } = {
     name: "text",
     options: {
-      primaryKey: false,
       searchable: false,
     },
   }
