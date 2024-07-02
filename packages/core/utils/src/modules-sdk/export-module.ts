@@ -1,5 +1,5 @@
 import { Constructor, ModuleExports } from "@medusajs/types"
-import { MedusaServiceDmlObjectsSymbolFunction } from "./medusa-service"
+import { MedusaServiceModelObjectsSymbol } from "./medusa-service"
 import {
   buildLinkConfigFromDmlObjects,
   defineJoinerConfig,
@@ -17,14 +17,14 @@ import { DmlEntity } from "../dml"
  */
 export function ExportModule<
   const Service extends Constructor<any>,
-  const DMLObjects extends DmlEntity<any, any>[] = Service extends {
-    $dmlObjects: infer $DmlObjects
+  const ModelObjects extends DmlEntity<any, any>[] = Service extends {
+    $modelObjects: infer $DmlObjects
   }
     ? $DmlObjects
     : [],
-  Links = keyof DMLObjects extends never
+  Links = keyof ModelObjects extends never
     ? Record<string, any>
-    : InfersLinksConfig<DMLObjects>
+    : InfersLinksConfig<ModelObjects>
 >(
   moduleName: string,
   { service, loaders }: ModuleExports<Service>
@@ -33,7 +33,7 @@ export function ExportModule<
 } {
   service.prototype.__joinerConfig ??= defineJoinerConfig(moduleName)
 
-  const dmlObjects = service[MedusaServiceDmlObjectsSymbolFunction]
+  const dmlObjects = service[MedusaServiceModelObjectsSymbol]
   return {
     service,
     loaders,

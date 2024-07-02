@@ -34,7 +34,7 @@ import {
  * @param moduleName
  * @param alias
  * @param schema
- * @param entityQueryingConfig
+ * @param models
  * @param linkableKeys
  * @param primaryKeys
  */
@@ -43,13 +43,13 @@ export function defineJoinerConfig(
   {
     alias,
     schema,
-    dmlObjects,
+    models,
     linkableKeys,
     primaryKeys,
   }: {
     alias?: JoinerServiceConfigAlias[]
     schema?: string
-    dmlObjects?: DmlEntity<any, any>[] | { name: string }[]
+    models?: DmlEntity<any, any>[] | { name: string }[]
     linkableKeys?: Record<string, string>
     primaryKeys?: string[]
   } = {}
@@ -76,31 +76,31 @@ export function defineJoinerConfig(
 
   basePath = join(basePath, "models")
 
-  let models = dmlObjects ?? loadModels(basePath)
-  const dmlDefinitions = new Map(
-    models
+  let loadedModels = models ?? loadModels(basePath)
+  const modelDefinitions = new Map(
+    loadedModels
       .filter((model) => !!DmlEntity.isDmlEntity(model))
       .map((model) => [model.name, model])
   )
   const mikroOrmObjects = new Map(
-    models
+    loadedModels
       .filter((model) => !DmlEntity.isDmlEntity(model))
       .map((model) => [model.name, model])
   )
 
   // We prioritize DML if there is any equivalent Mikro orm entities found
-  models = [...dmlDefinitions.values()]
+  loadedModels = [...modelDefinitions.values()]
   mikroOrmObjects.forEach((model) => {
-    if (dmlDefinitions.has(model.name)) {
+    if (modelDefinitions.has(model.name)) {
       return
     }
 
-    models.push(model)
+    loadedModels.push(model)
   })
 
   if (!linkableKeys) {
     const linkableKeysFromDml = buildLinkableKeysFromDmlObjects([
-      ...dmlDefinitions.values(),
+      ...modelDefinitions.values(),
     ])
     const linkableKeysFromMikroOrm = buildLinkableKeysFromMikroOrmObjects([
       ...mikroOrmObjects.values(),
@@ -111,9 +111,9 @@ export function defineJoinerConfig(
     }
   }
 
-  if (!primaryKeys && dmlDefinitions.size) {
+  if (!primaryKeys && modelDefinitions.size) {
     const linkConfig = buildLinkConfigFromDmlObjects([
-      ...dmlDefinitions.values(),
+      ...modelDefinitions.values(),
     ])
 
     primaryKeys = deduplicate(
@@ -154,7 +154,7 @@ export function defineJoinerConfig(
             pluralize(upperCaseFirst(alias.args.entity)),
         },
       })),
-      ...models
+      ...loadedModels
         .filter((model) => {
           return (
             !alias || !alias.some((alias) => alias.args?.entity === model.name)
@@ -195,20 +195,20 @@ export function defineJoinerConfig(
  * //   car_number_plate: 'Car',
  * // }
  *
- * @param dmlObjects
+ * @param models
  */
 export function buildLinkableKeysFromDmlObjects<
   const T extends DmlEntity<any, any>[],
   LinkableKeys = InferLinkableKeys<T>
->(dmlObjects: T): LinkableKeys {
+>(models: T): LinkableKeys {
   const linkableKeys = {} as LinkableKeys
 
-  for (const dml of dmlObjects) {
-    if (!DmlEntity.isDmlEntity(dml)) {
+  for (const model of models) {
+    if (!DmlEntity.isDmlEntity(model)) {
       continue
     }
 
-    const schema = dml.schema
+    const schema = model.schema
     const primaryKeys: string[] = []
 
     for (const [property, value] of Object.entries(schema)) {
@@ -220,14 +220,14 @@ export function buildLinkableKeysFromDmlObjects<
       if (PrimaryKeyModifier.isPrimaryKeyModifier(value)) {
         const linkableKeyName =
           parsedProperty.dataType.options?.linkable ??
-          `${camelToSnakeCase(dml.name).toLowerCase()}_${property}`
+          `${camelToSnakeCase(model.name).toLowerCase()}_${property}`
         primaryKeys.push(linkableKeyName)
       }
     }
 
     if (primaryKeys.length) {
       primaryKeys.forEach((primaryKey) => {
-        linkableKeys[primaryKey] = dml.name
+        linkableKeys[primaryKey] = model.name
       })
     }
   }
@@ -275,20 +275,20 @@ export function buildLinkableKeysFromMikroOrmObjects(
  * //   },
  * // }
  *
- * @param dmlObjects
+ * @param models
  */
 export function buildLinkConfigFromDmlObjects<
   const T extends DmlEntity<any, any>[]
->(dmlObjects: T = [] as unknown as T): InfersLinksConfig<T> {
+>(models: T = [] as unknown as T): InfersLinksConfig<T> {
   const linkConfig = {} as InfersLinksConfig<T>
 
-  for (const dml of dmlObjects) {
-    if (!DmlEntity.isDmlEntity(dml)) {
+  for (const model of models) {
+    if (!DmlEntity.isDmlEntity(model)) {
       continue
     }
 
-    const schema = dml.schema
-    const dmlLinkConfig = (linkConfig[lowerCaseFirst(dml.name)] ??= {
+    const schema = model.schema
+    const modelLinkConfig = (linkConfig[lowerCaseFirst(model.name)] ??= {
       toJSON: function () {
         const linkables = Object.entries(this)
           .filter(([name]) => name !== "toJSON")
@@ -307,8 +307,8 @@ export function buildLinkConfigFromDmlObjects<
       if (PrimaryKeyModifier.isPrimaryKeyModifier(value)) {
         const linkableKeyName =
           parsedProperty.dataType.options?.linkable ??
-          `${camelToSnakeCase(dml.name).toLowerCase()}_${property}`
-        dmlLinkConfig[property] = {
+          `${camelToSnakeCase(model.name).toLowerCase()}_${property}`
+        modelLinkConfig[property] = {
           linkable: linkableKeyName,
           primaryKey: property,
         }
@@ -319,6 +319,10 @@ export function buildLinkConfigFromDmlObjects<
   return linkConfig as InfersLinksConfig<T> & Record<any, any>
 }
 
+/**
+ * Reversed map from linkableKeys to entity name to linkable keys
+ * @param linkableKeys
+ */
 export function buildEntitiesNameToLinkableKeysMap(
   linkableKeys: Record<string, string>
 ): MapToConfig {

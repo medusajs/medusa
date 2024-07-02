@@ -67,10 +67,10 @@ function buildMethodNamesFromModel(
 }
 
 /**
- * Accessible from the MedusaService, holds the dml objects when provided
+ * Accessible from the MedusaService, holds the model objects when provided
  */
-export const MedusaServiceDmlObjectsSymbolFunction = Symbol.for(
-  "MedusaServiceDmlObjectSymbolFunction"
+export const MedusaServiceModelObjectsSymbol = Symbol.for(
+  "MedusaServiceModelObjectsSymbol"
 )
 
 /**
@@ -353,13 +353,13 @@ export function MedusaService<
   class AbstractModuleService_ {
     [MedusaServiceSymbol] = true
 
-    static [MedusaServiceDmlObjectsSymbolFunction] = Object.values(
+    static [MedusaServiceModelObjectsSymbol] = Object.values(
       entities
     ) as unknown as MedusaServiceReturnType<
       EntitiesConfig extends { __empty: any }
         ? ModelConfigurationsToConfigTemplate<TEntities>
         : EntitiesConfig
-    >["$dmlObjects"];
+    >["$modelObjects"];
 
     [MedusaServiceEntityNameToLinkableKeysMapSymbol]: MapToConfig
 

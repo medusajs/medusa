@@ -7,7 +7,7 @@ import {
 } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.PAYMENT, {
-  dmlObjects: [Payment, PaymentCollection, PaymentProvider, PaymentSession],
+  models: [Payment, PaymentCollection, PaymentProvider, PaymentSession],
   linkableKeys: {
     payment_id: Payment.name,
     payment_collection_id: PaymentCollection.name,

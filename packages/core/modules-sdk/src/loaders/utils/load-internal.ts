@@ -11,11 +11,11 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
-  createMikrORMEntity,
   defineJoinerConfig,
   DmlEntity,
   MedusaModuleType,
   ModulesSdkUtils,
+  toMikroOrmEntities,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 import { statSync } from "fs"
@@ -270,12 +270,11 @@ export async function loadResources(
       ),
     ])
 
-    const entityBuilder = createMikrORMEntity()
     const cleanupResources = (resources) => {
       return Object.values(resources)
         .map((resource) => {
           if (DmlEntity.isDmlEntity(resource)) {
-            return entityBuilder(resource as DmlEntity<any, any>)
+            return resource
           }
 
           if (typeof resource === "function") {
@@ -289,11 +288,12 @@ export async function loadResources(
 
     const potentialServices = [...new Set(cleanupResources(services))]
     const potentialModels = [...new Set(cleanupResources(models))]
+    const mikroOrmModels = toMikroOrmEntities(potentialModels)
     const potentialRepositories = [...new Set(cleanupResources(repositories))]
 
     const finalLoaders = prepareLoaders({
       loadedModuleLoaders,
-      models: potentialModels,
+      models: mikroOrmModels,
       repositories: potentialRepositories,
       services: potentialServices,
       moduleResolution,
@@ -308,7 +308,7 @@ export async function loadResources(
 
     return {
       services: potentialServices,
-      models: potentialModels,
+      models: mikroOrmModels,
       repositories: potentialRepositories,
       loaders: finalLoaders,
       moduleService,
@@ -433,7 +433,7 @@ function generateJoinerConfigIfNecessary({
 }: {
   moduleResolution: ModuleResolution
   service: Constructor<IModuleService>
-  models: Function[]
+  models: (Function | DmlEntity<any, any>)[]
 }) {
   if (service.prototype.__joinerConfig) {
     return
@@ -441,7 +441,7 @@ function generateJoinerConfigIfNecessary({
 
   service.prototype.__joinerConfig = function () {
     return defineJoinerConfig(moduleResolution.definition.key, {
-      dmlObjects: models,
+      models,
     })
   }
 }

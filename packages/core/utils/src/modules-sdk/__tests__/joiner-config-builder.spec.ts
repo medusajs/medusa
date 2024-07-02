@@ -30,7 +30,7 @@ describe("joiner-config-builder", () => {
   describe("defineJoiner | Mikro orm objects", () => {
     it("should return a full joiner configuration", () => {
       const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-        dmlObjects: [
+        models: [
           FulfillmentSet,
           ShippingOption,
           ShippingProfile,
@@ -149,7 +149,7 @@ describe("joiner-config-builder", () => {
 
     it("should return a full joiner configuration with custom aliases and models", () => {
       const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-        dmlObjects: [
+        models: [
           FulfillmentSet,
           ShippingOption,
           ShippingProfile,
@@ -283,7 +283,7 @@ describe("joiner-config-builder", () => {
 
     it("should return a full joiner configuration with custom aliases overriding defaults", () => {
       const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-        dmlObjects: [FulfillmentSet],
+        models: [FulfillmentSet],
         alias: [
           {
             name: ["fulfillment_set", "fulfillment_sets"],
@@ -318,7 +318,7 @@ describe("joiner-config-builder", () => {
   describe("defineJoiner | DML objects", () => {
     it("should return a full joiner configuration", () => {
       const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
-        dmlObjects: [
+        models: [
           dmlFulfillmentSet,
           dmlShippingOption,
           dmlShippingProfile,

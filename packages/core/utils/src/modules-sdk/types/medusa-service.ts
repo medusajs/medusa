@@ -1,4 +1,3 @@
-import { DmlEntity } from "../../dml"
 import {
   Constructor,
   Context,
@@ -7,6 +6,7 @@ import {
   RestoreReturn,
   SoftDeleteReturn,
 } from "@medusajs/types"
+import { DmlEntity } from "../../dml"
 
 export type BaseMethods =
   | "retrieve"
@@ -20,7 +20,7 @@ export type BaseMethods =
 
 export type ModelDTOConfig = {
   dto: object
-  dml?: DmlEntity<any, any>
+  model?: DmlEntity<any, any>
   create?: any
   update?: any
   /**
@@ -40,8 +40,8 @@ export type EntitiesConfigTemplate = { [key: string]: ModelDTOConfig }
 export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
   [Key in keyof T]: {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
-    dml: T[Key] extends { dml: infer DML }
-      ? DML
+    model: T[Key] extends { model: infer MODEL }
+      ? MODEL
       : T[Key] extends DmlEntity<any, any>
       ? T[Key]
       : never
@@ -79,7 +79,7 @@ export type ExtractPluralName<
     : Pluralize<K & string>
 >
 
-// TODO: The future expected entry will be a DML object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
+// TODO: The future expected entry will be a MODEL object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
 export type TEntityEntries<Keys = string> = Record<
   Keys & string,
   | Constructor<any>
@@ -224,16 +224,16 @@ export type AbstractModuleService<
   }
 }*/
 
-type InferDmlFromConfig<T> = {
-  [K in keyof T as T[K] extends { dml: any }
+type InferModelFromConfig<T> = {
+  [K in keyof T as T[K] extends { model: any }
     ? K
     : K extends DmlEntity<any, any>
     ? K
     : never]: T[K] extends {
-    dml: infer DML
+    model: infer MODEL
   }
-    ? DML extends DmlEntity<any, any>
-      ? DML
+    ? MODEL extends DmlEntity<any, any>
+      ? MODEL
       : never
     : T[K] extends DmlEntity<any, any>
     ? T[K]
@@ -242,5 +242,5 @@ type InferDmlFromConfig<T> = {
 
 export type MedusaServiceReturnType<EntitiesConfig extends Record<any, any>> = {
   new (...args: any[]): AbstractModuleService<EntitiesConfig>
-  $dmlObjects: InferDmlFromConfig<EntitiesConfig>[keyof InferDmlFromConfig<EntitiesConfig>][]
+  $modelObjects: InferModelFromConfig<EntitiesConfig>[keyof InferModelFromConfig<EntitiesConfig>][]
 }
