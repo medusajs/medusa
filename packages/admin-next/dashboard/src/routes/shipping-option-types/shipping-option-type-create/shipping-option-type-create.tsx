@@ -1,5 +1,5 @@
-import { RouteFocusModal } from "../../../components/route-modal"
 import { CreateShippingOptionTypeForm } from "./components/create-shipping-option-type-form"
+import { RouteFocusModal } from "../../../components/modals"
 
 export function ShippingOptionTypeCreate() {
   return (
