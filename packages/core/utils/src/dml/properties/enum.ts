@@ -1,6 +1,9 @@
 import { BaseProperty } from "./base"
 
-type EnumLike = { [K: string]: string | number; [number: number]: string }
+export type EnumLike = {
+  [K: string]: string | number
+  [number: number]: string
+}
 
 /**
  * The EnumProperty is used to define a property with pre-defined
