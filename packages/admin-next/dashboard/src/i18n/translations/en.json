@@ -502,6 +502,7 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "editItemDetails": "Edit item details",
     "create": {
       "title": "Add item",
       "details": "Details",

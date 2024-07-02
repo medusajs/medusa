@@ -207,6 +207,9 @@ export interface UpdateOrderLineItemDTO
 export interface CreateOrderShippingMethodDTO {
   name: string
   order_id: string
+  return_id?: string
+  claim_id?: string
+  exchange_id?: string
   version?: number
   amount: BigNumberInput
   shipping_option_id?: string
@@ -381,6 +384,7 @@ interface BaseOrderBundledItemActionsDTO {
   internal_note?: string | null
   note?: string | null
   metadata?: Record<string, unknown> | null
+  [key: string]: any
 }
 interface BaseOrderBundledActionsDTO {
   order_id: string
@@ -424,6 +428,11 @@ export interface CreateOrderReturnDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
+export interface CancelOrderReturnDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+  return_id: string
+}
+
 export type OrderClaimType = "refund" | "replace"
 export type ClaimReason =
   | "missing_item"
@@ -446,17 +455,23 @@ export interface CreateOrderClaimDTO extends BaseOrderBundledActionsDTO {
   no_notification?: boolean
 }
 
+export interface CancelOrderClaimDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+  claim_id: string
+}
+
 export interface CreateOrderExchangeDTO extends BaseOrderBundledActionsDTO {
   additional_items?: BaseOrderBundledItemActionsDTO[]
   shipping_methods?: Omit<CreateOrderShippingMethodDTO, "order_id">[] | string[]
-  return_shipping: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
+  return_shipping?: Omit<CreateOrderShippingMethodDTO, "order_id"> | string
   difference_due?: BigNumberInput
   allow_backorder?: boolean
   no_notification?: boolean
 }
 
-export interface CancelOrderReturnDTO {
-  return_id: string
+export interface CancelOrderExchangeDTO
+  extends Omit<BaseOrderBundledActionsDTO, "order_id"> {
+  exchange_id: string
 }
 
 export interface ReceiveOrderReturnDTO

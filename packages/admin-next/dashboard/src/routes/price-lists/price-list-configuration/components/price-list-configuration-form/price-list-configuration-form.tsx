@@ -41,7 +41,6 @@ const PriceListConfigurationSchema = z.object({
 
 const STACKED_MODAL_ID = "cg"
 
-// TODO: Fix DatePickers once new version is merged.
 export const PriceListConfigurationForm = ({
   priceList,
   customerGroups,
@@ -122,7 +121,7 @@ export const PriceListConfigurationForm = ({
           <Form.Field
             control={form.control}
             name="starts_at"
-            render={({ field: { value, onChange, ...field } }) => {
+            render={({ field }) => {
               return (
                 <Form.Item>
                   <div className="grid grid-cols-1 gap-3">
@@ -135,12 +134,10 @@ export const PriceListConfigurationForm = ({
                       </Form.Hint>
                     </div>
                     <Form.Control>
-                      {/* TODO: Add timepicker see CORE-2382 */}
                       <DatePicker
-                        mode="single"
+                        granularity="minute"
+                        shouldCloseOnSelect={false}
                         {...field}
-                        onChange={(value) => onChange(value ?? null)}
-                        value={value ?? undefined}
                       />
                     </Form.Control>
                   </div>
@@ -153,7 +150,7 @@ export const PriceListConfigurationForm = ({
           <Form.Field
             control={form.control}
             name="ends_at"
-            render={({ field: { value, onChange, ...field } }) => {
+            render={({ field }) => {
               return (
                 <Form.Item>
                   <div className="grid grid-cols-1 gap-3">
@@ -167,10 +164,9 @@ export const PriceListConfigurationForm = ({
                     </div>
                     <Form.Control>
                       <DatePicker
-                        mode="single"
+                        granularity="minute"
+                        shouldCloseOnSelect={false}
                         {...field}
-                        onChange={(value) => onChange(value ?? null)}
-                        value={value ?? undefined}
                       />
                     </Form.Control>
                   </div>

@@ -15,7 +15,7 @@ export function applyChangesToOrder(
   actionsMap: Record<string, any[]>
 ) {
   const itemsToUpsert: OrderItem[] = []
-  const shippingMethodsToInsert: OrderShippingMethod[] = []
+  const shippingMethodsToUpsert: OrderShippingMethod[] = []
   const summariesToUpsert: any[] = []
   const orderToUpdate: any[] = []
 
@@ -68,8 +68,9 @@ export function applyChangesToOrder(
           ...((shippingMethod as any).detail ?? shippingMethod),
           version,
         }
+
         delete sm.id
-        shippingMethodsToInsert.push(sm)
+        shippingMethodsToUpsert.push(sm)
       }
 
       orderToUpdate.push({
@@ -85,7 +86,7 @@ export function applyChangesToOrder(
 
   return {
     itemsToUpsert,
-    shippingMethodsToInsert,
+    shippingMethodsToUpsert,
     summariesToUpsert,
     orderToUpdate,
   }

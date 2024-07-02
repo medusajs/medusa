@@ -16,7 +16,7 @@ The rest of this guide uses this `Manager` data model as an example:
 import { model } from "@medusajs/utils"
 
 const Manager = model.define("manager", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   firstName: model.text(),
   lastName: model.text(),
   email: model.text(),

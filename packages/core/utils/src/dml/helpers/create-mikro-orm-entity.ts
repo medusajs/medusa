@@ -87,14 +87,14 @@ export function createMikrORMEntity() {
  */
 export const toMikroORMEntity = <T>(
   entity: T
-): T extends DmlEntity<infer Schema> ? Infer<T> : T => {
+): T extends DmlEntity<any> ? Infer<T> : T => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<infer Schema> ? Infer<T> : T
+  return mikroOrmEntity as T extends DmlEntity<any> ? Infer<T> : T
 }
 
 /**

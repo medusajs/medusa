@@ -5,8 +5,9 @@ import {
   deduplicate,
   isDefined,
 } from "@medusajs/utils"
-import { Order, OrderClaim, OrderExchange, Return } from "@models"
 
+// Reshape the order object to match the OrderDTO
+// This function is used to format the order object before returning to the main module methods
 export function formatOrder(
   order,
   options: {
@@ -20,8 +21,9 @@ export function formatOrder(
   orders.map((order) => {
     let mainOrder = order
 
-    const isRelatedEntity = options?.entity !== Order
+    const isRelatedEntity = options?.entity?.name !== "Order"
 
+    // If the entity is a related entity, the original order is located in the order property
     if (isRelatedEntity) {
       if (!order.order) {
         return order
@@ -48,11 +50,12 @@ export function formatOrder(
         formatOrderReturn(order.return, mainOrder)
       }
 
-      if (options.entity === OrderClaim) {
+      const entityName = options.entity.name
+      if (entityName === "OrderClaim") {
         formatClaim(order)
-      } else if (options.entity === OrderExchange) {
+      } else if (entityName === "OrderExchange") {
         formatExchange(order)
-      } else if (options.entity === Return) {
+      } else if (entityName === "Return") {
         formatReturn(order)
       }
     }
@@ -85,9 +88,6 @@ export function formatOrder(
 }
 
 function formatOrderReturn(orderReturn, mainOrder) {
-  orderReturn.items = orderReturn.items.filter(
-    (item) => !item.is_additional_item
-  )
   orderReturn.items.forEach((orderItem) => {
     const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
 
@@ -154,7 +154,15 @@ function formatReturn(returnOrder) {
   })
 }
 
+// Map the public order model to the repository model format
+// As the public responses have a different shape than the repository responses, this function is used to map the public properties to the internal db entities
+// e.g "items" is the relation between "line-item" and "order" + "version", The line item itself is in "items.item"
+// This helper maps to the correct repository to query the DB, and the function "formatOrder" remap the response to the public shape
 export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
+  if (isRelatedEntity) {
+    return mapRepositoryToRelatedEntity(config)
+  }
+
   const conf = { ...config }
 
   function replace(obj, type): string[] | undefined {
@@ -220,6 +228,39 @@ export function mapRepositoryToOrderModel(config, isRelatedEntity = false) {
       }
     }
   }
+
+  return conf
+}
+
+// This function has the same purpose as "mapRepositoryToOrderModel" but for returns, claims and exchanges
+function mapRepositoryToRelatedEntity(config) {
+  const conf = { ...config }
+
+  function replace(obj, type): string[] | undefined {
+    if (!isDefined(obj[type])) {
+      return
+    }
+
+    return deduplicate(
+      obj[type].sort().map((rel) => {
+        if (
+          rel.includes("shipping_methods") &&
+          !rel.includes("shipping_methods.shipping_method")
+        ) {
+          obj.populate.push("shipping_methods.shipping_method")
+
+          return rel.replace(
+            "shipping_methods",
+            "shipping_methods.shipping_method"
+          )
+        }
+        return rel
+      })
+    )
+  }
+
+  conf.options.fields = replace(config.options, "fields")
+  conf.options.populate = replace(config.options, "populate")
 
   return conf
 }
