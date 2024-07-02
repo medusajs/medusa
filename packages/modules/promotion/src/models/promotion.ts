@@ -51,7 +51,6 @@ export default class Promotion {
     fieldName: "campaign_id",
     nullable: true,
     mapToPk: true,
-    onDelete: "set null",
   })
   campaign_id: string | null = null
 

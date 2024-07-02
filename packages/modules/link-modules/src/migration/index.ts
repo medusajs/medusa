@@ -60,7 +60,7 @@ export function getMigration(
           logger.info(`Link module "${serviceName}" migration executed`)
         } catch (error) {
           logger.error(
-            `Link module "${serviceName}" migration failed to run - Error: ${error}`
+            `Link module "${serviceName}" migration failed to run - Error: ${error.errros ?? error}`
           )
         }
       } else {
@@ -76,7 +76,9 @@ export function getMigration(
         logger.info(`Link module "${serviceName}" migration executed`)
       } catch (error) {
         logger.error(
-          `Link module "${serviceName}" migration failed to run - Error: ${error}`
+          `Link module "${serviceName}" migration failed to run - Error: ${
+            error.errros ?? error
+          }`
         )
       }
     }
@@ -118,7 +120,9 @@ export function getRevertMigration(
       logger.info(`Link module "${serviceName}" migration executed`)
     } catch (error) {
       logger.error(
-        `Link module "${serviceName}" migration failed to run - Error: ${error}`
+        `Link module "${serviceName}" migration failed to run - Error: ${
+          error.errros ?? error
+        }`
       )
     }
 

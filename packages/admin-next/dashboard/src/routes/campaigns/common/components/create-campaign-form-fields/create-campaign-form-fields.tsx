@@ -32,6 +32,11 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     name: `${fieldScope}budget.currency_code`,
   })
 
+  const promotionCurrencyValue = useWatch({
+    control: form.control,
+    name: `application_method.currency_code`,
+  })
+
   const watchPromotionCurrencyCode = useWatch({
     control: form.control,
     name: "application_method.currency_code",
@@ -188,7 +193,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         render={({ field }) => {
           return (
             <Form.Item>
-              <Form.Label>{t("campaigns.budget.fields.type")}</Form.Label>
+              <Form.Label
+                tooltip={
+                  currencyValue
+                    ? undefined
+                    : t("promotions.tooltips.campaignType")
+                }
+              >
+                {t("campaigns.budget.fields.type")}
+              </Form.Label>
 
               <Form.Control>
                 <RadioGroup
@@ -197,15 +210,16 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
-                    value={"spend"}
-                    label={t("campaigns.budget.type.spend.title")}
-                    description={t("campaigns.budget.type.spend.description")}
-                  />
-
-                  <RadioGroup.ChoiceBox
                     value={"usage"}
                     label={t("campaigns.budget.type.usage.title")}
                     description={t("campaigns.budget.type.usage.description")}
+                  />
+
+                  <RadioGroup.ChoiceBox
+                    value={"spend"}
+                    label={t("campaigns.budget.type.spend.title")}
+                    description={t("campaigns.budget.type.spend.description")}
+                    disabled={!!!(currencyValue || promotionCurrencyValue)}
                   />
                 </RadioGroup>
               </Form.Control>

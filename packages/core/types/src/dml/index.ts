@@ -1,10 +1,21 @@
+/**
+ * Symbol to identify a DML entity from an object
+ */
 export const IsDmlEntity = Symbol.for("isDmlEntity")
 
+/**
+ * Representation of DML schema. It must be a key-value pair
+ * with string based keys and properties/relationships
+ * as the value.
+ */
 export type DMLSchema = Record<
   string,
   PropertyType<any> | RelationshipType<any>
 >
 
+/**
+ * Representation of a DML entity
+ */
 export interface IDmlEntity<Schema extends DMLSchema> {
   [IsDmlEntity]: true
   schema: Schema
@@ -66,9 +77,9 @@ export type PropertyType<T> = {
  */
 export type RelationshipOptions = {
   /**
-   * The name of the relationship as defined
-   * in the other data model. This is only required
-   * by the `belongsTo` relationship method.
+   * The name of the relationship as defined in the other
+   * data model. This is only required by the `belongsTo`
+   * relationship method.
    */
   mappedBy?: string
 } & Record<string, any>
@@ -107,7 +118,8 @@ export interface EntityConstructor<Props> extends Function {
 }
 
 /**
- * From a IDmlEntity, infer the foreign keys name and type for belongsTo relation meaning hasOne and ManyToOne
+ * From a IDmlEntity, infer the foreign keys name and type for
+ * "belongsTo" relation meaning "hasOne" and "ManyToOne"
  */
 export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
   ? {
