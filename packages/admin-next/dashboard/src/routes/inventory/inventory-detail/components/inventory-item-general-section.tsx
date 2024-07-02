@@ -9,21 +9,14 @@ import { HttpTypes } from "@medusajs/types"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: InventoryItemRes["inventory_item"] & {
-    variant: HttpTypes.AdminProductVariant | HttpTypes.AdminProductVariant[]
+    variants: HttpTypes.AdminProductVariant[]
   }
 }
 export const InventoryItemGeneralSection = ({
   inventoryItem,
 }: InventoryItemGeneralSectionProps) => {
   const { t } = useTranslation()
-
-  const variantArray = inventoryItem.variant
-    ? Array.isArray(inventoryItem.variant)
-      ? inventoryItem.variant
-      : [inventoryItem.variant]
-    : []
-
-  const variantTitles = variantArray.map((variant) => variant.title)
+  const variantTitles = inventoryItem.variants?.map((v) => v.title)
 
   return (
     <Container className="divide-y p-0">
