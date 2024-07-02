@@ -2,7 +2,7 @@ import { model } from "@medusajs/utils"
 import RegionCountry from "./country"
 
 const Region = model.define("region", {
-  id: model.id().primaryKey("reg"),
+  id: model.id({ prefix: "reg" }).primaryKey(),
   name: model.text().searchable(),
   currency_code: model.text().searchable(),
   automatic_taxes: model.boolean().default(true),

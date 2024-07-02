@@ -2,7 +2,7 @@ import { model } from "@medusajs/utils"
 import { Notification } from "./notification"
 
 export const NotificationProvider = model.define("notificationProvider", {
-  id: model.id().primaryKey("notpro"),
+  id: model.id({ prefix: "notpro" }).primaryKey(),
   handle: model.text(),
   name: model.text(),
   is_enabled: model.boolean().default(true),

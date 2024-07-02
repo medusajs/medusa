@@ -1451,7 +1451,7 @@ describe("Entity builder", () => {
 
     test("define prefix for the id", () => {
       const user = model.define("user", {
-        id: model.id().primaryKey("us"),
+        id: model.id({ prefix: "us" }).primaryKey(),
         username: model.text(),
         email: model.text(),
       })

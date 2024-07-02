@@ -30,19 +30,12 @@ export class TextProperty extends BaseProperty<string> {
    *   // ...
    * })
    *
-   * // With a custom prefix
-   * const Product = model.define("Product", {
-   *   code: model.text().primaryKey('idx_product_code'),
-   *   // ...
-   * })
-   *
    * export default Product
    *
    * @customNamespace Property Configuration Methods
    */
-  primaryKey(prefix?: string) {
+  primaryKey() {
     this.dataType.options.primaryKey = true
-    this.dataType.options.prefix = prefix
 
     return this
   }

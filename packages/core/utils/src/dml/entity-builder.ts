@@ -2,7 +2,6 @@ import type { DMLSchema, RelationshipOptions } from "@medusajs/types"
 import { DmlEntity } from "./entity"
 import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
 import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
-import { inferPrimaryKeyProperties } from "./helpers/entity-builder/infer-primary-key-properties"
 import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
@@ -105,7 +104,6 @@ export class EntityBuilder {
     schema: Schema
   ) {
     this.#disallowImplicitProperties(schema)
-    schema = inferPrimaryKeyProperties(schema)
 
     return new DmlEntity(nameOrConfig, {
       ...schema,
@@ -132,8 +130,8 @@ export class EntityBuilder {
    *
    * @customNamespace Property Types
    */
-  id() {
-    return new IdProperty()
+  id(options?: { prefix?: string }) {
+    return new IdProperty(options)
   }
 
   /**

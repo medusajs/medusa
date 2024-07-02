@@ -16,6 +16,11 @@ export class IdProperty extends BaseProperty<string> {
     options: { primaryKey: false },
   }
 
+  constructor(options?: { prefix?: string }) {
+    super()
+    this.dataType.options.prefix = options?.prefix
+  }
+
   /**
    * This method indicates that the property is the data model's primary key.
    *
@@ -27,19 +32,12 @@ export class IdProperty extends BaseProperty<string> {
    *   // ...
    * })
    *
-   * // With a custom prefix
-   * const Product = model.define("Product", {
-   *   id: model.id().primaryKey('idx_product_id'),
-   *   // ...
-   * })
-   *
    * export default Product
    *
    * @customNamespace Property Configuration Methods
    */
-  primaryKey(prefix?: string) {
+  primaryKey() {
     this.dataType.options.primaryKey = true
-    this.dataType.options.prefix = prefix
     return this
   }
 }
