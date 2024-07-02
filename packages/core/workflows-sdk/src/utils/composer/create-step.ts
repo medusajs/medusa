@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { resolveValue, StepResponse } from "./helpers"
+import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -214,18 +214,29 @@ function applyStep<
         >
       ) => {
         const newStepName = localConfig.name ?? stepName
+        const newConfig = {
+          ...stepConfig,
+          ...localConfig,
+        }
 
         delete localConfig.name
 
         this.handlers.set(newStepName, handler)
 
-        this.flow.replaceAction(stepConfig.uuid!, newStepName, {
-          ...stepConfig,
-          ...localConfig,
-        })
+        this.flow.replaceAction(stepConfig.uuid!, newStepName, newConfig)
 
         ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
+        return proxify(ret)
+      },
+      if: (input: any, condition: (...args: any) => boolean | WorkflowData) => {
+        if (typeof condition !== "function") {
+          throw new Error("Condition must be a function")
+        }
+
+        wrapConditionalStep(input, condition, handler)
+        this.handlers.set(ret.__step__, handler)
 
         return proxify(ret)
       },
@@ -288,6 +299,39 @@ function wrapAsyncHandler(
         return response
       }
     }
+  }
+}
+
+/**
+ * @internal
+ *
+ * Internal function to handle conditional steps.
+ *
+ * @param condition
+ * @param handle
+ */
+function wrapConditionalStep(
+  input: any,
+  condition: (...args: any) => boolean | WorkflowData,
+  handle: {
+    invoke: WorkflowStepHandler
+    compensate?: WorkflowStepHandler
+  }
+) {
+  const originalInvoke = handle.invoke
+  handle.invoke = async (stepArguments: WorkflowStepHandlerArguments) => {
+    const args = await resolveValue(input, stepArguments)
+    const canContinue = await condition(args)
+
+    if (stepArguments.step.definition?.async) {
+      stepArguments.step.definition.backgroundExecution = true
+    }
+
+    if (!canContinue) {
+      return
+    }
+
+    return await originalInvoke(stepArguments)
   }
 }
 

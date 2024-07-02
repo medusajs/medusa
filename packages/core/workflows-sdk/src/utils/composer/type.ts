@@ -20,6 +20,10 @@ type StepFunctionReturnConfig<TOutput> = {
       "next" | "uuid" | "action"
     >
   ): WorkflowData<TOutput>
+  if(
+    input: WorkflowData<TOutput>,
+    condition: () => boolean
+  ): WorkflowData<TOutput>
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
