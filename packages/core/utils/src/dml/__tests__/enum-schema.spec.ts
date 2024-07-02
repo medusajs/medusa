@@ -46,4 +46,52 @@ describe("Enum property", () => {
       relationships: [],
     })
   })
+
+  test("use typescript enum as enum property options", () => {
+    enum Roles {
+      ADMIN,
+      WRITER,
+      EDITOR,
+    }
+
+    const property = new EnumProperty(Roles)
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<Roles>()
+
+    expect(property.parse("role")).toEqual({
+      fieldName: "role",
+      dataType: {
+        name: "enum",
+        options: {
+          choices: ["ADMIN", "WRITER", "EDITOR", 0, 1, 2],
+        },
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+    })
+  })
+
+  test("use typescript enum with key-value pair as enum property options", () => {
+    enum Roles {
+      ADMIN = "admin",
+      WRITER = "writer",
+      EDITOR = "editor",
+    }
+
+    const property = new EnumProperty(Roles)
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<Roles>()
+
+    expect(property.parse("role")).toEqual({
+      fieldName: "role",
+      dataType: {
+        name: "enum",
+        options: {
+          choices: ["admin", "writer", "editor"],
+        },
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+    })
+  })
 })
