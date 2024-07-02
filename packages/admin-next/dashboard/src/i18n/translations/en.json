@@ -676,6 +676,14 @@
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"
     },
+    "shipment": {
+      "title": "Mark fulfillment shipped",
+      "trackingNumber": "Tracking number",
+      "addTracking": "Add additional tracking number",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify the customer about this shipment.",
+      "toastCreated": "Shipment created successfully."
+    },
     "fulfillment": {
       "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
       "unfulfilledItems": "Unfulfilled Items",
@@ -683,12 +691,12 @@
       "statusTitle": "Fulfillment Status",
       "fulfillItems": "Fulfill items",
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
-      "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
       "create": "Create Fulfillment",
       "available": "Available",
       "inStock": "In stock",
+      "markAsShipped": "Mark as shipped",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
