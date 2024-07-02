@@ -1,9 +1,4 @@
-import {
-  buildEntitiesNameToLinkableKeysMap,
-  defineJoinerConfig,
-  MapToConfig,
-  Modules,
-} from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/utils"
 import { Price, PriceList, PriceSet } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.PRICING, {
@@ -14,6 +9,3 @@ export const joinerConfig = defineJoinerConfig(Modules.PRICING, {
     price_id: Price.name,
   },
 })
-
-export const entityNameToLinkableKeysMap: MapToConfig =
-  buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)

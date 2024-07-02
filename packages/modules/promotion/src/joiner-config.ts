@@ -1,9 +1,4 @@
-import {
-  buildEntitiesNameToLinkableKeysMap,
-  defineJoinerConfig,
-  MapToConfig,
-  Modules,
-} from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/utils"
 import { Campaign, Promotion, PromotionRule } from "@models"
 
 export const joinerConfig = defineJoinerConfig(Modules.PROMOTION, {
@@ -14,6 +9,3 @@ export const joinerConfig = defineJoinerConfig(Modules.PROMOTION, {
     promotion_rule_id: PromotionRule.name,
   },
 })
-
-export const entityNameToLinkableKeysMap: MapToConfig =
-  buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)

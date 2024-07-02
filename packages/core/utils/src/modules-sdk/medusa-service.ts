@@ -5,6 +5,7 @@ import {
   Context,
   FindConfig,
   IEventBusModuleService,
+  ModuleJoinerConfig,
   RepositoryService,
   RestoreReturn,
   SoftDeleteReturn,
@@ -28,6 +29,7 @@ import {
   ModelConfigurationsToConfigTemplate,
   TEntityEntries,
 } from "./types/medusa-service"
+import { buildEntitiesNameToLinkableKeysMap } from "./joiner-config-builder"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -64,11 +66,25 @@ function buildMethodNamesFromModel(
   }, {})
 }
 
-export const MedusaServiceDmlObjectSymbolFunction = Symbol.for(
+/**
+ * Accessible from the MedusaService, holds the dml objects when provided
+ */
+export const MedusaServiceDmlObjectsSymbolFunction = Symbol.for(
   "MedusaServiceDmlObjectSymbolFunction"
 )
 
+/**
+ * Symbol to mark a class as a Medusa service
+ */
 export const MedusaServiceSymbol = Symbol.for("MedusaServiceSymbol")
+
+/**
+ * Accessible from the MedusaService, holds the entity name to linkable keys map
+ * to be used for softDelete and restore methods
+ */
+export const MedusaServiceEntityNameToLinkableKeysMapSymbol = Symbol.for(
+  "MedusaServiceEntityNameToLinkableKeysMapSymbol"
+)
 
 /**
  * Check if a value is a Medusa service
@@ -98,10 +114,9 @@ export function isMedusaService(
  *   RuleType,
  * }
  *
- * class MyService extends ModulesSdkUtils.MedusaService(entities, entityNameToLinkableKeysMap) {}
+ * class MyService extends ModulesSdkUtils.MedusaService(entities) {}
  *
  * @param entities
- * @param entityNameToLinkableKeysMap
  */
 export function MedusaService<
   const EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
@@ -109,8 +124,7 @@ export function MedusaService<
     ExtractKeysFromConfig<EntitiesConfig>
   > = TEntityEntries<ExtractKeysFromConfig<EntitiesConfig>>
 >(
-  entities: TEntities,
-  entityNameToLinkableKeysMap: MapToConfig = {}
+  entities: TEntities
 ): MedusaServiceReturnType<
   EntitiesConfig extends { __empty: any }
     ? ModelConfigurationsToConfigTemplate<TEntities>
@@ -289,7 +303,7 @@ export function MedusaService<
           // eg: product.id = product_id, variant.id = variant_id
           const mappedCascadedEntitiesMap = mapObjectTo(
             cascadedEntitiesMap,
-            entityNameToLinkableKeysMap,
+            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
@@ -321,7 +335,7 @@ export function MedusaService<
           // eg: product.id = product_id, variant.id = variant_id
           mappedCascadedEntitiesMap = mapObjectTo(
             cascadedEntitiesMap,
-            entityNameToLinkableKeysMap,
+            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
@@ -339,19 +353,21 @@ export function MedusaService<
   class AbstractModuleService_ {
     [MedusaServiceSymbol] = true
 
-    static [MedusaServiceDmlObjectSymbolFunction] = Object.values(
+    static [MedusaServiceDmlObjectsSymbolFunction] = Object.values(
       entities
     ) as unknown as MedusaServiceReturnType<
       EntitiesConfig extends { __empty: any }
         ? ModelConfigurationsToConfigTemplate<TEntities>
         : EntitiesConfig
-    >["$dmlObjects"]
+    >["$dmlObjects"];
+
+    [MedusaServiceEntityNameToLinkableKeysMapSymbol]: MapToConfig
 
     readonly __container__: Record<any, any>
     readonly baseRepository_: RepositoryService
-    readonly eventBusModuleService_: IEventBusModuleService;
+    readonly eventBusModuleService_: IEventBusModuleService
 
-    [key: string]: any
+    __joinerConfig?(): ModuleJoinerConfig
 
     constructor(container: Record<any, any>) {
       this.__container__ = container
@@ -364,6 +380,11 @@ export function MedusaService<
       this.eventBusModuleService_ = hasEventBusModuleService
         ? this.__container__.eventBusModuleService
         : undefined
+
+      this[MedusaServiceEntityNameToLinkableKeysMapSymbol] =
+        buildEntitiesNameToLinkableKeysMap(
+          this.__joinerConfig?.()?.linkableKeys ?? {}
+        )
     }
 
     protected async emitEvents_(groupedEvents) {

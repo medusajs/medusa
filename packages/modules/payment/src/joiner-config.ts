@@ -1,9 +1,4 @@
-import {
-  buildEntitiesNameToLinkableKeysMap,
-  defineJoinerConfig,
-  MapToConfig,
-  Modules,
-} from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/utils"
 import {
   Payment,
   PaymentCollection,
@@ -19,6 +14,3 @@ export const joinerConfig = defineJoinerConfig(Modules.PAYMENT, {
     payment_provider_id: PaymentProvider.name,
   },
 })
-
-export const entityNameToLinkableKeysMap: MapToConfig =
-  buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)

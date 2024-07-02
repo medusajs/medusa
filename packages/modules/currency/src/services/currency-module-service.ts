@@ -13,7 +13,7 @@ import {
 
 import { MedusaService } from "@medusajs/utils"
 import { Currency } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -23,7 +23,7 @@ type InjectedDependencies = {
 export default class CurrencyModuleService
   extends MedusaService<{
     Currency: { dto: CurrencyTypes.CurrencyDTO; dml: typeof Currency }
-  }>({ Currency }, entityNameToLinkableKeysMap)
+  }>({ Currency })
   implements ICurrencyModuleService
 {
   protected baseRepository_: DAL.RepositoryService

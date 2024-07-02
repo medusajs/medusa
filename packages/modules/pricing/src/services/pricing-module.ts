@@ -9,7 +9,6 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
-  PriceDTO,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
@@ -38,7 +37,7 @@ import { Price, PriceList, PriceListRule, PriceRule, PriceSet } from "@models"
 
 import { ServiceTypes } from "@types"
 import { eventBuilders, validatePriceListDates } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { CreatePriceListDTO } from "src/types/services"
 
 type InjectedDependencies = {
@@ -70,7 +69,7 @@ export default class PricingModuleService
     }
     PriceList: { dto: PricingTypes.PriceListDTO }
     PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements PricingTypes.IPricingModuleService
 {
   protected baseRepository_: DAL.RepositoryService

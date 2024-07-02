@@ -26,7 +26,7 @@ import {
   CustomerGroup,
   CustomerGroupCustomer,
 } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -42,10 +42,7 @@ export default class CustomerModuleService
     Customer: { dto: CustomerDTO }
     CustomerGroup: { dto: CustomerGroupDTO }
     CustomerGroupCustomer: { dto: CustomerGroupCustomerDTO }
-  }>(
-    { Address, Customer, CustomerGroup, CustomerGroupCustomer },
-    entityNameToLinkableKeysMap
-  )
+  }>({ Address, Customer, CustomerGroup, CustomerGroupCustomer })
   implements ICustomerModuleService
 {
   protected baseRepository_: DAL.RepositoryService

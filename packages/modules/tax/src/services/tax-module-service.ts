@@ -20,7 +20,7 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { TaxProvider, TaxRate, TaxRateRule, TaxRegion } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -44,7 +44,7 @@ export default class TaxModuleService
     TaxRegion: { dto: TaxTypes.TaxRegionDTO }
     TaxRateRule: { dto: TaxTypes.TaxRateRuleDTO }
     TaxProvider: { dto: TaxTypes.TaxProviderDTO }
-  }>(generateForModels, entityNameToLinkableKeysMap)
+  }>(generateForModels)
   implements ITaxModuleService
 {
   protected readonly container_: InjectedDependencies
