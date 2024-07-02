@@ -93,9 +93,9 @@ export const highlights = [
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
 import {
   IProductModuleService,
-  MedusaContainer
-} from "@medusajs/types";
-import { ModuleRegistrationName } from "@medusajs/utils";
+  MedusaContainer,
+} from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export default async function myCustomJob(
   container: MedusaContainer
@@ -114,7 +114,7 @@ export const config = {
   name: "hello-world",
   // execute every minute
   schedule: "* * * * *",
-};
+}
 ```
 
 In the scheduled job function, you resolve the Product Module's main service and retrieve the number of products in the store, then log the number in the terminal.

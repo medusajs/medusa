@@ -632,7 +632,7 @@ export const syncProductsWorkflowHighlight = [
   ```ts
   import { MedusaContainer } from "@medusajs/types"
   import { 
-    syncProductsWorkflow
+    syncProductsWorkflow,
   } from "../workflows/sync-products"
 
   export default async function syncProductsJob(
@@ -650,8 +650,8 @@ export const syncProductsWorkflowHighlight = [
     name: "sync-products",
     // execute every minute
     schedule: "0 0 * * *",
-    numberOfExecutions: 3
-  };
+    numberOfExecutions: 3,
+  }
   ```
 
 </Details>
