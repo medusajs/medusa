@@ -136,24 +136,24 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Property Types",
             },
             {
-              path: "/advanced-development/data-models/configure-properties",
-              title: "Configure Properties",
-            },
-            {
               path: "/advanced-development/data-models/primary-key",
               title: "Primary Key",
+            },
+            {
+              path: "/advanced-development/data-models/default-properties",
+              title: "Default Properties",
+            },
+            {
+              path: "/advanced-development/data-models/configure-properties",
+              title: "Configure Properties",
             },
             {
               path: "/advanced-development/data-models/relationships",
               title: "Relationships",
             },
             {
-              path: "/advanced-development/data-models/indexes",
-              title: "Data Model Index",
-            },
-            {
-              path: "/advanced-development/data-models/soft-deletable",
-              title: "Soft-Deletable Models",
+              path: "/advanced-development/data-models/index",
+              title: "Index",
             },
             {
               path: "/advanced-development/data-models/searchable-property",

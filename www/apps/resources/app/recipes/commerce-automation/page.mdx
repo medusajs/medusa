@@ -94,7 +94,7 @@ export const restockModelHighlights = [
   import { model } from "@medusajs/utils"
 
   const RestockNotification = model.define("restock_notification", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     email: model.text(),
     variant_id: model.text(),
     sales_channel_id: model.text(),
