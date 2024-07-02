@@ -30,7 +30,7 @@ For example, create the file `src/modules/hello/models/my-custom.ts` with the fo
 import { model } from "@medusajs/utils"
 
 const MyCustom = model.define("my_custom", {
-  id: model.id(),
+  id: model.id().primaryKey(),
   name: model.text(),
 })
 

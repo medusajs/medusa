@@ -118,10 +118,10 @@ export class OrderChangeProcessing {
 
       const amount = MathBN.mult(action.amount!, type.isDeduction ? -1 : 1)
 
-      if (action.group_id && !action.evaluationOnly) {
-        this.groupTotal[action.group_id] ??= 0
-        this.groupTotal[action.group_id] = MathBN.add(
-          this.groupTotal[action.group_id],
+      if (action.change_id && !action.evaluationOnly) {
+        this.groupTotal[action.change_id] ??= 0
+        this.groupTotal[action.change_id] = MathBN.add(
+          this.groupTotal[action.change_id],
           amount
         )
       }
@@ -146,7 +146,7 @@ export class OrderChangeProcessing {
           amount
         )
       } else {
-        if (!this.isEventDone(action) && !action.group_id) {
+        if (!this.isEventDone(action) && !action.change_id) {
           summary.difference_sum = MathBN.add(summary.difference_sum, amount)
         }
         summary.current_order_total = MathBN.add(
@@ -243,8 +243,8 @@ export class OrderChangeProcessing {
       if (action.resolve.reference_id) {
         this.resolveReferences(action)
       }
-      const groupId = action.resolve.group_id ?? "__default"
-      if (action.resolve.group_id) {
+      const groupId = action.resolve.change_id ?? "__default"
+      if (action.resolve.change_id) {
         // resolve all actions in the same group
         this.resolveGroup(action)
       }
@@ -320,7 +320,7 @@ export class OrderChangeProcessing {
       const type = OrderChangeProcessing.typeDefinition[actionKey]
       const actions = this.actionsProcessed[actionKey]
       for (const action of actions) {
-        if (!resolve?.group_id || action?.group_id !== resolve.group_id) {
+        if (!resolve?.change_id || action?.change_id !== resolve.change_id) {
           continue
         }
 

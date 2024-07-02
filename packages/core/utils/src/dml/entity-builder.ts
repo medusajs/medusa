@@ -6,7 +6,7 @@ import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
 import { DateTimeProperty } from "./properties/date-time"
-import { EnumProperty } from "./properties/enum"
+import { EnumLike, EnumProperty } from "./properties/enum"
 import { IdProperty } from "./properties/id"
 import { JSONProperty } from "./properties/json"
 import { NumberProperty } from "./properties/number"
@@ -291,7 +291,7 @@ export class EntityBuilder {
    *
    * @customNamespace Property Types
    */
-  enum<const Values extends unknown>(values: Values[]) {
+  enum<const Values extends unknown[] | EnumLike>(values: Values) {
     return new EnumProperty<Values>(values)
   }
 

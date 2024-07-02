@@ -156,16 +156,13 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
   </CodeTab>
   <CodeTab label="Scheduled Job" value="scheduled-job">
     
-    ```ts title="src/jobs/message-daily.ts" highlights={[["10"], ["11"], ["12"], ["13"], ["14"], ["15"]]}
-    import {
-      type ScheduledJobConfig,
-      type ScheduledJobArgs,
-    } from "@medusajs/medusa"
+    ```ts title="src/jobs/message-daily.ts" highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"]]}
+    import { MedusaContainer } from "@medusajs/types"
     import myWorkflow from "../workflows/hello-world"
 
-    export default async function handler({
-      container,
-    }: ScheduledJobArgs) {
+    export default async function myCustomJob(
+      container: MedusaContainer
+    ) {
       const { result } = await myWorkflow(container)
         .run({
           input: {
@@ -176,10 +173,10 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
       console.log(result.message)
     }
 
-    export const config: ScheduledJobConfig = {
+    export const config = {
       name: "run-once-a-day",
       schedule: `0 0 * * *`,
-    }
+    };
     ```
 
   </CodeTab>
