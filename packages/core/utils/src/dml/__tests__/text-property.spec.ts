@@ -17,4 +17,40 @@ describe("Text property", () => {
       relationships: [],
     })
   })
+
+  test("mark text property as primary key", () => {
+    const property = new TextProperty().primaryKey()
+
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
+    expect(property.parse("username")).toEqual({
+      fieldName: "username",
+      dataType: {
+        name: "text",
+        options: { primaryKey: true, searchable: false },
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+    })
+  })
+
+  test("mark text property as primary key with custom prefix", () => {
+    const property = new TextProperty().primaryKey("idx_product_code")
+
+    expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
+    expect(property.parse("username")).toEqual({
+      fieldName: "username",
+      dataType: {
+        name: "text",
+        options: {
+          primaryKey: true,
+          searchable: false,
+          prefix: "idx_product_code",
+        },
+      },
+      nullable: false,
+      indexes: [],
+      relationships: [],
+    })
+  })
 })

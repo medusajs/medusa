@@ -1,27 +1,9 @@
 import { DMLSchema } from "@medusajs/types"
 import { IdProperty } from "../../properties/id"
 
-/*
-  The id() property is an core opinionated property that will act as a primaryKey
-  by default and come with built-in logic when converted to a mikroorm entity. If no other
-  primaryKey() properties are found within the schema, we continue treating the id() property 
-  as a primaryKey. When other fields are set as explicit primaryKey fields, we convert the 
-  id() property to no longer be a primaryKey. 
-
-  Example:
-  Model 1:
-    id: model.id() -> primary key
-    code: model.text()
-
-  Model 2:
-    id: model.id()
-    code: model.text().primaryKey() -> primary key
-
-  Model 3:
-    id: model.id()
-    code: model.text().primaryKey() -> composite primary key
-    name: model.text().primaryKey() -> composite primary key
-*/
+/**
+ * The method is used to infer primary keys from the schema
+ */
 export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
   schema: TSchema
 ) {
@@ -39,10 +21,6 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
     if (isRelationshipType) {
       continue
     }
-
-    if (parsed.dataType.name === "id") {
-      ;(property as IdProperty).primaryKey(false)
-    }
   }
 
   return schema
@@ -50,7 +28,7 @@ export function inferPrimaryKeyProperties<TSchema extends DMLSchema>(
 
 /*
   Gets all explicit primary key fields from a schema, except id properties.
-  
+
   eg: model.define('test', {
     id: model.id(), -> implicit primaryKey field,
     text: model.text(),
