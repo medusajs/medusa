@@ -31,6 +31,7 @@ import {
   PriceListType,
   promiseAll,
   removeNullish,
+  simpleHash,
 } from "@medusajs/utils"
 
 import { Price, PriceList, PriceListRule, PriceRule, PriceSet } from "@models"
@@ -38,7 +39,7 @@ import { Price, PriceList, PriceListRule, PriceRule, PriceSet } from "@models"
 import { ServiceTypes } from "@types"
 import { eventBuilders, validatePriceListDates } from "@utils"
 import { joinerConfig } from "../joiner-config"
-import { CreatePriceListDTO } from "src/types/services"
+import { CreatePriceListDTO, UpsertPriceDTO } from "src/types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -425,35 +426,6 @@ export default class PricingModuleService
     return isString(idOrSelector) ? priceSets[0] : priceSets
   }
 
-  private async normalizeUpdateData(data: ServiceTypes.UpdatePriceSetInput[]) {
-    return data.map((priceSet) => {
-      const prices = priceSet.prices?.map((price) => {
-        const rules = Object.entries(price.rules ?? {}).map(
-          ([attribute, value]) => {
-            return {
-              attribute,
-              value,
-            }
-          }
-        )
-
-        const hasRulesInput = isPresent(price.rules)
-        delete price.rules
-        return {
-          ...price,
-          price_set_id: priceSet.id,
-          price_rules: hasRulesInput ? rules : undefined,
-          rules_count: hasRulesInput ? rules.length : undefined,
-        }
-      })
-
-      return {
-        ...priceSet,
-        prices,
-      }
-    })
-  }
-
   @InjectTransactionManager("baseRepository_")
   protected async updatePriceSets_(
     data: ServiceTypes.UpdatePriceSetInput[],
@@ -493,6 +465,67 @@ export default class PricingModuleService
       )
 
     return priceSets
+  }
+
+  private async normalizeUpdateData(data: ServiceTypes.UpdatePriceSetInput[]) {
+    return data.map((priceSet) => {
+      return {
+        ...priceSet,
+        prices: this.normalizePrices(
+          priceSet.prices?.map((p) => ({ ...p, price_set_id: priceSet.id })),
+          []
+        ),
+      }
+    })
+  }
+
+  private normalizePrices(
+    data: CreatePricesDTO[] | undefined,
+    existingPrices: PricingTypes.PriceDTO[],
+    priceListId?: string | undefined
+  ) {
+    const pricesToUpsert = new Map<
+      string,
+      CreatePricesDTO & { price_rules?: CreatePriceRuleDTO[] }
+    >()
+    const existingPricesMap = new Map<string, PricingTypes.PriceDTO>()
+    existingPrices?.forEach((price) => {
+      existingPricesMap.set(hashPrice(price), price)
+    })
+
+    data?.forEach((price) => {
+      const cleanRules = price.rules ? removeNullish(price.rules) : {}
+      const ruleEntries = Object.entries(cleanRules)
+      const rules = ruleEntries.map(([attribute, value]) => {
+        return {
+          attribute,
+          value,
+        }
+      })
+
+      const hasRulesInput = isPresent(price.rules)
+      const entry = {
+        ...price,
+        price_list_id: priceListId,
+        price_rules: hasRulesInput ? rules : undefined,
+        rules_count: hasRulesInput ? ruleEntries.length : undefined,
+      } as UpsertPriceDTO
+      delete (entry as CreatePricesDTO).rules
+
+      const entryHash = hashPrice(entry)
+
+      // We want to keep the existing rules as they might already have ids, but any other data should come from the updated input
+      const existing = existingPricesMap.get(entryHash)
+      pricesToUpsert.set(entryHash, {
+        ...entry,
+        id: existing?.id ?? entry.id,
+        price_rules: existing?.price_rules ?? entry.price_rules,
+      })
+
+      return entry
+    })
+
+    return Array.from(pricesToUpsert.values())
   }
 
   async addPrices(
@@ -618,35 +651,8 @@ export default class PricingModuleService
     const toCreate = input.map((inputData) => {
       const entry = {
         ...inputData,
+        prices: this.normalizePrices(inputData.prices, []),
       }
-
-      if (!inputData.prices) {
-        return entry
-      }
-
-      const pricesData: CreatePricesDTO[] = inputData.prices.map((price) => {
-        let { rules: priceRules = {}, ...rest } = price
-        const cleanRules = priceRules ? removeNullish(priceRules) : {}
-        const rules = Object.entries(cleanRules)
-        const numberOfRules = rules.length
-
-        const rulesDataMap = new Map()
-        rules.map(([attribute, value]) => {
-          const rule = {
-            attribute,
-            value,
-          }
-          rulesDataMap.set(JSON.stringify(rule), rule)
-        })
-
-        return {
-          ...rest,
-          rules_count: numberOfRules,
-          price_rules: Array.from(rulesDataMap.values()),
-        }
-      })
-
-      entry.prices = pricesData
       return entry
     })
 
@@ -709,86 +715,74 @@ export default class PricingModuleService
   ) {
     const priceSets = await this.listPriceSets(
       { id: input.map((d) => d.priceSetId) },
-      {},
+      { take: null, relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
-    const priceSetMap = new Map(priceSets.map((p) => [p.id, p]))
-    input.forEach(({ priceSetId }) => {
-      const priceSet = priceSetMap.get(priceSetId)
+    const existingPrices = priceSets
+      .map((p) => p.prices)
+      .flat() as PricingTypes.PriceDTO[]
+
+    const pricesToUpsert = input
+      .map((addPrice) =>
+        this.normalizePrices(
+          addPrice.prices?.map((p) => ({
+            ...p,
+            price_set_id: addPrice.priceSetId,
+          })),
+          existingPrices
+        )
+      )
+      .filter(Boolean)
+      .flat() as UpsertPriceDTO[]
+
+    const priceSetMap = new Map<string, PriceSetDTO>(
+      priceSets.map((p) => [p.id, p])
+    )
+    pricesToUpsert.forEach((price) => {
+      const priceSet = priceSetMap.get(price.price_set_id)
 
       if (!priceSet) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Price set with id: ${priceSetId} not found`
+          `Price set with id: ${price.price_set_id} not found`
         )
       }
     })
 
-    const pricesToCreate: PricingTypes.CreatePriceDTO[] = input.flatMap(
-      ({ priceSetId, prices }) =>
-        prices.map((price) => {
-          const numberOfRules = Object.entries(price?.rules ?? {}).length
-
-          const priceRules = Object.entries(price.rules ?? {}).map(
-            ([attribute, value]) => ({
-              price_set_id: priceSetId,
-              attribute: attribute,
-              value,
-            })
-          )
-
-          return {
-            ...price,
-            price_set_id: priceSetId,
-            rules_count: numberOfRules,
-            price_rules: priceRules,
-          }
-        })
-    )
-
-    const prices = await this.priceService_.create(
-      pricesToCreate,
-      sharedContext
-    )
-
-    /**
-     * Preparing data for emitting events
-     */
-    const eventsData = prices.reduce(
-      (eventsData, price) => {
-        eventsData.prices.push({
-          id: price.id,
-        })
-        price.price_rules.map((priceRule) => {
-          eventsData.priceRules.push({
-            id: priceRule.id,
-          })
-        })
-        return eventsData
-      },
-      {
-        priceRules: [],
-        prices: [],
-      } as {
-        priceRules: { id: string }[]
-        prices: { id: string }[]
-      }
-    )
-
-    /**
-     * Emitting events for all created entities
-     */
+    const { entities, performedActions } =
+      await this.priceService_.upsertWithReplace(
+        pricesToUpsert,
+        { relations: ["price_rules"] },
+        sharedContext
+      )
     eventBuilders.createdPrice({
-      data: eventsData.prices,
+      data: performedActions.created[Price.name] ?? [],
       sharedContext,
     })
-    eventBuilders.createdPriceRule({
-      data: eventsData.priceRules,
+    eventBuilders.updatedPrice({
+      data: performedActions.updated[Price.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedPrice({
+      data: performedActions.deleted[Price.name] ?? [],
       sharedContext,
     })
 
-    return prices
+    eventBuilders.createdPriceRule({
+      data: performedActions.created[PriceRule.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.updatedPriceRule({
+      data: performedActions.updated[PriceRule.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedPriceRule({
+      data: performedActions.deleted[PriceRule.name] ?? [],
+      sharedContext,
+    })
+
+    return entities
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -806,29 +800,10 @@ export default class PricingModuleService
         } as CreatePriceListDTO
 
         if (priceListData.prices) {
-          const pricesData = priceListData.prices.map((price) => {
-            let { rules: priceRules = {}, ...rest } = price
-            const cleanRules = priceRules ? removeNullish(priceRules) : {}
-            const rules = Object.entries(cleanRules)
-            const numberOfRules = rules.length
-
-            const rulesDataMap = new Map()
-            rules.map(([attribute, value]) => {
-              const rule = {
-                attribute,
-                value,
-              }
-              rulesDataMap.set(JSON.stringify(rule), rule)
-            })
-
-            return {
-              ...rest,
-              rules_count: numberOfRules,
-              price_rules: Array.from(rulesDataMap.values()),
-            }
-          })
-
-          entry.prices = pricesData
+          entry.prices = this.normalizePrices(
+            priceListData.prices,
+            []
+          ) as UpsertPriceDTO[]
         }
 
         if (priceListData.rules) {
@@ -993,38 +968,28 @@ export default class PricingModuleService
     data: PricingTypes.UpdatePriceListPricesDTO[],
     sharedContext: Context = {}
   ): Promise<Price[]> {
-    const priceListIds: string[] = []
-    const priceIds: string[] = []
-
-    for (const priceListData of data) {
-      priceListIds.push(priceListData.price_list_id)
-
-      for (const price of priceListData.prices) {
-        priceIds.push(price.id)
-      }
-    }
-
-    const prices = await this.listPrices(
-      { id: priceIds },
-      { take: null, relations: ["price_rules"] },
-      sharedContext
-    )
-
-    const priceMap: Map<string, PricingTypes.PriceDTO> = new Map(
-      prices.map((price) => [price.id, price])
-    )
-
     const priceLists = await this.listPriceLists(
-      { id: priceListIds },
-      { take: null },
+      { id: data.map((p) => p.price_list_id) },
+      { take: null, relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
+
+    const existingPrices = priceLists
+      .map((p) => p.prices ?? [])
+      .flat() as PricingTypes.PriceDTO[]
+
+    const pricesToUpsert = data
+      .map((addPrice) =>
+        this.normalizePrices(
+          addPrice.prices as UpsertPriceDTO[],
+          existingPrices,
+          addPrice.price_list_id
+        )
+      )
+      .filter(Boolean)
+      .flat() as UpsertPriceDTO[]
 
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
-
-    const pricesToUpdate: Partial<Price>[] = []
-    const priceRuleIdsToDelete: string[] = []
-    const priceRulesToCreate: CreatePriceRuleDTO[] = []
 
     for (const { price_list_id: priceListId, prices } of data) {
       const priceList = priceListMap.get(priceListId)
@@ -1035,38 +1000,15 @@ export default class PricingModuleService
           `Price list with id: ${priceListId} not found`
         )
       }
-
-      for (const priceData of prices) {
-        const { rules = {}, price_set_id, ...rest } = priceData
-        const price = priceMap.get(rest.id)!
-        const priceRules = price.price_rules!
-
-        priceRulesToCreate.push(
-          ...Object.entries(rules).map(([ruleAttribute, ruleValue]) => ({
-            price_set_id,
-            attribute: ruleAttribute,
-            value: ruleValue,
-            price_id: price.id,
-          }))
-        )
-
-        pricesToUpdate.push({
-          ...rest,
-          rules_count: Object.keys(rules).length,
-        } as unknown as Price)
-
-        priceRuleIdsToDelete.push(...priceRules.map((pr) => pr.id))
-      }
     }
 
-    const [_deletedPriceRule, _createdPriceRule, updatedPrices] =
-      await promiseAll([
-        this.priceRuleService_.delete(priceRuleIdsToDelete),
-        this.priceRuleService_.create(priceRulesToCreate),
-        this.priceService_.update(pricesToUpdate),
-      ])
+    const { entities } = await this.priceService_.upsertWithReplace(
+      pricesToUpsert,
+      { relations: ["price_rules"] },
+      sharedContext
+    )
 
-    return updatedPrices
+    return entities
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1082,97 +1024,73 @@ export default class PricingModuleService
     data: PricingTypes.AddPriceListPricesDTO[],
     sharedContext: Context = {}
   ): Promise<Price[]> {
-    const priceListIds: string[] = []
-
-    for (const priceListData of data) {
-      priceListIds.push(priceListData.price_list_id)
-    }
-
     const priceLists = await this.listPriceLists(
-      { id: priceListIds },
-      {},
+      { id: data.map((p) => p.price_list_id) },
+      { take: null, relations: ["prices", "prices.price_rules"] },
       sharedContext
     )
 
+    const existingPrices = priceLists
+      .map((p) => p.prices ?? [])
+      .flat() as PricingTypes.PriceDTO[]
+
+    const pricesToUpsert = data
+      .map((addPrice) =>
+        this.normalizePrices(
+          addPrice.prices,
+          existingPrices,
+          addPrice.price_list_id
+        )
+      )
+      .filter(Boolean)
+      .flat() as UpsertPriceDTO[]
+
     const priceListMap = new Map(priceLists.map((p) => [p.id, p]))
-
-    const pricesToCreate: Partial<Price>[] = []
-
-    for (const { price_list_id: priceListId, prices } of data) {
-      const priceList = priceListMap.get(priceListId)
+    pricesToUpsert.forEach((price) => {
+      const priceList = priceListMap.get(price.price_list_id!)
 
       if (!priceList) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Price list with id: ${priceListId} not found`
+          `Price list with id: ${price.price_list_id} not found`
         )
       }
+    })
 
-      const priceListPricesToCreate = prices.map((priceData) => {
-        const priceRules = priceData.rules || {}
-        const noOfRules = Object.keys(priceRules).length
-
-        const priceRulesToCreate = Object.entries(priceRules).map(
-          ([ruleAttribute, ruleValue]) => {
-            return {
-              price_list_id: priceData.price_set_id,
-              attribute: ruleAttribute,
-              value: ruleValue,
-            }
-          }
-        )
-
-        return {
-          ...priceData,
-          price_set_id: priceData.price_set_id,
-          title: "test",
-          price_list_id: priceList.id,
-          rules_count: noOfRules,
-          price_rules: priceRulesToCreate,
-        } as unknown as Price
-      })
-
-      pricesToCreate.push(...priceListPricesToCreate)
-    }
-
-    const createdPrices = await this.priceService_.create(
-      pricesToCreate,
-      sharedContext
-    )
-
-    const eventsData = createdPrices.reduce(
-      (eventsData, price) => {
-        eventsData.prices.push({
-          id: price.id,
-        })
-
-        price.price_rules.map((priceRule) => {
-          eventsData.priceRules.push({
-            id: priceRule.id,
-          })
-        })
-
-        return eventsData
-      },
-      {
-        priceRules: [],
-        prices: [],
-      } as {
-        priceRules: { id: string }[]
-        prices: { id: string }[]
-      }
-    )
+    const { entities, performedActions } =
+      await this.priceService_.upsertWithReplace(
+        pricesToUpsert,
+        { relations: ["price_rules"] },
+        sharedContext
+      )
 
     eventBuilders.createdPrice({
-      data: eventsData.prices,
+      data: performedActions.created[Price.name] ?? [],
       sharedContext,
     })
-    eventBuilders.createdPriceRule({
-      data: eventsData.priceRules,
+    eventBuilders.updatedPrice({
+      data: performedActions.updated[Price.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedPrice({
+      data: performedActions.deleted[Price.name] ?? [],
       sharedContext,
     })
 
-    return createdPrices
+    eventBuilders.createdPriceRule({
+      data: performedActions.created[PriceRule.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.updatedPriceRule({
+      data: performedActions.updated[PriceRule.name] ?? [],
+      sharedContext,
+    })
+    eventBuilders.deletedPriceRule({
+      data: performedActions.deleted[PriceRule.name] ?? [],
+      sharedContext,
+    })
+
+    return entities
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1333,4 +1251,25 @@ export default class PricingModuleService
       ...config,
     }
   }
+}
+
+const hashPrice = (
+  price: PricingTypes.PriceDTO | PricingTypes.CreatePricesDTO
+): string => {
+  const data = Object.entries({
+    currency_code: price.currency_code,
+    price_set_id: "price_set_id" in price ? price.price_set_id ?? null : null,
+    price_list_id:
+      "price_list_id" in price ? price.price_list_id ?? null : null,
+    min_quantity: price.min_quantity ? price.min_quantity.toString() : null,
+    max_quantity: price.max_quantity ? price.max_quantity.toString() : null,
+    ...("price_rules" in price
+      ? price.price_rules?.reduce((agg, pr) => {
+          agg[pr.attribute] = pr.value
+          return agg
+        }, {})
+      : {}),
+  }).sort(([a], [b]) => a.localeCompare(b))
+
+  return simpleHash(JSON.stringify(data))
 }
