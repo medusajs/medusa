@@ -52,12 +52,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "@medusajs/payment-stripe",
+            id: "stripe",
             options: {
-              config: {
-                stripe: {
-                  apiKey: process.env.STRIPE_API_KEY,
-                },
-              },
+              apiKey: process.env.STRIPE_API_KEY,
             },
           },
         ],

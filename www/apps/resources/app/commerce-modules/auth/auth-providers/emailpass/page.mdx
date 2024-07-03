@@ -33,11 +33,10 @@ const modules = {
       providers: [
         {
           resolve: "@medusajs/auth-emailpass",
-          config: {
-            emailpass: {
-              // options...
-            },
-          },
+          id: "emailpass"
+          options: {
+            // options...
+          }
         },
       ],
     },

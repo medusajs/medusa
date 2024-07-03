@@ -65,12 +65,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-auth",
+            id: "my-auth",
             options: {
-              config: {
-                "my-auth": {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],

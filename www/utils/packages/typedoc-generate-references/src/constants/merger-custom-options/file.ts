@@ -71,12 +71,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-file",
+            id: "my-file",
             options: {
-              config: {
-                "my-file": {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],

@@ -49,16 +49,13 @@ const modules = {
       providers: [
         {
           resolve: "@medusajs/auth-google",
+          id: "google",
           options: {
-            config: {
-              google: {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: process.env.GOOGLE_CALLBACK_URL,
-                successRedirectUrl:
-                  process.env.GOOGLE_SUCCESS_REDIRECT_URL,
-              },
-            },
+            clientID: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            callbackURL: process.env.GOOGLE_CALLBACK_URL,
+            successRedirectUrl:
+              process.env.GOOGLE_SUCCESS_REDIRECT_URL,
           },
         },
       ],

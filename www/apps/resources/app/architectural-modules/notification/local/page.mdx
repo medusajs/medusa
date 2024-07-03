@@ -47,12 +47,9 @@ module.exports = defineConfig({
           // ...
           {
             resolve: "@medusajs/notification-local",
+            id: "local",
             options: {
-              config: {
-                local: {
-                  channels: ["email"],
-                },
-              },
+              channels: ["email"],
             },
           },
         ],

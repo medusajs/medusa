@@ -32,13 +32,10 @@ module.exports = defineConfig({
     options: {
       providers: [
         {
-          resolve: "@medusajs/auth-google",
+          resolve: "@medusajs/auth-emailpass",
+          id: "emailpass",
           options: {
-            config: {
-              google: {
-                // provider options...
-              },
-            },
+            // provider options...
           },
         },
       ],
@@ -50,8 +47,8 @@ module.exports = defineConfig({
 The `providers` option is an array of objects that accept the following properties:
 
 - `resolve`: A string indicating the package name of the module provider or the path to it.
-- `options`: An optional object of the module provider's options. The object must have the following property:
-  - `config`: An object whose key is the ID of the auth provider, and its value is an object of options to pass to the module provider.
+- `id`: A string indicating the provider's unique name or ID.
+- `options`: An optional object of the module provider's options.
 
 ---
 

@@ -34,12 +34,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: `@medusajs/fulfillment-manual`,
+            name: "manual",
             options: {
-              config: {
-                manual: {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],
@@ -52,5 +49,5 @@ module.exports = defineConfig({
 The `providers` option is an array of objects that accept the following properties:
 
 - `resolve`: A string indicating either the package name  of the module provider or the path to it relative to the `src` directory.
-- `options`: An optional object of the module provider's options. The object must have the following property:
-  - `config`: An object whose key is the ID of the module provider, and its value is an object of options to pass to the module provider.
+- `name`: A string indicating the provider's unique name.
+- `options`: An optional object of the module provider's options.
