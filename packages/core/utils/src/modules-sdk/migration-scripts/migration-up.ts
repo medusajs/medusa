@@ -46,21 +46,27 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
 
     try {
       const migrator = orm.getMigrator()
-
       const pendingMigrations = await migrator.getPendingMigrations()
-      logger.info(
-        `Running pending migrations: ${JSON.stringify(
-          pendingMigrations,
-          null,
-          2
-        )}`
-      )
 
-      await migrator.up({
-        migrations: pendingMigrations.map((m) => m.name),
-      })
+      if (pendingMigrations.length) {
+        logger.info(
+          `Pending migrations: ${JSON.stringify(pendingMigrations, null, 2)}`
+        )
 
-      logger.info(`${upperCaseFirst(moduleName)} module migration executed`)
+        await migrator.up({
+          migrations: pendingMigrations.map((m) => m.name),
+        })
+
+        logger.info(
+          `${upperCaseFirst(moduleName)} module: ${
+            pendingMigrations.length
+          } migration files executed`
+        )
+      } else {
+        logger.info(
+          `${upperCaseFirst(moduleName)} module: No pending migrations`
+        )
+      }
     } catch (error) {
       logger.error(
         `${upperCaseFirst(
