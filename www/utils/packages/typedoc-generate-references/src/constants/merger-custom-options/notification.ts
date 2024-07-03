@@ -43,10 +43,11 @@ Create the file \`src/modules/my-notification/index.ts\` with the following cont
 
 \`\`\`ts title="src/modules/my-notification/index.ts"
 import MyNotificationProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-notification", {
   service: MyNotificationProviderService,
-}
+})
 \`\`\`
 
 This exports the module's definition, indicating that the \`MyNotificationProviderService\` is the main service of the module.`,

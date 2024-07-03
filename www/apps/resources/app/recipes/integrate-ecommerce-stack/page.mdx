@@ -110,10 +110,11 @@ export const serviceHighlights = [
 
   ```ts title="src/modules/erp/index.ts"
   import ErpModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("erp", {
     service: ErpModuleService,
-  }
+  })
   ```
 
   Finally, add the module to the `modules` object in `medusa-config.js`:

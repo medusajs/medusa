@@ -135,10 +135,11 @@ Create the file `src/modules/my-cache/index.ts` with the following content:
 
 ```ts title="src/modules/my-cache/index.ts"
 import MyCacheService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-cache", {
   service: MyCacheService,
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyCacheService` is the main service of the module.

@@ -117,10 +117,11 @@ The module will hold your custom data models and the service implementing digita
   
   ```ts title="src/modules/digital-product/index.ts"
   import DigitalProductModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("digital-product", {
     service: DigitalProductModuleService,
-  }
+  })
   ```
   
   This file holds the definition of the module.

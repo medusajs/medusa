@@ -48,13 +48,19 @@ A module must have an `index.ts` file in its root directory that exports its def
 
 For example, create the file `src/modules/hello/index.ts` with the following content:
 
-```ts title="src/modules/hello.index.ts" highlights={[["4", "", "The main service of the module."]]}
+```ts title="src/modules/hello.index.ts" highlights={[["5", "", "The main service of the module."]]}
 import HelloModuleService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("hello", {
   service: HelloModuleService,
-}
+})
 ```
+
+You use the `Module` function imported from `@medusajs/utils` to create the module definition. It requires two parameters:
+
+1. The module's name.
+2. An object with a required property `service` indicating the module's main service.
 
 ### 3. Add Module to Configurations
 

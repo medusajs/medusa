@@ -175,10 +175,11 @@ export const mainServiceHighlights = [
   
   ```ts title="src/modules/marketplace/index.ts"
   import MarketplaceModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("hello", {
     service: MarketplaceModuleService,
-  } 
+  })
   ```
   
   To use the module, add it to the `modules` object in `medusa-config.js`:

@@ -88,12 +88,13 @@ class MyEventService extends AbstractEventBusModuleService {
 
 Create the file `src/modules/my-event/index.ts` with the following content:
 
-```ts
+```ts title="src/modules/my-event/index.ts"
 import MyEventService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-event", {
   service: MyEventService,
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyEventService` is the main service of the module.
