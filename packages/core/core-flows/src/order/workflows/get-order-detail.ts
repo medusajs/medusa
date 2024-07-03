@@ -26,14 +26,8 @@ export const getOrderDetailWorkflow = createWorkflow(
         "id",
         "status",
         "version",
-        "payment_collections.status",
-        "payment_collections.amount",
-        "payment_collections.captured_amount",
-        "payment_collections.refunded_amount",
-        "fulfillments.packed_at",
-        "fulfillments.shipped_at",
-        "fulfillments.delivered_at",
-        "fulfillments.canceled_at",
+        "payment_collections.*",
+        "fulfillments.*",
       ])
     })
 
