@@ -1110,19 +1110,20 @@
     },
     "edit": {
       "title": "Edit Tax Rate",
-      "description": "Edits tax rate for a tax region"
+      "description": "Edits the tax rate of a tax region"
     },
     "create": {
       "title": "Create Tax Rate Override",
-      "description": "Creates tax rate overrides for a tax region"
+      "description": "Create a tax rate that overrides the default tax rates for selected conditions."
     }
   },
   "taxRegions": {
     "domain": "Tax Regions",
+    "subtitle": "Manage tax rates and settings for each region.",
     "description": "Manage your region's tax structure",
     "create": {
       "title": "Create Tax Region",
-      "description": "Creates a tax region with default tax rate"
+      "description": "Creates a tax region with a default tax rate."
     },
     "create-child": {
       "title": "Create Default Rate for Province",
@@ -1136,7 +1137,7 @@
       },
       "is_combinable": {
         "name": "Is combinable",
-        "hint": "If this tax rate can be combined with the default rate from province or parent"
+        "hint": "Whether this tax rate can be combined with the default rate from province or parent tax region."
       }
     }
   },
@@ -1543,14 +1544,14 @@
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
     "addCountries": "Add countries",
     "editRegion": "Edit Region",
-    "countriesHint": "Add the countries that should be included in this region.",
+    "countriesHint": "Add the countries included in this region.",
     "deleteRegionWarning": "You are about to delete the region {{name}}. This action cannot be undone.",
     "removeCountriesWarning_one": "You are about to remove {{count}} country from the region. This action cannot be undone.",
     "removeCountriesWarning_other": "You are about to remove {{count}} countries from the region. This action cannot be undone.",
     "removeCountryWarning": "You are about to remove the country {{name}} from the region. This action cannot be undone.",
     "automaticTaxesHint": "When enabled, taxes will only be calculated at checkout based on the shipping address.",
     "taxInclusiveHint": "When enabled, prices in the region will be tax inclusive.",
-    "providersHint": " Add which payment providers should be available in this region.",
+    "providersHint": " Add which payment providers are available in this region.",
     "shippingOptions": "Shipping Options",
     "deleteShippingOptionWarning": "You are about to delete the shipping option {{name}}. This action cannot be undone.",
     "return": "Return",
@@ -1660,9 +1661,10 @@
   },
   "salesChannels": {
     "domain": "Sales Channels",
+    "subtitle": "Manage the online and offline channels you sell products on.",
     "createSalesChannel": "Create Sales Channel",
     "createSalesChannelHint": "Create a new sales channel to sell your products on.",
-    "enabledHint": "Specify if the sales channel is enabled or disabled.",
+    "enabledHint": "Specify whether the sales channel is enabled.",
     "removeProductsWarning_one": "You are about to remove {{count}} product from {{sales_channel}}.",
     "removeProductsWarning_other": "You are about to remove {{count}} products from {{sales_channel}}.",
     "addProducts": "Add Products",
@@ -1673,6 +1675,11 @@
       "create": "Sales channel created successfully",
       "update": "Sales channel updated successfully",
       "delete": "Sales channel deleted successfully"
+    },
+    "products": {
+      "list": {
+        "noRecordsMessage": "There are no products in the sales channel."
+      }
     }
   },
   "apiKeyManagement": {

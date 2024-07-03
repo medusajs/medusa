@@ -149,6 +149,9 @@ export const SalesChannelProductSection = ({
         isLoading={isLoading}
         orderBy={["title", "variants", "status", "created_at", "updated_at"]}
         queryObject={raw}
+        noRecords={{
+          message: t("salesChannels.products.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
