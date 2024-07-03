@@ -11,17 +11,15 @@ import * as providers from "../providers"
 import { PaymentProviderService } from "@services"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = `pp_${klass.PROVIDER}_${name}`
+  const key = `pp_${klass.PROVIDER}_${pluginOptions.id}`
 
-    container.register({
-      [key]: asFunction((cradle) => new klass(cradle, config), {
-        lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }),
-    })
-
-    container.registerAdd("payment_providers", asValue(key))
+  container.register({
+    [key]: asFunction((cradle) => new klass(cradle, pluginOptions.options), {
+      lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
+    }),
   })
+
+  container.registerAdd("payment_providers", asValue(key))
 }
 
 export default async ({
@@ -35,7 +33,7 @@ export default async ({
 >): Promise<void> => {
   // Local providers
   for (const provider of Object.values(providers)) {
-    await registrationFn(provider, container, { config: { default: {} } })
+    await registrationFn(provider, container, { id: "default" })
   }
 
   await moduleProviderLoader({

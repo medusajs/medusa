@@ -41,6 +41,7 @@ const Navbar = () => {
       }}
       additionalActionsBefore={<VersionSwitcher />}
       additionalActionsAfter={<FeedbackModal />}
+      showSearchOpener
       isLoading={isLoading}
     />
   )

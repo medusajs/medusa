@@ -66,17 +66,18 @@ export function getMigration(
       } else {
         logger.info(`Skipping "${tableName}" migration.`)
       }*/
-      logger.info(
-        `Link module "${serviceName}" table update skipped because the table already exists. Please write your own migration if needed.`
-      )
+      // Note: Temporarily skipping this for handling no logs on the CI. Bring this back if necessary.
+      // logger.info(
+      //   `Link module('${serviceName}'): Table already exists. Write your own migration if needed.`
+      // )
     } else {
       try {
         await generator.createSchema()
 
-        logger.info(`Link module "${serviceName}" migration executed`)
+        logger.info(`Link module('${serviceName}'): Migration executed`)
       } catch (error) {
         logger.error(
-          `Link module "${serviceName}" migration failed to run - Error: ${
+          `Link module('${serviceName}'): Migration failed - Error: ${
             error.errros ?? error
           }`
         )
