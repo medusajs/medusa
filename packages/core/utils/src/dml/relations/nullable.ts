@@ -16,7 +16,7 @@ export class NullableModifier<T, Relation extends RelationshipType<T>>
     return !!modifier?.[IsNullableModifier]
   }
 
-  declare type: RelationshipType<T>["type"]
+  declare type: Relation["type"]
 
   /**
    * A type-only property to infer the JavScript data-type
