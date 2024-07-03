@@ -52,22 +52,23 @@ export const navbarItemsV1: NavbarItem[] = [
       href: `/ui`,
     },
   },
-  {
-    type: "divider",
-  },
-  {
-    type: "link",
-    props: {
-      label: "Learn Medusa v2",
-      target: "_blank",
-      rel: "noreferrer",
-      href: `/v2`,
-      badge: {
-        variant: "blue",
-        children: "New",
-      },
-    },
-  },
+  // TODO enable them later
+  // {
+  //   type: "divider",
+  // },
+  // {
+  //   type: "link",
+  //   props: {
+  //     label: "Learn Medusa v2",
+  //     target: "_blank",
+  //     rel: "noreferrer",
+  //     href: `/v2`,
+  //     badge: {
+  //       variant: "blue",
+  //       children: "New",
+  //     },
+  //   },
+  // },
 ]
 
 export const navbarItemsV2: NavbarItem[] = [
