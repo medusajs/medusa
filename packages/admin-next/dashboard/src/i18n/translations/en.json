@@ -528,7 +528,7 @@
     },
     "reservation": {
       "header": "Reservation of {{itemName}}",
-      "editItemDetails": "Edit item details",
+      "editItemDetails": "Edit reservation",
       "orderID": "Order ID",
       "description": "Description",
       "location": "Location",
@@ -961,13 +961,13 @@
             },
             "calculated": {
               "label": "Calculated",
-              "hint": "The shipping option's price is calculated by the fulfillment provider."
+              "hint": "The shipping option's price is calculated by the fulfillment provider during checkout."
             }
           }
         },
         "enableInStore": {
           "label": "Enable in store",
-          "hint": "Control the visibility of this option to customers in your store."
+          "hint": "Whether customers can use this option during checkout."
         },
         "provider": "Fulfillment provider",
         "profile": "Shipping profile"
@@ -996,13 +996,14 @@
         "successToast": "Areas for {{name}} were successfully updated."
       },
       "fields": {
-        "noRecords": "Currently not covered by any service zones.",
+        "noRecords": "There are no service zones to add shipping options to.",
         "tip": "A service zone is a collection of geographical zones or areas. It's used to restrict available shipping options to a defined set of locations."
       }
     }
   },
   "shippingProfile": {
     "domain": "Shipping Profiles",
+    "subtitle": "Group products with similar shipping requirements into profiles.",
     "create": {
       "header": "Create Shipping Profile",
       "hint": "Create a new shipping profile to group products with similar shipping requirements.",
@@ -1657,6 +1658,7 @@
   },
   "reservations": {
     "domain": "Reservations",
+    "subtitle": "Manage the reserved quantity of inventory items.",
     "deleteWarning": "You are about to delete a reservation. This action cannot be undone."
   },
   "salesChannels": {
@@ -1679,6 +1681,11 @@
     "products": {
       "list": {
         "noRecordsMessage": "There are no products in the sales channel."
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Create a product first."
+        }
       }
     }
   },
@@ -1686,6 +1693,10 @@
     "domain": {
       "publishable": "Publishable API Keys",
       "secret": "Secret API Keys"
+    },
+    "subtitle": {
+      "publishable": "Manage API keys used in the storefront to limit the scope of requests to specific sales channels.",
+      "secret": "Manage API keys used to authenticate admin users in admin applications."
     },
     "status": {
       "active": "Active",
@@ -1699,7 +1710,7 @@
       "createPublishableHeader": "Create Publishable API Key",
       "createPublishableHint": "Create a new publishable API key to limit the scope of requests to specific sales channels.",
       "createSecretHeader": "Create Secret API Key",
-      "createSecretHint": "Create a new secret API key to access the Medusa API.",
+      "createSecretHint": "Create a new secret API key to access the Medusa API as an authenticated admin user.",
       "secretKeyCreatedHeader": "Secret Key Created",
       "secretKeyCreatedHint": "Your new secret key has been generated. Copy and securely store it now. This is the only time it will be displayed.",
       "copySecretTokenSuccess": "Secret key was copied to clipboard.",
@@ -1713,7 +1724,10 @@
     "salesChannels": {
       "successToast_one": "{{count}} sales channel was successfully added to the API key.",
       "successToast_other": "{{count}} sales channels were successfully added to the API key.",
-      "alreadyAddedTooltip": "The sales channel has already been added to the API key."
+      "alreadyAddedTooltip": "The sales channel has already been added to the API key.",
+      "list": {
+        "noRecordsMessage": "There are no sales channels in the publishable API key's scope."
+      }
     },
     "delete": {
       "warning": "You are about to delete the API key {{title}}. This action cannot be undone.",
@@ -1722,6 +1736,11 @@
     "revoke": {
       "warning": "You are about to revoke the API key {{title}}. This action cannot be undone.",
       "successToast": "API key {{title}} was successfully revoked."
+    },
+    "addSalesChannels": {
+      "list": {
+        "noRecordsMessage": "Create a sales channel first."
+      }
     },
     "removeSalesChannel": {
       "warning": "You are about to remove the sales channel {{name}} from the API key. This action cannot be undone.",
@@ -1795,11 +1814,15 @@
   },
   "workflowExecutions": {
     "domain": "Workflows",
+    "subtitle": "View and keep track of workflow executions in your Medusa application.",
     "transactionIdLabel": "Transaction ID",
     "workflowIdLabel": "Workflow ID",
     "progressLabel": "Progress",
     "stepsCompletedLabel_one": "{{completed}} of {{count}} step",
     "stepsCompletedLabel_other": "{{completed}} of {{count}} steps",
+    "list": {
+      "noRecordsMessage": "No workflows have been executed, yet."
+    },
     "history": {
       "sectionTitle": "History",
       "runningState": "Running...",
@@ -1834,6 +1857,7 @@
   },
   "productTypes": {
     "domain": "Product Types",
+    "subtitle": "Organize your products into types.",
     "create": {
       "header": "Create Product Type",
       "hint": "Create a new product type to categorize your products.",

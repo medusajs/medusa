@@ -156,6 +156,11 @@ export const ApiKeySalesChannelsForm = ({
             queryObject={raw}
             orderBy={["name", "created_at", "updated_at"]}
             layout="fill"
+            noRecords={{
+              message: t(
+                "apiKeyManagement.addSalesChannels.list.noRecordsMessage"
+              ),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

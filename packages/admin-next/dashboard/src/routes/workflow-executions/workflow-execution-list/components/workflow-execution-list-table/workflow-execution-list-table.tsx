@@ -1,4 +1,4 @@
-import { Container, Heading } from "@medusajs/ui"
+import { Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/table/data-table"
@@ -55,7 +55,12 @@ export const WorkflowExecutionListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("workflowExecutions.domain")}</Heading>
+        <div>
+          <Heading>{t("workflowExecutions.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t(`workflowExecutions.subtitle`)}
+          </Text>
+        </div>
       </div>
       <DataTable
         table={table}
@@ -67,6 +72,9 @@ export const WorkflowExecutionListTable = () => {
         search
         pagination
         queryObject={raw}
+        noRecords={{
+          message: t("workflowExecutions.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
