@@ -453,10 +453,13 @@ describe("joiner-config-builder", () => {
         name: model.text(),
       })
 
-      const car = model.define("car", {
-        id: model.id(),
-        number_plate: model.text().primaryKey(),
-      })
+      const car = model.define(
+        { name: "car", tableName: "car" },
+        {
+          id: model.id(),
+          number_plate: model.text().primaryKey(),
+        }
+      )
 
       const linkConfig = buildLinkConfigFromDmlObjects("myService", [user, car])
 

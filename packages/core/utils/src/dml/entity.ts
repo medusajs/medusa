@@ -13,7 +13,7 @@ import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
-function extractNameAndTableName<Config extends IDmlEntityConfig>(
+function extractNameAndTableName<const Config extends IDmlEntityConfig>(
   nameOrConfig: Config
 ) {
   const result = {
@@ -59,7 +59,7 @@ function extractNameAndTableName<Config extends IDmlEntityConfig>(
  */
 export class DmlEntity<
   Schema extends DMLSchema,
-  TConfig extends IDmlEntityConfig
+  const TConfig extends IDmlEntityConfig
 > implements IDmlEntity<Schema, TConfig>
 {
   [IsDmlEntity]: true = true
