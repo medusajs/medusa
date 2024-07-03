@@ -1,4 +1,4 @@
-import { ArrayType, MetadataStorage } from "@mikro-orm/core"
+import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
@@ -72,7 +72,7 @@ describe("Entity builder", () => {
         phones: model.array(),
       })
 
-      expect(user.name).toEqual("user")
+      expect(user.name).toEqual("User")
       expect(user.parse().tableName).toEqual("user")
 
       const User = toMikroORMEntity(user)
@@ -202,7 +202,7 @@ describe("Entity builder", () => {
         }
       )
 
-      expect(user.name).toEqual("user")
+      expect(user.name).toEqual("User")
       expect(user.parse().tableName).toEqual("user_table")
 
       const User = toMikroORMEntity(user)
@@ -324,7 +324,7 @@ describe("Entity builder", () => {
         }
       )
 
-      expect(user.name).toEqual("userRole")
+      expect(user.name).toEqual("UserRole")
       expect(user.parse().tableName).toEqual("user_role")
 
       const User = toMikroORMEntity(user)
@@ -1558,9 +1558,10 @@ describe("Entity builder", () => {
         account_id: model.number(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const User = toMikroORMEntity(user)
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        User
+      ) as unknown as EntityMetadata<InstanceType<typeof User>>
 
       expect(metaData.properties.id).toEqual({
         columnType: "text",
@@ -3848,7 +3849,7 @@ describe("Entity builder", () => {
           })
 
       expect(defineEmail).toThrow(
-        'Cannot cascade delete "user" relationship(s) from "email" entity. Child to parent cascades are not allowed'
+        'Cannot cascade delete "user" relationship(s) from "Email" entity. Child to parent cascades are not allowed'
       )
     })
 

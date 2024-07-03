@@ -65,7 +65,7 @@ import {
   UpdateOrderLineItemTaxLineDTO,
   UpdateOrderShippingMethodTaxLineDTO,
 } from "@types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import {
   applyChangesToOrder,
   ApplyOrderChangeDTO,
@@ -165,7 +165,7 @@ export default class OrderModuleService<
     ReturnItem: { dto: any } // TODO: Add return item dto
     OrderClaim: { dto: any } // TODO: Add claim dto
     OrderExchange: { dto: any } // TODO: Add exchange dto
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements IOrderModuleService
 {
   protected baseRepository_: DAL.RepositoryService

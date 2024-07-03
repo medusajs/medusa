@@ -20,9 +20,10 @@ type InjectedDependencies = {
   orderChangeRepository: DAL.RepositoryService
 }
 
-export default class OrderChangeService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+export default class OrderChangeService extends ModulesSdkUtils.MedusaInternalService<
+  InjectedDependencies,
   OrderChange
-)<OrderChange> {
+>(OrderChange) {
   protected readonly orderChangeRepository_: RepositoryService<OrderChange>
 
   constructor(container: InjectedDependencies) {

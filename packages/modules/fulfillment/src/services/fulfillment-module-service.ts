@@ -47,7 +47,7 @@ import {
   isContextValid,
   validateAndNormalizeRules,
 } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { UpdateShippingOptionsInput } from "../types/service"
 import { buildCreatedShippingOptionEvents } from "../utils/events"
 import FulfillmentProviderService from "./fulfillment-provider"
@@ -87,7 +87,7 @@ export default class FulfillmentModuleService
     ShippingOptionRule: { dto: FulfillmentTypes.ShippingOptionRuleDTO }
     ShippingOptionType: { dto: FulfillmentTypes.ShippingOptionTypeDTO }
     FulfillmentProvider: { dto: FulfillmentTypes.FulfillmentProviderDTO }
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements IFulfillmentModuleService
 {
   protected baseRepository_: DAL.RepositoryService

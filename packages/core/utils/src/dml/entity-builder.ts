@@ -1,7 +1,17 @@
-import type { DMLSchema, RelationshipOptions } from "@medusajs/types"
+import {
+  DMLSchema,
+  IDmlEntityConfig,
+  RelationshipOptions,
+} from "@medusajs/types"
 import { DmlEntity } from "./entity"
-import { createBigNumberProperties } from "./helpers/entity-builder/create-big-number-properties"
-import { createDefaultProperties } from "./helpers/entity-builder/create-default-properties"
+import {
+  createBigNumberProperties,
+  DMLSchemaWithBigNumber,
+} from "./helpers/entity-builder/create-big-number-properties"
+import {
+  createDefaultProperties,
+  DMLSchemaDefaults,
+} from "./helpers/entity-builder/create-default-properties"
 import { ArrayProperty } from "./properties/array"
 import { BigNumberProperty } from "./properties/big-number"
 import { BooleanProperty } from "./properties/boolean"
@@ -57,7 +67,7 @@ export type ManyToManyOptions = RelationshipOptions &
          * representing the pivot table created in the
          * database for this relationship.
          */
-        pivotEntity?: () => DmlEntity<any>
+        pivotEntity?: () => DmlEntity<any, any>
       }
   )
 
@@ -99,17 +109,23 @@ export class EntityBuilder {
    *
    * export default MyCustom
    */
-  define<Schema extends DMLSchema>(
-    nameOrConfig: DefineOptions,
+  define<Schema extends DMLSchema, TConfig extends IDmlEntityConfig>(
+    nameOrConfig: TConfig,
     schema: Schema
-  ) {
+  ): DmlEntity<
+    Schema & DMLSchemaWithBigNumber<Schema> & DMLSchemaDefaults,
+    TConfig
+  > {
     this.#disallowImplicitProperties(schema)
 
-    return new DmlEntity(nameOrConfig, {
+    return new DmlEntity<Schema, TConfig>(nameOrConfig, {
       ...schema,
       ...createBigNumberProperties(schema),
       ...createDefaultProperties(),
-    })
+    }) as unknown as DmlEntity<
+      Schema & DMLSchemaWithBigNumber<Schema> & DMLSchemaDefaults,
+      TConfig
+    >
   }
 
   /**

@@ -1,3 +1,5 @@
+import { CamelCase } from "../common"
+
 /**
  * Symbol to identify a DML entity from an object
  */
@@ -13,11 +15,26 @@ export type DMLSchema = Record<
   PropertyType<any> | RelationshipType<any>
 >
 
+export type IDmlEntityConfig = string | { name?: string; tableName: string }
+
+export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
+  TConfig extends string
+    ? Capitalize<CamelCase<TConfig>>
+    : TConfig extends { name: string }
+    ? Capitalize<CamelCase<TConfig["name"] & string>>
+    : TConfig extends { tableName: string }
+    ? Capitalize<CamelCase<TConfig["tableName"] & string>>
+    : never
+
 /**
  * Representation of a DML entity
  */
-export interface IDmlEntity<Schema extends DMLSchema> {
+export interface IDmlEntity<
+  Schema extends DMLSchema,
+  Config extends IDmlEntityConfig
+> {
   [IsDmlEntity]: true
+  name: InferDmlEntityNameFromConfig<Config>
   schema: Schema
 }
 
@@ -60,6 +77,7 @@ export type PropertyMetadata = {
     type: "index" | "unique"
   }[]
   relationships: RelationshipMetadata[]
+  primaryKey?: boolean
 }
 
 /**
@@ -125,22 +143,23 @@ export type InferForeignKeys<Schema extends DMLSchema> = {
   [K in keyof Schema as Schema[K] extends { type: infer Type }
     ? Type extends RelationshipTypes
       ? `${K & string}_id`
-      : K
-    : K]: Schema[K] extends { type: infer Type }
+      : never
+    : never]: Schema[K] extends { type: infer Type }
     ? Type extends RelationshipTypes
       ? string
-      : Schema[K]
-    : Schema[K]
+      : never
+    : never
 }
 
 /**
  * Infer fields for a belongsTo relationship
  */
 export type InferBelongsToFields<Relation> = Relation extends () => IDmlEntity<
-  infer R
+  infer R,
+  any
 >
   ? InferSchemaFields<R>
-  : Relation extends () => IDmlEntity<infer R> | null
+  : Relation extends () => IDmlEntity<infer R, any> | null
   ? InferSchemaFields<R> | null
   : never
 
@@ -153,7 +172,8 @@ export type InferHasOneFields<Relation> = InferBelongsToFields<Relation>
  * Infer fields for hasMany relationship
  */
 export type InferHasManyFields<Relation> = Relation extends () => IDmlEntity<
-  infer R
+  infer R,
+  any
 >
   ? InferSchemaFields<R>[]
   : never
@@ -184,7 +204,7 @@ export type InferSchemaFields<Schema extends DMLSchema> = {
 /**
  * Helper to infer the schema type of a DmlEntity
  */
-export type Infer<T> = T extends IDmlEntity<infer Schema>
+export type Infer<T> = T extends IDmlEntity<infer Schema, any>
   ? EntityConstructor<InferSchemaFields<Schema>>
   : never
 
@@ -217,12 +237,12 @@ export type EntityCascades<Relationships> = {
 /**
  * Helper to infer the instance type of a IDmlEntity once converted as an Entity
  */
-export type InferTypeOf<T extends IDmlEntity<any>> = InstanceType<Infer<T>>
+export type InferTypeOf<T extends IDmlEntity<any, any>> = InstanceType<Infer<T>>
 
 /**
  * Used in the module sdk internal service to infer propert entity typings from DML
  */
-export type InferEntityType<T extends any> = T extends IDmlEntity<any>
+export type InferEntityType<T> = T extends IDmlEntity<any, any>
   ? InferTypeOf<T>
   : T
 
@@ -230,7 +250,8 @@ export type InferEntityType<T extends any> = T extends IDmlEntity<any>
  * Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
  */
 export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
-  infer Schema
+  infer Schema,
+  any
 >
   ? {
       [K in keyof Schema as Schema[K] extends { type: infer Type }
@@ -258,7 +279,7 @@ export type EntityIndex<
   /**
    * The list of properties to create the index on.
    */
-  on: InferIndexableProperties<IDmlEntity<TSchema>>[]
+  on: InferIndexableProperties<IDmlEntity<TSchema, any>>[]
   /**
    * Conditions to restrict which records are indexed.
    */
@@ -270,7 +291,7 @@ export type NeQueryValue = { $ne: SimpleQueryValue }
 export type QueryValue = SimpleQueryValue | NeQueryValue
 
 export type QueryCondition<T extends DMLSchema = DMLSchema> = {
-  [K in keyof IDmlEntity<T>["schema"]]?: T[K] extends object
+  [K in keyof IDmlEntity<T, any>["schema"]]?: T[K] extends object
     ? QueryValue
     : QueryCondition<T>
 }
