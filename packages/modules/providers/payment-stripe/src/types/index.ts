@@ -1,22 +1,24 @@
-export interface StripeCredentials {
-  apiKey: string
-  webhookSecret: string
-}
-
 export interface StripeOptions {
-  credentials: Record<string, StripeCredentials>
+  /**
+   * The API key for the Stripe account
+   */
+  apiKey: string
+  /**
+   * The webhook secret used to verify webhooks
+   */
+  webhookSecret: string
   /**
    * Use this flag to capture payment immediately (default is false)
    */
   capture?: boolean
   /**
-   * set `automatic_payment_methods` to `{ enabled: true }`
+   * set `automatic_payment_methods` on the intent request to `{ enabled: true }`
    */
-  automatic_payment_methods?: boolean
+  automaticPaymentMethods?: boolean
   /**
    * Set a default description on the intent if the context does not provide one
    */
-  payment_description?: string
+  paymentDescription?: string
 }
 
 export interface PaymentIntentOptions {
