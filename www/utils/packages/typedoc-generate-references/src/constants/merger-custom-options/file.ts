@@ -41,7 +41,7 @@ Create the file \`src/modules/my-file/index.ts\` with the following content:
 import MyFileProviderService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module("my-file", {
+export default Module({
   service: MyFileProviderService,
 })
 \`\`\`

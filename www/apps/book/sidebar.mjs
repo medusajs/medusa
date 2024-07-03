@@ -129,6 +129,7 @@ export const sidebar = sidebarAttachHrefCommonOptions(
           ],
         },
         {
+          path: "/advanced-development/data-models",
           title: "Data Models",
           children: [
             {

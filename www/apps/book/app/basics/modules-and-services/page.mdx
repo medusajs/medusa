@@ -52,15 +52,14 @@ For example, create the file `src/modules/hello/index.ts` with the following con
 import HelloModuleService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module("hello", {
+export default Module({
   service: HelloModuleService,
 })
 ```
 
-You use the `Module` function imported from `@medusajs/utils` to create the module definition. It requires two parameters:
+You use the `Module` function imported from `@medusajs/utils` to create the module definition.
 
-1. The module's name.
-2. An object with a required property `service` indicating the module's main service.
+It accepts an object parameter with the required property `service`, whose value is the module's main service.
 
 ### 3. Add Module to Configurations
 
@@ -136,7 +135,6 @@ You’ll receive the following response:
 <Note title="Use modules when" type="success">
 
 - You're implementing a custom commerce feature. For example, you're implementing digital products.
-- You want to extend data models in other commerce modules, such as the `Product` model.
 - You want to re-use your custom commerce functionalities across Medusa applications or use them in other environments, such as Edge functions and Next.js apps.
 
 </Note>
