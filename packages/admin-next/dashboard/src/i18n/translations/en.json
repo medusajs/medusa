@@ -1344,6 +1344,9 @@
           "title": "Usage",
           "description": "Set a limit on how many times the promotion can be used."
         }
+      },
+      "edit": {
+        "header": "Edit Campaign Budget"
       }
     },
     "promotions": {
@@ -1356,6 +1359,14 @@
       "currencyMismatch": "Currency of the promotion and campaign doesn't match",
       "toast": {
         "success": "Successfully added {{count}} promotion(s) to campaign"
+      },
+      "add": {
+        "list": {
+          "noRecordsMessage": "Create a promotion first."
+        }
+      },
+      "list": {
+        "noRecordsMessage": "There are no promotions in the campaign."
       }
     },
     "deleteCampaignWarning": "You are about to delete the campaign {{name}}. This action cannot be undone.",
@@ -1363,6 +1374,7 @@
   },
   "priceLists": {
     "domain": "Price Lists",
+    "subtitle": "Create sales or override prices for specific conditions.",
     "delete": {
       "confirmation": "You are about to delete the price list {{title}}. This action cannot be undone.",
       "successToast": "Price list {{title}} was successfully deleted."
@@ -1375,7 +1387,12 @@
         "products": "Products",
         "prices": "Prices"
       },
-      "successToast": "Price list {{title}} was successfully created."
+      "successToast": "Price list {{title}} was successfully created.",
+      "products": {
+        "list": {
+          "noRecordsMessage": "Create a product first."
+        }
+      }
     },
     "edit": {
       "header": "Edit Price List",
@@ -1455,14 +1472,14 @@
   },
   "profile": {
     "domain": "Profile",
-    "manageYourProfileDetails": "Manage your profile details",
+    "manageYourProfileDetails": "Manage your profile details.",
     "fields": {
       "languageLabel": "Language",
       "usageInsightsLabel": "Usage insights"
     },
     "edit": {
       "header": "Edit Profile",
-      "languageHint": "The language you want to use in the admin dashboard. This will not change the language of your store.",
+      "languageHint": "The language you want to use in the admin dashboard. This doesn't change the language of your store.",
       "languagePlaceholder": "Select language",
       "usageInsightsHint": "Share usage insights and help us improve Medusa. You can read more about what we collect and how we use it in our <0>documentation</0>."
     },
@@ -1521,6 +1538,7 @@
   },
   "regions": {
     "domain": "Regions",
+    "subtitle": "A region is an area that you sell products in. It can cover multipe countries, and has different tax rates, providers, and currency.",
     "createRegion": "Create Region",
     "createRegionHint": "Manage tax rates and providers for a set of countries.",
     "addCountries": "Add countries",
@@ -1540,6 +1558,9 @@
     "priceType": "Price Type",
     "flatRate": "Flat Rate",
     "calculated": "Calculated",
+    "list": {
+      "noRecordsMessage": "Create a region for the areas that you sell in."
+    },
     "toast": {
       "delete": "Region deleted successfully",
       "edit": "Region edit saved",

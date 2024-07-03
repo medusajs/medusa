@@ -18,7 +18,7 @@ export const CampaignBudgetEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>{t("campaigns.edit.header")}</Heading>
+        <Heading>{t("campaigns.budget.edit.header")}</Heading>
       </RouteDrawer.Header>
 
       {!isLoading && campaign && <EditCampaignBudgetForm campaign={campaign} />}
