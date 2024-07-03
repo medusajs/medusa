@@ -1168,7 +1168,7 @@
           "description": "Which customer is allowed to use the promotion code? Promotion code can be used by all customers if left untouched."
         },
         "target-rules": {
-          "title": "What will the promotion be applied to?",
+          "title": "What items will the promotion be applied to?",
           "description": "The promotion will be applied to items that match the following conditions."
         },
         "buy-rules": {
@@ -1191,17 +1191,17 @@
     "edit": {
       "title": "Edit Promotion Details",
       "rules": {
-        "title": "Edit rules"
+        "title": "Edit usage conditions"
       },
       "target-rules": {
-        "title": "Edit target rules"
+        "title": "Edit item conditions"
       },
       "buy-rules": {
         "title": "Edit buy rules"
       }
     },
     "addToCampaign": {
-      "title": "Add Promotion To Campaign"
+      "title": "Promotion's Campaign"
     },
     "campaign_currency": {
       "tooltip": "This is the promotion's currency. Change it from the Details tab."
@@ -1281,15 +1281,21 @@
     },
     "deleteWarning": "You are about to delete the promotion {{code}}. This action cannot be undone.",
     "createPromotionTitle": "Create Promotion",
-    "type": "Promotion type"
+    "type": "Promotion type",
+    "conditions": {
+      "add": "Add condition",
+      "list": {
+        "noRecordsMessage": "Add a condition to restrict what items the promotion applies to."
+      }
+    }
   },
   "campaigns": {
     "domain": "Campaigns",
     "details": "Campaign details",
     "status": {
-      "active": "active",
-      "expired": "expired",
-      "scheduled": "scheduled"
+      "active": "Active",
+      "expired": "Expired",
+      "scheduled": "Scheduled"
     },
     "delete": {
       "title": "Are you sure?",
