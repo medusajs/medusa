@@ -6,7 +6,7 @@ const service = CurrencyModuleService
 const loaders = [initialDataLoader]
 
 export default Module({
-  moduleName: Modules.CURRENCY,
+  name: Modules.CURRENCY,
   service,
   loaders,
 })

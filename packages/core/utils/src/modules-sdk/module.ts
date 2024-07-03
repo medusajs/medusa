@@ -26,13 +26,13 @@ export function Module<
     ? Record<string, any>
     : InfersLinksConfig<ModelObjects>
 >({
-  moduleName = "",
+  name = "",
   service,
   loaders,
-}: ModuleExports<Service> & { moduleName?: string }): ModuleExports<Service> & {
+}: ModuleExports<Service> & { name?: string }): ModuleExports<Service> & {
   links: Links
 } {
-  service.prototype.__joinerConfig ??= defineJoinerConfig(moduleName)
+  service.prototype.__joinerConfig ??= defineJoinerConfig(name)
 
   const dmlObjects = service[MedusaServiceModelObjectsSymbol]
   return {
