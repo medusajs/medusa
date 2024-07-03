@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# InferDmlEntityNameFromConfig
+
+ **InferDmlEntityNameFromConfig**: TConfig extends `string` ? Capitalize&#60;[CamelCase](../../../CommonTypes/types/types.CommonTypes.CamelCase/page.mdx)&#60;TConfig&#62;&#62; : TConfig extends `object` ? Capitalize&#60;[CamelCase](../../../CommonTypes/types/types.CommonTypes.CamelCase/page.mdx)&#60;TConfig["name"] & string&#62;&#62; : TConfig extends `object` ? Capitalize&#60;[CamelCase](../../../CommonTypes/types/types.CommonTypes.CamelCase/page.mdx)&#60;TConfig["tableName"] & string&#62;&#62; : `never`
+
+## Type Parameters
+
+<TypeList types={[{"name":"TConfig","type":"[IDmlEntityConfig](../types.DmlTypes.IDmlEntityConfig/page.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"tableName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="InferDmlEntityNameFromConfig"/>

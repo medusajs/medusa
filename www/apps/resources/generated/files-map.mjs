@@ -4560,12 +4560,24 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder/page.mdx",
@@ -4912,8 +4924,20 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CancelOrderChangeDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderClaimDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderClaimDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderExchangeDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderExchangeDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderFulfillmentDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CancelOrderFulfillmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderReturnDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.ConfirmOrderChangeDTO/page.mdx",
@@ -8476,6 +8500,10 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.BatchWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.CamelCase/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.CamelCase"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.ContainerLike/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.ContainerLike"
   },
@@ -8600,8 +8628,20 @@ export const filesMap = [
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.ExtractEntityRelations"
   },
   {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.IDmlEntityConfig/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.IDmlEntityConfig"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.Infer/page.mdx",
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.Infer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferBelongsToFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferBelongsToFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferDmlEntityNameFromConfig/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferDmlEntityNameFromConfig"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferEntityType/page.mdx",
@@ -8612,8 +8652,24 @@ export const filesMap = [
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferForeignKeys"
   },
   {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferHasManyFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferHasManyFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferHasOneFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferHasOneFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties/page.mdx",
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferManyToManyFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferManyToManyFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferSchemaFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferSchemaFields"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferTypeOf/page.mdx",
@@ -9880,6 +9936,14 @@ export const filesMap = [
     "pathname": "/references/types/types/types.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CamelCapitalizer/page.mdx",
+    "pathname": "/references/types/types/types.CamelCapitalizer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CamelCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.CamelCaseParser"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.CartLikeWithTotals/page.mdx",
     "pathname": "/references/types/types/types.CartLikeWithTotals"
   },
@@ -9920,8 +9984,32 @@ export const filesMap = [
     "pathname": "/references/types/types/types.FlowRunOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.IncludesSeparator/page.mdx",
+    "pathname": "/references/types/types/types.IncludesSeparator"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.InternalJoinerServiceConfig/page.mdx",
     "pathname": "/references/types/types/types.InternalJoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsCamelCase/page.mdx",
+    "pathname": "/references/types/types/types.IsCamelCase"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsOneWord/page.mdx",
+    "pathname": "/references/types/types/types.IsOneWord"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsPascalCase/page.mdx",
+    "pathname": "/references/types/types/types.IsPascalCase"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsStringLiteral/page.mdx",
+    "pathname": "/references/types/types/types.IsStringLiteral"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.Join/page.mdx",
+    "pathname": "/references/types/types/types.Join"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.JoinerRelationship/page.mdx",
@@ -9934,6 +10022,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.Order/page.mdx",
     "pathname": "/references/types/types/types.Order"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PascalCapitalizer/page.mdx",
+    "pathname": "/references/types/types/types.PascalCapitalizer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PascalCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.PascalCaseParser"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.PrevLimit/page.mdx",
@@ -9956,12 +10052,28 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Scalar"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.Separator/page.mdx",
+    "pathname": "/references/types/types/types.Separator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.SeparatorCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.SeparatorCaseParser"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.SplitAnyCase/page.mdx",
+    "pathname": "/references/types/types/types.SplitAnyCase"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateProductVariantWorkflowInputDTO/page.mdx",
     "pathname": "/references/types/types/types.UpdateProductVariantWorkflowInputDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateProductWorkflowInputDTO/page.mdx",
     "pathname": "/references/types/types/types.UpdateProductWorkflowInputDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.WordInCamelCase/page.mdx",
+    "pathname": "/references/types/types/types.WordInCamelCase"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.AdminTypes/page.mdx",
