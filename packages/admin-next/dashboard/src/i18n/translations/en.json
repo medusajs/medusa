@@ -767,13 +767,11 @@
           "canceled": "Payment canceled"
         },
         "fulfillment": {
-          "created": "Fulfillment created",
+          "created": "Items fulfilled",
           "canceled": "Fulfillment canceled",
-          "shipped": "Fulfillment shipped",
-          "itemsFulfilledFrom_one": "{{count}} item fulfilled from {{location}}",
-          "itemsFulfilledFrom_other": "{{count}} items fulfilled from {{location}}",
-          "itemsFulfilled_one": "{{count}} item fulfilled",
-          "itemsFulfilled_other": "{{count}} items fulfilled"
+          "shipped": "Items shipped",
+          "items_one": "{{count}} item",
+          "items_other": "{{count}} items"
         },
         "return": {
           "created": "Return created"
@@ -1881,6 +1879,7 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "paidTotal": "Paid total",
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
