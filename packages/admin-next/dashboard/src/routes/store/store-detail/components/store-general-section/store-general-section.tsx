@@ -1,22 +1,29 @@
 import { PencilSquare } from "@medusajs/icons"
+import { AdminStore } from "@medusajs/types"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { useCurrency } from "../../../../../hooks/api/currencies"
 import { useRegion } from "../../../../../hooks/api/regions"
-import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type StoreGeneralSectionProps = {
-  store: ExtendedStoreDTO
+  store: AdminStore
 }
 
 export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
   const { t } = useTranslation()
 
-  const { region } = useRegion(store.default_region_id, undefined, {
+  const { region } = useRegion(store.default_region_id!, undefined, {
     enabled: !!store.default_region_id,
   })
 
-  const defaultCurrency = store.supported_currencies?.find((c) => c.is_default)
+  const defaultCurrencyCode = store.supported_currencies?.find(
+    (c) => c.is_default
+  )?.currency_code
+
+  const { currency: defaultCurrency } = useCurrency(defaultCurrencyCode!, {
+    enabled: !!defaultCurrencyCode,
+  })
 
   return (
     <Container className="divide-y p-0">
@@ -55,11 +62,9 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         </Text>
         {defaultCurrency ? (
           <div className="flex items-center gap-x-2">
-            <Badge size="2xsmall">
-              {defaultCurrency.currency_code.toUpperCase()}
-            </Badge>
+            <Badge size="2xsmall">{defaultCurrency.code.toUpperCase()}</Badge>
             <Text size="small" leading="compact">
-              {defaultCurrency.currency.name}
+              {defaultCurrency.name}
             </Text>
           </div>
         ) : (
