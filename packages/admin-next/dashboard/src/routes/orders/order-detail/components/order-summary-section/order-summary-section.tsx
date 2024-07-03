@@ -193,11 +193,6 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
       <Cost
-        label={t("fields.subtotal")}
-        secondaryValue={t("general.items", { count: order.items.length })}
-        value={getLocaleAmount(order.subtotal, order.currency_code)}
-      />
-      <Cost
         label={t("fields.discount")}
         // TODO: DISCOUNTS -> moved to line items now
         // secondaryValue={
@@ -224,13 +219,23 @@ const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
 
   return (
-    <div className="text-ui-fg-base flex items-center justify-between px-6 py-4">
-      <Text size="small" leading="compact" weight="plus">
-        {t("fields.total")}
-      </Text>
-      <Text size="small" leading="compact" weight="plus">
-        {getStylizedAmount(order.total, order.currency_code)}
-      </Text>
+    <div className=" flex flex-col gap-y-2 px-6 py-4">
+      <div className="text-ui-fg-base flex items-center justify-between">
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {t("fields.total")}
+        </Text>
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {getStylizedAmount(order.total, order.currency_code)}
+        </Text>
+      </div>
+      <div className="text-ui-fg-base flex items-center justify-between">
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {t("fields.paidTotal")}
+        </Text>
+        <Text className="text-ui-fg-subtle" size="small" leading="compact">
+          {/*TODO*/}-
+        </Text>
+      </div>
     </div>
   )
 }

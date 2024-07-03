@@ -1879,6 +1879,7 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "paidTotal": "Paid total",
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",
