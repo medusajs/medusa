@@ -37,11 +37,11 @@ Then, resolve the module's main service in other resources, such as API routes o
 
 <Details summaryContent="Example: Create a module integrating an ERP system">
 
-This example showcases how to create a module that integrates to a dummy ERP system.
+  This example showcases how to create a module that integrates to a dummy ERP system.
 
-Start by creating the directory `src/modules/erp` for your module.
+  Start by creating the directory `src/modules/erp` for your module.
 
-Then, create the file `src/modules/erp/service.ts` with the following content:
+  Then, create the file `src/modules/erp/service.ts` with the following content:
 
 export const serviceHighlights = [
   ["4", "ErpModuleOptions", "The module's expected options."],
@@ -57,42 +57,41 @@ export const serviceHighlights = [
   import { ProductDTO } from "@medusajs/types"
 
   type ErpModuleOptions = {
-  apiKey: string
+    apiKey: string
   }
 
   class ErpModuleService {
-  private client\_: AxiosInstance
+    private client_: AxiosInstance
 
-      constructor({}, { apiKey }: ErpModuleOptions) {
-        this.client_ = axios.create({
-          baseURL: `https://api.erp-example.com`,
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-          },
-        })
-      }
+    constructor({}, { apiKey }: ErpModuleOptions) {
+      this.client_ = axios.create({
+        baseURL: `https://api.erp-example.com`,
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+        },
+      })
+    }
 
-      async getProductData(id: string) {
-        const { data: erpProduct } = await this.client_.get(`/product/${id}`)
+    async getProductData(id: string) {
+      const { data: erpProduct } = await this.client_.get(`/product/${id}`)
 
-        return erpProduct
-      }
+      return erpProduct
+    }
 
-      async createProduct(data: ProductDTO) {
-        const { data: erpProduct } = await this.client_.post(`/product`, data)
+    async createProduct(data: ProductDTO) {
+      const { data: erpProduct } = await this.client_.post(`/product`, data)
 
-        return erpProduct
-      }
+      return erpProduct
+    }
 
-      async deleteProduct(id: string) {
-        await this.client_.delete(`/product/${id}`)
-      }
-
+    async deleteProduct(id: string) {
+      await this.client_.delete(`/product/${id}`)
+    }
   }
 
   export default ErpModuleService
 
-  ````
+  ```
 
   This creates the module's main service. Few things to note:
 
