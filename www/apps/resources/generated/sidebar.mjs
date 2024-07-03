@@ -162,13 +162,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/api-key/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -371,13 +364,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/auth/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -880,13 +866,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/cart/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -990,13 +969,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/currency/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -1275,13 +1247,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/customer/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -1931,13 +1896,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/fulfillment/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -2293,13 +2251,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/inventory/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -3187,13 +3138,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/order/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -3557,13 +3501,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/payment/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -3947,13 +3884,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/pricing/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -4533,13 +4463,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/product/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -4881,13 +4804,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/promotion/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5061,13 +4977,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/region/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5220,13 +5129,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/sales-channel/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5386,13 +5288,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/stock-location/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5545,13 +5440,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/store/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5823,13 +5711,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/tax/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -6052,13 +5933,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/user/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -7915,13 +7789,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/medusa-container-resources",
         "title": "Medusa Container Resources",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/events-reference",
-        "title": "Events",
         "children": []
       },
       {
