@@ -219,16 +219,6 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
         //   .join(", ")}
         value={getLocaleAmount(order.shipping_total, order.currency_code)}
       />
-      <Cost
-        label={t("fields.tax")}
-        // TODO: TAX_RATE is missing on order
-        secondaryValue={`${order.tax_rate || 0}%`}
-        value={
-          order.tax_total
-            ? getLocaleAmount(order.tax_total, order.currency_code)
-            : "-"
-        }
-      />
     </div>
   )
 }
