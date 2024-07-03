@@ -1,0 +1,15 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "DatePickerButton",
+  "props": {
+    "size": {
+      "defaultValue": {
+        "value": "\"base\"",
+        "computed": false
+      },
+      "description": "",
+      "required": false
+    }
+  }
+}
