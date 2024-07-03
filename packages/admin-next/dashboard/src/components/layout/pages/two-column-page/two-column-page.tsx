@@ -70,7 +70,7 @@ const Root = <TData,>({
             </div>
           )}
         </div>
-        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[400px]">
+        <div className="flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]">
           {sideBefore.widgets.map((w, i) => {
             return <w.Component {...widgetProps} key={i} />
           })}

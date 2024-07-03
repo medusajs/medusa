@@ -1,3 +1,4 @@
+import { FetchError } from "@medusajs/js-sdk"
 import { HttpTypes } from "@medusajs/types"
 import {
   QueryKey,
@@ -15,11 +16,11 @@ export const taxRegionsQueryKeys = queryKeysFactory(TAX_REGIONS_QUERY_KEY)
 
 export const useTaxRegion = (
   id: string,
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminTaxRegionParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminTaxRegionResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminTaxRegionResponse,
       QueryKey
     >,
@@ -36,11 +37,11 @@ export const useTaxRegion = (
 }
 
 export const useTaxRegions = (
-  query?: Record<string, any>,
+  query?: HttpTypes.AdminTaxRegionListParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminTaxRegionListResponse,
-      Error,
+      FetchError,
       HttpTypes.AdminTaxRegionListResponse,
       QueryKey
     >,
@@ -59,7 +60,7 @@ export const useTaxRegions = (
 export const useCreateTaxRegion = (
   options?: UseMutationOptions<
     HttpTypes.AdminTaxRegionResponse,
-    Error,
+    FetchError,
     HttpTypes.AdminCreateTaxRegion
   >
 ) => {
@@ -77,7 +78,7 @@ export const useDeleteTaxRegion = (
   id: string,
   options?: UseMutationOptions<
     HttpTypes.AdminTaxRegionDeleteResponse,
-    Error,
+    FetchError,
     void
   >
 ) => {
