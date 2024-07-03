@@ -435,11 +435,16 @@ function generateJoinerConfigIfNecessary({
   service: Constructor<IModuleService>
   models: (Function | DmlEntity<any, any>)[]
 }) {
-  if (service.prototype.__joinerConfig) {
-    return
-  }
+  const originalJoinerConfigFn = service.prototype.__joinerConfig
 
   service.prototype.__joinerConfig = function () {
+    if (originalJoinerConfigFn) {
+      return {
+        serviceName: moduleResolution.definition.key,
+        ...originalJoinerConfigFn(),
+      }
+    }
+
     return defineJoinerConfig(moduleResolution.definition.key, {
       models,
     })

@@ -25,10 +25,11 @@ export function Module<
   Links = keyof ModelObjects extends never
     ? Record<string, any>
     : InfersLinksConfig<ModelObjects>
->(
-  moduleName: string,
-  { service, loaders }: ModuleExports<Service>
-): ModuleExports<Service> & {
+>({
+  moduleName = "",
+  service,
+  loaders,
+}: ModuleExports<Service> & { moduleName?: string }): ModuleExports<Service> & {
   links: Links
 } {
   service.prototype.__joinerConfig ??= defineJoinerConfig(moduleName)
