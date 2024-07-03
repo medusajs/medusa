@@ -1080,6 +1080,10 @@
       "create": {
         "header": "Create Override",
         "hint": "Create a new tax override to define the taxes applied under specific conditions."
+      },
+      "edit": {
+        "header": "Edit Override",
+        "hint": "Edit the tax override to define the taxes applied under specific conditions."
       }
     },
     "fields": {

@@ -52,8 +52,8 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
       <div className="flex items-center justify-between px-6 py-3">
         <div className="flex items-center gap-x-2">
           <Collapsible.Trigger asChild>
-            <IconButton size="2xsmall" variant="transparent">
-              <TriangleRightMini className="text-ui-fg-muted" />
+            <IconButton size="2xsmall" variant="transparent" className="group">
+              <TriangleRightMini className="text-ui-fg-muted transition-transform group-data-[state='open']:rotate-90" />
             </IconButton>
           </Collapsible.Trigger>
           <div className="flex items-center gap-x-1.5">
