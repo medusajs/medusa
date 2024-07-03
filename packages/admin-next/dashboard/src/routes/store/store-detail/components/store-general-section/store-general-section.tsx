@@ -59,7 +59,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
               {defaultCurrency.currency_code.toUpperCase()}
             </Badge>
             <Text size="small" leading="compact">
-              {defaultCurrency.currency.name}
+              {defaultCurrency.name}
             </Text>
           </div>
         ) : (

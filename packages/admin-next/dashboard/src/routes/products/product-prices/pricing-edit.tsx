@@ -46,7 +46,7 @@ export const PricingEdit = ({
       acc[reg.id] = reg.currency_code
       return acc
     }, {})
-  }, regions)
+  }, [regions])
 
   const variants = variantId
     ? product.variants.filter((v) => v.id === variantId)
