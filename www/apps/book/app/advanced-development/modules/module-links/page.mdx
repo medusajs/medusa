@@ -27,8 +27,8 @@ Links are defined in a TypeScript or JavaScript file under the `src/links` direc
 For example:
 
 export const highlights = [
-  ["6", "links", "Special `links` property that holds the `HelloModule`'s data models."],
-  ["7", "links", "Special `links` property that holds the `ProductModule`'s data models."],
+  ["6", "links", "Special `links` property that holds the link configurations of the `HelloModule`'s data models."],
+  ["7", "links", "Special `links` property that holds the link configurations of the `ProductModule`'s data models."],
 ]
 
 ```ts title="src/links/hello-product.ts" highlights={highlights}
@@ -38,13 +38,13 @@ import { defineLink } from "@medusajs/utils"
 
 export default defineLink(
   HelloModule.links.myCustom,
-  HelloModule.links.product
+  ProductModule.links.product
 )
 ```
 
-The `defineLink` function accepts two parameters, which are the the data models to form the link between them.
+The `defineLink` function accepts as parameters the link configurations of each module's data model. A module has a special `links` property that holds the link configurations for its data models.
 
-You retrieve those data models by importing the module and accessing the special `links` property, which is an object of the module's data models.
+In this example, you create a module link between `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
 
 ---
 
@@ -66,7 +66,7 @@ export default defineLink(
     model: HelloModule.links.myCustom,
     isList: true
   },
-  HelloModule.links.product
+  ProductModule.links.product
 )
 ```
 
