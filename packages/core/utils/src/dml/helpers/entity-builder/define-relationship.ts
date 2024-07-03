@@ -9,9 +9,9 @@ import {
   BeforeCreate,
   ManyToMany,
   ManyToOne,
-  OnInit,
   OneToMany,
   OneToOne,
+  OnInit,
   Property,
 } from "@mikro-orm/core"
 import { camelToSnakeCase, pluralize } from "../../../common"
@@ -81,7 +81,8 @@ export function defineBelongsToRelationship(
   MikroORMEntity: EntityConstructor<any>,
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
-    Record<string, PropertyType<any> | RelationshipType<any>>
+    Record<string, PropertyType<any> | RelationshipType<any>>,
+    any
   >,
   { relatedModelName }: { relatedModelName: string }
 ) {
@@ -213,7 +214,8 @@ export function defineManyToManyRelationship(
   MikroORMEntity: EntityConstructor<any>,
   relationship: RelationshipMetadata,
   relatedEntity: DmlEntity<
-    Record<string, PropertyType<any> | RelationshipType<any>>
+    Record<string, PropertyType<any> | RelationshipType<any>>,
+    any
   >,
   {
     relatedModelName,

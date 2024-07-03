@@ -224,8 +224,8 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
   deleteCascade?: boolean
 }
 
-export type ModuleExports = {
-  service: Constructor<any>
+export type ModuleExports<T = Constructor<any>> = {
+  service: T
   loaders?: ModuleLoaderFunction[]
   runMigrations?(
     options: LoaderOptions<any>,

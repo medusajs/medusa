@@ -17,7 +17,7 @@ import type {
 } from "@medusajs/workflows-sdk"
 import { WorkflowExecution } from "@models"
 import { WorkflowOrchestratorService } from "@services"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -30,7 +30,7 @@ export class WorkflowsModuleService<
   TWorkflowExecution extends WorkflowExecution = WorkflowExecution
 > extends ModulesSdkUtils.MedusaService<{
   WorkflowExecution: { dto: WorkflowExecution }
-}>({ WorkflowExecution }, entityNameToLinkableKeysMap) {
+}>({ WorkflowExecution }) {
   protected baseRepository_: DAL.RepositoryService
   protected workflowExecutionService_: ModulesSdkTypes.IMedusaInternalService<TWorkflowExecution>
   protected workflowOrchestratorService_: WorkflowOrchestratorService

@@ -51,7 +51,7 @@ import {
   UpdateTypeInput,
 } from "../types"
 import { eventBuilders } from "../utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -90,18 +90,15 @@ export default class ProductModuleService
     ProductVariant: {
       dto: ProductTypes.ProductVariantDTO
     }
-  }>(
-    {
-      Product,
-      ProductCategory,
-      ProductCollection,
-      ProductOption,
-      ProductTag,
-      ProductType,
-      ProductVariant,
-    },
-    entityNameToLinkableKeysMap
-  )
+  }>({
+    Product,
+    ProductCategory,
+    ProductCollection,
+    ProductOption,
+    ProductTag,
+    ProductType,
+    ProductVariant,
+  })
   implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
