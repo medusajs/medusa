@@ -199,7 +199,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
       />
       <Cost
         label={t("fields.discount")}
-        // TODO: ORDER<>DISCOUNTS link
+        // TODO: DISCOUNTS -> moved to line items now
         // secondaryValue={
         //   order.discounts.length > 0
         //     ? order.discounts.map((d) => d.code).join(", ")
@@ -213,10 +213,7 @@ const CostBreakdown = ({ order }: { order: AdminOrder }) => {
       />
       <Cost
         label={t("fields.shipping")}
-        // TODO: ORDER<>SHIPPING link
-        // secondaryValue={order.shipping_methods
-        //   .map((sm) => sm.shipping_option.name)
-        //   .join(", ")}
+        secondaryValue={order.shipping_methods.map((sm) => sm.name).join(", ")}
         value={getLocaleAmount(order.shipping_total, order.currency_code)}
       />
     </div>

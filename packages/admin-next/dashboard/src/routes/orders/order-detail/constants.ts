@@ -23,6 +23,7 @@ const DEFAULT_RELATIONS = [
   "*billing_address",
   "*sales_channel",
   "*promotion",
+  "*shipping_methods",
   "*fulfillments",
   "*fulfillments.items",
   "*fulfillments.labels",
