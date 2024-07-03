@@ -66,9 +66,10 @@ export function getMigration(
       } else {
         logger.info(`Skipping "${tableName}" migration.`)
       }*/
-      logger.info(
-        `Link module('${serviceName}'): Table already exists. Write your own migration if needed.`
-      )
+      // Note: Temporarily skipping this for handling no logs on the CI. Bring this back if necessary.
+      // logger.info(
+      //   `Link module('${serviceName}'): Table already exists. Write your own migration if needed.`
+      // )
     } else {
       try {
         await generator.createSchema()

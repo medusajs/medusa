@@ -62,10 +62,6 @@ export function buildMigrationScript({ moduleName, models, pathToMigrations }) {
             pendingMigrations.length
           } migration files executed`
         )
-      } else {
-        logger.info(
-          `${upperCaseFirst(moduleName)} module: No pending migrations`
-        )
       }
     } catch (error) {
       logger.error(
