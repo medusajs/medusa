@@ -51,48 +51,50 @@ export function defineLink(
   rightService: DefineLinkInputSource,
   linkServiceOptions?: ExtraOptions
 ) {
+  let serviceAObj = {} as ModuleLinkableKeyConfig
+  let serviceBObj = {} as ModuleLinkableKeyConfig
+
+  if (isInputSource(leftService)) {
+    serviceAObj = {
+      key: leftService.linkable,
+      alias: leftService.field,
+      isList: false,
+      module: leftService.serviceName,
+    }
+  } else if (isInputOptions(leftService)) {
+    serviceAObj = {
+      key: leftService.source.linkable,
+      alias: leftService.source.field,
+      isList: leftService.isList ?? false,
+      module: leftService.source.serviceName,
+    }
+  } else {
+    throw new Error("Invalid value for serviceA config")
+  }
+
+  if (isInputSource(rightService)) {
+    serviceBObj = {
+      key: rightService.linkable,
+      alias: rightService.field,
+      isList: false,
+      module: rightService.serviceName,
+    }
+  } else if (isInputOptions(rightService)) {
+    serviceBObj = {
+      key: rightService.source.linkable,
+      alias: rightService.source.field,
+      isList: rightService.isList ?? false,
+      module: rightService.source.serviceName,
+    }
+  } else {
+    throw new Error("Invalid value for serviceA config")
+  }
+
+  const output = { serviceName: "" }
+
   const register = function (
     modules: ModuleJoinerConfig[]
   ): ModuleJoinerConfig {
-    let serviceAObj = {} as ModuleLinkableKeyConfig
-    let serviceBObj = {} as ModuleLinkableKeyConfig
-
-    if (isInputSource(leftService)) {
-      serviceAObj = {
-        key: leftService.linkable,
-        alias: leftService.field,
-        isList: false,
-        module: leftService.serviceName,
-      }
-    } else if (isInputOptions(leftService)) {
-      serviceAObj = {
-        key: leftService.source.linkable,
-        alias: leftService.source.field,
-        isList: leftService.isList ?? false,
-        module: leftService.source.serviceName,
-      }
-    } else {
-      throw new Error("Invalid value for serviceA config")
-    }
-
-    if (isInputSource(rightService)) {
-      serviceBObj = {
-        key: rightService.linkable,
-        alias: rightService.field,
-        isList: false,
-        module: rightService.serviceName,
-      }
-    } else if (isInputOptions(rightService)) {
-      serviceBObj = {
-        key: rightService.source.linkable,
-        alias: rightService.source.field,
-        isList: rightService.isList ?? false,
-        module: rightService.source.serviceName,
-      }
-    } else {
-      throw new Error("Invalid value for serviceA config")
-    }
-
     const serviceAInfo = modules.find(
       (mod) => mod.serviceName === serviceAObj.module
     )
@@ -173,7 +175,7 @@ export function defineLink(
       serviceBPrimaryKey = serviceBPrimaryKey[0]
     }
 
-    const serviceName = composeLinkName(
+    output.serviceName = composeLinkName(
       serviceAObj.module,
       aliasA,
       serviceBObj.module,
@@ -181,7 +183,7 @@ export function defineLink(
     )
 
     const linkDefinition: ModuleJoinerConfig = {
-      serviceName,
+      serviceName: output.serviceName,
       isLink: true,
       alias: [
         {
@@ -222,7 +224,7 @@ export function defineLink(
               aliasB + "_link." + aliasB, //plural aliasA
           },
           relationship: {
-            serviceName,
+            serviceName: output.serviceName,
             primaryKey: serviceAObj.key,
             foreignKey: serviceBPrimaryKey!,
             alias: aliasB + "_link", // plural alias
@@ -236,7 +238,7 @@ export function defineLink(
               aliasA + "_link." + aliasA,
           },
           relationship: {
-            serviceName,
+            serviceName: output.serviceName,
             primaryKey: serviceBObj.key,
             foreignKey: serviceAPrimaryKey!,
             alias: aliasA + "_link", // plural alias
@@ -259,4 +261,6 @@ export function defineLink(
   }
 
   MedusaModule.setCustomLink(register)
+
+  return output
 }
