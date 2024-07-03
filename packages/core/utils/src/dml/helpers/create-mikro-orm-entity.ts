@@ -85,16 +85,14 @@ export function createMikrORMEntity() {
  * return the input idempotently
  * @param entity
  */
-export const toMikroORMEntity = <T>(
-  entity: T
-): T extends DmlEntity<any> ? Infer<T> : T => {
+export const toMikroORMEntity = <T>(entity: T): Infer<T> => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<any> ? Infer<T> : T
+  return mikroOrmEntity as Infer<T>
 }
 
 /**
