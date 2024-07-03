@@ -27,7 +27,7 @@ import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
  * The aliases will be built from the entityQueryingConfig and custom aliases if provided, in case of aliases provided if the methodSuffix is not provided
  * then it will be inferred from the entity name of the alias args.
  *
- * @param moduleName
+ * @param serviceName
  * @param alias
  * @param schema
  * @param models
@@ -35,7 +35,7 @@ import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
  * @param primaryKeys
  */
 export function defineJoinerConfig(
-  moduleName: string,
+  serviceName: string,
   {
     alias,
     schema,
@@ -108,7 +108,7 @@ export function defineJoinerConfig(
   }
 
   if (!primaryKeys && modelDefinitions.size) {
-    const linkConfig = buildLinkConfigFromDmlObjects([
+    const linkConfig = buildLinkConfigFromDmlObjects(serviceName, [
       ...modelDefinitions.values(),
     ])
 
@@ -126,7 +126,7 @@ export function defineJoinerConfig(
   // TODO: In the context of DML add a validation on primary keys and linkable keys if the consumer provide them manually. follow up pr
 
   return {
-    serviceName: moduleName,
+    serviceName,
     primaryKeys: primaryKeys ?? ["id"],
     schema,
     linkableKeys: linkableKeys,
@@ -250,23 +250,41 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *   test: model.text(),
  * })
  *
+ * const links = buildLinkConfigFromDmlObjects('userService', [user, car])
+ *
  * // output:
  * // {
- * //   toJSON: function () {  },
  * //   user: {
- * //     id: "user_id",
+ * //     id: {
+ * //       serviceName: 'userService',
+ * //       field: 'user',
+ * //       linkable: 'user_id',
+ * //       primaryKey: 'id'
+ * //     },
+ * //     toJSON() { ... }
  * //   },
  * //   car: {
- * //     number_plate: "car_number_plate",
- * //   },
+ * //     number_plate: {
+ * //       serviceName: 'userService',
+ * //       field: 'car',
+ * //       linkable: 'car_number_plate',
+ * //       primaryKey: 'number_plate'
+ * //     },
+ * //     toJSON() { ... }
+ * //   }
  * // }
  *
+ * @param serviceName
  * @param models
  */
 export function buildLinkConfigFromDmlObjects<
+  const ServiceName extends string,
   const T extends DmlEntity<any, any>[]
->(models: T = [] as unknown as T): InfersLinksConfig<T> {
-  const linkConfig = {} as InfersLinksConfig<T>
+>(
+  serviceName: ServiceName,
+  models: T = [] as unknown as T
+): InfersLinksConfig<ServiceName, T> {
+  const linkConfig = {} as InfersLinksConfig<ServiceName, T>
 
   for (const model of models) {
     if (!DmlEntity.isDmlEntity(model)) {
@@ -297,12 +315,14 @@ export function buildLinkConfigFromDmlObjects<
         modelLinkConfig[property] = {
           linkable: linkableKeyName,
           primaryKey: property,
+          serviceName,
+          field: lowerCaseFirst(model.name),
         }
       }
     }
   }
 
-  return linkConfig as InfersLinksConfig<T> & Record<any, any>
+  return linkConfig as InfersLinksConfig<ServiceName, T> & Record<any, any>
 }
 
 /**
