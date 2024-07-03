@@ -20,10 +20,6 @@ type StepFunctionReturnConfig<TOutput> = {
       "next" | "uuid" | "action"
     >
   ): WorkflowData<TOutput>
-  if(
-    input: WorkflowData<TOutput>,
-    condition: () => boolean
-  ): WorkflowData<TOutput>
 }
 
 type KeysOfUnion<T> = T extends T ? keyof T : never
@@ -74,6 +70,8 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
         "next" | "uuid" | "action"
       >
     ): WorkflowData<T>
+  } & {
+    if(input: object, condition: (...args: any) => boolean): WorkflowData<T>
   }
 
 export type CreateWorkflowComposerContext = {
