@@ -24,6 +24,7 @@ const DEFAULT_RELATIONS = [
   "*promotion",
   "*fulfillments",
   "*fulfillments.items",
+  "*fulfillments.labels",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

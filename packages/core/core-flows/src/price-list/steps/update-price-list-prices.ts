@@ -4,6 +4,7 @@ import {
   PriceDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPricesDTO,
+  UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPriceWorkflowStepDTO,
 } from "@medusajs/types"
 import { buildPriceSetPricesForModule } from "@medusajs/utils"
@@ -25,10 +26,13 @@ export const updatePriceListPricesStep = createStep(
       const { prices = [], id } = priceListData
 
       for (const price of prices) {
-        pricesToUpdate.push({
+        const toPush = {
           ...price,
           price_set_id: variantPriceSetMap[price.variant_id!],
-        })
+        } as UpdatePriceListPriceDTO
+        delete (toPush as Partial<UpdatePriceListPriceWorkflowDTO>).variant_id
+
+        pricesToUpdate.push(toPush)
 
         if (price.id) {
           priceIds.push(price.id)
