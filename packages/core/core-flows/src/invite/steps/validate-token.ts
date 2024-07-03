@@ -1,8 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { InviteDTO } from "@medusajs/types"
 import { IUserModuleService } from "@medusajs/types"
-import { StepResponse } from "@medusajs/workflows-sdk"
-import { createStep } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const validateTokenStepId = "validate-invite-token-step"
 export const validateTokenStep = createStep(

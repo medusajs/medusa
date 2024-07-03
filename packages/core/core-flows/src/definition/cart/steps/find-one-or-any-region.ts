@@ -1,6 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IRegionModuleService, IStoreModuleService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const findOneOrAnyRegionStepId = "find-one-or-any-region"

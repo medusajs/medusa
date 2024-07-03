@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,

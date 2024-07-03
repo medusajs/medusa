@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CartWorkflowDTO,
   CreateLineItemTaxLineDTO,
@@ -7,6 +6,7 @@ import {
   ItemTaxLineDTO,
   ShippingTaxLineDTO,
 } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

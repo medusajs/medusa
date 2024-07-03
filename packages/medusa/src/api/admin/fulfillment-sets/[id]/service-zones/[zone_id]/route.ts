@@ -2,7 +2,6 @@ import {
   deleteServiceZonesWorkflow,
   updateServiceZonesWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AdminFulfillmentSetResponse,
   AdminServiceZoneResponse,
@@ -11,6 +10,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ModuleRegistrationName,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {

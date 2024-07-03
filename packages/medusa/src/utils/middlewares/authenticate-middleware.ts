@@ -1,6 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ApiKeyDTO, ConfigModule, IApiKeyModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import {
