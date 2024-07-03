@@ -1,11 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreatePromotionRuleDTO,
   IPromotionModuleService,
   PromotionRuleDTO,
   RemovePromotionRulesWorkflowDTO,
 } from "@medusajs/types"
-import { RuleType } from "@medusajs/utils"
+import { ModuleRegistrationName, RuleType } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const removeRulesFromPromotionsStepId = "remove-rules-from-promotions"

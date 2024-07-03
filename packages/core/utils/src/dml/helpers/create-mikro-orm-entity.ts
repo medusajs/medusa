@@ -1,4 +1,10 @@
-import type { EntityConstructor, Infer, PropertyType } from "@medusajs/types"
+import type {
+  DMLSchema,
+  EntityConstructor,
+  IDmlEntity,
+  Infer,
+  PropertyType,
+} from "@medusajs/types"
 import { Entity, Filter } from "@mikro-orm/core"
 import { mikroOrmSoftDeletableFilterOptions } from "../../dal"
 import { DmlEntity } from "../entity"
@@ -59,7 +65,7 @@ export function createMikrORMEntity() {
     /**
      * Processing schema fields
      */
-    Object.entries(schema).forEach(([name, property]) => {
+    Object.entries(schema as DMLSchema).forEach(([name, property]) => {
       const field = property.parse(name)
 
       if ("fieldName" in field) {
@@ -89,14 +95,14 @@ export function createMikrORMEntity() {
  */
 export const toMikroORMEntity = <T>(
   entity: T
-): T extends DmlEntity<any, any> ? Infer<T> : T => {
+): T extends IDmlEntity<any, any> ? Infer<T> : T => {
   let mikroOrmEntity: T | EntityConstructor<any> = entity
 
   if (DmlEntity.isDmlEntity(entity)) {
     mikroOrmEntity = createMikrORMEntity()(entity)
   }
 
-  return mikroOrmEntity as T extends DmlEntity<any, any> ? Infer<T> : T
+  return mikroOrmEntity as T extends IDmlEntity<any, any> ? Infer<T> : T
 }
 
 /**
@@ -114,6 +120,6 @@ export const toMikroOrmEntities = function <T extends any[]>(entities: T) {
 
     return entity
   }) as {
-    [K in keyof T]: T[K] extends DmlEntity<any, any> ? Infer<T[K]> : T[K]
+    [K in keyof T]: T[K] extends IDmlEntity<any, any> ? Infer<T[K]> : T[K]
   }
 }

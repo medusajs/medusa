@@ -4,7 +4,7 @@ import {
 } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const createStockLocationsStepId = "create-stock-locations"
 export const createStockLocations = createStep(

@@ -1,4 +1,3 @@
-import { EntityConstructor } from "@medusajs/types"
 import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
@@ -77,7 +76,6 @@ describe("Entity builder", () => {
       expect(user.parse().tableName).toEqual("user")
 
       const User = toMikroORMEntity(user)
-
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
@@ -1809,15 +1807,20 @@ describe("Entity builder", () => {
       })
 
       const User = toMikroORMEntity(user)
-      expectTypeOf(new User()).toMatchTypeOf<{
+
+      expectTypeOf(new User()).toEqualTypeOf<{
         id: number
         username: string
+        created_at: Date
+        updated_at: Date
         deleted_at: Date | null
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
+          created_at: Date
+          updated_at: Date
           deleted_at: Date | null
-        }>
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -1902,11 +1905,11 @@ describe("Entity builder", () => {
         id: number
         username: string
         deleted_at: Date | null
-        emails: EntityConstructor<{
+        emails: {
           email: string
           isVerified: boolean
           deleted_at: Date | null
-        }> | null
+        } | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -1989,7 +1992,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{ email: string; isVerified: boolean }>
+        email: { email: string; isVerified: boolean }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2076,7 +2079,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{ email: string; isVerified: boolean }>
+        email: { email: string; isVerified: boolean }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2222,14 +2225,14 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
-          }>
-        }>
+          }
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2662,7 +2665,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }>
+        emails: { email: string; isVerified: boolean }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2748,7 +2751,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }> | null
+        emails: { email: string; isVerified: boolean }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2835,7 +2838,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }>
+        emails: { email: string; isVerified: boolean }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -2925,7 +2928,7 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{ email: string; isVerified: boolean }>
+        emails: { email: string; isVerified: boolean }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -3088,32 +3091,32 @@ describe("Entity builder", () => {
         id: number
         username: string
         deleted_at: Date | null
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
           deleted_at: Date | null
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
           deleted_at: Date | null
-          email: EntityConstructor<{
+          email: {
             email: string
             isVerified: boolean
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -3273,27 +3276,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
-          }> | null
-        }>
+          } | null
+        }
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
-          email: EntityConstructor<{
+          email: {
             email: string
             isVerified: boolean
-          }>
-        }> | null
+          }
+        } | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -3453,27 +3456,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{
+        emails: {
           email: string
           isVerified: boolean
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
-          }>
-        }>
+          }
+        }[]
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
-          emails: EntityConstructor<{
+          emails: {
             email: string
             isVerified: boolean
-          }>
-        }>
+          }[]
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -3632,27 +3635,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        emails: EntityConstructor<{
+        emails: {
           email: string
           isVerified: boolean
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
-          }> | null
-        }>
+          } | null
+        }[]
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
-          emails: EntityConstructor<{
+          emails: {
             email: string
             isVerified: boolean
-          }>
-        }> | null
+          }[]
+        } | null
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -3870,32 +3873,32 @@ describe("Entity builder", () => {
         id: number
         username: string
         deleted_at: Date | null
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
           deleted_at: Date | null
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
           deleted_at: Date | null
-          email: EntityConstructor<{
+          email: {
             email: string
             isVerified: boolean
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4058,32 +4061,32 @@ describe("Entity builder", () => {
         id: number
         username: string
         deleted_at: Date | null
-        email: EntityConstructor<{
+        email: {
           email: string
           isVerified: boolean
           deleted_at: Date | null
-          user: EntityConstructor<{
+          user: {
             id: number
             username: string
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       expectTypeOf(new Email()).toMatchTypeOf<{
         email: string
         isVerified: boolean
         deleted_at: Date | null
-        user: EntityConstructor<{
+        user: {
           id: number
           username: string
           deleted_at: Date | null
-          email: EntityConstructor<{
+          email: {
             email: string
             isVerified: boolean
             deleted_at: Date | null
-          }>
-        }>
+          }
+        }
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4247,27 +4250,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4414,27 +4417,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4616,27 +4619,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4790,27 +4793,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -4970,39 +4973,39 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
-        activeTeams: EntityConstructor<{
+          }[]
+        }[]
+        activeTeams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-          activeTeams: EntityConstructor<{
+          }[]
+          activeTeams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -5169,27 +5172,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -5340,27 +5343,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const metaData = MetadataStorage.getMetadataFromDecorator(User)
@@ -5514,27 +5517,27 @@ describe("Entity builder", () => {
       expectTypeOf(new User()).toMatchTypeOf<{
         id: number
         username: string
-        teams: EntityConstructor<{
+        teams: {
           id: number
           name: string
-          users: EntityConstructor<{
+          users: {
             id: number
             username: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       expectTypeOf(new Team()).toMatchTypeOf<{
         id: number
         name: string
-        users: EntityConstructor<{
+        users: {
           id: number
           username: string
-          teams: EntityConstructor<{
+          teams: {
             id: number
             name: string
-          }>
-        }>
+          }[]
+        }[]
       }>()
 
       const squadMetaData = MetadataStorage.getMetadataFromDecorator(Squad)

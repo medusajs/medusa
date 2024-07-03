@@ -4,9 +4,9 @@ import "regenerator-runtime/runtime"
 import express from "express"
 import { track } from "medusa-telemetry"
 
+import { ModuleRegistrationName } from "@medusajs/utils"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export default async function ({
   directory,

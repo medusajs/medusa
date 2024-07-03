@@ -2,7 +2,6 @@ import {
   createShippingOptionsWorkflow,
   deleteShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FulfillmentSetDTO,
   FulfillmentWorkflow,
@@ -13,6 +12,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"

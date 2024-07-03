@@ -4,6 +4,7 @@ import {
   TaxRateDTO,
   UpdateTaxRateDTO,
 } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import {
   StepResponse,
   WorkflowData,
@@ -16,7 +17,6 @@ import {
   deleteTaxRateRulesStep,
   updateTaxRatesStep,
 } from "../steps"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 // import { setTaxRateRulesWorkflow } from "./set-tax-rate-rules"
 
 type UpdateTaxRatesStepInput = {
