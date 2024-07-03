@@ -154,7 +154,7 @@ export function defineJoinerConfig(
             `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
           ],
           args: {
-            entity: entity.name,
+            entity: upperCaseFirst(entity.name),
             methodSuffix: pluralize(upperCaseFirst(entity.name)),
           },
         })),
@@ -215,7 +215,7 @@ export function buildLinkableKeysFromDmlObjects<
 
     if (primaryKeys.length) {
       primaryKeys.forEach((primaryKey) => {
-        linkableKeys[primaryKey] = model.name
+        linkableKeys[primaryKey] = upperCaseFirst(model.name)
       })
     }
   }

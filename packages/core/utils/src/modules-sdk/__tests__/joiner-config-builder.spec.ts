@@ -25,6 +25,7 @@ import {
   ShippingOptionRule,
   ShippingProfile,
 } from "../__fixtures__/joiner-config/entities"
+import { upperCaseFirst } from "../../common"
 
 describe("joiner-config-builder", () => {
   describe("defineJoiner | Mikro orm objects", () => {
@@ -427,8 +428,8 @@ describe("joiner-config-builder", () => {
       }>()
 
       expect(linkableKeys).toEqual({
-        user_id: user.name,
-        car_number_plate: car.name,
+        user_id: upperCaseFirst(user.name),
+        car_number_plate: upperCaseFirst(car.name),
       })
     })
   })
