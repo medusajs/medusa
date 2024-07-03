@@ -40,7 +40,10 @@ export function Module<
     service,
     loaders,
     links: (dmlObjects?.length
-      ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(dmlObjects)
+      ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(
+          serviceName,
+          dmlObjects
+        )
       : {}) as Links,
   }
 }

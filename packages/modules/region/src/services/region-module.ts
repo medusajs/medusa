@@ -40,9 +40,11 @@ export default class RegionModuleService
   extends MedusaService<{
     Region: {
       dto: RegionDTO
+      model: typeof Region
     }
     Country: {
       dto: RegionCountryDTO
+      model: typeof Country
     }
   }>({ Region, Country })
   implements IRegionModuleService

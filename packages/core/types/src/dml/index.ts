@@ -21,9 +21,9 @@ export type InferDmlEntityNameFromConfig<TConfig extends IDmlEntityConfig> =
   TConfig extends string
     ? Capitalize<CamelCase<TConfig>>
     : TConfig extends { name: string }
-    ? Capitalize<CamelCase<TConfig["name"] & string>>
+    ? Capitalize<CamelCase<TConfig["name"]>>
     : TConfig extends { tableName: string }
-    ? Capitalize<CamelCase<TConfig["tableName"] & string>>
+    ? Capitalize<CamelCase<TConfig["tableName"]>>
     : never
 
 /**

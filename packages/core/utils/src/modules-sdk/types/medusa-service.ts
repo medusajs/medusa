@@ -2,6 +2,7 @@ import {
   Constructor,
   Context,
   FindConfig,
+  IDmlEntity,
   Pluralize,
   RestoreReturn,
   SoftDeleteReturn,
@@ -242,15 +243,15 @@ export type AbstractModuleService<
 type InferModelFromConfig<T> = {
   [K in keyof T as T[K] extends { model: any }
     ? K
-    : K extends DmlEntity<any, any>
+    : K extends IDmlEntity<any, any>
     ? K
     : never]: T[K] extends {
     model: infer MODEL
   }
-    ? MODEL extends DmlEntity<any, any>
+    ? MODEL extends IDmlEntity<any, any>
       ? MODEL
       : never
-    : T[K] extends DmlEntity<any, any>
+    : T[K] extends IDmlEntity<any, any>
     ? T[K]
     : never
 }
