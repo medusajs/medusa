@@ -56,7 +56,7 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         {defaultCurrency ? (
           <div className="flex items-center gap-x-2">
             <Badge size="2xsmall">
-              {defaultCurrency.currency?.code?.toUpperCase()}
+              {defaultCurrency.currency_code?.toUpperCase()}
             </Badge>
             <Text size="small" leading="compact">
               {defaultCurrency.currency?.name}
