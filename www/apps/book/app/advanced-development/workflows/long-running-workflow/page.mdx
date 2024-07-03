@@ -60,7 +60,7 @@ const myWorkflow = createWorkflow<
   const message = step3()
 
   return {
-    message
+    message,
   }
 })
 
@@ -110,7 +110,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const subscriptionOptions = {
     workflowId: "hello-world",
     transactionId: transaction.transactionId,
-    subscriberId: "hello-world-subscriber"
+    subscriberId: "hello-world-subscriber",
   }
 
   await workflowEngineModuleService.subscribe({
@@ -121,7 +121,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
         // unsubscribe
         await workflowEngineModuleService.unsubscribe({
           ...subscriptionOptions,
-          subscriberOrId: subscriptionOptions.subscriberId
+          subscriberOrId: subscriptionOptions.subscriberId,
         })
       } else if (data.eventType === "onStepFailure") {
         console.log("Workflow failed", data.step)
