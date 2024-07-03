@@ -236,7 +236,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                 <Form.Item>
                   <Form.Label
                     tooltip={
-                      fieldScope.length
+                      fieldScope?.length && !currency
                         ? t("promotions.campaign_currency.tooltip")
                         : undefined
                     }
@@ -289,9 +289,9 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
               <Form.Item className="basis-1/2">
                 <Form.Label
                   tooltip={
-                    currencyValue
-                      ? undefined
-                      : t("promotions.fields.amount.tooltip")
+                    !currency && isTypeSpend
+                      ? t("promotions.fields.amount.tooltip")
+                      : undefined
                   }
                 >
                   {t("campaigns.budget.fields.limit")}
@@ -310,7 +310,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                       }
                       {...field}
                       value={value}
-                      disabled={!!fieldScope.length && !currencyValue}
+                      disabled={!currency && isTypeSpend}
                     />
                   ) : (
                     <Input
