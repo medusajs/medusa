@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 import { IInventoryService } from "@medusajs/types"

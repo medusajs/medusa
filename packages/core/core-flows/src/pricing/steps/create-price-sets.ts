@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CreatePriceSetDTO, IPricingModuleService } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const createPriceSetsStepId = "create-price-sets"
 export const createPriceSetsStep = createStep(

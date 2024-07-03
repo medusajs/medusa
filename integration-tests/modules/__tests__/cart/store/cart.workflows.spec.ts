@@ -13,7 +13,6 @@ import {
   updateLineItemsStepId,
   updatePaymentCollectionStepId,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   ICustomerModuleService,
@@ -28,6 +27,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
   RuleOperator,
 } from "@medusajs/utils"

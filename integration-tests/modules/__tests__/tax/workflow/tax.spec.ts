@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ITaxModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 import {
   createTaxRateRulesStepId,

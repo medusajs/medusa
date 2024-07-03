@@ -11,8 +11,8 @@ import {
 
 import { DAL } from "@medusajs/types"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   Searchable,
 } from "@medusajs/utils"
@@ -20,10 +20,11 @@ import {
 const userEmailIndexName = "IDX_user_email"
 const userEmailIndexStatement = createPsqlIndexStatementHelper({
   name: userEmailIndexName,
+  unique: true,
   tableName: "user",
   columns: "email",
   where: "deleted_at IS NULL",
-}).expression
+})
 
 const userDeletedAtIndexName = "IDX_user_deleted_at"
 const userDeletedAtIndexStatement = createPsqlIndexStatementHelper({
@@ -56,10 +57,7 @@ export default class User {
   @Property({ columnType: "text", nullable: true })
   last_name: string | null = null
 
-  @Index({
-    name: userEmailIndexName,
-    expression: userEmailIndexStatement,
-  })
+  @userEmailIndexStatement.MikroORMIndex()
   @Searchable()
   @Property({ columnType: "text" })
   email: string

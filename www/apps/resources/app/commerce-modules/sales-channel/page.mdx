@@ -27,15 +27,14 @@ Some use case examples for using a sales channel:
 Manage sales channels in your store. Each sales channel has different meta information such as name or description, allowing you to easily differentiate between sales channels.
 
 ```ts
-const salesChannels = await salesChannelModuleService
-  .createSalesChannels([
-    {
-     name: "B2B",
-    },
-    {
-     name: "Mobile App",
-    },
-  ])
+const salesChannels = await salesChannelModuleService.createSalesChannels([
+  {
+    name: "B2B",
+  },
+  {
+    name: "Mobile App",
+  },
+])
 ```
 
 ### Product Availability
@@ -61,64 +60,55 @@ For example:
 <CodeTabs groupId="resource-type">
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { ISalesChannelModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const salesChannelModuleService: ISalesChannelModuleService =
-      request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const salesChannelModuleService: ISalesChannelModuleService =
+    request.scope.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
-    res.json({
-      sales_channels: await salesChannelModuleService
-        .listSalesChannels(),
-    })
-  }
-  ```
+  res.json({
+    sales_channels: await salesChannelModuleService.listSalesChannels(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/medusa"
+import { ISalesChannelModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const salesChannelModuleService: ISalesChannelModuleService =
-      container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const salesChannelModuleService: ISalesChannelModuleService =
+    container.resolve(ModuleRegistrationName.SALES_CHANNEL)
 
-    const salesChannels = await salesChannelModuleService
-      .listSalesChannels()
-  }
-  ```
+  const salesChannels = await salesChannelModuleService.listSalesChannels()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
 
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { ISalesChannelModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+import { ISalesChannelModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const salesChannelModuleService: ISalesChannelModuleService =
-      container.resolve(
-        ModuleRegistrationName.SALES_CHANNEL
-      )
-    
-    const salesChannels = await salesChannelModuleService
-      .listSalesChannels()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const salesChannelModuleService: ISalesChannelModuleService =
+    container.resolve(ModuleRegistrationName.SALES_CHANNEL)
+
+  const salesChannels = await salesChannelModuleService.listSalesChannels()
+})
+```
 
   </CodeTab>
 </CodeTabs>

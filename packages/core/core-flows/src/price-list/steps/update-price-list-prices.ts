@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   PriceDTO,
@@ -7,7 +6,10 @@ import {
   UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPriceWorkflowStepDTO,
 } from "@medusajs/types"
-import { buildPriceSetPricesForModule } from "@medusajs/utils"
+import {
+  buildPriceSetPricesForModule,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const updatePriceListPricesStepId = "update-price-list-prices"
