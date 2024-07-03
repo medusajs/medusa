@@ -19,7 +19,7 @@ medusaIntegrationTestRunner({
 
       it("should generate a proper link definition", async () => {
         const currencyLinks = CurrencyModule.links
-        const regionLinks = RegionModule.links as any // TODO fix typings for model.define with config object
+        const regionLinks = RegionModule.links
 
         const link = defineLink(currencyLinks.currency, regionLinks.region)
 

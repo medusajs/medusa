@@ -420,9 +420,10 @@ describe("joiner-config-builder", () => {
       })
 
       const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
+
       expectTypeOf(linkableKeys).toMatchTypeOf<{
-        user_id: "User"
-        car_number_plate: "Car"
+        user_id: "user"
+        car_number_plate: "car"
       }>()
 
       expect(linkableKeys).toEqual({
@@ -461,7 +462,10 @@ describe("joiner-config-builder", () => {
         }
       )
 
-      const linkConfig = buildLinkConfigFromDmlObjects("myService", [user, car])
+      const linkConfig = buildLinkConfigFromDmlObjects("myService", {
+        user,
+        car,
+      })
 
       expectTypeOf(linkConfig).toMatchTypeOf<{
         user: {

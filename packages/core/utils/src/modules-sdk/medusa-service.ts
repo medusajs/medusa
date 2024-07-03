@@ -353,13 +353,12 @@ export function MedusaService<
   class AbstractModuleService_ {
     [MedusaServiceSymbol] = true
 
-    static [MedusaServiceModelObjectsSymbol] = Object.values(
-      entities
-    ) as unknown as MedusaServiceReturnType<
-      EntitiesConfig extends { __empty: any }
-        ? ModelConfigurationsToConfigTemplate<TEntities>
-        : EntitiesConfig
-    >["$modelObjects"];
+    static [MedusaServiceModelObjectsSymbol] =
+      entities as unknown as MedusaServiceReturnType<
+        EntitiesConfig extends { __empty: any }
+          ? ModelConfigurationsToConfigTemplate<TEntities>
+          : EntitiesConfig
+      >["$modelObjects"];
 
     [MedusaServiceEntityNameToLinkableKeysMapSymbol]: MapToConfig
 

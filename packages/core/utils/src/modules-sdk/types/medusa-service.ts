@@ -43,7 +43,7 @@ export type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
     dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
     model: T[Key] extends { model: infer MODEL }
       ? MODEL
-      : T[Key] extends DmlEntity<any, any>
+      : T[Key] extends IDmlEntity<any, any>
       ? T[Key]
       : never
     /**
@@ -258,5 +258,5 @@ type InferModelFromConfig<T> = {
 
 export type MedusaServiceReturnType<ModelsConfig extends Record<any, any>> = {
   new (...args: any[]): AbstractModuleService<ModelsConfig>
-  $modelObjects: InferModelFromConfig<ModelsConfig>[keyof InferModelFromConfig<ModelsConfig>][]
+  $modelObjects: InferModelFromConfig<ModelsConfig>
 }

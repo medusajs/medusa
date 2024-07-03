@@ -10,11 +10,13 @@ type InputSource = {
 }
 
 type InputToJson = {
-  toJSON(): InputSource
+  toJSON: () => InputSource
 }
 
+type CombinedSource = Record<any, any> & InputToJson
+
 type InputOptions = {
-  source: InputToJson | InputSource
+  source: CombinedSource | InputSource
   isList?: boolean
 }
 
@@ -29,7 +31,7 @@ type ExtraOptions = {
   }
 }
 
-type DefineLinkInputSource = InputSource | InputOptions
+type DefineLinkInputSource = InputSource | InputOptions | CombinedSource
 
 type ModuleLinkableKeyConfig = {
   module: string
