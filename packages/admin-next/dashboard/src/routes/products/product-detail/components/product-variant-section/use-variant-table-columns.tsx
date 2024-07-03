@@ -124,10 +124,11 @@ export const useProductVariantTableColumns = (
           }
 
           return (
-            <div className="flex h-full w-full items-center overflow-hidden">
+            <div className="flex items-center">
               <Badge
                 size="2xsmall"
-                className="flex min-w-[20px] items-center justify-center"
+                title={variantOpt.value}
+                className="inline-block min-w-[20px] max-w-[140px] overflow-hidden truncate"
               >
                 {variantOpt.value}
               </Badge>
