@@ -15,19 +15,16 @@ type VariantPricesSectionProps = {
 
 export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
   const { t } = useTranslation()
-
   const prices = variant.prices
     .filter((p) => !Object.keys(p.rules || {}).length) // display just currency prices
     .sort((p1, p2) => p1.currency_code?.localeCompare(p2.currency_code))
 
-  const [current, setCurrent] = useState(Math.min(prices.length, 3))
-
   const hasPrices = !!prices.length
-
-  const displayPrices = prices.slice(0, current)
+  const [pageSize, setPageSize] = useState(3)
+  const displayPrices = prices.slice(0, pageSize)
 
   const onShowMore = () => {
-    setCurrent(Math.min(current + 3, prices.length))
+    setPageSize(pageSize + 3)
   }
 
   return (
@@ -67,12 +64,12 @@ export function VariantPricesSection({ variant }: VariantPricesSectionProps) {
           <span className="font-medium">
             {t("products.variant.pricesPagination", {
               total: prices.length,
-              current,
+              current: Math.min(pageSize, prices.length),
             })}
           </span>
           <Button
             onClick={onShowMore}
-            disabled={current >= prices.length}
+            disabled={pageSize >= prices.length}
             className="-mr-3 text-blue-500"
             variant="transparent"
           >

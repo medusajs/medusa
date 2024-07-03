@@ -78,6 +78,7 @@ const useFormField = () => {
     id,
     name: fieldContext.name,
     formItemId: `${id}-form-item`,
+    formLabelId: `${id}-form-item-label`,
     formDescriptionId: `${id}-form-item-description`,
     formErrorMessageId: `${id}-form-item-message`,
     ...fieldState,
@@ -109,12 +110,13 @@ const Label = forwardRef<
     icon?: ReactNode
   }
 >(({ className, optional = false, tooltip, icon, ...props }, ref) => {
-  const { formItemId } = useFormField()
+  const { formLabelId, formItemId } = useFormField()
   const { t } = useTranslation()
 
   return (
     <div className="flex items-center gap-x-1">
       <LabelComponent
+        id={formLabelId}
         ref={ref}
         className={clx(className)}
         htmlFor={formItemId}
@@ -142,8 +144,13 @@ const Control = forwardRef<
   React.ElementRef<typeof Slot>,
   React.ComponentPropsWithoutRef<typeof Slot>
 >(({ ...props }, ref) => {
-  const { error, formItemId, formDescriptionId, formErrorMessageId } =
-    useFormField()
+  const {
+    error,
+    formItemId,
+    formDescriptionId,
+    formErrorMessageId,
+    formLabelId,
+  } = useFormField()
 
   return (
     <Slot
@@ -155,6 +162,7 @@ const Control = forwardRef<
           : `${formDescriptionId} ${formErrorMessageId}`
       }
       aria-invalid={!!error}
+      aria-labelledby={formLabelId}
       {...props}
     />
   )

@@ -2,8 +2,8 @@ import {
   deleteShippingProfileWorkflow,
   updateShippingProfilesWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { HttpTypes, IFulfillmentModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,

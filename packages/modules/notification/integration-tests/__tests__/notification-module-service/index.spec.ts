@@ -10,13 +10,10 @@ let moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
+      id: "test-provider",
       options: {
-        config: {
-          "test-provider": {
-            name: "Test provider",
-            channels: ["email"],
-          },
-        },
+        name: "Test provider",
+        channels: ["email"],
       },
     },
   ],

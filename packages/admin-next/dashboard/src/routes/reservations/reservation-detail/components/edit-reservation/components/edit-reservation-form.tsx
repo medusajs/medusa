@@ -2,10 +2,7 @@ import * as zod from "zod"
 
 import { InventoryTypes, StockLocationDTO } from "@medusajs/types"
 import { Button, Input, Select, Text, Textarea, toast } from "@medusajs/ui"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../../components/modals"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -140,7 +137,11 @@ export const EditReservationForm = ({
             />
             <AttributeGridRow
               title={t("inventory.available")}
-              value={level!.stocked_quantity - reservedQuantity}
+              value={
+                level!.stocked_quantity -
+                (level.reserved_quantity - reservation.quantity) -
+                reservedQuantity
+              }
             />
           </div>
           <Form.Field

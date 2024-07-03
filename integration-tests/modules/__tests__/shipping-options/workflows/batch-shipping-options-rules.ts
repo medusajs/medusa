@@ -2,7 +2,6 @@ import {
   batchShippingOptionRulesWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   BatchWorkflowInput,
   CreateShippingOptionRuleDTO,
@@ -16,6 +15,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   RuleOperator,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"

@@ -1,10 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   UpdatePriceListDTO,
   UpdatePriceListWorkflowInputDTO,
 } from "@medusajs/types"
 import {
+  ModuleRegistrationName,
   buildPriceListRules,
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,

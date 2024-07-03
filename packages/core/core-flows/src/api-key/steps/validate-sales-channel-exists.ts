@@ -1,6 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { ISalesChannelModuleService } from "@medusajs/types"
-import { MedusaError, arrayDifference } from "@medusajs/utils"
+import {
+  MedusaError,
+  ModuleRegistrationName,
+  arrayDifference,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

@@ -1,8 +1,11 @@
 import { INotificationModuleService } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  promiseAll,
+} from "@medusajs/utils"
 import { get } from "lodash"
 import { SubscriberArgs, SubscriberConfig } from "../types/subscribers"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
 
 type HandlerConfig = {
   event: string

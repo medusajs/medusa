@@ -1,7 +1,11 @@
-import { LinkModuleUtils } from "@medusajs/modules-sdk"
 import { CartWorkflowDTO } from "@medusajs/types"
-import { isObject, Modules, remoteQueryObjectFromString } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  ContainerRegistrationKeys,
+  Modules,
+  isObject,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   cart_or_cart_id: string | CartWorkflowDTO
@@ -19,7 +23,9 @@ export const retrieveCartWithLinksStep = createStep(
     }
 
     const id = cartOrCartId
-    const remoteQuery = container.resolve(LinkModuleUtils.REMOTE_QUERY)
+    const remoteQuery = container.resolve(
+      ContainerRegistrationKeys.REMOTE_QUERY
+    )
     const query = remoteQueryObjectFromString({
       entryPoint: Modules.CART,
       fields,

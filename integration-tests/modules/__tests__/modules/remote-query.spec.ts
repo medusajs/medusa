@@ -1,6 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../..//helpers/create-admin-user"
 import { adminHeaders } from "../../../helpers/create-admin-user"

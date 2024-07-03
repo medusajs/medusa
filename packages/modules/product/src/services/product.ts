@@ -18,9 +18,10 @@ type NormalizedFilterableProductProps = ProductTypes.FilterableProductProps & {
   }
 }
 
-export default class ProductService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
+export default class ProductService extends ModulesSdkUtils.MedusaInternalService<
+  InjectedDependencies,
   Product
-)<Product> {
+>(Product) {
   protected readonly productRepository_: DAL.RepositoryService<Product>
 
   constructor({ productRepository }: InjectedDependencies) {

@@ -1,12 +1,14 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   CreateNotificationDTO,
   IEventBusModuleService,
   INotificationModuleService,
   Logger,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { medusaIntegrationTestRunner, TestEventUtils } from "medusa-test-utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
+import { TestEventUtils, medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 

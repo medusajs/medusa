@@ -20,7 +20,7 @@ import {
 } from "@medusajs/utils"
 
 import { Store, StoreCurrency } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
 type InjectedDependencies = {
@@ -32,7 +32,7 @@ export default class StoreModuleService
   extends MedusaService<{
     Store: { dto: StoreTypes.StoreDTO }
     StoreCurrency: { dto: StoreTypes.StoreCurrencyDTO }
-  }>({ Store, StoreCurrency }, entityNameToLinkableKeysMap)
+  }>({ Store, StoreCurrency })
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService

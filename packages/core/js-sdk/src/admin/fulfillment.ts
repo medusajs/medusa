@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/types"
+import { HttpTypes, SelectParams } from "@medusajs/types"
 import { Client } from "../client"
 import { ClientHeaders } from "../types"
 
@@ -46,7 +46,7 @@ export class Fulfillment {
     headers?: ClientHeaders
   ) {
     return await this.client.fetch<HttpTypes.AdminFulfillmentResponse>(
-      `/admin/fulfillments/${id}/shipments`,
+      `/admin/fulfillments/${id}/shipment`,
       {
         method: "POST",
         headers,

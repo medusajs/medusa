@@ -1,13 +1,12 @@
 import {
   CreateCustomerAddressDTO,
-  UpdateCustomerAddressDTO,
   FilterableCustomerAddressProps,
   ICustomerModuleService,
+  UpdateCustomerAddressDTO,
 } from "@medusajs/types"
+import { ModuleRegistrationName, isDefined } from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { unsetForCreate, unsetForUpdate } from "./utils"
-import { isDefined } from "@medusajs/utils"
 
 type StepInput = {
   create?: CreateCustomerAddressDTO[]

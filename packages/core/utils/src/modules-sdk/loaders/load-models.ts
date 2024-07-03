@@ -27,15 +27,15 @@ export function loadModels(basePath: string) {
 
       if (stats.isFile()) {
         try {
-          const required = require(filePath) as {
-            [key: string]: { name?: string }
-          }
+          const required = require(filePath)
 
-          return Object.values(required).filter((resource) => !!resource.name)
+          return Object.values(required).filter(
+            (resource: any) => !!resource.name
+          )
         } catch (e) {}
       }
 
       return
     })
-    .filter(Boolean) as { name: string }[]
+    .filter(Boolean) as any[]
 }

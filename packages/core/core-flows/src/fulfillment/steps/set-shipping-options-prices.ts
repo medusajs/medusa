@@ -8,14 +8,14 @@ import {
   PriceSetDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   ContainerRegistrationKeys,
-  isDefined,
   LINKS,
+  ModuleRegistrationName,
+  isDefined,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface PriceRegionId {
   region_id: string

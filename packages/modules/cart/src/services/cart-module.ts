@@ -39,7 +39,7 @@ import {
   UpdateLineItemDTO,
   UpdateShippingMethodTaxLineDTO,
 } from "@types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -74,7 +74,7 @@ export default class CartModuleService
     ShippingMethod: { dto: CartTypes.CartShippingMethodDTO }
     ShippingMethodAdjustment: { dto: CartTypes.ShippingMethodAdjustmentDTO }
     ShippingMethodTaxLine: { dto: CartTypes.ShippingMethodTaxLineDTO }
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements ICartModuleService
 {
   protected baseRepository_: DAL.RepositoryService

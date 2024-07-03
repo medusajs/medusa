@@ -48,7 +48,7 @@ import {
   PaymentSession,
   Refund,
 } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import PaymentProviderService from "./payment-provider"
 
 type InjectedDependencies = {
@@ -76,7 +76,7 @@ export default class PaymentModuleService
     Payment: { dto: PaymentDTO }
     Capture: { dto: CaptureDTO }
     Refund: { dto: RefundDTO }
-  }>(generateMethodForModels, entityNameToLinkableKeysMap)
+  }>(generateMethodForModels)
   implements IPaymentModuleService
 {
   protected baseRepository_: DAL.RepositoryService

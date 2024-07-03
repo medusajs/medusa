@@ -2,11 +2,10 @@
  * Utility factory and interfaces for module service public facing API
  */
 import {
-  Constructor,
   Context,
   FindConfig,
   IEventBusModuleService,
-  Pluralize,
+  ModuleJoinerConfig,
   RepositoryService,
   RestoreReturn,
   SoftDeleteReturn,
@@ -22,17 +21,15 @@ import {
 } from "../common"
 import { InjectManager, MedusaContext } from "./decorators"
 import { ModuleRegistrationName } from "./definition"
-import { DmlEntity } from "../dml"
-
-type BaseMethods =
-  | "retrieve"
-  | "list"
-  | "listAndCount"
-  | "delete"
-  | "softDelete"
-  | "restore"
-  | "create"
-  | "update"
+import {
+  BaseMethods,
+  EntitiesConfigTemplate,
+  ExtractKeysFromConfig,
+  MedusaServiceReturnType,
+  ModelConfigurationsToConfigTemplate,
+  TEntityEntries,
+} from "./types/medusa-service"
+import { buildEntitiesNameToLinkableKeysMap } from "./joiner-config-builder"
 
 const readMethods = ["retrieve", "list", "listAndCount"] as BaseMethods[]
 const writeMethods = [
@@ -44,200 +41,6 @@ const writeMethods = [
 ] as BaseMethods[]
 
 const methods: BaseMethods[] = [...readMethods, ...writeMethods]
-
-type ModelDTOConfig = {
-  dto: object
-  create?: any
-  update?: any
-  /**
-   * @internal
-   * @deprecated
-   */
-  singular?: string
-  /**
-   * @internal
-   * @deprecated
-   */
-  plural?: string
-}
-
-type EntitiesConfigTemplate = { [key: string]: ModelDTOConfig }
-
-type ModelConfigurationsToConfigTemplate<T extends TEntityEntries> = {
-  [Key in keyof T as `${Capitalize<Key & string>}`]: {
-    dto: T[Key] extends Constructor<any> ? InstanceType<T[Key]> : any
-    create: any
-    update: any
-    singular: T[Key] extends { singular: string } ? T[Key]["singular"] : Key
-    plural: T[Key] extends { plural: string }
-      ? T[Key]["plural"]
-      : Pluralize<Key & string>
-  }
-}
-
-/**
- * @deprecated should all notion of singular and plural be removed once all modules are aligned with the convention
- */
-type ExtractSingularName<T extends Record<any, any>, K = keyof T> = Capitalize<
-  T[K] extends { singular?: string } ? T[K]["singular"] & string : K & string
->
-
-/**
- * @deprecated should all notion of singular and plural be removed once all modules are aligned with the convention
- * The pluralize will move to where it should be used instead
- */
-type ExtractPluralName<T extends Record<any, any>, K = keyof T> = Capitalize<
-  T[K] extends {
-    plural?: string
-  }
-    ? T[K]["plural"] & string
-    : Pluralize<K & string>
->
-
-// TODO: The future expected entry will be a DML object but in the meantime we have to maintain  backward compatibility for ouw own modules and therefore we need to support Constructor<any> as well as this temporary object
-type TEntityEntries<Keys = string> = Record<
-  Keys & string,
-  | Constructor<any>
-  | DmlEntity<any>
-  | { name?: string; singular?: string; plural?: string }
->
-
-type ExtractKeysFromConfig<EntitiesConfig> = EntitiesConfig extends {
-  __empty: any
-}
-  ? string
-  : keyof EntitiesConfig
-
-export type AbstractModuleService<
-  TEntitiesDtoConfig extends Record<string, any>
-> = {
-  [TEntityName in keyof TEntitiesDtoConfig as `retrieve${ExtractSingularName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: (
-    id: string,
-    config?: FindConfig<any>,
-    sharedContext?: Context
-  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `list${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: (
-    filters?: any,
-    config?: FindConfig<any>,
-    sharedContext?: Context
-  ) => Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `listAndCount${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (filters?: any, config?: FindConfig<any>, sharedContext?: Context): Promise<
-      [TEntitiesDtoConfig[TEntityName]["dto"][], number]
-    >
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `delete${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (
-      primaryKeyValues: string | object | string[] | object[],
-      sharedContext?: Context
-    ): Promise<void>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `softDelete${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    <TReturnableLinkableKeys extends string>(
-      primaryKeyValues: string | object | string[] | object[],
-      config?: SoftDeleteReturn<TReturnableLinkableKeys>,
-      sharedContext?: Context
-    ): Promise<Record<string, string[]> | void>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `restore${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    <TReturnableLinkableKeys extends string>(
-      primaryKeyValues: string | object | string[] | object[],
-      config?: RestoreReturn<TReturnableLinkableKeys>,
-      sharedContext?: Context
-    ): Promise<Record<string, string[]> | void>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (...args: any[]): Promise<any>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (...args: any[]): Promise<any>
-  }
-}
-
-// TODO: Because of a bug, those methods were not made visible which now cause issues with the fix as our interface are not consistent with the expectations
-
-// are not consistent accross modules
-/* & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (data: any[], sharedContext?: Context): Promise<
-      TEntitiesDtoConfig[TEntityName]["dto"][]
-    >
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `create${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (data: any, sharedContext?: Context): Promise<
-      TEntitiesDtoConfig[TEntityName]["dto"][]
-    >
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (
-      data: TEntitiesDtoConfig[TEntityName]["update"][],
-      sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (
-      data: TEntitiesDtoConfig[TEntityName]["update"],
-      sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"]>
-  }
-} & {
-  [TEntityName in keyof TEntitiesDtoConfig as `update${ExtractPluralName<
-    TEntitiesDtoConfig,
-    TEntityName
-  >}`]: {
-    (
-      idOrdSelector: any,
-      data: TEntitiesDtoConfig[TEntityName]["update"],
-      sharedContext?: Context
-    ): Promise<TEntitiesDtoConfig[TEntityName]["dto"][]>
-  }
-}*/
 
 /**
  * @internal
@@ -264,6 +67,36 @@ function buildMethodNamesFromModel(
 }
 
 /**
+ * Accessible from the MedusaService, holds the model objects when provided
+ */
+export const MedusaServiceModelObjectsSymbol = Symbol.for(
+  "MedusaServiceModelObjectsSymbol"
+)
+
+/**
+ * Symbol to mark a class as a Medusa service
+ */
+export const MedusaServiceSymbol = Symbol.for("MedusaServiceSymbol")
+
+/**
+ * Accessible from the MedusaService, holds the entity name to linkable keys map
+ * to be used for softDelete and restore methods
+ */
+export const MedusaServiceEntityNameToLinkableKeysMapSymbol = Symbol.for(
+  "MedusaServiceEntityNameToLinkableKeysMapSymbol"
+)
+
+/**
+ * Check if a value is a Medusa service
+ * @param value
+ */
+export function isMedusaService(
+  value: any
+): value is MedusaServiceReturnType<any> {
+  return value && value?.prototype[MedusaServiceSymbol]
+}
+
+/**
  * Factory function for creating an abstract module service
  *
  * @example
@@ -281,26 +114,22 @@ function buildMethodNamesFromModel(
  *   RuleType,
  * }
  *
- * class MyService extends ModulesSdkUtils.MedusaService(entities, entityNameToLinkableKeysMap) {}
+ * class MyService extends ModulesSdkUtils.MedusaService(entities) {}
  *
  * @param entities
- * @param entityNameToLinkableKeysMap
  */
 export function MedusaService<
-  EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
-  TEntities extends TEntityEntries<
+  const EntitiesConfig extends EntitiesConfigTemplate = { __empty: any },
+  const TEntities extends TEntityEntries<
     ExtractKeysFromConfig<EntitiesConfig>
   > = TEntityEntries<ExtractKeysFromConfig<EntitiesConfig>>
 >(
-  entities: TEntities,
-  entityNameToLinkableKeysMap: MapToConfig = {}
-): {
-  new (...args: any[]): AbstractModuleService<
-    EntitiesConfig extends { __empty: any }
-      ? ModelConfigurationsToConfigTemplate<TEntities>
-      : EntitiesConfig
-  >
-} {
+  entities: TEntities
+): MedusaServiceReturnType<
+  EntitiesConfig extends { __empty: any }
+    ? ModelConfigurationsToConfigTemplate<TEntities>
+    : EntitiesConfig
+> {
   const buildAndAssignMethodImpl = function (
     klassPrototype: any,
     method: string,
@@ -474,7 +303,7 @@ export function MedusaService<
           // eg: product.id = product_id, variant.id = variant_id
           const mappedCascadedEntitiesMap = mapObjectTo(
             cascadedEntitiesMap,
-            entityNameToLinkableKeysMap,
+            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
@@ -506,7 +335,7 @@ export function MedusaService<
           // eg: product.id = product_id, variant.id = variant_id
           mappedCascadedEntitiesMap = mapObjectTo(
             cascadedEntitiesMap,
-            entityNameToLinkableKeysMap,
+            this[MedusaServiceEntityNameToLinkableKeysMapSymbol],
             {
               pick: config.returnLinkableKeys,
             }
@@ -522,11 +351,23 @@ export function MedusaService<
   }
 
   class AbstractModuleService_ {
+    [MedusaServiceSymbol] = true
+
+    static [MedusaServiceModelObjectsSymbol] = Object.values(
+      entities
+    ) as unknown as MedusaServiceReturnType<
+      EntitiesConfig extends { __empty: any }
+        ? ModelConfigurationsToConfigTemplate<TEntities>
+        : EntitiesConfig
+    >["$modelObjects"];
+
+    [MedusaServiceEntityNameToLinkableKeysMapSymbol]: MapToConfig
+
     readonly __container__: Record<any, any>
     readonly baseRepository_: RepositoryService
-    readonly eventBusModuleService_: IEventBusModuleService;
+    readonly eventBusModuleService_: IEventBusModuleService
 
-    [key: string]: any
+    __joinerConfig?(): ModuleJoinerConfig
 
     constructor(container: Record<any, any>) {
       this.__container__ = container
@@ -539,6 +380,11 @@ export function MedusaService<
       this.eventBusModuleService_ = hasEventBusModuleService
         ? this.__container__.eventBusModuleService
         : undefined
+
+      this[MedusaServiceEntityNameToLinkableKeysMapSymbol] =
+        buildEntitiesNameToLinkableKeysMap(
+          this.__joinerConfig?.()?.linkableKeys ?? {}
+        )
     }
 
     protected async emitEvents_(groupedEvents) {
@@ -563,7 +409,7 @@ export function MedusaService<
     string,
     TEntities[keyof TEntities],
     Record<string, string>
-  ][] = Object.entries(entities).map(([name, config]) => [
+  ][] = Object.entries(entities as {}).map(([name, config]) => [
     name,
     config as TEntities[keyof TEntities],
     buildMethodNamesFromModel(name, config as TEntities[keyof TEntities]),

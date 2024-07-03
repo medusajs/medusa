@@ -17,11 +17,13 @@ export type PaymentModuleOptions = Partial<ModuleServiceInitializeOptions> & {
      * The module provider to be registered
      */
     resolve: string | ModuleProviderExports
-    options: {
-      /**
-       * key value pair of the provider name and the configuration to be passed to the provider constructor
-       */
-      config: Record<string, unknown>
-    }
+    /**
+     * The id of the provider
+     */
+    id: string
+    /**
+     * key value pair of the configuration to be passed to the provider constructor
+     */
+    options?: Record<string, unknown>
   }[]
 }

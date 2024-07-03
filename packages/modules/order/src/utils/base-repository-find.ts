@@ -34,11 +34,18 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
+      if (!config.options.populate.includes("order.items")) {
+        config.options.populate.unshift("order.items")
+      }
+
       // first relation is always order if the entity is not Order
+      const index = config.options.populate.findIndex((p) => p === "order")
+      if (index > -1) {
+        config.options.populate.splice(index, 1)
+      }
+
       config.options.populate.unshift("order")
       orderAlias = "o1"
-
-      config.options.populate.unshift("order.items")
     }
 
     let defaultVersion = knex.raw(`"${orderAlias}"."version"`)
@@ -105,7 +112,12 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     let orderAlias = "o0"
     if (isRelatedEntity) {
-      // first relation is always order if entity is not Order
+      // first relation is always order if the entity is not Order
+      const index = config.options.populate.findIndex((p) => p === "order")
+      if (index > -1) {
+        config.options.populate.splice(index, 1)
+      }
+
       config.options.populate.unshift("order")
       orderAlias = "o1"
     }

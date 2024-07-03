@@ -69,59 +69,55 @@ For example:
 <CodeTabs groupId="resource-type">
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    res.json({ 
-      products: await productModuleService.listProducts(),
-    })
-  }
-  ```
+  res.json({
+    products: await productModuleService.listProducts(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/medusa"
+import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const productModuleService: IProductModuleService =
-      container.resolve(ModuleRegistrationName.PRODUCT)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.listProducts()
-  }
-  ```
+  const products = await productModuleService.listProducts()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
 
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { IProductModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const productModuleService: IProductModuleService =
-      container.resolve(ModuleRegistrationName.PRODUCT)
+const step1 = createStep("step-1", async (_, { container }) => {
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.listProducts()
-  })
-  ```
+  const products = await productModuleService.listProducts()
+})
+```
 
   </CodeTab>
 </CodeTabs>

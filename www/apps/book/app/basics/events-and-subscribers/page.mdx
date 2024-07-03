@@ -64,23 +64,25 @@ For example:
 export const highlights = [
   ["10", "container", "Recieve the Medusa Container in the object parameter."],
   ["13", "resolve", "Resolve the Product Module's main service."],
-  ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  [
+    "13",
+    "ModuleRegistrationName.PRODUCT",
+    "The resource registration name imported from `@medusajs/modules-sdk`.",
+  ],
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
-import {
-  SubscriberArgs,
-  type SubscriberConfig,
-} from "@medusajs/medusa"
+import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export default async function productCreateHandler({
   data,
   container,
 }: SubscriberArgs<Record<string, string>>) {
-  const productModuleService: IProductModuleService =
-    container.resolve(ModuleRegistrationName.PRODUCT)
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
   const product = await productModuleService.retrieve(data.id)
 

@@ -90,11 +90,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         providers: [
           {
             resolve: "@medusajs/file-local-next",
-            options: {
-              config: {
-                local: {},
-              },
-            },
+            id: "local",
           },
         ],
       },
@@ -105,11 +101,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         providers: [
           {
             resolve: "@medusajs/fulfillment-manual",
-            options: {
-              config: {
-                manual: {},
-              },
-            },
+            id: "manual",
           },
         ],
       },
@@ -120,11 +112,7 @@ export function defineConfig(config: Partial<ConfigModule> = {}): ConfigModule {
         providers: [
           {
             resolve: "@medusajs/notification-local",
-            options: {
-              config: {
-                local: {},
-              },
-            },
+            id: "local",
           },
         ],
       },

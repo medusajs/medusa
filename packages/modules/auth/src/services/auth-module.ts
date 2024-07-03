@@ -12,7 +12,7 @@ import {
 
 import { AuthIdentity, ProviderIdentity } from "@models"
 
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 import {
   InjectManager,
@@ -32,7 +32,7 @@ export default class AuthModuleService
   extends MedusaService<{
     AuthIdentity: { dto: AuthTypes.AuthIdentityDTO }
     ProviderIdentity: { dto: AuthTypes.ProviderIdentityDTO }
-  }>({ AuthIdentity, ProviderIdentity }, entityNameToLinkableKeysMap)
+  }>({ AuthIdentity, ProviderIdentity })
   implements AuthTypes.IAuthModuleService
 {
   protected baseRepository_: DAL.RepositoryService
