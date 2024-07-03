@@ -1,6 +1,8 @@
 import {
   AdminCampaignListResponse,
   AdminCampaignResponse,
+  AdminCreateCampaign,
+  AdminUpdateCampaign,
   LinkMethodRequest,
 } from "@medusajs/types"
 import {
@@ -13,7 +15,6 @@ import {
 import { client } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { CreateCampaignReq, UpdateCampaignReq } from "../../types/api-payloads"
 import { CampaignDeleteRes } from "../../types/api-responses"
 import { promotionsQueryKeys } from "./promotions"
 
@@ -64,7 +65,11 @@ export const useCampaigns = (
 }
 
 export const useCreateCampaign = (
-  options?: UseMutationOptions<AdminCampaignResponse, Error, CreateCampaignReq>
+  options?: UseMutationOptions<
+    AdminCampaignResponse,
+    Error,
+    AdminCreateCampaign
+  >
 ) => {
   return useMutation({
     mutationFn: (payload) => client.campaigns.create(payload),
@@ -78,7 +83,11 @@ export const useCreateCampaign = (
 
 export const useUpdateCampaign = (
   id: string,
-  options?: UseMutationOptions<AdminCampaignResponse, Error, UpdateCampaignReq>
+  options?: UseMutationOptions<
+    AdminCampaignResponse,
+    Error,
+    AdminUpdateCampaign
+  >
 ) => {
   return useMutation({
     mutationFn: (payload) => client.campaigns.update(id, payload),
