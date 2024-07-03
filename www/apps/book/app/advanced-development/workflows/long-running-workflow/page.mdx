@@ -23,10 +23,7 @@ A workflow is considered long-running if at least one step has its `async` confi
 For example, consider the following workflow and steps:
 
 ```ts title="src/workflows/hello-world.ts" highlights={[["13"]]} collapsibleLines="1-10" expandButtonLabel="Show More"
-import { 
-  createStep,  
-  createWorkflow,
-} from "@medusajs/workflows-sdk"
+import { createStep, createWorkflow } from "@medusajs/workflows-sdk"
 
 const step1 = createStep("step-1", async () => {
   // ...
@@ -50,19 +47,18 @@ type WorkflowOutput = {
   message: string
 }
 
-const myWorkflow = createWorkflow<
-  {},
-  WorkflowOutput
->({
-  name: "hello-world",
-}, function () {
-  step1()
-  step2()
-  step3()
-})
+const myWorkflow = createWorkflow<{}, WorkflowOutput>(
+  {
+    name: "hello-world",
+  },
+  function () {
+    step1()
+    step2()
+    step3()
+  }
+)
 
 export default myWorkflow
-
 ```
 
 The second step has in its configuration object `async` set to true. This indicates that this step is an asynchronous step.
@@ -89,26 +85,15 @@ export const highlights = [
 ]
 
 ```ts title="src/api/store/workflows/route.ts" highlights={highlights} collapsibleLines="1-11" expandButtonLabel="Show Imports"
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import myWorkflow from "../../../workflows/hello-world"
-import { 
-  IWorkflowEngineService,
-} from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-export async function GET(
-  req: MedusaRequest,
-  res: MedusaResponse
-) {
-  const { transaction, result } = await myWorkflow(req.scope)
-    .run()
+export async function GET(req: MedusaRequest, res: MedusaResponse) {
+  const { transaction, result } = await myWorkflow(req.scope).run()
 
-  const workflowEngine = req.scope.resolve<
-    IWorkflowEngineService
-  >(
+  const workflowEngine = req.scope.resolve<IWorkflowEngineService>(
     ModuleRegistrationName.WORKFLOW_ENGINE
   )
 
@@ -137,18 +122,20 @@ The `subscribe` method accepts an object having three properties:
     {
       name: "workflowId",
       type: "`string`",
-      description: "The name of the workflow."
+      description: "The name of the workflow.",
     },
     {
       name: "transactionId",
       type: "`string`",
-      description: "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution."
+      description:
+        "The ID of the workflow exection's transaction. The transaction's details are returned in the response of the workflow execution.",
     },
     {
       name: "subscriber",
       type: "`string`",
-      description: "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution."
-    }
+      description:
+        "The function executed when the workflow execution's status changes.  The function receives a data object. It has an `eventType` property, which you use to check the status of the workflow execution.",
+    },
   ]}
   sectionTitle="Access Long-Running Workflow Status and Result"
 />

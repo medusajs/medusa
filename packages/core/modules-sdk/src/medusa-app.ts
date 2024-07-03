@@ -18,16 +18,17 @@ import type {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
-  Modules,
-  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
 import type { Knex } from "knex"
-import { MODULE_PACKAGE_NAMES, ModuleRegistrationName } from "./definitions"
+import { MODULE_PACKAGE_NAMES } from "./definitions"
 import { MedusaModule, RegisterModuleJoinerConfig } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"

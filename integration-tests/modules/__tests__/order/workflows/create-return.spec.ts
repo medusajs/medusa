@@ -2,7 +2,7 @@ import {
   createReturnOrderWorkflow,
   createShippingOptionsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName, RemoteLink } from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
 import {
   FulfillmentSetDTO,
   FulfillmentWorkflow,
@@ -17,6 +17,7 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
+  ModuleRegistrationName,
   Modules,
   RuleOperator,
   remoteQueryObjectFromString,

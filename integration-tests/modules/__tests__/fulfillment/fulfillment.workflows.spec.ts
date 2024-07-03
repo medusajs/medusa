@@ -6,8 +6,8 @@ import {
   updateFulfillmentWorkflow,
   updateFulfillmentWorkflowId,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   generateCreateFulfillmentData,

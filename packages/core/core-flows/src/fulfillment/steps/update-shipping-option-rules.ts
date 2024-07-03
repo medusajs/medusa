@@ -1,10 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IFulfillmentModuleService,
   UpdateFulfillmentShippingOptionRulesWorkflowDTO,
   UpdateShippingOptionRuleDTO,
 } from "@medusajs/types"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const updateShippingOptionRulesStepId = "update-shipping-option-rules"
 export const updateShippingOptionRulesStep = createStep(

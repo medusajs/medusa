@@ -1,6 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { CustomerDTO, ICustomerModuleService } from "@medusajs/types"
-import { validateEmail } from "@medusajs/utils"
+import { ModuleRegistrationName, validateEmail } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

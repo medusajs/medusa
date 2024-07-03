@@ -3,7 +3,6 @@ import {
   MedusaModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  ModuleRegistrationName,
 } from "@medusajs/modules-sdk"
 import {
   ExternalModuleDeclaration,
@@ -19,6 +18,7 @@ import {
   arrayDifference,
   ContainerRegistrationKeys,
   lowerCaseFirst,
+  ModuleRegistrationName,
   simpleHash,
   toPascalCase,
 } from "@medusajs/utils"

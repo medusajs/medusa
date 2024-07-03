@@ -1,10 +1,7 @@
-import {
-  DeleteEntityInput,
-  ModuleRegistrationName,
-} from "@medusajs/modules-sdk"
+import { DeleteEntityInput } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
+import { ModuleRegistrationName, Modules } from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
-import { Modules } from "@medusajs/utils"
 
 export const deleteShippingOptionsStepId = "delete-shipping-options-step"
 export const deleteShippingOptionsStep = createStep(

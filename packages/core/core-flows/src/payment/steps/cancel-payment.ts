@@ -1,6 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPaymentModuleService, Logger } from "@medusajs/types"
-import { ContainerRegistrationKeys, promiseAll } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  promiseAll,
+} from "@medusajs/utils"
 import { createStep } from "@medusajs/workflows-sdk"
 
 type StepInput = {

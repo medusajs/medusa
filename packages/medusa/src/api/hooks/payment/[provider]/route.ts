@@ -1,6 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { PaymentModuleOptions } from "@medusajs/types"
-import { PaymentWebhookEvents } from "@medusajs/utils"
+import { ModuleRegistrationName, PaymentWebhookEvents } from "@medusajs/utils"
 
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 

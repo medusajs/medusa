@@ -1,4 +1,4 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const eventBusServiceMock = {
   subscribe: jest.fn().mockImplementation((...args) => {
