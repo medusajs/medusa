@@ -7,6 +7,10 @@ import {
 import { DmlEntity } from "../../dml"
 import { PrimaryKeyModifier } from "../../dml/properties/primary-key"
 
+/**
+ * Utils
+ */
+
 type FlattenUnion<T> = T extends { [K in keyof T]: infer U }
   ? { [K in keyof T]: U }
   : never
@@ -16,6 +20,30 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 ) => void
   ? I
   : never
+
+type UnionToOvlds<U> = UnionToIntersection<
+  U extends any ? (f: U) => void : never
+>
+
+type PopUnion<U> = UnionToOvlds<U> extends (a: infer A) => void ? A : never
+
+type IsUnion<T> = [T] extends [UnionToIntersection<T>] ? false : true
+
+type UnionToArray<T, A extends unknown[] = []> = IsUnion<T> extends true
+  ? UnionToArray<Exclude<T, PopUnion<T>>, [PopUnion<T>, ...A]>
+  : [T, ...A]
+
+type Reverse<T extends unknown[], R extends unknown[] = []> = ReturnType<
+  T extends [infer F, ...infer L] ? () => Reverse<L, [F, ...R]> : () => R
+>
+
+/**
+ * End of utils
+ */
+
+/**
+ * Linkable keys
+ */
 
 type InferLinkableKeyName<
   Key,
@@ -67,16 +95,61 @@ type AggregateSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
 export type InferLinkableKeys<T extends DmlEntity<any, any>[]> =
   UnionToIntersection<FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]>
 
+/**
+ * End Linkable keys
+ */
+
+/**
+ * Links config
+ */
+
+/**
+ * From a union infer an Array and return the last element
+ */
+type InferLastLink<ServiceName extends string, DmlEntity> = UnionToArray<
+  | InferSchemaLinksConfig<ServiceName, DmlEntity>[keyof InferSchemaLinksConfig<
+      ServiceName,
+      DmlEntity
+    >]
+> extends [...any, infer V]
+  ? V
+  : never
+
+type InferLastPrimaryKey<ServiceName extends string, DmlEntity> = InferLastLink<
+  ServiceName,
+  DmlEntity
+> extends {
+  primaryKey: infer PrimaryKey
+}
+  ? PrimaryKey
+  : string
+
+type InferLastLinkable<ServiceName extends string, DmlEntity> = InferLastLink<
+  ServiceName,
+  DmlEntity
+> extends {
+  linkable: infer Linkable
+}
+  ? Linkable
+  : string
+
 type InferPrimaryKeyNameOrNever<
   Schema extends DMLSchema,
   Key extends keyof Schema
 > = Schema[Key] extends PrimaryKeyModifier<any, any> ? Key : never
 
-type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
+type InferSchemaLinksConfig<
+  ServiceName extends string,
+  T
+> = T extends DmlEntity<infer Schema, infer Config>
   ? {
       [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferPrimaryKeyNameOrNever<Schema, K>
         : never]: {
+        serviceName: ServiceName
+        field: T extends DmlEntity<any, infer Config>
+          ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+          : string
         linkable: InferLinkableKeyName<K, Schema[K], Config>
         primaryKey: K
       }
@@ -84,7 +157,10 @@ type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
   : {}
 
 /**
- * From an array of DmlEntity, returns a formatted object with the linkable keys
+ * From an array of DmlEntity, returns a formatted links object.
+ * the toJSON of each object representation will return the last linkable definition
+ * as the default. To specify a specific linkable, you can chain until the desired linkable property.
+ *
  *
  * @example:
  *
@@ -103,6 +179,8 @@ type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
  * // {
  * //   user: {
  * //     id: {
+ * //       serviceName: 'userService',
+ * //       field: 'user',
  * //       linkable: 'user_id',
  * //       primaryKey: 'id'
  * //     },
@@ -110,6 +188,8 @@ type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
  * //   },
  * //   car: {
  * //     number_plate: {
+ * //       serviceName: 'userService',
+ * //       field: 'car',
  * //       linkable: 'car_number_plate',
  * //       primaryKey: 'number_plate'
  * //     },
@@ -118,14 +198,24 @@ type InferSchemaLinksConfig<T> = T extends DmlEntity<infer Schema, infer Config>
  * // }
  *
  */
-export type InfersLinksConfig<T extends DmlEntity<any, any>[]> =
-  UnionToIntersection<{
-    [K in keyof T as T[K] extends DmlEntity<any, infer Config>
-      ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
-      : never]: InferSchemaLinksConfig<T[K]> & {
-      toJSON: () => {
-        linkable: string
-        primaryKey: string
-      }
+export type InfersLinksConfig<
+  ServiceName extends string,
+  T extends DmlEntity<any, any>[]
+> = UnionToIntersection<{
+  [K in keyof T as T[K] extends DmlEntity<any, infer Config>
+    ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+    : never]: InferSchemaLinksConfig<ServiceName, T[K]> & {
+    toJSON: () => {
+      serviceName: ServiceName
+      field: T[K] extends DmlEntity<any, infer Config>
+        ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+        : string
+      linkable: InferLastLinkable<ServiceName, T[K]>
+      primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
     }
-  }>
+  }
+}>
+
+/**
+ * End Links config
+ */

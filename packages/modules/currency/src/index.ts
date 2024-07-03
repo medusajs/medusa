@@ -5,8 +5,7 @@ import { Module, Modules } from "@medusajs/utils"
 const service = CurrencyModuleService
 const loaders = [initialDataLoader]
 
-export default Module({
-  name: Modules.CURRENCY,
+export default Module(Modules.CURRENCY, {
   service,
   loaders,
 })
