@@ -10,10 +10,7 @@ import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useCreateProductVariant } from "../../../../../hooks/api/products"
 import { castNumber } from "../../../../../lib/cast-number"
 import { optionalInt } from "../../../../../lib/validation"
@@ -142,21 +139,6 @@ export const CreateProductVariantForm = ({
                 return (
                   <Form.Item>
                     <Form.Label>{t("fields.title")}</Form.Label>
-                    <Form.Control>
-                      <Input {...field} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="material"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label optional>{t("fields.material")}</Form.Label>
                     <Form.Control>
                       <Input {...field} />
                     </Form.Control>
@@ -357,6 +339,21 @@ export const CreateProductVariantForm = ({
           )}
           <div className="flex flex-col gap-y-4">
             <Heading level="h2">{t("products.attributes")}</Heading>
+            <Form.Field
+              control={form.control}
+              name="material"
+              render={({ field }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label optional>{t("fields.material")}</Form.Label>
+                    <Form.Control>
+                      <Input {...field} />
+                    </Form.Control>
+                    <Form.ErrorMessage />
+                  </Form.Item>
+                )
+              }}
+            />
             <Form.Field
               control={form.control}
               name="weight"
