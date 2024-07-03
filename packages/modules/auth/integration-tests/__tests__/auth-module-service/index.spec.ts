@@ -10,11 +10,7 @@ let moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          plaintextpass: {},
-        },
-      },
+      id: "plaintextpass",
     },
   ],
 }

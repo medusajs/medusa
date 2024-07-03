@@ -14,20 +14,12 @@ const customPaymentProvider = {
   resolve: {
     services: [require("@medusajs/payment/dist/providers/system").default],
   },
-  options: {
-    config: {
-      default_2: {},
-    },
-  },
+  id: "default_2",
 }
 
 const customFulfillmentProvider = {
   resolve: "@medusajs/fulfillment-manual",
-  options: {
-    config: {
-      "test-provider": {},
-    },
-  },
+  id: "test-provider",
 }
 
 module.exports = {
@@ -101,13 +93,10 @@ module.exports = {
         providers: [
           {
             resolve: "@medusajs/notification-local",
+            id: "local-notification-provider",
             options: {
-              config: {
-                "local-notification-provider": {
-                  name: "Local Notification Provider",
-                  channels: ["log", "email"],
-                },
-              },
+              name: "Local Notification Provider",
+              channels: ["log", "email"],
             },
           },
         ],
