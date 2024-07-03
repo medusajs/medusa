@@ -35,7 +35,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -151,7 +151,7 @@ import type {
   SubscriberArgs,
   SubscriberConfig,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({

@@ -25,7 +25,7 @@ import type {
   MedusaResponse,
 } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const GET = async (
   req: MedusaRequest,
@@ -34,7 +34,8 @@ export const GET = async (
   const productModuleService: IProductModuleService =
     req.scope.resolve(ModuleRegistrationName.PRODUCT)
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,

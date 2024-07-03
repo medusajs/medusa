@@ -16,45 +16,38 @@ Since the Medusa server is a Node.js server, you can use any Node.js testing too
 
 [Jest](https://jestjs.io/) is a JavaScript testing framework. Your Medusa project is already configured with Jest; you can use it out-of-the-box.
 
+<Note>
+
+Refer to [Jest's documentation](https://jestjs.io/docs/getting-started) to learn how to install and configure it.
+
+</Note>
+
 For example, consider the following service created at `src/modules/hello/service.ts`:
 
 ```ts title="src/modules/hello/service.ts"
-import { TransactionBaseService } from "@medusajs/medusa"
-
-class HelloWorldService extends TransactionBaseService {
-  constructor(container) {
-    super(arguments[0])
-  }
+class HelloModuleService {
   getMessage(): string {
     return "Hello, world!"
   }
 }
 
-export default HelloWorldService
+export default HelloModuleService
 
 ```
 
-You can write a test for it in the file `src/modules/hello/__tests__/hello-world.ts`: 
+You can write a test for it in the file `src/modules/hello/__tests__/hello-world.spec.ts`: 
 
-```ts title="src/modules/hello/__tests__/hello-world.ts"
-import HelloWorldService from "../hello-world"
+```ts title="src/modules/hello/__tests__/hello-world.spec.ts"
+import HelloModuleService from "../service"
 
-describe("HelloWorldService", () => {
-  const helloWorldService = new HelloWorldService()
+describe("HelloModuleService", () => {
+  const helloModuleService = new HelloModuleService()
 
   it("should return hello world message", () => {
-    expect(helloWorldService.getMessage()).toBe("Hello, world!")
+    expect(helloModuleService.getMessage()).toBe("Hello, world!")
   })
 })
 ```
-
-Then, run the following command in the root of your Medusa project to run the test:
-
-```bash npm2yarn
-npm run test
-```
-
-This command looks for TypeScript and JavaScript files under any directory named `__tests__` and runs them.
 
 ---
 

@@ -28,7 +28,7 @@ export default function () {
 
 // the job's configurations
 export const config = {
-  name: "hello-world",
+  name: "every-minute-message",
   // execute every minute
   schedule: "* * * * *",
 }
@@ -37,10 +37,10 @@ export const config = {
 
 A scheduled job file must export:
 
-- The function to be executed whenever it’s time to run the scheduled job.
+- A function to be executed whenever it’s time to run the scheduled job.
 - A configuration object defining the job. It has two properties:
     - `name`: a unique name for the job.
-    - `schedule`: a [cron expression](https://crontab.guru/).
+    - `schedule`: a [cron expression](https://crontab.guru/) specifying when to run the job.
 
 This scheduled job executes every minute and logs into the terminal `Time to say hello world!`.
 
@@ -81,13 +81,13 @@ Time to say hello world!
 
 ## Resolve Resources
 
-The scheduled job function receives an object parameter that has a `container` property. Its value is the Medusa container, which you can use to resolve resources in your Medusa application, such as services.
+The scheduled job function receives a `container` parameter, which is the Medusa container. Use it to resolve resources in your Medusa application, such as services.
 
 For example:
 
 export const highlights = [
   ["11", "resolve", "Resolve the Product Module's main service."],
-  ["11", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  ["11", "ModuleRegistrationName.PRODUCT", "The module's registration name imported from `@medusajs/modules-sdk`."]
 ]
 
 ```ts title="src/jobs/hello-world.ts" highlights={highlights}
@@ -111,7 +111,7 @@ export default async function myCustomJob(
 }
 
 export const config = {
-  name: "hello-world",
+  name: "every-minute-message",
   // execute every minute
   schedule: "* * * * *",
 }

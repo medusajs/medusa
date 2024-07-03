@@ -8,7 +8,7 @@ In this chapter, you’ll learn about path, query, and request body parameters.
 
 ## Path Parameters
 
-To create an API route that accepts a path parameter, create a directory within the route's path whose name is of the format `[param]`.
+To create an API route that accepts a path parameter, create a directory within the route file's path whose name is of the format `[param]`.
 
 For example, to create an API Route at the path `/message/{id}`, where `{id}` is a path parameter, create the file `src/api/store/hello-world/[id]/route.ts` with the following content:
 
@@ -16,7 +16,7 @@ export const singlePathHighlights = [
   ["11", "req.params.id", "Access the path parameter `id`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/route.ts" highlights={singlePathHighlights}
+```ts title="src/api/store/hello-world/[id]/route.ts" highlights={singlePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}" testApiMethod="GET" testPathParams={{ "id": "1" }}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -45,7 +45,7 @@ export const multiplePathHighlights = [
   ["13", "req.params.name", "Access the path parameter `name`"]
 ]
 
-```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights}
+```ts title="src/api/store/hello-world/[id]/name/[name]/route.ts" highlights={multiplePathHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world/{id}/name/{name}" testApiMethod="GET" testPathParams={{ "id": "1", "name": "John" }}
 import type {
   MedusaRequest,
   MedusaResponse,
@@ -77,7 +77,7 @@ export const queryHighlights = [
   ["11", "req.query.name", "Access the query parameter `name`"],
 ]
 
-```ts title="src/api/store/hello-world/route.ts" highlights={queryHighlights}
+```ts title="src/api/store/hello-world/route.ts" highlights={queryHighlights} apiTesting testApiUrl="http://localhost:9000/store/hello-world" testApiMethod="GET" testQueryParams={{ "name": "John" }}
 import type {
   MedusaRequest,
   MedusaResponse,

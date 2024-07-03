@@ -259,6 +259,8 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
         }
       `
 
+      const result = await remoteQuery(query)
+
       res.json({
         my_customs: result,
       })

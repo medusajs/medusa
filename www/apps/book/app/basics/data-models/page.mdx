@@ -12,17 +12,17 @@ A data model is a class that represents a table in the database. It's created in
 
 ---
 
-## How to Create a Data Model
+## How to Create a Data Model?
 
 <Note title="Steps Summary">
 
-1. Create data model class in a module.
-2. Generate migration for the data model.
-4. Run migration to add table for data model in the database.
+1. Create a data model in a module.
+2. Create migration for the data model.
+4. Run migration to add the data model's table in the database.
 
 </Note>
 
-A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medjusajs/utils`.
+A data model is created in a TypeScript or JavaScript file under a module's `models` directory. It's defined using the `model` utility imported from `@medusajs/utils`.
 
 For example, create the file `src/modules/hello/models/my-custom.ts` with the following content:
 
@@ -47,8 +47,6 @@ The example above defines the data model `MyCustom` with the properties `id` and
 ### Create a Migration
 
 A migration defines changes to be made in the database, such as create or update tables.
-
-So, you must create a migration that creates a table for your data model in the database.
 
 A migration is a class created in a TypeScript or JavaScript file under a module's `migrations` directory. It has two methods:
 
@@ -93,16 +91,16 @@ A migration is a class created in a TypeScript or JavaScript file under a module
 For example:
 
 ```ts title="src/modules/migrations/Migration20240429090012.ts"
-import { Migration } from "@mikro-orm/migrations"
+import { Migration } from '@mikro-orm/migrations';
 
-export class Migration20240624145652 extends Migration {
+export class Migration20240702105919 extends Migration {
 
   async up(): Promise<void> {
-    this.addSql("create table if not exists \"my_custom\" (\"id\" text not null, \"name\" text not null, \"created_at\" timestamptz not null default now(), \"updated_at\" timestamptz not null default now(), \"deleted_at\" timestamptz null, constraint \"my_custom_pkey\" primary key (\"id\"));")
+    this.addSql('create table if not exists "my_custom" ("id" text not null, "name" text not null, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "my_custom_pkey" primary key ("id"));');
   }
 
   async down(): Promise<void> {
-    this.addSql("drop table if exists \"my_custom\" cascade;")
+    this.addSql('drop table if exists "my_custom" cascade;');
   }
 
 }
@@ -120,7 +118,7 @@ The queries performed in each of the methods use PostgreSQL syntax.
 
 To reflect the changes in the migration, run the `migration` command:
 
-```bash npm2yarn
+```bash
 npx medusa migrations run
 ```
 

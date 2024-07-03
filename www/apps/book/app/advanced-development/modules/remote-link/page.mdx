@@ -6,6 +6,12 @@ export const metadata = {
 
 In this chapter, you’ll learn what the remote link is and how to use it to manage links.
 
+<Note type="soon" title="In Development">
+
+Remote Links are in development.
+
+</Note>
+
 ## What is the Remote Link?
 
 The remote link is a class with utility methods to manage links defined by the link module. It’s registered in the Medusa container under the `remoteLink` registration name.
@@ -38,7 +44,9 @@ export async function POST(
 
 You can use its methods to manage links, such as create or delete links.
 
-### Create Link
+---
+
+## Create Link
 
 To create a link between records of two data models, use the `create` method of the remote link.
 
@@ -65,7 +73,9 @@ The value of each module’s property is an object. It defines the values of the
 
 So, in the example above, you specify for the Product Module the value of the `variant_id`, and for the Pricing Module the value of `price_set_id`. These are the fields linked between the models of the two modules.
 
-### Dismiss Link
+---
+
+## Dismiss Link
 
 To remove a link between records of two data models, use the `dismiss` method of the remote link. This doesn’t remove the records, only the relation between them.
 
@@ -88,7 +98,9 @@ await remoteLink.dismiss({
 
 The `dismiss` method accepts the same parameter type as the [create method](#create-link).
 
-### Cascade Delete Linked Records
+---
+
+## Cascade Delete Linked Records
 
 If a record, such as a variant, is deleted, use the `delete` method of the remote link to delete all associated links with cascade delete enabled. 
 
@@ -110,7 +122,9 @@ await remoteLink.delete({
 
 This deletes all records linked to the deleted variant with cascade delete enabled in their relationship.
 
-### Restore Linked Records
+---
+
+## Restore Linked Records
 
 If a record, such as a variant, that was previously soft-deleted is now restored, use the `restore` method of the remote link to restore all associated links that were cascade deleted.
 

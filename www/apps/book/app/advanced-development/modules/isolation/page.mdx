@@ -9,7 +9,7 @@ In this chapter, you'll learn about how modules are isolated, and what that mean
 <Note title="Summary">
 
 - Modules can't access resources, such as services, from other modules.
-- You can use Medusa's tools, explained in the next chapters, to extend modules or implement features across modules.
+- You can use Medusa's tools, as explained in the next chapters, to extend a modules' features or implement features across modules.
 
 </Note>
 
@@ -17,13 +17,13 @@ In this chapter, you'll learn about how modules are isolated, and what that mean
 
 A module is unaware of any resources other than its own, such as services or data models. This means it can't access these resources if they're implemented in another module.
 
-For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to another module's data model.
+For example, your custom module can't resolve the Product Module's main service or have direct relationships from its data model to the Product module's data models.
 
 ---
 
-## Customize and Implement Features Across Modules
+## How to Implement Custom Features Across Modules?
 
-In your Medusa application, you want to implement features that span across modules, or you want to extend existing modules to add new features.
+In your Medusa application, you want to implement features that span across modules, or you want to extend an existing module's features and customize them for your own use case.
 
 For example, you want to extend the Product Module to add new properties to the `Product` data model.
 

@@ -8,7 +8,7 @@ In this chapter, you'll learn how create and execute custom scripts from Medusa'
 
 ## What is a Custom CLI Script?
 
-A custom CLI script is a function to execute through Medusa's CLI tool. This is useful when creating custom Medusa tooling to run as a CLI tool.
+A custom CLI script is a function to execute through Medusa's CLI tool. This is useful when creating custom Medusa tooling to run through the CLI.
 
 ---
 
@@ -23,7 +23,7 @@ import {
   ExecArgs,
   IProductModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export default async function myScript({
   container,
@@ -31,7 +31,8 @@ export default async function myScript({
   const productModuleService: IProductModuleService = 
     container.resolve(ModuleRegistrationName.PRODUCT)
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   console.log(`You have ${count} product(s)`)
 }
@@ -45,7 +46,7 @@ The function receives as a parameter an object having a `container` property, wh
 
 To run the custom CLI script, run the Medusa CLI's `exec` command:
 
-```bash npm2yarn
+```bash
 npx medusa exec ./src/scripts/my-script.ts
 ```
 
@@ -69,6 +70,6 @@ export default async function myScript({
 
 Then, pass the arguments in the `exec` command after the file path:
 
-```bash npm2yarn
+```bash
 npx medusa exec ./src/scripts/my-script.ts arg1 arg2
 ```

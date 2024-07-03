@@ -8,7 +8,7 @@ In this chapter, you’ll learn about middlewares and how to create them.
 
 ## What is a Middleware?
 
-A middleware is a function executed when a request is sent to an API Route.
+A middleware is a function executed when a request is sent to an API Route. It's executed before the route handler function.
 
 ---
 
@@ -19,14 +19,23 @@ Middlewares are defined in the special file `src/api/middlewares.ts`. The file m
 For example:
 
 ```ts title="src/api/middlewares.ts"
-import { MiddlewaresConfig } from "@medusajs/medusa"
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
+  MiddlewaresConfig
+} from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/store*",
       middlewares: [
-        (req, res, next) => {
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
           console.log("Received a request!")
 
           next()
@@ -37,17 +46,16 @@ export const config: MiddlewaresConfig = {
 }
 ```
 
-The middleware configurations object has the property `routes`. Its value is an array of middleware route objects, where each object is a middleware to apply to a route pattern.
+The middleware configurations object has the property `routes`. Its value is an array of middleware route objects, each having the following properties:
+
+- `matcher`: a string or regular expression indicating the API route path to apply the middleware on.
+- `middlewares`: An array of middleware functions.
 
 In the example above, you define a middleware that logs the message `Received a request!` whenever a request is sent to an API route path starting with `/store`.
 
-<Note>
+---
 
-The `matcher` property can be a string or a regular expression.
-
-</Note>
-
-### Test Middleware
+## Test the Middleware
 
 To test the middleware:
 
@@ -99,10 +107,15 @@ In addition to the `matcher` configuration, you can restrict which HTTP methods 
 
 For example:
 
-export const highlights = [["7", "", "Apply the middleware only on `POST` requests"]]
+export const highlights = [["12", "method", "Apply the middleware only on `POST` requests"]]
 
-```ts title="src/api/middlewares.ts" highlights={highlights}
-import { MiddlewaresConfig } from "@medusajs/medusa"
+```ts title="src/api/middlewares.ts" highlights={highlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import type { 
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
+  MiddlewaresConfig
+} from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -110,7 +123,11 @@ export const config: MiddlewaresConfig = {
       matcher: "/store*",
       method: ["POST", "PUT"],
       middlewares: [
-        (req, res, next) => {
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
           console.log("Received a request!")
 
           next()

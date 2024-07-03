@@ -23,9 +23,9 @@ Start by creating the file `src/workflows/update-product-erp/index.ts` that will
 In the file, add the type of the expected workflow input:
 
 ```ts title="src/workflows/update-product-erp/index.ts"
-import { UpdateProductDTO } from "@medusajs/types"
+import { UpsertProductDTO } from "@medusajs/types"
 
-export type UpdateProductAndErpWorkflowInput = UpdateProductDTO
+export type UpdateProductAndErpWorkflowInput = UpsertProductDTO
 
 ```
 
@@ -42,8 +42,8 @@ Create the file `src/workflows/update-product-erp/steps/update-product.ts` with 
 export const updateProductHighlights = [
   ["13", "resolve", "Resolve the `ProductService` from the Medusa container."],
   ["16", "previousProductData", "Retrieve the `previousProductData` to pass it to the compensation function."],
-  ["19", "", "Update the product."],
-  ["39", "", "Revert the product’s data using the `previousProductData` passed from the step to the compensation function."]
+  ["19", "updateProducts", "Update the product."],
+  ["39", "updateProducts", "Revert the product’s data using the `previousProductData` passed from the step to the compensation function."]
 ]
 
 ```ts title="src/workflows/update-product-erp/steps/update-product.ts" highlights={updateProductHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
@@ -52,7 +52,7 @@ import {
   StepResponse,
 } from "@medusajs/workflows-sdk"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { UpdateProductAndErpWorkflowInput } from ".."
 
 const updateProduct = createStep(
@@ -63,9 +63,9 @@ const updateProduct = createStep(
 
     const { id } = input
     const previousProductData =
-      await productModuleService.retrieve(id)
+      await productModuleService.retrieveProduct(id)
 
-    const product = await productModuleService.update(id, input)
+    const product = await productModuleService.updateProducts(id, input)
 
     return new StepResponse(product, {
       // pass to compensation function
@@ -85,7 +85,7 @@ const updateProduct = createStep(
       ...previousData
     } = previousProductData
 
-    await productModuleService.update(
+    await productModuleService.updateProducts(
       id,
       {
         ...previousData,
@@ -116,7 +116,7 @@ export default updateProduct
 
 In the step:
 
-- You resolve the `ProductService` from the Medusa container.
+- You resolve the Product Module's main service from the Medusa container.
 - You retrieve the `previousProductData` to pass it to the compensation function.
 - You update and return the product.
 
@@ -210,11 +210,11 @@ Change the content of `src/workflows/update-product-erp/index.ts` to the followi
 
 ```ts title="src/workflows/update-product-erp/index.ts" collapsibleLines="1-6" expandButtonLabel="Show Imports"
 import { createWorkflow } from "@medusajs/workflows-sdk"
-import { UpdateProductDTO, ProductDTO } from "@medusajs/types"
+import { UpsertProductDTO, ProductDTO } from "@medusajs/types"
 import updateProduct from "./steps/update-product"
 import updateErp from "./steps/update-erp"
 
-export type UpdateProductAndErpWorkflowInput = UpdateProductDTO
+export type UpdateProductAndErpWorkflowInput = UpsertProductDTO
 
 type WorkflowOutput = {
   product: ProductDTO

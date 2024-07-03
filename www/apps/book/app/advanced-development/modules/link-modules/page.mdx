@@ -4,11 +4,17 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you’ll learn what a link module is and how to use the remote link in your customizations.
+In this chapter, you’ll learn what a link module is.
 
 ## What is a Link Module?
 
 A link module is a module whose only purpose is to define a relationship between two modules’ data models. The relationship is represented as a pivot or link table in the database, pointing at the primary keys of each data model.
+
+<Note type="soon">
+
+Link modules are currently only available for Medusa’s commerce modules.
+
+</Note>
 
 For example, Medusa has a link module that defines a relationship between the Product and Pricing modules. It links the `ProductVariant` and `PriceSet` data models.
 
@@ -16,8 +22,3 @@ For example, Medusa has a link module that defines a relationship between the Pr
 
 Link modules create the relationship between modules while maintaining module isolation. The Medusa application only creates the link tables when both modules are available.
 
-<Note type="soon">
-
-Link modules are currently only available for Medusa’s commerce modules.
-
-</Note>
