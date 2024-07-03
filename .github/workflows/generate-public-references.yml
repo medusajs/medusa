@@ -1,6 +1,5 @@
 name: Generate Public References
 on:
-  workflow_call:
   workflow_dispatch:
     inputs:
       referenceName:
@@ -13,7 +12,7 @@ on:
 jobs:
   api-v2:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -60,58 +59,57 @@ jobs:
           add-paths: www/apps/api-reference/specs
           branch: "docs/generate-api-ref"
           branch-suffix: "timestamp"
-  # TODO enable once we start releasing new versions of UI package (not under preview)
-  # ui:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
-  #   steps:
-  #     - name: Cancel Previous Runs
-  #       uses: styfle/cancel-workflow-action@0.11.0
-  #       with:
-  #         access_token: ${{ github.token }}
+  ui:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
 
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-  #     - name: Setup Node.js environment
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 20
-  #         cache: "yarn"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
 
-  #     - name: Install dependencies
-  #       uses: ./.github/actions/cache-deps
-  #       with:
-  #         extension: reference
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
 
-  #     - name: Build Packages
-  #       run: yarn build
+      - name: Build Packages
+        run: yarn build
 
-  #     - name: Install Workspace dependencies
-  #       run: yarn install
-  #       working-directory: www/utils
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: www/utils
 
-  #     - name: Build Workspace dependencies
-  #       run: yarn build
-  #       working-directory: www/utils
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: www/utils
 
-  #     - name: Generate UI Specs
-  #       run: yarn generate:ui
-  #       working-directory: www/utils/packages/react-docs-generator
+      - name: Generate UI Specs
+        run: yarn generate:ui
+        working-directory: www/utils/packages/react-docs-generator
 
-  #     - name: Generate Changeset
-  #       run: "yarn generate:changeset"
-  #       working-directory: www/utils/packages/scripts
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
+        working-directory: www/utils/packages/scripts
 
-  #     - name: Create Pull Request
-  #       uses: peter-evans/create-pull-request@v4
-  #       with:
-  #         commit-message: "chore(docs): Generated UI Reference"
-  #         base: "develop"
-  #         title: "chore(docs): Updated UI Reference"
-  #         labels: "type: chore"
-  #         add-paths: www/apps/ui/src/specs
-  #         branch: "docs/generate-ui-ref"
-  #         branch-suffix: "timestamp"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated UI Reference"
+          base: "develop"
+          title: "chore(docs): Updated UI Reference"
+          labels: "type: chore"
+          add-paths: www/apps/ui/src/specs
+          branch: "docs/generate-ui-ref"
+          branch-suffix: "timestamp"
