@@ -34,7 +34,7 @@ Import the loader in `src/modules/hello/index.ts` and export it in the module's 
 // other imports...
 import helloWorldLoader from "./loaders/hello-world"
 
-export default Module({
+export default Module("hello", {
   // ...
   loaders: [helloWorldLoader],
 })

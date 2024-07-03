@@ -41,7 +41,7 @@ Create the file \`src/modules/my-fulfillment/index.ts\` with the following conte
 import MyFulfillmentProviderService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module({
+export default Module("my-fulfillment", {
   service: MyFulfillmentProviderService,
 })
 \`\`\`

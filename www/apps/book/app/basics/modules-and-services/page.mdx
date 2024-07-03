@@ -52,14 +52,15 @@ For example, create the file `src/modules/hello/index.ts` with the following con
 import HelloModuleService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module({
+export default Module("hello", {
   service: HelloModuleService,
 })
 ```
 
-You use the `Module` function imported from `@medusajs/utils` to create the module definition.
+You use the `Module` function imported from `@medusajs/utils` to create the module definition. It requires two parameters:
 
-It accepts an object parameter with the required property `service`, whose value is the module's main service.
+1. The module's name.
+2. An object with a required property `service` indicating the module's main service.
 
 ### 3. Add Module to Configurations
 

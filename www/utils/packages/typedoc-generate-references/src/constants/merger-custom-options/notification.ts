@@ -45,7 +45,7 @@ Create the file \`src/modules/my-notification/index.ts\` with the following cont
 import MyNotificationProviderService from "./service"
 import { Module } from "@medusajs/utils"
 
-export default Module({
+export default Module("my-notification", {
   service: MyNotificationProviderService,
 })
 \`\`\`
