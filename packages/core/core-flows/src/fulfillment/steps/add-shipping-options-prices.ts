@@ -1,10 +1,10 @@
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 import {
   CreatePriceSetDTO,
   IPricingModuleService,
   IRegionModuleService,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 interface PriceCurrencyCode {
   currency_code: string

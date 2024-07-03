@@ -25,10 +25,7 @@ A workflow is made of a series of steps. A step is created using the `createStep
 Create the file `src/workflows/hello-world.ts` with the following content:
 
 ```ts title="src/workflows/hello-world.ts"
-import { 
-  createStep,
-  StepResponse,
-} from "@medusajs/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 const step1 = createStep("step-1", async () => {
   return new StepResponse(`Hello from step one!`)
@@ -46,12 +43,9 @@ type WorkflowInput = {
   name: string
 }
 
-const step2 = createStep(
-  "step-2",
-  async ({ name }: WorkflowInput) => {
-    return new StepResponse(`Hello ${name} from step two!`)
-  }
-)
+const step2 = createStep("step-2", async ({ name }: WorkflowInput) => {
+  return new StepResponse(`Hello ${name} from step two!`)
+})
 ```
 
 ### 2. Create a Workflow
@@ -70,18 +64,18 @@ type WorkflowOutput = {
   message: string
 }
 
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
-  const str1 = step1()
-  // to pass input
-  const str2 = step2(input)
+const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>(
+  "hello-world",
+  function (input) {
+    const str1 = step1()
+    // to pass input
+    const str2 = step2(input)
 
-  return {
-    message: str1,
+    return {
+      message: str1,
+    }
   }
-})
+)
 
 export default myWorkflow
 ```
@@ -234,7 +228,11 @@ For example:
 
 export const highlights = [
   ["15", "resolve", "Resolve the Product Module's main service."],
-  ["15", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  [
+    "15",
+    "ModuleRegistrationName.PRODUCT",
+    "The resource registration name imported from `@medusajs/modules-sdk`.",
+  ],
 ]
 
 ```ts title="src/workflows/product-count.ts" highlights={highlights} collapsibleLines="1-12" expandButtonLabel="Show Imports"

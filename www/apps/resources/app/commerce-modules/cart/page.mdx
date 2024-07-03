@@ -36,12 +36,11 @@ const cart = await cartModuleService.createCarts({
 Apply promotions or discounts to line items and shipping methods by adding adjustment lines that are factored into their subtotals.
 
 ```ts
-const lineAdjustments =
-  await cartModuleService.addLineItemAdjustments({
-    item_id: "cali_123",
-    code: "50OFF",
-    amount: 500,
-  })
+const lineAdjustments = await cartModuleService.addLineItemAdjustments({
+  item_id: "cali_123",
+  code: "50OFF",
+  amount: 500,
+})
 
 const shippingAdjustments =
   await cartModuleService.addShippingMethodAdjustments({
@@ -77,18 +76,19 @@ For example:
   import { ICartModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const cartModuleService: ICartModuleService =
-      req.scope.resolve(ModuleRegistrationName.CART)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const cartModuleService: ICartModuleService = req.scope.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    res.json({
-      carts: await cartModuleService.listCarts(),
-    })
-  }
-  ```
+  res.json({
+    carts: await cartModuleService.listCarts(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -98,15 +98,14 @@ For example:
   import { ICartModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const cartModuleService: ICartModuleService =
-      container.resolve(ModuleRegistrationName.CART)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const cartModuleService: ICartModuleService = container.resolve(
+    ModuleRegistrationName.CART
+  )
 
-    const carts = await cartModuleService.listCarts()
-  }
-  ```
+  const carts = await cartModuleService.listCarts()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -116,17 +115,14 @@ For example:
   import { ICartModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const cartModuleService: ICartModuleService =
-      container.resolve(
-        ModuleRegistrationName.CART
-      )
-    
-    const carts = await cartModuleService.listCarts()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const cartModuleService: ICartModuleService = container.resolve(
+    ModuleRegistrationName.CART
+  )
+
+  const carts = await cartModuleService.listCarts()
+})
+```
 
   </CodeTab>
 </CodeTabs>

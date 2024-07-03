@@ -799,7 +799,7 @@ moduleIntegrationTestRunner<IPricingModuleService>({
               {
                 id: "price-set-PLN",
                 is_calculated_price_price_list: true,
-                calculated_amount: 116,
+                calculated_amount: 232,
                 is_original_price_price_list: false,
                 original_amount: 400,
                 currency_code: "PLN",

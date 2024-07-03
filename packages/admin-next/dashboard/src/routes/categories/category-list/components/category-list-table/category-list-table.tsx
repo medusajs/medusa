@@ -1,4 +1,4 @@
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -11,6 +11,7 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../components/table/data-table"
 import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { useCategoryTableColumns } from "./use-category-table-columns"
 import { useCategoryTableQuery } from "./use-category-table-query"
 
@@ -94,6 +95,7 @@ const CategoryRowActions = ({
   category: AdminProductCategoryResponse["product_category"]
 }) => {
   const { t } = useTranslation()
+  const handleDelete = useDeleteProductCategoryAction(category)
 
   return (
     <ActionMenu
@@ -104,6 +106,15 @@ const CategoryRowActions = ({
               label: t("actions.edit"),
               icon: <PencilSquare />,
               to: `${category.id}/edit`,
+            },
+          ],
+        },
+        {
+          actions: [
+            {
+              label: t("actions.delete"),
+              icon: <Trash />,
+              onClick: handleDelete,
             },
           ],
         },

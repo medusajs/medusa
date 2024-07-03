@@ -1,8 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPaymentModuleService, Logger, PaymentDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ModuleRegistrationName,
   PaymentSessionStatus,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"

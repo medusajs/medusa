@@ -37,8 +37,7 @@ const secretApiKey = await apiKeyModuleService.createApiKeys({
 Verify tokens of secret API keys to authenticate users or actions, such as verifying a password reset token.
 
 ```ts
-const authenticatedToken =
-    await apiKeyModuleService.authenticate("sk_123")
+const authenticatedToken = await apiKeyModuleService.authenticate("sk_123")
 
 if (!authenticatedToken) {
   console.error("Couldn't verify token")
@@ -89,18 +88,19 @@ For example:
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const apiKeyModuleService: IApiKeyModuleService =
-      request.scope.resolve(ModuleRegistrationName.API_KEY)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
+    ModuleRegistrationName.API_KEY
+  )
 
-    res.json({
-      api_keys: await apiKeyModuleService.listApiKeys(),
-    })
-  }
-  ```
+  res.json({
+    api_keys: await apiKeyModuleService.listApiKeys(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -110,15 +110,14 @@ For example:
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const apiKeyModuleService: IApiKeyModuleService =
-      container.resolve(ModuleRegistrationName.API_KEY)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const apiKeyModuleService: IApiKeyModuleService = container.resolve(
+    ModuleRegistrationName.API_KEY
+  )
 
-    const apiKeys = await apiKeyModuleService.listApiKeys()
-  }
-  ```
+  const apiKeys = await apiKeyModuleService.listApiKeys()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -128,17 +127,14 @@ For example:
   import { IApiKeyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-      const apiKeyModuleService: IApiKeyModuleService =
-        container.resolve(
-          ModuleRegistrationName.API_KEY
-        )
+const step1 = createStep("step-1", async (_, { container }) => {
+  const apiKeyModuleService: IApiKeyModuleService = container.resolve(
+    ModuleRegistrationName.API_KEY
+  )
 
-      const apiKeys = await apiKeyModuleService.listApiKeys()
-  })
-  ```
+  const apiKeys = await apiKeyModuleService.listApiKeys()
+})
+```
 
   </CodeTab>
 </CodeTabs>

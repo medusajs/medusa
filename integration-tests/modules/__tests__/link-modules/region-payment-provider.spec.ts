@@ -1,7 +1,10 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IRegionModuleService } from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 

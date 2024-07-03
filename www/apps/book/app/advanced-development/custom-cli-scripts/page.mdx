@@ -25,11 +25,10 @@ import {
 } from "@medusajs/types"
 import { ModuleRegistrationName } from "@medusajs/utils"
 
-export default async function myScript({
-  container,
-}: ExecArgs) {
-  const productModuleService: IProductModuleService = 
-    container.resolve(ModuleRegistrationName.PRODUCT)
+export default async function myScript({ container }: ExecArgs) {
+  const productModuleService: IProductModuleService = container.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
   const [, count] = await productModuleService
     .listAndCountProducts()
@@ -61,9 +60,7 @@ For example:
 ```ts
 import { ExecArgs } from "@medusajs/types"
 
-export default async function myScript({
-  args,
-}: ExecArgs) {
+export default async function myScript({ args }: ExecArgs) {
   console.log(`The arguments you passed: ${args}`)
 }
 ```

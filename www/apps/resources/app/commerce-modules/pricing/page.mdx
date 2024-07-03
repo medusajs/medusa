@@ -24,12 +24,12 @@ const priceSet = await pricingModuleService.createPriceSets({
       currency_code: "USD",
     },
     {
-        amount: 400,
-        currency_code: "EUR",
-        min_quantity: 0,
-        max_quantity: 4,
-        rules: {},
-      },
+      amount: 400,
+      currency_code: "EUR",
+      min_quantity: 0,
+      max_quantity: 4,
+      rules: {},
+    },
   ],
 })
 ```
@@ -58,23 +58,25 @@ const priceSet = await pricingModuleService.addPrices({
 Price lists allow you to group prices and apply them only in specific conditions. You can also use them to override existing prices for the specified conditions.
 
 ```ts
-const priceList = await pricingModuleService.createPriceLists([{
-  title: "My Sale",
-  description: "Sale on selected items.",
-  type: "sale",
-  starts_at: Date.parse("01/10/2023").toString(),
-  ends_at: Date.parse("31/10/2023").toString(),
-  rules: {
-    region_id: ["reg_123", "reg_321"],
-  },
-  prices: [
-    {
-      amount: 400,
-      currency_code: "EUR",
-      price_set_id: "pset_123",
+const priceList = await pricingModuleService.createPriceLists([
+  {
+    title: "My Sale",
+    description: "Sale on selected items.",
+    type: "sale",
+    starts_at: Date.parse("01/10/2023").toString(),
+    ends_at: Date.parse("31/10/2023").toString(),
+    rules: {
+      region_id: ["reg_123", "reg_321"],
     },
-  ],
-}])
+    prices: [
+      {
+        amount: 400,
+        currency_code: "EUR",
+        price_set_id: "pset_123",
+      },
+    ],
+  },
+])
 ```
 
 ### Price Calculation Strategy
@@ -109,18 +111,19 @@ For example:
   import { IPricingModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const pricingModuleService: IPricingModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRICING)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const pricingModuleService: IPricingModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRICING
+  )
 
-    res.json({
-      price_sets: await pricingModuleService.listPriceSets(),
-    })
-  }
-  ```
+  res.json({
+    price_sets: await pricingModuleService.listPriceSets(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -130,15 +133,14 @@ For example:
   import { IPricingModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const pricingModuleService: IPricingModuleService =
-      container.resolve(ModuleRegistrationName.PRICING)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const pricingModuleService: IPricingModuleService = container.resolve(
+    ModuleRegistrationName.PRICING
+  )
 
-    const priceSets = await pricingModuleService.listPriceSets()
-  }
-  ```
+  const priceSets = await pricingModuleService.listPriceSets()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -148,15 +150,14 @@ For example:
   import { IPricingModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const pricingModuleService: IPricingModuleService =
-      container.resolve(ModuleRegistrationName.PRICING)
+const step1 = createStep("step-1", async (_, { container }) => {
+  const pricingModuleService: IPricingModuleService = container.resolve(
+    ModuleRegistrationName.PRICING
+  )
 
-    const priceSets = await pricingModuleService.listPriceSets()
-  })
-  ```
+  const priceSets = await pricingModuleService.listPriceSets()
+})
+```
 
   </CodeTab>
 </CodeTabs>

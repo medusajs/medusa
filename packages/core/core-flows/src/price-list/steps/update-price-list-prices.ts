@@ -1,12 +1,15 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
   PriceDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPricesDTO,
+  UpdatePriceListPriceWorkflowDTO,
   UpdatePriceListPriceWorkflowStepDTO,
 } from "@medusajs/types"
-import { buildPriceSetPricesForModule } from "@medusajs/utils"
+import {
+  buildPriceSetPricesForModule,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 export const updatePriceListPricesStepId = "update-price-list-prices"
@@ -25,10 +28,13 @@ export const updatePriceListPricesStep = createStep(
       const { prices = [], id } = priceListData
 
       for (const price of prices) {
-        pricesToUpdate.push({
+        const toPush = {
           ...price,
           price_set_id: variantPriceSetMap[price.variant_id!],
-        })
+        } as UpdatePriceListPriceDTO
+        delete (toPush as Partial<UpdatePriceListPriceWorkflowDTO>).variant_id
+
+        pricesToUpdate.push(toPush)
 
         if (price.id) {
           priceIds.push(price.id)

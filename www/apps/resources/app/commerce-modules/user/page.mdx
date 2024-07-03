@@ -57,18 +57,19 @@ For example:
   import { IUserModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const userModuleService: IUserModuleService =
-      req.scope.resolve(ModuleRegistrationName.USER)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const userModuleService: IUserModuleService = req.scope.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    res.json({
-      users: await userModuleService.listUsers(),
-    })
-  }
-  ```
+  res.json({
+    users: await userModuleService.listUsers(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -78,15 +79,14 @@ For example:
   import { IUserModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const userModuleService: IUserModuleService =
-      container.resolve(ModuleRegistrationName.USER)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const userModuleService: IUserModuleService = container.resolve(
+    ModuleRegistrationName.USER
+  )
 
-    const users = await userModuleService.listUsers()
-  }
-  ```
+  const users = await userModuleService.listUsers()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -96,17 +96,14 @@ For example:
   import { IUserModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const userModuleService: IUserModuleService =
-      container.resolve(
-        ModuleRegistrationName.USER
-      )
-      
-    const users = await userModuleService.listUsers()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const userModuleService: IUserModuleService = container.resolve(
+    ModuleRegistrationName.USER
+  )
+
+  const users = await userModuleService.listUsers()
+})
+```
 
   </CodeTab>
 </CodeTabs>

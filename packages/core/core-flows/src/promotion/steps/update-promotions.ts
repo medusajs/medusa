@@ -1,6 +1,6 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService, UpdatePromotionDTO } from "@medusajs/types"
 import {
+  ModuleRegistrationName,
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"

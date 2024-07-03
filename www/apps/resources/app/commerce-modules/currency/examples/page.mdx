@@ -18,38 +18,36 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
   import { ICurrencyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const currencyModuleService: ICurrencyModuleService =
-      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+    ModuleRegistrationName.CURRENCY
+  )
 
-    res.json({
-      currencies: await currencyModuleService.listCurrencies(),
-    })
-  }
-  ```
+  res.json({
+    currencies: await currencyModuleService.listCurrencies(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCurrencyModule,
-  } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/currency"
 
-  export async function GET(request: Request) {
-    const currencyModuleService = 
-      await initializeCurrencyModule()
+export async function GET(request: Request) {
+  const currencyModuleService = await initializeCurrencyModule()
 
-    return NextResponse.json({
-      currencies: await currencyModuleService.listCurrencies(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    currencies: await currencyModuleService.listCurrencies(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -66,43 +64,38 @@ In this guide, you’ll find common examples of how you can use the Currency Mod
   import { ICurrencyModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const currencyModuleService: ICurrencyModuleService =
-      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+    ModuleRegistrationName.CURRENCY
+  )
 
-    const currency = await currencyModuleService
-      .retrieveCurrency("usd")
+  const currency = await currencyModuleService.retrieveCurrency("usd")
 
-    res.json({
-      currency,
-    })
-  }
-  ```
+  res.json({
+    currency,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCurrencyModule,
-  } from "@medusajs/currency"
+import { initialize as initializeCurrencyModule } from "@medusajs/currency"
 
-  export async function GET(
-    request: Request
-  ) {
-    const currencyModuleService = await initializeCurrencyModule()
+export async function GET(request: Request) {
+  const currencyModuleService = await initializeCurrencyModule()
 
-    const currency = await currencyModuleService
-      .retrieveCurrency("usd")
+  const currency = await currencyModuleService.retrieveCurrency("usd")
 
-    return NextResponse.json({ currency })
-  }
-  ```
+  return NextResponse.json({ currency })
+}
+```
 
   </CodeTab>
 </CodeTabs>

@@ -81,18 +81,19 @@ For example:
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    res.json({
-      regions: await regionModuleService.listRegions(),
-    })
-  }
-  ```
+  res.json({
+    regions: await regionModuleService.listRegions(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -102,15 +103,14 @@ For example:
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const regionModuleService: IRegionModuleService =
-      container.resolve(ModuleRegistrationName.REGION)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const regionModuleService: IRegionModuleService = container.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    const regions = await regionModuleService.listRegions()
-  }
-  ```
+  const regions = await regionModuleService.listRegions()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -120,17 +120,14 @@ For example:
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const regionModuleService: IRegionModuleService =
-      container.resolve(
-        ModuleRegistrationName.REGION
-      )
-    
-    const regions = await regionModuleService.listRegions()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const regionModuleService: IRegionModuleService = container.resolve(
+    ModuleRegistrationName.REGION
+  )
+
+  const regions = await regionModuleService.listRegions()
+})
+```
 
   </CodeTab>
 </CodeTabs>

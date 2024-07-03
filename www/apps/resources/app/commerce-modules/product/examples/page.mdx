@@ -18,75 +18,71 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.createProducts([
-      {
-        title: "Medusa Shirt",
-        options: [
-          {
-            title: "Color",
-          },
-        ],
-        variants: [
-          {
-            title: "Black Shirt",
-            options: [
-              {
-                value: "Black",
-              },
-            ],
-          },
-        ],
-      },
-    ])
+  const products = await productModuleService.createProducts([
+    {
+      title: "Medusa Shirt",
+      options: [
+        {
+          title: "Color",
+        },
+      ],
+      variants: [
+        {
+          title: "Black Shirt",
+          options: [
+            {
+              value: "Black",
+            },
+          ],
+        },
+      ],
+    },
+  ])
 
-    res.json({ products })
-  }
-  ```
+  res.json({ products })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function POST(request: Request) {
-    const productModuleService = await initializeProductModule()
+export async function POST(request: Request) {
+  const productModuleService = await initializeProductModule()
 
-    const products = await productModuleService.createProducts([
-      {
-        title: "Medusa Shirt",
-        options: [
-          {
-            title: "Color",
-          },
-        ],
-        variants: [
-          {
-            title: "Black Shirt",
-            options: [
-              {
-                value: "Black",
-              },
-            ],
-          },
-        ],
-      },
-    ])
+  const products = await productModuleService.createProducts([
+    {
+      title: "Medusa Shirt",
+      options: [
+        {
+          title: "Color",
+        },
+      ],
+      variants: [
+        {
+          title: "Black Shirt",
+          options: [
+            {
+              value: "Black",
+            },
+          ],
+        },
+      ],
+    },
+  ])
 
-    return NextResponse.json({ products })
-  }
-  ```
+  return NextResponse.json({ products })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -103,37 +99,33 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const products = await productModuleService.listProducts()
+  const products = await productModuleService.listProducts()
 
-    res.json({ products })
-  }
-  ```
+  res.json({ products })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function GET(request: Request) {
-    const productModuleService = await initializeProductModule()
+export async function GET(request: Request) {
+  const productModuleService = await initializeProductModule()
 
-    const products = await productModuleService.listProducts()
+  const products = await productModuleService.listProducts()
 
-    return NextResponse.json({ products })
-  }
-  ```
+  return NextResponse.json({ products })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -150,45 +142,37 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const product = await productModuleService.retrieveProduct(
-      request.params.id
-    )
+  const product = await productModuleService.retrieveProduct(request.params.id)
 
-    res.json({ product })
-  }
-  ```
+  res.json({ product })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function GET(
-    request: Request, 
-    { params }: { params: Record<string, any> }) {
-    
-    const { id } = params
-    const productModuleService = await initializeProductModule()
+export async function GET(
+  request: Request,
+  { params }: { params: Record<string, any> }
+) {
+  const { id } = params
+  const productModuleService = await initializeProductModule()
 
-    const product = await productModuleService.retrieveProduct(
-      id
-    )
+  const product = await productModuleService.retrieveProduct(id)
 
-    return NextResponse.json({ product })
-  }
-  ```
+  return NextResponse.json({ product })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -205,41 +189,37 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function GET(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const data = await productModuleService.listProducts({
-      handle: "shirt",
-    })
+  const data = await productModuleService.listProducts({
+    handle: "shirt",
+  })
 
-    res.json({ product: data[0] })
-  }
-  ```
+  res.json({ product: data[0] })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function GET(request: Request) {
-    const productModuleService = await initializeProductModule()
+export async function GET(request: Request) {
+  const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService.listProducts({
-      handle: "shirt",
-    })
+  const data = await productModuleService.listProducts({
+    handle: "shirt",
+  })
 
-    return NextResponse.json({ product: data[0] })
-  }
-  ```
+  return NextResponse.json({ product: data[0] })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -256,39 +236,33 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const categories = await productModuleService
-      .listProductCategories()
+  const categories = await productModuleService.listProductCategories()
 
-    res.json({ categories })
-  }
-  ```
+  res.json({ categories })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function GET(request: Request) {
-    const productModuleService = await initializeProductModule()
+export async function GET(request: Request) {
+  const productModuleService = await initializeProductModule()
 
-    const categories = await productModuleService
-      .listProductCategories()
+  const categories = await productModuleService.listProductCategories()
 
-    return NextResponse.json({ categories })
-  }
-  ```
+  return NextResponse.json({ categories })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -305,47 +279,41 @@ In this guide, you’ll find common examples of how you can use the Product Modu
   import { IProductModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const productModuleService: IProductModuleService =
-      request.scope.resolve(ModuleRegistrationName.PRODUCT)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const productModuleService: IProductModuleService = request.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
-    const data = await productModuleService
-      .listProductCategories({
-        handle: request.params.handle,
-      })
+  const data = await productModuleService.listProductCategories({
+    handle: request.params.handle,
+  })
 
-    res.json({ category: data[0] })
-  }
-  ```
+  res.json({ category: data[0] })
+}
+```
 
   </CodeTab>
   <CodeTab value="nextjs" label="Next.js App Router">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import { 
-    initialize as initializeProductModule,
-  } from "@medusajs/product"
+import { initialize as initializeProductModule } from "@medusajs/product"
 
-  export async function GET(
-    request: Request, 
-    { params }: { params: Record<string, any> }) {
-    
-    const { handle } = params
-    const productModuleService = await initializeProductModule()
+export async function GET(
+  request: Request,
+  { params }: { params: Record<string, any> }
+) {
+  const { handle } = params
+  const productModuleService = await initializeProductModule()
 
-    const data = await productModuleService
-      .listProductCategories({
-        handle,
-      })
+  const data = await productModuleService.listProductCategories({
+    handle,
+  })
 
-    return NextResponse.json({ category: data[0] })
-  }
-  ```
+  return NextResponse.json({ category: data[0] })
+}
+```
 
   </CodeTab>
 </CodeTabs>

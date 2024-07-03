@@ -121,33 +121,71 @@ export interface EntityConstructor<Props> extends Function {
  * From a IDmlEntity, infer the foreign keys name and type for
  * "belongsTo" relation meaning "hasOne" and "ManyToOne"
  */
-export type InferForeignKeys<T> = T extends IDmlEntity<infer Schema>
-  ? {
-      [K in keyof Schema as Schema[K] extends { type: infer Type }
-        ? Type extends RelationshipTypes
-          ? `${K & string}_id`
-          : K
-        : K]: Schema[K] extends { type: infer Type }
-        ? Type extends RelationshipTypes
-          ? string
-          : Schema[K]
-        : Schema[K]
-    }
+export type InferForeignKeys<Schema extends DMLSchema> = {
+  [K in keyof Schema as Schema[K] extends { type: infer Type }
+    ? Type extends RelationshipTypes
+      ? `${K & string}_id`
+      : K
+    : K]: Schema[K] extends { type: infer Type }
+    ? Type extends RelationshipTypes
+      ? string
+      : Schema[K]
+    : Schema[K]
+}
+
+/**
+ * Infer fields for a belongsTo relationship
+ */
+export type InferBelongsToFields<Relation> = Relation extends () => IDmlEntity<
+  infer R
+>
+  ? InferSchemaFields<R>
+  : Relation extends () => IDmlEntity<infer R> | null
+  ? InferSchemaFields<R> | null
   : never
+
+/**
+ * Infer fields for a hasOne relationship
+ */
+export type InferHasOneFields<Relation> = InferBelongsToFields<Relation>
+
+/**
+ * Infer fields for hasMany relationship
+ */
+export type InferHasManyFields<Relation> = Relation extends () => IDmlEntity<
+  infer R
+>
+  ? InferSchemaFields<R>[]
+  : never
+
+/**
+ * Infer fields for manyToMany relationship
+ */
+export type InferManyToManyFields<Relation> = InferHasManyFields<Relation>
+
+/**
+ * Inferring the types of the schema fields from the DML
+ * entity
+ */
+export type InferSchemaFields<Schema extends DMLSchema> = {
+  [K in keyof Schema]: Schema[K] extends RelationshipType<any>
+    ? Schema[K]["type"] extends "belongsTo"
+      ? InferBelongsToFields<Schema[K]["$dataType"]>
+      : Schema[K]["type"] extends "hasOne"
+      ? InferHasOneFields<Schema[K]["$dataType"]>
+      : Schema[K]["type"] extends "hasMany"
+      ? InferHasManyFields<Schema[K]["$dataType"]>
+      : Schema[K]["type"] extends "manyToMany"
+      ? InferManyToManyFields<Schema[K]["$dataType"]>
+      : never
+    : Schema[K]["$dataType"]
+}
 
 /**
  * Helper to infer the schema type of a DmlEntity
  */
 export type Infer<T> = T extends IDmlEntity<infer Schema>
-  ? EntityConstructor<
-      {
-        [K in keyof Schema]: Schema[K]["$dataType"] extends () => infer R
-          ? Infer<R>
-          : Schema[K]["$dataType"] extends (() => infer R) | null
-          ? Infer<R> | null
-          : Schema[K]["$dataType"]
-      } & InferForeignKeys<T>
-    >
+  ? EntityConstructor<InferSchemaFields<Schema>>
   : never
 
 /**
@@ -200,7 +238,7 @@ export type InferIndexableProperties<T> = keyof (T extends IDmlEntity<
           ? never
           : K
         : K]: string
-    } & InferForeignKeys<T>
+    } & InferForeignKeys<Schema>
   : never)
 
 export type EntityIndex<

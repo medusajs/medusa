@@ -1,9 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   BigNumberInput,
   IPaymentModuleService,
   PaymentProviderContext,
 } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

@@ -54,18 +54,19 @@ For example:
   import { IStoreModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    res.json({
-      stores: await storeModuleService.listStores(),
-    })
-  }
-  ```
+  res.json({
+    stores: await storeModuleService.listStores(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
@@ -75,15 +76,14 @@ For example:
   import { IStoreModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const storeModuleService: IStoreModuleService =
-      container.resolve(ModuleRegistrationName.STORE)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const storeModuleService: IStoreModuleService = container.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    const stores = await storeModuleService.listStores()
-  }
-  ```
+  const stores = await storeModuleService.listStores()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
@@ -93,17 +93,14 @@ For example:
   import { IStoreModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const storeModuleService: IStoreModuleService =
-      container.resolve(
-        ModuleRegistrationName.STORE
-      )
-    
-    const stores = await storeModuleService.listStores()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const storeModuleService: IStoreModuleService = container.resolve(
+    ModuleRegistrationName.STORE
+  )
+
+  const stores = await storeModuleService.listStores()
+})
+```
 
   </CodeTab>
 </CodeTabs>

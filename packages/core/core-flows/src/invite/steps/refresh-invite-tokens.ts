@@ -1,7 +1,7 @@
-import { IUserModuleService, InviteDTO } from "@medusajs/types"
+import { IUserModuleService } from "@medusajs/types"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
 export const refreshInviteTokensStepId = "refresh-invite-tokens-step"
 export const refreshInviteTokensStep = createStep(

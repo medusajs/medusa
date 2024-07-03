@@ -37,11 +37,11 @@ Then, resolve the module's main service in other resources, such as API routes o
 
 <Details summaryContent="Example: Create a module integrating an ERP system">
 
-  This example showcases how to create a module that integrates to a dummy ERP system.
+This example showcases how to create a module that integrates to a dummy ERP system.
 
-  Start by creating the directory `src/modules/erp` for your module.
+Start by creating the directory `src/modules/erp` for your module.
 
-  Then, create the file `src/modules/erp/service.ts` with the following content:
+Then, create the file `src/modules/erp/service.ts` with the following content:
 
 export const serviceHighlights = [
   ["4", "ErpModuleOptions", "The module's expected options."],
@@ -56,12 +56,12 @@ export const serviceHighlights = [
   import axios, { AxiosInstance } from "axios"
   import { ProductDTO } from "@medusajs/types"
 
-  type ErpModuleOptions = {
-    apiKey: string
-  }
+type ErpModuleOptions = {
+apiKey: string
+}
 
-  class ErpModuleService {
-    private client_: AxiosInstance
+class ErpModuleService {
+private client\_: AxiosInstance
 
     constructor({}, { apiKey }: ErpModuleOptions) {
       this.client_ = axios.create({
@@ -74,39 +74,37 @@ export const serviceHighlights = [
 
     async getProductData(id: string) {
       const { data: erpProduct } = await this.client_.get(`/product/${id}`)
-      
+
       return erpProduct
     }
 
     async createProduct(data: ProductDTO) {
       const { data: erpProduct } = await this.client_.post(`/product`, data)
-      
+
       return erpProduct
     }
 
     async deleteProduct(id: string) {
       await this.client_.delete(`/product/${id}`)
     }
-  }
 
-  export default ErpModuleService
-  ```
+}
 
-  This creates the module's main service. Few things to note:
+export default ErpModuleService
 
-  - The module accepts an `apiKey` option, used to authenticate to the dummy ERP system. The module's main service accesses this option in the second parameter of the constructor.
-  - The module uses axios to create a client in the constructor. The client is used in the service's methods when connecting to the ERP system. If the system you're integrating has an SDK, you can initialize it in the constructor, instead.
-  - The `getProductData` method retrieves a product's details from the ERP system by sending a `GET` request using the client.
-  - The `createProduct` method creates a product in the ERP system by sending a `POST` request using the client.
-  - The `deleteProduct` method deletes a product in the ERP system by sending a `DELETE` request using the client.
+````
 
-  <Note title="Tip">
+This creates the module's main service. Few things to note:
 
-  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
+- The module accepts an `apiKey` option, used to authenticate to the dummy ERP system. The module's main service accesses this option in the second parameter of the constructor.
+- The module uses axios to create a client in the constructor. The client is used in the service's methods when connecting to the ERP system. If the system you're integrating has an SDK, you can initialize it in the constructor, instead.
+- The `getProductData` method retrieves a product's details from the ERP system by sending a `GET` request using the client.
+- The `createProduct` method creates a product in the ERP system by sending a `POST` request using the client.
+- The `deleteProduct` method deletes a product in the ERP system by sending a `DELETE` request using the client.
 
-  </Note>
+<Note title="Tip">
 
-  Then, create the module's definition file at `src/modules/erp/index.ts` with the following content:
+You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
 
   ```ts title="src/modules/erp/index.ts"
   import ErpModuleService from "./service"
@@ -117,24 +115,34 @@ export const serviceHighlights = [
   })
   ```
 
-  Finally, add the module to the `modules` object in `medusa-config.js`:
+Then, create the module's definition file at `src/modules/erp/index.ts` with the following content:
 
-  ```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
-  module.exports = defineConfig({
-    // ...
-    modules: {
-      erpModuleService: {
-        resolve: "./modules/erp",
-        options: {
-          apiKey: process.env.ERP_API_KEY,
-        },
+```ts title="src/modules/erp/index.ts"
+import ErpModuleService from "./service"
+
+export default {
+  service: ErpModuleService,
+}
+````
+
+Finally, add the module to the `modules` object in `medusa-config.js`:
+
+```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
+module.exports = defineConfig({
+  // ...
+  modules: {
+    erpModuleService: {
+      resolve: "./modules/erp",
+      options: {
+        apiKey: process.env.ERP_API_KEY,
       },
     },
-  })
-  ```
+  },
+})
+```
 
 </Details>
-    
+
 
 ---
 
@@ -168,12 +176,28 @@ export const workflowHighlights = [
   ["24", "productModuleService", "Resolve the Product Module's main service."],
   ["28", "retrieve", "Retrieve the created product's data."],
   ["30", "createProduct", "Create the product in the ERP system."],
-  ["34", "update", "Update the product in Medusa with the ID of the ERP product."],
+  [
+    "34",
+    "update",
+    "Update the product in Medusa with the ID of the ERP product.",
+  ],
   ["43", "erpId", "Pass the ERP product's ID to the compensation function."],
   ["44", "productId", "Pass the product's ID to the compensation function."],
-  ["46", "", "Define a compensation function that rolls back changes when an error occurs."],
-  ["53", "deleteProduct", "Undo creating the product in the ERP system by deleting it."],
-  ["54", "update", "Update the product in Medusa to remove the ERP product's ID."]
+  [
+    "46",
+    "",
+    "Define a compensation function that rolls back changes when an error occurs.",
+  ],
+  [
+    "53",
+    "deleteProduct",
+    "Undo creating the product in the ERP system by deleting it.",
+  ],
+  [
+    "54",
+    "update",
+    "Update the product in Medusa to remove the ERP product's ID.",
+  ],
 ]
 
     ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
@@ -195,14 +219,14 @@ export const workflowHighlights = [
     }
 
     const createInErpStep = createStep(
-      "create-in-erp", 
+      "create-in-erp",
       async ({ productId }: WorkflowInput, { container }) => {
       const erpModuleService: ErpModuleService = container.resolve(
         "erpModuleService"
       )
       const productModuleService: IProductModuleService = container
         .resolve(ModuleRegistrationName.PRODUCT)
-      
+
       const createdProductData = await productModuleService
         .retrieveProduct(productId)
 
@@ -215,7 +239,7 @@ export const workflowHighlights = [
           erp_id: erpProduct.id
         }
       })
-      
+
       return new StepResponse({
         erpProduct
       }, {
@@ -251,20 +275,20 @@ export const workflowHighlights = [
     - Retrieves the product's data using the Product Module's main service.
     - Create the product in the ERP system using the ERP Module's main service.
     - Updates the product in Medusa by setting the ID of the ERP product in the product's `metadata` property.
-    
+
     The step also has a compensation function that rolls back changes when an error occurs. It deletes the product in the ERP system and removes the ID of the ERP product in the Medusa product.
-    
+
     Then, create the subscriber at `src/subscribers/create-product.ts`:
 
     ```ts title="src/subscribers/create-product.ts"
-    import type { 
-      SubscriberConfig, 
+    import type {
+      SubscriberConfig,
       SubscriberArgs,
     } from "@medusajs/medusa"
     import createProductWorkflow from "../workflows/create-product"
 
-    export default async function handleProductUpdate({ 
-      data, container 
+    export default async function handleProductUpdate({
+      data, container
     }: SubscriberArgs<{id: string}>) {
       createProductWorkflow(container)
         .run({
@@ -307,12 +331,12 @@ For example, suppose an administrator changes the product data in the ERP system
     For example, create the file `src/api/webhooks/erp/update/route.ts` with the following content:
 
     ```ts title="src/api/webhooks/erp/update/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
-    import { 
-      MedusaRequest, 
-      MedusaResponse, 
+    import {
+      MedusaRequest,
+      MedusaResponse,
     } from "@medusajs/medusa"
-    import { 
-      IProductModuleService, 
+    import {
+      IProductModuleService,
       UpdateProductDTO
     } from "@medusajs/types"
     import {
@@ -325,7 +349,7 @@ For example, suppose an administrator changes the product data in the ERP system
     }
 
     export async function POST(
-      req: MedusaRequest<WebhookReq>, 
+      req: MedusaRequest<WebhookReq>,
       res: MedusaResponse
     ) {
       const { id, updatedData} = req.body
@@ -340,15 +364,15 @@ For example, suppose an administrator changes the product data in the ERP system
       res.status(200)
     }
     ```
-    
+
     This creates a webhook listener for an ERP system. It receives the ID of a product and its updated data, assuming that’s how your ERP system sends the data.
-    
+
     Then, create the file `src/api/middlewares.ts` with the following content:
 
     ```ts title="src/api/middlewares.ts"
     import { MiddlewaresConfig } from "@medusajs/medusa"
     import { raw } from "body-parser"
-    
+
     export const config: MiddlewaresConfig = {
       routes: [
         {

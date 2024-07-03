@@ -97,11 +97,16 @@ export const useVariantPriceGridColumns = ({
         return columnHelper.display({
           header: `Price ${region.name}`,
           cell: ({ row, table }) => {
+            const currency = currencies.find(
+              (c) => c.code === region.currency_code
+            )
+
+            if (!currency) {
+              return null
+            }
             return (
               <CurrencyCell
-                currency={currencies.find(
-                  (c) => c.code === region.currency_code
-                )}
+                currency={currency}
                 meta={table.options.meta as DataGridMeta}
                 field={`variants.${row.index}.prices.${region.id}`}
               />

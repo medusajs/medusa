@@ -1,10 +1,11 @@
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  RemoteLink,
-} from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
 import { ICartModuleService, IPromotionModuleService } from "@medusajs/types"
-import { Modules, PromotionType } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+  Modules,
+  PromotionType,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
@@ -30,7 +31,9 @@ medusaIntegrationTestRunner({
         promotionModuleService = appContainer.resolve(
           ModuleRegistrationName.PROMOTION
         )
-        remoteLinkService = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
+        remoteLinkService = appContainer.resolve(
+          ContainerRegistrationKeys.REMOTE_LINK
+        )
       })
 
       beforeEach(async () => {

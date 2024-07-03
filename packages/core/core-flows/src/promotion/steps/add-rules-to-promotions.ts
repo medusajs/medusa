@@ -1,9 +1,8 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   AddPromotionRulesWorkflowDTO,
   IPromotionModuleService,
 } from "@medusajs/types"
-import { RuleType } from "@medusajs/utils"
+import { ModuleRegistrationName, RuleType } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 export const addRulesToPromotionsStepId = "add-rules-to-promotions"

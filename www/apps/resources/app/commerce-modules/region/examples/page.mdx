@@ -18,47 +18,46 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    const region = await regionModuleService.createRegions({
-      name: "Europe",
-      currency_code: "eur",
-    })
+  const region = await regionModuleService.createRegions({
+    name: "Europe",
+    currency_code: "eur",
+  })
 
-    res.json({
-      region,
-    })
-  }
-  ```
+  res.json({
+    region,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeRegionModule,
-  } from "@medusajs/region"
+import { initialize as initializeRegionModule } from "@medusajs/region"
 
-  export async function POST(request: Request) {
-    const regionModuleService = await initializeRegionModule()
+export async function POST(request: Request) {
+  const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService.createRegions({
-      name: "Europe",
-      currency_code: "eur",
-    })
+  const region = await regionModuleService.createRegions({
+    name: "Europe",
+    currency_code: "eur",
+  })
 
-    res.json({
-      region,
-    })
-  }
-  ```
+  res.json({
+    region,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -75,37 +74,36 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    res.json({
-      regions: await regionModuleService.listRegions(),
-    })
-  }
-  ```
+  res.json({
+    regions: await regionModuleService.listRegions(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeRegionModule,
-  } from "@medusajs/region"
+import { initialize as initializeRegionModule } from "@medusajs/region"
 
-  export async function GET(request: Request) {
-    const regionModuleService = await initializeRegionModule()
+export async function GET(request: Request) {
+  const regionModuleService = await initializeRegionModule()
 
-    return NextResponse.json({
-      regions: await regionModuleService.listRegions(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    regions: await regionModuleService.listRegions(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -122,41 +120,36 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    const region = await regionModuleService
-      .retrieveRegion("reg_123")
+  const region = await regionModuleService.retrieveRegion("reg_123")
 
-    res.json({ region })
-  }
-  ```
+  res.json({ region })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeRegionModule,
-  } from "@medusajs/region"
+import { initialize as initializeRegionModule } from "@medusajs/region"
 
-  export async function GET(
-    request: Request
-  ) {
-    const regionModuleService = await initializeRegionModule()
+export async function GET(request: Request) {
+  const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService
-      .retrieveRegion("reg_123")
+  const region = await regionModuleService.retrieveRegion("reg_123")
 
-    return NextResponse.json({ region })
-  }
-  ```
+  return NextResponse.json({ region })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -173,45 +166,40 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    const region = await regionModuleService
-      .updateRegions("reg_123", {
-        automatic_taxes: false,
-      })
+  const region = await regionModuleService.updateRegions("reg_123", {
+    automatic_taxes: false,
+  })
 
-    res.json({ region })
-  }
-  ```
+  res.json({ region })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeRegionModule,
-  } from "@medusajs/region"
+import { initialize as initializeRegionModule } from "@medusajs/region"
 
-  export async function POST(
-    request: Request
-  ) {
-    const regionModuleService = await initializeRegionModule()
+export async function POST(request: Request) {
+  const regionModuleService = await initializeRegionModule()
 
-    const region = await regionModuleService
-      .updateRegions("reg_123", {
-        automatic_taxes: false,
-      })
+  const region = await regionModuleService.updateRegions("reg_123", {
+    automatic_taxes: false,
+  })
 
-    return NextResponse.json({ region })
-  }
-  ```
+  return NextResponse.json({ region })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -228,37 +216,34 @@ In this guide, you’ll find common examples of how you can use the Region Modul
   import { IRegionModuleService } from "@medusajs/types"
   import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const regionModuleService: IRegionModuleService =
-      req.scope.resolve(ModuleRegistrationName.REGION)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const regionModuleService: IRegionModuleService = req.scope.resolve(
+    ModuleRegistrationName.REGION
+  )
 
-    await regionModuleService.deleteRegions("reg_123")
+  await regionModuleService.deleteRegions("reg_123")
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeRegionModule,
-  } from "@medusajs/region"
+import { initialize as initializeRegionModule } from "@medusajs/region"
 
-  export async function DELETE(
-    request: Request
-  ) {
-    const regionModuleService = await initializeRegionModule()
+export async function DELETE(request: Request) {
+  const regionModuleService = await initializeRegionModule()
 
-    await regionModuleService.deleteRegions("reg_123")
-  }
-  ```
+  await regionModuleService.deleteRegions("reg_123")
+}
+```
 
   </CodeTab>
 </CodeTabs>
