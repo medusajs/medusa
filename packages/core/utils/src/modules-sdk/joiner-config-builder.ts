@@ -108,7 +108,7 @@ export function defineJoinerConfig(
   }
 
   if (!primaryKeys && modelDefinitions.size) {
-    const linkConfig = buildLinkConfigFromDmlObjects([
+    const linkConfig = buildLinkConfigFromDmlObjects(serviceName, [
       ...modelDefinitions.values(),
     ])
 
@@ -250,23 +250,40 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *   test: model.text(),
  * })
  *
+ * const links = buildLinkConfigFromDmlObjects('userService', [user, car])
+ *
  * // output:
  * // {
- * //   toJSON: function () {  },
  * //   user: {
- * //     id: "user_id",
+ * //     id: {
+ * //       serviceName: 'userService',
+ * //       field: 'user',
+ * //       linkable: 'user_id',
+ * //       primaryKey: 'id'
+ * //     },
+ * //     toJSON() { ... }
  * //   },
  * //   car: {
- * //     number_plate: "car_number_plate",
- * //   },
+ * //     number_plate: {
+ * //       serviceName: 'userService',
+ * //       field: 'car',
+ * //       linkable: 'car_number_plate',
+ * //       primaryKey: 'number_plate'
+ * //     },
+ * //     toJSON() { ... }
+ * //   }
  * // }
  *
+ * @param serviceName
  * @param models
  */
 export function buildLinkConfigFromDmlObjects<
   const ServiceName extends string,
   const T extends DmlEntity<any, any>[]
->(models: T = [] as unknown as T): InfersLinksConfig<ServiceName, T> {
+>(
+  serviceName: ServiceName,
+  models: T = [] as unknown as T
+): InfersLinksConfig<ServiceName, T> {
   const linkConfig = {} as InfersLinksConfig<ServiceName, T>
 
   for (const model of models) {
@@ -298,6 +315,8 @@ export function buildLinkConfigFromDmlObjects<
         modelLinkConfig[property] = {
           linkable: linkableKeyName,
           primaryKey: property,
+          serviceName,
+          field: lowerCaseFirst(model.name),
         }
       }
     }

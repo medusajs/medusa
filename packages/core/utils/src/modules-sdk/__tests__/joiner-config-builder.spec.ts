@@ -458,45 +458,61 @@ describe("joiner-config-builder", () => {
         number_plate: model.text().primaryKey(),
       })
 
-      const linkConfig = buildLinkConfigFromDmlObjects([user, car])
+      const linkConfig = buildLinkConfigFromDmlObjects("myService", [user, car])
 
       expectTypeOf(linkConfig).toMatchTypeOf<{
         user: {
           id: {
+            serviceName: "myService"
+            field: "user"
             linkable: "user_id"
             primaryKey: "id"
           }
           toJSON: () => {
-            linkable: string
-            primaryKey: string
+            serviceName: "myService"
+            field: "user"
+            linkable: "user_id"
+            primaryKey: "id"
           }
         }
         car: {
           number_plate: {
+            serviceName: "myService"
+            field: "car"
             linkable: "car_number_plate"
             primaryKey: "number_plate"
           }
           toJSON: () => {
-            linkable: string
-            primaryKey: string
+            serviceName: "myService"
+            field: "car"
+            linkable: "car_number_plate"
+            primaryKey: "number_plate"
           }
         }
       }>()
 
       expect(linkConfig.user.id).toEqual({
+        serviceName: "myService",
+        field: "user",
         linkable: "user_id",
         primaryKey: "id",
       })
       expect(linkConfig.car.number_plate).toEqual({
+        serviceName: "myService",
+        field: "car",
         linkable: "car_number_plate",
         primaryKey: "number_plate",
       })
 
       expect(linkConfig.car.toJSON()).toEqual({
+        serviceName: "myService",
+        field: "car",
         linkable: "car_number_plate",
         primaryKey: "number_plate",
       })
       expect(linkConfig.user.toJSON()).toEqual({
+        serviceName: "myService",
+        field: "user",
         linkable: "user_id",
         primaryKey: "id",
       })

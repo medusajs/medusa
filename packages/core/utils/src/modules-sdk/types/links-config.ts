@@ -106,16 +106,32 @@ export type InferLinkableKeys<T extends DmlEntity<any, any>[]> =
 /**
  * From a union infer an Array and return the last element
  */
-type InferLastLink<ServiceName extends string, DmlEntity> = Reverse<
-  UnionToArray<
-    InferSchemaLinksConfig<ServiceName, DmlEntity>[keyof InferSchemaLinksConfig<
+type InferLastLink<ServiceName extends string, DmlEntity> = UnionToArray<
+  | InferSchemaLinksConfig<ServiceName, DmlEntity>[keyof InferSchemaLinksConfig<
       ServiceName,
       DmlEntity
     >]
-  >
 > extends [...any, infer V]
   ? V
   : never
+
+type InferLastPrimaryKey<ServiceName extends string, DmlEntity> = InferLastLink<
+  ServiceName,
+  DmlEntity
+> extends {
+  primaryKey: infer PrimaryKey
+}
+  ? PrimaryKey
+  : string
+
+type InferLastLinkable<ServiceName extends string, DmlEntity> = InferLastLink<
+  ServiceName,
+  DmlEntity
+> extends {
+  linkable: infer Linkable
+}
+  ? Linkable
+  : string
 
 type InferPrimaryKeyNameOrNever<
   Schema extends DMLSchema,
@@ -170,7 +186,7 @@ type InferSchemaLinksConfig<
  * //     },
  * //     toJSON() { ... }
  * //   },
- * //   car: {s
+ * //   car: {
  * //     number_plate: {
  * //       serviceName: 'userService',
  * //       field: 'car',
@@ -194,16 +210,8 @@ export type InfersLinksConfig<
       field: T[K] extends DmlEntity<any, infer Config>
         ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
         : string
-      linkable: InferLastLink<ServiceName, T> extends {
-        linkable: infer Linkable
-      }
-        ? Linkable
-        : never
-      primaryKey: InferLastLink<ServiceName, T> extends {
-        primaryKey: infer PrimaryKey
-      }
-        ? PrimaryKey
-        : never
+      linkable: InferLastLinkable<ServiceName, T[K]>
+      primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
     }
   }
 }>
