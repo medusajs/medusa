@@ -23,7 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js environment
@@ -73,7 +72,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js environment
