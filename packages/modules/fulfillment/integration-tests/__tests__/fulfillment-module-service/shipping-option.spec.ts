@@ -25,11 +25,7 @@ const moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "test-provider": {},
-        },
-      },
+      id: "test-provider",
     },
   ],
 }

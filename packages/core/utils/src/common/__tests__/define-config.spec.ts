@@ -21,11 +21,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -36,11 +32,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -52,11 +44,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -123,11 +111,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -138,11 +122,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -157,11 +137,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -228,11 +204,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -243,11 +215,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -259,11 +227,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/notification-local",
                 },
               ],
@@ -332,11 +296,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/file-local-next",
                 },
               ],
@@ -347,11 +307,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "manual": {},
-                    },
-                  },
+                  "id": "manual",
                   "resolve": "@medusajs/fulfillment-manual",
                 },
               ],
@@ -363,11 +319,7 @@ describe("defineConfig", function () {
             "options": {
               "providers": [
                 {
-                  "options": {
-                    "config": {
-                      "local": {},
-                    },
-                  },
+                  "id": "local",
                   "resolve": "@medusajs/notification-local",
                 },
               ],
