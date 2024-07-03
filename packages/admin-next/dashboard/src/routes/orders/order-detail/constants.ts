@@ -2,6 +2,7 @@ const DEFAULT_PROPERTIES = [
   "id",
   "status",
   "created_at",
+  "canceled_at",
   "email",
   // "payment_status", // -> TODO replacement for this
   "display_id",
@@ -22,8 +23,10 @@ const DEFAULT_RELATIONS = [
   "*billing_address",
   "*sales_channel",
   "*promotion",
+  "*shipping_methods",
   "*fulfillments",
   "*fulfillments.items",
+  "*fulfillments.labels",
 ]
 
 export const DEFAULT_FIELDS = `${DEFAULT_PROPERTIES.join(

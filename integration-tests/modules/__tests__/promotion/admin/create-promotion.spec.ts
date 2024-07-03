@@ -1,5 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
 import { PromotionType } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import { createAdminUser } from "../../../../helpers/create-admin-user"

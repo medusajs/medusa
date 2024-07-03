@@ -16,23 +16,22 @@ For example, in a custom API route you can resolve any service registered in the
 
 export const highlights = [
   ["13", "resolve", "Resolve the Product Module's main service."],
-  ["13", "ModuleRegistrationName.PRODUCT", "The resource registration name imported from `@medusajs/modules-sdk`."]
+  [
+    "13",
+    "ModuleRegistrationName.PRODUCT",
+    "The resource registration name imported from `@medusajs/modules-sdk`.",
+  ],
 ]
 
 ```ts highlights={highlights}
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 import { IProductModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  const productModuleService: IProductModuleService =
-    req.scope.resolve(ModuleRegistrationName.PRODUCT)
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+  const productModuleService: IProductModuleService = req.scope.resolve(
+    ModuleRegistrationName.PRODUCT
+  )
 
   const [, count] = await productModuleService.listAndCount()
 

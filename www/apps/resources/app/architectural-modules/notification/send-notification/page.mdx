@@ -15,17 +15,26 @@ In your resource, such as a subscriber, resolve the Notification Module's main s
 export const highlights = [
   ["12", "notificationModuleService", "Resolve the Notification Module."],
   ["17", "create", "Create the notification to be sent."],
-  ["19", '"email"', "Use the module provider defined for the `email` channel to send an email."],
-  ["20", '"product-created"', "The ID of the template defined in the third-party service, such as SendGrid."],
-  ["21", "data", "The data to pass to the template defined in the third-party service."]
+  [
+    "19",
+    '"email"',
+    "Use the module provider defined for the `email` channel to send an email.",
+  ],
+  [
+    "20",
+    '"product-created"',
+    "The ID of the template defined in the third-party service, such as SendGrid.",
+  ],
+  [
+    "21",
+    "data",
+    "The data to pass to the template defined in the third-party service.",
+  ],
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-import type {
-  SubscriberArgs,
-  SubscriberConfig,
-} from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import type { SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 
 export default async function productCreateHandler({
@@ -33,9 +42,7 @@ export default async function productCreateHandler({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const notificationModuleService: INotificationModuleService =
-    container.resolve(
-      ModuleRegistrationName.NOTIFICATION
-    )
+    container.resolve(ModuleRegistrationName.NOTIFICATION)
 
   await notificationModuleService.create({
     to: "shahednasser@gmail.com",
@@ -57,30 +64,31 @@ The `create` method accepts an object or an array of objects having the followin
     {
       name: "to",
       type: "`string`",
-      description: "The destination to send the notification to. When sending an email, it'll be the email address. When sending an SMS, it'll be the phone number.",
+      description:
+        "The destination to send the notification to. When sending an email, it'll be the email address. When sending an SMS, it'll be the phone number.",
       optional: false,
     },
     {
       name: "channel",
       type: "`string`",
-      description: "The channel to send the notification through. For example, `email` or `sms`. The module provider defined for that channel will be used to send the notification.",
-      optional: false
+      description:
+        "The channel to send the notification through. For example, `email` or `sms`. The module provider defined for that channel will be used to send the notification.",
+      optional: false,
     },
     {
       name: "template",
       type: "`string`",
-      description: "The ID of the template used for the notification. This is useful for providers like SendGrid, where you define templates within SendGrid and use their IDs here.",
-      optional: false
+      description:
+        "The ID of the template used for the notification. This is useful for providers like SendGrid, where you define templates within SendGrid and use their IDs here.",
+      optional: false,
     },
     {
       name: "data",
       type: "`Record<string, unknown>`",
-      description: "The data to pass along to the template, if necessary."
-    }
+      description: "The data to pass along to the template, if necessary.",
+    },
   ]}
   sectionTitle="Use the Create Method"
 />
 
-{/* TODO add once reference for type once generated */}
-
-{/* For a full list of properties accepted, refer to [this guide](/references/notification-provider-module#create). */}
+For a full list of properties accepted, refer to [this guide](/references/notification-provider-module#create).

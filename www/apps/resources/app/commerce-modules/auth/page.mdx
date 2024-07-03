@@ -15,15 +15,17 @@ The Auth Module is the `@medusajs/auth` NPM package that provides authentication
 With the Auth Module, authenticate users using their email and password credentials.
 
 ```ts
-const { success, authIdentity, error } =
-  await authModuleService.authenticate("emailpass", {
+const { success, authIdentity, error } = await authModuleService.authenticate(
+  "emailpass",
+  {
     url: req.url,
     headers: req.headers,
     query: req.query,
     body: req.body,
     authScope: "admin",
     protocol: req.protocol,
-  } as AuthenticationInput)
+  } as AuthenticationInput
+)
 
 if (!success) {
   // incorrect authentication details
@@ -53,15 +55,17 @@ if (!authIdentity && location) {
 }
 
 // in callback API route
-const { success, authIdentity } =
-  await authModuleService.validateCallback("google", {
+const { success, authIdentity } = await authModuleService.validateCallback(
+  "google",
+  {
     url: req.url,
     headers: req.headers,
     query: req.query,
     body: req.body,
     authScope: "admin",
     protocol: req.protocol,
-  } as AuthenticationInput)
+  } as AuthenticationInput
+)
 ```
 
 ---
@@ -81,72 +85,57 @@ For example:
 <CodeTabs groupId="resource-type">
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { 
-    MedusaRequest, 
-    MedusaResponse,
-  } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { 
-    ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    res.json({
-      authIdentitys: 
-        await authModuleService.listAuthIdentities(),
-    })
-  }
-  ```
+  res.json({
+    authIdentitys: await authModuleService.listAuthIdentities(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { 
-    ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/medusa"
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const authModuleService: IAuthModuleService =
-      container.resolve(ModuleRegistrationName.AUTH)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const authModuleService: IAuthModuleService = container.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    const authIdentitys = await authModuleService
-      .listAuthIdentities()
-  }
-  ```
+  const authIdentitys = await authModuleService.listAuthIdentities()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
 
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { IAuthModuleService } from "@medusajs/types"
-  import { 
-    ModuleRegistrationName,
-  } from "@medusajs/modules-sdk"
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+import { IAuthModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const authModuleService: IAuthModuleService =
-      container.resolve(
-        ModuleRegistrationName.AUTH
-      )
-    const authIdentitys = await authModuleService
-      .listAuthIdentities()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const authModuleService: IAuthModuleService = container.resolve(
+    ModuleRegistrationName.AUTH
+  )
+  const authIdentitys = await authModuleService.listAuthIdentities()
+})
+```
 
   </CodeTab>
 </CodeTabs>

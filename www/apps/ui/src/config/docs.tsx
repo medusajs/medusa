@@ -1,10 +1,5 @@
 import { ArrowUpRightOnBox } from "@medusajs/icons"
-import {
-  NavbarItem,
-  getNavbarItems,
-  legacyMobileSidebarItems,
-  mobileSidebarItemsV1,
-} from "docs-ui"
+import { NavbarItem, getNavbarItems, mobileSidebarItemsV1 } from "docs-ui"
 import { SidebarSectionItemsType } from "types"
 import { siteConfig } from "./site"
 
@@ -17,7 +12,7 @@ export const docsConfig: DocsConfig = {
   mainNav: getNavbarItems({
     basePath: siteConfig.baseUrl,
     activePath: process.env.NEXT_PUBLIC_BASE_PATH || "/ui",
-    version: process.env.NEXT_PUBLIC_SHOW_V2 ? "v1" : "legacy",
+    version: "v1",
   }),
   sidebar: {
     top: [
@@ -285,8 +280,6 @@ export const docsConfig: DocsConfig = {
         ],
       },
     ],
-    mobile: process.env.NEXT_PUBLIC_SHOW_V2
-      ? mobileSidebarItemsV1
-      : legacyMobileSidebarItems,
+    mobile: mobileSidebarItemsV1,
   },
 }

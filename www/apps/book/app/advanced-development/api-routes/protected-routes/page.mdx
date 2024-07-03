@@ -30,15 +30,9 @@ To disable the authentication guard on custom routes under the `/admin` or `/sto
 For example:
 
 ```ts title="src/api/store/customers/me/custom/route.ts" highlights={[["15"]]} apiTesting testApiUrl="http://localhost:9000/store/customers/me/custom" testApiMethod="GET"
-import type {
-  MedusaRequest,
-  MedusaResponse,
-} from "@medusajs/medusa"
+import type { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
 
-export const GET = async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
+export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   res.json({
     message: "Hello",
   })
@@ -62,15 +56,16 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { ICustomerModuleService } from "@medusajs/types"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService: ICustomerModuleService =
-    req.scope.resolve(ModuleRegistrationName.CUSTOMER)
+  const customerModuleService: ICustomerModuleService = req.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
   const customer = await customerModuleService.retrieve(
     req.auth_context.actor_id
@@ -95,7 +90,7 @@ import type {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "@medusajs/medusa"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { IUserModuleService } from "@medusajs/types"
 
 export const GET = async (
@@ -106,9 +101,7 @@ export const GET = async (
     ModuleRegistrationName.USER
   )
 
-  const user = await userService.retrieve(
-    req.auth_context.actor_id
-  )
+  const user = await userService.retrieve(req.auth_context.actor_id)
 
   // ...
 }
@@ -125,29 +118,30 @@ To protect custom API Routes that don’t start with `/store/customers/me` or `/
 For example:
 
 export const highlights = [
-  ["11", "authenticate", "Only authenticated admin users can access routes starting with `/custom/admin`"],
-  ["17", "authenticate", "Only authenticated customers can access routes starting with `/custom/customers`"]
+  [
+    "11",
+    "authenticate",
+    "Only authenticated admin users can access routes starting with `/custom/admin`",
+  ],
+  [
+    "17",
+    "authenticate",
+    "Only authenticated customers can access routes starting with `/custom/customers`",
+  ],
 ]
 
 ```ts title="src/api/middlewares.ts" highlights={highlights}
-import { 
-  MiddlewaresConfig, 
-  authenticate,
-} from "@medusajs/medusa"
+import { MiddlewaresConfig, authenticate } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/custom/admin*",
-      middlewares: [
-        authenticate("user", ["session", "bearer", "api-key"]),
-      ],
+      middlewares: [authenticate("user", ["session", "bearer", "api-key"])],
     },
     {
       matcher: "/custom/customer*",
-      middlewares: [
-        authenticate("customer", ["session", "bearer"]),
-      ],
+      middlewares: [authenticate("customer", ["session", "bearer"])],
     },
   ],
 }
@@ -158,5 +152,5 @@ The `authenticate` middleware function accepts three parameters:
 1. The type of user authenticating. Use `user` for authenticating admin users, and `customer` for authenticating customers.
 2. An array of the types of authentication methods allowed. Both `user` and `customer` scopes support `session` and `bearer`. The `admin` scope also supports the `api-key` authentication method.
 3. An optional object of options having the following properties:
-    1. `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. In that case, enable the `allowUnauthenticated` option.
-    2. `allowUnregistered`: (default: `false`) A boolean indicating whether new users can be authenticated.
+   1. `allowUnauthenticated`: (default: `false`) A boolean indicating whether authentication is required. For example, you may have an API route where you want to access the logged-in customer if available, but guest customers can still access it too. In that case, enable the `allowUnauthenticated` option.
+   2. `allowUnregistered`: (default: `false`) A boolean indicating whether new users can be authenticated.

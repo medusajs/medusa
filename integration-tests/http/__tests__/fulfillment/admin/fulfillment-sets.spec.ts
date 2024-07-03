@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IFulfillmentModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,

@@ -1,12 +1,12 @@
 import {
-  AuthenticatedMedusaRequest,
-  MedusaResponse,
-} from "../../../../../types/routing"
-import {
   IWorkflowEngineService,
   WorkflowOrchestratorRunDTO,
 } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../../types/routing"
 import { AdminCreateWorkflowsRunType } from "../../validators"
 
 export const POST = async (

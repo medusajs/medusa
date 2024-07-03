@@ -1,13 +1,15 @@
-import { IAuthModuleService, ICustomerModuleService } from "@medusajs/types"
+import { IAuthModuleService } from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,
   createAdminUser,
 } from "../../../../helpers/create-admin-user"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 

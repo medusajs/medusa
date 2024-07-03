@@ -18,11 +18,7 @@ let moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "test-provider": {},
-        },
-      },
+      id: "test-provider",
     },
   ],
 }
@@ -125,17 +121,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },
@@ -179,17 +171,13 @@ moduleIntegrationTestRunner({
               definition: ModulesDefinition[Modules.FULFILLMENT],
               options: {
                 databaseConfig,
-                providers: [
-                  {
-                    resolve: resolve(
-                      process.cwd() +
-                        "/integration-tests/__fixtures__/providers/default-provider"
-                    ),
-                    options: {
-                      config: providersConfig2,
-                    },
-                  },
-                ],
+                providers: Object.keys(providersConfig2).map((id) => ({
+                  resolve: resolve(
+                    process.cwd() +
+                      "/integration-tests/__fixtures__/providers/default-provider"
+                  ),
+                  id,
+                })),
               },
             },
           },

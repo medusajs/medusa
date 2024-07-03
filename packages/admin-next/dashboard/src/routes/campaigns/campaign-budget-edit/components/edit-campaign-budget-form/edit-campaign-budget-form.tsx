@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
-import {
-  RouteDrawer,
-  useRouteModal,
-} from "../../../../../components/modals"
+import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { useUpdateCampaign } from "../../../../../hooks/api/campaigns"
 import { getCurrencySymbol } from "../../../../../lib/data/currencies"
 
@@ -38,7 +35,6 @@ export const EditCampaignBudgetForm = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        id: campaign.id,
         budget: {
           limit: data.limit ? data.limit : null,
         },

@@ -5,7 +5,7 @@ import { camelToSnakeCase, toCamelCase, upperCaseFirst } from "../../../common"
  * Parses entity name and returns model and table name from
  * it
  */
-export function parseEntityName(entity: DmlEntity<any>) {
+export function parseEntityName(entity: DmlEntity<any, any>) {
   const parsedEntity = entity.parse()
 
   /**

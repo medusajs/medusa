@@ -11,7 +11,7 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { ApiKey } from "@models"
 import {
   CreateApiKeyDTO,
@@ -41,7 +41,7 @@ type InjectedDependencies = {
 export default class ApiKeyModuleService
   extends MedusaService<{
     ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
-  }>({ ApiKey }, entityNameToLinkableKeysMap)
+  }>({ ApiKey })
   implements IApiKeyModuleService
 {
   protected baseRepository_: DAL.RepositoryService

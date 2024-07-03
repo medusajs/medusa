@@ -502,6 +502,7 @@
     "associatedVariants": "Associated variants",
     "manageLocations": "Manage locations",
     "deleteWarning": "You are about to delete an inventory item. This action cannot be undone.",
+    "editItemDetails": "Edit item details",
     "create": {
       "title": "Add item",
       "details": "Details",
@@ -675,6 +676,14 @@
       "allocatedLabel": "Allocated",
       "notAllocatedLabel": "Not allocated"
     },
+    "shipment": {
+      "title": "Mark fulfillment shipped",
+      "trackingNumber": "Tracking number",
+      "addTracking": "Add additional tracking number",
+      "sendNotification": "Send notification",
+      "sendNotificationHint": "Notify the customer about this shipment.",
+      "toastCreated": "Shipment created successfully."
+    },
     "fulfillment": {
       "cancelWarning": "You are about to cancel a fulfillment. This action cannot be undone.",
       "unfulfilledItems": "Unfulfilled Items",
@@ -682,12 +691,12 @@
       "statusTitle": "Fulfillment Status",
       "fulfillItems": "Fulfill items",
       "awaitingFulfillmentBadge": "Awaiting fulfillment",
-      "awaitingFullfillmentBadge": "Awaiting fulfillment",
       "number": "Fulfillment #{{number}}",
       "itemsToFulfill": "Items to fulfill",
       "create": "Create Fulfillment",
       "available": "Available",
       "inStock": "In stock",
+      "markAsShipped": "Mark as shipped",
       "itemsToFulfillDesc": "Choose items and quantities to fulfill",
       "locationDescription": "Choose which location you want to fulfill items from.",
       "sendNotificationHint": "Notify customers about the created fulfillment.",
@@ -758,13 +767,11 @@
           "canceled": "Payment canceled"
         },
         "fulfillment": {
-          "created": "Fulfillment created",
+          "created": "Items fulfilled",
           "canceled": "Fulfillment canceled",
-          "shipped": "Fulfillment shipped",
-          "itemsFulfilledFrom_one": "{{count}} item fulfilled from {{location}}",
-          "itemsFulfilledFrom_other": "{{count}} items fulfilled from {{location}}",
-          "itemsFulfilled_one": "{{count}} item fulfilled",
-          "itemsFulfilled_other": "{{count}} items fulfilled"
+          "shipped": "Items shipped",
+          "items_one": "{{count}} item",
+          "items_other": "{{count}} items"
         },
         "return": {
           "created": "Return created"
@@ -1130,6 +1137,11 @@
     "sections": {
       "details": "Promotion Details"
     },
+    "tabs": {
+      "template": "Template",
+      "promotion": "Promotion",
+      "campaign": "Campaign"
+    },
     "fields": {
       "method": "Method",
       "type": "Type",
@@ -1157,8 +1169,15 @@
         }
       }
     },
+    "tooltips": {
+      "campaignType": "Select the currency code in the promotion tab to enable it."
+    },
     "errors": {
-      "requiredField": "Required field"
+      "requiredField": "Required field",
+      "promotionTabError": "Fix errors in Promotion Tab before proceeding"
+    },
+    "toasts": {
+      "promotionCreateSuccess": "Promotion ({{code}}) was successfully created."
     },
     "create": {},
     "edit": {
@@ -1887,6 +1906,7 @@
     "orders": "Orders",
     "account": "Account",
     "total": "Total",
+    "paidTotal": "Paid total",
     "totalExclTax": "Total excl. tax",
     "subtotal": "Subtotal",
     "shipping": "Shipping",

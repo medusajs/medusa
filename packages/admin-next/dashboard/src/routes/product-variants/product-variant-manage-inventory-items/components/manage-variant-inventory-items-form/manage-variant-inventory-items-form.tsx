@@ -16,6 +16,7 @@ import {
 import { useProductVariantsInventoryItemsBatch } from "../../../../../hooks/api/products"
 import { useComboboxData } from "../../../../../hooks/use-combobox-data"
 import { sdk } from "../../../../../lib/client"
+import { useEffect } from "react"
 
 type ManageVariantInventoryItemsFormProps = {
   variant: AdminProductVariant & {
@@ -53,10 +54,17 @@ export function ManageVariantInventoryItemsForm({
 
   const form = useForm<zod.infer<typeof ManageVariantInventoryItemsSchema>>({
     defaultValues: {
-      inventory: variant.inventory_items!.map((i) => ({
-        required_quantity: i.required_quantity,
-        inventory_item_id: i.inventory.id,
-      })),
+      inventory: variant.inventory_items.length
+        ? variant.inventory_items!.map((i) => ({
+            required_quantity: i.required_quantity,
+            inventory_item_id: i.inventory.id,
+          }))
+        : [
+            {
+              inventory_item_id: "",
+              required_quantity: "",
+            },
+          ],
     },
     resolver: zodResolver(ManageVariantInventoryItemsSchema),
   })

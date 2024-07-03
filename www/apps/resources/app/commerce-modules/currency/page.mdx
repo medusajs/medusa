@@ -15,9 +15,7 @@ The Currency Module is the `@medusajs/currency` NPM package that provides curren
 List and retrieve currencies stored in your application.
 
 ```ts
-const currency = await currencyModuleService.retrieveCurrency(
-  "usd"
-)
+const currency = await currencyModuleService.retrieveCurrency("usd")
 ```
 
 ### Support Currencies in Modules
@@ -27,9 +25,7 @@ Other commerce modules use currency codes in their data models or operations. Yo
 An example with the Region Module:
 
 ```ts
-const region = await regionModuleService.retrieveCurrency(
-  "reg_123"
-)
+const region = await regionModuleService.retrieveCurrency("reg_123")
 const currency = await currencyModuleService.retrieveCurrency(
   region.currency_code
 )
@@ -46,63 +42,58 @@ For example:
 <CodeTabs groupId="resource-type">
   <CodeTab label="API Route" value="api-route">
 
-  ```ts title="src/api/store/custom/route.ts"
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/api/store/custom/route.ts"
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { ICurrencyModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const currencyModuleService: ICurrencyModuleService =
-      req.scope.resolve(ModuleRegistrationName.CURRENCY)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const currencyModuleService: ICurrencyModuleService = req.scope.resolve(
+    ModuleRegistrationName.CURRENCY
+  )
 
-    res.json({
-      currencies: await currencyModuleService.listCurrencies(),
-    })
-  }
-  ```
+  res.json({
+    currencies: await currencyModuleService.listCurrencies(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-  ```ts title="src/subscribers/custom-handler.ts"
-  import { SubscriberArgs } from "@medusajs/medusa"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/subscribers/custom-handler.ts"
+import { SubscriberArgs } from "@medusajs/medusa"
+import { ICurrencyModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export default async function subscriberHandler({
-    container,
-  }: SubscriberArgs) {
-    const currencyModuleService: ICurrencyModuleService =
-      container.resolve(ModuleRegistrationName.CURRENCY)
+export default async function subscriberHandler({ container }: SubscriberArgs) {
+  const currencyModuleService: ICurrencyModuleService = container.resolve(
+    ModuleRegistrationName.CURRENCY
+  )
 
-    const currencies = await currencyModuleService
-      .listCurrencies()
-  }
-  ```
+  const currencies = await currencyModuleService.listCurrencies()
+}
+```
 
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
 
-  ```ts title="src/workflows/hello-world/step1.ts"
-  import { createStep } from "@medusajs/workflows-sdk"
-  import { ICurrencyModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts title="src/workflows/hello-world/step1.ts"
+import { createStep } from "@medusajs/workflows-sdk"
+import { ICurrencyModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  const step1 = createStep(
-    "step-1", 
-    async (_, { container }) => {
-    const currencyModuleService: ICurrencyModuleService =
-      container.resolve(
-        ModuleRegistrationName.CURRENCY
-      )
-    
-    const currencies = await currencyModuleService
-      .listCurrencies()
-  })
-  ```
+const step1 = createStep("step-1", async (_, { container }) => {
+  const currencyModuleService: ICurrencyModuleService = container.resolve(
+    ModuleRegistrationName.CURRENCY
+  )
+
+  const currencies = await currencyModuleService.listCurrencies()
+})
+```
 
   </CodeTab>
 </CodeTabs>

@@ -48,7 +48,7 @@ const useColumns = () => {
             <DataGridReadOnlyCell>{row.original.name}</DataGridReadOnlyCell>
           )
         },
-        disableHidding: true,
+        disableHiding: true,
       }),
       columnHelper.column({
         id: "in-stock",
@@ -64,6 +64,7 @@ const useColumns = () => {
             />
           )
         },
+        disableHiding: true,
       }),
     ],
     [t]

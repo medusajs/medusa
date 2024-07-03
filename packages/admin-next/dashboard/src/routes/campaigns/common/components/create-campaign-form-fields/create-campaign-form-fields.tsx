@@ -32,16 +32,18 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     name: `${fieldScope}budget.currency_code`,
   })
 
-  const watchPromotionCurrencyCode = useWatch({
+  const promotionCurrencyValue = useWatch({
     control: form.control,
-    name: "application_method.currency_code",
+    name: `application_method.currency_code`,
   })
+
+  const currency = currencyValue || promotionCurrencyValue
 
   useEffect(() => {
     form.setValue(`${fieldScope}budget.limit`, null)
 
-    if (watchValueType === "spend") {
-      form.setValue(`campaign.budget.currency_code`, watchPromotionCurrencyCode)
+    if (isTypeSpend) {
+      form.setValue(`campaign.budget.currency_code`, promotionCurrencyValue)
     }
 
     if (watchValueType === "usage") {
@@ -49,15 +51,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
     }
   }, [watchValueType])
 
-  if (watchPromotionCurrencyCode) {
+  if (promotionCurrencyValue) {
     const formCampaignBudget = form.getValues().campaign?.budget
     const formCampaignCurrency = formCampaignBudget?.currency_code
 
     if (
       formCampaignBudget?.type === "spend" &&
-      formCampaignCurrency !== watchPromotionCurrencyCode
+      formCampaignCurrency !== promotionCurrencyValue
     ) {
-      form.setValue("campaign.budget.currency_code", watchPromotionCurrencyCode)
+      form.setValue("campaign.budget.currency_code", promotionCurrencyValue)
     }
   }
 
@@ -133,18 +135,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         <Form.Field
           control={form.control}
           name={`${fieldScope}starts_at`}
-          render={({ field: { value, onChange, ref: _ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label>{t("campaigns.fields.start_date")}</Form.Label>
 
                 <Form.Control>
                   <DatePicker
-                    showTimePicker
-                    value={value ?? undefined}
-                    onChange={(v) => {
-                      onChange(v ?? null)
-                    }}
+                    granularity="minute"
+                    shouldCloseOnSelect={false}
                     {...field}
                   />
                 </Form.Control>
@@ -158,16 +157,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         <Form.Field
           control={form.control}
           name={`${fieldScope}ends_at`}
-          render={({ field: { value, onChange, ref: _ref, ...field } }) => {
+          render={({ field }) => {
             return (
               <Form.Item>
                 <Form.Label>{t("campaigns.fields.end_date")}</Form.Label>
 
                 <Form.Control>
                   <DatePicker
-                    showTimePicker
-                    value={value ?? undefined}
-                    onChange={(v) => onChange(v ?? null)}
+                    granularity="minute"
+                    shouldCloseOnSelect={false}
                     {...field}
                   />
                 </Form.Control>
@@ -192,7 +190,15 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
         render={({ field }) => {
           return (
             <Form.Item>
-              <Form.Label>{t("campaigns.budget.fields.type")}</Form.Label>
+              <Form.Label
+                tooltip={
+                  fieldScope?.length && !currency
+                    ? t("promotions.tooltips.campaignType")
+                    : undefined
+                }
+              >
+                {t("campaigns.budget.fields.type")}
+              </Form.Label>
 
               <Form.Control>
                 <RadioGroup
@@ -201,15 +207,16 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
-                    value={"spend"}
-                    label={t("campaigns.budget.type.spend.title")}
-                    description={t("campaigns.budget.type.spend.description")}
-                  />
-
-                  <RadioGroup.ChoiceBox
                     value={"usage"}
                     label={t("campaigns.budget.type.usage.title")}
                     description={t("campaigns.budget.type.usage.description")}
+                  />
+
+                  <RadioGroup.ChoiceBox
+                    value={"spend"}
+                    label={t("campaigns.budget.type.spend.title")}
+                    description={t("campaigns.budget.type.spend.description")}
+                    disabled={fieldScope?.length ? !currency : false}
                   />
                 </RadioGroup>
               </Form.Control>
@@ -229,7 +236,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                 <Form.Item>
                   <Form.Label
                     tooltip={
-                      fieldScope.length
+                      fieldScope?.length && !currency
                         ? t("promotions.campaign_currency.tooltip")
                         : undefined
                     }
@@ -282,9 +289,9 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
               <Form.Item className="basis-1/2">
                 <Form.Label
                   tooltip={
-                    currencyValue
-                      ? undefined
-                      : t("promotions.fields.amount.tooltip")
+                    !currency && isTypeSpend
+                      ? t("promotions.fields.amount.tooltip")
+                      : undefined
                   }
                 >
                   {t("campaigns.budget.fields.limit")}
@@ -303,7 +310,7 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
                       }
                       {...field}
                       value={value}
-                      disabled={!currencyValue}
+                      disabled={!currency && isTypeSpend}
                     />
                   ) : (
                     <Input

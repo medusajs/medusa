@@ -13,54 +13,50 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const inventoryItem =
-      await inventoryModuleService.createInventoryItems({
-        sku: request.body.sku,
-        title: request.body.title,
-        requires_shipping: request.body.requires_shipping,
-      })
+  const inventoryItem = await inventoryModuleService.createInventoryItems({
+    sku: request.body.sku,
+    title: request.body.title,
+    requires_shipping: request.body.requires_shipping,
+  })
 
-    res.json({ inventory_item: inventoryItem })
-  }
-  ```
+  res.json({ inventory_item: inventoryItem })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function POST(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
-    const body = await request.json()
+export async function POST(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
+  const body = await request.json()
 
-    const inventoryItem =
-      await inventoryModuleService.createInventoryItems({
-        sku: body.sku,
-        title: body.title,
-        requires_shipping: body.requires_shipping,
-      })
+  const inventoryItem = await inventoryModuleService.createInventoryItems({
+    sku: body.sku,
+    title: body.title,
+    requires_shipping: body.requires_shipping,
+  })
 
-    return NextResponse.json({ inventory_item: inventoryItem })
-  }
-  ```
+  return NextResponse.json({ inventory_item: inventoryItem })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -72,45 +68,41 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+  const inventoryItems = await inventoryModuleService.listInventoryItems({})
 
-    res.json({ inventory_items: inventoryItems })
-  }
-  ```
+  res.json({ inventory_items: inventoryItems })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function GET(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
+export async function GET(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
 
-    const inventoryItems =
-      await inventoryModuleService.listInventoryItems({})
+  const inventoryItems = await inventoryModuleService.listInventoryItems({})
 
-    return NextResponse.json({ inventory_items: inventoryItems })
-  }
-  ```
+  return NextResponse.json({ inventory_items: inventoryItems })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -122,58 +114,51 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const inventoryItem =
-      await inventoryModuleService.retrieveInventoryItem(
-        request.params.id
-      )
+  const inventoryItem = await inventoryModuleService.retrieveInventoryItem(
+    request.params.id
+  )
 
-    res.json({ inventory_item: inventoryItem })
-  }
-  ```
+  res.json({ inventory_item: inventoryItem })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
+type ContextType = {
+  params: {
+    id: string
   }
+}
 
-  export async function GET(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
+export async function GET(request: Request, { params }: ContextType) {
+  const inventoryModuleService = await initializeInventoryModule({})
 
-    const inventoryItem =
-      await inventoryModuleService.retrieveInventoryItem(
-        params.id
-      )
+  const inventoryItem = await inventoryModuleService.retrieveInventoryItem(
+    params.id
+  )
 
-    return NextResponse.json({ inventory_item: inventoryItem })
-  }
-  ```
+  return NextResponse.json({ inventory_item: inventoryItem })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -185,54 +170,50 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const inventoryLevel =
-      await inventoryModuleService.createInventoryLevels({
-        inventory_item_id: request.body.inventory_item_id,
-        location_id: request.body.location_id,
-        stocked_quantity: request.body.quantity,
-      })
+  const inventoryLevel = await inventoryModuleService.createInventoryLevels({
+    inventory_item_id: request.body.inventory_item_id,
+    location_id: request.body.location_id,
+    stocked_quantity: request.body.quantity,
+  })
 
-    res.json({ inventory_level: inventoryLevel })
-  }
-  ```
+  res.json({ inventory_level: inventoryLevel })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function POST(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
-    const body = await request.json()
+export async function POST(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
+  const body = await request.json()
 
-    const inventoryLevel =
-      await inventoryModuleService.createInventoryLevels({
-        inventory_item_id: body.inventory_item_id,
-        location_id: body.location_id,
-        stocked_quantity: body.quantity,
-      })
+  const inventoryLevel = await inventoryModuleService.createInventoryLevels({
+    inventory_item_id: body.inventory_item_id,
+    location_id: body.location_id,
+    stocked_quantity: body.quantity,
+  })
 
-    return NextResponse.json({ inventory_level: inventoryLevel })
-  }
-  ```
+  return NextResponse.json({ inventory_level: inventoryLevel })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -244,54 +225,50 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const inventoryLevel =
-      await inventoryModuleService.adjustInventory(
-        request.body.inventory_item_id,
-        request.body.location_id,
-        request.body.new_quantity
-      )
+  const inventoryLevel = await inventoryModuleService.adjustInventory(
+    request.body.inventory_item_id,
+    request.body.location_id,
+    request.body.new_quantity
+  )
 
-    res.json({ inventory_level: inventoryLevel })
-  }
-  ```
+  res.json({ inventory_level: inventoryLevel })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function POST(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
-    const body = await request.json()
+export async function POST(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
+  const body = await request.json()
 
-    const inventoryLevel =
-      await inventoryModuleService.adjustInventory(
-        body.inventory_item_id,
-        body.location_id,
-        body.new_quantity
-      )
+  const inventoryLevel = await inventoryModuleService.adjustInventory(
+    body.inventory_item_id,
+    body.location_id,
+    body.new_quantity
+  )
 
-    return NextResponse.json({ inventory_level: inventoryLevel })
-  }
-  ```
+  return NextResponse.json({ inventory_level: inventoryLevel })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -303,52 +280,50 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    res.json({
-      is_available: await inventoryModuleService.confirmInventory(
-        request.body.inventory_item_id,
-        [request.body.location_id],
-        request.body.required_quantity
-      ),
-    })
-  }
-  ```
+  res.json({
+    is_available: await inventoryModuleService.confirmInventory(
+      request.body.inventory_item_id,
+      [request.body.location_id],
+      request.body.required_quantity
+    ),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function POST(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
-    const body = await request.json()
+export async function POST(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
+  const body = await request.json()
 
-    return NextResponse.json({
-      is_available: await inventoryModuleService.confirmInventory(
-        body.inventory_item_id,
-        [body.location_id],
-        body.required_quantity
-      ),
-    })
-  }
-  ```
+  return NextResponse.json({
+    is_available: await inventoryModuleService.confirmInventory(
+      body.inventory_item_id,
+      [body.location_id],
+      body.required_quantity
+    ),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -360,56 +335,52 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const reservationItem =
-      await inventoryModuleService.createReservationItems({
-        inventory_item_id: request.body.inventory_item_id,
-        location_id: request.body.location_id,
-        quantity: request.body.reserved_quantity,
-      })
+  const reservationItem = await inventoryModuleService.createReservationItems({
+    inventory_item_id: request.body.inventory_item_id,
+    location_id: request.body.location_id,
+    quantity: request.body.reserved_quantity,
+  })
 
-    res.json({ reservation_item: reservationItem })
-  }
-  ```
+  res.json({ reservation_item: reservationItem })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  export async function POST(request: Request) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
-    const body = await request.json()
+export async function POST(request: Request) {
+  const inventoryModuleService = await initializeInventoryModule({})
+  const body = await request.json()
 
-    const reservationItem =
-      await inventoryModuleService.createReservationItems({
-        inventory_item_id: body.inventory_item_id,
-        location_id: body.location_id,
-        quantity: body.reserved_quantity,
-      })
+  const reservationItem = await inventoryModuleService.createReservationItems({
+    inventory_item_id: body.inventory_item_id,
+    location_id: body.location_id,
+    quantity: body.reserved_quantity,
+  })
 
-    return NextResponse.json({
-      reservation_item: reservationItem,
-    })
-  }
-  ```
+  return NextResponse.json({
+    reservation_item: reservationItem,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -421,89 +392,82 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    const reservedQuantity =
-      await inventoryModuleService.retrieveReservedQuantity(
-        request.params.inventory_item_id,
-        [request.params.location_id]
-      )
-    const stockedQuantity =
-      await inventoryModuleService.retrieveStockedQuantity(
-        request.params.inventory_item_id,
-        [request.params.location_id]
-      )
-    const availableQuantity =
-      await inventoryModuleService.retrieveAvailableQuantity(
-        request.params.inventory_item_id,
-        [request.params.location_id]
-      )
+  const reservedQuantity =
+    await inventoryModuleService.retrieveReservedQuantity(
+      request.params.inventory_item_id,
+      [request.params.location_id]
+    )
+  const stockedQuantity = await inventoryModuleService.retrieveStockedQuantity(
+    request.params.inventory_item_id,
+    [request.params.location_id]
+  )
+  const availableQuantity =
+    await inventoryModuleService.retrieveAvailableQuantity(
+      request.params.inventory_item_id,
+      [request.params.location_id]
+    )
 
-    res.json({
-      reserved_quantity: reservedQuantity,
-      stocked_quantity: stockedQuantity,
-      available_quantity: availableQuantity,
-    })
-  }
-  ```
+  res.json({
+    reserved_quantity: reservedQuantity,
+    stocked_quantity: stockedQuantity,
+    available_quantity: availableQuantity,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  type ContextType = {
-    params: {
-      inventory_item_id: string
-      location_id: string
-    }
+type ContextType = {
+  params: {
+    inventory_item_id: string
+    location_id: string
   }
+}
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
+export async function POST(request: Request, { params }: ContextType) {
+  const inventoryModuleService = await initializeInventoryModule({})
 
-    const reservedQuantity =
-      await inventoryModuleService.retrieveReservedQuantity(
-        params.inventory_item_id,
-        [params.location_id]
-      )
-    const stockedQuantity =
-      await inventoryModuleService.retrieveStockedQuantity(
-        params.inventory_item_id,
-        [params.location_id]
-      )
-    const availableQuantity =
-      await inventoryModuleService.retrieveAvailableQuantity(
-        params.inventory_item_id,
-        [params.location_id]
-      )
+  const reservedQuantity =
+    await inventoryModuleService.retrieveReservedQuantity(
+      params.inventory_item_id,
+      [params.location_id]
+    )
+  const stockedQuantity = await inventoryModuleService.retrieveStockedQuantity(
+    params.inventory_item_id,
+    [params.location_id]
+  )
+  const availableQuantity =
+    await inventoryModuleService.retrieveAvailableQuantity(
+      params.inventory_item_id,
+      [params.location_id]
+    )
 
-    return NextResponse.json({
-      reserved_quantity: reservedQuantity,
-      stocked_quantity: stockedQuantity,
-      available_quantity: availableQuantity,
-    })
-  }
-  ```
+  return NextResponse.json({
+    reserved_quantity: reservedQuantity,
+    stocked_quantity: stockedQuantity,
+    available_quantity: availableQuantity,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -515,52 +479,45 @@ In this document, you’ll find common examples of how you can use the Inventory
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-  ```ts
-  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-  import { IInventoryService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+```ts
+import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+import { IInventoryService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const inventoryModuleService: IInventoryService =
-      request.scope.resolve(ModuleRegistrationName.INVENTORY)
+export async function DELETE(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const inventoryModuleService: IInventoryService = request.scope.resolve(
+    ModuleRegistrationName.INVENTORY
+  )
 
-    await inventoryModuleService.deleteReservationItems([
-      request.params.reservation_id,
-    ])
+  await inventoryModuleService.deleteReservationItems([
+    request.params.reservation_id,
+  ])
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import {
-    initialize as initializeInventoryModule,
-  } from "@medusajs/inventory-next"
+```ts
+import { initialize as initializeInventoryModule } from "@medusajs/inventory-next"
 
-  type ContextType = {
-    params: {
-      reservation_id: string
-    }
+type ContextType = {
+  params: {
+    reservation_id: string
   }
+}
 
-  export async function DELETE(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const inventoryModuleService =
-      await initializeInventoryModule({})
+export async function DELETE(request: Request, { params }: ContextType) {
+  const inventoryModuleService = await initializeInventoryModule({})
 
-    await inventoryModuleService.deleteReservationItems([
-      params.reservation_id,
-    ])
-  }
-  ```
+  await inventoryModuleService.deleteReservationItems([params.reservation_id])
+}
+```
 
   </CodeTab>
 </CodeTabs>

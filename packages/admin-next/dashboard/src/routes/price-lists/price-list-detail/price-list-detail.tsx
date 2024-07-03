@@ -34,7 +34,7 @@ export const PriceListDetails = () => {
         )
       })}
       <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
-        <div className="flex w-full flex-col gap-y-3">
+        <div className="flex flex-1 flex-col gap-y-3">
           <PriceListGeneralSection priceList={price_list} />
           <PriceListProductSection priceList={price_list} />
           {after.widgets.map((w, i) => {
@@ -48,7 +48,7 @@ export const PriceListDetails = () => {
             <JsonViewSection data={price_list} />
           </div>
         </div>
-        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[423px]">
+        <div className="mt-2 flex w-full max-w-[100%] flex-col gap-y-2 xl:mt-0 xl:max-w-[440px]">
           {sideBefore.widgets.map((w, i) => {
             return (
               <div key={i}>

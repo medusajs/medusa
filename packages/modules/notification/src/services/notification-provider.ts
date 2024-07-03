@@ -12,9 +12,10 @@ type InjectedDependencies = {
   ]: NotificationTypes.INotificationProvider
 }
 
-export default class NotificationProviderService extends ModulesSdkUtils.MedusaInternalService<InjectedDependencies>(
-  NotificationProvider
-) {
+export default class NotificationProviderService extends ModulesSdkUtils.MedusaInternalService<
+  InjectedDependencies,
+  typeof NotificationProvider
+>(NotificationProvider) {
   protected readonly notificationProviderRepository_: DAL.RepositoryService<
     InferEntityType<typeof NotificationProvider>
   >
@@ -50,6 +51,8 @@ export default class NotificationProviderService extends ModulesSdkUtils.MedusaI
   ): Promise<InferEntityType<typeof NotificationProvider> | undefined> {
     if (!this.providersCache) {
       const providers = await this.notificationProviderRepository_.find()
+
+      type name = (typeof NotificationProvider)["name"]
       this.providersCache = new Map(
         providers.flatMap((provider) =>
           provider.channels.map((c) => [c, provider])
