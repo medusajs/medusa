@@ -162,13 +162,13 @@ export const mobileSidebarItemsV1: SidebarItemType[] = [
     loaded: true,
     isPathHref: true,
   },
-  {
-    title: "Learn Medusa V2",
-    path: `/v2`,
-    loaded: true,
-    isPathHref: true,
-    additionalElms: <Badge variant="blue">v2</Badge>,
-  },
+  // {
+  //   title: "Learn Medusa V2",
+  //   path: `/v2`,
+  //   loaded: true,
+  //   isPathHref: true,
+  //   additionalElms: <Badge variant="blue">v2</Badge>,
+  // },
 ]
 
 export const mobileSidebarItemsV2: SidebarItemType[] = [
