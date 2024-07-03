@@ -2426,6 +2426,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/cancelClaim",
+                        "title": "cancelClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelExchange",
+                        "title": "cancelExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/cancelFulfillment",
                         "title": "cancelFulfillment",
                         "children": []
@@ -2435,6 +2449,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/cancelOrderChange",
                         "title": "cancelOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelReturn",
+                        "title": "cancelReturn",
                         "children": []
                       },
                       {

@@ -283,10 +283,11 @@ Create the file `src/modules/my-auth/index.ts` with the following content:
 
 ```ts title="src/modules/my-auth/index.ts"
 import MyAuthProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-auth", {
   service: MyAuthProviderService,
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyAuthProviderService` is the main service of the module.
