@@ -40,7 +40,6 @@ export const EditCampaignForm = ({ campaign }: EditCampaignFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     await mutateAsync(
       {
-        id: campaign.id,
         name: data.name,
         description: data.description,
         campaign_identifier: data.campaign_identifier,
