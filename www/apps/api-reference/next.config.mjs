@@ -12,6 +12,7 @@ const nextConfig = {
           destination: `${
             process.env.NEXT_PUBLIC_DOCS_URL || "https://localhost:3001"
           }/:path*`,
+          basePath: false,
         },
       ],
     }

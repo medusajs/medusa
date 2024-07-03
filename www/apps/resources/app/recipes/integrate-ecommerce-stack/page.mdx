@@ -37,11 +37,11 @@ Then, resolve the module's main service in other resources, such as API routes o
 
 <Details summaryContent="Example: Create a module integrating an ERP system">
 
-This example showcases how to create a module that integrates to a dummy ERP system.
+  This example showcases how to create a module that integrates to a dummy ERP system.
 
-Start by creating the directory `src/modules/erp` for your module.
+  Start by creating the directory `src/modules/erp` for your module.
 
-Then, create the file `src/modules/erp/service.ts` with the following content:
+  Then, create the file `src/modules/erp/service.ts` with the following content:
 
 export const serviceHighlights = [
   ["4", "ErpModuleOptions", "The module's expected options."],
@@ -56,12 +56,12 @@ export const serviceHighlights = [
   import axios, { AxiosInstance } from "axios"
   import { ProductDTO } from "@medusajs/types"
 
-type ErpModuleOptions = {
-apiKey: string
-}
+  type ErpModuleOptions = {
+    apiKey: string
+  }
 
-class ErpModuleService {
-private client\_: AxiosInstance
+  class ErpModuleService {
+    private client_: AxiosInstance
 
     constructor({}, { apiKey }: ErpModuleOptions) {
       this.client_ = axios.create({
@@ -87,52 +87,51 @@ private client\_: AxiosInstance
     async deleteProduct(id: string) {
       await this.client_.delete(`/product/${id}`)
     }
+  }
 
-}
+  export default ErpModuleService
 
-export default ErpModuleService
+  ```
 
-````
+  This creates the module's main service. Few things to note:
 
-This creates the module's main service. Few things to note:
+  - The module accepts an `apiKey` option, used to authenticate to the dummy ERP system. The module's main service accesses this option in the second parameter of the constructor.
+  - The module uses axios to create a client in the constructor. The client is used in the service's methods when connecting to the ERP system. If the system you're integrating has an SDK, you can initialize it in the constructor, instead.
+  - The `getProductData` method retrieves a product's details from the ERP system by sending a `GET` request using the client.
+  - The `createProduct` method creates a product in the ERP system by sending a `POST` request using the client.
+  - The `deleteProduct` method deletes a product in the ERP system by sending a `DELETE` request using the client.
 
-- The module accepts an `apiKey` option, used to authenticate to the dummy ERP system. The module's main service accesses this option in the second parameter of the constructor.
-- The module uses axios to create a client in the constructor. The client is used in the service's methods when connecting to the ERP system. If the system you're integrating has an SDK, you can initialize it in the constructor, instead.
-- The `getProductData` method retrieves a product's details from the ERP system by sending a `GET` request using the client.
-- The `createProduct` method creates a product in the ERP system by sending a `POST` request using the client.
-- The `deleteProduct` method deletes a product in the ERP system by sending a `DELETE` request using the client.
+  <Note title="Tip">
 
-<Note title="Tip">
+  You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
 
-You can store the product's ID in the external system using the `metadata` property of the `Product` data model in the Product Module. Alternatively, you can create a [data model](!docs!/basics/data-models) in your module to store data related to the external system.
+  </Note>
 
-</Note>
+  Then, create the module's definition file at `src/modules/erp/index.ts` with the following content:
 
-Then, create the module's definition file at `src/modules/erp/index.ts` with the following content:
+  ```ts title="src/modules/erp/index.ts"
+  import ErpModuleService from "./service"
 
-```ts title="src/modules/erp/index.ts"
-import ErpModuleService from "./service"
+  export default {
+    service: ErpModuleService,
+  }
+  ````
 
-export default {
-  service: ErpModuleService,
-}
-````
+  Finally, add the module to the `modules` object in `medusa-config.js`:
 
-Finally, add the module to the `modules` object in `medusa-config.js`:
-
-```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
-module.exports = defineConfig({
-  // ...
-  modules: {
-    erpModuleService: {
-      resolve: "./modules/erp",
-      options: {
-        apiKey: process.env.ERP_API_KEY,
+  ```js title="medusa-config.js" highlights={[["7", "ERP_API_KEY", "The environment variable holding the API key of the ERP system."]]}
+  module.exports = defineConfig({
+    // ...
+    modules: {
+      erpModuleService: {
+        resolve: "./modules/erp",
+        options: {
+          apiKey: process.env.ERP_API_KEY,
+        },
       },
     },
-  },
-})
-```
+  })
+  ```
 
 </Details>
 

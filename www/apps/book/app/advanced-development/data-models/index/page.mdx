@@ -53,7 +53,7 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
@@ -82,13 +82,13 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
     where: {
-      age: 30
-    }
+      age: 30,
+    },
   },
 ])
 
@@ -111,15 +111,15 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number().nullable()
+  age: model.number().nullable(),
 }).indexes([
   {
     on: ["name", "age"],
     where: {
       age: {
-        $ne: null
-      }
-    }
+        $ne: null,
+      },
+    },
   },
 ])
 
@@ -146,11 +146,11 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
-    unique: true
+    unique: true,
   },
 ])
 
