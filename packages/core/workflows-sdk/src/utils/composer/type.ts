@@ -70,8 +70,6 @@ export type WorkflowData<T = unknown> = (T extends Array<infer Item>
         "next" | "uuid" | "action"
       >
     ): WorkflowData<T>
-  } & {
-    if(input: object, condition: (...args: any) => boolean): WorkflowData<T>
   }
 
 export type CreateWorkflowComposerContext = {

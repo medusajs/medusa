@@ -3,6 +3,7 @@ import { createWorkflow } from "../create-workflow"
 import { StepResponse } from "../helpers"
 import { transform } from "../transform"
 import { WorkflowData } from "../type"
+import { when } from "../when"
 
 let count = 1
 const getNewWorkflowId = () => `workflow-${count++}`
@@ -62,13 +63,13 @@ describe("Workflow composer", () => {
       const workflow = createWorkflow(
         getNewWorkflowId(),
         function (input: { callSubFlow: boolean }) {
-          const subWorkflowRes = subWorkflow
-            .runAsStep({
+          const subWorkflowRes = when({ input }, ({ input }) => {
+            return input.callSubFlow
+          }).then(() => {
+            return subWorkflow.runAsStep({
               input: "hi from outside",
             })
-            .if({ input }, ({ input }) => {
-              return input.callSubFlow
-            })
+          })
 
           return step3(subWorkflowRes.result)
         }

@@ -3,6 +3,7 @@ import {
   createWorkflow,
   StepResponse,
 } from "@medusajs/workflows-sdk"
+import { when } from "@medusajs/workflows-sdk/src/utils/composer"
 
 const step_1 = createStep(
   "step_1",
@@ -38,17 +39,19 @@ createWorkflow(
 
     const ret = step_2({ hey: "oh" })
 
-    const ret2_async = step_2({ hey: "hello" })
-      .config({
+    const ret2_async = when({ input, ret }, ({ input, ret }) => {
+      return input.runNewStepName && ret.notAsyncResponse === "oh"
+    }).then(() => {
+      return step_2({ hey: "hello" }).config({
         name: "new_step_name",
         async: true,
       })
-      .if({ input, ret }, ({ input, ret }) => {
-        return input.runNewStepName && ret.notAsyncResponse === "oh"
-      })
+    })
 
-    return step_3(ret2_async).if({ ret2_async }, ({ ret2_async }) => {
+    return when({ ret2_async }, ({ ret2_async }) => {
       return ret2_async?.notAsyncResponse === "hello"
+    }).then(() => {
+      return step_3(ret2_async)
     })
   }
 )

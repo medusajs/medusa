@@ -228,9 +228,26 @@ function applyStep<
         ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)
 
-        return proxify(ret)
+        const confRef = proxify(ret)
+
+        if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
+          const flagSteps =
+            global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+              .steps
+
+          const idx = flagSteps.findIndex((a) => a.__step__ === ret.__step__)
+          if (idx > -1) {
+            flagSteps.splice(idx, 1)
+          }
+          flagSteps.push(confRef)
+        }
+
+        return confRef
       },
-      if: (input: any, condition: (...args: any) => boolean | WorkflowData) => {
+      if: (
+        input: any,
+        condition: (...args: any) => boolean | WorkflowData
+      ): WorkflowData<TInvokeResultOutput> => {
         if (typeof condition !== "function") {
           throw new Error("Condition must be a function")
         }
@@ -242,7 +259,15 @@ function applyStep<
       },
     }
 
-    return proxify(ret)
+    const refRet = proxify(ret) as WorkflowData<TInvokeResultOutput>
+
+    if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
+      global[
+        OrchestrationUtils.SymbolMedusaWorkflowComposerCondition
+      ].steps.push(refRet)
+    }
+
+    return refRet
   }
 }
 
