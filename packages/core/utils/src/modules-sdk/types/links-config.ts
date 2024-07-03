@@ -61,7 +61,7 @@ type InferSchemaLinkableKeys<T> = T extends IDmlEntity<
   ? {
       [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferLinkableKeyName<K, Schema[K], Config>
-        : never]: InferDmlEntityNameFromConfig<Config>
+        : never]: Capitalize<InferDmlEntityNameFromConfig<Config>>
     }
   : {}
 
