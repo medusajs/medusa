@@ -411,7 +411,7 @@ function ServiceZone({ zone, locationId, fulfillmentSetId }: ServiceZoneProps) {
                   {
                     label: t("stockLocations.serviceZones.manageAreas.action"),
                     icon: <Map />,
-                    to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/edit-areas`,
+                    to: `/settings/locations/${locationId}/fulfillment-set/${fulfillmentSetId}/service-zone/${zone.id}/areas`,
                   },
                 ],
               },

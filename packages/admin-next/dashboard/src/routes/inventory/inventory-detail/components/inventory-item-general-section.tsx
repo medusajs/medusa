@@ -59,6 +59,7 @@ export const InventoryItemGeneralSection = ({
 }
 
 const getQuantityFormat = (quantity: number, locations?: number) => {
-  return `${quantity ?? "-"}
-   ${quantity ? `across ${locations ?? "-"} locations` : ""}`
+  return `${quantity ?? "-"} ${
+    quantity ? `across ${locations ?? "-"} locations` : ""
+  }`
 }
