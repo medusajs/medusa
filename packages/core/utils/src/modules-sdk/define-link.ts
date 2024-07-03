@@ -1,5 +1,5 @@
 import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
-import { isObject, toPascalCase } from "../common"
+import { isObject, pluralize, toPascalCase } from "../common"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { composeLinkName } from "../link"
 
@@ -218,7 +218,8 @@ export function defineLink(
         {
           serviceName: serviceAObj.module,
           fieldAlias: {
-            [aliasB]: aliasB + "_link." + aliasB, //plural aliasA
+            [serviceAObj.isList ? pluralize(aliasB) : aliasB]:
+              aliasB + "_link." + aliasB, //plural aliasA
           },
           relationship: {
             serviceName,
@@ -231,7 +232,8 @@ export function defineLink(
         {
           serviceName: serviceBObj.module,
           fieldAlias: {
-            [aliasA]: aliasA + "_link." + aliasA,
+            [serviceAObj.isList ? pluralize(aliasA) : aliasA]:
+              aliasA + "_link." + aliasA,
           },
           relationship: {
             serviceName,
