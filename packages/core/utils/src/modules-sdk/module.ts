@@ -10,12 +10,14 @@ import { DmlEntity } from "../dml"
 /**
  * Wrapper to build the module export and auto generate the joiner config if needed as well as
  * return a links object based on the DML objects
- * @param moduleName
+ *
+ * @param serviceName
  * @param service
  * @param loaders
  * @constructor
  */
 export function Module<
+  const ServiceName extends string,
   const Service extends Constructor<any>,
   const ModelObjects extends DmlEntity<any, any>[] = Service extends {
     $modelObjects: infer $DmlObjects
@@ -24,22 +26,21 @@ export function Module<
     : [],
   Links = keyof ModelObjects extends never
     ? Record<string, any>
-    : InfersLinksConfig<ModelObjects>
->({
-  name = "",
-  service,
-  loaders,
-}: ModuleExports<Service> & { name?: string }): ModuleExports<Service> & {
+    : InfersLinksConfig<ServiceName, ModelObjects>
+>(
+  serviceName: ServiceName,
+  { service, loaders }: ModuleExports<Service>
+): ModuleExports<Service> & {
   links: Links
 } {
-  service.prototype.__joinerConfig ??= defineJoinerConfig(name)
+  service.prototype.__joinerConfig ??= defineJoinerConfig(serviceName)
 
   const dmlObjects = service[MedusaServiceModelObjectsSymbol]
   return {
     service,
     loaders,
     links: (dmlObjects?.length
-      ? buildLinkConfigFromDmlObjects(dmlObjects)
+      ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(dmlObjects)
       : {}) as Links,
   }
 }
