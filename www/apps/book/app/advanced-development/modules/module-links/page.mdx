@@ -1,0 +1,96 @@
+export const metadata = {
+  title: `${pageNumber} Module Link`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn what a module link is.
+
+<Note type="soon" title="In Development">
+
+Module links are in active development.
+
+</Note>
+
+## What is a Module Link?
+
+A module link forms an association between two data models of different modules, while maintaining module isolation.
+
+You can then retrieve data across the linked modules, and manage their linked records.
+
+---
+
+## How to Create a Module Link?
+
+Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
+
+For example:
+
+export const highlights = [
+  ["6", "links", "Special `links` property that holds the `HelloModule`'s data models."],
+  ["7", "links", "Special `links` property that holds the `ProductModule`'s data models."],
+]
+
+```ts title="src/links/hello-product.ts" highlights={highlights}
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  HelloModule.links.myCustom,
+  HelloModule.links.product
+)
+```
+
+The `defineLink` function accepts two parameters, which are the the data models to form the link between them.
+
+You retrieve those data models by importing the module and accessing the special `links` property, which is an object of the module's data models.
+
+---
+
+## Define a List Link
+
+By default, the defined link establishes a one-to-one relation: a record of a data model is linked to one record of the other data model.
+
+To specify that a data model can have multiple of its records linked to the other data model's record, use the `isList` option.
+
+For example:
+
+```ts
+import HelloModule from "../modules/hello"
+import ProductModule from "@medusajs/product"
+import { defineLink } from "@medusajs/utils"
+
+export default defineLink(
+  {
+    model: HelloModule.links.myCustom,
+    isList: true
+  },
+  HelloModule.links.product
+)
+```
+
+In this case, you pass an object of configuration as a parameter rather than the linked model. The object accepts the following properties:
+
+- `model`: The data model to link.
+- `isList`: Whether multiple records can be linked to one record of the other data model.
+
+In this example, a record of `product` can be linked to more than one record of `myCustom`.
+
+---
+
+## Extend Data Models with Module Links
+
+Module links are most useful when you want to add properties to a data model of another module.
+
+For example, to add custom properties to the `Product` data model of the Product Module, you:
+
+1. Create a module.
+2. Create in the module a data model that holds the custom properties you want to add to the `Product` data model.
+2. Create a module link that links your module to the Product module.
+
+Then, in the next chapters, you'll learn how to:
+
+- Link each product to a record of your data model.
+- Retrieve your data model's properties when you retrieve products.
+

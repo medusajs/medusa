@@ -111,8 +111,8 @@ export const sidebar = sidebarAttachHrefCommonOptions(
               title: "Module Isolation",
             },
             {
-              path: "/advanced-development/modules/link-modules",
-              title: "Link Modules",
+              path: "/advanced-development/modules/module-links",
+              title: "Module Links",
             },
             {
               path: "/advanced-development/modules/remote-link",

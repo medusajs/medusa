@@ -93,6 +93,48 @@ You then pass the query to the `remoteQuery` function to retrieve the results.
 
 ---
 
+## Retrieve Linked Records
+
+Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "product.*"
+  ],
+})
+```
+
+<Note title="Tip">
+
+`.*` means that all of data model's properties should be retrieved. To retrieve a specific property, replace the `*` with the property's name. For example, `product.title`.
+
+</Note>
+
+### Retrieve List Link Records
+
+If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "products.*"
+  ],
+})
+```
+
+---
+
 ## Apply Filters
 
 ```ts highlights={[["6"], ["7"], ["8"], ["9"]]}
