@@ -3,9 +3,9 @@ import {
   CreateRegionDTO,
   DAL,
   FilterableRegionProps,
-  IRegionModuleService,
   InferEntityType,
   InternalModuleDeclaration,
+  IRegionModuleService,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
@@ -15,20 +15,20 @@ import {
   UpsertRegionDTO,
 } from "@medusajs/types"
 import {
+  arrayDifference,
+  getDuplicates,
   InjectManager,
   InjectTransactionManager,
+  isString,
   MedusaContext,
   MedusaError,
   MedusaService,
-  arrayDifference,
-  getDuplicates,
-  isString,
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
-import { RegionCountry as Country, Region } from "@models"
+import { Region, RegionCountry as Country } from "@models"
 import { UpdateRegionInput } from "@types"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -44,7 +44,7 @@ export default class RegionModuleService
     Country: {
       dto: RegionCountryDTO
     }
-  }>({ Region, Country }, entityNameToLinkableKeysMap)
+  }>({ Region, Country })
   implements IRegionModuleService
 {
   protected baseRepository_: DAL.RepositoryService

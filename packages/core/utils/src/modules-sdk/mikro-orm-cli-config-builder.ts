@@ -14,7 +14,7 @@ type Options = Partial<MikroORMOptions> & {
     | EntityClass<AnyEntity>
     | EntityClassGroup<AnyEntity>
     | EntitySchema
-    | DmlEntity<any>
+    | DmlEntity<any, any>
   )[]
   databaseName: string
 }

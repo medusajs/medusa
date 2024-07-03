@@ -10,7 +10,7 @@ describe("Text property", () => {
       fieldName: "username",
       dataType: {
         name: "text",
-        options: { primaryKey: false, searchable: false },
+        options: { searchable: false },
       },
       nullable: false,
       indexes: [],
@@ -26,11 +26,12 @@ describe("Text property", () => {
       fieldName: "username",
       dataType: {
         name: "text",
-        options: { primaryKey: true, searchable: false },
+        options: { searchable: false },
       },
       nullable: false,
       indexes: [],
       relationships: [],
+      primaryKey: true,
     })
   })
 })
