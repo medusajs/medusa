@@ -25,7 +25,7 @@ These features are also available in a safe test environment, allowing for a con
 <Note type="check">
 
 - [Stripe account](https://stripe.com/).
-- [Stripe API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
+- [Stripe Secret API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
 - For deployed Medusa applications, a [Stripe webhook secret](https://docs.stripe.com/webhooks#add-a-webhook-endpoint). When creating the Webhook, set the endpoint URL to `{medusa_url}/hooks/payment/stripe`, where `{medusa_url}` with the URL to your deployed Medusa application.
 
 </Note>
@@ -55,11 +55,7 @@ module.exports = defineConfig({
             options: {
               config: {
                 stripe: {
-                  credentials: {
-                    usd: {
-                      apiKey: process.env.STRIPE_USD_API_KEY,
-                    },
-                  },
+                  apiKey: process.env.STRIPE_API_KEY,
                 },
               },
             },
@@ -76,7 +72,7 @@ module.exports = defineConfig({
 Make sure to add the necessary environment variables for the above options in `.env`:
 
 ```bash
-STRIPE_USD_API_KEY=<YOUR_STRIPE_API_KEY>
+STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
 ```
 
 ### Module Options
@@ -94,17 +90,12 @@ STRIPE_USD_API_KEY=<YOUR_STRIPE_API_KEY>
     <Table.Row>
       <Table.Cell>
       
-      `credentials`
+      `apiKey`
       
       </Table.Cell>
       <Table.Cell>
       
-      An object where each entry is a stripe provider installation. The object’s keys are the name suffix of the provider, where the provider name will be formatted as `stripe-{key}`. For example, `stripe-usd`.
-
-      Each value is an object that accepts the following properties:
-
-      - `apiKey`: A string indicating the Stripe API key.
-      - `webhookSecret`: (optional in development) A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.
+      A string indicating the Stripe Secret API key.
       
       </Table.Cell>
       <Table.Cell>
@@ -114,7 +105,29 @@ STRIPE_USD_API_KEY=<YOUR_STRIPE_API_KEY>
       </Table.Cell>
       <Table.Cell>
       
-      \-
+      -
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `webhookSecret`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A string indicating the Stripe webhook secret. This is only useful for deployed Medusa applications.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      Yes
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      -
       
       </Table.Cell>
     </Table.Row>
