@@ -14,27 +14,11 @@ The remote query fetches data across modules. It’s a function registered in th
 
 In your resources, such as API routes or workflows, you can resolve the remote query to fetch data across custom modules and Medusa’s commerce modules.
 
----
+<Note type="check">
 
-## isQueryable Configuration
+- [Enable the isQueryable configuration of the module](../module-links/page.mdx#prerequisite-isqueryable-configuration)
 
-Before you use remote query on your module, you must enable the `isQueryable` configuration of the module.
-
-For example:
-
-```js
-module.exports = defineConfig({
-  // ...
-  modules: {
-    helloModuleService: {
-      resolve: "./modules/hello",
-      definition: {
-        isQueryable: true,
-      },
-    },
-  },
-})
-```
+</Note>
 
 ---
 

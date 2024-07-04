@@ -20,7 +20,29 @@ You can then retrieve data across the linked modules, and manage their linked re
 
 ---
 
-## How to Create a Module Link?
+## Prerequisite: isQueryable Configuration
+
+Before you define a module link, you must enable the `isQueryable` configuration of the module.
+
+For example:
+
+```js
+module.exports = defineConfig({
+  // ...
+  modules: {
+    helloModuleService: {
+      resolve: "./modules/hello",
+      definition: {
+        isQueryable: true,
+      },
+    },
+  },
+})
+```
+
+---
+
+## How to Define a Module Link?
 
 Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
 
@@ -44,7 +66,7 @@ export default defineLink(
 
 The `defineLink` function accepts as parameters the link configurations of each module's data model. A module has a special `linkable` property that holds these configurations for its data models.
 
-In this example, you create a module link between the `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
+In this example, you define a module link between the `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
 
 ---
 
@@ -87,7 +109,7 @@ For example, to add custom properties to the `Product` data model of the Product
 
 1. Create a module.
 2. Create in the module a data model that holds the custom properties you want to add to the `Product` data model.
-2. Create a module link that links your module to the Product Module.
+2. Define a module link that links your module to the Product Module.
 
 Then, in the next chapters, you'll learn how to:
 
