@@ -4,6 +4,7 @@ import {
   ModuleJoinerConfig,
   PropertyType,
 } from "@medusajs/types"
+import * as path from "path"
 import { dirname, join } from "path"
 import {
   camelToSnakeCase,
@@ -21,6 +22,7 @@ import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
 import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
+import { accessSync } from "fs"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -85,6 +87,18 @@ export function defineJoinerConfig(
       }
 
       basePath = join(basePath, "models")
+      let doesModelsDirExist = false
+      try {
+        accessSync(path.resolve(basePath))
+        doesModelsDirExist = true
+      } catch (e) {}
+
+      if (!doesModelsDirExist) {
+        stopSearching = true
+        loadedModels = []
+        continue
+      }
+
       loadedModels = loadModels(basePath)
 
       if (index === maxSearchIndex || loadedModels.length) {
