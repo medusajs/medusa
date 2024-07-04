@@ -44,6 +44,8 @@ module.exports = defineConfig({
 
 ## How to Define a Module Link?
 
+### 1. Create Link File
+
 Links are defined in a TypeScript or JavaScript file under the `src/links` directory. The file defines the link using the `defineLink` function imported from `@medusajs/utils` and exports it.
 
 For example:
@@ -67,6 +69,14 @@ export default defineLink(
 The `defineLink` function accepts as parameters the link configurations of each module's data model. A module has a special `linkable` property that holds these configurations for its data models.
 
 In this example, you define a module link between the `hello` module's `MyCustom` data model and the Product Module's `Product` data model.
+
+### 2. Run Migrations
+
+Medusa stores links as pivot tables in the database, so you must run migrations after defining a link:
+
+```bash
+npx medusa migrations run
+```
 
 ---
 
