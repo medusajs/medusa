@@ -1,6 +1,6 @@
-import "../../globals.css"
+import "./globals.css"
 import Navbar from "@/components/Navbar"
-import Providers from "../../../providers"
+import Providers from "../providers"
 import { WideLayout } from "docs-ui"
 import { Inter, Roboto_Mono } from "next/font/google"
 import clsx from "clsx"

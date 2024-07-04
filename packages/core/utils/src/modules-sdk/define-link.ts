@@ -2,6 +2,8 @@ import { LinkModulesExtraFields, ModuleJoinerConfig } from "@medusajs/types"
 import { isObject, pluralize, toPascalCase } from "../common"
 import { composeLinkName } from "../link"
 
+export const DefineLinkSymbol = Symbol.for("DefineLink")
+
 type InputSource = {
   serviceName: string
   field: string
@@ -116,7 +118,7 @@ export function defineLink(
     throw new Error(`Invalid linkable passed for the second argument`)
   }
 
-  const output = { serviceName: "" }
+  const output = { [DefineLinkSymbol]: true, serviceName: "" }
 
   const register = function (
     modules: ModuleJoinerConfig[]

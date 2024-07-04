@@ -6,9 +6,9 @@ import {
 } from "@medusajs/types"
 import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 import {
+  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
-  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCategory } from "@models"
@@ -72,7 +72,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<ProductCategory[]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const productCategories = await manager.find(
@@ -136,12 +135,14 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     relationIndex = findOptions.options?.populate?.indexOf("category_children")
     const shouldPopulateChildren = relationIndex !== -1
+
     if (shouldPopulateChildren && include.descendants) {
       findOptions.options!.populate!.splice(relationIndex as number, 1)
     }
 
     const mpaths: any[] = []
     const parentMpaths = new Set()
+
     for (const cat of productCategories) {
       if (include.descendants) {
         mpaths.push({ mpath: { $like: `${cat.mpath}%` } })
@@ -158,37 +159,34 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
 
     mpaths.push({ mpath: Array.from(parentMpaths) })
 
-    const whereOptions = {
-      ...findOptions.where,
-      $or: mpaths,
-    }
+    const where = { ...findOptions.where, $or: mpaths }
+    const options = {
+      ...findOptions.options,
+      limit: undefined,
+      offset: 0,
+    } as MikroOptions<ProductCategory>
 
-    if ("parent_category_id" in whereOptions) {
-      delete whereOptions.parent_category_id
-    }
+    delete where.id
+    delete where.mpath
+    delete where.parent_category_id
 
-    if ("id" in whereOptions) {
-      delete whereOptions.id
-    }
-
-    let allCategories = await manager.find(
-      ProductCategory,
-      whereOptions as MikroFilterQuery<ProductCategory>,
-      findOptions.options as MikroOptions<ProductCategory>
+    const categoriesInTree = await this.serialize<ProductCategory[]>(
+      await manager.find(ProductCategory, where, options)
     )
 
-    allCategories = JSON.parse(JSON.stringify(allCategories))
+    const categoriesById = new Map(categoriesInTree.map((cat) => [cat.id, cat]))
 
-    const categoriesById = new Map(allCategories.map((cat) => [cat.id, cat]))
-
-    allCategories.forEach((cat: any) => {
+    categoriesInTree.forEach((cat: any) => {
       if (cat.parent_category_id && include.ancestors) {
         cat.parent_category = categoriesById.get(cat.parent_category_id)
+        cat.parent_category_id = categoriesById.get(cat.parent_category_id)?.[
+          "id"
+        ]
       }
     })
 
     const populateChildren = (category, level = 0) => {
-      const categories = allCategories.filter(
+      const categories = categoriesInTree.filter(
         (child) => child.parent_category_id === category.id
       )
 
@@ -231,7 +229,6 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     const manager = super.getActiveManager<SqlEntityManager>(context)
-
     const findOptions_ = this.buildFindOptions(findOptions, transformOptions)
 
     const [productCategories, count] = await manager.findAndCount(
