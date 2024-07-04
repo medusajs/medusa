@@ -13,6 +13,7 @@ import {
   lowerCaseFirst,
   MapToConfig,
   pluralize,
+  toCamelCase,
   upperCaseFirst,
 } from "../common"
 import { loadModels } from "./loaders/load-models"
@@ -60,39 +61,57 @@ export function defineJoinerConfig(
       "serviceName" | "primaryKeys" | "linkableKeys" | "alias"
     >
   > {
-  const fullPath = getCallerFilePath()
-  const srcDir = fullPath.includes("dist") ? "dist" : "src"
-  const splitPath = fullPath.split(srcDir)
+  let loadedModels = models
 
-  let basePath = splitPath[0] + srcDir
+  if (!loadedModels) {
+    let stopSearching = false
+    let index = 4
 
-  const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
-  if (isMedusaProject) {
-    basePath = dirname(fullPath)
+    while (!stopSearching) {
+      const fullPath = getCallerFilePath(index)
+      const srcDir = fullPath.includes("dist") ? "dist" : "src"
+      const splitPath = fullPath.split(srcDir)
+
+      let basePath = splitPath[0] + srcDir
+
+      const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
+      if (isMedusaProject) {
+        basePath = dirname(fullPath)
+      }
+
+      basePath = join(basePath, "models")
+      loadedModels = loadModels(basePath)
+
+      if (index === 0 || loadedModels.length) {
+        stopSearching = true
+      }
+    }
   }
 
-  basePath = join(basePath, "models")
-
-  let loadedModels = models ?? loadModels(basePath)
-  const modelDefinitions = new Map(
-    loadedModels
-      .filter((model) => !!DmlEntity.isDmlEntity(model))
+  const modelDefinitions = new Map<string, DmlEntity<any, any>>(
+    loadedModels!
+      .filter(
+        (model): model is DmlEntity<any, any> => !!DmlEntity.isDmlEntity(model)
+      )
       .map((model) => [model.name, model])
   )
-  const mikroOrmObjects = new Map(
-    loadedModels
-      .filter((model) => !DmlEntity.isDmlEntity(model))
+  const mikroOrmObjects = new Map<string, Function>(
+    loadedModels!
+      .filter((model): model is Function => !DmlEntity.isDmlEntity(model))
       .map((model) => [model.name, model])
   )
 
   // We prioritize DML if there is any equivalent Mikro orm entities found
-  loadedModels = [...modelDefinitions.values()]
+  const deduplicatedLoadedModels = [...modelDefinitions.values()] as (
+    | DmlEntity<any, any>
+    | { name: string }
+  )[]
   mikroOrmObjects.forEach((model) => {
     if (modelDefinitions.has(model.name)) {
       return
     }
 
-    loadedModels.push(model)
+    deduplicatedLoadedModels.push(model)
   })
 
   if (!linkableKeys) {
@@ -109,7 +128,7 @@ export function defineJoinerConfig(
   }
 
   if (!primaryKeys && modelDefinitions.size) {
-    const linkConfig = buildLinkConfigFromDmlObjects(
+    const linkConfig = buildLinkConfigFromModelObjects(
       serviceName,
       Object.fromEntries(modelDefinitions)
     )
@@ -142,7 +161,7 @@ export function defineJoinerConfig(
             pluralize(upperCaseFirst(alias.args.entity)),
         },
       })),
-      ...loadedModels
+      ...deduplicatedLoadedModels
         .filter((model) => {
           return (
             !alias || !alias.some((alias) => alias.args?.entity === model.name)
@@ -254,7 +273,7 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *   test: model.text(),
  * })
  *
- * const links = buildLinkConfigFromDmlObjects('userService', { user, car })
+ * const links = buildLinkConfigFromModelObjects('userService', { user, car })
  *
  * // output:
  * // {
@@ -281,7 +300,7 @@ export function buildLinkableKeysFromMikroOrmObjects(
  * @param serviceName
  * @param models
  */
-export function buildLinkConfigFromDmlObjects<
+export function buildLinkConfigFromModelObjects<
   const ServiceName extends string,
   const T extends Record<string, IDmlEntity<any, any>>
 >(serviceName: ServiceName, models: T): InfersLinksConfig<ServiceName, T> {
@@ -325,6 +344,40 @@ export function buildLinkConfigFromDmlObjects<
   }
 
   return linkConfig as InfersLinksConfig<ServiceName, T>
+}
+
+/**
+ * @deprecated temporary supports for mikro orm entities to get the linkable available from the module export while waiting for the migration to DML
+ *
+ * @param serviceName
+ * @param linkableKeys
+ */
+export function buildLinkConfigFromLinkableKeys<
+  const ServiceName extends string,
+  const T extends Record<string, string>
+>(serviceName: ServiceName, linkableKeys: T): Record<string, any> {
+  const linkConfig = {} as Record<string, any>
+
+  for (const [linkable, modelName] of Object.entries(linkableKeys)) {
+    const kebabCasedModelName = camelToSnakeCase(toCamelCase(modelName))
+    const inferredReferenceProperty = linkable.replace(
+      `${kebabCasedModelName}_`,
+      ""
+    )
+
+    const config = {
+      linkable: linkable,
+      primaryKey: inferredReferenceProperty,
+      serviceName,
+      field: lowerCaseFirst(modelName),
+    }
+    linkConfig[lowerCaseFirst(modelName)] = {
+      [inferredReferenceProperty]: config,
+      toJSON: () => config,
+    }
+  }
+
+  return linkConfig as Record<string, any>
 }
 
 /**
