@@ -104,7 +104,7 @@ When the Medusa application starts, these providers are registered and can be us
 For example:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -117,6 +117,7 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "@medusajs/payment-stripe",
+            id: "stripe",
             options: {
               // ...
             },
@@ -131,5 +132,5 @@ module.exports = defineConfig({
 The `providers` option is an array of objects that accept the following properties:
 
 - `resolve`: A string indicating the package name of the module provider or the path to it relative to the `src` directory.
-- `options`: An optional object of the module provider's options. The object must have the following property:
-  - `config`: An object whose key is the ID of the module provider, and its value is an object of options to pass to the module provider.
+- `id`: A string indicating the provider's unique name or ID.
+- `options`: An optional object of the module provider's options.

@@ -174,7 +174,7 @@ type InferSchemaLinksConfig<
  *   test: model.text(),
  * })
  *
- * const linkConfig = buildLinkConfigFromDmlObjects([user, car])
+ * const linkConfig = buildLinkConfigFromModelObjects([user, car])
  * // {
  * //   user: {
  * //     id: {

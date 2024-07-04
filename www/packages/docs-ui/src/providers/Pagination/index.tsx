@@ -50,18 +50,23 @@ export const PaginationProvider = ({ children }: PaginationProviderProps) => {
 
   const getFirstChild = (
     item: SidebarItemType
-  ): SidebarItemType | undefined => {
+  ): SidebarItemWithParent | undefined => {
     const children = getChildrenWithPages(item)
     if (!children?.length) {
       return undefined
     }
 
-    return children[0].path ? children[0] : getFirstChild(children[0])
+    return children[0].path
+      ? {
+          ...children[0],
+          parent: item,
+        }
+      : getFirstChild(children[0])
   }
 
   const getChildrenWithPages = (
     item: SidebarItemType
-  ): SidebarItemType[] | undefined => {
+  ): SidebarItemWithParent[] | undefined => {
     return item.children?.filter(
       (childItem) =>
         childItem.path !== undefined || getChildrenWithPages(childItem)?.length

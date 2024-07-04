@@ -25,7 +25,9 @@ medusaIntegrationTestRunner({
 
         const linkDefinition = MedusaModule.getCustomLinks()
           .map((linkDefinition: any) => {
-            const definition = linkDefinition(MedusaModule.getLoadedModules())
+            const definition = linkDefinition(
+              MedusaModule.getAllJoinerConfigs()
+            )
             return definition.serviceName === link.serviceName && definition
           })
           .filter(Boolean)[0]
@@ -49,12 +51,18 @@ medusaIntegrationTestRunner({
               primaryKey: "code",
               foreignKey: "currency_code",
               alias: "currency",
+              args: {
+                methodSuffix: "Currencies",
+              },
             },
             {
               serviceName: "region",
               primaryKey: "id",
               foreignKey: "region_id",
               alias: "region",
+              args: {
+                methodSuffix: "Regions",
+              },
             },
           ],
           extends: [
@@ -65,8 +73,8 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
-                primaryKey: "region_id",
-                foreignKey: "id",
+                primaryKey: "currency_code",
+                foreignKey: "code",
                 alias: "region_link",
                 isList: false,
               },
@@ -78,8 +86,8 @@ medusaIntegrationTestRunner({
               },
               relationship: {
                 serviceName: "currencyCurrencyRegionRegionLink",
-                primaryKey: "currency_code",
-                foreignKey: "code",
+                primaryKey: "region_id",
+                foreignKey: "id",
                 alias: "currency_link",
                 isList: false,
               },

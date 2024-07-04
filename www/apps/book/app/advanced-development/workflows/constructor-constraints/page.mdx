@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining Workflow constructor functions.
+This chapter lists some constraints to keep in mind when defining a workflow's constructor function.
 
 ## No Arrow Functions
 
@@ -28,6 +28,8 @@ const myWorkflow = createWorkflow<
 })
 ```
 
+---
+
 ## No Async Functions
 
 The function passed to the `createWorkflow` can’t be an async function:
@@ -49,6 +51,8 @@ const myWorkflow = createWorkflow<
   // ...
 })
 ```
+
+---
 
 ## No Direct Data Manipulation
 

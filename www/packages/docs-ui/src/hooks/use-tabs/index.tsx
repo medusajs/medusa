@@ -30,6 +30,9 @@ export function useTabs<T extends BaseTabType>({ tabs, group }: TabProps<T>) {
   const scrollPosition = useRef<number>(0)
 
   const changeSelectedTab = (tab: T) => {
+    if (tab.value === selectedTab?.value) {
+      return
+    }
     scrollPosition.current = window.scrollY
     setSelectedTab(tab)
     localStorage.setItem(storageKey, tab.value)
