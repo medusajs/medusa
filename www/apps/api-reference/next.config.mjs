@@ -3,7 +3,7 @@ import bundleAnalyzer from "@next/bundle-analyzer"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
+  // basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/v2",
   async rewrites() {
     return {
       fallback: [
