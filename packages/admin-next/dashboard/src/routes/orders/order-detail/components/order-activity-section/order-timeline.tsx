@@ -1,4 +1,3 @@
-import { Fulfillment, Note, Order } from "@medusajs/medusa"
 import { IconButton, Text, Tooltip, clx, usePrompt } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
 
@@ -6,11 +5,11 @@ import { PropsWithChildren, ReactNode, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { XMarkMini } from "@medusajs/icons"
-import { AdminOrder } from "@medusajs/types"
+import { AdminFulfillment, AdminOrder } from "@medusajs/types"
 import { useTranslation } from "react-i18next"
-import { Skeleton } from "../../../../../components/common/skeleton"
+
 import { useDate } from "../../../../../hooks/use-date"
-import { useStockLocation } from "../../../../../hooks/api/stock-locations"
+import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderTimelineProps = {
   order: AdminOrder
@@ -78,7 +77,7 @@ type Activity = {
   children?: ReactNode
 }
 
-const useActivityItems = (order: Order) => {
+const useActivityItems = (order: AdminOrder) => {
   const { t } = useTranslation()
 
   const notes = []
@@ -141,20 +140,34 @@ const useActivityItems = (order: Order) => {
     //   }
     // }
 
-    // for (const fulfillment of order.fulfillments) {
-    //   items.push({
-    //     title: t("orders.activity.events.fulfillment.created"),
-    //     timestamp: fulfillment.created_at,
-    //     children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
-    //   })
-    //
-    //   if (fulfillment.shipped_at) {
-    //     items.push({
-    //       title: t("orders.activity.events.fulfillment.shipped"),
-    //       timestamp: fulfillment.shipped_at,
-    //     })
-    //   }
-    // }
+    for (const fulfillment of order.fulfillments) {
+      items.push({
+        title: t("orders.activity.events.fulfillment.created"),
+        timestamp: fulfillment.created_at,
+        children: <FulfillmentCreatedBody fulfillment={fulfillment} />,
+      })
+
+      if (fulfillment.shipped_at) {
+        items.push({
+          title: t("orders.activity.events.fulfillment.shipped"),
+          timestamp: fulfillment.shipped_at,
+          children: (
+            <FulfillmentCreatedBody fulfillment={fulfillment} isShipment />
+          ),
+        })
+      }
+
+      if (fulfillment.canceled_at) {
+        items.push({
+          title: t("orders.activity.events.fulfillment.canceled"),
+          timestamp: fulfillment.canceled_at,
+        })
+      }
+    }
+
+    /**
+     * TODO: revisit when API is fixed to fetch returns of an order
+     */
 
     // for (const ret of order.returns) {
     //   items.push({
@@ -187,9 +200,7 @@ const useActivityItems = (order: Order) => {
       timestamp: order.created_at,
       children: (
         <Text size="small" className="text-ui-fg-subtle">
-          {t("orders.activity.events.placed.fromSalesChannel", {
-            salesChannel: order.sales_channel.name,
-          })}
+          {getStylizedAmount(order.total, order.currency_code)}
         </Text>
       ),
     }
@@ -311,7 +322,7 @@ const NoteBody = ({ note }: { note: Note }) => {
     author: name || email,
   })
 
-  const { mutateAsync } = useAdminDeleteNote(note.id)
+  const { mutateAsync } = {} // useAdminDeleteNote(note.id)
 
   const handleDelete = async () => {
     const res = await prompt({
@@ -362,44 +373,21 @@ const NoteBody = ({ note }: { note: Note }) => {
 const FulfillmentCreatedBody = ({
   fulfillment,
 }: {
-  fulfillment: Fulfillment
+  fulfillment: AdminFulfillment
 }) => {
   const { t } = useTranslation()
-
-  const { stock_location, isLoading, isError, error } = useStockLocation(
-    fulfillment.location_id!,
-    undefined,
-    {
-      enabled: !!fulfillment.location_id,
-    }
-  )
 
   const numberOfItems = fulfillment.items.reduce((acc, item) => {
     return acc + item.quantity
   }, 0)
 
-  const triggerText = stock_location
-    ? t("orders.activity.events.fulfillment.itemsFulfilledFrom", {
-        count: numberOfItems,
-        location: stock_location.name,
-      })
-    : t("orders.activity.events.fulfillment.itemsFulfilled", {
-        count: numberOfItems,
-      })
-
-  if (isError) {
-    throw error
-  }
-
   return (
     <div>
-      {isLoading ? (
-        <Skeleton className="h-7 w-full" />
-      ) : (
-        <Text size="small" className="text-ui-fg-subtle">
-          {triggerText}
-        </Text>
-      )}
+      <Text size="small" className="text-ui-fg-subtle">
+        {t("orders.activity.events.fulfillment.items", {
+          count: numberOfItems,
+        })}
+      </Text>
     </div>
   )
 }
