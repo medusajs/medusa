@@ -1497,6 +1497,72 @@ export interface IPricingModuleService extends IModuleService {
   removePrices(ids: string[], sharedContext?: Context): Promise<void>
 
   /**
+   * This method is used to retrieve a price preference by its ID.
+   *
+   * @param {string} id - The ID of the price preference to retrieve.
+   * @param {FindConfig<PricePreferenceDTO>} config -
+   * The configurations determining how the price preference is retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO>} The retrieved price preference.
+   *
+   * @example
+   * A simple example that retrieves a price preference by its ID:
+   *
+   * ```ts
+   * const pricePreference =
+   *   await pricingModuleService.retrievePricePreference("prpref_123")
+   * ```
+   */
+  retrievePricePreference(
+    id: string,
+    config?: FindConfig<PricePreferenceDTO>,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  /**
+   * This method is used to retrieve a paginated list of price preferences based on optional filters and configuration.
+   *
+   * @param {FilterablePricePreferenceProps} filters - The filters to apply on the retrieved price lists.
+   * @param {FindConfig<PricePreferenceDTO>} config -
+   * The configurations determining how the price preferences are retrieved. Its properties, such as `select` or `relations`, accept the
+   * attributes or relations associated with a price preference.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<PricePreferenceDTO[]>} The list of price preferences.
+   *
+   * @example
+   *
+   * To retrieve a list of price preferences using their IDs:
+   *
+   * ```ts
+   * const pricePreferences = await pricingModuleService.listPricePreferences({
+   *   id: ["prpref_123", "prpref_321"],
+   * })
+   * ```
+   *
+   * To specify relations that should be retrieved within the price preferences:
+   *
+   * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+   *
+   * ```ts
+   * const pricePreferences = await pricingModuleService.listPricePreferences(
+   *   {
+   *     id: ["prpref_123", "prpref_321"],
+   *   },
+   *   {
+   *     take: 20,
+   *     skip: 2,
+   *   }
+   * )
+   * ```
+   */
+  listPricePreferences(
+    filters?: FilterablePricePreferenceProps,
+    config?: FindConfig<PricePreferenceDTO>,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  /**
    * This method is used to create a new price preference.
    *
    * @param {CreatePricePreferenceDTO} data - The attributes of the price preference to create.
@@ -1674,4 +1740,16 @@ export interface IPricingModuleService extends IModuleService {
     config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
+
+  /**
+   * This method deletes price preferences by their IDs.
+   *
+   * @param {string[]} ids - The IDs of the price preferences to delete.
+   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
+   * @returns {Promise<void>} Resolves when the price preferences are successfully deleted.
+   *
+   * @example
+   * await pricingModuleService.deletePricePreferences(["prpref_123", "prpref_321"])
+   */
+  deletePricePreferences(ids: string[], sharedContext?: Context): Promise<void>
 }

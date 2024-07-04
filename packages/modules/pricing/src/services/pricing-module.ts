@@ -256,10 +256,46 @@ export default class PricingModuleService
       pricingContext,
       sharedContext
     )
-    const pricesSetPricesMap = groupBy(
-      results,
-      "price_set_id"
-    ) as unknown as Map<string, PricingTypes.CalculatedPriceSetDTO[]>
+
+    const pricesSetPricesMap = groupBy(results, "price_set_id")
+    const priceIds: string[] = []
+    pricesSetPricesMap.forEach(
+      (prices: PricingTypes.CalculatedPriceSetDTO[], key) => {
+        const priceListPrice = prices.find((p) => p.price_list_id)
+        const defaultPrice = prices?.find((p) => !p.price_list_id)
+        if (!prices.length || (!priceListPrice && !defaultPrice)) {
+          pricesSetPricesMap.delete(key)
+          return
+        }
+
+        let calculatedPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
+          defaultPrice
+        let originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
+          defaultPrice
+        if (priceListPrice) {
+          calculatedPrice = priceListPrice
+
+          if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
+            originalPrice = priceListPrice
+          }
+        }
+
+        pricesSetPricesMap.set(key, { calculatedPrice, originalPrice })
+        priceIds.push(
+          ...(deduplicate(
+            [calculatedPrice?.id, originalPrice?.id].filter(Boolean)
+          ) as string[])
+        )
+      }
+    )
+
+    // We use the price rules to get the right preferences for the price
+    const priceRulesForPrices = await this.priceRuleService_.list(
+      { price_id: priceIds },
+      { take: null }
+    )
+
+    const priceRulesPriceMap = groupBy(priceRulesForPrices, "price_id")
 
     // Note: For now the preferences are intentionally kept very simple and explicit - they use either the region or currency,
     // so we hard-code those as the possible filters here. This can be made more flexible if needed later on.
@@ -278,96 +314,61 @@ export default class PricingModuleService
       sharedContext
     )
 
-    const calculatedPrices: PricingTypes.CalculatedPriceSet[] = (
-      await promiseAll(
-        pricingFilters.id.map(
-          async (
-            priceSetId: string
-          ): Promise<PricingTypes.CalculatedPriceSet | null> => {
-            // This is where we select prices, for now we just do a first match based on the database results
-            // which is prioritized by rules_count first for exact match and then default_priority of the rule_type
-
-            const prices = pricesSetPricesMap.get(priceSetId) || []
-            const priceListPrice = prices.find((p) => p.price_list_id)
-            const defaultPrice = prices?.find((p) => !p.price_list_id)
-            if (!prices.length || (!priceListPrice && !defaultPrice)) {
-              return null
-            }
-
-            let calculatedPrice:
-              | PricingTypes.CalculatedPriceSetDTO
-              | undefined = defaultPrice
-            let originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
-              defaultPrice
-            if (priceListPrice) {
-              calculatedPrice = priceListPrice
-
-              if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
-                originalPrice = priceListPrice
-              }
-            }
-
-            const priceIds = deduplicate(
-              [calculatedPrice?.id, originalPrice?.id].filter(Boolean)
-            )
-
-            // We use the price rules to get the right preferences for the price
-            const priceRulesForPrices = await this.priceRuleService_.list(
-              {
-                price_id: priceIds,
-              },
-              { take: null }
-            )
-            const calculatedPriceRules = priceRulesForPrices.filter(
-              (pr) => pr.price_id === calculatedPrice?.id
-            )
-            const originalPriceRules = priceRulesForPrices.filter(
-              (pr) => pr.price_id === originalPrice?.id
-            )
-
-            return {
-              id: priceSetId,
-              is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
-              is_calculated_price_tax_inclusive: isTaxInclusive(
-                calculatedPriceRules,
-                pricingPreferences
-              ),
-              calculated_amount:
-                parseInt(calculatedPrice?.amount || "") || null,
-
-              is_original_price_price_list: !!originalPrice?.price_list_id,
-              is_original_price_tax_inclusive: isTaxInclusive(
-                originalPriceRules,
-                pricingPreferences
-              ),
-              original_amount: parseInt(originalPrice?.amount || "") || null,
-
-              currency_code: calculatedPrice?.currency_code || null,
-
-              calculated_price: {
-                id: calculatedPrice?.id || null,
-                price_list_id: calculatedPrice?.price_list_id || null,
-                price_list_type: calculatedPrice?.price_list_type || null,
-                min_quantity:
-                  parseInt(calculatedPrice?.min_quantity || "") || null,
-                max_quantity:
-                  parseInt(calculatedPrice?.max_quantity || "") || null,
-              },
-
-              original_price: {
-                id: originalPrice?.id || null,
-                price_list_id: originalPrice?.price_list_id || null,
-                price_list_type: originalPrice?.price_list_type || null,
-                min_quantity:
-                  parseInt(originalPrice?.min_quantity || "") || null,
-                max_quantity:
-                  parseInt(originalPrice?.max_quantity || "") || null,
-              },
-            }
+    const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
+      pricingFilters.id
+        .map((priceSetId: string): PricingTypes.CalculatedPriceSet | null => {
+          const prices = pricesSetPricesMap.get(priceSetId)
+          if (!prices) {
+            return null
           }
-        )
-      )
-    ).filter(Boolean) as PricingTypes.CalculatedPriceSet[]
+          const {
+            calculatedPrice,
+            originalPrice,
+          }: {
+            calculatedPrice: PricingTypes.CalculatedPriceSetDTO
+            originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined
+          } = prices
+
+          return {
+            id: priceSetId,
+            is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
+            is_calculated_price_tax_inclusive: isTaxInclusive(
+              priceRulesPriceMap.get(calculatedPrice.id),
+              pricingPreferences
+            ),
+            calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
+
+            is_original_price_price_list: !!originalPrice?.price_list_id,
+            is_original_price_tax_inclusive: originalPrice?.id
+              ? isTaxInclusive(
+                  priceRulesPriceMap.get(originalPrice.id),
+                  pricingPreferences
+                )
+              : false,
+            original_amount: parseInt(originalPrice?.amount || "") || null,
+
+            currency_code: calculatedPrice?.currency_code || null,
+
+            calculated_price: {
+              id: calculatedPrice?.id || null,
+              price_list_id: calculatedPrice?.price_list_id || null,
+              price_list_type: calculatedPrice?.price_list_type || null,
+              min_quantity:
+                parseInt(calculatedPrice?.min_quantity || "") || null,
+              max_quantity:
+                parseInt(calculatedPrice?.max_quantity || "") || null,
+            },
+
+            original_price: {
+              id: originalPrice?.id || null,
+              price_list_id: originalPrice?.price_list_id || null,
+              price_list_type: originalPrice?.price_list_type || null,
+              min_quantity: parseInt(originalPrice?.min_quantity || "") || null,
+              max_quantity: parseInt(originalPrice?.max_quantity || "") || null,
+            },
+          }
+        })
+        .filter(Boolean) as PricingTypes.CalculatedPriceSet[]
 
     return JSON.parse(JSON.stringify(calculatedPrices))
   }
