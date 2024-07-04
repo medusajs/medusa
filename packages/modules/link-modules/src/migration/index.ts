@@ -40,7 +40,9 @@ export function getMigration(
 
     let hasTable = false
     try {
-      await orm.em.getConnection().execute(`SELECT 1 FROM ${tableName} LIMIT 0`)
+      await orm.em
+        .getConnection()
+        .execute(`SELECT 1 FROM "${tableName}" LIMIT 0`)
       hasTable = true
     } catch {}
 
