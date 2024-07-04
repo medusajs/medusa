@@ -1,5 +1,5 @@
 import { MikroORMOptions } from "@mikro-orm/core/utils/Configuration"
-import { DmlEntity, toMikroORMEntity } from "../dml"
+import { DmlEntity, toMikroOrmEntities } from "../dml"
 import { TSMigrationGenerator } from "../dal"
 import type {
   AnyEntity,
@@ -7,6 +7,7 @@ import type {
   EntityClassGroup,
 } from "@mikro-orm/core/typings"
 import type { EntitySchema } from "@mikro-orm/core/metadata/EntitySchema"
+import { kebabCase } from "../common"
 
 type Options = Partial<MikroORMOptions> & {
   entities: (
@@ -16,7 +17,7 @@ type Options = Partial<MikroORMOptions> & {
     | EntitySchema
     | DmlEntity<any, any>
   )[]
-  databaseName: string
+  databaseName?: string
 }
 
 type ReturnedOptions = Partial<MikroORMOptions> & {
@@ -32,26 +33,24 @@ type ReturnedOptions = Partial<MikroORMOptions> & {
  * by mikro orm cli.
  * @param options
  */
-export function defineMikroOrmCliConfig(options: Options): ReturnedOptions {
+export function defineMikroOrmCliConfig(
+  moduleName: string,
+  options: Options
+): ReturnedOptions {
   if (!options.entities?.length) {
     throw new Error("defineMikroOrmCliConfig failed with: entities is required")
   }
 
-  const entities = options.entities.map((entity) => {
-    if (DmlEntity.isDmlEntity(entity)) {
-      return toMikroORMEntity(entity)
-    }
+  const dmlEntities = options.entities.filter(DmlEntity.isDmlEntity)
+  const nonDmlEntities = options.entities.filter(
+    (entity) => !DmlEntity.isDmlEntity(entity)
+  )
 
-    return entity
-  })
+  const entities = nonDmlEntities.concat(toMikroOrmEntities(dmlEntities))
 
-  if (!options.databaseName) {
-    throw new Error(
-      "defineMikroOrmCliConfig failed with: databaseName is required"
-    )
-  }
+  const normalizedModuleName = kebabCase(moduleName.replace("Service", ""))
+  let databaseName = `medusa-${normalizedModuleName}`
 
-  let databaseName
   if (options.databaseName) {
     databaseName = options.databaseName
     // @ts-ignore
