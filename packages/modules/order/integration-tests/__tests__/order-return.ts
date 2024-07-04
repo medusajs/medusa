@@ -282,11 +282,12 @@ moduleIntegrationTestRunner<IOrderModuleService>({
             "items.detail.fulfilled_quantity",
             "items.detail.return_requested_quantity",
           ],
-          relations: ["items", "items.detail"],
+          relations: ["items", "items.detail", "shipping_methods"],
         })
 
         serializedOrder = JSON.parse(JSON.stringify(getOrder))
 
+        expect(serializedOrder.shipping_methods).toHaveLength(3)
         expect(serializedOrder).toEqual(
           expect.objectContaining({
             items: [

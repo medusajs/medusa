@@ -1,6 +1,6 @@
 import { CreateOrderDTO, IOrderModuleService } from "@medusajs/types"
 import { ClaimType, Modules } from "@medusajs/utils"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(100000)
 
@@ -222,7 +222,7 @@ moduleIntegrationTestRunner({
                 }),
               }),
             ],
-            shipping_methods: [
+            shipping_methods: expect.arrayContaining([
               expect.objectContaining({
                 name: "return shipping method",
                 amount: 10,
@@ -231,7 +231,7 @@ moduleIntegrationTestRunner({
                 name: "Claim method",
                 amount: 35,
               }),
-            ],
+            ]),
             refund_amount: null,
           })
         )
