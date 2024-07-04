@@ -4,7 +4,6 @@ const DEFAULT_PROPERTIES = [
   "created_at",
   "canceled_at",
   "email",
-  // "payment_status", // -> TODO replacement for this
   "display_id",
   "currency_code",
   // --- TOTALS ---

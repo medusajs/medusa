@@ -1,12 +1,16 @@
-import { FulfillmentStatus, PaymentStatus } from "@medusajs/medusa"
 import { TFunction } from "i18next"
 
 export const getOrderPaymentStatus = (
   t: TFunction<"translation">,
-  status: PaymentStatus
+  status: string
 ) => {
-  const [label, color] = ({
+  const [label, color] = {
     not_paid: [t("orders.payment.status.notPaid"), "red"],
+    authorized: [t("orders.payment.status.authorized"), "orange"],
+    partially_authorized: [
+      t("orders.payment.status.partiallyAuthorized"),
+      "red",
+    ],
     awaiting: [t("orders.payment.status.awaiting"), "orange"],
     captured: [t("orders.payment.status.captured"), "green"],
     refunded: [t("orders.payment.status.refunded"), "green"],
@@ -14,18 +18,20 @@ export const getOrderPaymentStatus = (
       t("orders.payment.status.partiallyRefunded"),
       "orange",
     ],
+    partially_captured: [
+      t("orders.payment.status.partiallyCaptured"),
+      "orange",
+    ],
     canceled: [t("orders.payment.status.canceled"), "red"],
     requires_action: [t("orders.payment.status.requiresAction"), "orange"],
-  }[status] ||
-    // TODO: remove this when Order<>Payment are linked
-    "not_paid") as [string, "red" | "orange" | "green"]
+  }[status]
 
   return { label, color }
 }
 
 export const getOrderFulfillmentStatus = (
   t: TFunction<"translation">,
-  status: FulfillmentStatus
+  status: string
 ) => {
   const [label, color] = {
     not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],

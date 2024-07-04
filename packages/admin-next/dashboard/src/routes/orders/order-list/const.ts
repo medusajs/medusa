@@ -4,7 +4,8 @@ const DEFAULT_PROPERTIES = [
   "created_at",
   "email",
   "display_id",
-  // "payment_status", // -> TODO replacement for this
+  "payment_status",
+  "fulfillment_status",
   "total",
   "currency_code",
 ]
