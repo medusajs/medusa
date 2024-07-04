@@ -7,6 +7,7 @@ import {
 import { useRemoteQueryStep } from "../../../common/steps/use-remote-query"
 import {
   addShippingMethodToCartStep,
+  removeShippingMethodFromCartStep,
   validateCartShippingOptionsStep,
 } from "../steps"
 import { refreshCartPromotionsStep } from "../steps/refresh-cart-promotions"
@@ -76,7 +77,15 @@ export const addShippingMethodToWorkflow = createWorkflow(
       }
     )
 
-    const shippingMethods = addShippingMethodToCartStep({
+    const currentShippingMethods = transform({ cart }, ({ cart }) => {
+      return cart.shipping_methods.map((sm) => sm.id)
+    })
+
+    removeShippingMethodFromCartStep({
+      shipping_method_ids: currentShippingMethods,
+    })
+
+    const shippingMethodsToAdd = addShippingMethodToCartStep({
       shipping_methods: shippingMethodInput,
     })
 
@@ -84,7 +93,7 @@ export const addShippingMethodToWorkflow = createWorkflow(
       refreshCartPromotionsStep({ id: input.cart_id }),
       updateTaxLinesStep({
         cart_or_cart_id: input.cart_id,
-        shipping_methods: shippingMethods,
+        shipping_methods: shippingMethodsToAdd,
       })
     )
   }

@@ -48,8 +48,8 @@ export function mergeDefaultModules(
     const orignalDef = value?.definition
     if (isObject(orignalDef)) {
       value.definition = {
-        ...orignalDef,
         ...def,
+        ...orignalDef,
       }
     }
   }
