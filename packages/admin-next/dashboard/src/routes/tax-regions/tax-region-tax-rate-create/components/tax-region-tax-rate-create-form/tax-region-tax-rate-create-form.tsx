@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 import { Form } from "../../../../../components/common/form"
+import { SwitchBox } from "../../../../../components/common/switch-box"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
   RouteFocusModal,
@@ -14,6 +15,7 @@ import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
 
 type TaxRegionTaxRateCreateFormProps = {
   taxRegion: HttpTypes.AdminTaxRegion
+  isSublevel?: boolean
 }
 
 const TaxRegionTaxRateCreateSchema = z.object({
@@ -25,10 +27,12 @@ const TaxRegionTaxRateCreateSchema = z.object({
       value: z.string().optional(),
     })
     .optional(),
+  is_combinable: z.boolean().optional(),
 })
 
 export const TaxRegionTaxRateCreateForm = ({
   taxRegion,
+  isSublevel = false,
 }: TaxRegionTaxRateCreateFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -40,6 +44,7 @@ export const TaxRegionTaxRateCreateForm = ({
       rate: {
         value: "",
       },
+      is_combinable: false,
     },
     resolver: zodResolver(TaxRegionTaxRateCreateSchema),
   })
@@ -54,6 +59,7 @@ export const TaxRegionTaxRateCreateForm = ({
         name: values.name,
         code: values.code || undefined,
         rate: values.rate?.float,
+        is_combinable: values.is_combinable,
       },
       {
         onSuccess: () => {
@@ -143,6 +149,14 @@ export const TaxRegionTaxRateCreateForm = ({
                   }}
                 />
               </div>
+              {isSublevel && (
+                <SwitchBox
+                  control={form.control}
+                  name="is_combinable"
+                  label={t("taxRegions.fields.isCombinable.label")}
+                  description={t("taxRegions.fields.isCombinable.hint")}
+                />
+              )}
             </div>
           </div>
         </RouteFocusModal.Body>

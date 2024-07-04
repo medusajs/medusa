@@ -4,10 +4,10 @@ import { useTaxRegion } from "../../../hooks/api/tax-regions"
 import { TaxRegionTaxRateCreateForm } from "./components/tax-region-tax-rate-create-form"
 
 export const TaxRegionTaxRateCreate = () => {
-  const { id, provinceId } = useParams()
+  const { id, province_id } = useParams()
 
   const { tax_region, isPending, isError, error } = useTaxRegion(
-    provinceId || id!
+    province_id || id!
   )
 
   const ready = !isPending && !!tax_region
@@ -18,7 +18,12 @@ export const TaxRegionTaxRateCreate = () => {
 
   return (
     <RouteFocusModal>
-      {ready && <TaxRegionTaxRateCreateForm taxRegion={tax_region} />}
+      {ready && (
+        <TaxRegionTaxRateCreateForm
+          taxRegion={tax_region}
+          isSublevel={!!province_id}
+        />
+      )}
     </RouteFocusModal>
   )
 }

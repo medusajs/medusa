@@ -2,15 +2,15 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { SingleColumnPage } from "../../../components/layout/pages"
 import { useTaxRegion } from "../../../hooks/api/tax-regions"
-import { TaxRegionDetailSection } from "./components/tax-region-detail-section"
+import { TaxRegionProvinceDetailSection } from "./components/tax-region-province-detail-section"
 
 import after from "virtual:medusa/widgets/tax/details/after"
 import before from "virtual:medusa/widgets/tax/details/before"
-import { TaxRegionOverrideSection } from "./components/tax-region-override-section"
+import { TaxRegionProvinceOverrideSection } from "./components/tax-region-province-override-section"
 import { taxRegionLoader } from "./loader"
 
 export const TaxRegionDetail = () => {
-  const { provinceId } = useParams()
+  const { province_id } = useParams()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<typeof taxRegionLoader>
@@ -21,7 +21,7 @@ export const TaxRegionDetail = () => {
     isLoading,
     isError,
     error,
-  } = useTaxRegion(provinceId!, undefined, { initialData })
+  } = useTaxRegion(province_id!, undefined, { initialData })
 
   if (isLoading || !taxRegion) {
     return <div>Loading...</div>
@@ -41,8 +41,8 @@ export const TaxRegionDetail = () => {
         before,
       }}
     >
-      <TaxRegionDetailSection taxRegion={taxRegion} />
-      <TaxRegionOverrideSection taxRegion={taxRegion} />
+      <TaxRegionProvinceDetailSection taxRegion={taxRegion} />
+      <TaxRegionProvinceOverrideSection taxRegion={taxRegion} />
     </SingleColumnPage>
   )
 }

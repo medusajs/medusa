@@ -7,7 +7,7 @@ import { TaxRegionTaxRateEditForm } from "./components/tax-region-tax-rate-edit-
 
 export const TaxRegionEdit = () => {
   const { t } = useTranslation()
-  const { tax_rate_id } = useParams()
+  const { province_id, tax_rate_id } = useParams()
 
   const { tax_rate, isPending, isError, error } = useTaxRate(tax_rate_id!)
 
@@ -27,7 +27,12 @@ export const TaxRegionEdit = () => {
           {t("taxRegions.taxRates.edit.hint")}
         </RouteDrawer.Description>
       </RouteDrawer.Header>
-      {ready && <TaxRegionTaxRateEditForm taxRate={tax_rate} />}
+      {ready && (
+        <TaxRegionTaxRateEditForm
+          taxRate={tax_rate}
+          isSublevel={!!province_id}
+        />
+      )}
     </RouteDrawer>
   )
 }

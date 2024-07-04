@@ -5,13 +5,13 @@ import { useTranslation } from "react-i18next"
 import { TaxRateLine } from "../../../common/components/tax-rate-line"
 import { TaxRegionCard } from "../../../common/components/tax-region-card"
 
-type TaxRegionDetailSectionProps = {
+type TaxRegionProvinceDetailSectionProps = {
   taxRegion: HttpTypes.AdminTaxRegion
 }
 
-export const TaxRegionDetailSection = ({
+export const TaxRegionProvinceDetailSection = ({
   taxRegion,
-}: TaxRegionDetailSectionProps) => {
+}: TaxRegionProvinceDetailSectionProps) => {
   const { t } = useTranslation()
 
   const defaultRates = taxRegion.tax_rates.filter((r) => r.is_default === true)

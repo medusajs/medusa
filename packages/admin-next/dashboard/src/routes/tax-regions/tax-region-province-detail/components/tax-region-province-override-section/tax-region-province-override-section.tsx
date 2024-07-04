@@ -7,16 +7,16 @@ import { useTaxRateTableQuery } from "../../../../../hooks/table/query/use-tax-r
 import { TaxOverrideTable } from "../../../common/components/tax-override-table"
 import { useTaxOverrideTable } from "../../../common/hooks/use-tax-override-table"
 
-type TaxRegionOverrideSectionProps = {
+type TaxRegionProvinceOverrideSectionProps = {
   taxRegion: HttpTypes.AdminTaxRegion
 }
 
 const PAGE_SIZE = 10
 const PREFIX = "o"
 
-export const TaxRegionOverrideSection = ({
+export const TaxRegionProvinceOverrideSection = ({
   taxRegion,
-}: TaxRegionOverrideSectionProps) => {
+}: TaxRegionProvinceOverrideSectionProps) => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useTaxRateTableQuery({

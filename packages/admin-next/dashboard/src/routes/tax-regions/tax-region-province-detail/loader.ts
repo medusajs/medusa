@@ -10,7 +10,7 @@ const taxRegionDetailQuery = (id: string) => ({
 })
 
 export const taxRegionLoader = async ({ params }: LoaderFunctionArgs) => {
-  const id = params.provinceId
+  const id = params.province_id
   const query = taxRegionDetailQuery(id!)
 
   return (
