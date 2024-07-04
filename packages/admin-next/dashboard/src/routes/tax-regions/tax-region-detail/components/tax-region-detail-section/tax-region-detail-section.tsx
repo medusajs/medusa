@@ -1,10 +1,11 @@
-import { PencilSquare } from "@medusajs/icons"
+import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Text } from "@medusajs/ui"
+import { Badge, Container, Text, Tooltip } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
 import { TaxRegionCard } from "../../../common/components/tax-region-card"
+import { useDeleteTaxRegionAction } from "../../../common/hooks"
 
 type TaxRegionDetailSectionProps = {
   taxRegion: HttpTypes.AdminTaxRegion
@@ -14,11 +15,27 @@ export const TaxRegionDetailSection = ({
   taxRegion,
 }: TaxRegionDetailSectionProps) => {
   const { t } = useTranslation()
+  const handleDelete = useDeleteTaxRegionAction({ taxRegion })
+
   const defaultRates = taxRegion.tax_rates.filter((r) => r.is_default === true)
+  const showBage = defaultRates.length === 0
 
   return (
     <Container className="divide-y p-0">
-      <TaxRegionCard taxRegion={taxRegion} type="header" asLink={false} />
+      <TaxRegionCard
+        taxRegion={taxRegion}
+        type="header"
+        asLink={false}
+        badge={
+          showBage && (
+            <Tooltip content={t("taxRegions.fields.noDefaultRate.tooltip")}>
+              <Badge color="orange" size="2xsmall" className="cursor-default">
+                {t("taxRegions.fields.noDefaultRate.label")}
+              </Badge>
+            </Tooltip>
+          )
+        }
+      />
       {defaultRates.map((rate) => {
         return (
           <div
@@ -39,6 +56,15 @@ export const TaxRegionDetailSection = ({
                       label: t("actions.edit"),
                       icon: <PencilSquare />,
                       to: `tax-rates/${rate.id}/edit`,
+                    },
+                  ],
+                },
+                {
+                  actions: [
+                    {
+                      label: t("actions.delete"),
+                      icon: <Trash />,
+                      onClick: handleDelete,
                     },
                   ],
                 },

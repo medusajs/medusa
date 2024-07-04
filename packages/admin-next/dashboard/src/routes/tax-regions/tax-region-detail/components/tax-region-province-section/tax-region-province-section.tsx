@@ -13,9 +13,13 @@ const PREFIX = "p"
 
 type TaxRateListProps = {
   taxRegion: HttpTypes.AdminTaxRegion
+  showSublevelRegions: boolean
 }
 
-export const TaxRegionProvinceSection = ({ taxRegion }: TaxRateListProps) => {
+export const TaxRegionProvinceSection = ({
+  taxRegion,
+  showSublevelRegions,
+}: TaxRateListProps) => {
   const { t } = useTranslation()
 
   const { searchParams, raw } = useTaxRegionTableQuery({
@@ -41,9 +45,11 @@ export const TaxRegionProvinceSection = ({ taxRegion }: TaxRateListProps) => {
 
   const provinceObject = getCountryProvinceObjectByIso2(taxRegion.country_code!)
 
-  if (!provinceObject) {
+  if (!provinceObject && !showSublevelRegions && !taxRegion.children.length) {
     return null
   }
+
+  const type = provinceObject?.type || "sublevel"
 
   if (isError) {
     throw error
@@ -59,9 +65,7 @@ export const TaxRegionProvinceSection = ({ taxRegion }: TaxRateListProps) => {
         queryObject={raw}
         count={count}
       >
-        <Heading level="h2">
-          {t(`taxRegions.${provinceObject?.type!}.header`)}
-        </Heading>
+        <Heading level="h2">{t(`taxRegions.${type}.header`)}</Heading>
       </TaxRegionTable>
     </Container>
   )

@@ -87,9 +87,8 @@ export const TaxRegionProvinceCreateForm = ({
 
   const provinceObject = getCountryProvinceObjectByIso2(parent.country_code!)
 
-  const label = provinceObject
-    ? t(`provinces.labels.${provinceObject.type}`)
-    : ""
+  const type = provinceObject?.type || "sublevel"
+  const label = t(`taxRegions.fields.sublevels.labels.${type}`)
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -102,11 +101,9 @@ export const TaxRegionProvinceCreateForm = ({
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
-                <Heading>
-                  {t(`taxRegions.${provinceObject?.type!}.create.header`)}
-                </Heading>
+                <Heading>{t(`taxRegions.${type}.create.header`)}</Heading>
                 <Text size="small" className="text-ui-fg-subtle">
-                  {t(`taxRegions.${provinceObject?.type!}.create.hint`)}
+                  {t(`taxRegions.${type}.create.hint`)}
                 </Text>
               </div>
               <div className="grid gap-4 md:grid-cols-2">
@@ -116,12 +113,23 @@ export const TaxRegionProvinceCreateForm = ({
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label>{label}</Form.Label>
+                        <Form.Label
+                          tooltip={
+                            !provinceObject &&
+                            t("taxRegions.fields.sublevels.tooltips.sublevel")
+                          }
+                        >
+                          {label}
+                        </Form.Label>
                         <Form.Control>
-                          <ProvinceSelect
-                            country_code={parent.country_code!}
-                            {...field}
-                          />
+                          {provinceObject ? (
+                            <ProvinceSelect
+                              country_code={parent.country_code!}
+                              {...field}
+                            />
+                          ) : (
+                            <Input {...field} placeholder="KR-26" />
+                          )}
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -147,75 +155,73 @@ export const TaxRegionProvinceCreateForm = ({
                     <InformationCircleSolid className="text-ui-fg-muted" />
                   </Tooltip>
                 </div>
-                <div className="flex flex-col gap-y-4">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <Form.Field
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>{t("fields.name")}</Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                    <Form.Field
-                      control={form.control}
-                      name="rate"
-                      render={({ field: { value, onChange, ...field } }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("taxRegions.fields.taxRate")}
-                            </Form.Label>
-                            <Form.Control>
-                              <PercentageInput
-                                {...field}
-                                value={value?.value}
-                                onValueChange={(value, _name, values) =>
-                                  onChange({
-                                    value: value,
-                                    float: values?.float,
-                                  })
-                                }
-                              />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                    <Form.Field
-                      control={form.control}
-                      name="code"
-                      render={({ field }) => {
-                        return (
-                          <Form.Item>
-                            <Form.Label>
-                              {t("taxRegions.fields.taxCode")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Input {...field} />
-                            </Form.Control>
-                            <Form.ErrorMessage />
-                          </Form.Item>
-                        )
-                      }}
-                    />
-                  </div>
-                  <SwitchBox
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Form.Field
                     control={form.control}
-                    name="is_combinable"
-                    label={t("taxRegions.fields.isCombinable.label")}
-                    description={t("taxRegions.fields.isCombinable.hint")}
+                    name="name"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>{t("fields.name")}</Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="rate"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>
+                            {t("taxRegions.fields.taxRate")}
+                          </Form.Label>
+                          <Form.Control>
+                            <PercentageInput
+                              {...field}
+                              value={value?.value}
+                              onValueChange={(value, _name, values) =>
+                                onChange({
+                                  value: value,
+                                  float: values?.float,
+                                })
+                              }
+                            />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="code"
+                    render={({ field }) => {
+                      return (
+                        <Form.Item>
+                          <Form.Label>
+                            {t("taxRegions.fields.taxCode")}
+                          </Form.Label>
+                          <Form.Control>
+                            <Input {...field} />
+                          </Form.Control>
+                          <Form.ErrorMessage />
+                        </Form.Item>
+                      )
+                    }}
                   />
                 </div>
               </div>
+              <SwitchBox
+                control={form.control}
+                name="is_combinable"
+                label={t("taxRegions.fields.isCombinable.label")}
+                description={t("taxRegions.fields.isCombinable.hint")}
+              />
             </div>
           </div>
         </RouteFocusModal.Body>

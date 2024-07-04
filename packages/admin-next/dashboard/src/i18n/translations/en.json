@@ -87,7 +87,8 @@
     "add": "Add",
     "select": "Select",
     "browse": "Browse",
-    "logout": "Logout"
+    "logout": "Logout",
+    "hide": "Hide"
   },
   "operators": {
     "in": "In"
@@ -1075,6 +1076,13 @@
         "hint": "Create a new tax region to define tax rates for a specific emirate."
       }
     },
+    "sublevel": {
+      "header": "Sublevels",
+      "create": {
+        "header": "Create Sublevel Tax Region",
+        "hint": "Create a new tax region to define tax rates for a specific sublevel."
+      }
+    },
     "taxOverrides": {
       "header": "Overrides",
       "create": {
@@ -1095,7 +1103,8 @@
       },
       "defaultTaxRate": {
         "label": "Default tax rate",
-        "tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country or region."
+        "tooltip": "The default tax rate for this region. An example is the standard VAT rate for a country or region.",
+        "action": "Create default tax rate"
       },
       "taxRate": "Tax rate",
       "taxCode": "Tax code",
@@ -1133,6 +1142,47 @@
         "numberOfTargets_other": "{{count}} targets",
         "additionalValues_one": "and {{count}} more value",
         "additionalValues_other": "and {{count}} more values"
+      },
+      "sublevels": {
+        "labels": {
+          "province": "Province",
+          "state": "State",
+          "region": "Region",
+          "stateOrTerritory": "State/Territory",
+          "department": "Department",
+          "county": "County",
+          "territory": "Territory",
+          "prefecture": "Prefecture",
+          "district": "District",
+          "governorate": "Governorate",
+          "emirate": "Emirate",
+          "sublevel": "Sublevel code"
+        },
+        "placeholders": {
+          "province": "Select province",
+          "state": "Select state",
+          "region": "Select region",
+          "stateOrTerritory": "Select state/territory",
+          "department": "Select department",
+          "county": "Select county",
+          "territory": "Select territory",
+          "prefecture": "Select prefecture",
+          "district": "Select district",
+          "governorate": "Select governorate",
+          "emirate": "Select emirate"
+        },
+        "tooltips": {
+          "sublevel": "Enter the ISO 3166-2 code for the sublevel tax region."
+        },
+        "alert": {
+          "header": "Sublevel regions are disabled for this tax region",
+          "description": "Sublevel regions are disabled for this region by default. You can enable them to create sublevel regions like provinces, states, or territories.",
+          "action": "Enable sublevel regions"
+        }
+      },
+      "noDefaultRate": {
+        "label": "No default rate",
+        "tooltip": "This tax region does not have a default tax rate. If there is a standard rate, such as a country's VAT, please add it to this region."
       }
     }
   },
@@ -1978,34 +2028,6 @@
     "endDate": "End date",
     "draft": "Draft",
     "values": "Values"
-  },
-  "provinces": {
-    "labels": {
-      "province": "Province",
-      "state": "State",
-      "region": "Region",
-      "stateOrTerritory": "State/Territory",
-      "department": "Department",
-      "county": "County",
-      "territory": "Territory",
-      "prefecture": "Prefecture",
-      "district": "District",
-      "governorate": "Governorate",
-      "emirate": "Emirate"
-    },
-    "placeholders": {
-      "province": "Select province",
-      "state": "Select state",
-      "region": "Select region",
-      "stateOrTerritory": "Select state/territory",
-      "department": "Select department",
-      "county": "Select county",
-      "territory": "Select territory",
-      "prefecture": "Select prefecture",
-      "district": "Select district",
-      "governorate": "Select governorate",
-      "emirate": "Select emirate"
-    }
   },
   "metadata": {
     "warnings": {

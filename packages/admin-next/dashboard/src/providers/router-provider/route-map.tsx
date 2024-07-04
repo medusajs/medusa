@@ -4,7 +4,6 @@ import {
   AdminTaxRegionResponse,
   HttpTypes,
   SalesChannelDTO,
-  UserDTO,
 } from "@medusajs/types"
 import { Outlet, RouteObject } from "react-router-dom"
 
@@ -1079,7 +1078,7 @@ export const RouteMap: RouteObject[] = [
             path: "tax-regions",
             element: <Outlet />,
             handle: {
-              crumb: () => "Taxes",
+              crumb: () => "Tax Regions",
             },
             children: [
               {
@@ -1125,9 +1124,6 @@ export const RouteMap: RouteObject[] = [
                           import(
                             "../../routes/tax-regions/tax-region-tax-override-create"
                           ),
-                      },
-                      {
-                        path: "",
                       },
                     ],
                   },

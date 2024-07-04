@@ -2,8 +2,8 @@ import { HttpTypes } from "@medusajs/types"
 import { Heading, Text, clx } from "@medusajs/ui"
 import ReactCountryFlag from "react-country-flag"
 
-import { MapPin, Trash } from "@medusajs/icons"
-import { ComponentPropsWithoutRef } from "react"
+import { MapPin, Plus, Trash } from "@medusajs/icons"
+import { ComponentPropsWithoutRef, ReactNode } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -17,6 +17,7 @@ interface TaxRegionCardProps extends ComponentPropsWithoutRef<"div"> {
   type?: "header" | "list"
   variant?: "country" | "province"
   asLink?: boolean
+  badge?: ReactNode
 }
 
 export const TaxRegionCard = ({
@@ -24,6 +25,7 @@ export const TaxRegionCard = ({
   type = "list",
   variant = "country",
   asLink = true,
+  badge,
 }: TaxRegionCardProps) => {
   const { id, country_code, province_code } = taxRegion
 
@@ -37,6 +39,10 @@ export const TaxRegionCard = ({
   } else if (country || country_code) {
     name = country ? country.display_name : country_code!.toUpperCase()
   }
+
+  const showCreateDefaultTaxRate =
+    !taxRegion.tax_rates.filter((tr) => tr.is_default).length &&
+    type === "header"
 
   const Component = (
     <div
@@ -85,13 +91,21 @@ export const TaxRegionCard = ({
             )}
           </div>
         </div>
-        <div className="block size-fit md:hidden">
-          <TaxRegionCardActions taxRegion={taxRegion} />
+        <div className="flex size-fit items-center gap-x-2 md:hidden">
+          {badge}
+          <TaxRegionCardActions
+            taxRegion={taxRegion}
+            showCreateDefaultTaxRate={showCreateDefaultTaxRate}
+          />
         </div>
       </div>
 
-      <div className="hidden size-fit md:block">
-        <TaxRegionCardActions taxRegion={taxRegion} />
+      <div className="hidden size-fit items-center gap-x-2 md:flex">
+        {badge}
+        <TaxRegionCardActions
+          taxRegion={taxRegion}
+          showCreateDefaultTaxRate={showCreateDefaultTaxRate}
+        />
       </div>
     </div>
   )
@@ -111,7 +125,13 @@ export const TaxRegionCard = ({
   return Component
 }
 
-const TaxRegionCardActions = ({ taxRegion }: TaxRegionCardProps) => {
+const TaxRegionCardActions = ({
+  taxRegion,
+  showCreateDefaultTaxRate,
+}: {
+  taxRegion: HttpTypes.AdminTaxRegion
+  showCreateDefaultTaxRate?: boolean
+}) => {
   const { t } = useTranslation()
 
   const to = taxRegion.parent_id
@@ -122,6 +142,19 @@ const TaxRegionCardActions = ({ taxRegion }: TaxRegionCardProps) => {
   return (
     <ActionMenu
       groups={[
+        ...(showCreateDefaultTaxRate
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <Plus />,
+                    label: t("taxRegions.fields.defaultTaxRate.action"),
+                    to: `tax-rates/create`,
+                  },
+                ],
+              },
+            ]
+          : []),
         {
           actions: [
             {
