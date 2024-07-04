@@ -66,16 +66,17 @@ export function defineJoinerConfig(
   let loadedModels = models
 
   if (!loadedModels) {
-    let stopSearching = false
+    loadedModels = []
+
     let index = 2
     const maxSearchIndex = 6
 
-    while (!stopSearching) {
+    while (true) {
       const fullPath = getCallerFilePath(index)
       if (!fullPath) {
-        stopSearching = true
         break
       }
+
       const srcDir = fullPath.includes("dist") ? "dist" : "src"
       const splitPath = fullPath.split(srcDir)
 
@@ -94,15 +95,13 @@ export function defineJoinerConfig(
       } catch (e) {}
 
       if (!doesModelsDirExist) {
-        stopSearching = true
-        loadedModels = []
         continue
       }
 
       loadedModels = loadModels(basePath)
 
       if (index === maxSearchIndex || loadedModels.length) {
-        stopSearching = true
+        break
       }
       ++index
     }

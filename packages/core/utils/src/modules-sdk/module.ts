@@ -41,8 +41,8 @@ export function Module<
   let linkable = {} as Linkable
 
   if (Object.keys(modelObjects)?.length) {
-    const dmlObjects = Object.entries(modelObjects).filter(
-      DmlEntity.isDmlEntity
+    const dmlObjects = Object.entries(modelObjects).filter(([, model]) =>
+      DmlEntity.isDmlEntity(model)
     )
 
     if (dmlObjects.length) {
