@@ -25,6 +25,7 @@ import {
   ShippingOptionRule,
   ShippingProfile,
 } from "../__fixtures__/joiner-config/entities"
+import { upperCaseFirst } from "../../common"
 
 describe("joiner-config-builder", () => {
   describe("defineJoiner | Mikro orm objects", () => {
@@ -420,14 +421,15 @@ describe("joiner-config-builder", () => {
       })
 
       const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
+
       expectTypeOf(linkableKeys).toMatchTypeOf<{
         user_id: "User"
         car_number_plate: "Car"
       }>()
 
       expect(linkableKeys).toEqual({
-        user_id: user.name,
-        car_number_plate: car.name,
+        user_id: upperCaseFirst(user.name),
+        car_number_plate: upperCaseFirst(car.name),
       })
     })
   })
@@ -453,12 +455,18 @@ describe("joiner-config-builder", () => {
         name: model.text(),
       })
 
-      const car = model.define("car", {
-        id: model.id(),
-        number_plate: model.text().primaryKey(),
-      })
+      const car = model.define(
+        { name: "car", tableName: "car" },
+        {
+          id: model.id(),
+          number_plate: model.text().primaryKey(),
+        }
+      )
 
-      const linkConfig = buildLinkConfigFromDmlObjects("myService", [user, car])
+      const linkConfig = buildLinkConfigFromDmlObjects("myService", {
+        user,
+        car,
+      })
 
       expectTypeOf(linkConfig).toMatchTypeOf<{
         user: {

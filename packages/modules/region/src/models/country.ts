@@ -1,7 +1,7 @@
 import { model } from "@medusajs/utils"
 import Region from "./region"
 
-const Country = model
+export default model
   .define(
     { name: "Country", tableName: "region_country" },
     {
@@ -24,5 +24,3 @@ const Country = model
       unique: true,
     },
   ])
-
-export default Country

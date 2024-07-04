@@ -26,7 +26,7 @@ import {
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
-import { Region, RegionCountry as Country } from "@models"
+import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
 import { joinerConfig } from "../joiner-config"
 
@@ -40,9 +40,11 @@ export default class RegionModuleService
   extends MedusaService<{
     Region: {
       dto: RegionDTO
+      model: typeof Region
     }
     Country: {
       dto: RegionCountryDTO
+      model: typeof Country
     }
   }>({ Region, Country })
   implements IRegionModuleService
