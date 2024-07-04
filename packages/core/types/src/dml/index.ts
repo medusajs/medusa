@@ -1,12 +1,4 @@
-import { CamelCase } from "../common"
-
-/**
- * Locally used helper to prettify the inferred properties of
- * a DML schema.
- */
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
+import { CamelCase, Prettify } from "../common"
 
 /**
  * Symbol to identify a DML entity from an object
