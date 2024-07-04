@@ -65,7 +65,8 @@ export function defineJoinerConfig(
 
   if (!loadedModels) {
     let stopSearching = false
-    let index = 4
+    let index = 2
+    const maxSearchIndex = 4
 
     while (!stopSearching) {
       const fullPath = getCallerFilePath(index)
@@ -82,9 +83,10 @@ export function defineJoinerConfig(
       basePath = join(basePath, "models")
       loadedModels = loadModels(basePath)
 
-      if (index === 0 || loadedModels.length) {
+      if (index === maxSearchIndex || loadedModels.length) {
         stopSearching = true
       }
+      ++index
     }
   }
 
