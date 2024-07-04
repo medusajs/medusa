@@ -1,6 +1,7 @@
 import {
   AddPricesDTO,
   Context,
+  CreatePricePreferenceDTO,
   CreatePriceRuleDTO,
   CreatePricesDTO,
   CreatePriceSetDTO,
@@ -9,15 +10,18 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ModulesSdkTypes,
+  PricePreferenceDTO,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
   PricingRepositoryService,
   PricingTypes,
+  UpsertPricePreferenceDTO,
   UpsertPriceSetDTO,
 } from "@medusajs/types"
 import {
   arrayDifference,
+  deduplicate,
   EmitEvents,
   GetIsoStringFromDate,
   groupBy,
@@ -34,7 +38,14 @@ import {
   simpleHash,
 } from "@medusajs/utils"
 
-import { Price, PriceList, PriceListRule, PriceRule, PriceSet } from "@models"
+import {
+  Price,
+  PriceList,
+  PriceListRule,
+  PriceRule,
+  PriceSet,
+  PricePreference,
+} from "@models"
 
 import { ServiceTypes } from "@types"
 import { eventBuilders, validatePriceListDates } from "@utils"
@@ -48,6 +59,7 @@ type InjectedDependencies = {
   priceRuleService: ModulesSdkTypes.IMedusaInternalService<any>
   priceService: ModulesSdkTypes.IMedusaInternalService<any>
   priceListService: ModulesSdkTypes.IMedusaInternalService<any>
+  pricePreferenceService: ModulesSdkTypes.IMedusaInternalService<any>
   priceListRuleService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
@@ -57,6 +69,7 @@ const generateMethodForModels = {
   PriceListRule,
   PriceRule,
   Price,
+  PricePreference,
 }
 
 export default class PricingModuleService
@@ -70,6 +83,8 @@ export default class PricingModuleService
     }
     PriceList: { dto: PricingTypes.PriceListDTO }
     PriceListRule: { dto: PricingTypes.PriceListRuleDTO }
+    // PricePreference: { dto: PricingTypes.PricePreferenceDTO }
+    PricePreference: { dto: any }
   }>(generateMethodForModels)
   implements PricingTypes.IPricingModuleService
 {
@@ -80,6 +95,7 @@ export default class PricingModuleService
   protected readonly priceService_: ModulesSdkTypes.IMedusaInternalService<Price>
   protected readonly priceListService_: ModulesSdkTypes.IMedusaInternalService<PriceList>
   protected readonly priceListRuleService_: ModulesSdkTypes.IMedusaInternalService<PriceListRule>
+  protected readonly pricePreferenceService_: ModulesSdkTypes.IMedusaInternalService<PricePreference>
 
   constructor(
     {
@@ -88,6 +104,7 @@ export default class PricingModuleService
       priceSetService,
       priceRuleService,
       priceService,
+      pricePreferenceService,
       priceListService,
       priceListRuleService,
     }: InjectedDependencies,
@@ -101,6 +118,7 @@ export default class PricingModuleService
     this.priceSetService_ = priceSetService
     this.priceRuleService_ = priceRuleService
     this.priceService_ = priceService
+    this.pricePreferenceService_ = pricePreferenceService
     this.priceListService_ = priceListService
     this.priceListRuleService_ = priceListRuleService
   }
@@ -240,41 +258,93 @@ export default class PricingModuleService
     )
 
     const pricesSetPricesMap = groupBy(results, "price_set_id")
+    const priceIds: string[] = []
+    pricesSetPricesMap.forEach(
+      (prices: PricingTypes.CalculatedPriceSetDTO[], key) => {
+        const priceListPrice = prices.find((p) => p.price_list_id)
+        const defaultPrice = prices?.find((p) => !p.price_list_id)
+        if (!prices.length || (!priceListPrice && !defaultPrice)) {
+          pricesSetPricesMap.delete(key)
+          return
+        }
+
+        let calculatedPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
+          defaultPrice
+        let originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined =
+          defaultPrice
+        if (priceListPrice) {
+          calculatedPrice = priceListPrice
+
+          if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
+            originalPrice = priceListPrice
+          }
+        }
+
+        pricesSetPricesMap.set(key, { calculatedPrice, originalPrice })
+        priceIds.push(
+          ...(deduplicate(
+            [calculatedPrice?.id, originalPrice?.id].filter(Boolean)
+          ) as string[])
+        )
+      }
+    )
+
+    // We use the price rules to get the right preferences for the price
+    const priceRulesForPrices = await this.priceRuleService_.list(
+      { price_id: priceIds },
+      { take: null }
+    )
+
+    const priceRulesPriceMap = groupBy(priceRulesForPrices, "price_id")
+
+    // Note: For now the preferences are intentionally kept very simple and explicit - they use either the region or currency,
+    // so we hard-code those as the possible filters here. This can be made more flexible if needed later on.
+    const pricingPreferences = await this.pricePreferenceService_.list(
+      {
+        $or: Object.entries(pricingContext)
+          .filter(([key, val]) => {
+            return key === "region_id" || key === "currency_code"
+          })
+          .map(([key, val]) => ({
+            attribute: key,
+            value: val,
+          })),
+      },
+      {},
+      sharedContext
+    )
 
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] =
       pricingFilters.id
         .map((priceSetId: string): PricingTypes.CalculatedPriceSet | null => {
-          // This is where we select prices, for now we just do a first match based on the database results
-          // which is prioritized by rules_count first for exact match and then deafult_priority of the rule_type
-
-          // TODO: inject custom price selection here
-
-          const prices = pricesSetPricesMap.get(priceSetId) || []
-          if (!prices.length) {
+          const prices = pricesSetPricesMap.get(priceSetId)
+          if (!prices) {
             return null
           }
-
-          const priceListPrice = prices.find((p) => p.price_list_id)
-
-          const defaultPrice = prices?.find((p) => !p.price_list_id)
-
-          let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
-          let originalPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice
-
-          if (priceListPrice) {
-            calculatedPrice = priceListPrice
-
-            if (priceListPrice.price_list_type === PriceListType.OVERRIDE) {
-              originalPrice = priceListPrice
-            }
-          }
+          const {
+            calculatedPrice,
+            originalPrice,
+          }: {
+            calculatedPrice: PricingTypes.CalculatedPriceSetDTO
+            originalPrice: PricingTypes.CalculatedPriceSetDTO | undefined
+          } = prices
 
           return {
             id: priceSetId,
             is_calculated_price_price_list: !!calculatedPrice?.price_list_id,
+            is_calculated_price_tax_inclusive: isTaxInclusive(
+              priceRulesPriceMap.get(calculatedPrice.id),
+              pricingPreferences
+            ),
             calculated_amount: parseInt(calculatedPrice?.amount || "") || null,
 
             is_original_price_price_list: !!originalPrice?.price_list_id,
+            is_original_price_tax_inclusive: originalPrice?.id
+              ? isTaxInclusive(
+                  priceRulesPriceMap.get(originalPrice.id),
+                  pricingPreferences
+                )
+              : false,
             original_amount: parseInt(originalPrice?.amount || "") || null,
 
             currency_code: calculatedPrice?.currency_code || null,
@@ -639,6 +709,102 @@ export default class PricingModuleService
     return await this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
       priceList
     )
+  }
+
+  // @ts-expect-error
+  async createPricePreferences(
+    data: PricingTypes.CreatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+  async createPricePreferences(
+    data: PricingTypes.CreatePricePreferenceDTO[],
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  @InjectManager("baseRepository_")
+  @EmitEvents()
+  async createPricePreferences(
+    data:
+      | PricingTypes.CreatePricePreferenceDTO
+      | PricingTypes.CreatePricePreferenceDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricePreferenceDTO | PricePreferenceDTO[]> {
+    const preferences = await this.pricePreferenceService_.create(
+      data,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<any[]>(preferences)
+  }
+
+  async upsertPricePreferences(
+    data: UpsertPricePreferenceDTO[],
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+  async upsertPricePreferences(
+    data: UpsertPricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+
+  @InjectManager("baseRepository_")
+  async upsertPricePreferences(
+    data: UpsertPricePreferenceDTO | UpsertPricePreferenceDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricePreferenceDTO | PricePreferenceDTO[]> {
+    const input = Array.isArray(data) ? data : [data]
+    const forUpdate = input.filter(
+      (
+        pricePreference
+      ): pricePreference is ServiceTypes.UpdatePricePreferenceInput =>
+        !!pricePreference.id
+    )
+    const forCreate = input.filter(
+      (pricePreference): pricePreference is CreatePricePreferenceDTO =>
+        !pricePreference.id
+    )
+
+    const operations: Promise<PricePreference[]>[] = []
+
+    if (forCreate.length) {
+      operations.push(
+        this.pricePreferenceService_.create(forCreate, sharedContext)
+      )
+    }
+    if (forUpdate.length) {
+      operations.push(
+        this.pricePreferenceService_.update(forUpdate, sharedContext)
+      )
+    }
+
+    const result = (await promiseAll(operations)).flat()
+    return await this.baseRepository_.serialize<
+      PricePreferenceDTO[] | PricePreferenceDTO
+    >(Array.isArray(data) ? result : result[0])
+  }
+
+  // @ts-expect-error
+  async updatePricePreferences(
+    id: string,
+    data: PricingTypes.UpdatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO>
+  async updatePricePreferences(
+    selector: PricingTypes.FilterablePricePreferenceProps,
+    data: PricingTypes.UpdatePricePreferenceDTO,
+    sharedContext?: Context
+  ): Promise<PricePreferenceDTO[]>
+
+  @InjectManager("baseRepository_")
+  async updatePricePreferences(
+    idOrSelector: string | PricingTypes.FilterablePricePreferenceProps,
+    data: PricingTypes.UpdatePricePreferenceDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<PricePreferenceDTO | PricePreferenceDTO[]> {
+    const preferences = await this.pricePreferenceService_.update(
+      data,
+      sharedContext
+    )
+    return await this.baseRepository_.serialize<any[]>(preferences)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1251,6 +1417,31 @@ export default class PricingModuleService
       ...config,
     }
   }
+}
+
+const isTaxInclusive = (
+  priceRules: PriceRule[],
+  preferences: PricePreference[]
+) => {
+  const regionPreference = preferences.find((p) => p.attribute === "region_id")
+  const currencyPreference = preferences.find(
+    (p) => p.attribute === "currency_code"
+  )
+  const regionRule = priceRules?.find((rule) => rule.attribute === "region_id")
+
+  if (
+    regionRule &&
+    regionPreference &&
+    regionRule.value === regionPreference.value
+  ) {
+    return regionPreference.is_tax_inclusive
+  }
+
+  if (currencyPreference) {
+    return currencyPreference.is_tax_inclusive
+  }
+
+  return false
 }
 
 const hashPrice = (
