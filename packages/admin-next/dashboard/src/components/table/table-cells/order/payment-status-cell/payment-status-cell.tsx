@@ -1,4 +1,3 @@
-import type { PaymentStatus } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
 import { getOrderPaymentStatus } from "../../../../../lib/order-helpers"
 import { StatusCell } from "../../common/status-cell"
@@ -9,9 +8,6 @@ type PaymentStatusCellProps = {
 
 export const PaymentStatusCell = ({ status }: PaymentStatusCellProps) => {
   const { t } = useTranslation()
-
-  // TODO: remove this when Order<>Payments are linked
-  return "-"
 
   const { label, color } = getOrderPaymentStatus(t, status)
 
