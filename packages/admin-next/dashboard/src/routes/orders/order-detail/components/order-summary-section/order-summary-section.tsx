@@ -75,7 +75,7 @@ const Item = ({
   return (
     <div
       key={item.id}
-      className="text-ui-fg-subtle grid grid-cols-2 items-start gap-x-4 px-6 py-4"
+      className="text-ui-fg-subtle grid grid-cols-2 items-center gap-x-4 px-6 py-4"
     >
       <div className="flex items-start gap-x-4">
         <Thumbnail src={item.thumbnail} />
@@ -101,7 +101,7 @@ const Item = ({
       </div>
       <div className="grid grid-cols-3 items-center gap-x-4">
         <div className="flex items-center justify-end gap-x-4">
-          <Text size="small">
+          <Text size="small" style={{ paddingTop: 3 }}>
             {getLocaleAmount(item.unit_price, currencyCode)}
           </Text>
         </div>
@@ -111,7 +111,7 @@ const Item = ({
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
-          <div className="overflow-visible">
+          <div className="overflow-visible" style={{ paddingTop: 2 }}>
             <StatusBadge
               color={reservation ? "green" : "orange"}
               className="text-nowrap"
@@ -123,7 +123,7 @@ const Item = ({
           </div>
         </div>
         <div className="flex items-center justify-end">
-          <Text size="small">
+          <Text size="small" style={{ paddingTop: 3 }}>
             {getLocaleAmount(item.subtotal || 0, currencyCode)}
           </Text>
         </div>
