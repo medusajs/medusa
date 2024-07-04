@@ -44,12 +44,13 @@ export function mergeDefaultModules(
     def.key ??= key
     def.registrationName ??= key
     def.label ??= upperCaseFirst(key)
+    def.isQueryable = true
 
     const orignalDef = value?.definition
     if (isObject(orignalDef)) {
       value.definition = {
-        ...orignalDef,
         ...def,
+        ...orignalDef,
       }
     }
   }
