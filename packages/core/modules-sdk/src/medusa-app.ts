@@ -18,12 +18,12 @@ import type {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModuleRegistrationName,
-  Modules,
-  ModulesSdkUtils,
   createMedusaContainer,
   isObject,
   isString,
+  ModuleRegistrationName,
+  Modules,
+  ModulesSdkUtils,
   promiseAll,
 } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -435,18 +435,30 @@ async function MedusaApp_({
       ...(sharedResourcesConfig?.database ?? {}),
     }
 
+    const customLinks = MedusaModule.getCustomLinks().map((link) => {
+      return typeof link === "function"
+        ? link(MedusaModule.getAllJoinerConfigs())
+        : link
+    })
+
     if (revert) {
       revertLinkModuleMigration &&
-        (await revertLinkModuleMigration({
-          options: linkModuleOpt,
-          injectedDependencies,
-        }))
+        (await revertLinkModuleMigration(
+          {
+            options: linkModuleOpt,
+            injectedDependencies,
+          },
+          customLinks
+        ))
     } else {
       linkModuleMigration &&
-        (await linkModuleMigration({
-          options: linkModuleOpt,
-          injectedDependencies,
-        }))
+        (await linkModuleMigration(
+          {
+            options: linkModuleOpt,
+            injectedDependencies,
+          },
+          customLinks
+        ))
     }
   }
 
