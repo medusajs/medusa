@@ -31,6 +31,8 @@ type ReturnedOptions = Partial<MikroORMOptions> & {
  * Defines a MikroORM CLI config based on the provided options.
  * Convert any DML entities to MikroORM entities to be consumed
  * by mikro orm cli.
+ *
+ * @param moduleName
  * @param options
  */
 export function defineMikroOrmCliConfig(
@@ -46,7 +48,9 @@ export function defineMikroOrmCliConfig(
     (entity) => !DmlEntity.isDmlEntity(entity)
   )
 
-  const entities = nonDmlEntities.concat(toMikroOrmEntities(dmlEntities))
+  const entities = nonDmlEntities.concat(
+    toMikroOrmEntities(dmlEntities)
+  ) as MikroORMOptions["entities"]
 
   const normalizedModuleName = kebabCase(moduleName.replace("Service", ""))
   let databaseName = `medusa-${normalizedModuleName}`
