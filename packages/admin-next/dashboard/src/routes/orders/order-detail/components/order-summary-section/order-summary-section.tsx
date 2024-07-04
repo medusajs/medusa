@@ -111,7 +111,7 @@ const Item = ({
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
-          <div className="overflow-visible" style={{ paddingTop: 2 }}>
+          <div className="overflow-visible pt-[2px]">
             <StatusBadge
               color={reservation ? "green" : "orange"}
               className="text-nowrap"
