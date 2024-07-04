@@ -58,7 +58,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   }>(
     tag["x-associatedSchema"]
       ? basePathUrl(
-          `/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
+          `/api/schema?name=${tag["x-associatedSchema"].$ref}&area=${area}`
         )
       : null,
     swrFetcher,
