@@ -198,7 +198,7 @@ export function defineLink(
       )
     }
 
-    const serviceBMethodSuffix = serviceAAliases.find((serviceAlias) => {
+    const serviceBMethodSuffix = serviceBAliases.find((serviceAlias) => {
       return Array.isArray(serviceAlias.name)
         ? serviceAlias.name.includes(aliasB)
         : serviceAlias.name === aliasB
