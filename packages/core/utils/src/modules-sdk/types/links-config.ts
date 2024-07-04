@@ -3,6 +3,7 @@ import {
   IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
+  Prettify,
   SnakeCase,
 } from "@medusajs/types"
 import { PrimaryKeyModifier } from "../../dml/properties/primary-key"
@@ -199,20 +200,22 @@ type InferSchemaLinksConfig<
 export type InfersLinksConfig<
   ServiceName extends string,
   T extends Record<string, IDmlEntity<any, any>>
-> = {
+> = Prettify<{
   [K in keyof T as T[K] extends IDmlEntity<any, infer Config>
     ? InferDmlEntityNameFromConfig<Config>
-    : never]: InferSchemaLinksConfig<ServiceName, T[K]> & {
-    toJSON: () => {
-      serviceName: ServiceName
-      field: T[K] extends IDmlEntity<any, infer Config>
-        ? InferDmlEntityNameFromConfig<Config>
-        : string
-      linkable: InferLastLinkable<ServiceName, T[K]>
-      primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
+    : never]: Prettify<
+    InferSchemaLinksConfig<ServiceName, T[K]> & {
+      toJSON: () => {
+        serviceName: ServiceName
+        field: T[K] extends IDmlEntity<any, infer Config>
+          ? InferDmlEntityNameFromConfig<Config>
+          : string
+        linkable: InferLastLinkable<ServiceName, T[K]>
+        primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
+      }
     }
-  }
-}
+  >
+}>
 
 /**
  * End Links config

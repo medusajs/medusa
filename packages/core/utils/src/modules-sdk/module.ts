@@ -23,14 +23,14 @@ export function Module<
   }
     ? Service["$modelObjects"]
     : {},
-  Links = keyof ModelObjects extends never
+  Linkable = keyof ModelObjects extends never
     ? Record<string, any>
     : InfersLinksConfig<ServiceName, ModelObjects>
 >(
   serviceName: ServiceName,
   { service, loaders }: ModuleExports<Service>
 ): ModuleExports<Service> & {
-  links: Links
+  linkable: Linkable
 } {
   service.prototype.__joinerConfig ??= defineJoinerConfig(serviceName)
 
@@ -39,11 +39,11 @@ export function Module<
   return {
     service,
     loaders,
-    links: (Object.keys(dmlObjects)?.length
+    linkable: (Object.keys(dmlObjects)?.length
       ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(
           serviceName,
           dmlObjects
         )
-      : {}) as Links,
+      : {}) as Linkable,
   }
 }

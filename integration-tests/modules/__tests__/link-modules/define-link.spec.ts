@@ -18,8 +18,8 @@ medusaIntegrationTestRunner({
       })
 
       it("should generate a proper link definition", async () => {
-        const currencyLinks = CurrencyModule.links
-        const regionLinks = RegionModule.links
+        const currencyLinks = CurrencyModule.linkable
+        const regionLinks = RegionModule.linkable
 
         const link = defineLink(currencyLinks.currency, regionLinks.region)
 
