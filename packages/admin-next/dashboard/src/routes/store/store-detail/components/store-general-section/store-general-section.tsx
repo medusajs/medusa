@@ -1,18 +1,18 @@
 import { PencilSquare } from "@medusajs/icons"
+import { AdminStore } from "@medusajs/types"
 import { Badge, Container, Heading, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useRegion } from "../../../../../hooks/api/regions"
-import { ExtendedStoreDTO } from "../../../../../types/api-responses"
 
 type StoreGeneralSectionProps = {
-  store: ExtendedStoreDTO
+  store: AdminStore
 }
 
 export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
   const { t } = useTranslation()
 
-  const { region } = useRegion(store.default_region_id, undefined, {
+  const { region } = useRegion(store.default_region_id!, undefined, {
     enabled: !!store.default_region_id,
   })
 
@@ -56,10 +56,10 @@ export const StoreGeneralSection = ({ store }: StoreGeneralSectionProps) => {
         {defaultCurrency ? (
           <div className="flex items-center gap-x-2">
             <Badge size="2xsmall">
-              {defaultCurrency.currency_code.toUpperCase()}
+              {defaultCurrency.currency_code?.toUpperCase()}
             </Badge>
             <Text size="small" leading="compact">
-              {defaultCurrency.currency.name}
+              {defaultCurrency.currency?.name}
             </Text>
           </div>
         ) : (
