@@ -121,12 +121,13 @@ export function defineLink(
   const register = function (
     modules: ModuleJoinerConfig[]
   ): ModuleJoinerConfig {
-    const serviceAInfo = modules
-      .map((mod) => mod[serviceAObj.module])
-      .filter(Boolean)[0]
-    const serviceBInfo = modules
-      .map((mod) => mod[serviceBObj.module])
-      .filter(Boolean)[0]
+    const serviceAInfo = modules.find(
+      (mod) => mod.serviceName === serviceAObj.module
+    )!
+    const serviceBInfo = modules.find(
+      (mod) => mod.serviceName === serviceBObj.module
+    )!
+
     if (!serviceAInfo) {
       throw new Error(`Service ${serviceAObj.module} was not found`)
     }
@@ -134,11 +135,9 @@ export function defineLink(
       throw new Error(`Service ${serviceBObj.module} was not found`)
     }
 
-    const serviceAKeyInfo =
-      serviceAInfo.__joinerConfig.linkableKeys?.[serviceAObj.key]
-    const serviceBKeyInfo =
-      serviceBInfo.__joinerConfig.linkableKeys?.[serviceBObj.key]
-    if (!serviceAKeyInfo) {
+    const serviceAKeyEntity = serviceAInfo.linkableKeys?.[serviceAObj.key]
+    const serviceBKeyInfo = serviceBInfo.linkableKeys?.[serviceBObj.key]
+    if (!serviceAKeyEntity) {
       throw new Error(
         `Key ${serviceAObj.key} is not linkable on service ${serviceAObj.module}`
       )
@@ -149,7 +148,7 @@ export function defineLink(
       )
     }
 
-    let serviceAAliases = serviceAInfo.__joinerConfig.alias ?? []
+    let serviceAAliases = serviceAInfo.alias ?? []
     if (!Array.isArray(serviceAAliases)) {
       serviceAAliases = [serviceAAliases]
     }
@@ -157,20 +156,27 @@ export function defineLink(
     let aliasAOptions =
       serviceAObj.alias ??
       serviceAAliases.find((a) => {
-        return a.args?.entity == serviceAKeyInfo
+        return a.args?.entity == serviceAKeyEntity
       })?.name
 
     let aliasA = aliasAOptions
     if (Array.isArray(aliasAOptions)) {
       aliasA = aliasAOptions[0]
     }
+
     if (!aliasA) {
       throw new Error(
         `You need to provide an alias for ${serviceAObj.module}.${serviceAObj.key}`
       )
     }
 
-    let serviceBAliases = serviceBInfo.__joinerConfig.alias ?? []
+    const serviceAMethodSuffix = serviceAAliases.find((serviceAlias) => {
+      return Array.isArray(serviceAlias.name)
+        ? serviceAlias.name.includes(aliasA)
+        : serviceAlias.name === aliasA
+    })?.args?.methodSuffix
+
+    let serviceBAliases = serviceBInfo.alias ?? []
     if (!Array.isArray(serviceBAliases)) {
       serviceBAliases = [serviceBAliases]
     }
@@ -185,13 +191,20 @@ export function defineLink(
     if (Array.isArray(aliasBOptions)) {
       aliasB = aliasBOptions[0]
     }
+
     if (!aliasB) {
       throw new Error(
         `You need to provide an alias for ${serviceBObj.module}.${serviceBObj.key}`
       )
     }
 
-    const moduleAPrimaryKeys = serviceAInfo.__joinerConfig.primaryKeys
+    const serviceBMethodSuffix = serviceAAliases.find((serviceAlias) => {
+      return Array.isArray(serviceAlias.name)
+        ? serviceAlias.name.includes(aliasB)
+        : serviceAlias.name === aliasB
+    })?.args?.methodSuffix
+
+    const moduleAPrimaryKeys = serviceAInfo.primaryKeys ?? []
     let serviceAPrimaryKey =
       serviceAObj.primaryKey ??
       linkServiceOptions?.pk?.[serviceAObj.module] ??
@@ -208,7 +221,7 @@ export function defineLink(
       )
     }
 
-    const moduleBPrimaryKeys = serviceBInfo.__joinerConfig.primaryKeys
+    const moduleBPrimaryKeys = serviceBInfo.primaryKeys ?? []
     let serviceBPrimaryKey =
       serviceBObj.primaryKey ??
       linkServiceOptions?.pk?.[serviceBObj.module] ??
@@ -258,12 +271,18 @@ export function defineLink(
           primaryKey: serviceAPrimaryKey,
           foreignKey: serviceAObj.key,
           alias: aliasA,
+          args: {
+            methodSuffix: serviceAMethodSuffix,
+          },
         },
         {
           serviceName: serviceBObj.module,
           primaryKey: serviceBPrimaryKey!,
           foreignKey: serviceBObj.key,
           alias: aliasB,
+          args: {
+            methodSuffix: serviceBMethodSuffix,
+          },
         },
       ],
       extends: [
@@ -275,8 +294,8 @@ export function defineLink(
           },
           relationship: {
             serviceName: output.serviceName,
-            primaryKey: serviceBObj.key,
-            foreignKey: serviceBPrimaryKey,
+            primaryKey: serviceAObj.key,
+            foreignKey: serviceAPrimaryKey,
             alias: aliasB + "_link", // plural alias
             isList: serviceBObj.isList,
           },
@@ -289,8 +308,8 @@ export function defineLink(
           },
           relationship: {
             serviceName: output.serviceName,
-            primaryKey: serviceAObj.key,
-            foreignKey: serviceAPrimaryKey,
+            primaryKey: serviceBObj.key,
+            foreignKey: serviceBPrimaryKey,
             alias: aliasA + "_link", // plural alias
             isList: serviceAObj.isList,
           },

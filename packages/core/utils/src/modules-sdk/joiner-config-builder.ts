@@ -68,10 +68,11 @@ export function defineJoinerConfig(
   if (!loadedModels) {
     loadedModels = []
 
-    let index = 2
+    let index = 1
     const maxSearchIndex = 6
 
     while (true) {
+      ++index
       const fullPath = getCallerFilePath(index)
       if (!fullPath) {
         break
@@ -103,7 +104,6 @@ export function defineJoinerConfig(
       if (index === maxSearchIndex || loadedModels.length) {
         break
       }
-      ++index
     }
   }
 
