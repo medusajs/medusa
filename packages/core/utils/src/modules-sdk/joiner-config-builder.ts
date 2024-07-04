@@ -70,6 +70,10 @@ export function defineJoinerConfig(
 
     while (!stopSearching) {
       const fullPath = getCallerFilePath(index)
+      if (!fullPath) {
+        stopSearching = true
+        break
+      }
       const srcDir = fullPath.includes("dist") ? "dist" : "src"
       const splitPath = fullPath.split(srcDir)
 
