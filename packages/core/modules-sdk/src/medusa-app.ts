@@ -372,10 +372,7 @@ async function MedusaApp_({
     const customLink: any = linkModules[linkIdx]
     if (typeof customLink === "function") {
       linkModules[linkIdx] = customLink(allLoadedJoinerConfigs)
-      continue
     }
-
-    linkModules[linkIdx] = customLink
   }
 
   const {
