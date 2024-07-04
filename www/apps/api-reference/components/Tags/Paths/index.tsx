@@ -43,7 +43,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     paths: PathsObject
   }>(
     !Object.keys(paths).length
-      ? basePathUrl(`/api/tag?tagName=${tagSlugName}&area=${area}`)
+      ? basePathUrl(`/tag?tagName=${tagSlugName}&area=${area}`)
       : null,
     swrFetcher,
     {
