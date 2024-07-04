@@ -8,7 +8,7 @@ import type {
 } from "@mikro-orm/core/typings"
 import type { EntitySchema } from "@mikro-orm/core/metadata/EntitySchema"
 
-type Options = Partial<MikroORMOptions> & {
+type Options = Partial<Omit<MikroORMOptions, "entities" | "entitiesTs">> & {
   entities: (
     | string
     | EntityClass<AnyEntity>
