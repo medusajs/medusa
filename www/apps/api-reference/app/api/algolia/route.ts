@@ -1,12 +1,12 @@
 import OpenAPIParser from "@readme/openapi-parser"
 import algoliasearch from "algoliasearch"
-import type { ExpandedDocument, Operation } from "../../../../types/openapi"
+import type { ExpandedDocument, Operation } from "../../../types/openapi"
 import path from "path"
-import getPathsOfTag from "../../../../utils/get-paths-of-tag"
-import getSectionId from "../../../../utils/get-section-id"
+import getPathsOfTag from "../../../utils/get-paths-of-tag"
+import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
 import { JSDOM } from "jsdom"
-import getUrl from "../../../../utils/get-url"
+import getUrl from "../../../utils/get-url"
 import { capitalize } from "docs-ui"
 
 export async function GET() {

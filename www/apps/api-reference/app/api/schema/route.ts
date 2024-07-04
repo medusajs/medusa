@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
-import { SchemaObject } from "../../../../types/openapi"
+import { SchemaObject } from "../../../types/openapi"
 import path from "path"
 import { existsSync, promises as fs } from "fs"
 import { parseDocument } from "yaml"
-import dereference from "../../../../utils/dereference"
+import dereference from "../../../utils/dereference"
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
