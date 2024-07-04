@@ -372,7 +372,10 @@ async function MedusaApp_({
     const customLink: any = linkModules[linkIdx]
     if (typeof customLink === "function") {
       linkModules[linkIdx] = customLink(allLoadedJoinerConfigs)
+      continue
     }
+
+    linkModules[linkIdx] = customLink
   }
 
   const {
@@ -435,12 +438,6 @@ async function MedusaApp_({
       ...(sharedResourcesConfig?.database ?? {}),
     }
 
-    const customLinks = MedusaModule.getCustomLinks().map((link) => {
-      return typeof link === "function"
-        ? link(MedusaModule.getAllJoinerConfigs())
-        : link
-    })
-
     if (revert) {
       revertLinkModuleMigration &&
         (await revertLinkModuleMigration(
@@ -448,7 +445,7 @@ async function MedusaApp_({
             options: linkModuleOpt,
             injectedDependencies,
           },
-          customLinks
+          linkModules
         ))
     } else {
       linkModuleMigration &&
@@ -457,7 +454,7 @@ async function MedusaApp_({
             options: linkModuleOpt,
             injectedDependencies,
           },
-          customLinks
+          linkModules
         ))
     }
   }
