@@ -15,6 +15,12 @@ import {
  *
  * A payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.
  * 
+ * :::note
+ * 
+ * This guide is a work in progress.
+ * 
+ * :::
+ * 
  * ---
  * 
  * ## How to Create a Payment Provider
