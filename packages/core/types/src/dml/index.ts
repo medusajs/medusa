@@ -1,4 +1,4 @@
-import { CamelCase } from "../common"
+import { CamelCase, Prettify } from "../common"
 
 /**
  * Symbol to identify a DML entity from an object
@@ -187,7 +187,7 @@ export type InferManyToManyFields<Relation> = InferHasManyFields<Relation>
  * Inferring the types of the schema fields from the DML
  * entity
  */
-export type InferSchemaFields<Schema extends DMLSchema> = {
+export type InferSchemaFields<Schema extends DMLSchema> = Prettify<{
   [K in keyof Schema]: Schema[K] extends RelationshipType<any>
     ? Schema[K]["type"] extends "belongsTo"
       ? InferBelongsToFields<Schema[K]["$dataType"]>
@@ -199,7 +199,7 @@ export type InferSchemaFields<Schema extends DMLSchema> = {
       ? InferManyToManyFields<Schema[K]["$dataType"]>
       : never
     : Schema[K]["$dataType"]
-}
+}>
 
 /**
  * Helper to infer the schema type of a DmlEntity
