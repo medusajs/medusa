@@ -1127,9 +1127,9 @@
       },
       "taxRate": "Tax rate",
       "taxCode": "Tax code",
-      "conditions": {
-        "label": "Conditions",
-        "hint": "Define the conditions under which this tax override is applied.",
+      "targets": {
+        "label": "Targets",
+        "hint": "Select the targets that this tax rate will apply to.",
         "options": {
           "product": "Products",
           "productCollection": "Product collections",
@@ -1156,13 +1156,16 @@
           "productType": "Product type",
           "customerGroup": "Customer group"
         },
+        "modal": {
+          "header": "Add targets"
+        },
         "values_one": "{{count}} value",
         "values_other": "{{count}} values",
         "numberOfTargets_one": "{{count}} target",
         "numberOfTargets_other": "{{count}} targets",
         "additionalValues_one": "and {{count}} more value",
         "additionalValues_other": "and {{count}} more values",
-        "action": "Add condtion"
+        "action": "Add target"
       },
       "sublevels": {
         "labels": {

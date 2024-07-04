@@ -203,41 +203,41 @@ export const TaxRegionCreateTaxOverrideForm = ({
   const referenceTypeOptions = [
     {
       value: RuleReferenceType.PRODUCT,
-      label: t("taxRegions.fields.conditions.options.product"),
+      label: t("taxRegions.fields.targets.options.product"),
     },
     {
       value: RuleReferenceType.PRODUCT_COLLECTION,
-      label: t("taxRegions.fields.conditions.options.productCollection"),
+      label: t("taxRegions.fields.targets.options.productCollection"),
     },
     {
       value: RuleReferenceType.PRODUCT_TAG,
-      label: t("taxRegions.fields.conditions.options.productTag"),
+      label: t("taxRegions.fields.targets.options.productTag"),
     },
     {
       value: RuleReferenceType.PRODUCT_TYPE,
-      label: t("taxRegions.fields.conditions.options.productType"),
+      label: t("taxRegions.fields.targets.options.productType"),
     },
     {
       value: RuleReferenceType.CUSTOMER_GROUP,
-      label: t("taxRegions.fields.conditions.options.customerGroup"),
+      label: t("taxRegions.fields.targets.options.customerGroup"),
     },
   ]
 
   const searchPlaceholders = {
     [RuleReferenceType.PRODUCT]: t(
-      "taxRegions.fields.conditions.placeholders.product"
+      "taxRegions.fields.targets.placeholders.product"
     ),
     [RuleReferenceType.PRODUCT_COLLECTION]: t(
-      "taxRegions.fields.conditions.placeholders.productCollection"
+      "taxRegions.fields.targets.placeholders.productCollection"
     ),
     [RuleReferenceType.PRODUCT_TAG]: t(
-      "taxRegions.fields.conditions.placeholders.productTag"
+      "taxRegions.fields.targets.placeholders.productTag"
     ),
     [RuleReferenceType.PRODUCT_TYPE]: t(
-      "taxRegions.fields.conditions.placeholders.productType"
+      "taxRegions.fields.targets.placeholders.productType"
     ),
     [RuleReferenceType.CUSTOMER_GROUP]: t(
-      "taxRegions.fields.conditions.placeholders.customerGroup"
+      "taxRegions.fields.targets.placeholders.customerGroup"
     ),
   }
 
@@ -432,7 +432,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                         id="tax_region_rules_label"
                         htmlFor="tax_region_rules"
                       >
-                        {t("taxRegions.fields.conditions.label")}
+                        {t("taxRegions.fields.targets.label")}
                       </Label>
                       <Text
                         size="small"
@@ -446,7 +446,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                       id="tax_region_rules_description"
                       className="text-pretty"
                     >
-                      {t("taxRegions.fields.conditions.hint")}
+                      {t("taxRegions.fields.targets.hint")}
                     </Hint>
                   </div>
                   {showAddButton && (
@@ -457,7 +457,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                       variant="transparent"
                       className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex-shrink-0"
                     >
-                      {t("taxRegions.fields.conditions.action")}
+                      {t("taxRegions.fields.targets.action")}
                     </Button>
                   )}
                 </div>
@@ -538,7 +538,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                     )}
                                     <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
                                       {t(
-                                        "taxRegions.fields.conditions.operators.in"
+                                        "taxRegions.fields.targets.operators.in"
                                       )}
                                     </div>
                                   </div>
@@ -559,7 +559,18 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                         </Button>
                                       </StackedFocusModal.Trigger>
                                       <StackedFocusModal.Content>
-                                        <StackedFocusModal.Header />
+                                        <StackedFocusModal.Header>
+                                          <StackedFocusModal.Title className="sr-only">
+                                            {t(
+                                              "taxRegions.fields.targets.modal.header"
+                                            )}
+                                          </StackedFocusModal.Title>
+                                          <StackedFocusModal.Description className="sr-only">
+                                            {t(
+                                              "taxRegions.fields.targets.hint"
+                                            )}
+                                          </StackedFocusModal.Description>
+                                        </StackedFocusModal.Header>
                                         <TargetForm
                                           type="focus"
                                           referenceType={type}

@@ -1,19 +1,23 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
+import { SelectParams } from "../common"
 import { AdminProduct } from "../product"
 
 export interface BaseCollection {
-  id?: string
-  title?: string
-  handle?: string
-  created_at?: string
-  updated_at?: string
-  deleted_at?: string | null
+  id: string
+  title: string
+  handle: string
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
   products?: AdminProduct[]
-  metadata?: Record<string, unknown> | null
+  metadata: Record<string, unknown> | null
 }
 
-export interface BaseCollectionFilters
-  extends BaseFilterable<BaseCollectionFilters> {
+export interface BaseCollectionParams extends SelectParams {}
+
+export interface BaseCollectionListParams
+  extends SelectParams,
+    BaseFilterable<BaseCollectionListParams> {
   q?: string
   id?: string | string[]
   handle?: string | string[]
