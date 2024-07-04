@@ -25,7 +25,9 @@ medusaIntegrationTestRunner({
 
         const linkDefinition = MedusaModule.getCustomLinks()
           .map((linkDefinition: any) => {
-            const definition = linkDefinition(MedusaModule.getLoadedModules())
+            const definition = linkDefinition(
+              MedusaModule.getAllJoinerConfigs()
+            )
             return definition.serviceName === link.serviceName && definition
           })
           .filter(Boolean)[0]
