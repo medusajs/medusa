@@ -72,6 +72,15 @@ A migration is a class created in a TypeScript or JavaScript file under a module
   })
   ```
 
+  <Note title="Important">
+
+  The `databaseName`'s value is only used to generate the migrations. So, make sure it:
+
+  1. Is unique to the module. Two modules shouldn't have the same database name, and it shouldn't be the same as the Medusa application.
+  2. Doesn't change between migrations, as that causes inconsistencies between the migrations.
+
+  </Note>
+
   2. Run the following command in the root directory of your Medusa application:
 
   ```bash
