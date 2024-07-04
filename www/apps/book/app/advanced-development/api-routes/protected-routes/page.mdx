@@ -101,11 +101,11 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const userService: IUserModuleService = req.scope.resolve(
+  const userModuleService: IUserModuleService = req.scope.resolve(
     ModuleRegistrationName.USER
   )
 
-  const user = await userService.retrieveUser(
+  const user = await userModuleService.retrieveUser(
     req.auth_context.actor_id
   )
 
