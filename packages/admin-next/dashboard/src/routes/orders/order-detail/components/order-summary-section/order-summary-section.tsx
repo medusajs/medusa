@@ -101,17 +101,17 @@ const Item = ({
       </div>
       <div className="grid grid-cols-3 items-center gap-x-4">
         <div className="flex items-center justify-end gap-x-4">
-          <Text size="small" className="pt-[3px]">
+          <Text size="small">
             {getLocaleAmount(item.unit_price, currencyCode)}
           </Text>
         </div>
         <div className="flex items-center gap-x-2">
           <div className="w-fit min-w-[27px]">
-            <Text>
+            <Text size="small">
               <span className="tabular-nums">{item.quantity}</span>x
             </Text>
           </div>
-          <div className="overflow-visible pt-[2px]">
+          <div className="overflow-visible">
             <StatusBadge
               color={reservation ? "green" : "orange"}
               className="text-nowrap"
@@ -123,7 +123,7 @@ const Item = ({
           </div>
         </div>
         <div className="flex items-center justify-end">
-          <Text size="small" className="pt-[3px]">
+          <Text size="small" className="pt-[1px]">
             {getLocaleAmount(item.subtotal || 0, currencyCode)}
           </Text>
         </div>
