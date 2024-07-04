@@ -1,0 +1,21 @@
+{
+  "description": "",
+  "methods": [],
+  "displayName": "DateSegment",
+  "props": {
+    "segment": {
+      "required": true,
+      "tsType": {
+        "name": "Segment"
+      },
+      "description": ""
+    },
+    "state": {
+      "required": true,
+      "tsType": {
+        "name": "DateFieldState"
+      },
+      "description": ""
+    }
+  }
+}
