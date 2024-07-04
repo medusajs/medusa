@@ -15,7 +15,10 @@ export const getOrderDetailWorkflowId = "get-order-detail"
 export const getOrderDetailWorkflow = createWorkflow(
   getOrderDetailWorkflowId,
   (
-    input: WorkflowData<{ fields: string[]; order_id: string }>
+    input: WorkflowData<{
+      fields: string[]
+      order_id: string
+    }>
   ): WorkflowData<OrderDetailDTO> => {
     const fields = transform(input, ({ fields }) => {
       return deduplicate([
