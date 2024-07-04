@@ -9,7 +9,7 @@ import type {
 import type { EntitySchema } from "@mikro-orm/core/metadata/EntitySchema"
 import { kebabCase } from "../common"
 
-type Options = Partial<MikroORMOptions> & {
+type Options = Partial<Omit<MikroORMOptions, "entities" | "entitiesTs">> & {
   entities: (
     | string
     | EntityClass<AnyEntity>
