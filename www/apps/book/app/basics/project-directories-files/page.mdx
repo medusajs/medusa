@@ -1,0 +1,23 @@
+export const metadata = {
+  title: `${pageNumber} Project Directories and Files`,
+}
+
+# {metadata.title}
+
+In this chapter, you’ll learn about important directories and files in your Medusa application's project.
+
+## src
+
+This directory is the central place for your custom development. It includes the following sub-directories:
+
+- `admin`: Holds your admin dashboard's custom components and pages.
+- `api`: Holds your custom API routes that are added as endpoints in your Medusa application.
+- `jobs`: Holds your scheduled jobs that run at a specified interval during your Medusa application's runtime.
+- `modules`: Holds your custom modules that implement custom business logic.
+- `scripts`: Holds your custom scripts to be executed using Medusa's CLI tool.
+- `subscribers`: Holds your event listeners that are executed asynchronously whenever an event is emitted.
+- `workflows`: Holds your custom flows that can be executed from anywhere in your application.
+
+## medusa-config.js
+
+This file holds your Medusa configurations, such as your PostgreSQL database configurations.

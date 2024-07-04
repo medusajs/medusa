@@ -13,10 +13,10 @@ In this guide, you’ll find common examples of how you can use the API Key Modu
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-```ts
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IApiKeyModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
@@ -68,10 +68,10 @@ export async function POST(request: Request) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-```ts
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IApiKeyModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export async function GET(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
@@ -172,10 +172,10 @@ export async function POST(request: Request, { params }: ContextType) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-```ts
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IApiKeyModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export async function POST(request: MedusaRequest, res: MedusaResponse) {
   const apiKeyModuleService: IApiKeyModuleService = request.scope.resolve(
@@ -229,10 +229,13 @@ export async function POST(request: Request, { params }: ContextType) {
 <CodeTabs groupId="app-type">
   <CodeTab label="Medusa API Router" value="medusa">
 
-```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
-import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IApiKeyModuleService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts collapsibleLines="1-8" expandButtonLabel="Show Imports"
+  import { 
+    AuthenticatedMedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+  import { IApiKeyModuleService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export async function POST(
   request: AuthenticatedMedusaRequest,

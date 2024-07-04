@@ -11,22 +11,22 @@ import {
 } from "@medusajs/types"
 import { IInventoryService } from "@medusajs/types/dist/inventory"
 import {
+  arrayDifference,
   CommonEvents,
   EmitEvents,
   InjectManager,
   InjectTransactionManager,
   InventoryEvents,
+  isDefined,
+  isString,
   MedusaContext,
   MedusaError,
   MedusaService,
-  arrayDifference,
-  isDefined,
-  isString,
   partitionArray,
   promiseAll,
 } from "@medusajs/utils"
 import { InventoryItem, InventoryLevel, ReservationItem } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import InventoryLevelService from "./inventory-level"
 
 type InjectedDependencies = {
@@ -47,14 +47,11 @@ export default class InventoryModuleService
     ReservationItem: {
       dto: InventoryTypes.ReservationItemDTO
     }
-  }>(
-    {
-      InventoryItem,
-      InventoryLevel,
-      ReservationItem,
-    },
-    entityNameToLinkableKeysMap
-  )
+  }>({
+    InventoryItem,
+    InventoryLevel,
+    ReservationItem,
+  })
   implements IInventoryService
 {
   protected baseRepository_: DAL.RepositoryService

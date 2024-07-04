@@ -31,8 +31,8 @@ const Navbar = () => {
   return (
     <UiNavbar
       logo={{
-        light: basePathUrl("/images/logo-icon.png"),
-        dark: basePathUrl("/images/logo-icon-dark.png"),
+        light: "/images/logo-icon.png",
+        dark: "/images/logo-icon-dark.png",
       }}
       items={navbarItems}
       mobileMenuButton={{
@@ -41,6 +41,7 @@ const Navbar = () => {
       }}
       additionalActionsBefore={<VersionSwitcher />}
       additionalActionsAfter={<FeedbackModal />}
+      showSearchOpener
       isLoading={isLoading}
     />
   )

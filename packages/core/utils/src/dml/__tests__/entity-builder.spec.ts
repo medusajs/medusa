@@ -1,4 +1,4 @@
-import { ArrayType, MetadataStorage } from "@mikro-orm/core"
+import { ArrayType, EntityMetadata, MetadataStorage } from "@mikro-orm/core"
 import { expectTypeOf } from "expect-type"
 import { DmlEntity } from "../entity"
 import { model } from "../entity-builder"
@@ -1558,9 +1558,10 @@ describe("Entity builder", () => {
         account_id: model.number(),
       })
 
-      const entityBuilder = createMikrORMEntity()
-      const User = entityBuilder(user)
-      const metaData = MetadataStorage.getMetadataFromDecorator(User)
+      const User = toMikroORMEntity(user)
+      const metaData = MetadataStorage.getMetadataFromDecorator(
+        User
+      ) as unknown as EntityMetadata<InstanceType<typeof User>>
 
       expect(metaData.properties.id).toEqual({
         columnType: "text",

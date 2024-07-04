@@ -35,7 +35,7 @@ Only one provider can be defined for a channel.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -49,14 +49,11 @@ module.exports = defineConfig({
           // ...
           {
             resolve: "@medusajs/notification-sendgrid",
+            id: "sendgrid",
             options: {
-              config: {
-                sendgrid: {
-                  channels: ["email"],
-                  api_key: process.env.SENDGRID_API_KEY,
-                  from: process.env.SENDGRID_FROM,
-                },
-              },
+              channels: ["email"],
+              api_key: process.env.SENDGRID_API_KEY,
+              from: process.env.SENDGRID_FROM,
             },
           },
         ],
@@ -130,7 +127,10 @@ export const highlights = [
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
-import type { SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
+import type {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "@medusajs/medusa"
 import { ModuleRegistrationName } from "@medusajs/utils"
 import { INotificationModuleService } from "@medusajs/types"
 

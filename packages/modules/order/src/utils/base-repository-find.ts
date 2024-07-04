@@ -78,13 +78,18 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     orderWhere.items ??= {}
     orderWhere.items.version = version
+    orderWhere.items.deleted_at ??= null
 
     popWhere.shipping_methods ??= {}
     popWhere.shipping_methods.version = version
+    popWhere.shipping_methods.deleted_at ??= null
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }
     }
+
+    config.where ??= {}
+    config.where.deleted_at ??= null
 
     return await manager.find(entity, config.where, config.options)
   }
@@ -152,9 +157,11 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     orderWhere.items ??= {}
     orderWhere.items.version = version
+    orderWhere.items.deleted_at ??= null
 
     popWhere.shipping_methods ??= {}
     popWhere.shipping_methods.version = version
+    popWhere.shipping_methods.deleted_at ??= null
 
     if (!config.options.orderBy) {
       config.options.orderBy = { id: "ASC" }

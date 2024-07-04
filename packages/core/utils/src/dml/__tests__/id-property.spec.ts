@@ -10,9 +10,7 @@ describe("Id property", () => {
       fieldName: "id",
       dataType: {
         name: "id",
-        options: {
-          primaryKey: false,
-        },
+        options: {},
       },
       nullable: false,
       indexes: [],
@@ -28,13 +26,12 @@ describe("Id property", () => {
       fieldName: "id",
       dataType: {
         name: "id",
-        options: {
-          primaryKey: true,
-        },
+        options: {},
       },
       nullable: false,
       indexes: [],
       relationships: [],
+      primaryKey: true,
     })
   })
 })

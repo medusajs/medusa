@@ -1,4 +1,5 @@
 import { BaseProperty } from "./base"
+import { PrimaryKeyModifier } from "./primary-key"
 
 /**
  * The TextProperty is used to define a textual property
@@ -7,14 +8,12 @@ export class TextProperty extends BaseProperty<string> {
   protected dataType: {
     name: "text"
     options: {
-      primaryKey: boolean
       prefix?: string
       searchable: boolean
     }
   } = {
     name: "text",
     options: {
-      primaryKey: false,
       searchable: false,
     },
   }
@@ -35,9 +34,7 @@ export class TextProperty extends BaseProperty<string> {
    * @customNamespace Property Configuration Methods
    */
   primaryKey() {
-    this.dataType.options.primaryKey = true
-
-    return this
+    return new PrimaryKeyModifier<string, TextProperty>(this)
   }
 
   /**

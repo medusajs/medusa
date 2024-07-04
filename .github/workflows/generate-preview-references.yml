@@ -1,9 +1,65 @@
 name: Generate Preview Reference [Automated]
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
 jobs:
   preview-references:
     uses: ./.github/workflows/generate-resources-reference.yml
-  preview-api-ui:
-    uses: ./.github/workflows/generate-public-references.yml
+  preview-api:
+    name: Generate OAS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install www/utils Dependencies
+        run: yarn
+        working-directory: www/utils
+
+      - name: Build www/utils packages
+        run: yarn build
+        working-directory: www/utils
+
+      - name: Run docblock generator
+        run: "yarn generate:oas"
+        working-directory: www/utils
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_OWNER: ${{ github.repository_owner }}
+          GIT_REPO: medusa
+
+      - name: Generate API Reference (v2)
+        run: yarn openapi:generate
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated API Reference (v2)"
+          base: "develop"
+          title: "chore(docs): Updated API Reference (v2)"
+          labels: "type: chore"
+          add-paths: www/apps/api-reference/specs
+          branch: "docs/generate-api-ref"
+          branch-suffix: "timestamp"

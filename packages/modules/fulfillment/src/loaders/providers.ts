@@ -10,20 +10,21 @@ import { FulfillmentIdentifiersRegistrationName } from "@types"
 import { Lifetime, asFunction, asValue } from "awilix"
 
 const registrationFn = async (klass, container, pluginOptions) => {
-  Object.entries(pluginOptions.config || []).map(([name, config]) => {
-    const key = FulfillmentProviderService.getRegistrationIdentifier(
-      klass,
-      name
-    )
+  const key = FulfillmentProviderService.getRegistrationIdentifier(
+    klass,
+    pluginOptions.id
+  )
 
-    container.register({
-      ["fp_" + key]: asFunction((cradle) => new klass(cradle, config), {
+  container.register({
+    ["fp_" + key]: asFunction(
+      (cradle) => new klass(cradle, pluginOptions.options),
+      {
         lifetime: klass.LIFE_TIME || Lifetime.SINGLETON,
-      }),
-    })
-
-    container.registerAdd(FulfillmentIdentifiersRegistrationName, asValue(key))
+      }
+    ),
   })
+
+  container.registerAdd(FulfillmentIdentifiersRegistrationName, asValue(key))
 }
 
 export default async ({
