@@ -987,8 +987,8 @@
       "hint": "Manage what you charge your customers when they shop from different countries and regions."
     },
     "delete": {
-      "confirmation": "You are about to delete the tax region {{name}}. This action cannot be undone.",
-      "successToast": "Tax region {{name}} was successfully deleted."
+      "confirmation": "You are about to delete a tax region. This action cannot be undone.",
+      "successToast": "The tax region was successfully deleted."
     },
     "create": {
       "header": "Create Tax Region",
@@ -1092,6 +1092,22 @@
       "edit": {
         "header": "Edit Override",
         "hint": "Edit the tax override to define the taxes applied under specific conditions."
+      }
+    },
+    "taxRates": {
+      "create": {
+        "header": "Create Tax Rate",
+        "hint": "Create a new tax rate to define the tax rate for a region.",
+        "successToast": "Tax rate was successfully created."
+      },
+      "edit": {
+        "header": "Edit Tax Rate",
+        "hint": "Edit the tax rate to define the tax rate for a region.",
+        "successToast": "Tax rate was successfully updated."
+      },
+      "delete": {
+        "confirmation": "You are about to delete the tax rate {{name}}. This action cannot be undone.",
+        "successToast": "Tax rate was successfully deleted."
       }
     },
     "fields": {

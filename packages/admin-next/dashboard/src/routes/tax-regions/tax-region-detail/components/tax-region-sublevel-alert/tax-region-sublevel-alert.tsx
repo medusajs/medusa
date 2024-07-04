@@ -20,7 +20,12 @@ export const TaxRegionSublevelAlert = ({
   const [dismissed, setDismissed] = useState(false)
   const provinceObject = getCountryProvinceObjectByIso2(taxRegion.country_code!)
 
-  if (provinceObject || showSublevelRegions || dismissed) {
+  if (
+    provinceObject ||
+    showSublevelRegions ||
+    dismissed ||
+    taxRegion.children.length
+  ) {
     return null
   }
 

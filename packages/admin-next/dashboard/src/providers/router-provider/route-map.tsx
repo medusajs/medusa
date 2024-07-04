@@ -1125,10 +1125,24 @@ export const RouteMap: RouteObject[] = [
                             "../../routes/tax-regions/tax-region-tax-override-create"
                           ),
                       },
+                      {
+                        path: "tax-rates/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-create"
+                          ),
+                      },
+                      {
+                        path: "tax-rates/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-edit"
+                          ),
+                      },
                     ],
                   },
                   {
-                    path: "provinces/:provinceId",
+                    path: "provinces/:province_id",
                     lazy: () =>
                       import(
                         "../../routes/tax-regions/tax-region-province-detail"
@@ -1142,6 +1156,22 @@ export const RouteMap: RouteObject[] = [
                         )
                       },
                     },
+                    children: [
+                      {
+                        path: "tax-rates/create",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-create"
+                          ),
+                      },
+                      {
+                        path: "tax-rates/:tax_rate_id/edit",
+                        lazy: () =>
+                          import(
+                            "../../routes/tax-regions/tax-region-tax-rate-edit"
+                          ),
+                      },
+                    ],
                   },
                 ],
               },

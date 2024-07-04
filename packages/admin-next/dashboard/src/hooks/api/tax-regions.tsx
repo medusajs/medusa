@@ -90,6 +90,9 @@ export const useDeleteTaxRegion = (
         queryKey: taxRegionsQueryKeys.detail(id),
       })
 
+      // Invalidate all detail queries, as the deleted tax region may have been a sublevel region
+      queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
+
       options?.onSuccess?.(data, variables, context)
     },
     ...options,
