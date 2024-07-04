@@ -14,9 +14,11 @@ When an action is performed in Medusa, such as creating a product, the Medusa ap
 
 ## What is a Subscriber?
 
-A subscriber is a function executed whenever its associated event is emitted.
+A subscriber is a function executed whenever the event it listens to is emitted.
 
-The subscriber is created in a TypeScript or JavaScript file under the `src/subscribers` directory.
+### How to Create a Subscriber?
+
+A subscriber is created in a TypeScript or JavaScript file under the `src/subscribers` directory.
 
 For example, create the file `src/subscribers/product-created.ts` with the following content:
 
@@ -36,10 +38,29 @@ export const config: SubscriberConfig = {
 
 A subscriber file must export:
 
-- The subscriber function that is an asynchronous function executed whenever the associated event is triggered.
+- A subscriber function that is an asynchronous function executed whenever the associated event is triggered.
 - A configuration object defining the event this subscriber is listening to.
 
 The above subscriber listens to the `product.created` event. Whenever the event is emitted, it logs in the terminal `A product is created`.
+
+---
+
+## Test the Subscriber
+
+To test the subscriber, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, go to the Medusa Admin at `localhost:9000/app` and create a product. You’ll see the following messages logged in the Medusa application's terminal:
+
+```bash
+info:    Processing product.created which has 1 subscribers
+A product was created
+```
+
+The first message indicates that the `product.created` event was emitted, and the second one is the message logged from the subscriber.
 
 ---
 
@@ -59,16 +80,10 @@ The subscriber function accepts an object parameter with the property `container
 
 For example:
 
-{/* TODO change how event names are loaded */}
-
 export const highlights = [
   ["10", "container", "Recieve the Medusa Container in the object parameter."],
   ["13", "resolve", "Resolve the Product Module's main service."],
-  [
-    "13",
-    "ModuleRegistrationName.PRODUCT",
-    "The resource registration name imported from `@medusajs/modules-sdk`.",
-  ],
+  ["13", "ModuleRegistrationName.PRODUCT", "The module's registration name imported from `@medusajs/modules-sdk`."]
 ]
 
 ```ts title="src/subscribers/product-created.ts" highlights={highlights}
@@ -79,12 +94,15 @@ import { ModuleRegistrationName } from "@medusajs/utils"
 export default async function productCreateHandler({
   data,
   container,
-}: SubscriberArgs<Record<string, string>>) {
-  const productModuleService: IProductModuleService = container.resolve(
-    ModuleRegistrationName.PRODUCT
-  )
+}: SubscriberArgs<{ id: string }>) {
+  const productModuleService: IProductModuleService =
+    container.resolve(ModuleRegistrationName.PRODUCT)
 
-  const product = await productModuleService.retrieve(data.id)
+  const productId = "data" in data ? data.data.id : data.id
+
+  const product = await productModuleService.retrieveProduct(
+    productId
+  )
 
   console.log(`The product ${product.title} was created`)
 }

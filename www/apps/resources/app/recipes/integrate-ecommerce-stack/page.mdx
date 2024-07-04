@@ -74,13 +74,13 @@ export const serviceHighlights = [
 
     async getProductData(id: string) {
       const { data: erpProduct } = await this.client_.get(`/product/${id}`)
-
+      
       return erpProduct
     }
 
     async createProduct(data: ProductDTO) {
       const { data: erpProduct } = await this.client_.post(`/product`, data)
-
+      
       return erpProduct
     }
 
@@ -90,7 +90,6 @@ export const serviceHighlights = [
   }
 
   export default ErpModuleService
-
   ```
 
   This creates the module's main service. Few things to note:
@@ -111,11 +110,12 @@ export const serviceHighlights = [
 
   ```ts title="src/modules/erp/index.ts"
   import ErpModuleService from "./service"
+  import { Module } from "@medusajs/utils"
 
-  export default {
+  export default Module("erp", {
     service: ErpModuleService,
-  }
-  ````
+  })
+  ```
 
   Finally, add the module to the `modules` object in `medusa-config.js`:
 
@@ -134,7 +134,7 @@ export const serviceHighlights = [
   ```
 
 </Details>
-
+    
 
 ---
 
@@ -168,28 +168,12 @@ export const workflowHighlights = [
   ["24", "productModuleService", "Resolve the Product Module's main service."],
   ["28", "retrieve", "Retrieve the created product's data."],
   ["30", "createProduct", "Create the product in the ERP system."],
-  [
-    "34",
-    "update",
-    "Update the product in Medusa with the ID of the ERP product.",
-  ],
+  ["34", "update", "Update the product in Medusa with the ID of the ERP product."],
   ["43", "erpId", "Pass the ERP product's ID to the compensation function."],
   ["44", "productId", "Pass the product's ID to the compensation function."],
-  [
-    "46",
-    "",
-    "Define a compensation function that rolls back changes when an error occurs.",
-  ],
-  [
-    "53",
-    "deleteProduct",
-    "Undo creating the product in the ERP system by deleting it.",
-  ],
-  [
-    "54",
-    "update",
-    "Update the product in Medusa to remove the ERP product's ID.",
-  ],
+  ["46", "", "Define a compensation function that rolls back changes when an error occurs."],
+  ["53", "deleteProduct", "Undo creating the product in the ERP system by deleting it."],
+  ["54", "update", "Update the product in Medusa to remove the ERP product's ID."]
 ]
 
     ```ts title="src/workflows/create-product.ts" highlights={workflowHighlights} collapsibleLines="1-9" expandButtonLabel="Show Imports"
@@ -211,14 +195,14 @@ export const workflowHighlights = [
     }
 
     const createInErpStep = createStep(
-      "create-in-erp",
+      "create-in-erp", 
       async ({ productId }: WorkflowInput, { container }) => {
       const erpModuleService: ErpModuleService = container.resolve(
         "erpModuleService"
       )
       const productModuleService: IProductModuleService = container
         .resolve(ModuleRegistrationName.PRODUCT)
-
+      
       const createdProductData = await productModuleService
         .retrieveProduct(productId)
 
@@ -231,7 +215,7 @@ export const workflowHighlights = [
           erp_id: erpProduct.id
         }
       })
-
+      
       return new StepResponse({
         erpProduct
       }, {
@@ -267,20 +251,20 @@ export const workflowHighlights = [
     - Retrieves the product's data using the Product Module's main service.
     - Create the product in the ERP system using the ERP Module's main service.
     - Updates the product in Medusa by setting the ID of the ERP product in the product's `metadata` property.
-
+    
     The step also has a compensation function that rolls back changes when an error occurs. It deletes the product in the ERP system and removes the ID of the ERP product in the Medusa product.
-
+    
     Then, create the subscriber at `src/subscribers/create-product.ts`:
 
     ```ts title="src/subscribers/create-product.ts"
-    import type {
-      SubscriberConfig,
+    import type { 
+      SubscriberConfig, 
       SubscriberArgs,
     } from "@medusajs/medusa"
     import createProductWorkflow from "../workflows/create-product"
 
-    export default async function handleProductUpdate({
-      data, container
+    export default async function handleProductUpdate({ 
+      data, container 
     }: SubscriberArgs<{id: string}>) {
       createProductWorkflow(container)
         .run({
@@ -323,12 +307,12 @@ For example, suppose an administrator changes the product data in the ERP system
     For example, create the file `src/api/webhooks/erp/update/route.ts` with the following content:
 
     ```ts title="src/api/webhooks/erp/update/route.ts" collapsibleLines="1-12" expandButtonLabel="Show Imports"
-    import {
-      MedusaRequest,
-      MedusaResponse,
+    import { 
+      MedusaRequest, 
+      MedusaResponse, 
     } from "@medusajs/medusa"
-    import {
-      IProductModuleService,
+    import { 
+      IProductModuleService, 
       UpdateProductDTO
     } from "@medusajs/types"
     import {
@@ -341,7 +325,7 @@ For example, suppose an administrator changes the product data in the ERP system
     }
 
     export async function POST(
-      req: MedusaRequest<WebhookReq>,
+      req: MedusaRequest<WebhookReq>, 
       res: MedusaResponse
     ) {
       const { id, updatedData} = req.body
@@ -356,15 +340,15 @@ For example, suppose an administrator changes the product data in the ERP system
       res.status(200)
     }
     ```
-
+    
     This creates a webhook listener for an ERP system. It receives the ID of a product and its updated data, assuming that’s how your ERP system sends the data.
-
+    
     Then, create the file `src/api/middlewares.ts` with the following content:
 
     ```ts title="src/api/middlewares.ts"
     import { MiddlewaresConfig } from "@medusajs/medusa"
     import { raw } from "body-parser"
-
+    
     export const config: MiddlewaresConfig = {
       routes: [
         {

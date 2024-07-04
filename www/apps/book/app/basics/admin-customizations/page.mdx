@@ -10,9 +10,9 @@ In this chapter, you’ll learn how to customize the Medusa Admin dashboard.
 
 The Medusa Admin is an admin dashboard that merchants use to manage their store's data.
 
-You can extend the Medusa Admin to add widgets and new pages. Your customizations interact with API routes to provide merchants with custom functionalities.
+You can extend the Medusa Admin to add widgets and new pages. In your customizations, you interact with API routes to provide merchants with custom functionalities.
 
-The Medusa Admin is installed in your Medusa application and runs at the path `/app` when you start the Medusa application.
+The Medusa Admin is installed in your Medusa application and runs at `http://localhost:9000/app` when you start the application.
 
 ---
 
@@ -34,13 +34,13 @@ const ProductWidget = () => {
 }
 
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details.before",
 })
 
 export default ProductWidget
 ```
 
-This inserts a widget with the text “Product Widget” at the end of a product’s details page.
+This inserts a widget with the text “Product Widget” at the beginning of a product’s details page.
 
 ### Test the Widget
 
@@ -50,4 +50,4 @@ To test out the widget, start the Medusa application:
 npm run dev
 ```
 
-Then, open a product’s details page. You’ll find your custom widget at the bottom of the page.
+Then, open a product’s details page in the Medusa Admin. You’ll find your custom widget at the top of the page.

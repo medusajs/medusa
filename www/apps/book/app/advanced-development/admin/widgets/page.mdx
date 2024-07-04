@@ -23,96 +23,15 @@ A widget is created in a file under the `src/admin/widgets` directory. The file�
 For example, create the file `src/admin/widgets/product-widget.tsx` with the following content:
 
 export const widgetHighlights = [
-  ["4", "ProductWidget", "The React component of the product widget."], 
-  ["14", "zone", "The zone to inject the widget to."]
+  ["5", "ProductWidget", "The React component of the product widget."], 
+  ["15", "zone", "The zone to inject the widget to."]
 ]
 
 ```tsx title="src/admin/widgets/product-widget.tsx" highlights={widgetHighlights}
 import { defineWidgetConfig } from "@medusajs/admin-shared"
-
-// The widget
-const ProductWidget = () => {
-  return (
-    <div>
-      <h2>Product Widget</h2>
-    </div>
-  )
-}
-
-// The widget's configurations
-export const config = defineWidgetConfig({
-  zone: "product.details.after",
-})
-
-export default ProductWidget
-```
-
-The widget only shows the heading `Product Widget`.
-
-Use the `defineWidgetConfig` function imported from `@medusajs/admin-shared` to create and export the widget's configurations.
-
-The function accepts as a parameter an object with the following property:
-
-- `zone`: A string or an array of strings, each being the name of the zone to inject the widget into.
-
-In the example above, the widget is injected after a product’s details.
-
-### Test the Widget
-
-To test out the widget, start the Medusa application:
-
-```bash npm2yarn
-npm run dev
-```
-
-Then, open a product’s details page. You’ll find your custom widget at the bottom of the page.
-
----
-
-## Detail Widget Props
-
-Widgets that are injected into a details page (for example, `product.details.after`) receive a `data` prop, which is the main data of the details page (for example, the product object).
-
-For example:
-
-```tsx title="src/admin/widgets/product-widget.tsx" highlights={[["8"]]}
-import { defineWidgetConfig } from "@medusajs/admin-shared"
-import { 
-  DetailWidgetProps, 
-  AdminProduct,
-} from "@medusajs/types"
-
-const ProductWidget = ({ 
-  data,
-}: DetailWidgetProps<AdminProduct>) => {
-  return (
-    <div>
-      <h2>Product Widget {data.title}</h2>
-    </div>
-  )
-}
-
-export const config = defineWidgetConfig({
-  zone: "product.details.after",
-})
-
-export default ProductWidget
-```
-
-Notice that the type of the props is `DetailWidgetProps`, which accepts as a type argument the expected type of the data.
-
----
-
-## Using UI Components
-
-It’s highly recommended that you use the [Medusa UI package](https://docs.medusajs.com/ui) to match your widget’s design with the rest of the Medusa Admin.
-
-For example, you can rewrite the above component to the following:
-
-```tsx title="src/admin/widgets/product-widget.tsx"
-import { defineWidgetConfig } from "@medusajs/admin-shared"
 import { Container, Heading } from "@medusajs/ui"
 
+// The widget
 const ProductWidget = () => {
   return (
     <Container>
@@ -121,18 +40,78 @@ const ProductWidget = () => {
   )
 }
 
-export const config: WidgetConfig = defineWidgetConfig({
-  zone: "product.details.after",
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
 })
 
 export default ProductWidget
 ```
 
-<Note title="Tip">
+The widget only shows the heading `Product Widget`.
 
-Admin Widgets also support [Tailwind CSS](https://tailwindcss.com/) out of the box.
+Use the `defineWidgetConfig` function imported from `@medusajs/admin-shared` to create and export the widget's configurations. It accepts as a parameter an object with the following property:
 
-</Note>
+- `zone`: A string or an array of strings, each being the name of the zone to inject the widget into.
+
+In the example above, the widget is injected at the top of a product’s details.
+
+---
+
+## Test the Widget
+
+To test out the widget, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, open a product’s details page. You’ll find your custom widget at the top of the page.
+
+---
+
+## Detail Widget Props
+
+Widgets that are injected into a details page (for example, `product.details.before`) receive a `data` prop, which is the main data of the details page (for example, the product object).
+
+For example:
+
+export const detailHighlights = [
+  ["10", "data", "Receive the data as a prop."],
+  ["11", "AdminProduct", "Pass the expected type of `data` as a type argument."],
+  ["15", "data.title"]
+]
+
+```tsx title="src/admin/widgets/product-widget.tsx" highlights={detailHighlights}
+import { defineWidgetConfig } from "@medusajs/admin-shared"
+import { Container, Heading } from "@medusajs/ui"
+import { 
+  DetailWidgetProps, 
+  AdminProduct,
+} from "@medusajs/types"
+
+// The widget
+const ProductWidget = ({ 
+  data,
+}: DetailWidgetProps<AdminProduct>) => {
+  return (
+    <Container>
+      <Heading level="h2">
+        Product Widget {data.title}
+      </Heading>
+    </Container>
+  )
+}
+
+// The widget's configurations
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Notice that the type of the props is `DetailWidgetProps`, which accepts as a type argument the expected type of `data`.
 
 ---
 

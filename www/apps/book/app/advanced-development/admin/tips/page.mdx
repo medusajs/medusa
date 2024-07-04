@@ -8,11 +8,7 @@ In this chapter, you'll find some tips for your admin development.
 
 ## Routing Functionalities
 
-To navigate or link to other pages, or use other routing functionalities, use the [react-router-dom](https://reactrouter.com/en/main) package:
-
-```bash npm2yarn
-npm install react-router-dom
-```
+To navigate or link to other pages, or perform other routing functionalities, use the [react-router-dom](https://reactrouter.com/en/main) package. It's installed in your project through the Medusa Admin.
 
 For example:
 
@@ -37,7 +33,7 @@ const ProductWidget = () => {
 
 // The widget's configurations
 export const config = defineWidgetConfig({
-  zone: "product.details.after",
+  zone: "product.details.before",
 })
 
 export default ProductWidget

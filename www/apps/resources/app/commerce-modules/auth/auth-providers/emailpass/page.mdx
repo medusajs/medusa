@@ -21,7 +21,7 @@ The Emailpass auth provider is registered by default with the Auth Module.
 If you want to pass options to the provider, add the provider to the `providers` option of the Auth Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -33,10 +33,9 @@ const modules = {
       providers: [
         {
           resolve: "@medusajs/auth-emailpass",
-          config: {
-            emailpass: {
-              // options...
-            },
+          id: "emailpass",
+          options: {
+            // options...
           },
         },
       ],
