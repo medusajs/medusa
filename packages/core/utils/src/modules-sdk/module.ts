@@ -34,12 +34,12 @@ export function Module<
 } {
   service.prototype.__joinerConfig ??= defineJoinerConfig(serviceName)
 
-  const dmlObjects = service[MedusaServiceModelObjectsSymbol]
+  const dmlObjects = service[MedusaServiceModelObjectsSymbol] ?? {}
 
   return {
     service,
     loaders,
-    links: (dmlObjects?.length
+    links: (Object.keys(dmlObjects)?.length
       ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(
           serviceName,
           dmlObjects

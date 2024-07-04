@@ -177,6 +177,8 @@ export function defineJoinerConfig(
  *   test: model.text(),
  * })
  *
+ * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
+ *
  * // output:
  * // {
  * //   user_id: 'User',
