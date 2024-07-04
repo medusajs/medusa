@@ -1,4 +1,5 @@
 import {
+  IDmlEntity,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   PropertyType,
@@ -108,13 +109,14 @@ export function defineJoinerConfig(
   }
 
   if (!primaryKeys && modelDefinitions.size) {
-    const linkConfig = buildLinkConfigFromDmlObjects(serviceName, [
-      ...modelDefinitions.values(),
-    ])
+    const linkConfig = buildLinkConfigFromDmlObjects(
+      serviceName,
+      Object.fromEntries(modelDefinitions)
+    )
 
     primaryKeys = deduplicate(
       Object.values(linkConfig).flatMap((entityLinkConfig) => {
-        return (Object.values(entityLinkConfig) as any[])
+        return (Object.values(entityLinkConfig as any) as any[])
           .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
             return linkableConfig.primaryKey
@@ -152,7 +154,7 @@ export function defineJoinerConfig(
             `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
           ],
           args: {
-            entity: entity.name,
+            entity: upperCaseFirst(entity.name),
             methodSuffix: pluralize(upperCaseFirst(entity.name)),
           },
         })),
@@ -174,6 +176,8 @@ export function defineJoinerConfig(
  *   number_plate: model.text().primaryKey(),
  *   test: model.text(),
  * })
+ *
+ * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
  *
  * // output:
  * // {
@@ -213,7 +217,7 @@ export function buildLinkableKeysFromDmlObjects<
 
     if (primaryKeys.length) {
       primaryKeys.forEach((primaryKey) => {
-        linkableKeys[primaryKey] = model.name
+        linkableKeys[primaryKey] = upperCaseFirst(model.name)
       })
     }
   }
@@ -250,7 +254,7 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *   test: model.text(),
  * })
  *
- * const links = buildLinkConfigFromDmlObjects('userService', [user, car])
+ * const links = buildLinkConfigFromDmlObjects('userService', { user, car })
  *
  * // output:
  * // {
@@ -279,19 +283,17 @@ export function buildLinkableKeysFromMikroOrmObjects(
  */
 export function buildLinkConfigFromDmlObjects<
   const ServiceName extends string,
-  const T extends DmlEntity<any, any>[]
->(
-  serviceName: ServiceName,
-  models: T = [] as unknown as T
-): InfersLinksConfig<ServiceName, T> {
+  const T extends Record<string, IDmlEntity<any, any>>
+>(serviceName: ServiceName, models: T): InfersLinksConfig<ServiceName, T> {
   const linkConfig = {} as InfersLinksConfig<ServiceName, T>
 
-  for (const model of models) {
+  for (const model of Object.values(models) ?? []) {
     if (!DmlEntity.isDmlEntity(model)) {
       continue
     }
 
     const schema = model.schema
+    // @ts-ignore
     const modelLinkConfig = (linkConfig[lowerCaseFirst(model.name)] ??= {
       toJSON: function () {
         const linkables = Object.entries(this)
@@ -322,7 +324,7 @@ export function buildLinkConfigFromDmlObjects<
     }
   }
 
-  return linkConfig as InfersLinksConfig<ServiceName, T> & Record<any, any>
+  return linkConfig as InfersLinksConfig<ServiceName, T>
 }
 
 /**

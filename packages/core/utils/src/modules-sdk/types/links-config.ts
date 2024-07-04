@@ -1,10 +1,11 @@
 import {
   DMLSchema,
+  IDmlEntity,
   IDmlEntityConfig,
   InferDmlEntityNameFromConfig,
+  Prettify,
   SnakeCase,
 } from "@medusajs/types"
-import { DmlEntity } from "../../dml"
 import { PrimaryKeyModifier } from "../../dml/properties/primary-key"
 
 /**
@@ -54,22 +55,22 @@ type InferLinkableKeyName<
       string}`
   : never
 
-type InferSchemaLinkableKeys<T> = T extends DmlEntity<
+type InferSchemaLinkableKeys<T> = T extends IDmlEntity<
   infer Schema,
   infer Config
 >
   ? {
       [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
         ? InferLinkableKeyName<K, Schema[K], Config>
-        : never]: InferDmlEntityNameFromConfig<Config>
+        : never]: Capitalize<InferDmlEntityNameFromConfig<Config>>
     }
   : {}
 
-type InferSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
+type InferSchemasLinkableKeys<T extends IDmlEntity<any, any>[]> = {
   [K in keyof T]: InferSchemaLinkableKeys<T[K]>
 }
 
-type AggregateSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
+type AggregateSchemasLinkableKeys<T extends IDmlEntity<any, any>[]> = {
   [K in keyof InferSchemasLinkableKeys<T>]: InferSchemasLinkableKeys<T>[K]
 }
 
@@ -92,7 +93,7 @@ type AggregateSchemasLinkableKeys<T extends DmlEntity<any, any>[]> = {
  * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car]) // { user_id: 'user', car_number_plate: 'car' }
  *
  */
-export type InferLinkableKeys<T extends DmlEntity<any, any>[]> =
+export type InferLinkableKeys<T extends IDmlEntity<any, any>[]> =
   UnionToIntersection<FlattenUnion<AggregateSchemasLinkableKeys<T>>[0]>
 
 /**
@@ -141,14 +142,12 @@ type InferPrimaryKeyNameOrNever<
 type InferSchemaLinksConfig<
   ServiceName extends string,
   T
-> = T extends DmlEntity<infer Schema, infer Config>
+> = T extends IDmlEntity<infer Schema, infer Config>
   ? {
-      [K in keyof Schema as Schema[K] extends PrimaryKeyModifier<any, any>
-        ? InferPrimaryKeyNameOrNever<Schema, K>
-        : never]: {
+      [K in keyof Schema as InferPrimaryKeyNameOrNever<Schema, K>]: {
         serviceName: ServiceName
-        field: T extends DmlEntity<any, infer Config>
-          ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
+        field: T extends IDmlEntity<any, infer Config>
+          ? InferDmlEntityNameFromConfig<Config>
           : string
         linkable: InferLinkableKeyName<K, Schema[K], Config>
         primaryKey: K
@@ -200,20 +199,22 @@ type InferSchemaLinksConfig<
  */
 export type InfersLinksConfig<
   ServiceName extends string,
-  T extends DmlEntity<any, any>[]
-> = UnionToIntersection<{
-  [K in keyof T as T[K] extends DmlEntity<any, infer Config>
-    ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
-    : never]: InferSchemaLinksConfig<ServiceName, T[K]> & {
-    toJSON: () => {
-      serviceName: ServiceName
-      field: T[K] extends DmlEntity<any, infer Config>
-        ? Uncapitalize<InferDmlEntityNameFromConfig<Config>>
-        : string
-      linkable: InferLastLinkable<ServiceName, T[K]>
-      primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
+  T extends Record<string, IDmlEntity<any, any>>
+> = Prettify<{
+  [K in keyof T as T[K] extends IDmlEntity<any, infer Config>
+    ? InferDmlEntityNameFromConfig<Config>
+    : never]: Prettify<
+    InferSchemaLinksConfig<ServiceName, T[K]> & {
+      toJSON: () => {
+        serviceName: ServiceName
+        field: T[K] extends IDmlEntity<any, infer Config>
+          ? InferDmlEntityNameFromConfig<Config>
+          : string
+        linkable: InferLastLinkable<ServiceName, T[K]>
+        primaryKey: InferLastPrimaryKey<ServiceName, T[K]>
+      }
     }
-  }
+  >
 }>
 
 /**
