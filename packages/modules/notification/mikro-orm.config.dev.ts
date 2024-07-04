@@ -1,8 +1,6 @@
 import * as entities from "./src/models"
-import { defineMikroOrmCliConfig } from "@medusajs/utils"
+import { defineMikroOrmCliConfig, Modules } from "@medusajs/utils"
 
-module.exports = defineMikroOrmCliConfig({
+module.exports = defineMikroOrmCliConfig(Modules.NOTIFICATION, {
   entities: Object.values(entities),
-  schema: "public",
-  databaseName: "medusa-notification",
 })

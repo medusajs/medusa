@@ -1,7 +1,5 @@
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
+import { getOrdersListlWorkflow } from "@medusajs/core-flows"
+import { OrderDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -11,24 +9,28 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "order",
-    variables: {
-      filters: {
-        ...req.filterableFields,
-        is_draft_order: false,
-      },
-      ...req.remoteQueryConfig.pagination,
+  const variables = {
+    filters: {
+      ...req.filterableFields,
+      is_draft_order: false,
     },
-    fields: req.remoteQueryConfig.fields,
+    ...req.remoteQueryConfig.pagination,
+  }
+
+  const workflow = getOrdersListlWorkflow(req.scope)
+  const { result } = await workflow.run({
+    input: {
+      fields: req.remoteQueryConfig.fields,
+      variables,
+    },
   })
 
-  const { rows: orders, metadata } = await remoteQuery(queryObject)
-
+  const { rows, metadata } = result as {
+    rows: OrderDTO[]
+    metadata: any
+  }
   res.json({
-    orders,
+    orders: rows,
     count: metadata.count,
     offset: metadata.skip,
     limit: metadata.take,
