@@ -8,7 +8,9 @@ In this chapter, you’ll learn about the CORS middleware and how to configure i
 
 ## CORS Overview
 
-Cross-Origin Resource Sharing (CORS) allows only configured origins to access your API Routes. For example, if you allow only origins starting with `http://localhost:7001` to access your Admin API Routes, other origins accessing those routes get a CORS error.
+Cross-Origin Resource Sharing (CORS) allows only configured origins to access your API Routes.
+
+For example, if you allow only origins starting with `http://localhost:7001` to access your Admin API Routes, other origins accessing those routes get a CORS error.
 
 ### CORS Configurations
 
@@ -29,6 +31,12 @@ module.exports = defineConfig({
 ```
 
 This allows the `http://localhost:7001` origin to access the Admin API Routes, and the `http://localhost:8000` origin to access Store API Routes.
+
+<Note title="Tip">
+
+Learn more about the CORS configurations in [this resource guide](!resources!/references/medusa-config#http).
+
+</Note>
 
 ---
 
@@ -70,13 +78,16 @@ You can do that in the exported middlewares configurations in `src/api/middlewar
 
 For example:
 
-export const highlights = [["18", "parseCorsOrigins", "A utility function that parses the CORS configurations in `medusa-config.js`"]]
+export const highlights = [["25", "parseCorsOrigins", "A utility function that parses the CORS configurations in `medusa-config.js`"]]
 
-```ts title="src/api/middlewares.ts" highlights={highlights} collapsibleLines="1-7" expandButtonLabel="Show Imports"
+```ts title="src/api/middlewares.ts" highlights={highlights} collapsibleLines="1-10" expandButtonLabel="Show Imports"
 import {
-  ConfigModule,
   MiddlewaresConfig,
+  MedusaNextFunction, 
+  MedusaRequest, 
+  MedusaResponse, 
 } from "@medusajs/medusa"
+import { ConfigModule } from "@medusajs/types"
 import { parseCorsOrigins } from "@medusajs/utils"
 import cors from "cors"
 
@@ -85,7 +96,11 @@ export const config: MiddlewaresConfig = {
     {
       matcher: "/custom*",
       middlewares: [
-        (req, res, next) => {
+        (
+          req: MedusaRequest, 
+          res: MedusaResponse, 
+          next: MedusaNextFunction
+        ) => {
           const configModule: ConfigModule =
             req.scope.resolve("configModule")
 

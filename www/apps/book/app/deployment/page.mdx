@@ -25,7 +25,7 @@ You must deploy the Medusa server before the admin or storefront, as both of the
 
 ![Diagram showcasing how the Medusa server and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600972/Medusa%20Book/backend_deployment_pgexo3.jpg)
 
-Since the Medusa server is a Node.js server, it must be deployed to a hosting provider that supports deploying servers, such as Railway, DigitalOcean, AWS, Heruko, etc…
+The Medusa server must be deployed to a hosting provider supporting Node.js server deployments, such as Railway, DigitalOcean, AWS, Heruko, etc…
 
 <Note title="Tip">
 
@@ -33,7 +33,7 @@ For optimal experience, make sure that the hosting provider and plan offer at le
 
 </Note>
 
-Your server connects to PostgreSQL and Redis databases. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean). You can also choose a separate hosting for either of them and connect to them with Medusa’s configurations.
+Your server connects to a PostgreSQL database and, optionally, Redis or other services. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean).
 
 Refer to [this reference](!resources!/deployment) to find how-to deployment guides for specific hosting providers.
 
@@ -41,15 +41,9 @@ Refer to [this reference](!resources!/deployment) to find how-to deployment guid
 
 ## Deploying the Medusa Admin
 
-<Note type="soon" title="Development Notice">
-
-Admin deployment details are still in the work.
-
-</Note>
-
 ### Deploy Admin with the Server
 
-Since the Medusa Admin is a plugin installed in the server, you may choose to host them together. 
+The Medusa Admin can be deployed on the same hosting with the server.
 
 In this scenario, make sure the hosting provider and plan of your choice provide at least 2GB of RAM, as the admin build requires high RAM usage.
 
@@ -60,17 +54,6 @@ In this scenario, make sure the hosting provider and plan of your choice provide
 The server deployment guides mention details on how to deploy the admin along with the backend.
 
 </Note>
-
-### Deploy Admin through GitHub Action
-
-If you host your server's code on GitHub, you can:
-
-1. Disable the `autoRebuild` option of the admin plugin. 
-2. Create a GitHub action that builds the admin before the deployment is triggered.
-
-With this solution, you can deploy the admin with the server but the hosting provider doesn’t handle the admin building, decreasing the RAM usage.
-
-![Diagram showcasing how the admin can be built through a GitHub action before deployment](https://res.cloudinary.com/dza7lstvk/image/upload/v1708601239/Medusa%20Book/admin_deployment_1_-_actions_cxjv6h.jpg)
 
 ### Deploy Admin Separately
 

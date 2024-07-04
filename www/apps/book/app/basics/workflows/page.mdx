@@ -12,11 +12,11 @@ In this chapter, you’ll learn about workflows and how to define and execute th
 
 A workflow is a series of queries and actions that complete a task.
 
-You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps. This makes it possible to keep track of your Workflow’s progress, automatically retry failing steps, and roll back steps.
+You construct a workflow similar to how you create a JavaScript function, but unlike regular functions, a workflow creates an internal representation of your steps. This makes it possible to keep track of your workflow’s progress, automatically retry failing steps, and roll back steps.
 
 ---
 
-## How to Create and Execute a Workflow
+## How to Create and Execute a Workflow?
 
 ### 1. Create the Steps
 
@@ -34,7 +34,9 @@ const step1 = createStep("step-1", async () => {
 
 This creates one step that returns a hello message.
 
-Steps can accepts input parameters. For example:
+Steps can accept input parameters.
+
+For example, add the following to `src/workflows/hello-world.ts`:
 
 ```ts title="src/workflows/hello-world.ts"
 type WorkflowInput = {
@@ -48,7 +50,7 @@ const step2 = createStep("step-2", async ({ name }: WorkflowInput) => {
 
 ### 2. Create a Workflow
 
-Next, create the workflow using the `createWorkflow` function:
+Next, add the following to the same file to create the workflow using the `createWorkflow` function:
 
 ```ts title="src/workflows/hello-world.ts"
 import {
@@ -93,7 +95,7 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
 <CodeTabs group="resource-types">
   <CodeTab label="API Route" value="api-route">
     
-    ```ts title="src/api/store/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]}
+    ```ts title="src/api/store/workflow/route.ts" highlights={[["11"], ["12"], ["13"], ["14"], ["15"], ["16"]]} collapsibleLines="1-6" expandButtonLabel="Show Imports"
     import type {
       MedusaRequest,
       MedusaResponse,
@@ -118,23 +120,30 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
   </CodeTab>
   <CodeTab label="Subscriber" value="subscriber">
     
-    ```ts title="src/subscribers/customer-created.ts" highlights={[["13"], ["14"], ["15"], ["16"], ["17"], ["18"]]}
+    ```ts title="src/subscribers/customer-created.ts" highlights={[["20"], ["21"], ["22"], ["23"], ["24"], ["25"]]} collapsibleLines="1-9" expandButtonLabel="Show Imports"
     import {
       type SubscriberConfig,
       type SubscriberArgs,
-      CustomerService,
-      Customer,
     } from "@medusajs/medusa"
     import myWorkflow from "../workflows/hello-world"
+    import { ModuleRegistrationName } from "@medusajs/utils"
+    import { IUserModuleService } from "@medusajs/types"
 
     export default async function handleCustomerCreate({
       data,
       container,
-    }: SubscriberArgs<Customer>) {
+    }: SubscriberArgs<{ id: string }>) {
+      const userId = "data" in data ? data.data.id : data.id
+      const userModuleService: IUserModuleService = container.resolve(
+        ModuleRegistrationName.USER
+      )
+
+      const user = await userModuleService.retrieveUser(userId)
+
       const { result } = await myWorkflow(container)
         .run({
           input: {
-            name: data.first_name,
+            name: user.first_name,
           },
         })
 
@@ -142,7 +151,7 @@ To execute the workflow, invoke it passing the Medusa container as a parameter. 
     }
 
     export const config: SubscriberConfig = {
-      event: CustomerService.Events.CREATED,
+      event: "user.created",
     }
     ```
 
@@ -205,7 +214,7 @@ You’ll receive the following response:
 
 - You're defining a flow with interactions across multiple systems and services.
 - You're defining flows to be used across different resources. For example, if you want to invoke the flow manually through an API Router, but also want to automate its running through a scheduled job.
-- You want to define how the series of actions are rolled-back when an error occurs.
+- You want to define configurations related to errors and how to roll-back steps. This is explained more in later chapters.
 
 </Note>
 
@@ -240,10 +249,12 @@ type WorkflowOutput = {
 }
 
 const step1 = createStep("step-1", async (_, context) => {
-  const productModuleService: IProductModuleService = context.container.resolve(
-    ModuleRegistrationName.PRODUCT
-  )
-  return new StepResponse((await productModuleService.listAndCount())[1])
+  const productModuleService: IProductModuleService =
+    context.container.resolve(ModuleRegistrationName.PRODUCT)
+
+  const [, count] = await productModuleService.listAndCountProducts()
+
+  return new StepResponse(count)
 })
 
 const myWorkflow = createWorkflow<unknown, WorkflowOutput>(

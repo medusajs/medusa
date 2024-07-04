@@ -31,7 +31,7 @@ When you send a notification, you specify the channel to send it through, such a
 For example:
 
 ```js title="medusa-config.js" highlights={[["19"]]}
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -46,12 +46,9 @@ module.exports = {
           // ...
           {
             resolve: "@medusajs/notification-local",
+            id: "notification",
             options: {
-              config: {
-                local: {
-                  channels: ["email"],
-                },
-              },
+              channels: ["email"],
             },
           },
         ],

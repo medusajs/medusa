@@ -85,7 +85,7 @@ The File Module accepts one provider only.
 </Note>
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -99,18 +99,15 @@ module.exports = {
         providers: [
           {
             resolve: "@medusajs/file-s3",
+            id: "s3",
             options: {
-              config: {
-                s3: {
-                  file_url: process.env.S3_FILE_URL,
-                  access_key_id: process.env.S3_ACCESS_KEY_ID,
-                  secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-                  region: process.env.S3_REGION,
-                  bucket: process.env.S3_BUCKET,
-                  endpoint: process.env.S3_ENDPOINT,
-                  // other options...
-                },
-              },
+              file_url: process.env.S3_FILE_URL,
+              access_key_id: process.env.S3_ACCESS_KEY_ID,
+              secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+              region: process.env.S3_REGION,
+              bucket: process.env.S3_BUCKET,
+              endpoint: process.env.S3_ENDPOINT,
+              // other options...
             },
           },
         ],

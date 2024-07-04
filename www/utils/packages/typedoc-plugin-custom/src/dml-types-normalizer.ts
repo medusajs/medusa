@@ -19,6 +19,7 @@ export function load(app: Application) {
     Converter.EVENT_CREATE_DECLARATION,
     (_context: Context, reflection: DeclarationReflection) => {
       normalizeNullable(reflection)
+      normalizePrimary(reflection)
     },
     2
   )
@@ -29,7 +30,7 @@ function normalizeNullable(reflection: DeclarationReflection) {
     reflection.type?.type !== "reference" ||
     reflection.type.name !== "NullableModifier" ||
     !reflection.type.typeArguments ||
-    reflection.type.typeArguments?.length < 2
+    reflection.type.typeArguments.length < 2
   ) {
     return
   }
@@ -44,4 +45,25 @@ function normalizeNullable(reflection: DeclarationReflection) {
   reflection.type = actualType
   // set a flag on the property to consider it optional
   reflection.setFlag(ReflectionFlag.Optional)
+}
+
+function normalizePrimary(reflection: DeclarationReflection) {
+  if (
+    reflection.type?.type !== "reference" ||
+    reflection.type.name !== "PrimaryKeyModifier" ||
+    !reflection.type.typeArguments ||
+    reflection.type.typeArguments.length < 2
+  ) {
+    return
+  }
+
+  const actualType = reflection.type.typeArguments[1]
+
+  if (actualType.type !== "reference") {
+    return
+  }
+
+  // change the type argument of primary key modifier to have one type argument
+  // being the actual type
+  reflection.type.typeArguments = [actualType]
 }

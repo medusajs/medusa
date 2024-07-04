@@ -12,9 +12,9 @@ In this chapter, you’ll learn about what the service factory is and how to use
 
 Medusa provides a service factory that your module’s main service can extend.
 
-The service factory generates data management methods for your data models, so you don't have to implement them manually.
+The service factory generates data management methods for your data models, so you don't have to implement these methods manually.
 
-<Note title="Use the service factory when" type="success">
+<Note title="Extend the service factory when" type="success">
 
 - Your service provides data-management functionalities of your data models.
 
@@ -50,7 +50,7 @@ export default HelloModuleService
 
 The `MedusaService` function accepts one parameter, which is an object of data models to generate data-management methods for.
 
-In the example above, the `HelloModuleService` now has methods to manage the `MyCustom` data model, such as `createMyCustoms`.
+In the example above, since the `HelloModuleService` extends `MedusaService`, it has methods to manage the `MyCustom` data model, such as `createMyCustoms`.
 
 ### Generated Methods
 

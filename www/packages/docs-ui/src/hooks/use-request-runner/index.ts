@@ -48,12 +48,23 @@ export const useRequestRunner = ({
         replaceLog ? replaceLog(stringifiedData) : pushLog(stringifiedData)
       })
       .catch((error) => {
-        pushLog(
-          `An error ocurred: ${JSON.stringify(error, undefined, 2)}`,
-          `\nThis could be a CORS error. You can resolve it by adding\nthe docs' URLto your CORS configurations:\n`,
-          `STORE_CORS=http://localhost:8000,https://docs.medusajs.com`,
-          `ADMIN_CORS=http://localhost:7001,https://docs.medusajs.com`
-        )
+        pushLog(`\nAn error ocurred: ${JSON.stringify(error, undefined, 2)}`)
+        if (responseCode === "404") {
+          pushLog(
+            `\nPossible Solutions:\n`,
+            `- If this is a custom API route, make sure you added it at the correct path.`,
+            `- If this API route accepts any parameters, such as an ID, make sure it exists\nin the Medusa application.`
+          )
+          return
+        }
+
+        if (!responseCode.length) {
+          pushLog(
+            `\nThis could be a CORS error. You can resolve it by adding\nthe docs' URLto your CORS configurations:\n`,
+            `STORE_CORS=http://localhost:8000,https://docs.medusajs.com`,
+            `ADMIN_CORS=http://localhost:7001,https://docs.medusajs.com`
+          )
+        }
       })
       .finally(() => onFinish(`Finished running request.`, responseCode))
   }

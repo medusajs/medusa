@@ -33,7 +33,8 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     ModuleRegistrationName.PRODUCT
   )
 
-  const [, count] = await productModuleService.listAndCount()
+  const [, count] = await productModuleService
+    .listAndCountProducts()
 
   res.json({
     count,

@@ -8,9 +8,9 @@ In this chapter, you’ll learn how to run workflow steps in parallel.
 
 ## parallelize Utility Function
 
-If your workflow has steps that don’t rely on one another’s results, you can run them in parallel. The workflow will wait until all specified steps are finished before continuing with the rest of its implementation.
+If your workflow has steps that don’t rely on one another’s results, run them in parallel using the `parallelize` utility function imported from the `@medusajs/workflows-sdk`.
 
-The `parallelize` utility function imported from the `@medusajs/workflows-sdk` package allows you to run the steps in parallel.
+The workflow waits until all steps passed to the `parallelize` function finish executing before continuing with the rest of its implementation.
 
 For example:
 
@@ -55,4 +55,4 @@ const myWorkflow = createWorkflow<
 
 The `parallelize` function accepts the steps to run in parallel as a parameter.
 
-It returns an array of each step’s result. The results are ordered in the result array by the order they're passed in the function's parameter.
+It returns an array of the steps' results. The results are ordered based on the `parallelize` parameters' order.

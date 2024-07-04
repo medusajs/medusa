@@ -60,12 +60,12 @@ jobs:
         working-directory: www/utils
 
       - name: Generate References
-        if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' }}
-        run: "yarn start generate ${{ github.event.inputs.referenceName }} --merge"
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: "yarn start generate ${{ github.event.inputs.referenceName || 'all' }} --merge"
         working-directory: www/utils/packages/typedoc-generate-references
 
       - name: Generate References
-        if: ${{ github.event_name != 'workflow_dispatch' || github.event_name == 'schedule' }}
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         run: "yarn generate:references"
         working-directory: www/utils
 

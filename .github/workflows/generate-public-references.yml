@@ -1,6 +1,5 @@
 name: Generate Public References
 on:
-  workflow_call:
   workflow_dispatch:
     inputs:
       referenceName:
@@ -13,7 +12,7 @@ on:
 jobs:
   api-v2:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'api' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -23,7 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js environment
@@ -63,7 +61,7 @@ jobs:
           branch-suffix: "timestamp"
   ui:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
+    if: ${{ github.event_name == 'release' || github.event_name == 'workflow_dispatch' || github.event.inputs.referenceName == 'all' || github.event.inputs.referenceName == 'ui' }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
@@ -73,7 +71,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REFERENCE_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js environment
