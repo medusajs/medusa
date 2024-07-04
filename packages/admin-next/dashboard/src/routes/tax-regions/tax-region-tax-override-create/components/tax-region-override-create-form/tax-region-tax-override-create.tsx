@@ -1,5 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Select, Text, clx, toast } from "@medusajs/ui"
+import {
+  Button,
+  Heading,
+  Hint,
+  Input,
+  Label,
+  Select,
+  Text,
+  clx,
+  toast,
+} from "@medusajs/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
@@ -18,7 +28,10 @@ import {
 } from "../../../../../components/modals"
 import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { RuleReferenceType } from "../../../common/constants"
-import { Reference, TargetSchema } from "../../../common/schemas"
+import {
+  TaxRateRuleValue,
+  TaxRateRuleValueSchema,
+} from "../../../common/schemas"
 import { createTaxRulePayload } from "../../../common/utils"
 import { TargetForm } from "./target-form"
 import { TargetItem } from "./target-item"
@@ -33,7 +46,18 @@ const TaxRegionCreateTaxOverrideSchema = z.object({
     })
     .optional(),
   is_combinable: z.boolean().optional(),
-  target: TargetSchema,
+  enabled_rules: z.object({
+    products: z.boolean(),
+    product_collections: z.boolean(),
+    product_tags: z.boolean(),
+    product_types: z.boolean(),
+    customer_groups: z.boolean(),
+  }),
+  products: z.array(TaxRateRuleValueSchema).optional(),
+  product_collections: z.array(TaxRateRuleValueSchema).optional(),
+  product_tags: z.array(TaxRateRuleValueSchema).optional(),
+  product_types: z.array(TaxRateRuleValueSchema).optional(),
+  customer_groups: z.array(TaxRateRuleValueSchema).optional(),
 })
 
 type TaxRegionCreateTaxOverrideFormProps = {
@@ -57,10 +81,18 @@ export const TaxRegionCreateTaxOverrideForm = ({
       rate: {
         value: "",
       },
-      target: {
-        reference_type: RuleReferenceType.PRODUCT,
-        references: [],
+      enabled_rules: {
+        products: true,
+        product_collections: false,
+        product_tags: false,
+        product_types: false,
+        customer_groups: false,
       },
+      products: [],
+      product_collections: [],
+      product_tags: [],
+      product_types: [],
+      customer_groups: [],
     },
     resolver: zodResolver(TaxRegionCreateTaxOverrideSchema),
   })
@@ -68,6 +100,45 @@ export const TaxRegionCreateTaxOverrideForm = ({
   const { mutateAsync, isPending } = useCreateTaxRate()
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    const {
+      products,
+      customer_groups,
+      product_collections,
+      product_tags,
+      product_types,
+    } = values
+
+    const productRules = createTaxRulePayload({
+      reference_type: RuleReferenceType.PRODUCT,
+      references: products || [],
+    })
+    const customerGroupRules = createTaxRulePayload({
+      reference_type: RuleReferenceType.CUSTOMER_GROUP,
+      references: customer_groups || [],
+    })
+    const productCollectionRules = createTaxRulePayload({
+      reference_type: RuleReferenceType.PRODUCT_COLLECTION,
+      references: product_collections || [],
+    })
+    const productTagRules = createTaxRulePayload({
+      reference_type: RuleReferenceType.PRODUCT_TAG,
+      references: product_tags || [],
+    })
+    const productTypeRules = createTaxRulePayload({
+      reference_type: RuleReferenceType.PRODUCT_TYPE,
+      references: product_types || [],
+    })
+
+    const rules = [
+      productRules,
+      customerGroupRules,
+      productCollectionRules,
+      productTagRules,
+      productTypeRules,
+    ]
+      .filter((rule) => Boolean(rule))
+      .flatMap((r) => r) as HttpTypes.AdminCreateTaxRate["rules"]
+
     mutateAsync(
       {
         name: values.name,
@@ -75,7 +146,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
         rate: values.rate?.float,
         code: values.code,
         is_combinable: values.is_combinable,
-        rules: createTaxRulePayload(values.target),
+        rules: rules,
         is_default: false,
       },
       {
@@ -89,80 +160,165 @@ export const TaxRegionCreateTaxOverrideForm = ({
     )
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const products = useFieldArray({
     control: form.control,
-    name: "target.references",
-    keyName: "ref_id",
+    name: "products",
   })
+
+  const productCollections = useFieldArray({
+    control: form.control,
+    name: "product_collections",
+  })
+
+  const productTags = useFieldArray({
+    control: form.control,
+    name: "product_tags",
+  })
+
+  const productTypes = useFieldArray({
+    control: form.control,
+    name: "product_types",
+  })
+
+  const customerGroups = useFieldArray({
+    control: form.control,
+    name: "customer_groups",
+  })
+
+  const getControls = (type: RuleReferenceType) => {
+    switch (type) {
+      case RuleReferenceType.PRODUCT:
+        return products
+      case RuleReferenceType.PRODUCT_COLLECTION:
+        return productCollections
+      case RuleReferenceType.PRODUCT_TAG:
+        return productTags
+      case RuleReferenceType.PRODUCT_TYPE:
+        return productTypes
+      case RuleReferenceType.CUSTOMER_GROUP:
+        return customerGroups
+    }
+  }
 
   const referenceTypeOptions = [
     {
       value: RuleReferenceType.PRODUCT,
-      label: t("taxRegions.fields.target.options.product"),
+      label: t("taxRegions.fields.conditions.options.product"),
     },
     {
       value: RuleReferenceType.PRODUCT_COLLECTION,
-      label: t("taxRegions.fields.target.options.productCollection"),
+      label: t("taxRegions.fields.conditions.options.productCollection"),
     },
     {
       value: RuleReferenceType.PRODUCT_TAG,
-      label: t("taxRegions.fields.target.options.productTag"),
+      label: t("taxRegions.fields.conditions.options.productTag"),
     },
     {
       value: RuleReferenceType.PRODUCT_TYPE,
-      label: t("taxRegions.fields.target.options.productType"),
+      label: t("taxRegions.fields.conditions.options.productType"),
     },
     {
       value: RuleReferenceType.CUSTOMER_GROUP,
-      label: t("taxRegions.fields.target.options.customerGroup"),
+      label: t("taxRegions.fields.conditions.options.customerGroup"),
     },
   ]
 
-  const selectedReferenceType = useWatch({
-    control: form.control,
-    name: "target.reference_type",
-  })
-
-  const searchPlaceholder = {
+  const searchPlaceholders = {
     [RuleReferenceType.PRODUCT]: t(
-      "taxRegions.fields.target.placeholders.product"
+      "taxRegions.fields.conditions.placeholders.product"
     ),
     [RuleReferenceType.PRODUCT_COLLECTION]: t(
-      "taxRegions.fields.target.placeholders.productCollection"
+      "taxRegions.fields.conditions.placeholders.productCollection"
     ),
     [RuleReferenceType.PRODUCT_TAG]: t(
-      "taxRegions.fields.target.placeholders.productTag"
+      "taxRegions.fields.conditions.placeholders.productTag"
     ),
     [RuleReferenceType.PRODUCT_TYPE]: t(
-      "taxRegions.fields.target.placeholders.productType"
+      "taxRegions.fields.conditions.placeholders.productType"
     ),
     [RuleReferenceType.CUSTOMER_GROUP]: t(
-      "taxRegions.fields.target.placeholders.customerGroup"
+      "taxRegions.fields.conditions.placeholders.customerGroup"
     ),
-  }[selectedReferenceType]
+  }
 
-  const setFields = (references: Reference[]) => {
-    if (!references.length) {
-      form.setValue("target.references", [])
+  const getFieldHandler = (type: RuleReferenceType) => {
+    const { fields, remove, append } = getControls(type)
+
+    return (references: TaxRateRuleValue[]) => {
+      if (!references.length) {
+        form.setValue(type, [])
+        setIsOpen(STACKED_MODAL_ID, false)
+        return
+      }
+
+      const newIds = references.map((reference) => reference.value)
+
+      const fieldsToAdd = references.filter(
+        (reference) => !fields.some((field) => field.value === reference.value)
+      )
+
+      for (const field of fields) {
+        if (!newIds.includes(field.value)) {
+          remove(fields.indexOf(field))
+        }
+      }
+
+      append(fieldsToAdd)
       setIsOpen(STACKED_MODAL_ID, false)
-      return
     }
+  }
 
-    const newIds = references.map((reference) => reference.value)
+  const displayOrder = new Set<RuleReferenceType>([RuleReferenceType.PRODUCT])
 
-    const fieldsToAdd = references.filter(
-      (reference) => !fields.some((field) => field.value === reference.value)
+  const disableRule = (type: RuleReferenceType) => {
+    form.setValue(type, [])
+    form.setValue(`enabled_rules.${type}`, false)
+
+    displayOrder.delete(type)
+  }
+
+  const enableRule = (type: RuleReferenceType) => {
+    form.setValue(`enabled_rules.${type}`, true)
+    form.setValue(type, [])
+
+    displayOrder.add(type)
+  }
+
+  const watchedEnabledRules = useWatch({
+    control: form.control,
+    name: "enabled_rules",
+  })
+
+  const addRule = () => {
+    const firstDisabledRule = Object.keys(watchedEnabledRules).find(
+      (key) => !watchedEnabledRules[key as RuleReferenceType]
     )
 
-    for (const field of fields) {
-      if (!newIds.includes(field.value)) {
-        remove(fields.indexOf(field))
-      }
+    if (firstDisabledRule) {
+      enableRule(firstDisabledRule as RuleReferenceType)
     }
-
-    append(fieldsToAdd)
-    setIsOpen(STACKED_MODAL_ID, false)
   }
+
+  const visibleRuleTypes = referenceTypeOptions
+    .filter((option) => watchedEnabledRules[option.value])
+    .sort((a, b) => {
+      const orderArray = Array.from(displayOrder)
+      return orderArray.indexOf(a.value) - orderArray.indexOf(b.value)
+    })
+
+  const getAvailableRuleTypes = (type: RuleReferenceType) => {
+    return referenceTypeOptions.filter((option) => {
+      return (
+        !visibleRuleTypes.some(
+          (visibleOption) => visibleOption.value === option.value
+        ) || option.value === type
+      )
+    })
+  }
+
+  const showAddButton = Object.values(watchedEnabledRules).some(
+    (value) => !value
+  )
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -186,12 +342,16 @@ export const TaxRegionCreateTaxOverrideForm = ({
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
               <div>
-                <Heading className="capitalize">
-                  {t("taxRegions.taxOverrides.create.header")}
-                </Heading>
-                <Text size="small" className="text-ui-fg-subtle">
-                  {t("taxRegions.taxOverrides.create.hint")}
-                </Text>
+                <RouteFocusModal.Title asChild>
+                  <Heading>
+                    {t("taxRegions.taxOverrides.create.header")}
+                  </Heading>
+                </RouteFocusModal.Title>
+                <RouteFocusModal.Description asChild>
+                  <Text size="small" className="text-ui-fg-subtle">
+                    {t("taxRegions.taxOverrides.create.hint")}
+                  </Text>
+                </RouteFocusModal.Description>
               </div>
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-y-4">
@@ -264,117 +424,185 @@ export const TaxRegionCreateTaxOverrideForm = ({
                 label={t("taxRegions.fields.isCombinable.label")}
                 description={t("taxRegions.fields.isCombinable.hint")}
               />
-              <div>
-                <Form.Field
-                  control={form.control}
-                  name="target"
-                  render={({
-                    field: { value: _value, onChange: _onChange, ...field },
-                  }) => {
+              <div className="flex flex-col gap-y-3">
+                <div className="flex items-center justify-between gap-x-4">
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-x-1">
+                      <Label
+                        id="tax_region_rules_label"
+                        htmlFor="tax_region_rules"
+                      >
+                        {t("taxRegions.fields.conditions.label")}
+                      </Label>
+                      <Text
+                        size="small"
+                        leading="compact"
+                        className="text-ui-fg-muted"
+                      >
+                        ({t("fields.optional")})
+                      </Text>
+                    </div>
+                    <Hint
+                      id="tax_region_rules_description"
+                      className="text-pretty"
+                    >
+                      {t("taxRegions.fields.conditions.hint")}
+                    </Hint>
+                  </div>
+                  {showAddButton && (
+                    <Button
+                      onClick={addRule}
+                      type="button"
+                      size="small"
+                      variant="transparent"
+                      className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex-shrink-0"
+                    >
+                      {t("taxRegions.fields.conditions.action")}
+                    </Button>
+                  )}
+                </div>
+                <div
+                  id="tax_region_rules"
+                  aria-labelledby="tax_region_rules_label"
+                  aria-describedby="tax_region_rules_description"
+                  role="application"
+                  className="flex flex-col gap-y-3"
+                >
+                  {visibleRuleTypes.map((ruleType, index) => {
+                    const type = ruleType.value
+                    const label = ruleType.label
+                    const isLast = index === visibleRuleTypes.length - 1
+                    const searchPlaceholder = searchPlaceholders[type]
+
+                    const options = getAvailableRuleTypes(type)
+
+                    const { fields, remove } = getControls(type)
+                    const handler = getFieldHandler(type)
+
+                    const handleChangeType = (value: RuleReferenceType) => {
+                      disableRule(type)
+                      enableRule(value)
+                    }
+
                     return (
-                      <Form.Item>
-                        <Form.Label>
-                          {t("taxRegions.fields.target.label")}
-                        </Form.Label>
-                        <div
-                          className={clx(
-                            "bg-ui-bg-component shadow-elevation-card-rest transition-fg grid gap-1.5 rounded-xl py-1.5",
-                            "aria-[invalid='true']:shadow-borders-error"
-                          )}
-                          role="application"
-                          {...field}
-                        >
-                          <div className="text-ui-fg-subtle grid gap-1.5 px-1.5 md:grid-cols-2">
-                            <Form.Field
-                              control={form.control}
-                              name="target.reference_type"
-                              render={({
-                                field: { ref, onChange, ...field },
-                              }) => {
-                                return (
-                                  <Select
-                                    {...field}
-                                    onValueChange={(values) => {
-                                      form.setValue("target.references", [])
-                                      onChange(values)
-                                    }}
-                                  >
-                                    <Select.Trigger
-                                      className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover"
-                                      ref={ref}
-                                    >
-                                      <Select.Value />
-                                    </Select.Trigger>
-                                    <Select.Content>
-                                      {referenceTypeOptions.map((option) => {
-                                        return (
-                                          <Select.Item
-                                            key={option.value}
-                                            value={option.value}
-                                          >
-                                            {option.label}
-                                          </Select.Item>
-                                        )
-                                      })}
-                                    </Select.Content>
-                                  </Select>
-                                )
-                              }}
-                            />
-                            <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
-                              {t("taxRegions.fields.target.operators.in")}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-1.5 px-1.5">
-                            <StackedFocusModal id={STACKED_MODAL_ID}>
-                              <StackedFocusModal.Trigger asChild>
-                                <button
-                                  type="button"
-                                  className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
+                      <div key={type}>
+                        <Form.Field
+                          control={form.control}
+                          name={ruleType.value}
+                          render={({
+                            field: {
+                              value: _value,
+                              onChange: _onChange,
+                              ...field
+                            },
+                          }) => {
+                            return (
+                              <Form.Item className="space-y-0">
+                                <Form.Label className="sr-only">
+                                  {label}
+                                </Form.Label>
+                                <div
+                                  className={clx(
+                                    "bg-ui-bg-component shadow-elevation-card-rest transition-fg grid gap-1.5 rounded-xl py-1.5",
+                                    "aria-[invalid='true']:shadow-borders-error"
+                                  )}
+                                  role="application"
+                                  {...field}
                                 >
-                                  <MagnifyingGlass />
-                                  {searchPlaceholder}
-                                </button>
-                              </StackedFocusModal.Trigger>
-                              <StackedFocusModal.Trigger asChild>
-                                <Button variant="secondary">
-                                  {t("actions.browse")}
-                                </Button>
-                              </StackedFocusModal.Trigger>
-                              <StackedFocusModal.Content>
-                                <StackedFocusModal.Header />
-                                <TargetForm
-                                  type="focus"
-                                  referenceType={selectedReferenceType}
-                                  state={fields}
-                                  setState={setFields}
-                                />
-                              </StackedFocusModal.Content>
-                            </StackedFocusModal>
-                          </div>
-                          {fields.length > 0 ? (
-                            <div className="flex flex-col gap-y-1.5">
-                              <Divider variant="dashed" />
-                              <div className="flex flex-col gap-y-1.5 px-1.5">
-                                {fields.map((field, index) => {
-                                  return (
-                                    <TargetItem
-                                      key={field.ref_id}
-                                      index={index}
-                                      label={field.label}
-                                      onRemove={remove}
-                                    />
-                                  )
-                                })}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
-                        <Form.ErrorMessage />
-                      </Form.Item>
+                                  <div className="text-ui-fg-subtle grid gap-1.5 px-1.5 md:grid-cols-2">
+                                    {isLast ? (
+                                      <Select
+                                        value={type}
+                                        onValueChange={handleChangeType}
+                                      >
+                                        <Select.Trigger className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover">
+                                          <Select.Value />
+                                        </Select.Trigger>
+                                        <Select.Content>
+                                          {options.map((option) => {
+                                            return (
+                                              <Select.Item
+                                                key={option.value}
+                                                value={option.value}
+                                              >
+                                                {option.label}
+                                              </Select.Item>
+                                            )
+                                          })}
+                                        </Select.Content>
+                                      </Select>
+                                    ) : (
+                                      <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                                        {label}
+                                      </div>
+                                    )}
+                                    <div className="bg-ui-bg-field shadow-borders-base txt-compact-small rounded-md px-2 py-1.5">
+                                      {t(
+                                        "taxRegions.fields.conditions.operators.in"
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 px-1.5">
+                                    <StackedFocusModal id={STACKED_MODAL_ID}>
+                                      <StackedFocusModal.Trigger asChild>
+                                        <button
+                                          type="button"
+                                          className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
+                                        >
+                                          <MagnifyingGlass />
+                                          {searchPlaceholder}
+                                        </button>
+                                      </StackedFocusModal.Trigger>
+                                      <StackedFocusModal.Trigger asChild>
+                                        <Button variant="secondary">
+                                          {t("actions.browse")}
+                                        </Button>
+                                      </StackedFocusModal.Trigger>
+                                      <StackedFocusModal.Content>
+                                        <StackedFocusModal.Header />
+                                        <TargetForm
+                                          type="focus"
+                                          referenceType={type}
+                                          state={fields}
+                                          setState={handler}
+                                        />
+                                      </StackedFocusModal.Content>
+                                    </StackedFocusModal>
+                                    <Button
+                                      variant="secondary"
+                                      onClick={() => disableRule(type)}
+                                      type="button"
+                                    >
+                                      {t("actions.delete")}
+                                    </Button>
+                                  </div>
+                                  {fields.length > 0 ? (
+                                    <div className="flex flex-col gap-y-1.5">
+                                      <Divider variant="dashed" />
+                                      <div className="flex flex-col gap-y-1.5 px-1.5">
+                                        {fields.map((field, index) => {
+                                          return (
+                                            <TargetItem
+                                              key={field.id}
+                                              index={index}
+                                              label={field.label}
+                                              onRemove={remove}
+                                            />
+                                          )
+                                        })}
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                </div>
+                                <Form.ErrorMessage className="mt-2" />
+                              </Form.Item>
+                            )
+                          }}
+                        />
+                      </div>
                     )
-                  }}
-                />
+                  })}
+                </div>
               </div>
             </div>
           </div>

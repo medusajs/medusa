@@ -74,7 +74,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
         </div>
         <div className="flex items-center gap-x-3">
           <Text size="small" leading="compact" className="text-ui-fg-subtle">
-            {t("taxRegions.fields.target.numberOfTargets", {
+            {t("taxRegions.fields.conditions.numberOfTargets", {
               count: numberOfTargets,
             })}
           </Text>
@@ -123,7 +123,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
                   leading="compact"
                   className="text-ui-fg-subtle"
                 >
-                  {t("taxRegions.fields.target.operators.on")}
+                  {t("taxRegions.fields.conditions.operators.on")}
                 </Text>
                 {Object.entries(groupedRules).map(([reference, ids], index) => {
                   return (
@@ -142,7 +142,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
                           leading="compact"
                           className="text-ui-fg-subtle"
                         >
-                          {t("taxRegions.fields.target.operators.and")}
+                          {t("taxRegions.fields.conditions.operators.and")}
                         </Text>
                       )}
                     </div>
@@ -178,19 +178,19 @@ const ReferenceBadge = ({ reference }: { reference: RuleReferenceType }) => {
 
   switch (reference) {
     case RuleReferenceType.PRODUCT:
-      label = t("taxRegions.fields.target.tags.product")
+      label = t("taxRegions.fields.conditions.tags.product")
       break
     case RuleReferenceType.PRODUCT_COLLECTION:
-      label = t("taxRegions.fields.target.tags.productCollection")
+      label = t("taxRegions.fields.conditions.tags.productCollection")
       break
     case RuleReferenceType.PRODUCT_TAG:
-      label = t("taxRegions.fields.target.tags.productTag")
+      label = t("taxRegions.fields.conditions.tags.productTag")
       break
     case RuleReferenceType.PRODUCT_TYPE:
-      label = t("taxRegions.fields.target.tags.productType")
+      label = t("taxRegions.fields.conditions.tags.productType")
       break
     case RuleReferenceType.CUSTOMER_GROUP:
-      label = t("taxRegions.fields.target.tags.customerGroup")
+      label = t("taxRegions.fields.conditions.tags.customerGroup")
       break
   }
 
@@ -234,7 +234,7 @@ const ReferenceValues = ({
           ))}
           {additional > 0 && (
             <li>
-              {t("taxRegions.fields.target.additionalValues", {
+              {t("taxRegions.fields.conditions.additionalValues", {
                 count: additional,
               })}
             </li>
@@ -243,7 +243,7 @@ const ReferenceValues = ({
       }
     >
       <Badge size="2xsmall">
-        {t("taxRegions.fields.target.values", {
+        {t("taxRegions.fields.conditions.values", {
           count: ids.length,
         })}
       </Badge>

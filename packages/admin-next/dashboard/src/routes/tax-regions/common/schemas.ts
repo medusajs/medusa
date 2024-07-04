@@ -14,3 +14,17 @@ export const TargetSchema = z.object({
 })
 
 export type Target = z.infer<typeof TargetSchema>
+
+export const TaxRateRuleValueSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+})
+
+export type TaxRateRuleValue = z.infer<typeof TaxRateRuleValueSchema>
+
+export const TaxRateRulesSchema = z.record(
+  z.nativeEnum(RuleReferenceType),
+  z.array(TaxRateRuleValueSchema).optional()
+)
+
+export type TaxRateRules = z.infer<typeof TaxRateRulesSchema>
