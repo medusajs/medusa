@@ -101,7 +101,7 @@ const Item = ({
       </div>
       <div className="grid grid-cols-3 items-center gap-x-4">
         <div className="flex items-center justify-end gap-x-4">
-          <Text size="small" style={{ paddingTop: 3 }}>
+          <Text size="small" className="pt-[3px]">
             {getLocaleAmount(item.unit_price, currencyCode)}
           </Text>
         </div>
@@ -123,7 +123,7 @@ const Item = ({
           </div>
         </div>
         <div className="flex items-center justify-end">
-          <Text size="small" style={{ paddingTop: 3 }}>
+          <Text size="small" className="pt-[3px]">
             {getLocaleAmount(item.subtotal || 0, currencyCode)}
           </Text>
         </div>
