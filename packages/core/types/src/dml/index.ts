@@ -1,6 +1,14 @@
 import { CamelCase } from "../common"
 
 /**
+ * Locally used helper to prettify the inferred properties of
+ * a DML schema.
+ */
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
+/**
  * Symbol to identify a DML entity from an object
  */
 export const IsDmlEntity = Symbol.for("isDmlEntity")
@@ -187,7 +195,7 @@ export type InferManyToManyFields<Relation> = InferHasManyFields<Relation>
  * Inferring the types of the schema fields from the DML
  * entity
  */
-export type InferSchemaFields<Schema extends DMLSchema> = {
+export type InferSchemaFields<Schema extends DMLSchema> = Prettify<{
   [K in keyof Schema]: Schema[K] extends RelationshipType<any>
     ? Schema[K]["type"] extends "belongsTo"
       ? InferBelongsToFields<Schema[K]["$dataType"]>
@@ -199,7 +207,7 @@ export type InferSchemaFields<Schema extends DMLSchema> = {
       ? InferManyToManyFields<Schema[K]["$dataType"]>
       : never
     : Schema[K]["$dataType"]
-}
+}>
 
 /**
  * Helper to infer the schema type of a DmlEntity
