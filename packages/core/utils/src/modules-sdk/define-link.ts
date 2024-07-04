@@ -87,7 +87,7 @@ export function defineLink(
       module: source.serviceName,
     }
   } else {
-    throw new Error("Invalid value for serviceA config")
+    throw new Error("Invalid linkable passed for the first argument")
   }
 
   if (isInputSource(rightService)) {
@@ -113,7 +113,7 @@ export function defineLink(
       module: source.serviceName,
     }
   } else {
-    throw new Error("Invalid value for serviceA config")
+    throw new Error(`Invalid linkable passed for the second argument`)
   }
 
   const output = { serviceName: "" }
