@@ -170,8 +170,8 @@ export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeReposito
     delete where.mpath
     delete where.parent_category_id
 
-    const categoriesInTree = Array.from(
-      JSON.stringify(await manager.find(ProductCategory, where, options))
+    const categoriesInTree = await this.serialize<ProductCategory[]>(
+      await manager.find(ProductCategory, where, options)
     )
 
     const categoriesById = new Map(categoriesInTree.map((cat) => [cat.id, cat]))
