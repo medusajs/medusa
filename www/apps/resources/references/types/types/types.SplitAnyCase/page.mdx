@@ -1,0 +1,9 @@
+import { TypeList } from "docs-ui"
+
+# SplitAnyCase
+
+ **SplitAnyCase**: [IncludesSeparator](../types.IncludesSeparator/page.mdx)&#60;Type&#62; extends `true` ? [SeparatorCaseParser](../types.SeparatorCaseParser/page.mdx)&#60;Type&#62; : [IsOneWord](../types.IsOneWord/page.mdx)&#60;Type&#62; extends `true` ? [Lowercase&#60;Type & string&#62;] : [IsCamelCase](../types.IsCamelCase/page.mdx)&#60;Type&#62; extends `true` ? [CamelCaseParser](../types.CamelCaseParser/page.mdx)&#60;Type&#62; : [IsPascalCase](../types.IsPascalCase/page.mdx)&#60;Type&#62; extends `true` ? [PascalCaseParser](../types.PascalCaseParser/page.mdx)&#60;Type&#62; : []
+
+## Type Parameters
+
+<TypeList types={[{"name":"Type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SplitAnyCase"/>
