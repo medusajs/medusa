@@ -14,7 +14,7 @@ export const IconAvatar = ({ children, className }: IconAvatarProps) => {
   return (
     <div
       className={clx(
-        "shadow-borders-base flex size-7 items-center justify-center rounded-md",
+        "shadow-borders-base bg-ui-bg-base flex size-7 items-center justify-center rounded-md",
         "[&>div]:bg-ui-bg-field [&>div]:text-ui-fg-subtle [&>div]:flex [&>div]:size-6 [&>div]:items-center [&>div]:justify-center [&>div]:rounded-[4px]",
         className
       )}
