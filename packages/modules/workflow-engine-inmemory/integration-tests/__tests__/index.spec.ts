@@ -4,7 +4,7 @@ import {
   IWorkflowEngineService,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { Modules, TransactionHandlerType } from "@medusajs/utils"
+import { Module, Modules, TransactionHandlerType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
@@ -20,6 +20,7 @@ import {
   workflowEventGroupIdStep2Mock,
 } from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
+import { WorkflowsModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -32,6 +33,29 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
 
       beforeEach(() => {
         query = medusaApp.query
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.WORKFLOW_ENGINE, {
+          service: WorkflowsModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["workflowExecution"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          workflowExecution: {
+            id: {
+              linkable: "workflow_execution_id",
+              primaryKey: "id",
+              serviceName: "workflows",
+              field: "workflowExecution",
+            },
+          },
+        })
       })
 
       it("should execute an async workflow keeping track of the event group id provided in the context", async () => {

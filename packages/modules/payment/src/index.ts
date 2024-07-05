@@ -1,13 +1,10 @@
-import { ModuleExports } from "@medusajs/types"
-
 import { PaymentModuleService } from "@services"
 import loadProviders from "./loaders/providers"
+import { Module, Modules } from "@medusajs/utils"
 
-const moduleDefinition: ModuleExports = {
+export default Module(Modules.PAYMENT, {
   service: PaymentModuleService,
   loaders: [loadProviders],
-}
-
-export default moduleDefinition
+})
 
 export { PaymentModuleOptions } from "./types"

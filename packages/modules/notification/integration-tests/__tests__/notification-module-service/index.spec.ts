@@ -1,7 +1,8 @@
 import { INotificationModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { resolve } from "path"
+import { NotificationModuleService } from "@services"
 
 let moduleOptions = {
   providers: [
@@ -26,6 +27,29 @@ moduleIntegrationTestRunner({
   moduleOptions,
   testSuite: ({ service }: SuiteOptions<INotificationModuleService>) =>
     describe("Notification Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.NOTIFICATION, {
+          service: NotificationModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["notification"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          notification: {
+            id: {
+              linkable: "notification_id",
+              primaryKey: "id",
+              serviceName: "notification",
+              field: "notification",
+            },
+          },
+        })
+      })
+
       it("sends a notification and stores it in the database", async () => {
         const notification = {
           to: "admin@medusa.com",

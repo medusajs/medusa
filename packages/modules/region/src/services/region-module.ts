@@ -6,7 +6,6 @@ import {
   InferEntityType,
   InternalModuleDeclaration,
   IRegionModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
   RegionDTO,
@@ -28,7 +27,6 @@ import {
 } from "@medusajs/utils"
 import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -66,10 +64,6 @@ export default class RegionModuleService
     this.baseRepository_ = baseRepository
     this.regionService_ = regionService
     this.countryService_ = countryService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error
