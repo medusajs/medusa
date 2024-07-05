@@ -16,7 +16,7 @@ import {
 } from "@mikro-orm/core"
 import Customer from "./customer"
 
-type OptionalAddressProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAddressProps = DAL.ModelDateColumns // TODO: To be revisited when more clear
 
 const CustomerAddressUniqueCustomerShippingAddress =
   createPsqlIndexStatementHelper({
