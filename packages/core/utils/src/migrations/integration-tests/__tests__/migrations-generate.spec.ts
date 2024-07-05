@@ -22,10 +22,9 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
-console.log(pgGodCredentials)
-
 describe("Generate migrations", () => {
   beforeEach(async () => {
+    jest.setTimeout(300000)
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
   })
 
