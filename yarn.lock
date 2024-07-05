@@ -5343,7 +5343,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -5354,9 +5353,7 @@ __metadata:
     awilix: ^8.0.0
     cron-parser: ^4.9.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
