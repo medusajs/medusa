@@ -6,7 +6,6 @@ import {
   FindConfig,
   ICartModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
 import {
@@ -39,7 +38,6 @@ import {
   UpdateLineItemDTO,
   UpdateShippingMethodTaxLineDTO,
 } from "@types"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -113,10 +111,6 @@ export default class CartModuleService
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.shippingMethodTaxLineService_ = shippingMethodTaxLineService
     this.lineItemTaxLineService_ = lineItemTaxLineService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   private shouldIncludeTotals(config: FindConfig<any>): boolean {

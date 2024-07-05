@@ -8,10 +8,8 @@ import {
   FindConfig,
   IApiKeyModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
-import { joinerConfig } from "../joiner-config"
 import { ApiKey } from "@models"
 import {
   CreateApiKeyDTO,
@@ -38,7 +36,7 @@ type InjectedDependencies = {
   apiKeyService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
-export default class ApiKeyModuleService
+export class ApiKeyModuleService
   extends MedusaService<{
     ApiKey: { dto: ApiKeyTypes.ApiKeyDTO }
   }>({ ApiKey })
@@ -57,9 +55,6 @@ export default class ApiKeyModuleService
     this.apiKeyService_ = apiKeyService
   }
 
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
-  }
   //@ts-expect-error
   createApiKeys(
     data: ApiKeyTypes.CreateApiKeyDTO[],
