@@ -202,8 +202,8 @@ export interface PaymentProcessor {
    *
    * @example
    * import {
-   *   PaymentContext,
-   *   PaymentSessionResponse,
+   *   PaymentProcessorContext,
+   *   PaymentProcessorSessionResponse,
    *   // ...
    * } from "@medusajs/medusa"
    *
