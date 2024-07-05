@@ -1,7 +1,8 @@
 import { IStoreModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createStoreFixture } from "../__fixtures__"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { StoreModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -9,6 +10,37 @@ moduleIntegrationTestRunner<IStoreModuleService>({
   moduleName: Modules.STORE,
   testSuite: ({ service }) => {
     describe("Store Module Service", () => {
+      it.only(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.STORE, {
+          service: StoreModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["storeCurrency", "store"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          storeCurrency: {
+            id: {
+              linkable: "store_currency_id",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "storeCurrency",
+            },
+          },
+          store: {
+            id: {
+              linkable: "store_id",
+              primaryKey: "id",
+              serviceName: "store",
+              field: "store",
+            },
+          },
+        })
+      })
+
       describe("creating a store", () => {
         it("should get created successfully", async function () {
           const store = await service.createStores(createStoreFixture)
