@@ -1,6 +1,7 @@
 import { IRegionModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
+import { RegionModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -8,6 +9,37 @@ moduleIntegrationTestRunner<IRegionModuleService>({
   moduleName: Modules.REGION,
   testSuite: ({ service }) => {
     describe("Region Module Service", () => {
+      it.only(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.REGION, {
+          service: RegionModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["region", "country"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          region: {
+            id: {
+              linkable: "region_id",
+              primaryKey: "id",
+              serviceName: "region",
+              field: "region",
+            },
+          },
+          country: {
+            iso_2: {
+              linkable: "country_iso_2",
+              primaryKey: "iso_2",
+              serviceName: "region",
+              field: "country",
+            },
+          },
+        })
+      })
+
       it("should create countries on application start", async () => {
         const countries = await service.listCountries({}, { take: null })
         expect(countries.length).toEqual(250)

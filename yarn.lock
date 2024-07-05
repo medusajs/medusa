@@ -4988,7 +4988,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5034,7 +5033,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": 1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5057,7 +5055,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5066,9 +5063,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
     ts-node: ^10.9.1
