@@ -1,51 +1,59 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../../../../types/routing"
-import { CustomerAddressDTO, ICustomerModuleService } from "@medusajs/types"
 import {
   deleteCustomerAddressesWorkflow,
   updateCustomerAddressesWorkflow,
 } from "@medusajs/core-flows"
 
-import { MedusaError } from "@medusajs/utils"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import {
+  StoreGetCustomerAddressParamsType,
+  StoreUpdateCustomerAddressType,
+} from "../../../validators"
+import { refetchCustomer } from "../../../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<StoreGetCustomerAddressParamsType>,
   res: MedusaResponse
 ) => {
-  const id = req.auth.actor_id
+  const customerId = req.auth.actor_id
 
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer_address",
+    variables: {
+      filters: { id: req.params.address_id, customer_id: customerId },
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [address] = await customerModuleService.listAddresses(
-    { id: req.params.address_id, customer_id: id },
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-    }
-  )
+  const [address] = await remoteQuery(queryObject)
+  if (!address) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Address with id: ${req.params.address_id} was not found`
+    )
+  }
 
   res.status(200).json({ address })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<Partial<CustomerAddressDTO>>,
+  req: AuthenticatedMedusaRequest<StoreUpdateCustomerAddressType>,
   res: MedusaResponse
 ) => {
   const id = req.auth.actor_id!
-  const service = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
-
-  await validateCustomerAddress(service, id, req.params.address_id)
+  await validateCustomerAddress(req.scope, id, req.params.address_id)
 
   const updateAddresses = updateCustomerAddressesWorkflow(req.scope)
-  const { result, errors } = await updateAddresses.run({
+  const { errors } = await updateAddresses.run({
     input: {
       selector: { id: req.params.address_id, customer_id: req.params.id },
       update: req.validatedBody,
@@ -57,7 +65,13 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ address: result[0] })
+  const customer = await refetchCustomer(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer })
 }
 
 export const DELETE = async (
@@ -65,14 +79,9 @@ export const DELETE = async (
   res: MedusaResponse
 ) => {
   const id = req.auth.actor_id
+  await validateCustomerAddress(req.scope, id, req.params.address_id)
 
-  const service = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
-
-  await validateCustomerAddress(service, id, req.params.address_id)
   const deleteAddress = deleteCustomerAddressesWorkflow(req.scope)
-
   const { errors } = await deleteAddress.run({
     input: { ids: [req.params.address_id] },
     throwOnError: false,
@@ -82,23 +91,35 @@ export const DELETE = async (
     throw errors[0].error
   }
 
+  const customer = await refetchCustomer(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
     id,
     object: "address",
     deleted: true,
+    parent: customer,
   })
 }
 
 const validateCustomerAddress = async (
-  customerModuleService: ICustomerModuleService,
+  scope: MedusaContainer,
   customerId: string,
   addressId: string
 ) => {
-  const [address] = await customerModuleService.listAddresses(
-    { id: addressId, customer_id: customerId },
-    { select: ["id"] }
-  )
+  const remoteQuery = scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "customer_address",
+    variables: {
+      filters: { id: addressId, customer_id: customerId },
+    },
+    fields: ["id"],
+  })
 
+  const [address] = await remoteQuery(queryObject)
   if (!address) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

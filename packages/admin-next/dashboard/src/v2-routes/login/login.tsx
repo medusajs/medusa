@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Heading, Input, Text } from "@medusajs/ui"
+import { Alert, Button, Heading, Input, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import { Link, useLocation, useNavigate } from "react-router-dom"
@@ -7,7 +7,7 @@ import * as z from "zod"
 
 import { Form } from "../../components/common/form"
 import { LogoBox } from "../../components/common/logo-box"
-import { useV2LoginAndSetSession } from "../../lib/api-v2"
+import { useEmailPassLogin } from "../../hooks/api/auth"
 import { isAxiosError } from "../../lib/is-axios-error"
 
 const LoginSchema = z.object({
@@ -31,42 +31,40 @@ export const Login = () => {
   })
 
   //  TODO: Update when more than emailpass is supported
-  const { mutateAsync, isLoading } = useV2LoginAndSetSession()
+  const { mutateAsync, isPending } = useEmailPassLogin()
 
   const handleSubmit = form.handleSubmit(async ({ email, password }) => {
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         email,
         password,
-      },
-      {
-        onSuccess: () => {
-          navigate(from, { replace: true })
-        },
-        onError: (error) => {
-          if (isAxiosError(error)) {
-            if (error.response?.status === 401) {
-              form.setError("email", {
-                type: "manual",
-              })
+      })
 
-              form.setError("password", {
-                type: "manual",
-                message: t("errors.invalidCredentials"),
-              })
-
-              return
-            }
-          }
-
-          form.setError("root.serverError", {
+      navigate(from, { replace: true })
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          form.setError("email", {
             type: "manual",
-            message: t("errors.serverError"),
           })
-        },
+
+          form.setError("password", {
+            type: "manual",
+            message: t("errors.invalidCredentials"),
+          })
+
+          return
+        }
       }
-    )
+
+      form.setError("root.serverError", {
+        type: "manual",
+        message: t("errors.serverError"),
+      })
+    }
   })
+
+  const serverError = form.formState.errors?.root?.serverError?.message
 
   return (
     <div className="bg-ui-bg-base flex min-h-dvh w-dvw items-center justify-center">
@@ -119,10 +117,15 @@ export const Login = () => {
                 }}
               />
             </div>
-            <Button className="w-full" type="submit" isLoading={isLoading}>
+            <Button className="w-full" type="submit" isLoading={isPending}>
               {t("actions.continue")}
             </Button>
           </form>
+          {serverError && (
+            <Alert className="mt-4" dismissible variant="error">
+              {serverError}
+            </Alert>
+          )}
         </Form>
         <div className="my-6 h-px w-full border-b border-dotted" />
         <span className="text-ui-fg-subtle txt-small">

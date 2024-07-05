@@ -147,7 +147,8 @@ export type ModuleJoinerConfig = Omit<
       | string
       | {
           path: string
-          forwardArgumentsOnPath: string[]
+          forwardArgumentsOnPath?: string[]
+          isList?: boolean
         }
     > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
     relationship: ModuleJoinerRelationship
@@ -296,5 +297,6 @@ export interface IModuleService {
   __hooks?: {
     onApplicationStart?: () => Promise<void>
     onApplicationShutdown?: () => Promise<void>
+    onApplicationPrepareShutdown?: () => Promise<void>
   }
 }

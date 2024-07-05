@@ -512,7 +512,7 @@ moduleIntegrationTestRunner({
             const err = await service.create(data).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should fail on creating a new fulfillment set with new service zones and new geo zones that are not valid", async function () {
@@ -837,7 +837,7 @@ moduleIntegrationTestRunner({
             const err = await service.update(updateData).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should update a collection of fulfillment sets and replace old service zones by new ones", async function () {

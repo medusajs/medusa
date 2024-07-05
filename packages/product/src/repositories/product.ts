@@ -15,40 +15,6 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
     super(...arguments)
   }
 
-  async find(
-    findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
-    context: Context = {}
-  ): Promise<Product[]> {
-    const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
-
-    await this.mutateNotInCategoriesConstraints(findOptions_)
-
-    this.applyFreeTextSearchFilters<Product>(
-      findOptions_,
-      this.getFreeTextSearchConstraints
-    )
-
-    return await super.find(findOptions_, context)
-  }
-
-  async findAndCount(
-    findOptions: DAL.FindOptions<Product & { q?: string }> = { where: {} },
-    context: Context = {}
-  ): Promise<[Product[], number]> {
-    const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
-
-    await this.mutateNotInCategoriesConstraints(findOptions_)
-
-    this.applyFreeTextSearchFilters<Product>(
-      findOptions_,
-      this.getFreeTextSearchConstraints
-    )
-
-    return await super.findAndCount(findOptions_, context)
-  }
-
   /**
    * In order to be able to have a strict not in categories, and prevent a product
    * to be return in the case it also belongs to other categories, we need to
@@ -87,43 +53,5 @@ export class ProductRepository extends DALUtils.mikroOrmBaseRepositoryFactory<Pr
         }
       }
     }
-  }
-
-  protected getFreeTextSearchConstraints(q: string) {
-    return [
-      {
-        description: {
-          $ilike: `%${q}%`,
-        },
-      },
-      {
-        title: {
-          $ilike: `%${q}%`,
-        },
-      },
-      {
-        collection: {
-          title: {
-            $ilike: `%${q}%`,
-          },
-        },
-      },
-      {
-        variants: {
-          $or: [
-            {
-              title: {
-                $ilike: `%${q}%`,
-              },
-            },
-            {
-              sku: {
-                $ilike: `%${q}%`,
-              },
-            },
-          ],
-        },
-      },
-    ]
   }
 }

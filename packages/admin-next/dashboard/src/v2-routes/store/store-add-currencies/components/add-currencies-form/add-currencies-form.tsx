@@ -1,25 +1,26 @@
 import { Currency } from "@medusajs/medusa"
-import { Button, Checkbox, Hint, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
 import {
   OnChangeFn,
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
-import { adminCurrenciesKeys, useAdminCustomQuery } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { CurrencyDTO, StoreDTO } from "@medusajs/types"
+import { StoreDTO } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/route-modal"
 import { DataTable } from "../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { useV2UpdateStore } from "../../../../../lib/api-v2"
 import { useCurrenciesTableColumns } from "../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-table-query"
 
@@ -67,23 +68,24 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     prefix: PREFIX,
   })
 
-  const { data, isLoading, isError, error } = useAdminCustomQuery(
-    "/admin/currencies",
-    adminCurrenciesKeys.list(raw),
-    searchParams,
-    {
-      keepPreviousData: true,
-    }
-  )
+  const {
+    currencies,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useCurrencies(searchParams, {
+    placeholderData: keepPreviousData,
+  })
 
   const preSelectedRows = store.supported_currency_codes.map((c) => c)
 
   const columns = useColumns()
 
   const { table } = useDataTable({
-    data: (data?.currencies ?? []) as CurrencyDTO[],
+    data: currencies ?? [],
     columns,
-    count: data?.count,
+    count: count,
     getRowId: (row) => row.code,
     enableRowSelection: (row) => !preSelectedRows.includes(row.original.code),
     enablePagination: true,
@@ -95,23 +97,28 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
     },
   })
 
-  const { mutateAsync, isLoading: isMutating } = useV2UpdateStore(store.id)
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const currencies = Array.from(
       new Set([...data.currencies, ...preSelectedRows])
     ) as string[]
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         supported_currency_codes: currencies,
-      },
-      {
-        onSuccess: () => {
-          handleSuccess()
-        },
-      }
-    )
+      })
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesUpdated"),
+        dismissLabel: t("actions.close"),
+      })
+      handleSuccess()
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   if (isError) {
@@ -139,7 +146,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
                   {t("actions.cancel")}
                 </Button>
               </RouteFocusModal.Close>
-              <Button size="small" type="submit" isLoading={isMutating}>
+              <Button size="small" type="submit" isLoading={isPending}>
                 {t("actions.save")}
               </Button>
             </div>
@@ -149,7 +156,7 @@ export const AddCurrenciesForm = ({ store }: AddCurrenciesFormProps) => {
           <DataTable
             table={table}
             pageSize={PAGE_SIZE}
-            count={data?.count}
+            count={count}
             columns={columns}
             layout="fill"
             pagination

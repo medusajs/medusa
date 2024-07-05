@@ -483,11 +483,20 @@ export class WorkflowOrchestratorService {
 
         notify({ eventType: "onStepFailure", step, errors })
       },
+      onStepAwaiting: ({ step, transaction }) => {
+        customEventHandlers?.onStepAwaiting?.({ step, transaction })
+
+        notify({ eventType: "onStepAwaiting", step })
+      },
 
       onCompensateStepSuccess: ({ step, transaction }) => {
         const stepName = step.definition.action!
         const response = transaction.getContext().compensate[stepName]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        customEventHandlers?.onCompensateStepSuccess?.({
+          step,
+          transaction,
+          response,
+        })
 
         notify({ eventType: "onCompensateStepSuccess", step, response })
       },

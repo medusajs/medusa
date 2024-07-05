@@ -2,9 +2,9 @@ import { RepositoryTransformOptions } from "../common"
 import { Context } from "../shared-context"
 import {
   BaseFilterable,
-  FilterQuery as InternalFilterQuery,
   FilterQuery,
   FindOptions,
+  FilterQuery as InternalFilterQuery,
   UpsertWithReplaceConfig,
 } from "./index"
 

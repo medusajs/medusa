@@ -1,25 +1,25 @@
-import { transformBody, transformQuery } from "../../../api/middlewares"
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import * as QueryConfig from "./query-config"
 import {
-  AdminDeletePricingRuleTypesRuleTypeReq,
+  AdminCreatePricingRuleType,
+  AdminGetPricingRuleTypeParams,
   AdminGetPricingRuleTypesParams,
-  AdminGetPricingRuleTypesRuleTypeParams,
-  AdminPostPricingRuleTypesReq,
-  AdminPostPricingRuleTypesRuleTypeReq,
+  AdminUpdatePricingRuleType,
 } from "./validators"
 
 export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/pricing*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
     matcher: "/admin/pricing/rule-types",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetPricingRuleTypesParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -28,14 +28,20 @@ export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/pricing/rule-types",
-    middlewares: [transformBody(AdminPostPricingRuleTypesReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreatePricingRuleType),
+      validateAndTransformQuery(
+        AdminGetPricingRuleTypeParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/pricing/rule-types/:id",
     middlewares: [
-      transformQuery(
-        AdminGetPricingRuleTypesRuleTypeParams,
+      validateAndTransformQuery(
+        AdminGetPricingRuleTypeParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -43,11 +49,17 @@ export const adminPricingRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/pricing/rule-types/:id",
-    middlewares: [transformBody(AdminPostPricingRuleTypesRuleTypeReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdatePricingRuleType),
+      validateAndTransformQuery(
+        AdminGetPricingRuleTypeParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/pricing/rule-types/:id",
-    middlewares: [transformBody(AdminDeletePricingRuleTypesRuleTypeReq)],
+    middlewares: [],
   },
 ]

@@ -1,115 +1,83 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
-import { Product, SalesChannel } from "@medusajs/medusa"
 import {
   Button,
   Checkbox,
-  CommandBar,
   Container,
   Heading,
-  Table,
-  clx,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
-import {
-  PaginationState,
-  RowSelectionState,
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import {
-  adminProductKeys,
-  adminSalesChannelsKeys,
-  useAdminCustomPost,
-  useAdminDeleteProductsFromSalesChannel,
-  useAdminProducts,
-} from "medusa-react"
+import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import {
-  ProductStatusCell,
-  ProductTitleCell,
-  ProductVariantCell,
-} from "../../../../../components/common/product-table-cells"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
-
+import { SalesChannelDTO } from "@medusajs/types"
+import { keepPreviousData } from "@tanstack/react-query"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { FilterGroup } from "../../../../../components/filtering/filter-group"
-import { OrderBy } from "../../../../../components/filtering/order-by"
-import { Query } from "../../../../../components/filtering/query"
-import { useQueryParams } from "../../../../../hooks/use-query-params"
-import { queryClient } from "../../../../../lib/medusa"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useProducts } from "../../../../../hooks/api/products"
+import { useSalesChannelRemoveProducts } from "../../../../../hooks/api/sales-channels"
+import { useProductTableColumns } from "../../../../../hooks/table/columns/use-product-table-columns"
+import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
+import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
+import { useDataTable } from "../../../../../hooks/use-data-table"
+import { ExtendedProductDTO } from "../../../../../types/api-responses"
 
 const PAGE_SIZE = 10
 
-type SalesChannelProductSection = {
-  salesChannel: SalesChannel
+type SalesChannelProductSectionProps = {
+  salesChannel: SalesChannelDTO
 }
 
 export const SalesChannelProductSection = ({
   salesChannel,
-}: SalesChannelProductSection) => {
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
-
+}: SalesChannelProductSectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  const params = useQueryParams(["q", "order"])
-  const { products, count, isLoading, isError, error } = useAdminProducts(
+  const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
+  const {
+    products,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useProducts(
     {
+      ...searchParams,
       sales_channel_id: [salesChannel.id],
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-      ...params,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
-  const columns = useListColumns(salesChannel.id)
+  const columns = useColumns()
+  const filters = useProductTableFilters(["sales_channel_id"])
 
-  const table = useReactTable({
-    data: (products ?? []) as Product[],
+  const { table } = useDataTable({
+    data: products ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
+    count,
+    enablePagination: true,
+    enableRowSelection: true,
+    pageSize: PAGE_SIZE,
     getRowId: (row) => row.id,
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
+    rowSelection: {
+      state: rowSelection,
+      updater: setRowSelection,
+    },
+    meta: {
+      salesChannelId: salesChannel.id,
+    },
   })
 
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/sales-channels/${salesChannel.id}/products/batch/remove`,
-    [
-      adminSalesChannelsKeys.lists(),
-      adminSalesChannelsKeys.detail(salesChannel.id),
-    ]
-  )
+  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannel.id)
 
   const prompt = usePrompt()
-
   const { t } = useTranslation()
 
-  const onRemove = async () => {
+  const handleRemove = async () => {
     const ids = Object.keys(rowSelection)
 
     const result = await prompt({
@@ -132,8 +100,17 @@ export const SalesChannelProductSection = ({
       },
       {
         onSuccess: () => {
+          toast.success(t("general.success"), {
+            description: t("salesChannels.toast.update"),
+            dismissLabel: t("actions.close"),
+          })
           setRowSelection({})
-          queryClient.invalidateQueries(adminProductKeys.lists())
+        },
+        onError: (error) => {
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          })
         },
       }
     )
@@ -153,99 +130,38 @@ export const SalesChannelProductSection = ({
           </Button>
         </Link>
       </div>
-      <div className="flex items-center justify-between px-6 py-4">
-        <FilterGroup
-          filters={{
-            collection: "Collection",
-          }}
-        />
-        <div className="flex items-center gap-x-2">
-          <Query />
-          <OrderBy keys={["title", "status", "created_at", "updated_at"]} />
-        </div>
-      </div>
-      <div>
-        <Table>
-          <Table.Header className="border-t-0">
-            {table.getHeaderGroups().map((headerGroup) => {
-              return (
-                <Table.Row
-                  key={headerGroup.id}
-                  className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap [&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <Table.HeaderCell key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </Table.HeaderCell>
-                    )
-                  })}
-                </Table.Row>
-              )
-            })}
-          </Table.Header>
-          <Table.Body className="border-b-0">
-            {table.getRowModel().rows.map((row) => (
-              <Table.Row
-                key={row.id}
-                className={clx(
-                  "transition-fg [&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                  {
-                    "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                      row.getIsSelected(),
-                  }
-                )}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Cell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Table.Cell>
-                ))}
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-        <LocalizedTablePagination
-          canNextPage={table.getCanNextPage()}
-          canPreviousPage={table.getCanPreviousPage()}
-          nextPage={table.nextPage}
-          previousPage={table.previousPage}
-          count={count ?? 0}
-          pageIndex={pageIndex}
-          pageCount={table.getPageCount()}
-          pageSize={PAGE_SIZE}
-        />
-        <CommandBar open={!!Object.keys(rowSelection).length}>
-          <CommandBar.Bar>
-            <CommandBar.Value>
-              {t("general.countSelected", {
-                count: Object.keys(rowSelection).length,
-              })}
-            </CommandBar.Value>
-            <CommandBar.Seperator />
-            <CommandBar.Command
-              action={onRemove}
-              shortcut="r"
-              label={t("actions.remove")}
-            />
-          </CommandBar.Bar>
-        </CommandBar>
-      </div>
+      <DataTable
+        table={table}
+        columns={columns}
+        pageSize={PAGE_SIZE}
+        commands={[
+          {
+            action: handleRemove,
+            label: t("actions.remove"),
+            shortcut: "r",
+          },
+        ]}
+        count={count}
+        pagination
+        search
+        filters={filters}
+        navigateTo={(row) => `/products/${row.id}`}
+        isLoading={isLoading}
+        orderBy={["title", "variants", "status", "created_at", "updated_at"]}
+        queryObject={raw}
+      />
     </Container>
   )
 }
 
-const listColumnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
-const useListColumns = (id: string) => {
-  const { t } = useTranslation()
+const useColumns = () => {
+  const base = useProductTableColumns()
 
   return useMemo(
     () => [
-      listColumnHelper.display({
+      columnHelper.display({
         id: "select",
         header: ({ table }) => {
           return (
@@ -273,43 +189,24 @@ const useListColumns = (id: string) => {
           )
         },
       }),
-      listColumnHelper.accessor("title", {
-        header: t("fields.title"),
-        cell: ({ row }) => {
-          const product = row.original
-
-          return <ProductTitleCell product={product} />
-        },
-      }),
-      listColumnHelper.accessor("variants", {
-        header: t("fields.variants"),
-        cell: (cell) => {
-          const variants = cell.getValue()
-
-          return <ProductVariantCell variants={variants} />
-        },
-      }),
-      listColumnHelper.accessor("status", {
-        header: t("fields.status"),
-        cell: ({ getValue }) => {
-          const status = getValue()
-
-          return <ProductStatusCell status={status} />
-        },
-      }),
-      listColumnHelper.display({
+      ...base,
+      columnHelper.display({
         id: "actions",
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
+          const { salesChannelId } = table.options.meta as {
+            salesChannelId: string
+          }
+
           return (
             <ProductListCellActions
               productId={row.original.id}
-              salesChannelId={id}
+              salesChannelId={salesChannelId}
             />
           )
         },
       }),
     ],
-    [t]
+    [base]
   )
 }
 
@@ -322,18 +219,23 @@ const ProductListCellActions = ({
 }) => {
   const { t } = useTranslation()
 
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/sales-channels/${salesChannelId}/products/batch/remove`,
-    [
-      ...adminSalesChannelsKeys.lists(),
-      ...adminSalesChannelsKeys.detail(salesChannelId),
-    ]
-  )
+  const { mutateAsync } = useSalesChannelRemoveProducts(salesChannelId)
 
   const onRemove = async () => {
-    await mutateAsync({
-      product_ids: [productId],
-    })
+    try {
+      await mutateAsync({
+        product_ids: [productId],
+      })
+      toast.success(t("general.success"), {
+        description: t("salesChannels.toast.update"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (

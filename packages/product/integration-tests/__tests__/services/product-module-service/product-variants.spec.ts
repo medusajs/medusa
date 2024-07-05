@@ -26,7 +26,11 @@ moduleIntegrationTestRunner({
           options: [
             {
               title: "size",
-              values: ["large"],
+              values: ["large", "small"],
+            },
+            {
+              title: "color",
+              values: ["red", "blue"],
             },
           ],
         })
@@ -169,12 +173,81 @@ moduleIntegrationTestRunner({
         })
       })
 
+      describe("updateVariants", () => {
+        it("should update the title of the variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              title: "new test",
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id)
+          expect(productVariant.title).toEqual("new test")
+        })
+
+        it("should upsert the options of a variant successfully", async () => {
+          await service.upsertVariants([
+            {
+              id: variantOne.id,
+              options: { size: "small" },
+            },
+          ])
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options"],
+          })
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+            ])
+          )
+        })
+
+        it("should do a partial update on the options of a variant successfully", async () => {
+          await service.updateVariants(variantOne.id, {
+            options: { size: "small", color: "red" },
+          })
+
+          const productVariant = await service.retrieveVariant(variantOne.id, {
+            relations: ["options"],
+          })
+
+          expect(productVariant.options).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                value: "small",
+              }),
+              expect.objectContaining({
+                value: "red",
+              }),
+            ])
+          )
+        })
+
+        it("should throw an error when an id does not exist", async () => {
+          let error
+
+          try {
+            await service.updateVariants("does-not-exist", {})
+          } catch (e) {
+            error = e
+          }
+
+          expect(error.message).toEqual(
+            `Cannot update non-existing variants with ids: does-not-exist`
+          )
+        })
+      })
+
       describe("softDelete variant", () => {
         it("should soft delete a variant and its relations", async () => {
           const beforeDeletedVariants = await service.listVariants(
             { id: variantOne.id },
             {
-              relations: ["options", "options.option_value", "options.variant"],
+              relations: ["options"],
             }
           )
 
@@ -182,7 +255,7 @@ moduleIntegrationTestRunner({
           const deletedVariants = await service.listVariants(
             { id: variantOne.id },
             {
-              relations: ["options", "options.option_value", "options.variant"],
+              relations: ["options"],
               withDeleted: true,
             }
           )
@@ -191,9 +264,7 @@ moduleIntegrationTestRunner({
           expect(deletedVariants[0].deleted_at).not.toBeNull()
 
           for (const variantOption of deletedVariants[0].options) {
-            expect(variantOption.deleted_at).not.toBeNull()
-            // The value itself should not be affected
-            expect(variantOption?.option_value?.deleted_at).toBeNull()
+            expect(variantOption?.deleted_at).toBeNull()
           }
         })
       })

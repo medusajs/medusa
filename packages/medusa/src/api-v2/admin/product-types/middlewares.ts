@@ -1,15 +1,14 @@
 import * as QueryConfig from "./query-config"
-
-import {
-  AdminGetProductTypesProductTypeParams,
-  AdminGetProductTypesParams,
-  AdminPostProductTypesProductTypeReq,
-  AdminPostProductTypesReq,
-} from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateProductType,
+  AdminGetProductTypeParams,
+  AdminGetProductTypesParams,
+  AdminUpdateProductType,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -22,7 +21,7 @@ export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/product-types",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetProductTypesParams,
         QueryConfig.listProductTypesTransformQueryConfig
       ),
@@ -32,8 +31,8 @@ export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/product-types/:id",
     middlewares: [
-      transformQuery(
-        AdminGetProductTypesProductTypeParams,
+      validateAndTransformQuery(
+        AdminGetProductTypeParams,
         QueryConfig.retrieveProductTypeTransformQueryConfig
       ),
     ],
@@ -43,9 +42,9 @@ export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/product-types",
     middlewares: [
-      transformBody(AdminPostProductTypesReq),
-      transformQuery(
-        AdminGetProductTypesParams,
+      validateAndTransformBody(AdminCreateProductType),
+      validateAndTransformQuery(
+        AdminGetProductTypeParams,
         QueryConfig.retrieveProductTypeTransformQueryConfig
       ),
     ],
@@ -54,9 +53,9 @@ export const adminProductTypeRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/product-types/:id",
     middlewares: [
-      transformBody(AdminPostProductTypesProductTypeReq),
-      transformQuery(
-        AdminGetProductTypesProductTypeParams,
+      validateAndTransformBody(AdminUpdateProductType),
+      validateAndTransformQuery(
+        AdminGetProductTypeParams,
         QueryConfig.retrieveProductTypeTransformQueryConfig
       ),
     ],

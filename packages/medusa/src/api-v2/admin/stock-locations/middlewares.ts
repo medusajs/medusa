@@ -1,19 +1,17 @@
-import * as QueryConfig from "./query-config"
-
-import {
-  AdminGetStockLocationsLocationParams,
-  AdminGetStockLocationsParams,
-  AdminPostStockLocationsLocationParams,
-  AdminPostStockLocationsLocationReq,
-  AdminPostStockLocationsParams,
-  AdminPostStockLocationsReq,
-  AdminStockLocationsLocationSalesChannelBatchReq,
-} from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../types/middlewares"
-import { applySalesChannelsFilter } from "./utils/apply-sales-channel-filter"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { maybeApplyLinkFilter } from "../../utils/maybe-apply-link-filter"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import { createLinkBody } from "../../utils/validators"
+import * as QueryConfig from "./query-config"
+import {
+  AdminCreateStockLocation,
+  AdminCreateStockLocationFulfillmentSet,
+  AdminGetStockLocationParams,
+  AdminGetStockLocationsParams,
+  AdminUpdateStockLocation,
+} from "./validators"
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -25,9 +23,9 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/stock-locations",
     middlewares: [
-      transformBody(AdminPostStockLocationsReq),
-      transformQuery(
-        AdminPostStockLocationsParams,
+      validateAndTransformBody(AdminCreateStockLocation),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -36,31 +34,24 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/stock-locations",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetStockLocationsParams,
         QueryConfig.listTransformQueryConfig
       ),
-      applySalesChannelsFilter(),
+      maybeApplyLinkFilter({
+        entryPoint: "sales_channel_location",
+        resourceId: "stock_location_id",
+        filterableField: "sales_channel_id",
+      }),
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/stock-locations/:id",
     middlewares: [
-      transformBody(AdminPostStockLocationsLocationReq),
-      transformQuery(
-        AdminPostStockLocationsLocationParams,
-        QueryConfig.retrieveTransformQueryConfig
-      ),
-    ],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/stock-locations/:id/sales-channels/batch*",
-    middlewares: [
-      transformBody(AdminStockLocationsLocationSalesChannelBatchReq),
-      transformQuery(
-        AdminPostStockLocationsLocationParams,
+      validateAndTransformBody(AdminUpdateStockLocation),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -69,8 +60,30 @@ export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/stock-locations/:id",
     middlewares: [
-      transformQuery(
-        AdminGetStockLocationsLocationParams,
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/fulfillment-sets",
+    middlewares: [
+      validateAndTransformBody(AdminCreateStockLocationFulfillmentSet),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/stock-locations/:id/sales-channels",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetStockLocationParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],

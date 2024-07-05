@@ -2,19 +2,21 @@ import {
   BaseFilterable,
   Context,
   FilterQuery,
-  FindConfig,
   FilterQuery as InternalFilterQuery,
+  FindConfig,
   ModulesSdkTypes,
+  UpsertWithReplaceConfig,
 } from "@medusajs/types"
 import { EntitySchema } from "@mikro-orm/core"
 import { EntityClass } from "@mikro-orm/core/typings"
 import {
-  MedusaError,
   doNotForceTransaction,
   isDefined,
   isObject,
+  isPresent,
   isString,
   lowerCaseFirst,
+  MedusaError,
   shouldForceTransaction,
 } from "../common"
 import { buildQuery } from "./build-query"
@@ -23,7 +25,7 @@ import {
   InjectTransactionManager,
   MedusaContext,
 } from "./decorators"
-import { UpsertWithReplaceConfig } from "@medusajs/types"
+import { FreeTextSearchFilterKey } from "../dal"
 
 type SelectorAndData = {
   selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>
@@ -53,6 +55,20 @@ export function internalModuleServiceFactory<
       this[propertyRepositoryName] = container[injectedRepositoryName]
     }
 
+    static applyFreeTextSearchFilter(
+      filters: FilterQuery,
+      config: FindConfig<any>
+    ): void {
+      if (isDefined(filters?.q)) {
+        config.filters ??= {}
+        config.filters[FreeTextSearchFilterKey] = {
+          value: filters.q,
+          fromEntity: model.name,
+        }
+        delete filters.q
+      }
+    }
+
     static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema<any>) {
       return (
         (entity as EntitySchema<any>).meta?.primaryKeys ??
@@ -70,7 +86,7 @@ export function internalModuleServiceFactory<
      * @param config
      */
     static applyDefaultOrdering(config: FindConfig<any>) {
-      if (config.order) {
+      if (isPresent(config.order)) {
         return
       }
 
@@ -149,6 +165,8 @@ export function internalModuleServiceFactory<
       @MedusaContext() sharedContext: Context = {}
     ): Promise<TEntity[]> {
       AbstractService_.applyDefaultOrdering(config)
+      AbstractService_.applyFreeTextSearchFilter(filters, config)
+
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].find(
@@ -164,6 +182,8 @@ export function internalModuleServiceFactory<
       @MedusaContext() sharedContext: Context = {}
     ): Promise<[TEntity[], number]> {
       AbstractService_.applyDefaultOrdering(config)
+      AbstractService_.applyFreeTextSearchFilter(filters, config)
+
       const queryOptions = buildQuery(filters, config)
 
       return await this[propertyRepositoryName].findAndCount(

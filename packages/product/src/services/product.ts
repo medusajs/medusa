@@ -4,6 +4,7 @@ import {
   FindConfig,
   ProductTypes,
   BaseFilterable,
+  FilterableProductProps,
 } from "@medusajs/types"
 import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { Product } from "@models"
@@ -60,21 +61,22 @@ export default class ProductService<
   }
 
   protected static normalizeFilters(
-    filters: NormalizedFilterableProductProps = {}
+    filters: FilterableProductProps = {}
   ): NormalizedFilterableProductProps {
-    if (filters.category_id) {
-      if (Array.isArray(filters.category_id)) {
-        filters.categories = {
-          id: { $in: filters.category_id },
+    const normalized = filters as NormalizedFilterableProductProps
+    if (normalized.category_id) {
+      if (Array.isArray(normalized.category_id)) {
+        normalized.categories = {
+          id: { $in: normalized.category_id },
         }
       } else {
-        filters.categories = {
-          id: filters.category_id as string,
+        normalized.categories = {
+          id: normalized.category_id as string,
         }
       }
-      delete filters.category_id
+      delete normalized.category_id
     }
 
-    return filters
+    return normalized
   }
 }

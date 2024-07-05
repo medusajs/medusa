@@ -16,9 +16,22 @@
  *     type: number
  *     title: max_quantity
  *     description: The application method's max quantity.
- *   type: {}
- *   target_type: {}
- *   allocation: {}
+ *   type:
+ *     type: string
+ *     enum:
+ *       - fixed
+ *       - percentage
+ *   target_type:
+ *     type: string
+ *     enum:
+ *       - order
+ *       - shipping_methods
+ *       - items
+ *   allocation:
+ *     type: string
+ *     enum:
+ *       - each
+ *       - across
  *   target_rules:
  *     type: array
  *     description: The application method's target rules.
@@ -31,7 +44,16 @@
  *         - attribute
  *         - values
  *       properties:
- *         operator: {}
+ *         operator:
+ *           type: string
+ *           enum:
+ *             - gte
+ *             - lte
+ *             - gt
+ *             - lt
+ *             - eq
+ *             - ne
+ *             - in
  *         description:
  *           type: string
  *           title: description
@@ -59,7 +81,16 @@
  *         - attribute
  *         - values
  *       properties:
- *         operator: {}
+ *         operator:
+ *           type: string
+ *           enum:
+ *             - gte
+ *             - lte
+ *             - gt
+ *             - lt
+ *             - eq
+ *             - ne
+ *             - in
  *         description:
  *           type: string
  *           title: description

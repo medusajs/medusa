@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.address).toEqual(
+        expect(response.data.customer.addresses[0]).toEqual(
           expect.objectContaining({
             id: address.id,
             first_name: "Jane",

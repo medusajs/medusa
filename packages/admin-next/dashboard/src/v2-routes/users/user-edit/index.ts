@@ -1,1 +1,1 @@
-export { UserEdit as Component } from "../../../modules/user/user-edit"
+export { UserEdit as Component } from "./user-edit"

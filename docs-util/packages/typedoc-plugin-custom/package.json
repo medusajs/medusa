@@ -22,6 +22,7 @@
     "typedoc": "0.25.x"
   },
   "devDependencies": {
+    "@types/eslint": "^8.56.10",
     "@types/node": "^16.11.10",
     "typescript": "5.2"
   },

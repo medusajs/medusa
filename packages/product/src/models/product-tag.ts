@@ -12,6 +12,7 @@ import {
 
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -33,6 +34,7 @@ class ProductTag {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   value: string
 

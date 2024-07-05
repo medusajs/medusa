@@ -1,5 +1,4 @@
-import { Product } from "@medusajs/medusa"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 
 import {
@@ -22,8 +21,9 @@ import {
   VariantCell,
   VariantHeader,
 } from "../../../components/table/table-cells/product/variant-cell"
+import { ExtendedProductDTO } from "../../../types/api-responses"
 
-const columnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
 export const useProductTableColumns = () => {
   return useMemo(
@@ -55,5 +55,5 @@ export const useProductTableColumns = () => {
       }),
     ],
     []
-  ) as ColumnDef<Product>[]
+  )
 }

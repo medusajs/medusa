@@ -1,3 +1,3 @@
 export * from "./auth"
-export * from "./promotion"
-export * from "./store"
+export * from "./campaign"
+export * from "./currencies"

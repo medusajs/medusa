@@ -715,14 +715,13 @@ moduleIntegrationTestRunner({
 
       describe("addRules", () => {
         it("should add rules to existing price set", async () => {
-          console.log("1")
           await service.addRules([
             {
               priceSetId: "price-set-1",
               rules: [{ attribute: "region_id" }],
             },
           ])
-          console.log("2")
+
           const [priceSet] = await service.list(
             { id: ["price-set-1"] },
             { relations: ["rule_types"] }

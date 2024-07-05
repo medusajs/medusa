@@ -44,6 +44,10 @@ export interface CurrencyDTO {
 export interface FilterableCurrencyProps
   extends BaseFilterable<FilterableCurrencyProps> {
   /**
+   * Search through currencies using this search term.
+   */
+  q?: string
+  /**
    * The codes to filter the currencies by.
    */
   code?: string[]

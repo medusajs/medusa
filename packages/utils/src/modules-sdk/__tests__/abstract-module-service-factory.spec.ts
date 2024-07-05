@@ -115,7 +115,7 @@ describe("Abstract Module Service Factory", () => {
 
     it("should have softDelete method", async () => {
       const result = await instance.softDelete("1")
-      expect(result).toEqual(undefined)
+      expect(result).toEqual({})
       expect(
         containerMock.mainModelMockService.softDelete
       ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
@@ -123,7 +123,7 @@ describe("Abstract Module Service Factory", () => {
 
     it("should have restore method", async () => {
       const result = await instance.restore("1")
-      expect(result).toEqual(undefined)
+      expect(result).toEqual({})
       expect(containerMock.mainModelMockService.restore).toHaveBeenCalledWith(
         ["1"],
         defaultTransactionContext
@@ -175,7 +175,7 @@ describe("Abstract Module Service Factory", () => {
 
     it("should have softDelete method for other models", async () => {
       const result = await instance.softDeleteOtherModelMock1s("1")
-      expect(result).toEqual(undefined)
+      expect(result).toEqual({})
       expect(
         containerMock.otherModelMock1Service.softDelete
       ).toHaveBeenCalledWith(["1"], defaultTransactionContext)
@@ -183,7 +183,7 @@ describe("Abstract Module Service Factory", () => {
 
     it("should have restore method for other models", async () => {
       const result = await instance.restoreOtherModelMock1s("1")
-      expect(result).toEqual(undefined)
+      expect(result).toEqual({})
       expect(containerMock.otherModelMock1Service.restore).toHaveBeenCalledWith(
         ["1"],
         defaultTransactionContext

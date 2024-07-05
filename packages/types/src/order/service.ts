@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
@@ -11,6 +12,7 @@ import {
   FilterableOrderShippingMethodProps,
   FilterableOrderShippingMethodTaxLineProps,
   OrderAddressDTO,
+  OrderChangeActionDTO,
   OrderChangeDTO,
   OrderDTO,
   OrderItemDTO,
@@ -26,15 +28,19 @@ import {
   ConfirmOrderChangeDTO,
   CreateOrderAddressDTO,
   CreateOrderAdjustmentDTO,
+  CreateOrderChangeActionDTO,
   CreateOrderChangeDTO,
   CreateOrderDTO,
   CreateOrderLineItemDTO,
   CreateOrderLineItemForOrderDTO,
   CreateOrderLineItemTaxLineDTO,
+  CreateOrderReturnDTO,
   CreateOrderShippingMethodAdjustmentDTO,
   CreateOrderShippingMethodDTO,
   CreateOrderShippingMethodTaxLineDTO,
   DeclineOrderChangeDTO,
+  RegisterOrderFulfillmentDTO,
+  RegisterOrderShipmentDTO,
   UpdateOrderAddressDTO,
   UpdateOrderDTO,
   UpdateOrderItemDTO,
@@ -225,7 +231,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    */
   update(
-    selector: Partial<OrderDTO>,
+    selector: Partial<FilterableOrderProps>,
     data: UpdateOrderDTO,
     sharedContext?: Context
   ): Promise<OrderDTO[]>
@@ -260,21 +266,18 @@ export interface IOrderModuleService extends IModuleService {
    */
   delete(orderId: string, sharedContext?: Context): Promise<void>
 
-  /**
-   * This method retrieves a paginated list of {return type}(s) based on optional filters and configuration.
-   *
-   * @param {FilterableOrderAddressProps} filters - The filters to apply on the retrieved order address.
-   * @param {FindConfig<OrderAddressDTO>} config - The configurations determining how the order address is retrieved. Its properties, such as `select` or `relations`, accept the
-   * attributes or relations associated with a order address.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderAddressDTO[]>} The list of {return type}(s).
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.listAddresses();
-   * ```
-   *
-   */
+  softDelete<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
+  restore<TReturnableLinkableKeys extends string = string>(
+    storeIds: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
+
   listAddresses(
     filters?: FilterableOrderAddressProps,
     config?: FindConfig<OrderAddressDTO>,
@@ -467,75 +470,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderLineItemForOrderDTO} data - The order line item for order to be created.
-   * @returns {Promise<OrderLineItemDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addLineItems({
-   *     order_id: "123456",
-   *     {
-   *       product_id: "abc123",
-   *       quantity: 2,
-   *       unit_price: 1999, // Assuming type is an integer for price in cents
-   *     }
-   * });
-   * ```
-   *
-   */
-  addLineItems(
+  createLineItems(
     data: CreateOrderLineItemForOrderDTO
   ): Promise<OrderLineItemDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderLineItemForOrderDTO[]} data - The order line item for order to be created.
-   * @returns {Promise<OrderLineItemDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const lineItems: CreateOrderLineItemForOrderDTO[] = [{
-   *   order_id: "order_123",
-   *   product_id: "prod_456",
-   *   quantity: 2,
-   *   unit_price: 1999
-   * }];
-   *
-   * const result = await orderModuleService.addLineItems(lineItems);
-   * ```
-   *
-   */
-  addLineItems(
+  createLineItems(
     data: CreateOrderLineItemForOrderDTO[]
   ): Promise<OrderLineItemDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderLineItemDTO[]} items - The order line item to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderLineItemDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const result = await orderModuleService.addLineItems("orderIdValue", [
-   *     {
-   *         title: "Item Title",
-   *         requires_shipping: true,
-   *         is_discountable: true,
-   *         is_tax_inclusive: true,
-   *         unit_price: 100,
-   *     }
-   * ]);
-   * ```
-   *
-   */
-  addLineItems(
+  createLineItems(
     orderId: string,
     items: CreateOrderLineItemDTO[],
     sharedContext?: Context
@@ -588,7 +529,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    */
   updateLineItems(
-    selector: Partial<OrderLineItemDTO>,
+    selector: Partial<FilterableOrderLineItemProps>,
     data: Partial<UpdateOrderLineItemDTO>,
     sharedContext?: Context
   ): Promise<OrderLineItemDTO[]>
@@ -618,51 +559,10 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemDTO>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} itemIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItems(["itemId1", "itemId2"]);
-   * ```
-   *
-   */
-  removeLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} itemIds - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItems(itemId1);
-   * ```
-   *
-   */
-  removeLineItems(itemIds: string, sharedContext?: Context): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {Partial<OrderLineItemDTO>} selector - Make all properties in T optional
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItems({ id: 'item-123' });
-   * ```
-   *
-   */
-  removeLineItems(
-    selector: Partial<OrderLineItemDTO>,
+  deleteLineItems(itemIds: string[], sharedContext?: Context): Promise<void>
+  deleteLineItems(itemIds: string, sharedContext?: Context): Promise<void>
+  deleteLineItems(
+    selector: Partial<FilterableOrderLineItemProps>,
     sharedContext?: Context
   ): Promise<void>
 
@@ -684,7 +584,7 @@ export interface IOrderModuleService extends IModuleService {
    *
    */
   updateOrderItem(
-    selector: Partial<OrderItemDTO>,
+    selector: Partial<FilterableOrderShippingMethodProps>,
     data: UpdateOrderItemDTO,
     sharedContext?: Context
   ): Promise<OrderItemDTO[]>
@@ -768,138 +668,28 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodDTO} data - The order shipping method to be created.
-   * @returns {Promise<OrderShippingMethodDTO>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const result = await orderModuleService.addShippingMethods({
-   *   name: "Standard Shipping",
-   *   shipping_method_id: "1",
-   *   order_id: "123",
-   *   amount: 1000
-   * });
-   * ```
-   *
-   */
-  addShippingMethods(
+  createShippingMethods(
     data: CreateOrderShippingMethodDTO
   ): Promise<OrderShippingMethodDTO>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodDTO[]} data - The order shipping method to be created.
-   * @returns {Promise<OrderShippingMethodDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const shippingMethods: CreateOrderShippingMethodDTO[] = [
-   *   {
-   *     name: 'Standard Shipping',
-   *     shipping_method_id: 'std_ship_001',
-   *     order_id: 'order_12345',
-   *     amount: 1000
-   *   },
-   *   {
-   *     name: 'Express Shipping',
-   *     shipping_method_id: 'exp_ship_002',
-   *     order_id: 'order_12345',
-   *     amount: 1000
-   *   }
-   * ];
-   *
-   * const addedShippingMethods = await orderModuleService.addShippingMethods(shippingMethods);
-   * ```
-   *
-   */
-  addShippingMethods(
+  createShippingMethods(
     data: CreateOrderShippingMethodDTO[]
   ): Promise<OrderShippingMethodDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderShippingMethodDTO[]} methods - The order shipping method to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderShippingMethodDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const createOrderShippingMethodDTOs: CreateOrderShippingMethodDTO[] = [{
-   *   name: "Standard Shipping",
-   *   shipping_method_id: "123",
-   *   order_id: "abc",
-   *   amount: 1000
-   * }];
-   *
-   * await orderModuleService.addShippingMethods("orderId123", createOrderShippingMethodDTOs);
-   * ```
-   *
-   */
-  addShippingMethods(
+  createShippingMethods(
     orderId: string,
     methods: CreateOrderShippingMethodDTO[],
     sharedContext?: Context
   ): Promise<OrderShippingMethodDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} methodIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethods(['method1', 'method2']);
-   * ```
-   *
-   */
-  removeShippingMethods(
+  deleteShippingMethods(
     methodIds: string[],
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} methodIds - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethods("methodId12345");
-   * ```
-   *
-   */
-  removeShippingMethods(
+  deleteShippingMethods(
     methodIds: string,
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {Partial<OrderShippingMethodDTO>} selector - Make all properties in T optional
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethods({
-   *     id: "shipping-method-123",
-   * });
-   * ```
-   *
-   */
-  removeShippingMethods(
-    selector: Partial<OrderShippingMethodDTO>,
+  deleteShippingMethods(
+    selector: Partial<FilterableOrderShippingMethodProps>,
     sharedContext?: Context
   ): Promise<void>
 
@@ -924,62 +714,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderAdjustmentDTO[]} data - The order adjustment to be created.
-   * @returns {Promise<OrderLineItemAdjustmentDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addLineItemAdjustments([
-   *   {
-   *     amount: 1000,
-   *   }
-   * ]);
-   * ```
-   *
-   */
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     data: CreateOrderAdjustmentDTO[]
   ): Promise<OrderLineItemAdjustmentDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderAdjustmentDTO} data - The order adjustment to be created.
-   * @returns {Promise<OrderLineItemAdjustmentDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addLineItemAdjustments({
-   *   amount: 1000,
-   * });
-   * ```
-   *
-   */
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     data: CreateOrderAdjustmentDTO
   ): Promise<OrderLineItemAdjustmentDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderAdjustmentDTO[]} data - The order adjustment to be created.
-   * @returns {Promise<OrderLineItemAdjustmentDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addLineItemAdjustments("12345", [
-   *   {
-   *     amount: 1000,
-   *   }
-   * ]);
-   * ```
-   *
-   */
-  addLineItemAdjustments(
+  createLineItemAdjustments(
     orderId: string,
     data: CreateOrderAdjustmentDTO[]
   ): Promise<OrderLineItemAdjustmentDTO[]>
@@ -1009,57 +750,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemAdjustmentDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} adjustmentIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItemAdjustments(["adjustmentId1", "adjustmentId2"]);
-   *
-   */
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} adjustmentIds - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItemAdjustments("adjustmentId123");
-   * ```
-   *
-   */
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     adjustmentIds: string,
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {Partial<OrderLineItemAdjustmentDTO>} selector - Make all properties in T optional
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItemAdjustments({
-   *   item_id: "123"
-   * });
-   * ```
-   *
-   */
-  removeLineItemAdjustments(
+  deleteLineItemAdjustments(
     selector: Partial<OrderLineItemAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -1087,74 +786,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodAdjustmentDTO[]} data - The order shipping method adjustment to be created.
-   * @returns {Promise<OrderShippingMethodAdjustmentDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const adjustmentsData: CreateOrderShippingMethodAdjustmentDTO[] = [{
-   *   shipping_method_id: '123',
-   *   code: "ADJUSTMENT_CODE",
-   *   amount: 1000,
-   *   description: 'Discount',
-   *   promotion_id: 'promo-456'
-   * }];
-   *
-   * const result = await orderModuleService.addShippingMethodAdjustments(adjustmentsData);
-   * ```
-   *
-   */
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO[]
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodAdjustmentDTO} data - The order shipping method adjustment to be created.
-   * @returns {Promise<OrderShippingMethodAdjustmentDTO>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * // Example usage of addShippingMethodAdjustments method
-   * const adjustmentData: CreateOrderShippingMethodAdjustmentDTO = {
-   *   shipping_method_id: "shipping_method_123",
-   *   code: "ADJUSTMENT_CODE",
-   *   amount: 1000
-   * };
-   *
-   * const result = await orderModuleService.addShippingMethodAdjustments(adjustmentData);
-   * ```
-   *
-   */
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     data: CreateOrderShippingMethodAdjustmentDTO
   ): Promise<OrderShippingMethodAdjustmentDTO>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderShippingMethodAdjustmentDTO[]} data - The order shipping method adjustment to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderShippingMethodAdjustmentDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addShippingMethodAdjustments("orderId123", [
-   *   {
-   *     shipping_method_id: "shippingMethodId456",
-   *     code: "CODE123",
-   *     amount: 1000
-   *   }
-   * ]);
-   * ```
-   *
-   */
-  addShippingMethodAdjustments(
+  createShippingMethodAdjustments(
     orderId: string,
     data: CreateOrderShippingMethodAdjustmentDTO[],
     sharedContext?: Context
@@ -1189,56 +827,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodAdjustmentDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} adjustmentIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodAdjustments(["adjustmentId1", "adjustmentId2"]);
-   * ```
-   *
-   */
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     adjustmentIds: string[],
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} adjustmentId - The adjustment's ID.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodAdjustments("adjustmentId123");
-   * ```
-   *
-   */
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     adjustmentId: string,
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {Partial<OrderShippingMethodAdjustmentDTO>} selector - Make all properties in T optional
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodAdjustments({ id: "adjustment123" });
-   * ```
-   *
-   */
-  removeShippingMethodAdjustments(
+  deleteShippingMethodAdjustments(
     selector: Partial<OrderShippingMethodAdjustmentDTO>,
     sharedContext?: Context
   ): Promise<void>
@@ -1264,69 +861,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderLineItemTaxLineDTO[]} taxLines - The order line item tax line to be created.
-   * @returns {Promise<OrderLineItemTaxLineDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const taxLines: CreateOrderLineItemTaxLineDTO[] = [{
-   *   code: 'VAT',
-   *   rate: 20,
-   *   tax_rate_id: 'tax_rate_id_value'
-   * }];
-   *
-   * const result = await orderModuleService.addLineItemTaxLines(taxLines);
-   * ```
-   *
-   */
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     taxLines: CreateOrderLineItemTaxLineDTO[]
   ): Promise<OrderLineItemTaxLineDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderLineItemTaxLineDTO} taxLine - The order line item tax line to be created.
-   * @returns {Promise<OrderLineItemTaxLineDTO>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const taxLine: CreateOrderLineItemTaxLineDTO = {
-   *   code: 'TAX100',
-   *   rate: 10
-   * };
-   *
-   * const response = await orderModuleService.addLineItemTaxLines(taxLine);
-   * ```
-   *
-   */
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     taxLine: CreateOrderLineItemTaxLineDTO
   ): Promise<OrderLineItemTaxLineDTO>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderLineItemTaxLineDTO | CreateOrderLineItemTaxLineDTO[]} taxLines - The order line item tax line d t o |  create order line item tax line to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderLineItemTaxLineDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addLineItemTaxLines("orderId123", [
-   *   {
-   *     code: "TAX1001",
-   *     rate: 70,
-   *   }
-   * ]);
-   * ```
-   *
-   */
-  addLineItemTaxLines(
+  createLineItemTaxLines(
     orderId: string,
     taxLines: CreateOrderLineItemTaxLineDTO[] | CreateOrderLineItemTaxLineDTO,
     sharedContext?: Context
@@ -1362,59 +903,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderLineItemTaxLineDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} taxLineIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * // Example usage of removeLineItemTaxLines method from IOrderModuleService
-   * await orderModuleService.removeLineItemTaxLines(["taxLineId1", "taxLineId2"]);
-   * ```
-   *
-   */
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} taxLineIds - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItemTaxLines("yourTaxLineId");
-   * ```
-   *
-   */
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     taxLineIds: string,
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {FilterableOrderLineItemTaxLineProps} selector - The filters to apply on the retrieved order line item tax line.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeLineItemTaxLines({
-   *   id: "yourTaxLineId"
-   * });
-   * ```
-   *
-   */
-  removeLineItemTaxLines(
+  deleteLineItemTaxLines(
     selector: FilterableOrderLineItemTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -1444,73 +941,13 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodTaxLineDTO[]} taxLines - The order shipping method tax line to be created.
-   * @returns {Promise<OrderShippingMethodTaxLineDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const result = await orderModuleService.addShippingMethodTaxLines([
-   *   {
-   *     code: "VAT20",
-   *     rate: 20,
-   *   }
-   * ]);
-   * ```
-   *
-   */
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     taxLines: CreateOrderShippingMethodTaxLineDTO[]
   ): Promise<OrderShippingMethodTaxLineDTO[]>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {CreateOrderShippingMethodTaxLineDTO} taxLine - The order shipping method tax line to be created.
-   * @returns {Promise<OrderShippingMethodTaxLineDTO>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const taxLine: CreateOrderShippingMethodTaxLineDTO = {
-   *   code: "VAT20",
-   *   rate: 20,
-   * };
-   *
-   * orderModuleService.addShippingMethodTaxLines(taxLine).then((result) => {
-   *   console.log(result);
-   * });
-   * ```
-   *
-   */
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     taxLine: CreateOrderShippingMethodTaxLineDTO
   ): Promise<OrderShippingMethodTaxLineDTO>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} orderId - The order's ID.
-   * @param {CreateOrderShippingMethodTaxLineDTO | CreateOrderShippingMethodTaxLineDTO[]} taxLines - The order shipping method tax line d t o |  create order shipping method tax line to be created.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<OrderShippingMethodTaxLineDTO[]>} Represents the completion of an asynchronous operation
-   *
-   * @example
-   * ```typescript
-   * const orderId = '123';
-   * const taxLines = [
-   *   {
-   *     code: "VAT20",
-   *     rate: 20,
-   *   }
-   * ];
-   *
-   * const addedTaxLines = await orderModuleService.addShippingMethodTaxLines(orderId, taxLines);
-   * ```
-   *
-   */
-  addShippingMethodTaxLines(
+  createShippingMethodTaxLines(
     orderId: string,
     taxLines:
       | CreateOrderShippingMethodTaxLineDTO[]
@@ -1549,58 +986,15 @@ export interface IOrderModuleService extends IModuleService {
     sharedContext?: Context
   ): Promise<OrderShippingMethodTaxLineDTO[]>
 
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string[]} taxLineIds - The list of {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodTaxLines(["taxLine1", "taxLine2"]);
-   * ```
-   *
-   */
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     taxLineIds: string[],
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {string} taxLineIds - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodTaxLines("12345");
-   * ```
-   *
-   */
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     taxLineIds: string,
     sharedContext?: Context
   ): Promise<void>
-
-  /**
-   * This method Represents the completion of an asynchronous operation
-   *
-   * @param {FilterableOrderShippingMethodTaxLineProps} selector - The filters to apply on the retrieved order shipping method tax line.
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {Promise<void>} Resolves when {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.removeShippingMethodTaxLines({
-   *   id: "shippingMethodTaxLineId"
-   * });
-   * ```
-   *
-   */
-  removeShippingMethodTaxLines(
+  deleteShippingMethodTaxLines(
     selector: FilterableOrderShippingMethodTaxLineProps,
     sharedContext?: Context
   ): Promise<void>
@@ -1739,12 +1133,15 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  confirmOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string[]} orderId - The order's ID.
+   * @param {string[]} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1754,7 +1151,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  confirmOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  confirmOrderChange(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1801,7 +1201,7 @@ export interface IOrderModuleService extends IModuleService {
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string} orderId - The order's ID.
+   * @param {string} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1811,12 +1211,15 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  declineOrderChange(orderId: string, sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    orderChangeId: string,
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
    *
-   * @param {string[]} orderId - The order's ID.
+   * @param {string[]} orderChangeId - The order change's ID.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when {summary}
    *
@@ -1826,7 +1229,10 @@ export interface IOrderModuleService extends IModuleService {
    * ```
    *
    */
-  declineOrderChange(orderId: string[], sharedContext?: Context): Promise<void>
+  declineOrderChange(
+    orderChangeId: string[],
+    sharedContext?: Context
+  ): Promise<void>
 
   /**
    * This method Represents the completion of an asynchronous operation
@@ -1885,25 +1291,117 @@ export interface IOrderModuleService extends IModuleService {
    */
   applyPendingOrderActions(orderId: string | string[], sharedContext?: Context)
 
-  /**
-   * This method {summary}
-   *
-   * @param {any} data - {summary}
-   * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
-   * @returns {(data: any, sharedContext?: Context) => any} {summary}
-   *
-   * @example
-   * ```typescript
-   * await orderModuleService.addOrderAction({
-   *     action: 'create',
-   *     orderId: '12345',
-   *     details: {
-   *         productId: 'abc123',
-   *         quantity: 2
-   *     }
-   * });
-   * ```
-   *
-   */
-  addOrderAction(data: any, sharedContext?: Context)
+  addOrderAction(
+    data: CreateOrderChangeActionDTO,
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO>
+  addOrderAction(
+    data: CreateOrderChangeActionDTO[],
+    sharedContext?: Context
+  ): Promise<OrderChangeActionDTO[]>
+
+  softDeleteAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreAddresses<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItems<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethods<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemAdjustments<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodAdjustments<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreLineItemTaxLines<TReturnableLinkableKeys extends string = string>(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  softDeleteShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+  restoreShippingMethodTaxLines<
+    TReturnableLinkableKeys extends string = string
+  >(
+    ids: string[],
+    config?: RestoreReturn<TReturnableLinkableKeys>,
+    sharedContext?: Context
+  ): Promise<Record<TReturnableLinkableKeys, string[]> | void>
+
+  revertLastVersion(orderId: string, sharedContext?: Context): Promise<void>
+
+  // Bundled flows
+  registerFulfillment(
+    data: RegisterOrderFulfillmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  registerShipment(
+    data: RegisterOrderShipmentDTO,
+    sharedContext?: Context
+  ): Promise<void>
+
+  createReturn(
+    returnData: CreateOrderReturnDTO,
+    sharedContext?: Context
+  ): Promise<void>
 }

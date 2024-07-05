@@ -341,7 +341,7 @@ moduleIntegrationTestRunner({
 
           const productOptions = await service.list(
             {
-              title: "US%",
+              q: "US%",
             },
             {
               relations: ["product"],

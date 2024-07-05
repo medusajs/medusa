@@ -1,5 +1,4 @@
 import { createApiKeysWorkflow } from "@medusajs/core-flows"
-import { CreateApiKeyDTO } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
@@ -8,6 +7,7 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
+import { AdminCreateApiKeyType } from "./validators"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -35,14 +35,14 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<Omit<CreateApiKeyDTO, "created_by">>,
+  req: AuthenticatedMedusaRequest<AdminCreateApiKeyType>,
   res: MedusaResponse
 ) => {
   const input = [
     {
       ...req.validatedBody,
       created_by: req.auth.actor_id,
-    } as CreateApiKeyDTO,
+    },
   ]
 
   const { result, errors } = await createApiKeysWorkflow(req.scope).run({
@@ -54,7 +54,7 @@ export const POST = async (
     throw errors[0].error
   }
 
-  // We cannot use remoteQuery here, as we need to show the secret key in the response (and never again)
+  // We should not refetch the api key here, as we need to show the secret key in the response (and never again)
   // And the only time we get to see the secret, is when we create it
   res.status(200).json({ api_key: result[0] })
 }

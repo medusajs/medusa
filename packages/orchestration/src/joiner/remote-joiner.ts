@@ -36,7 +36,7 @@ export class RemoteJoiner {
 
   private static filterFields(
     data: any,
-    fields: string[],
+    fields?: string[],
     expands?: RemoteNestedExpands
   ): Record<string, unknown> | undefined {
     if (!fields || !data) {
@@ -841,6 +841,7 @@ export class RemoteJoiner {
     const alias = fieldAlias[property] as any
 
     const path = isString(alias) ? alias : alias.path
+    const fieldAliasIsList = isString(alias) ? false : !!alias.isList
     const fullPath = [...currentPath.concat(path.split("."))]
 
     if (aliasRealPathMap.has(aliasPath)) {
@@ -868,9 +869,11 @@ export class RemoteJoiner {
       location: [...currentPath],
       property,
       path: fullPath,
-      isList: !!serviceConfig.relationships?.find(
-        (relationship) => relationship.alias === parentFieldAlias
-      )?.isList,
+      isList:
+        fieldAliasIsList ||
+        !!serviceConfig.relationships?.find(
+          (relationship) => relationship.alias === parentFieldAlias
+        )?.isList,
     })
 
     const extMapping = expands as unknown[]

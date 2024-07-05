@@ -1,5 +1,6 @@
 import { BigNumberInput, OrderSummaryDTO } from "@medusajs/types"
 import {
+  BigNumber,
   MathBN,
   isDefined,
   transformPropertiesToBigNumber,
@@ -61,8 +62,8 @@ export class OrderChangeProcessing {
       pendingDifference: 0,
       futureTemporarySum: 0,
       differenceSum: 0,
-      currentOrderTotal: this.order.summary?.total ?? 0,
-      originalOrderTotal: this.order.summary?.total ?? 0,
+      currentOrderTotal: this.order.total ?? 0,
+      originalOrderTotal: this.order.total ?? 0,
       transactionTotal,
     }
   }
@@ -344,14 +345,16 @@ export class OrderChangeProcessing {
   public getSummary(): OrderSummaryDTO {
     const summary = this.summary
     const orderSummary = {
-      transactionTotal: summary.transactionTotal,
-      originalOrderTotal: summary.originalOrderTotal,
-      currentOrderTotal: summary.currentOrderTotal,
-      temporaryDifference: summary.temporaryDifference,
-      futureDifference: summary.futureDifference,
-      futureTemporaryDifference: summary.futureTemporaryDifference,
-      pendingDifference: summary.pendingDifference,
-      differenceSum: summary.differenceSum,
+      transactionTotal: new BigNumber(summary.transactionTotal),
+      originalOrderTotal: new BigNumber(summary.originalOrderTotal),
+      currentOrderTotal: new BigNumber(summary.currentOrderTotal),
+      temporaryDifference: new BigNumber(summary.temporaryDifference),
+      futureDifference: new BigNumber(summary.futureDifference),
+      futureTemporaryDifference: new BigNumber(
+        summary.futureTemporaryDifference
+      ),
+      pendingDifference: new BigNumber(summary.pendingDifference),
+      differenceSum: new BigNumber(summary.differenceSum),
     } as unknown as OrderSummaryDTO
 
     /*

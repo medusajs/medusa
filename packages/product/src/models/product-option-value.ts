@@ -9,13 +9,13 @@ import {
   Entity,
   Filter,
   Index,
+  ManyToMany,
   ManyToOne,
   OnInit,
-  OneToMany,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { ProductOption, ProductVariantOption } from "./index"
+import { ProductOption, ProductVariant } from "./index"
 
 const optionValueOptionIdIndexName = "IDX_option_value_option_id_unique"
 const optionValueOptionIdIndexStatement = createPsqlIndexStatementHelper({
@@ -51,8 +51,8 @@ class ProductOptionValue {
   })
   option: ProductOption | null
 
-  @OneToMany(() => ProductVariantOption, (value) => value.option_value, {})
-  variant_options = new Collection<ProductVariantOption>(this)
+  @ManyToMany(() => ProductVariant, (variant) => variant.options)
+  variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

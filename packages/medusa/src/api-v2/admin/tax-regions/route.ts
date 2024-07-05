@@ -1,14 +1,20 @@
 import { createTaxRegionsWorkflow } from "@medusajs/core-flows"
-import { remoteQueryObjectFromString } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { defaultAdminTaxRegionFields } from "./query-config"
-import { AdminPostTaxRegionsReq } from "./validators"
+import {
+  AdminCreateTaxRegionType,
+  AdminGetTaxRegionsParamsType,
+} from "./validators"
+import { refetchTaxRegion } from "./helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostTaxRegionsReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateTaxRegionType>,
   res: MedusaResponse
 ) => {
   const { result, errors } = await createTaxRegionsWorkflow(req.scope).run({
@@ -25,15 +31,35 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const remoteQuery = req.scope.resolve("remoteQuery")
-
-  const query = remoteQueryObjectFromString({
-    entryPoint: "tax_region",
-    variables: { id: result[0].id },
-    fields: defaultAdminTaxRegionFields,
-  })
-
-  const [taxRegion] = await remoteQuery(query)
-
+  const taxRegion = await refetchTaxRegion(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
   res.status(200).json({ tax_region: taxRegion })
+}
+
+export const GET = async (
+  req: AuthenticatedMedusaRequest<AdminGetTaxRegionsParamsType>,
+  res: MedusaResponse
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const { rows: tax_regions, metadata } = await remoteQuery(
+    remoteQueryObjectFromString({
+      entryPoint: "tax_regions",
+      variables: {
+        filters: req.filterableFields,
+        ...req.remoteQueryConfig.pagination,
+      },
+      fields: req.remoteQueryConfig.fields,
+    })
+  )
+
+  res.status(200).json({
+    tax_regions,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
+  })
 }

@@ -1,4 +1,4 @@
-import { CreateInventoryLevelInput, InventoryLevelDTO } from "@medusajs/types"
+import { InventoryLevelDTO, InventoryNext } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import {
   createInventoryLevelsStep,
@@ -6,7 +6,7 @@ import {
 } from "../steps"
 
 interface WorkflowInput {
-  inventory_levels: CreateInventoryLevelInput[]
+  inventory_levels: InventoryNext.CreateInventoryLevelInput[]
 }
 export const createInventoryLevelsWorkflowId =
   "create-inventory-levels-workflow"

@@ -20,6 +20,6 @@ export const retrieveTransformQueryConfig = {
 }
 
 export const listTransformQueryConfig = {
-  defaultLimit: 20,
+  ...retrieveTransformQueryConfig,
   isList: true,
 }

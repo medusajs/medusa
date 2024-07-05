@@ -1,43 +1,31 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product, SalesChannel } from "@medusajs/medusa"
-import { Button, Checkbox, Hint, Table, Tooltip, clx } from "@medusajs/ui"
+import { SalesChannelDTO } from "@medusajs/types"
+import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import {
-  PaginationState,
+  OnChangeFn,
   RowSelectionState,
   createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
 } from "@tanstack/react-table"
-import {
-  adminProductKeys,
-  adminSalesChannelsKeys,
-  useAdminCustomPost,
-  useAdminProducts,
-} from "medusa-react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import {
-  ProductAvailabilityCell,
-  ProductCollectionCell,
-  ProductStatusCell,
-  ProductTitleCell,
-  ProductVariantCell,
-} from "../../../../components/common/product-table-cells"
-import { OrderBy } from "../../../../components/filtering/order-by"
-import { Query } from "../../../../components/filtering/query"
-import { LocalizedTablePagination } from "../../../../components/localization/localized-table-pagination"
-import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../components/route-modal"
-import { useQueryParams } from "../../../../hooks/use-query-params"
-import { queryClient } from "../../../../lib/medusa"
+import { DataTable } from "../../../../components/table/data-table"
+import { useProducts } from "../../../../hooks/api/products"
+import { useSalesChannelAddProducts } from "../../../../hooks/api/sales-channels"
+import { useProductTableColumns } from "../../../../hooks/table/columns/use-product-table-columns"
+import { useProductTableFilters } from "../../../../hooks/table/filters/use-product-table-filters"
+import { useProductTableQuery } from "../../../../hooks/table/query/use-product-table-query"
+import { useDataTable } from "../../../../hooks/use-data-table"
+import { ExtendedProductDTO } from "../../../../types/api-responses"
 
 type AddProductsToSalesChannelFormProps = {
-  salesChannel: SalesChannel
+  salesChannel: SalesChannelDTO
 }
 
 const AddProductsToSalesChannelSchema = zod.object({
@@ -61,73 +49,58 @@ export const AddProductsToSalesChannelForm = ({
 
   const { setValue } = form
 
-  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
-    `/admin/sales-channels/${salesChannel.id}/products/batch/add`,
-    [
-      adminSalesChannelsKeys.lists(),
-      adminSalesChannelsKeys.detail(salesChannel.id),
-    ]
-  )
-
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: PAGE_SIZE,
-  })
-
-  const pagination = useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  )
+  const { mutateAsync, isPending } = useSalesChannelAddProducts(salesChannel.id)
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
-  useEffect(() => {
-    setValue(
-      "product_ids",
-      Object.keys(rowSelection).filter((k) => rowSelection[k]),
-      {
-        shouldDirty: true,
-        shouldTouch: true,
-      }
-    )
-  }, [rowSelection, setValue])
+  const updater: OnChangeFn<RowSelectionState> = (fn) => {
+    const state = typeof fn === "function" ? fn(rowSelection) : fn
 
-  const params = useQueryParams(["q", "order"])
+    const ids = Object.keys(state)
 
-  const { products, count } = useAdminProducts(
+    setValue("product_ids", ids, {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+
+    setRowSelection(state)
+  }
+
+  const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
+  const {
+    products,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useProducts(
     {
       expand: "variants,sales_channels",
-      limit: PAGE_SIZE,
-      offset: pageIndex * PAGE_SIZE,
-      ...params,
+      ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
   const columns = useColumns()
+  const filters = useProductTableFilters(["sales_channel_id"])
 
-  const table = useReactTable({
-    data: (products ?? []) as Product[],
+  const { table } = useDataTable({
+    data: products ?? [],
     columns,
-    pageCount: Math.ceil((count ?? 0) / PAGE_SIZE),
-    state: {
-      pagination,
-      rowSelection,
-    },
-    onPaginationChange: setPagination,
-    onRowSelectionChange: setRowSelection,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    getRowId: (row) => row.id,
-    enableRowSelection(row) {
+    enableRowSelection: (row) => {
       return !row.original.sales_channels
         ?.map((sc) => sc.id)
         .includes(salesChannel.id)
+    },
+    enablePagination: true,
+    getRowId: (row) => row.id,
+    pageSize: PAGE_SIZE,
+    count,
+    rowSelection: {
+      state: rowSelection,
+      updater,
     },
     meta: {
       salesChannelId: salesChannel.id,
@@ -141,16 +114,24 @@ export const AddProductsToSalesChannelForm = ({
       },
       {
         onSuccess: () => {
-          /**
-           * Invalidate the products list query to refetch products and
-           * determine if they are added to the sales channel or not.
-           */
-          queryClient.invalidateQueries(adminProductKeys.lists())
+          toast.success(t("general.success"), {
+            description: t("salesChannels.toast.update"),
+            dismissLabel: t("actions.close"),
+          })
           handleSuccess()
         },
+        onError: (error) =>
+          toast.error(t("general.error"), {
+            description: error.message,
+            dismissLabel: t("actions.close"),
+          }),
       }
     )
   })
+
+  if (isError) {
+    throw error
+  }
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -170,94 +151,35 @@ export const AddProductsToSalesChannelForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isMutating}>
+            <Button size="small" type="submit" isLoading={isPending}>
               {t("actions.save")}
             </Button>
           </div>
         </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex h-full w-full flex-col items-center divide-y overflow-y-auto">
-          <div className="flex w-full items-center justify-between px-6 py-4">
-            <div></div>
-            <div className="flex items-center gap-x-2">
-              <Query />
-              <OrderBy keys={["title"]} />
-            </div>
-          </div>
-          <div className="w-full flex-1 overflow-y-auto">
-            <Table>
-              <Table.Header className="border-t-0">
-                {table.getHeaderGroups().map((headerGroup) => {
-                  return (
-                    <Table.Row
-                      key={headerGroup.id}
-                      className="[&_th:first-of-type]:w-[1%] [&_th:first-of-type]:whitespace-nowrap"
-                    >
-                      {headerGroup.headers.map((header) => {
-                        return (
-                          <Table.HeaderCell key={header.id}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                          </Table.HeaderCell>
-                        )
-                      })}
-                    </Table.Row>
-                  )
-                })}
-              </Table.Header>
-              <Table.Body className="border-b-0">
-                {table.getRowModel().rows.map((row) => (
-                  <Table.Row
-                    key={row.id}
-                    className={clx(
-                      "transition-fg",
-                      {
-                        "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                          row.getIsSelected(),
-                      },
-                      {
-                        "bg-ui-bg-disabled hover:bg-ui-bg-disabled":
-                          row.original.sales_channels
-                            ?.map((sc) => sc.id)
-                            .includes(salesChannel.id),
-                      }
-                    )}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <Table.Cell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Table.Cell>
-                    ))}
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </div>
-          <div className="w-full border-t">
-            <LocalizedTablePagination
-              canNextPage={table.getCanNextPage()}
-              canPreviousPage={table.getCanPreviousPage()}
-              nextPage={table.nextPage}
-              previousPage={table.previousPage}
-              count={count ?? 0}
-              pageIndex={pageIndex}
-              pageCount={table.getPageCount()}
-              pageSize={PAGE_SIZE}
-            />
-          </div>
+          <DataTable
+            table={table}
+            count={count}
+            columns={columns}
+            pageSize={PAGE_SIZE}
+            isLoading={isLoading}
+            filters={filters}
+            orderBy={["title", "status", "created_at", "updated_at"]}
+            queryObject={raw}
+            layout="fill"
+            pagination
+            search
+          />
         </RouteFocusModal.Body>
       </form>
     </RouteFocusModal.Form>
   )
 }
 
-const columnHelper = createColumnHelper<Product>()
+const columnHelper = createColumnHelper<ExtendedProductDTO>()
 
 const useColumns = () => {
+  const base = useProductTableColumns()
   const { t } = useTranslation()
 
   return useMemo(
@@ -314,47 +236,8 @@ const useColumns = () => {
           return Component
         },
       }),
-      columnHelper.accessor("title", {
-        header: t("fields.title"),
-        cell: ({ row }) => {
-          const product = row.original
-
-          return <ProductTitleCell product={product} />
-        },
-      }),
-      columnHelper.accessor("collection", {
-        header: t("fields.collection"),
-        cell: ({ getValue }) => {
-          const collection = getValue()
-
-          return <ProductCollectionCell collection={collection} />
-        },
-      }),
-      columnHelper.accessor("sales_channels", {
-        header: t("fields.availability"),
-        cell: ({ getValue }) => {
-          const salesChannels = getValue()
-
-          return <ProductAvailabilityCell salesChannels={salesChannels} />
-        },
-      }),
-      columnHelper.accessor("variants", {
-        header: t("fields.inventory"),
-        cell: (cell) => {
-          const variants = cell.getValue()
-
-          return <ProductVariantCell variants={variants} />
-        },
-      }),
-      columnHelper.accessor("status", {
-        header: t("fields.status"),
-        cell: ({ getValue }) => {
-          const status = getValue()
-
-          return <ProductStatusCell status={status} />
-        },
-      }),
+      ...base,
     ],
-    [t]
+    [t, base]
   )
 }

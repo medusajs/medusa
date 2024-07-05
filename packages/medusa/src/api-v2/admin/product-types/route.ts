@@ -7,20 +7,20 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import {
-  AdminGetProductTypesParams,
-  AdminPostProductTypesReq,
-} from "./validators"
 import { createProductTypesWorkflow } from "@medusajs/core-flows"
 import { refetchProductType } from "./helpers"
+import {
+  AdminCreateProductTypeType,
+  AdminGetProductTypesParamsType,
+} from "./validators"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetProductTypesParams>,
+  req: AuthenticatedMedusaRequest<AdminGetProductTypesParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
   const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product",
+    entryPoint: "product_type",
     variables: {
       filters: req.filterableFields,
       ...req.remoteQueryConfig.pagination,
@@ -39,7 +39,7 @@ export const GET = async (
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostProductTypesReq>,
+  req: AuthenticatedMedusaRequest<AdminCreateProductTypeType>,
   res: MedusaResponse
 ) => {
   const input = [req.validatedBody]

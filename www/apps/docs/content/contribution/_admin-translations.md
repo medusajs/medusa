@@ -23,7 +23,7 @@ This type of contribution is a no-code contribution, meaning you don't need adva
 git clone https://github.com/medusajs/medusa.git
 ```
 
-If you already have it cloned, make sure to pull the latest changes from the `develop` branch.
+If you already have it cloned, make sure to pull the latest changes from the `v1.x` branch.
 
 2\. Create a branch that will be used to open the pull request later:
 

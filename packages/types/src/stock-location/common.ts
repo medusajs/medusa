@@ -1,6 +1,7 @@
 import { BaseFilterable, OperatorMap } from "../dal"
 
 import { StringComparisonOperator } from "../common/common"
+import { FulfillmentSetDTO } from "../fulfillment"
 
 /**
  * @schema StockLocationAddressDTO
@@ -204,6 +205,11 @@ export type StockLocationDTO = {
    * The address of the stock location.
    */
   address?: StockLocationAddressDTO
+
+  /**
+   * Fulfillment sets for the location
+   */
+  fulfillment_sets: FulfillmentSetDTO[]
 
   /**
    * The creation date of the stock location.
@@ -435,8 +441,22 @@ export type UpdateStockLocationInput = {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * @interface
+ *
+ * The attributes to update in a stock location.
+ */
 export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
+  /**
+   * The ID of the stock location.
+   */
   id: string
 }
 
+/**
+ * @interface
+ *
+ * A stock location to create or update. If the `id` property isn't provided,
+ * the stock location is created. In that case, the `name` property is required.
+ */
 export type UpsertStockLocationInput = Partial<UpdateStockLocationNextInput>

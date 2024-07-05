@@ -38,11 +38,11 @@ medusaIntegrationTestRunner({
         })
 
         let response = await api.get(
-          `/store/regions/${region.id}/payment-providers`
+          `/store/regions/${region.id}?fields=*payment_providers`
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.payment_providers).toEqual([])
+        expect(response.data.region.payment_providers).toEqual([])
 
         await remoteLink.create([
           {
@@ -56,11 +56,11 @@ medusaIntegrationTestRunner({
         ])
 
         response = await api.get(
-          `/store/regions/${region.id}/payment-providers`
+          `/store/regions/${region.id}?fields=*payment_providers`
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.payment_providers).toEqual([
+        expect(response.data.region.payment_providers).toEqual([
           expect.objectContaining({
             id: "pp_system_default",
           }),

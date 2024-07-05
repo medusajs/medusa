@@ -1,13 +1,14 @@
 import { ProductCategoryService } from "@services"
 
+import { Modules } from "@medusajs/modules-sdk"
+import { IProductModuleService } from "@medusajs/types"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
+  eletronicsCategoriesData,
   productCategoriesData,
   productCategoriesRankData,
 } from "../../../__fixtures__/product-category/data"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
-import { IProductModuleService } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
@@ -138,14 +139,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
@@ -153,7 +152,6 @@ moduleIntegrationTestRunner({
                       handle: "category-1-b",
                       mpath: "category-0.category-1.category-1-b.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
@@ -161,7 +159,6 @@ moduleIntegrationTestRunner({
                           mpath:
                             "category-0.category-1.category-1-b.category-1-b-1.",
                           parent_category_id: "category-1-b",
-                          parent_category: "category-1-b",
                           category_children: [],
                         }),
                       ],
@@ -170,6 +167,365 @@ moduleIntegrationTestRunner({
                 }),
               ],
             }),
+          ])
+        })
+
+        it("includes the entire list of descendants when include_descendants_tree is true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_descendants_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              category_children: [],
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              category_children: [
+                {
+                  id: "category-1-b-1",
+                  handle: "category-1-b-1",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  parent_category_id: "category-1-b",
+                  category_children: [],
+                },
+              ],
+            },
+          ])
+        })
+
+        it("includes the entire list of parents when include_ancestors_tree is true", async () => {
+          await createProductCategories(
+            MikroOrmWrapper.forkManager(),
+            eletronicsCategoriesData
+          )
+
+          const productCategoryResults = await service.list(
+            {
+              id: "4k-gaming",
+              include_ancestors_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "4k-gaming",
+              handle: "4k-gaming-laptops",
+              mpath:
+                "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming.",
+              parent_category_id: "high-performance",
+              parent_category: {
+                id: "high-performance",
+                parent_category_id: "gaming-laptops",
+                handle: "high-performance-gaming-laptops",
+                mpath:
+                  "electronics.computers.laptops.gaming-laptops.high-performance.",
+                parent_category: {
+                  id: "gaming-laptops",
+                  handle: "gaming-laptops",
+                  mpath: "electronics.computers.laptops.gaming-laptops.",
+                  parent_category_id: "laptops",
+                  parent_category: {
+                    id: "laptops",
+                    parent_category_id: "computers",
+                    handle: "laptops",
+                    mpath: "electronics.computers.laptops.",
+                    parent_category: {
+                      id: "computers",
+                      handle: "computers-&-accessories",
+                      mpath: "electronics.computers.",
+                      parent_category_id: "electronics",
+                      parent_category: {
+                        id: "electronics",
+                        parent_category_id: null,
+                        handle: "electronics",
+                        mpath: "electronics.",
+                        parent_category: null,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          ])
+        })
+
+        it("includes the entire list of descendants when include_descendants_tree is true", async () => {
+          await createProductCategories(
+            MikroOrmWrapper.forkManager(),
+            eletronicsCategoriesData
+          )
+
+          const productCategoryResults = await service.list(
+            {
+              id: "gaming-laptops",
+              include_descendants_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "gaming-laptops",
+              handle: "gaming-laptops",
+              mpath: "electronics.computers.laptops.gaming-laptops.",
+              parent_category_id: "laptops",
+              category_children: [
+                {
+                  id: "budget-gaming",
+                  handle: "budget-gaming-laptops",
+                  mpath:
+                    "electronics.computers.laptops.gaming-laptops.budget-gaming.",
+                  parent_category_id: "gaming-laptops",
+                  category_children: [],
+                },
+                {
+                  id: "high-performance",
+                  handle: "high-performance-gaming-laptops",
+                  mpath:
+                    "electronics.computers.laptops.gaming-laptops.high-performance.",
+                  parent_category_id: "gaming-laptops",
+                  category_children: [
+                    {
+                      id: "4k-gaming",
+                      handle: "4k-gaming-laptops",
+                      mpath:
+                        "electronics.computers.laptops.gaming-laptops.high-performance.4k-gaming.",
+                      parent_category_id: "high-performance",
+                      category_children: [],
+                    },
+                    {
+                      id: "vr-ready",
+                      handle: "vr-ready-high-performance-gaming-laptops",
+                      mpath:
+                        "electronics.computers.laptops.gaming-laptops.high-performance.vr-ready.",
+                      parent_category_id: "high-performance",
+                      category_children: [],
+                    },
+                  ],
+                },
+              ],
+            },
+          ])
+        })
+
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true", async () => {
+          await createProductCategories(
+            MikroOrmWrapper.forkManager(),
+            eletronicsCategoriesData
+          )
+
+          const productCategoryResults = await service.list(
+            {
+              id: "gaming-laptops",
+              include_descendants_tree: true,
+              include_ancestors_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "gaming-laptops",
+              handle: "gaming-laptops",
+              mpath: "electronics.computers.laptops.gaming-laptops.",
+              parent_category_id: "laptops",
+              parent_category: {
+                id: "laptops",
+                handle: "laptops",
+                mpath: "electronics.computers.laptops.",
+                parent_category_id: "computers",
+                parent_category: {
+                  id: "computers",
+                  handle: "computers-&-accessories",
+                  mpath: "electronics.computers.",
+                  parent_category_id: "electronics",
+                  parent_category: {
+                    id: "electronics",
+                    handle: "electronics",
+                    mpath: "electronics.",
+                    parent_category_id: null,
+                    parent_category: null,
+                  },
+                },
+              },
+              category_children: [
+                {
+                  id: "budget-gaming",
+                  handle: "budget-gaming-laptops",
+                  mpath:
+                    "electronics.computers.laptops.gaming-laptops.budget-gaming.",
+                  parent_category_id: "gaming-laptops",
+                },
+                {
+                  id: "high-performance",
+                  handle: "high-performance-gaming-laptops",
+                  mpath:
+                    "electronics.computers.laptops.gaming-laptops.high-performance.",
+                  parent_category_id: "gaming-laptops",
+                },
+              ],
+            },
+          ])
+        })
+
+        it("includes the entire list of parents when include_ancestors_tree is true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_ancestors_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+            },
+          ])
+        })
+
+        it("includes the entire list of descendants an parents when include_descendants_tree and include_ancestors_tree are true for multiple results", async () => {
+          const productCategoryResults = await service.list(
+            {
+              parent_category_id: "category-1",
+              include_descendants_tree: true,
+              include_ancestors_tree: true,
+            },
+            {
+              select: ["id", "handle"],
+            }
+          )
+
+          const serializedObject = JSON.parse(
+            JSON.stringify(productCategoryResults)
+          )
+
+          expect(serializedObject).toEqual([
+            {
+              id: "category-1-a",
+              handle: "category-1-a",
+              mpath: "category-0.category-1.category-1-a.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+              category_children: [],
+            },
+            {
+              id: "category-1-b",
+              handle: "category-1-b",
+              mpath: "category-0.category-1.category-1-b.",
+              parent_category_id: "category-1",
+              parent_category: {
+                id: "category-1",
+                handle: "category-1",
+                mpath: "category-0.category-1.",
+                parent_category_id: "category-0",
+                parent_category: {
+                  id: "category-0",
+                  handle: "category-0",
+                  mpath: "category-0.",
+                  parent_category_id: null,
+                  parent_category: null,
+                },
+              },
+              category_children: [
+                {
+                  id: "category-1-b-1",
+                  handle: "category-1-b-1",
+                  mpath: "category-0.category-1.category-1-b.category-1-b-1.",
+                  parent_category_id: "category-1-b",
+                },
+              ],
+            },
           ])
         })
 
@@ -202,14 +558,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                   ],
@@ -456,14 +810,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                     expect.objectContaining({
@@ -471,7 +823,6 @@ moduleIntegrationTestRunner({
                       handle: "category-1-b",
                       mpath: "category-0.category-1.category-1-b.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [
                         expect.objectContaining({
                           id: "category-1-b-1",
@@ -479,7 +830,6 @@ moduleIntegrationTestRunner({
                           mpath:
                             "category-0.category-1.category-1-b.category-1-b-1.",
                           parent_category_id: "category-1-b",
-                          parent_category: "category-1-b",
                           category_children: [],
                         }),
                       ],
@@ -522,14 +872,12 @@ moduleIntegrationTestRunner({
                   handle: "category-1",
                   mpath: "category-0.category-1.",
                   parent_category_id: "category-0",
-                  parent_category: "category-0",
                   category_children: [
                     expect.objectContaining({
                       id: "category-1-a",
                       handle: "category-1-a",
                       mpath: "category-0.category-1.category-1-a.",
                       parent_category_id: "category-1",
-                      parent_category: "category-1",
                       category_children: [],
                     }),
                   ],

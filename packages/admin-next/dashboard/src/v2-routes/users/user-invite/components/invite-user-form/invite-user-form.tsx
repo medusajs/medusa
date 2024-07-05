@@ -1,50 +1,41 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowPath, Link, XCircle } from "@medusajs/icons"
-import { Invite } from "@medusajs/medusa"
+import { ArrowPath, Trash } from "@medusajs/icons"
+import { InviteDTO } from "@medusajs/types"
 import {
   Button,
   Container,
   Heading,
   Input,
   StatusBadge,
-  Table,
   Text,
   Tooltip,
-  clx,
   usePrompt,
 } from "@medusajs/ui"
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { createColumnHelper } from "@tanstack/react-table"
 import { format } from "date-fns"
-import {
-  adminInviteKeys,
-  useAdminCustomPost,
-  useAdminDeleteInvite,
-  useAdminInvites,
-  useAdminResendInvite,
-} from "medusa-react"
 import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { NoRecords } from "../../../../../components/common/empty-table-content"
+import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Form } from "../../../../../components/common/form"
-import { LocalizedTablePagination } from "../../../../../components/localization/localized-table-pagination"
 import { RouteFocusModal } from "../../../../../components/route-modal"
-import { useV2Store } from "../../../../../lib/api-v2"
-import { InviteDTO } from "@medusajs/types"
+import {
+  useCreateInvite,
+  useDeleteInvite,
+  useInvites,
+  useResendInvite,
+} from "../../../../../hooks/api/invites"
+import { DataTable } from "../../../../../components/table/data-table"
+import { useUserInviteTableQuery } from "../../../../../hooks/table/query/use-user-invite-table-query"
 
 const InviteUserSchema = zod.object({
   email: zod.string().email(),
 })
 
 const PAGE_SIZE = 10
+const PREFIX = "usr_invite"
 
 export const InviteUserForm = () => {
   const { t } = useTranslation()
@@ -56,26 +47,31 @@ export const InviteUserForm = () => {
     resolver: zodResolver(InviteUserSchema),
   })
 
-  const { invites, isLoading, isError, error } = useAdminInvites()
-  const count = invites?.length ?? 0
+  const { raw, searchParams } = useUserInviteTableQuery({
+    prefix: PREFIX,
+    pageSize: PAGE_SIZE,
+  })
 
-  const noRecords = !isLoading && count === 0
+  const {
+    invites,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useInvites(searchParams)
 
   const columns = useColumns()
 
-  const table = useReactTable({
-    // TODO: Update type when medusa-react is 2.0 compatible
-    data: (invites ?? []) as unknown as InviteDTO[],
+  const { table } = useDataTable({
+    data: (invites ?? []) as InviteDTO[],
     columns,
-    pageCount: Math.ceil(count / PAGE_SIZE),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    count,
+    enablePagination: true,
+    getRowId: (row) => row.id,
+    pageSize: PAGE_SIZE,
   })
 
-  const { mutateAsync, isLoading: isMutating } = useAdminCustomPost(
-    "/admin/invites",
-    adminInviteKeys.lists()
-  )
+  const { mutateAsync, isPending } = useCreateInvite()
 
   const handleSubmit = form.handleSubmit(async (values) => {
     await mutateAsync(
@@ -133,7 +129,7 @@ export const InviteUserForm = () => {
                     size="small"
                     variant="secondary"
                     type="submit"
-                    isLoading={isMutating}
+                    isLoading={isPending}
                   >
                     {t("users.sendInvite")}
                   </Button>
@@ -142,68 +138,18 @@ export const InviteUserForm = () => {
               <div className="flex flex-col gap-y-4">
                 <Heading level="h2">{t("users.pendingInvites")}</Heading>
                 <Container className="overflow-hidden p-0">
-                  {!noRecords ? (
-                    <div>
-                      <Table>
-                        <Table.Header className="border-t-0">
-                          {table.getHeaderGroups().map((headerGroup) => {
-                            return (
-                              <Table.Row
-                                key={headerGroup.id}
-                                className="[&_th:last-of-type]:w-[1%] [&_th:last-of-type]:whitespace-nowrap [&_th]:w-1/3"
-                              >
-                                {headerGroup.headers.map((header) => {
-                                  return (
-                                    <Table.HeaderCell key={header.id}>
-                                      {flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                      )}
-                                    </Table.HeaderCell>
-                                  )
-                                })}
-                              </Table.Row>
-                            )
-                          })}
-                        </Table.Header>
-                        <Table.Body>
-                          {table.getRowModel().rows.map((row) => (
-                            <Table.Row
-                              key={row.id}
-                              className={clx(
-                                "transition-fg[&_td:last-of-type]:w-[1%] [&_td:last-of-type]:whitespace-nowrap",
-                                {
-                                  "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
-                                    row.getIsSelected(),
-                                }
-                              )}
-                            >
-                              {row.getVisibleCells().map((cell) => (
-                                <Table.Cell key={cell.id}>
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
-                                  )}
-                                </Table.Cell>
-                              ))}
-                            </Table.Row>
-                          ))}
-                        </Table.Body>
-                      </Table>
-                      <LocalizedTablePagination
-                        canNextPage={table.getCanNextPage()}
-                        canPreviousPage={table.getCanPreviousPage()}
-                        nextPage={table.nextPage}
-                        previousPage={table.previousPage}
-                        count={count}
-                        pageIndex={table.getState().pagination.pageIndex}
-                        pageCount={table.getPageCount()}
-                        pageSize={PAGE_SIZE}
-                      />
-                    </div>
-                  ) : (
-                    <NoRecords className="h-[200px]" />
-                  )}
+                  <DataTable
+                    table={table}
+                    columns={columns}
+                    count={count}
+                    pageSize={PAGE_SIZE}
+                    prefix={PREFIX}
+                    pagination
+                    search
+                    isLoading={isLoading}
+                    queryObject={raw}
+                    orderBy={["email", "created_at", "updated_at"]}
+                  />
                 </Container>
               </div>
             </div>
@@ -215,20 +161,20 @@ export const InviteUserForm = () => {
 }
 
 const InviteActions = ({ invite }: { invite: InviteDTO }) => {
-  const { mutateAsync: revokeAsync } = useAdminDeleteInvite(invite.id)
-  const { mutateAsync: resendAsync } = useAdminResendInvite(invite.id)
-  const { store, isLoading, isError, error } = useV2Store({})
+  const { mutateAsync: revokeAsync } = useDeleteInvite(invite.id)
+  const { mutateAsync: resendAsync } = useResendInvite(invite.id)
+
   const prompt = usePrompt()
   const { t } = useTranslation()
 
-  const handleRevoke = async () => {
+  const handleDelete = async () => {
     const res = await prompt({
       title: t("general.areYouSure"),
-      description: t("users.revokeInviteWarning", {
+      description: t("users.deleteInviteWarning", {
         email: invite.email,
       }),
       cancelText: t("actions.cancel"),
-      confirmText: t("actions.revoke"),
+      confirmText: t("actions.delete"),
     })
 
     if (!res) {
@@ -242,32 +188,11 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
     await resendAsync()
   }
 
-  const handleCopyInviteLink = () => {
-    const template = store?.invite_link_template
-
-    if (!template) {
-      return
-    }
-
-    const link = template.replace("{invite_token}", invite.token)
-    navigator.clipboard.writeText(link)
-  }
-
-  if (isError) {
-    throw error
-  }
-
   return (
     <ActionMenu
       groups={[
         {
           actions: [
-            {
-              icon: <Link />,
-              label: t("users.copyInviteLink"),
-              disabled: isLoading || !store?.invite_link_template,
-              onClick: handleCopyInviteLink,
-            },
             {
               icon: <ArrowPath />,
               label: t("users.resendInvite"),
@@ -278,9 +203,9 @@ const InviteActions = ({ invite }: { invite: InviteDTO }) => {
         {
           actions: [
             {
-              icon: <XCircle />,
-              label: t("actions.revoke"),
-              onClick: handleRevoke,
+              icon: <Trash />,
+              label: t("actions.delete"),
+              onClick: handleDelete,
             },
           ],
         },

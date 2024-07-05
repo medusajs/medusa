@@ -1,4 +1,7 @@
-import { CreateShippingOptionRuleDTO } from "./mutations"
+import {
+  CreateShippingOptionRuleDTO,
+  UpdateShippingOptionRuleDTO,
+} from "./mutations"
 
 export type AddFulfillmentShippingOptionRulesWorkflowDTO = {
   data: CreateShippingOptionRuleDTO[]
@@ -6,4 +9,8 @@ export type AddFulfillmentShippingOptionRulesWorkflowDTO = {
 
 export type RemoveFulfillmentShippingOptionRulesWorkflowDTO = {
   ids: string[]
+}
+
+export type UpdateFulfillmentShippingOptionRulesWorkflowDTO = {
+  data: UpdateShippingOptionRuleDTO[]
 }

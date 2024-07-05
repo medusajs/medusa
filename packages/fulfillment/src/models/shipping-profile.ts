@@ -2,6 +2,7 @@ import {
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
@@ -41,10 +42,12 @@ export default class ShippingProfile {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   @ShippingProfileTypeIndex.MikroORMIndex()
   name: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   type: string
 

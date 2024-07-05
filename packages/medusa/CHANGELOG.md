@@ -1,5 +1,119 @@
 # Change Log
 
+## 1.20.7
+
+### Patch Changes
+
+- [`dc8fe63bb3`](https://github.com/medusajs/medusa/commit/dc8fe63bb3c1700bc0596f6c52aebeea30094bc8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Use tx isolation level REPEATABLE READ in batch job subscriber
+
+- Updated dependencies [[`b7e32e47ee`](https://github.com/medusajs/medusa/commit/b7e32e47eef94f691dcacc4e954ffcdff152eca4)]:
+  - @medusajs/workflows-sdk@0.1.7
+
+## 1.20.6
+
+### Patch Changes
+
+- [#7203](https://github.com/medusajs/medusa/pull/7203) [`1422cd2900`](https://github.com/medusajs/medusa/commit/1422cd2900d9883ddac0cab2ca66449fdc1f8bea) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin,admin-ui,medusa): Fixes an issue where the `host` option did not have a default value. Updates the version of `tailwindcss`, `autoprefixer`, and `postcss` in `@medusajs/admin-ui`, to avoid issues when importing components using `tailwindcss@4`. Fixes an issue in `@medusajs/medusa` where the `develop` command would throw an error when `@medusajs/admin` was not installed.
+
+## 1.20.5
+
+### Patch Changes
+
+- [#6827](https://github.com/medusajs/medusa/pull/6827) [`0c0b425de7`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,types,dashboard): added empty state for promotions list page
+
+- [#6913](https://github.com/medusajs/medusa/pull/6913) [`49f16ab08d`](https://github.com/medusajs/medusa/commit/49f16ab08d0a270f3fa9232539a85ae3746f5fe7) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Fix get-query-config backward compatiblity
+
+- [#7077](https://github.com/medusajs/medusa/pull/7077) [`8d356217bd`](https://github.com/medusajs/medusa/commit/8d356217bd31c97a196e861ee243822a4d924df7) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,core-flows,types): add batch updates to price list prices
+
+- [#6850](https://github.com/medusajs/medusa/pull/6850) [`e58e81fd25`](https://github.com/medusajs/medusa/commit/e58e81fd2583acfaf091daff79937934c13fb0ba) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): associate refund with order when calling `refundFromPayment`
+
+- [#7128](https://github.com/medusajs/medusa/pull/7128) [`40686ba980`](https://github.com/medusajs/medusa/commit/40686ba98077c1c509744c0bd44fea4d4786abaa) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa,admin-ui): Remove forced `backendUrl` from develop command. Allow specifying an alternative host value
+
+- [#6864](https://github.com/medusajs/medusa/pull/6864) [`e944a627f0`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: region payment providers management workflows/api
+
+- [#6880](https://github.com/medusajs/medusa/pull/6880) [`1a48fe0282`](https://github.com/medusajs/medusa/commit/1a48fe0282a8bc1f8548a4736255e457d173da09) Thanks [@sradevski](https://github.com/sradevski)! - Add v2 product type endpoints and adjust the product module
+
+- [#6911](https://github.com/medusajs/medusa/pull/6911) [`483bf98a49`](https://github.com/medusajs/medusa/commit/483bf98a49f39132bde849b4a30abc570b70f2cf) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): added endpoints for rule attribute/operator/values options
+
+- [#7166](https://github.com/medusajs/medusa/pull/7166) [`08a9297f76`](https://github.com/medusajs/medusa/commit/08a9297f76afce17a2c7992513c7b79f00bf8b1e) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Remove require id from update shipping options validator
+
+- [`cc557c8752`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Order endpoints and Cart totals
+
+- [#6943](https://github.com/medusajs/medusa/pull/6943) [`58c68f6715`](https://github.com/medusajs/medusa/commit/58c68f67156e993255fbc25d91db15ae23bc95c0) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, types): list payment providers endpoint
+
+- [#6876](https://github.com/medusajs/medusa/pull/6876) [`1bcb13f892`](https://github.com/medusajs/medusa/commit/1bcb13f892bc61db21b3fc6bdbce85f747aeec4c) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Remove sales channels from pub keys
+
+- [#6901](https://github.com/medusajs/medusa/pull/6901) [`82a176e30e`](https://github.com/medusajs/medusa/commit/82a176e30e47a7d11caaf31c3023bd8db588b465) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-test-utils): Handle errors gracefully + Do not set Distributed storage on partial loading
+
+- [#7144](https://github.com/medusajs/medusa/pull/7144) [`11517f0faf`](https://github.com/medusajs/medusa/commit/11517f0fafdf00af256240448b58d149d8b6f600) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added store apis for products
+
+- [#6878](https://github.com/medusajs/medusa/pull/6878) [`85a27c3572`](https://github.com/medusajs/medusa/commit/85a27c357295d01be5c66bf33ae93c1bbd239439) Thanks [@gempain](https://github.com/gempain)! - Fix logging error when trying to migrate products for enabling inventory module.
+
+- [#7095](https://github.com/medusajs/medusa/pull/7095) [`62b9dcc6c1`](https://github.com/medusajs/medusa/commit/62b9dcc6c1ce46aadb7944215006c12da3c9f619) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): cancel fulfillments API
+
+- [#7089](https://github.com/medusajs/medusa/pull/7089) [`82cb6cfd36`](https://github.com/medusajs/medusa/commit/82cb6cfd361db4147584b0073cfd01ff100a52e6) Thanks [@kevinfurmanski](https://github.com/kevinfurmanski)! - fix: correct calculations of subtotal for shipping option requirements
+
+- [#6851](https://github.com/medusajs/medusa/pull/6851) [`ea8d9d4d42`](https://github.com/medusajs/medusa/commit/ea8d9d4d42210a5598b308656922c0e93c90b7c8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: API key sales channel link
+
+- [#7175](https://github.com/medusajs/medusa/pull/7175) [`e26cda4b6a`](https://github.com/medusajs/medusa/commit/e26cda4b6afb7fb25f0b0a7a7ce20b7f914d35db) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, core-flows, types): Allow to update the rules from a shipping options
+
+- [#6837](https://github.com/medusajs/medusa/pull/6837) [`6113af0a66`](https://github.com/medusajs/medusa/commit/6113af0a66addd287335b792e8e8ac7915b9cb3f) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Fix deleted discount missing on order
+
+- [#7178](https://github.com/medusajs/medusa/pull/7178) [`efa3308d78`](https://github.com/medusajs/medusa/commit/efa3308d78993a7801fd14cde597a502423d8d94) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): add middleware filters + scope products
+
+- [#6977](https://github.com/medusajs/medusa/pull/6977) [`bc06ad2db4`](https://github.com/medusajs/medusa/commit/bc06ad2db48c999023ab823fefc1375196976e9b) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat/shipping options api 3
+
+- [#7101](https://github.com/medusajs/medusa/pull/7101) [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): add create shipment api for fulfillments
+
+- [#7124](https://github.com/medusajs/medusa/pull/7124) [`38c971f111`](https://github.com/medusajs/medusa/commit/38c971f111af69f176e7e9892eb59f5bae831fa7) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): add fulfillment provider list api
+
+- [#6858](https://github.com/medusajs/medusa/pull/6858) [`6bf4d40856`](https://github.com/medusajs/medusa/commit/6bf4d40856839b755ce33f85ee30d046be7341ab) Thanks [@srindom](https://github.com/srindom)! - chore(medusa-test-utils): create declaration file
+
+- [#6883](https://github.com/medusajs/medusa/pull/6883) [`eadc5e8a79`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Admin V2 API keys
+
+- [#6882](https://github.com/medusajs/medusa/pull/6882) [`5e30b8cce6`](https://github.com/medusajs/medusa/commit/5e30b8cce63524d939a5068050798b0d8fcb9a53) Thanks [@riqwan](https://github.com/riqwan)! - feat(dashboard): added details page for promotions
+
+- [#6962](https://github.com/medusajs/medusa/pull/6962) [`65794f4bb5`](https://github.com/medusajs/medusa/commit/65794f4bb56e4fd3f0ccb7656a948f856f05324e) Thanks [@adrien2p](https://github.com/adrien2p)! - feat: Create shipping options API
+
+- [#6917](https://github.com/medusajs/medusa/pull/6917) [`b3a3993423`](https://github.com/medusajs/medusa/commit/b3a3993423f4872c84b52a68cc3e56766f9ad5a1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa-test-utils): recompute driver options
+
+- [#7029](https://github.com/medusajs/medusa/pull/7029) [`93ef94cad3`](https://github.com/medusajs/medusa/commit/93ef94cad3ddc5b6973b4e48e422b0aa0e6ddbbe) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): create promotion flows
+
+- [#6905](https://github.com/medusajs/medusa/pull/6905) [`edafe7db47`](https://github.com/medusajs/medusa/commit/edafe7db4780631601d07e43b18f80c3406166f0) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(link-modules, core-flows, medusa): add sales channel location management endpoint
+
+- [#6800](https://github.com/medusajs/medusa/pull/6800) [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(core-flows, medusa): add update stock location endpoint to api-v2
+
+- [#7028](https://github.com/medusajs/medusa/pull/7028) [`c78915c7c5`](https://github.com/medusajs/medusa/commit/c78915c7c5e91a99c1b1bae932656c8d86b17daf) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(): Add support for shipping options prices update
+
+- [#7101](https://github.com/medusajs/medusa/pull/7101) [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows,medusa,types): fulfillment API: create
+
+- [#7150](https://github.com/medusajs/medusa/pull/7150) [`d2393f004e`](https://github.com/medusajs/medusa/commit/d2393f004e0d02450300ad34dbbf98e859dae844) Thanks [@riqwan](https://github.com/riqwan)! - feat(core-flows, medusa): add shipping methods to cart API
+
+- [#7130](https://github.com/medusajs/medusa/pull/7130) [`2446151420`](https://github.com/medusajs/medusa/commit/2446151420747794711ba9d7149f2a55269b4bd9) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa): migrate store cart endpoints to zod
+
+- [#7018](https://github.com/medusajs/medusa/pull/7018) [`f175cac4af`](https://github.com/medusajs/medusa/commit/f175cac4af63b71066a8398ecf9beaa6f28b20cc) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(core-flows, medusa, types): add reservation item endpoints
+
+- [#6995](https://github.com/medusajs/medusa/pull/6995) [`0a9b9b073d`](https://github.com/medusajs/medusa/commit/0a9b9b073dd2d3f4aa5e5cb1c16e2221a7200e0d) Thanks [@fPolic](https://github.com/fPolic)! - feat(medusa, core-flows,types): delete fulfillment set, delete shipping profile
+
+- [#6998](https://github.com/medusajs/medusa/pull/6998) [`4f88743591`](https://github.com/medusajs/medusa/commit/4f8874359127e24df548d6c25440177d0dcd53ef) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa, customer): Add list filtering capabilities for customers
+
+- [#7026](https://github.com/medusajs/medusa/pull/7026) [`00e6b21bb5`](https://github.com/medusajs/medusa/commit/00e6b21bb50dbc886bc37ad052a1c40ce865294e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa,types): added tax flows end to end
+
+- [#6788](https://github.com/medusajs/medusa/pull/6788) [`18438a695a`](https://github.com/medusajs/medusa/commit/18438a695a9af8c44387d49d9593d803498e2d21) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa, stock-location-next): add list-stock-locations endpoint to api-v2
+
+- [#6865](https://github.com/medusajs/medusa/pull/6865) [`8fd1488938`](https://github.com/medusajs/medusa/commit/8fd148893850eb66c5eae00c4ca9391a80ea2eb9) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: medusa shutdown
+
+- [#7081](https://github.com/medusajs/medusa/pull/7081) [`7e66dd0dd0`](https://github.com/medusajs/medusa/commit/7e66dd0dd03f856add42056008aaf00e170cdf3a) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Fix validation of V2 POST /customers and POST /customers/:id
+
+- Updated dependencies [[`e603726985`](https://github.com/medusajs/medusa/commit/e60372698565315145037eb40fbe86c43f91cc16), [`8d356217bd`](https://github.com/medusajs/medusa/commit/8d356217bd31c97a196e861ee243822a4d924df7), [`d333db0842`](https://github.com/medusajs/medusa/commit/d333db08429611c0571a0b173adf37103b8a8aa6), [`1eeb1e9de3`](https://github.com/medusajs/medusa/commit/1eeb1e9de3e0b571735437b00968ee96e4aabad5), [`20e8df914e`](https://github.com/medusajs/medusa/commit/20e8df914ec5fdf8d562d4fa84f72c58c7056195), [`a164c0d512`](https://github.com/medusajs/medusa/commit/a164c0d5126a40e2bc669f9fc2883be502a15036), [`e0b02a1012`](https://github.com/medusajs/medusa/commit/e0b02a1012981c29830d7779f59ebe805bbfd137), [`e944a627f0`](https://github.com/medusajs/medusa/commit/e944a627f074fb39a56f4bc7b3d6d315736ebf7c), [`1a48fe0282`](https://github.com/medusajs/medusa/commit/1a48fe0282a8bc1f8548a4736255e457d173da09), [`86f499de2f`](https://github.com/medusajs/medusa/commit/86f499de2f31356ab36ad5e93f27345443b3e5f6), [`cc557c8752`](https://github.com/medusajs/medusa/commit/cc557c8752fd0554f5a1b58522d9a88dc43a8509), [`dd35a4dbff`](https://github.com/medusajs/medusa/commit/dd35a4dbff10c86ea3c5f7f817c18b6e60d599e3), [`1bcb13f892`](https://github.com/medusajs/medusa/commit/1bcb13f892bc61db21b3fc6bdbce85f747aeec4c), [`82a176e30e`](https://github.com/medusajs/medusa/commit/82a176e30e47a7d11caaf31c3023bd8db588b465), [`62b9dcc6c1`](https://github.com/medusajs/medusa/commit/62b9dcc6c1ce46aadb7944215006c12da3c9f619), [`5d9aea053c`](https://github.com/medusajs/medusa/commit/5d9aea053ce6e04f242f86fb9053c13dec515d5b), [`ea8d9d4d42`](https://github.com/medusajs/medusa/commit/ea8d9d4d42210a5598b308656922c0e93c90b7c8), [`e26cda4b6a`](https://github.com/medusajs/medusa/commit/e26cda4b6afb7fb25f0b0a7a7ce20b7f914d35db), [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b), [`232322d035`](https://github.com/medusajs/medusa/commit/232322d03515f81e56867ff8c765b8409399ee68), [`45c49e89f2`](https://github.com/medusajs/medusa/commit/45c49e89f28123ef622fc1c07253bae94fd74875), [`71aeda7347`](https://github.com/medusajs/medusa/commit/71aeda7347a1dc7039be05071ce90a6dca5f9154), [`c3efac5a0d`](https://github.com/medusajs/medusa/commit/c3efac5a0d6cfa38e1af8d248138fa83934a8ceb), [`528ef4ca90`](https://github.com/medusajs/medusa/commit/528ef4ca90bb2cf6173dccc9fd6a9f9932ff9b76), [`65794f4bb5`](https://github.com/medusajs/medusa/commit/65794f4bb56e4fd3f0ccb7656a948f856f05324e), [`edafe7db47`](https://github.com/medusajs/medusa/commit/edafe7db4780631601d07e43b18f80c3406166f0), [`4cf71af07d`](https://github.com/medusajs/medusa/commit/4cf71af07d1807c83df3889c1774f82cbd1b9a6f), [`4b57c5d286`](https://github.com/medusajs/medusa/commit/4b57c5d286f9dc6e2098c67e9fecb0d93175b5a1), [`c78915c7c5`](https://github.com/medusajs/medusa/commit/c78915c7c5e91a99c1b1bae932656c8d86b17daf), [`18f3aacee6`](https://github.com/medusajs/medusa/commit/18f3aacee6752854d377faa806f4cc67bc71456b), [`3affcc2525`](https://github.com/medusajs/medusa/commit/3affcc252599c93cf52fef24ec4f3695d65db79a), [`667c8609cc`](https://github.com/medusajs/medusa/commit/667c8609ccf3850f5df8cf784723a95bd0d6d2a6), [`d2393f004e`](https://github.com/medusajs/medusa/commit/d2393f004e0d02450300ad34dbbf98e859dae844), [`f175cac4af`](https://github.com/medusajs/medusa/commit/f175cac4af63b71066a8398ecf9beaa6f28b20cc), [`edcafa140c`](https://github.com/medusajs/medusa/commit/edcafa140c1869df3c420c2becfbf23b6af75ddc), [`0a9b9b073d`](https://github.com/medusajs/medusa/commit/0a9b9b073dd2d3f4aa5e5cb1c16e2221a7200e0d), [`a6562d2a41`](https://github.com/medusajs/medusa/commit/a6562d2a41453cbe7aa43be352c4924e3e4c79d5), [`8fd1488938`](https://github.com/medusajs/medusa/commit/8fd148893850eb66c5eae00c4ca9391a80ea2eb9), [`1c6ba4468e`](https://github.com/medusajs/medusa/commit/1c6ba4468eab1440931c88929affd5b4c593f377)]:
+  - @medusajs/workflows-sdk@0.1.6
+  - @medusajs/orchestration@0.5.7
+  - @medusajs/core-flows@0.0.9
+  - @medusajs/modules-sdk@1.12.11
+  - @medusajs/utils@1.11.9
+  - @medusajs/link-modules@0.2.11
+  - medusa-core-utils@1.2.2
+
 ## 1.20.4
 
 ### Patch Changes

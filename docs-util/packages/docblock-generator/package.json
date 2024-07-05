@@ -34,6 +34,7 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@types/node": "^20.9.4"
+    "@types/node": "^20.9.4",
+    "@types/pluralize": "^0.0.33"
   }
 }

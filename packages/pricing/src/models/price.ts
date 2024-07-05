@@ -1,8 +1,10 @@
 import { DAL } from "@medusajs/types"
 import {
+  BigNumber,
   createPsqlIndexStatementHelper,
   DALUtils,
   generateEntityId,
+  MikroOrmBigNumberProperty,
 } from "@medusajs/utils"
 import {
   BeforeCreate,
@@ -63,8 +65,11 @@ export default class Price {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({ columnType: "numeric", serializer: Number })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: Record<string, unknown>
 
   @Property({ columnType: "numeric", nullable: true })
   min_quantity: number | null = null

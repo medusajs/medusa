@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/workflows-sdk",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Set of workflows tooling for Medusa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.15",
+    "@medusajs/types": "^1.11.16",
     "cross-env": "^5.2.1",
     "jest": "^29.6.3",
     "rimraf": "^5.0.1",
@@ -29,9 +29,9 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.10",
-    "@medusajs/orchestration": "^0.5.6",
-    "@medusajs/utils": "^1.11.8",
+    "@medusajs/modules-sdk": "^1.12.11",
+    "@medusajs/orchestration": "^0.5.7",
+    "@medusajs/utils": "^1.11.9",
     "awilix": "^8.0.1",
     "ulid": "^2.3.0"
   },

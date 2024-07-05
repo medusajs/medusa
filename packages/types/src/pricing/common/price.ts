@@ -1,4 +1,5 @@
 import { BaseFilterable } from "../../dal"
+import { BigNumberInput, BigNumberValue } from "../../totals"
 import { PriceListDTO } from "./price-list"
 import { PriceRuleDTO } from "./price-rule"
 import { PriceSetDTO } from "./price-set"
@@ -24,15 +25,15 @@ export interface PriceDTO {
   /**
    * The price of this price.
    */
-  amount?: number
+  amount?: BigNumberValue
   /**
    * The minimum quantity required to be purchased for this price to be applied.
    */
-  min_quantity?: number
+  min_quantity?: BigNumberValue
   /**
    * The maximum quantity required to be purchased for this price to be applied.
    */
-  max_quantity?: number
+  max_quantity?: BigNumberValue
   /**
    * The price set associated with the price.
    *
@@ -80,15 +81,15 @@ export interface UpdatePriceDTO {
   /**
    * The amount of this price.
    */
-  amount?: number
+  amount?: BigNumberInput
   /**
    * The minimum quantity required to be purchased for this price to be applied.
    */
-  min_quantity?: number
+  min_quantity?: BigNumberInput
   /**
    * The maximum quantity required to be purchased for this price to be applied.
    */
-  max_quantity?: number
+  max_quantity?: BigNumberInput
 }
 
 export interface CreatePriceDTO {
@@ -104,15 +105,15 @@ export interface CreatePriceDTO {
   /**
    * The amount of this price.
    */
-  amount: number
+  amount: BigNumberInput
   /**
    * The minimum quantity required to be purchased for this price to be applied.
    */
-  min_quantity?: number | null
+  min_quantity?: BigNumberInput | null
   /**
    * The maximum quantity required to be purchased for this price to be applied.
    */
-  max_quantity?: number | null
+  max_quantity?: BigNumberInput | null
 }
 
 /**

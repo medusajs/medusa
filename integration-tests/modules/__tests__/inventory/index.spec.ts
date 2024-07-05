@@ -1,9 +1,9 @@
-import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
-
 import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
+import { IInventoryServiceNext, IStockLocationService } from "@medusajs/types"
+
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createAdminUser } from "../../../helpers/create-admin-user"
 
@@ -314,6 +314,49 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("Bulk create/delete inventory levels", () => {
+        const locationId = "loc_1"
+        let inventoryItem
+
+        beforeEach(async () => {
+          inventoryItem = await service.create({
+            sku: "MY_SKU",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: locationId,
+              stocked_quantity: 10,
+            },
+          ])
+        })
+
+        it("should delete an inventory location level and create a new one", async () => {
+          const result = await api.post(
+            `/admin/inventory-items/${inventoryItem.id}/location-levels/batch`,
+            {
+              create: [
+                {
+                  location_id: "location_2",
+                },
+              ],
+              delete: [locationId],
+            },
+            adminHeaders
+          )
+
+          expect(result.status).toEqual(200)
+
+          const levelsListResult = await api.get(
+            `/admin/inventory-items/${inventoryItem.id}/location-levels`,
+            adminHeaders
+          )
+          expect(levelsListResult.status).toEqual(200)
+          expect(levelsListResult.data.inventory_levels).toHaveLength(1)
+        })
+      })
+
       describe("Delete inventory levels", () => {
         const locationId = "loc_1"
         let inventoryItem
@@ -343,6 +386,7 @@ medusaIntegrationTestRunner({
             id: expect.any(String),
             object: "inventory-level",
             deleted: true,
+            parent: expect.any(Object),
           })
         })
 

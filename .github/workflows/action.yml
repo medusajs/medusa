@@ -1,6 +1,13 @@
 name: Medusa Pipeline
 on:
+  push:
+    branches:
+    - develop
+    - v1.x
   pull_request:
+    branches:
+    - develop
+    - v1.x
 
 jobs:
   setup:

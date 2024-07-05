@@ -44,6 +44,29 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("should support searching of customer groups", async () => {
+        await customerModuleService.createCustomerGroup([
+          {
+            name: "First group",
+          },
+          { name: "Second group" },
+        ])
+
+        const response = await api.get(
+          `/admin/customer-groups?q=fir`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.customer_groups).toHaveLength(1)
+        expect(response.data.customer_groups[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            name: "First group",
+          })
+        )
+      })
     })
   },
 })

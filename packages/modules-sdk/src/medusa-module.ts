@@ -136,6 +136,23 @@ export class MedusaModule {
     )
   }
 
+  public static async onApplicationPrepareShutdown(): Promise<void> {
+    await promiseAll(
+      [...MedusaModule.instances_.values()]
+        .map((instances) => {
+          return Object.values(instances).map((instance: IModuleService) => {
+            return instance.__hooks?.onApplicationPrepareShutdown
+              ?.bind(instance)()
+              .catch(() => {
+                // The module should handle this and log it
+                return void 0
+              })
+          })
+        })
+        .flat()
+    )
+  }
+
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
     MedusaModule.modules_.clear()

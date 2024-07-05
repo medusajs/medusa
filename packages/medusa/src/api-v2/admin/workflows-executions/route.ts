@@ -3,34 +3,33 @@ import {
   MedusaResponse,
 } from "../../../types/routing"
 
-import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { AdminGetWorkflowExecutionsParamsType } from "./validators"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetWorkflowExecutionsParamsType>,
   res: MedusaResponse
 ) => {
-  const workflowEngineService: IWorkflowEngineService = req.scope.resolve(
-    ModuleRegistrationName.WORKFLOW_ENGINE
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const listConfig = req.listConfig
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "workflow_execution",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [workflow_executions, count] =
-    await workflowEngineService.listAndCountWorkflowExecution(
-      req.filterableFields,
-      {
-        select: req.listConfig.select,
-        relations: req.listConfig.relations,
-        skip: listConfig.skip,
-        take: listConfig.take,
-      }
-    )
+  const { rows: workflowExecutions, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    workflow_executions,
-    count,
-    offset: listConfig.skip,
-    limit: listConfig.take,
+    workflow_executions: workflowExecutions,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }

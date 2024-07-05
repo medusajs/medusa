@@ -1,15 +1,15 @@
 import * as QueryConfig from "./query-config"
-
-import {
-  AdminGetCollectionsCollectionParams,
-  AdminGetCollectionsParams,
-  AdminPostCollectionsCollectionReq,
-  AdminPostCollectionsReq,
-} from "./validators"
-import { transformBody, transformQuery } from "../../../api/middlewares"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreateCollection,
+  AdminGetCollectionParams,
+  AdminGetCollectionsParams,
+  AdminUpdateCollection,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { createLinkBody } from "../../utils/validators"
 
 export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -22,7 +22,7 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/collections",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetCollectionsParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -32,8 +32,8 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["GET"],
     matcher: "/admin/collections/:id",
     middlewares: [
-      transformQuery(
-        AdminGetCollectionsCollectionParams,
+      validateAndTransformQuery(
+        AdminGetCollectionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -41,17 +41,39 @@ export const adminCollectionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/collections",
-    middlewares: [transformBody(AdminPostCollectionsReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateCollection),
+      validateAndTransformQuery(
+        AdminGetCollectionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/collections/:id",
-    middlewares: [transformBody(AdminPostCollectionsCollectionReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateCollection),
+      validateAndTransformQuery(
+        AdminGetCollectionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/collections/:id",
     middlewares: [],
   },
-  // TODO: There were two batch methods, they need to be handled
+  {
+    method: ["POST"],
+    matcher: "/admin/collections/:id/products",
+    middlewares: [
+      validateAndTransformBody(createLinkBody()),
+      validateAndTransformQuery(
+        AdminGetCollectionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
 ]

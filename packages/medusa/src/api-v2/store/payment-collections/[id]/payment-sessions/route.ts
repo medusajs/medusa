@@ -12,7 +12,7 @@ export const POST = async (
   res: MedusaResponse
 ) => {
   const { id } = req.params
-  const { context, provider_id, data } = req.body
+  const { context = {}, provider_id, data } = req.body
 
   // If the customer is logged in, we auto-assign them to the payment collection
   if (req.auth?.actor_id) {

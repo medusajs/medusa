@@ -85,6 +85,43 @@ medusaIntegrationTestRunner({
         expect(listedApiKeys.data.api_keys).toHaveLength(0)
       })
 
+      it("should allow searching for api keys", async () => {
+        await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test Secret Key",
+            type: ApiKeyType.SECRET,
+          },
+          adminHeaders
+        )
+        await api.post(
+          `/admin/api-keys`,
+          {
+            title: "Test Publishable Key",
+            type: ApiKeyType.PUBLISHABLE,
+          },
+          adminHeaders
+        )
+
+        const listedSecretKeys = await api.get(
+          `/admin/api-keys?q=Secret`,
+          adminHeaders
+        )
+        const listedPublishableKeys = await api.get(
+          `/admin/api-keys?q=Publish`,
+          adminHeaders
+        )
+
+        expect(listedSecretKeys.data.api_keys).toHaveLength(1)
+        expect(listedSecretKeys.data.api_keys[0].title).toEqual(
+          "Test Secret Key"
+        )
+        expect(listedPublishableKeys.data.api_keys).toHaveLength(1)
+        expect(listedPublishableKeys.data.api_keys[0].title).toEqual(
+          "Test Publishable Key"
+        )
+      })
+
       it("can use a secret api key for authentication", async () => {
         const created = await api.post(
           `/admin/api-keys`,
@@ -188,14 +225,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            sales_channel_ids: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")
@@ -229,9 +271,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch/add`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels`,
             {
-              sales_channel_ids: [sales_channel.id],
+              add: [sales_channel.id],
             },
             adminHeaders
           )
@@ -255,9 +297,9 @@ medusaIntegrationTestRunner({
 
         const errorRes = await api
           .post(
-            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels/batch/add`,
+            `/admin/api-keys/${apiKeyRes.data.api_key.id}/sales-channels`,
             {
-              sales_channel_ids: ["phony"],
+              add: ["phony"],
             },
             adminHeaders
           )
@@ -292,14 +334,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            sales_channel_ids: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")
@@ -311,14 +358,19 @@ medusaIntegrationTestRunner({
         ])
 
         const keyWithoutChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/remove`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            sales_channel_ids: [sales_channel.id],
+            remove: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithoutChannels } = keyWithoutChannelsRes.data
+        const keyWithoutChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithoutChannelsRes.status).toEqual(200)
         expect(keyWithoutChannels.title).toEqual("Test publishable KEY")
@@ -348,14 +400,19 @@ medusaIntegrationTestRunner({
         const { api_key } = apiKeyRes.data
 
         const keyWithChannelsRes = await api.post(
-          `/admin/api-keys/${api_key.id}/sales-channels/batch/add`,
+          `/admin/api-keys/${api_key.id}/sales-channels`,
           {
-            sales_channel_ids: [sales_channel.id],
+            add: [sales_channel.id],
           },
           adminHeaders
         )
 
-        const { api_key: keyWithChannels } = keyWithChannelsRes.data
+        const keyWithChannels = (
+          await api.get(
+            `/admin/api-keys/${api_key.id}?fields=*sales_channels`,
+            adminHeaders
+          )
+        ).data.api_key
 
         expect(keyWithChannelsRes.status).toEqual(200)
         expect(keyWithChannels.title).toEqual("Test publishable KEY")

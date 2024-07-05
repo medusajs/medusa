@@ -59,6 +59,9 @@ export class WorkflowsModuleService implements IWorkflowEngineService {
       await this.workflowOrchestratorService_.onApplicationShutdown()
       await this.redisDisconnectHandler_()
     },
+    onApplicationPrepareShutdown: async () => {
+      await this.workflowOrchestratorService_.onApplicationPrepareShutdown()
+    },
   }
 
   @InjectManager("baseRepository_")

@@ -1,21 +1,20 @@
 import {
   BeforeCreate,
-  Cascade,
   Collection,
   Entity,
   Filter,
   Formula,
-  OnInit,
-  OnLoad,
   OneToMany,
+  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 
 import { DAL } from "@medusajs/types"
@@ -64,15 +63,18 @@ export class InventoryItem {
   deleted_at: Date | null = null
 
   @InventoryItemSkuIndex.MikroORMIndex()
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   sku: string | null = null
 
   @Property({ columnType: "text", nullable: true })
   origin_country: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   hs_code: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   mid_code: string | null = null
 
@@ -94,9 +96,11 @@ export class InventoryItem {
   @Property({ columnType: "boolean" })
   requires_shipping: boolean = true
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   description: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   title: string | null = null
 

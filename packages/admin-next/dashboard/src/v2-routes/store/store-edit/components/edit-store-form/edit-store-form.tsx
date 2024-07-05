@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { StoreDTO } from "@medusajs/types"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, Select, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
@@ -10,16 +9,18 @@ import {
   RouteDrawer,
   useRouteModal,
 } from "../../../../../components/route-modal"
-import { useV2UpdateStore } from "../../../../../lib/api-v2"
+import { useUpdateStore } from "../../../../../hooks/api/store"
+import { ExtendedStoreDTO } from "../../../../../types/api-responses"
+import { useRegions } from "../../../../../hooks/api/regions"
 
 type EditStoreFormProps = {
-  store: StoreDTO
+  store: ExtendedStoreDTO
 }
 
 const EditStoreSchema = z.object({
   name: z.string().min(1),
-  // default_currency_code: z.string().optional(),
-  // default_region_id: z.string().optional(),
+  default_currency_code: z.string().optional(),
+  default_region_id: z.string().optional(),
   // default_location_id: z.string().optional(),
 })
 
@@ -30,18 +31,32 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
   const form = useForm<z.infer<typeof EditStoreSchema>>({
     defaultValues: {
       name: store.name,
+      default_region_id: store.default_region_id || undefined,
+      default_currency_code: store.default_currency_code || undefined,
     },
     resolver: zodResolver(EditStoreSchema),
   })
 
-  const { mutateAsync, isLoading } = useV2UpdateStore(store.id)
+  const { mutateAsync, isPending } = useUpdateStore(store.id)
+
+  const { regions, isPending: isRegionsLoading } = useRegions({ limit: 999 })
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    mutateAsync(values, {
-      onSuccess: () => {
-        handleSuccess()
-      },
-    })
+    try {
+      await mutateAsync(values)
+
+      handleSuccess()
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.update"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   })
 
   return (
@@ -62,7 +77,61 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 </Form.Item>
               )}
             />
-            {/* TODO: Add comboboxes for default region, location, and currency. `q` is currently missing on all v2 endpoints */}
+            {/* TODO: Add comboboxes for default sales channel and location */}
+            <Form.Field
+              control={form.control}
+              name="default_currency_code"
+              render={({ field: { onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("store.defaultCurrency")}</Form.Label>
+                    <Form.Control>
+                      <Select {...field} onValueChange={onChange}>
+                        <Select.Trigger ref={field.ref}>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {store.supported_currency_codes.map((code) => (
+                            <Select.Item key={code} value={code}>
+                              {code.toUpperCase()}
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select>
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
+            <Form.Field
+              control={form.control}
+              name="default_region_id"
+              render={({ field: { onChange, ...field } }) => {
+                return (
+                  <Form.Item>
+                    <Form.Label>{t("store.defaultRegion")}</Form.Label>
+                    <Form.Control>
+                      <Select
+                        {...field}
+                        onValueChange={onChange}
+                        disabled={isRegionsLoading}
+                      >
+                        <Select.Trigger ref={field.ref}>
+                          <Select.Value />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {(regions || []).map((region) => (
+                            <Select.Item key={region.id} value={region.id}>
+                              {region.name}
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select>
+                    </Form.Control>
+                  </Form.Item>
+                )
+              }}
+            />
           </div>
         </RouteDrawer.Body>
         <RouteDrawer.Footer>
@@ -72,7 +141,7 @@ export const EditStoreForm = ({ store }: EditStoreFormProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteDrawer.Close>
-            <Button size="small" isLoading={isLoading} type="submit">
+            <Button size="small" isLoading={isPending} type="submit">
               {t("actions.save")}
             </Button>
           </div>

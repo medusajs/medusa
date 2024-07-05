@@ -1,26 +1,28 @@
 import { Plus, Trash } from "@medusajs/icons"
-import { CurrencyDTO, StoreDTO } from "@medusajs/types"
+import { CurrencyDTO } from "@medusajs/types"
 import {
   Checkbox,
   CommandBar,
   Container,
   Heading,
+  toast,
   usePrompt,
 } from "@medusajs/ui"
+import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
-import { adminStoreKeys, useAdminCustomPost } from "medusa-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../../components/common/action-menu"
 import { DataTable } from "../../../../../../components/table/data-table"
+import { useCurrencies } from "../../../../../../hooks/api/currencies"
+import { useUpdateStore } from "../../../../../../hooks/api/store"
 import { useDataTable } from "../../../../../../hooks/use-data-table"
-import { useV2UpdateStore } from "../../../../../../lib/api-v2"
-import { useV2Currencies } from "../../../../../../lib/api-v2/currencies"
+import { ExtendedStoreDTO } from "../../../../../../types/api-responses"
 import { useCurrenciesTableColumns } from "../../../../common/hooks/use-currencies-table-columns"
 import { useCurrenciesTableQuery } from "../../../../common/hooks/use-currencies-table-query"
 
 type StoreCurrencySectionProps = {
-  store: StoreDTO
+  store: ExtendedStoreDTO
 }
 
 const PAGE_SIZE = 10
@@ -30,13 +32,19 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
 
   const { searchParams, raw } = useCurrenciesTableQuery({ pageSize: PAGE_SIZE })
 
-  const { currencies, count, isLoading, isError, error } = useV2Currencies(
+  const {
+    currencies,
+    count,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useCurrencies(
     {
       code: store.supported_currency_codes,
       ...searchParams,
     },
     {
-      keepPreviousData: true,
+      placeholderData: keepPreviousData,
     }
   )
 
@@ -55,12 +63,13 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
     enableRowSelection: true,
     pageSize: PAGE_SIZE,
     meta: {
-      currencyCodes: store.supported_currency_codes,
       storeId: store.id,
+      currencyCodes: store.supported_currency_codes,
+      defaultCurrencyCode: store.default_currency_code,
     },
   })
 
-  const { mutateAsync } = useV2UpdateStore(store.id)
+  const { mutateAsync } = useUpdateStore(store.id)
   const { t } = useTranslation()
   const prompt = usePrompt()
 
@@ -80,18 +89,24 @@ export const StoreCurrencySection = ({ store }: StoreCurrencySectionProps) => {
       return
     }
 
-    await mutateAsync(
-      {
+    try {
+      await mutateAsync({
         supported_currency_codes: store.supported_currency_codes.filter(
           (c) => !ids.includes(c)
         ),
-      },
-      {
-        onSuccess: () => {
-          setRowSelection({})
-        },
-      }
-    )
+      })
+      setRowSelection({})
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesRemoved"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   if (isError) {
@@ -150,15 +165,14 @@ const CurrencyActions = ({
   storeId,
   currency,
   currencyCodes,
+  defaultCurrencyCode,
 }: {
   storeId: string
   currency: CurrencyDTO
   currencyCodes: string[]
+  defaultCurrencyCode: string
 }) => {
-  const { mutateAsync } = useAdminCustomPost(
-    `/admin/stores/${storeId}`,
-    adminStoreKeys.details()
-  )
+  const { mutateAsync } = useUpdateStore(storeId)
 
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -179,11 +193,23 @@ const CurrencyActions = ({
       return
     }
 
-    await mutateAsync({
-      supported_currency_codes: currencyCodes.filter(
-        (c) => c !== currency.code
-      ),
-    })
+    try {
+      await mutateAsync({
+        supported_currency_codes: currencyCodes.filter(
+          (c) => c !== currency.code
+        ),
+      })
+
+      toast.success(t("general.success"), {
+        description: t("store.toast.currenciesRemoved"),
+        dismissLabel: t("actions.close"),
+      })
+    } catch (e) {
+      toast.error(t("general.error"), {
+        description: e.message,
+        dismissLabel: t("actions.close"),
+      })
+    }
   }
 
   return (
@@ -195,6 +221,7 @@ const CurrencyActions = ({
               icon: <Trash />,
               label: t("actions.remove"),
               onClick: handleRemove,
+              disabled: currency.code === defaultCurrencyCode,
             },
           ],
         },
@@ -242,9 +269,11 @@ const useColumns = () => {
       columnHelper.display({
         id: "actions",
         cell: ({ row, table }) => {
-          const { currencyCodes, storeId } = table.options.meta as {
+          const { currencyCodes, storeId, defaultCurrencyCode } = table.options
+            .meta as {
             currencyCodes: string[]
             storeId: string
+            defaultCurrencyCode: string
           }
 
           return (
@@ -252,6 +281,7 @@ const useColumns = () => {
               storeId={storeId}
               currency={row.original}
               currencyCodes={currencyCodes}
+              defaultCurrencyCode={defaultCurrencyCode}
             />
           )
         },

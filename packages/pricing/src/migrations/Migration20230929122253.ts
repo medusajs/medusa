@@ -11,7 +11,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price" ("id" text not null, "title" text, "price_set_id" text not null, "money_amount_id" text not null, "rules_count" integer not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_pkey" primary key ("id"));'
+      'create table "price" ("id" text not null, "title" text, "price_set_id" text not null, "money_amount_id" text not null, "raw_amount" jsonb not null, "rules_count" integer not null default 0, "created_at" timestamptz not null default now(), "updated_at" timestamptz not null default now(), "deleted_at" timestamptz null, constraint "price_pkey" primary key ("id"));'
     )
 
     this.addSql(

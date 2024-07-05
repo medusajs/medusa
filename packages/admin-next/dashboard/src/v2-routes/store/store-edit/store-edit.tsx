@@ -1,12 +1,12 @@
 import { Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { RouteDrawer } from "../../../components/route-modal"
-import { useV2Store } from "../../../lib/api-v2"
+import { useStore } from "../../../hooks/api/store"
 import { EditStoreForm } from "./components/edit-store-form/edit-store-form"
 
 export const StoreEdit = () => {
   const { t } = useTranslation()
-  const { store, isLoading, isError, error } = useV2Store()
+  const { store, isPending: isLoading, isError, error } = useStore()
 
   if (isError) {
     throw error

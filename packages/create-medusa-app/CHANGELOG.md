@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.8
+
+### Patch Changes
+
+- [#6027](https://github.com/medusajs/medusa/pull/6027) [`fe1d3a4a78`](https://github.com/medusajs/medusa/commit/fe1d3a4a78385bb356539d6f9cba5ce2012f5da8) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): Add a `--verbose` option.
+
 ## 1.2.7
 
 ### Patch Changes

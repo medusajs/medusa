@@ -6,3 +6,5 @@ export type BigNumberRawValue = {
 }
 
 export type BigNumberInput = BigNumberRawValue | number | string | BigNumberJS
+
+export type BigNumberValue = BigNumberJS | number | string

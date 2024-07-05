@@ -65,9 +65,11 @@ export const updatePriceListPricesStep = createStep(
       })
     }
 
-    await pricingModule.updatePriceListPrices(priceListPricesToUpdate)
+    const updatedPrices = await pricingModule.updatePriceListPrices(
+      priceListPricesToUpdate
+    )
 
-    return new StepResponse(null, dataBeforePriceUpdate)
+    return new StepResponse(updatedPrices, dataBeforePriceUpdate)
   },
   async (dataBeforePriceUpdate, { container }) => {
     if (!dataBeforePriceUpdate?.length) {

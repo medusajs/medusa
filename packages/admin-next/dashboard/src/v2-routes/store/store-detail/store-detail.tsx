@@ -1,7 +1,7 @@
 import { Outlet, useLoaderData } from "react-router-dom"
 
 import { JsonViewSection } from "../../../components/common/json-view-section"
-import { useV2Store } from "../../../lib/api-v2"
+import { useStore } from "../../../hooks/api/store"
 import { StoreCurrencySection } from "./components/store-currency-section/store-currencies-section.tsx"
 import { StoreGeneralSection } from "./components/store-general-section"
 import { storeLoader } from "./loader"
@@ -9,8 +9,13 @@ import { storeLoader } from "./loader"
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
 
-  const { store, isLoading, isError, error } = useV2Store({
-    initialData: initialData,
+  const {
+    store,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useStore({
+    initialData,
   })
 
   if (isLoading || !store) {

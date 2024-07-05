@@ -1,12 +1,19 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
+import {
+  MedusaError,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
-type UpdateProductsStepInput = {
-  selector: ProductTypes.FilterableProductProps
-  update: ProductTypes.UpdateProductDTO
-}
+type UpdateProductsStepInput =
+  | {
+      selector: ProductTypes.FilterableProductProps
+      update: ProductTypes.UpdateProductDTO
+    }
+  | {
+      products: ProductTypes.UpsertProductDTO[]
+    }
 
 export const updateProductsStepId = "update-products"
 export const updateProductsStep = createStep(
@@ -15,6 +22,22 @@ export const updateProductsStep = createStep(
     const service = container.resolve<IProductModuleService>(
       ModuleRegistrationName.PRODUCT
     )
+
+    if ("products" in data) {
+      if (data.products.some((p) => !p.id)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Product ID is required when doing a batch update of products"
+        )
+      }
+
+      const prevData = await service.list({
+        id: data.products.map((p) => p.id) as string[],
+      })
+
+      const products = await service.upsert(data.products)
+      return new StepResponse(products, prevData)
+    }
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,

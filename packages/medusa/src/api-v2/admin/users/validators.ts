@@ -1,112 +1,40 @@
-import { Type } from "class-transformer"
-import { IsEmail, IsOptional, IsString, ValidateNested } from "class-validator"
 import {
-  DateComparisonOperator,
-  FindParams,
-  extendedFindParamsMixin,
-} from "../../../types/common"
-import { IsType } from "../../../utils"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
+import { z } from "zod"
 
-export class AdminGetUsersUserParams extends FindParams {}
+export const AdminGetUserParams = createSelectParams()
 
-export class AdminGetUsersParams extends extendedFindParamsMixin({
-  limit: 50,
+export type AdminGetUsersParamsType = z.infer<typeof AdminGetUsersParams>
+export const AdminGetUsersParams = createFindParams({
   offset: 0,
-}) {
-  /**
-   * IDs to filter users by.
-   */
-  @IsOptional()
-  @IsType([String, [String]])
-  id?: string | string[]
+  limit: 50,
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    email: z.string().optional(),
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+  })
+)
 
-  /**
-   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-   */
-  @IsString()
-  @IsOptional()
-  order?: string
+export type AdminCreateUserType = z.infer<typeof AdminCreateUser>
+export const AdminCreateUser = z.object({
+  email: z.string(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  avatar_url: z.string().optional(),
+})
 
-  /**
-   * Date filters to apply on the users' `update_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator
-
-  /**
-   * Date filters to apply on the customer users' `created_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  created_at?: DateComparisonOperator
-
-  /**
-   * Date filters to apply on the users' `deleted_at` date.
-   */
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  deleted_at?: DateComparisonOperator
-
-  /**
-   * Filter to apply on the users' `email` field.
-   */
-  @IsOptional()
-  @IsString()
-  email?: string
-
-  /**
-   * Filter to apply on the users' `first_name` field.
-   */
-  @IsOptional()
-  @IsString()
-  first_name?: string
-
-  /**
-   * Filter to apply on the users' `last_name` field.
-   */
-  @IsOptional()
-  @IsString()
-  last_name?: string
-
-  /**
-   * Comma-separated fields that should be included in the returned users.
-   */
-  @IsOptional()
-  @IsString()
-  fields?: string
-}
-
-export class AdminCreateUserRequest {
-  @IsEmail()
-  email: string
-
-  @IsOptional()
-  @IsString()
-  first_name?: string
-
-  @IsOptional()
-  @IsString()
-  last_name?: string
-
-  @IsString()
-  @IsOptional()
-  avatar_url: string
-}
-
-export class AdminUpdateUserRequest {
-  @IsString()
-  @IsOptional()
-  first_name?: string
-
-  @IsString()
-  @IsOptional()
-  last_name?: string
-
-  @IsString()
-  @IsOptional()
-  avatar_url: string
-}
+export type AdminUpdateUserType = z.infer<typeof AdminUpdateUser>
+export const AdminUpdateUser = z.object({
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  avatar_url: z.string().optional(),
+})

@@ -35,7 +35,7 @@ export const removeRemoteLinkStep = createStep(
     )
     await link.delete(grouped)
 
-    return new StepResponse(void 0, grouped)
+    return new StepResponse(grouped, grouped)
   },
   async (removedLinks, { container }) => {
     if (!removedLinks) {

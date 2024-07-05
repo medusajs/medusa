@@ -1,42 +1,43 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
+import { createFindParams, createSelectParams } from "../../utils/validators"
+import { z } from "zod"
 
-export class AdminGetPricingRuleTypesRuleTypeParams extends FindParams {}
-export class AdminGetPricingRuleTypesParams extends extendedFindParamsMixin({
+export type AdminGetPricingRuleTypeParamsType = z.infer<
+  typeof AdminGetPricingRuleTypeParams
+>
+export const AdminGetPricingRuleTypeParams = createSelectParams()
+
+export type AdminGetPricingRuleTypesParamsType = z.infer<
+  typeof AdminGetPricingRuleTypesParams
+>
+export const AdminGetPricingRuleTypesParams = createFindParams({
   limit: 100,
   offset: 0,
-}) {
-  @IsString()
-  @IsOptional()
-  rule_attribute?: string[]
-}
+}).merge(
+  z.object({
+    rule_attribute: z.union([z.string(), z.array(z.string())]).optional(),
+    $and: z.lazy(() => AdminGetPricingRuleTypesParams.array()).optional(),
+    $or: z.lazy(() => AdminGetPricingRuleTypesParams.array()).optional(),
+  })
+)
 
-export class AdminPostPricingRuleTypesReq {
-  @IsNotEmpty()
-  @IsString()
-  name: string
+export type AdminCreatePricingRuleTypeType = z.infer<
+  typeof AdminCreatePricingRuleType
+>
+export const AdminCreatePricingRuleType = z
+  .object({
+    name: z.string(),
+    rule_attribute: z.string(),
+    default_priority: z.number(),
+  })
+  .strict()
 
-  @IsNotEmpty()
-  @IsString()
-  rule_attribute: string
-
-  @IsNotEmpty()
-  @IsNumber()
-  default_priority: number
-}
-
-export class AdminPostPricingRuleTypesRuleTypeReq {
-  @IsOptional()
-  @IsString()
-  name?: string
-
-  @IsOptional()
-  @IsString()
-  rule_attribute?: string
-
-  @IsOptional()
-  @IsNumber()
-  default_priority?: number
-}
-
-export class AdminDeletePricingRuleTypesRuleTypeReq {}
+export type AdminUpdatePricingRuleTypeType = z.infer<
+  typeof AdminUpdatePricingRuleType
+>
+export const AdminUpdatePricingRuleType = z
+  .object({
+    name: z.string().optional(),
+    rule_attribute: z.string().optional(),
+    default_priority: z.number().optional(),
+  })
+  .strict()

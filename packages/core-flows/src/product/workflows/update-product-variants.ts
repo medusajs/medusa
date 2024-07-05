@@ -8,12 +8,18 @@ import { updateProductVariantsStep } from "../steps"
 import { updatePriceSetsStep } from "../../pricing"
 import { getVariantPricingLinkStep } from "../steps/get-variant-pricing-link"
 
-type UpdateProductVariantsStepInput = {
-  selector: ProductTypes.FilterableProductVariantProps
-  update: ProductTypes.UpdateProductVariantDTO & {
-    prices?: PricingTypes.CreateMoneyAmountDTO[]
-  }
-}
+type UpdateProductVariantsStepInput =
+  | {
+      selector: ProductTypes.FilterableProductVariantProps
+      update: ProductTypes.UpdateProductVariantDTO & {
+        prices?: Partial<PricingTypes.CreateMoneyAmountDTO>[]
+      }
+    }
+  | {
+      product_variants: (ProductTypes.UpsertProductVariantDTO & {
+        prices?: Partial<PricingTypes.CreateMoneyAmountDTO>[]
+      })[]
+    }
 
 type WorkflowInput = UpdateProductVariantsStepInput
 
@@ -25,6 +31,17 @@ export const updateProductVariantsWorkflow = createWorkflow(
   ): WorkflowData<ProductTypes.ProductVariantDTO[]> => {
     // Passing prices to the product module will fail, we want to keep them for after the variant is updated.
     const updateWithoutPrices = transform({ input }, (data) => {
+      if ("product_variants" in data.input) {
+        return {
+          product_variants: data.input.product_variants.map((variant) => {
+            return {
+              ...variant,
+              prices: undefined,
+            }
+          }),
+        }
+      }
+
       return {
         selector: data.input.selector,
         update: {
@@ -38,6 +55,10 @@ export const updateProductVariantsWorkflow = createWorkflow(
 
     // We don't want to do any pricing updates if the prices didn't change
     const variantIds = transform({ input, updatedVariants }, (data) => {
+      if ("product_variants" in data.input) {
+        return data.updatedVariants.map((v) => v.id)
+      }
+
       if (!data.input.update.prices) {
         return []
       }
@@ -54,6 +75,19 @@ export const updateProductVariantsWorkflow = createWorkflow(
       (data) => {
         if (!data.variantPriceSetLinks.length) {
           return {}
+        }
+
+        if ("product_variants" in data.input) {
+          return data.variantPriceSetLinks.map((link) => {
+            const variant = (data.input as any).product_variants.find(
+              (v) => v.id === link.variant_id
+            )
+
+            return {
+              id: link.price_set_id,
+              prices: variant.prices,
+            } as PricingTypes.UpsertPriceSetDTO
+          })
         }
 
         return {

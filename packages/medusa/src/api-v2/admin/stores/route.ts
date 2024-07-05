@@ -2,25 +2,28 @@ import {
   ContainerRegistrationKeys,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
-import { defaultAdminStoreFields } from "./query-config"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
+import { AdminGetStoresParamsType } from "./validators"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: AuthenticatedMedusaRequest<AdminGetStoresParamsType>,
+  res: MedusaResponse
+) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const queryObject = remoteQueryObjectFromString({
     entryPoint: "store",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: defaultAdminStoreFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
   const { rows: stores, metadata } = await remoteQuery(queryObject)
-
   res.json({
     stores,
     count: metadata.count,

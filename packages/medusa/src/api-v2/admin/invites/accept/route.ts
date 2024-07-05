@@ -5,11 +5,10 @@ import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-
-import { AdminPostInvitesInviteAcceptReq } from "../validators"
+import { AdminInviteAcceptType } from "../validators"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostInvitesInviteAcceptReq>,
+  req: AuthenticatedMedusaRequest<AdminInviteAcceptType>,
   res: MedusaResponse
 ) => {
   if (req.auth.actor_id) {

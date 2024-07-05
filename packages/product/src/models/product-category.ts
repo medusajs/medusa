@@ -1,5 +1,6 @@
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
   kebabCase,
@@ -18,7 +19,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
 import Product from "./product"
 
 const categoryHandleIndexName = "IDX_category_handle_unique"
@@ -47,12 +47,15 @@ class ProductCategory {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: false })
   name?: string
 
+  @Searchable()
   @Property({ columnType: "text", default: "", nullable: false })
   description?: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: false })
   handle?: string
 
@@ -124,11 +127,14 @@ class ProductCategory {
     }
 
     const { em } = args
-    const parentCategoryId = args.changeSet?.entity?.parent_category?.id
+
     let parentCategory: ProductCategory | null = null
 
-    if (parentCategoryId) {
-      parentCategory = await em.findOne(ProductCategory, parentCategoryId)
+    if (this.parent_category_id) {
+      parentCategory = await em.findOne(
+        ProductCategory,
+        this.parent_category_id
+      )
     }
 
     if (parentCategory) {

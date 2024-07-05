@@ -5,25 +5,25 @@ import { UseQueryOptionsWrapper } from "../../../types"
 
 /**
  * This hook sends a `GET` request to a custom API Route.
- * 
+ *
  * @typeParam TQuery - The type of accepted query parameters which defaults to `Record<string, any>`.
  * @typeParam TResponse - The type of response which defaults to `any`.
  * @typeParamDefinition TQuery - The query parameters based on the type specified for `TQuery`.
  * @typeParamDefinition TResponse - The response based on the type specified for `TResponse`.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminCustomQuery } from "medusa-react"
  * import Post from "./models/Post"
- * 
+ *
  * type RequestQuery = {
  *   title: string
  * }
- * 
+ *
  * type ResponseData = {
  *   posts: Post
  * }
- * 
+ *
  * const Custom = () => {
  *   const { data, isLoading } = useAdminCustomQuery
  *     <RequestQuery, ResponseData>(
@@ -33,7 +33,7 @@ import { UseQueryOptionsWrapper } from "../../../types"
  *         title: "My post"
  *       }
  *     )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -50,9 +50,9 @@ import { UseQueryOptionsWrapper } from "../../../types"
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Custom
- * 
+ *
  * @customNamespace Hooks.Admin.Custom
  * @category Mutations
  */

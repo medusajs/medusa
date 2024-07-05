@@ -140,6 +140,36 @@
       },
       "required": ["domain"]
     },
+    "taxRegions": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
+    "taxRates": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object"
+        }
+      },
+      "required": ["domain"]
+    },
+    "campaigns": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      },
+      "required": ["domain"]
+    },
     "giftCards": {
       "type": "object",
       "properties": {

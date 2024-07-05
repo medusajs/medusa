@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import * as React from "react"
 
-import { Toast, ToastProvider, ToastViewport } from "./toast"
+import { Toast } from "./toast"
 
 const meta: Meta<typeof Toast> = {
   title: "Components/Toast",
@@ -10,13 +10,7 @@ const meta: Meta<typeof Toast> = {
     layout: "centered",
   },
   render: (args) => {
-    return (
-      <ToastProvider>
-        <ToastViewport>
-          <Toast {...args} />
-        </ToastViewport>
-      </ToastProvider>
-    )
+    return <Toast {...args} />
   },
 }
 
@@ -28,7 +22,7 @@ export const Information: Story = {
   args: {
     title: "Label",
     description: "The quick brown fox jumps over a lazy dog.",
-    open: true,
+    variant: "info",
   },
 }
 
@@ -37,7 +31,6 @@ export const Warning: Story = {
     title: "Label",
     description: "The quick brown fox jumps over a lazy dog.",
     variant: "warning",
-    open: true,
   },
 }
 
@@ -46,7 +39,6 @@ export const Error: Story = {
     title: "Label",
     description: "The quick brown fox jumps over a lazy dog.",
     variant: "error",
-    open: true,
   },
 }
 
@@ -55,7 +47,6 @@ export const Success: Story = {
     title: "Label",
     description: "The quick brown fox jumps over a lazy dog.",
     variant: "success",
-    open: true,
   },
 }
 
@@ -64,7 +55,6 @@ export const Loading: Story = {
     title: "Label",
     description: "The quick brown fox jumps over a lazy dog.",
     variant: "loading",
-    open: true,
   },
 }
 
@@ -73,7 +63,6 @@ export const WithAction: Story = {
     title: "Scheduled meeting",
     description: "The meeting has been added to your calendar.",
     variant: "success",
-    open: true,
     action: {
       altText: "Undo adding meeting to calendar",
       onClick: () => {},

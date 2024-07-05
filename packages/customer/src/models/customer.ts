@@ -1,5 +1,5 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -7,15 +7,15 @@ import {
   Entity,
   Filter,
   ManyToMany,
-  OneToMany,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import Address from "./address"
 import CustomerGroup from "./customer-group"
 import CustomerGroupCustomer from "./customer-group-customer"
-import Address from "./address"
 
 type OptionalCustomerProps =
   | "groups"
@@ -30,18 +30,23 @@ export default class Customer {
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   company_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   first_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   last_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   phone: string | null = null
 

@@ -13,6 +13,7 @@ import {
 } from "@medusajs/types"
 import {
   AbstractPaymentProvider,
+  BigNumber,
   MedusaError,
   PaymentActions,
   isPaymentProviderError,
@@ -115,7 +116,7 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
     const intentRequest: Stripe.PaymentIntentCreateParams = {
       description,
-      amount: Math.round(amount),
+      amount: Math.round(new BigNumber(amount).numeric),
       currency: currency_code,
       metadata: { resource_id: resource_id ?? "Medusa Payment" },
       capture_method: this.options_.capture ? "automatic" : "manual",
@@ -259,6 +260,8 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
   ): Promise<PaymentProviderError | PaymentProviderSessionResponse> {
     const { context, data, amount } = input
 
+    const amountNumeric = Math.round(new BigNumber(amount).numeric)
+
     const stripeId = context.customer?.metadata?.stripe_id
 
     if (stripeId !== data.customer) {
@@ -272,14 +275,14 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeCredentials> {
 
       return result
     } else {
-      if (amount && data.amount === Math.round(amount)) {
+      if (amount && data.amount === amountNumeric) {
         return { data }
       }
 
       try {
         const id = data.id as string
         const sessionData = (await this.stripe_.paymentIntents.update(id, {
-          amount: Math.round(amount),
+          amount: amountNumeric,
         })) as unknown as PaymentProviderSessionResponse["data"]
 
         return { data: sessionData }

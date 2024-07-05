@@ -162,12 +162,12 @@ export default class Fulfillment {
   @BeforeCreate()
   onCreate() {
     this.id = generateEntityId(this.id, "ful")
-    this.provider_id ??= this.provider.id
+    this.provider_id ??= this.provider_id ?? this.provider?.id
   }
 
   @OnInit()
   onInit() {
     this.id = generateEntityId(this.id, "ful")
-    this.provider_id ??= this.provider.id
+    this.provider_id ??= this.provider_id ?? this.provider?.id
   }
 }

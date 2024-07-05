@@ -1,6 +1,6 @@
-import { useAdminUser } from "medusa-react"
 import { Outlet, json, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { useUser } from "../../../hooks/api/users"
 import { UserGeneralSection } from "./components/user-general-section"
 import { userLoader } from "./loader"
 
@@ -8,7 +8,12 @@ export const UserDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof userLoader>>
 
   const { id } = useParams()
-  const { user, isLoading, isError, error } = useAdminUser(id!, {
+  const {
+    user,
+    isPending: isLoading,
+    isError,
+    error,
+  } = useUser(id!, undefined, {
     initialData,
   })
 

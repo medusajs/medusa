@@ -1,3 +1,4 @@
+import { BigNumberInput } from "@medusajs/types"
 import { WorkflowData, createWorkflow } from "@medusajs/workflows-sdk"
 import { refundPaymentStep } from "../steps/refund-payment"
 
@@ -8,7 +9,7 @@ export const refundPaymentWorkflow = createWorkflow(
     input: WorkflowData<{
       payment_id: string
       created_by?: string
-      amount?: number
+      amount?: BigNumberInput
     }>
   ) => {
     const payment = refundPaymentStep(input)

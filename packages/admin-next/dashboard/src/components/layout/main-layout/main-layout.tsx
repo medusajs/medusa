@@ -2,6 +2,7 @@ import {
   Buildings,
   ChevronDownMini,
   CurrencyDollar,
+  Envelope,
   MinusMini,
   ReceiptPercent,
   ShoppingCart,
@@ -11,12 +12,12 @@ import {
 } from "@medusajs/icons"
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
+import { useStore } from "../../../hooks/api/store"
 import { Skeleton } from "../../common/skeleton"
-import { NavItem, NavItemProps } from "../nav-item"
-import { Shell } from "../shell"
+import { NavItem, NavItemProps } from "../../layout/nav-item"
+import { Shell } from "../../layout/shell"
 
 import extensions from "medusa-admin:routes/links"
 
@@ -46,7 +47,7 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  const { store, isError, error } = useAdminStore()
+  const { store, isError, error } = useStore()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
@@ -135,13 +136,18 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <ReceiptPercent />,
-      label: t("discounts.domain"),
-      to: "/discounts",
+      label: t("promotions.domain"),
+      to: "/promotions",
     },
     {
       icon: <CurrencyDollar />,
       label: t("pricing.domain"),
       to: "/pricing",
+    },
+    {
+      icon: <Envelope />,
+      label: t("shipping.domain"),
+      to: "/shipping",
     },
   ]
 }

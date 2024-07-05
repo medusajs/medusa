@@ -5,7 +5,7 @@ import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 interface StepInput {
   links: {
     sales_channel_id: string
-    product_ids: string[]
+    product_id: string
   }[]
 }
 
@@ -14,22 +14,21 @@ export const detachProductsFromSalesChannelsStepId =
 export const detachProductsFromSalesChannelsStep = createStep(
   detachProductsFromSalesChannelsStepId,
   async (input: StepInput, { container }) => {
-    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+    if (!input.links?.length) {
+      return new StepResponse(void 0, [])
+    }
 
-    const links = input.links
-      .map((link) => {
-        return link.product_ids.map((id) => {
-          return {
-            [Modules.PRODUCT]: {
-              product_id: id,
-            },
-            [Modules.SALES_CHANNEL]: {
-              sales_channel_id: link.sales_channel_id,
-            },
-          }
-        })
-      })
-      .flat()
+    const remoteLink = container.resolve(ContainerRegistrationKeys.REMOTE_LINK)
+    const links = input.links.map((link) => {
+      return {
+        [Modules.PRODUCT]: {
+          product_id: link.product_id,
+        },
+        [Modules.SALES_CHANNEL]: {
+          sales_channel_id: link.sales_channel_id,
+        },
+      }
+    })
 
     await remoteLink.dismiss(links)
 

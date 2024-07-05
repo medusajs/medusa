@@ -6,8 +6,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
- * summary: "Create a Location Level"
- * description: "Create a Location Level for a given Inventory Item."
+ * summary: "Create an Inventory Level"
+ * description: "Create an Inventory Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
@@ -141,7 +141,7 @@ export default async (req: Request, res: Response) => {
 /**
  * @schema AdminPostInventoryItemsItemLocationLevelsReq
  * type: object
- * description: "The details of the location level to create."
+ * description: "The details of the inventory level to create."
  * required:
  *   - location_id
  *   - stocked_quantity

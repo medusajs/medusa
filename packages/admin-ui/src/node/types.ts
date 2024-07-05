@@ -18,6 +18,12 @@ export type DevelopOptions = {
    */
   open?: boolean
   /**
+   * The host the development server should run on.
+   *
+   * @default "localhost"
+   */
+  host?: string
+  /**
    * The port the development server should run on.
    * @default 7001
    * */
@@ -40,7 +46,7 @@ export type DevelopOptions = {
   /**
    * Specifying URL to web socket server
    */
-  webSocketURL?: string | WebSocketURL |undefined
+  webSocketURL?: string | WebSocketURL | undefined
 }
 
 export type AdminOptions = {

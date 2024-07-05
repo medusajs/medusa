@@ -1,19 +1,21 @@
-import {
-  ContainerRegistrationKeys,
-  remoteQueryObjectFromString,
-} from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-import { deleteStockLocationsWorkflow, updateStockLocationsWorkflow } from "@medusajs/core-flows"
+import {
+  deleteStockLocationsWorkflow,
+  updateStockLocationsWorkflow,
+} from "@medusajs/core-flows"
 import { MedusaError } from "@medusajs/utils"
-import { AdminPostStockLocationsLocationReq } from "../validators"
+import {
+  AdminGetStockLocationParamsType,
+  AdminUpdateStockLocationType,
+} from "../validators"
+import { refetchStockLocation } from "../helpers"
 
 export const POST = async (
-  req: MedusaRequest<AdminPostStockLocationsLocationReq>,
+  req: MedusaRequest<AdminUpdateStockLocationType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
-
   await updateStockLocationsWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
@@ -21,45 +23,37 @@ export const POST = async (
     },
   })
 
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const [stock_location] = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "stock_locations",
-      variables: {
-        id,
-      },
-      fields: req.remoteQueryConfig.fields,
-    })
+  const stockLocation = await refetchStockLocation(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
   res.status(200).json({
-    stock_location,
+    stock_location: stockLocation,
   })
 }
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
+export const GET = async (
+  req: MedusaRequest<AdminGetStockLocationParamsType>,
+  res: MedusaResponse
+) => {
   const { id } = req.params
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const [stock_location] = await remoteQuery(
-    remoteQueryObjectFromString({
-      entryPoint: "stock_locations",
-      variables: {
-        id,
-      },
-      fields: req.remoteQueryConfig.fields,
-    })
+  const stockLocation = await refetchStockLocation(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
   )
 
-  if (!stock_location) {
+  if (!stockLocation) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       `Stock location with id: ${id} was not found`
     )
   }
 
-  res.status(200).json({ stock_location })
+  res.status(200).json({ stock_location: stockLocation })
 }
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {

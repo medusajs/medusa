@@ -1,5 +1,6 @@
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -35,6 +36,7 @@ class ProductOption {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 

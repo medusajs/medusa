@@ -192,7 +192,7 @@ function createContextualWorkflowRunner<
   ) => {
     const transaction = await method.apply(method, args)
 
-    const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
+    let errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
     const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
     const isCancelled =
@@ -211,7 +211,13 @@ function createContextualWorkflowRunner<
 
     let result
     if (options?.wrappedInput) {
-      result = await resolveValue(resultFrom, transaction.getContext())
+      result = resolveValue(resultFrom, transaction.getContext())
+      if (result instanceof Promise) {
+        result = await result.catch((e) => {
+          errors ??= []
+          errors.push(e)
+        })
+      }
     } else {
       result = transaction.getContext().invoke?.[resultFrom]
     }

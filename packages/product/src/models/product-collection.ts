@@ -4,17 +4,18 @@ import {
   Entity,
   Filter,
   Index,
-  OnInit,
   OneToMany,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
 import {
-  DALUtils,
   createPsqlIndexStatementHelper,
+  DALUtils,
   generateEntityId,
   kebabCase,
+  Searchable,
 } from "@medusajs/utils"
 import Product from "./product"
 
@@ -34,6 +35,7 @@ class ProductCollection {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 

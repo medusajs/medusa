@@ -1,3 +1,5 @@
+import * as Dialog from "@radix-ui/react-dialog"
+
 import {
   ArrowRightOnRectangle,
   BellAlert,
@@ -10,8 +12,6 @@ import {
   User as UserIcon,
 } from "@medusajs/icons"
 import { Avatar, DropdownMenu, IconButton, Kbd, Text, clx } from "@medusajs/ui"
-import * as Dialog from "@radix-ui/react-dialog"
-import { useAdminDeleteSession, useAdminGetSession } from "medusa-react"
 import { PropsWithChildren } from "react"
 import {
   Link,
@@ -19,18 +19,14 @@ import {
   UIMatch,
   useLocation,
   useMatches,
-  useNavigate,
 } from "react-router-dom"
 
 import { Skeleton } from "../../common/skeleton"
 
-import { queryClient } from "../../../lib/medusa"
+import { useMe } from "../../../hooks/api/users"
 import { useSearch } from "../../../providers/search-provider"
 import { useSidebar } from "../../../providers/sidebar-provider"
 import { useTheme } from "../../../providers/theme-provider"
-import { useV2Session } from "../../../lib/api-v2"
-
-const V2_ENABLED = import.meta.env.VITE_MEDUSA_V2 || "false"
 
 export const Shell = ({ children }: PropsWithChildren) => {
   return (
@@ -109,7 +105,6 @@ const Breadcrumbs = () => {
                 </span>
               </div>
             )}
-            {/* {!isLast && <TriangleRightMini className="-mt-0.5 mx-2" />} */}
             {!isLast && <span className="mx-2 -mt-0.5">›</span>}
           </li>
         )
@@ -119,21 +114,7 @@ const Breadcrumbs = () => {
 }
 
 const UserBadge = () => {
-  const isV2Enabled = V2_ENABLED === "true"
-
-  // Medusa V2 disabled
-  const v1 = useAdminGetSession({
-    enabled: !isV2Enabled,
-  })
-
-  // Medusa V2 enabled
-  const v2 = useV2Session({
-    enabled: isV2Enabled,
-  })
-
-  // Comment: Only place where we switch between the two modes inline.
-  //  This is to avoid having to rebuild the shell for the app.
-  const { user, isLoading, isError, error } = !isV2Enabled ? v1 : v2
+  const { user, isLoading, isError, error } = useMe()
 
   const name = [user?.first_name, user?.last_name].filter(Boolean).join(" ")
   const displayName = name || user?.email
@@ -158,7 +139,7 @@ const UserBadge = () => {
       <button
         disabled={!user}
         className={clx(
-          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5"
+          "shadow-borders-base flex max-w-[192px] select-none items-center gap-x-2 overflow-hidden text-ellipsis whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 outline-none"
         )}
       >
         {fallback ? (
@@ -219,20 +200,20 @@ const ThemeToggle = () => {
 }
 
 const Logout = () => {
-  const navigate = useNavigate()
-  const { mutateAsync: logoutMutation } = useAdminDeleteSession()
+  // const navigate = useNavigate()
+  // const { mutateAsync: logoutMutation } = useAdminDeleteSession()
 
   const handleLayout = async () => {
-    await logoutMutation(undefined, {
-      onSuccess: () => {
-        /**
-         * When the user logs out, we want to clear the query cache
-         */
-        queryClient.clear()
-
-        navigate("/login")
-      },
-    })
+    // await logoutMutation(undefined, {
+    //   onSuccess: () => {
+    //     /**
+    //      * When the user logs out, we want to clear the query cache
+    //      */
+    //     queryClient.clear()
+    //     navigate("/login")
+    //   },
+    // })
+    // noop
   }
 
   return (
@@ -402,7 +383,7 @@ const MobileSidebarContainer = ({ children }: PropsWithChildren) => {
     <Dialog.Root open={mobile} onOpenChange={() => toggle("mobile")}>
       <Dialog.Portal>
         <Dialog.Overlay className="bg-ui-bg-overlay fixed inset-0" />
-        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-[220px] border-r">
+        <Dialog.Content className="bg-ui-bg-subtle fixed inset-y-0 left-0 h-screen w-full max-w-[240px] border-r">
           {children}
         </Dialog.Content>
       </Dialog.Portal>

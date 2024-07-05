@@ -50,7 +50,6 @@ medusaIntegrationTestRunner({
           expect.objectContaining({
             id: expect.any(String),
             code: "TEST",
-            campaign: null,
             is_automatic: false,
             type: "standard",
             created_at: expect.any(String),
@@ -64,6 +63,38 @@ medusaIntegrationTestRunner({
               target_type: "order",
               allocation: null,
             }),
+          }),
+        ])
+      })
+
+      it("should support search of promotions", async () => {
+        await promotionModuleService.create([
+          {
+            code: "first",
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 100,
+            },
+          },
+          {
+            code: "second",
+            type: PromotionType.STANDARD,
+            application_method: {
+              type: "fixed",
+              target_type: "order",
+              value: 100,
+            },
+          },
+        ])
+
+        const response = await api.get(`/admin/promotions?q=fir`, adminHeaders)
+
+        expect(response.status).toEqual(200)
+        expect(response.data.promotions).toEqual([
+          expect.objectContaining({
+            code: "first",
           }),
         ])
       })
