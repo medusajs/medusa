@@ -306,10 +306,10 @@ export function buildLinkableKeysFromMikroOrmObjects(
  * // {
  * //   user: {
  * //     id: {
- * //       serviceName: 'userService',
- * //       field: 'user',
- * //       linkable: 'user_id',
- * //       primaryKey: 'id'
+ * //       serviceName: 'userService', // The name of the module service it originate from
+ * //       field: 'user',              // The field name of the entity, the query field is inferred from it as kebab cased singular/plural
+ * //       linkable: 'user_id',        // The linkable key
+ * //       primaryKey: 'id'            // The primary key if refers to in the original object representation, it will be used to be passed to the filters of the corresponding public service method
  * //     },
  * //     toJSON() { ... }
  * //   },
