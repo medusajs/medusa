@@ -1,17 +1,37 @@
 import { join } from "path"
 import { setTimeout } from "timers/promises"
 import { MetadataStorage } from "@mikro-orm/core"
+import { createDatabase, dropDatabase } from "pg-god"
 
-import { Migrations } from "../index"
-import { FileSystem } from "../../common"
-import { DmlEntity, model } from "../../dml"
-import { defineMikroOrmCliConfig } from "../../modules-sdk"
+import { Migrations } from "../../index"
+import { FileSystem } from "../../../common"
+import { DmlEntity, model } from "../../../dml"
+import { defineMikroOrmCliConfig } from "../../../modules-sdk"
 
+const DB_HOST = process.env.DB_HOST
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+
+const dbName = "my-test-service"
 const moduleName = "myTestService"
 const fs = new FileSystem(join(__dirname, "./migrations"))
 
+const pgGodCredentials = {
+  user: DB_USERNAME,
+  password: DB_PASSWORD,
+  host: DB_HOST,
+}
+
 describe("Generate migrations", () => {
+  beforeEach(async () => {
+    await createDatabase({ databaseName: dbName }, pgGodCredentials)
+  })
+
   afterEach(async () => {
+    await dropDatabase(
+      { databaseName: dbName, errorIfNonExist: false },
+      pgGodCredentials
+    )
     await fs.cleanup()
     MetadataStorage.clear()
   })
@@ -25,6 +45,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User],
+      dbName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -59,6 +80,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User, Car],
+      dbName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -80,6 +102,7 @@ describe("Generate migrations", () => {
     function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
         entities,
+        dbName: dbName,
         migrations: {
           path: fs.basePath,
         },

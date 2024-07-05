@@ -1,13 +1,13 @@
-import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
 import { MigrationResult } from "@mikro-orm/migrations"
+import { MikroORM, MikroORMOptions } from "@mikro-orm/core"
 
 /**
  * Exposes the API to programmatically manage Mikro ORM migrations
  */
 export class Migrations {
-  #config: MikroORMOptions
+  #config: Partial<MikroORMOptions>
 
-  constructor(config: MikroORMOptions) {
+  constructor(config: Partial<MikroORMOptions>) {
     this.#config = config
   }
 
