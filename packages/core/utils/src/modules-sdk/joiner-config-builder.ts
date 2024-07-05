@@ -402,7 +402,7 @@ export function buildLinkConfigFromLinkableKeys<
  * Reversed map from linkableKeys to entity name to linkable keys
  * @param linkableKeys
  */
-export function buildEntitiesNameToLinkableKeysMap(
+export function buildModelsNameToLinkableKeysMap(
   linkableKeys: Record<string, string>
 ): MapToConfig {
   const entityLinkableKeysMap: MapToConfig = {}
