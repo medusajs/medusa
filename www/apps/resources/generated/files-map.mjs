@@ -4560,12 +4560,24 @@ export const filesMap = [
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel"
   },
   {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange/page.mdx",
     "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn/page.mdx",
+    "pathname": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn"
   },
   {
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder/page.mdx",
@@ -4912,8 +4924,20 @@ export const filesMap = [
     "pathname": "/references/order/interfaces/order.CancelOrderChangeDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderClaimDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderClaimDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderExchangeDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderExchangeDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderFulfillmentDTO/page.mdx",
     "pathname": "/references/order/interfaces/order.CancelOrderFulfillmentDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/order/interfaces/order.CancelOrderReturnDTO/page.mdx",
+    "pathname": "/references/order/interfaces/order.CancelOrderReturnDTO"
   },
   {
     "filePath": "/www/apps/resources/references/order/interfaces/order.ConfirmOrderChangeDTO/page.mdx",
@@ -5828,6 +5852,10 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceLists"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules"
   },
@@ -5842,6 +5870,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceLists/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceLists"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceRules/page.mdx",
@@ -5880,6 +5912,10 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceLists"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules"
   },
@@ -5904,6 +5940,10 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices"
   },
@@ -5914,6 +5954,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceListRule/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceListRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceRule/page.mdx",
@@ -5932,6 +5976,10 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePriceLists"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices"
   },
@@ -5944,12 +5992,20 @@ export const filesMap = [
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceLists"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets/page.mdx",
     "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences/page.mdx",
+    "pathname": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets/page.mdx",
@@ -5996,6 +6052,10 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.CreatePriceListRules"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePricePreferenceDTO/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.CreatePricePreferenceDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.CreatePriceRuleDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.CreatePriceRuleDTO"
   },
@@ -6022,6 +6082,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterablePriceListRuleProps/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.FilterablePriceListRuleProps"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterablePricePreferenceProps/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.FilterablePricePreferenceProps"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.FilterablePriceProps/page.mdx",
@@ -6080,6 +6144,10 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.PriceListRuleDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.PricePreferenceDTO/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.PricePreferenceDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.PriceRuleDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.PriceRuleDTO"
   },
@@ -6128,12 +6196,20 @@ export const filesMap = [
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceListPricesDTO"
   },
   {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePricePreferenceDTO/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.UpdatePricePreferenceDTO"
+  },
+  {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePriceRuleDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceRuleDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpdatePriceSetDTO/page.mdx",
     "pathname": "/references/pricing/interfaces/pricing.UpdatePriceSetDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpsertPricePreferenceDTO/page.mdx",
+    "pathname": "/references/pricing/interfaces/pricing.UpsertPricePreferenceDTO"
   },
   {
     "filePath": "/www/apps/resources/references/pricing/interfaces/pricing.UpsertPriceSetDTO/page.mdx",
@@ -6242,6 +6318,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceListRule/page.mdx",
     "pathname": "/references/pricing_models/classes/pricing_models.PriceListRule"
+  },
+  {
+    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PricePreference/page.mdx",
+    "pathname": "/references/pricing_models/classes/pricing_models.PricePreference"
   },
   {
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceRule/page.mdx",
@@ -7476,12 +7556,12 @@ export const filesMap = [
     "pathname": "/references/region/types/region.Scalar"
   },
   {
-    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Region/page.mdx",
-    "pathname": "/references/region_models/variables/region_models.Region"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Country/page.mdx",
+    "pathname": "/references/region_models/variables/region_models.Country"
   },
   {
-    "filePath": "/www/apps/resources/references/region_models/variables/region_models.RegionCountry/page.mdx",
-    "pathname": "/references/region_models/variables/region_models.RegionCountry"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Region/page.mdx",
+    "pathname": "/references/region_models/variables/region_models.Region"
   },
   {
     "filePath": "/www/apps/resources/references/sales_channel/IMessageAggregator/methods/sales_channel.IMessageAggregator.clearMessages/page.mdx",
@@ -8476,6 +8556,10 @@ export const filesMap = [
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.BatchWorkflowOutput"
   },
   {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.CamelCase/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.CamelCase"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.ContainerLike/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.ContainerLike"
   },
@@ -8506,6 +8590,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.PluginDetails/page.mdx",
     "pathname": "/references/types/CommonTypes/types/types.CommonTypes.PluginDetails"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.Prettify/page.mdx",
+    "pathname": "/references/types/CommonTypes/types/types.CommonTypes.Prettify"
   },
   {
     "filePath": "/www/apps/resources/references/types/CommonTypes/types/types.CommonTypes.RawRounding/page.mdx",
@@ -8600,8 +8688,20 @@ export const filesMap = [
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.ExtractEntityRelations"
   },
   {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.IDmlEntityConfig/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.IDmlEntityConfig"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.Infer/page.mdx",
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.Infer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferBelongsToFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferBelongsToFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferDmlEntityNameFromConfig/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferDmlEntityNameFromConfig"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferEntityType/page.mdx",
@@ -8612,8 +8712,24 @@ export const filesMap = [
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferForeignKeys"
   },
   {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferHasManyFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferHasManyFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferHasOneFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferHasOneFields"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties/page.mdx",
     "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferIndexableProperties"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferManyToManyFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferManyToManyFields"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferSchemaFields/page.mdx",
+    "pathname": "/references/types/DmlTypes/types/types.DmlTypes.InferSchemaFields"
   },
   {
     "filePath": "/www/apps/resources/references/types/DmlTypes/types/types.DmlTypes.InferTypeOf/page.mdx",
@@ -8778,6 +8894,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCollectionFilters"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCampaign/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCampaign"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminCreateCollection/page.mdx",
@@ -9106,6 +9226,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse/page.mdx",
     "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminTaxRegionResponse"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCampaign/page.mdx",
+    "pathname": "/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCampaign"
   },
   {
     "filePath": "/www/apps/resources/references/types/HttpTypes/interfaces/types.HttpTypes.AdminUpdateCollection/page.mdx",
@@ -9880,6 +10004,14 @@ export const filesMap = [
     "pathname": "/references/types/types/types.BigNumberValue"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.CamelCapitalizer/page.mdx",
+    "pathname": "/references/types/types/types.CamelCapitalizer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.CamelCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.CamelCaseParser"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.CartLikeWithTotals/page.mdx",
     "pathname": "/references/types/types/types.CartLikeWithTotals"
   },
@@ -9920,8 +10052,32 @@ export const filesMap = [
     "pathname": "/references/types/types/types.FlowRunOptions"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.IncludesSeparator/page.mdx",
+    "pathname": "/references/types/types/types.IncludesSeparator"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.InternalJoinerServiceConfig/page.mdx",
     "pathname": "/references/types/types/types.InternalJoinerServiceConfig"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsCamelCase/page.mdx",
+    "pathname": "/references/types/types/types.IsCamelCase"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsOneWord/page.mdx",
+    "pathname": "/references/types/types/types.IsOneWord"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsPascalCase/page.mdx",
+    "pathname": "/references/types/types/types.IsPascalCase"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.IsStringLiteral/page.mdx",
+    "pathname": "/references/types/types/types.IsStringLiteral"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.Join/page.mdx",
+    "pathname": "/references/types/types/types.Join"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.JoinerRelationship/page.mdx",
@@ -9934,6 +10090,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/types/types/types.Order/page.mdx",
     "pathname": "/references/types/types/types.Order"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PascalCapitalizer/page.mdx",
+    "pathname": "/references/types/types/types.PascalCapitalizer"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.PascalCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.PascalCaseParser"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.PrevLimit/page.mdx",
@@ -9956,12 +10120,28 @@ export const filesMap = [
     "pathname": "/references/types/types/types.Scalar"
   },
   {
+    "filePath": "/www/apps/resources/references/types/types/types.Separator/page.mdx",
+    "pathname": "/references/types/types/types.Separator"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.SeparatorCaseParser/page.mdx",
+    "pathname": "/references/types/types/types.SeparatorCaseParser"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.SplitAnyCase/page.mdx",
+    "pathname": "/references/types/types/types.SplitAnyCase"
+  },
+  {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateProductVariantWorkflowInputDTO/page.mdx",
     "pathname": "/references/types/types/types.UpdateProductVariantWorkflowInputDTO"
   },
   {
     "filePath": "/www/apps/resources/references/types/types/types.UpdateProductWorkflowInputDTO/page.mdx",
     "pathname": "/references/types/types/types.UpdateProductWorkflowInputDTO"
+  },
+  {
+    "filePath": "/www/apps/resources/references/types/types/types.WordInCamelCase/page.mdx",
+    "pathname": "/references/types/types/types.WordInCamelCase"
   },
   {
     "filePath": "/www/apps/resources/references/types/types.AdminTypes/page.mdx",
