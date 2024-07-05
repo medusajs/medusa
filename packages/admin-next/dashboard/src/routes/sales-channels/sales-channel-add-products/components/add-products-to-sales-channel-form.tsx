@@ -11,10 +11,7 @@ import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
-import {
-  RouteFocusModal,
-  useRouteModal,
-} from "../../../../components/modals"
+import { RouteFocusModal, useRouteModal } from "../../../../components/modals"
 import { DataTable } from "../../../../components/table/data-table"
 import { useProducts } from "../../../../hooks/api/products"
 import { useSalesChannelAddProducts } from "../../../../hooks/api/sales-channels"
@@ -168,6 +165,9 @@ export const AddProductsToSalesChannelForm = ({
             layout="fill"
             pagination
             search
+            noRecords={{
+              message: t("salesChannels.products.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

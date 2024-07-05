@@ -17,6 +17,7 @@ import { useProductTableQuery } from "../../../../../hooks/table/query/use-produ
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { PriceListCreateProductsSchema } from "../../../common/schemas"
 import { PricingCreateSchemaType } from "./schema"
+import { useTranslation } from "react-i18next"
 
 type PriceListProductsFormProps = {
   form: UseFormReturn<PricingCreateSchemaType>
@@ -33,6 +34,7 @@ function getInitialSelection(products: { id: string }[]) {
 }
 
 export const PriceListProductsForm = ({ form }: PriceListProductsFormProps) => {
+  const { t } = useTranslation()
   const { control, setValue } = form
 
   const selectedIds = useWatch({
@@ -128,6 +130,9 @@ export const PriceListProductsForm = ({ form }: PriceListProductsFormProps) => {
         pagination
         search
         queryObject={raw}
+        noRecords={{
+          message: t("priceLists.create.products.list.noRecordsMessage"),
+        }}
       />
     </div>
   )

@@ -141,6 +141,9 @@ export const CategoryProductSection = ({
         navigateTo={(row) => `/products/${row.id}`}
         isLoading={isLoading}
         queryObject={raw}
+        noRecords={{
+          message: t("categories.products.list.noRecordsMessage"),
+        }}
       />
       <CommandBar open={!!Object.keys(selection).length}>
         <CommandBar.Bar>
