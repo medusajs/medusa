@@ -8,6 +8,7 @@ import {
   DAL,
   ICustomerModuleService,
   InternalModuleDeclaration,
+  ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
 
@@ -25,6 +26,7 @@ import {
   CustomerGroup,
   CustomerGroupCustomer,
 } from "@models"
+import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -67,6 +69,10 @@ export default class CustomerModuleService
     this.addressService_ = addressService
     this.customerGroupService_ = customerGroupService
     this.customerGroupCustomerService_ = customerGroupCustomerService
+  }
+
+  __joinerConfig(): ModuleJoinerConfig {
+    return joinerConfig
   }
 
   // @ts-expect-error

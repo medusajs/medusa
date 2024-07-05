@@ -9,7 +9,7 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
   moduleName: Modules.CUSTOMER,
   testSuite: ({ service }) => {
     describe("Customer Module Service", () => {
-      it(`should export the appropriate linkable configuration`, () => {
+      it.only(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.CUSTOMER, {
           service: CustomerModuleService,
         }).linkable
