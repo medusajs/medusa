@@ -73,9 +73,17 @@ export function defineJoinerConfig(
 
     while (true) {
       ++index
-      const fullPath = getCallerFilePath(index)
+      let fullPath = getCallerFilePath(index)
       if (!fullPath) {
         break
+      }
+
+      /**
+       * Handle integration-tests/__tests__ path based on conventional naming
+       */
+      if (fullPath.includes("integration-tests/__tests__")) {
+        const sourcePath = fullPath.split("integration-tests/__tests__")[0]
+        fullPath = path.join(sourcePath, "src")
       }
 
       const srcDir = fullPath.includes("dist") ? "dist" : "src"
