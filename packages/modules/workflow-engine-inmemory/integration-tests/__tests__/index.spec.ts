@@ -30,7 +30,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
         query = medusaApp.query
       })
 
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.WORKFLOW_ENGINE, {
           service: WorkflowsModuleService,
         }).linkable
