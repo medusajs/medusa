@@ -2,38 +2,39 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { MagnifyingGlass } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
-    Button,
-    Heading,
-    Hint,
-    Input,
-    Label,
-    Select,
-    Text,
-    clx,
-    toast,
+  Button,
+  Heading,
+  Hint,
+  Input,
+  Label,
+  Select,
+  Text,
+  clx,
+  toast,
 } from "@medusajs/ui"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
+
 import { Divider } from "../../../../../components/common/divider"
 import { Form } from "../../../../../components/common/form"
 import { SwitchBox } from "../../../../../components/common/switch-box"
 import { PercentageInput } from "../../../../../components/inputs/percentage-input"
 import {
-    RouteDrawer,
-    StackedDrawer,
-    useRouteModal,
-    useStackedModal,
+  RouteDrawer,
+  StackedDrawer,
+  useRouteModal,
+  useStackedModal,
 } from "../../../../../components/modals"
 import { useUpdateTaxRate } from "../../../../../hooks/api/tax-rates"
+import { TargetForm } from "../../../common/components/target-form/target-form"
+import { TargetItem } from "../../../common/components/target-item/target-item"
 import { RuleReferenceType } from "../../../common/constants"
 import {
-    TaxRateRuleValue,
-    TaxRateRuleValueSchema,
+  TaxRateRuleValue,
+  TaxRateRuleValueSchema,
 } from "../../../common/schemas"
 import { createTaxRulePayload } from "../../../common/utils"
-import { TargetForm } from "../../../tax-region-tax-override-create/components/tax-region-override-create-form/target-form"
-import { TargetItem } from "../../../tax-region-tax-override-create/components/tax-region-override-create-form/target-item"
 import { InitialRuleValues } from "../../types"
 
 type TaxRegionTaxOverrideEditFormProps = {
@@ -42,6 +43,8 @@ type TaxRegionTaxOverrideEditFormProps = {
   isCombinable?: boolean
 }
 const STACKED_MODAL_ID = "tr"
+const getStackedModalId = (type: RuleReferenceType) =>
+  `${STACKED_MODAL_ID}-${type}`
 
 const TaxRegionTaxRateEditSchema = z.object({
   name: z.string().min(1),
@@ -243,11 +246,14 @@ export const TaxRegionTaxOverrideEditForm = ({
 
   const getFieldHandler = (type: RuleReferenceType) => {
     const { fields, remove, append } = getControls(type)
+    const modalId = getStackedModalId(type)
 
     return (references: TaxRateRuleValue[]) => {
       if (!references.length) {
-        form.setValue(type, [])
-        setIsOpen(STACKED_MODAL_ID, false)
+        form.setValue(type, [], {
+          shouldDirty: true,
+        })
+        setIsOpen(modalId, false)
         return
       }
 
@@ -264,22 +270,30 @@ export const TaxRegionTaxOverrideEditForm = ({
       }
 
       append(fieldsToAdd)
-      setIsOpen(STACKED_MODAL_ID, false)
+      setIsOpen(modalId, false)
     }
   }
 
   const displayOrder = new Set<RuleReferenceType>([RuleReferenceType.PRODUCT])
 
   const disableRule = (type: RuleReferenceType) => {
-    form.setValue(type, [])
-    form.setValue(`enabled_rules.${type}`, false)
+    form.setValue(type, [], {
+      shouldDirty: true,
+    })
+    form.setValue(`enabled_rules.${type}`, false, {
+      shouldDirty: true,
+    })
 
     displayOrder.delete(type)
   }
 
   const enableRule = (type: RuleReferenceType) => {
-    form.setValue(`enabled_rules.${type}`, true)
-    form.setValue(type, [])
+    form.setValue(`enabled_rules.${type}`, true, {
+      shouldDirty: true,
+    })
+    form.setValue(type, [], {
+      shouldDirty: true,
+    })
 
     displayOrder.add(type)
   }
@@ -436,6 +450,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                 const searchPlaceholder = searchPlaceholders[type]
 
                 const options = getAvailableRuleTypes(type)
+                const modalId = getStackedModalId(type)
 
                 const { fields, remove } = getControls(type)
                 const handler = getFieldHandler(type)
@@ -496,7 +511,7 @@ export const TaxRegionTaxOverrideEditForm = ({
                                 </div>
                               </div>
                               <div className="flex items-center gap-1.5 px-1.5">
-                                <StackedDrawer id={STACKED_MODAL_ID}>
+                                <StackedDrawer id={modalId}>
                                   <StackedDrawer.Trigger asChild>
                                     <button
                                       type="button"

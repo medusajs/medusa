@@ -27,14 +27,14 @@ import {
   useStackedModal,
 } from "../../../../../components/modals"
 import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
+import { TargetForm } from "../../../common/components/target-form/target-form"
+import { TargetItem } from "../../../common/components/target-item/target-item"
 import { RuleReferenceType } from "../../../common/constants"
 import {
   TaxRateRuleValue,
   TaxRateRuleValueSchema,
 } from "../../../common/schemas"
 import { createTaxRulePayload } from "../../../common/utils"
-import { TargetForm } from "./target-form"
-import { TargetItem } from "./target-item"
 
 const TaxRegionCreateTaxOverrideSchema = z.object({
   name: z.string().min(1),
@@ -65,6 +65,8 @@ type TaxRegionCreateTaxOverrideFormProps = {
 }
 
 const STACKED_MODAL_ID = "tr"
+const getStackedModalId = (type: RuleReferenceType) =>
+  `${STACKED_MODAL_ID}-${type}`
 
 export const TaxRegionCreateTaxOverrideForm = ({
   taxRegion,
@@ -243,11 +245,14 @@ export const TaxRegionCreateTaxOverrideForm = ({
 
   const getFieldHandler = (type: RuleReferenceType) => {
     const { fields, remove, append } = getControls(type)
+    const modalId = getStackedModalId(type)
 
     return (references: TaxRateRuleValue[]) => {
       if (!references.length) {
-        form.setValue(type, [])
-        setIsOpen(STACKED_MODAL_ID, false)
+        form.setValue(type, [], {
+          shouldDirty: true,
+        })
+        setIsOpen(modalId, false)
         return
       }
 
@@ -264,22 +269,30 @@ export const TaxRegionCreateTaxOverrideForm = ({
       }
 
       append(fieldsToAdd)
-      setIsOpen(STACKED_MODAL_ID, false)
+      setIsOpen(modalId, false)
     }
   }
 
   const displayOrder = new Set<RuleReferenceType>([RuleReferenceType.PRODUCT])
 
   const disableRule = (type: RuleReferenceType) => {
-    form.setValue(type, [])
-    form.setValue(`enabled_rules.${type}`, false)
+    form.setValue(type, [], {
+      shouldDirty: true,
+    })
+    form.setValue(`enabled_rules.${type}`, false, {
+      shouldDirty: true,
+    })
 
     displayOrder.delete(type)
   }
 
   const enableRule = (type: RuleReferenceType) => {
-    form.setValue(`enabled_rules.${type}`, true)
-    form.setValue(type, [])
+    form.setValue(`enabled_rules.${type}`, true, {
+      shouldDirty: true,
+    })
+    form.setValue(type, [], {
+      shouldDirty: true,
+    })
 
     displayOrder.add(type)
   }
@@ -303,7 +316,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
     .filter((option) => watchedEnabledRules[option.value])
     .sort((a, b) => {
       const orderArray = Array.from(displayOrder)
-      return orderArray.indexOf(a.value) - orderArray.indexOf(b.value)
+      return orderArray.indexOf(b.value) - orderArray.indexOf(a.value)
     })
 
   const getAvailableRuleTypes = (type: RuleReferenceType) => {
@@ -479,6 +492,8 @@ export const TaxRegionCreateTaxOverrideForm = ({
                     const { fields, remove } = getControls(type)
                     const handler = getFieldHandler(type)
 
+                    const modalId = getStackedModalId(type)
+
                     const handleChangeType = (value: RuleReferenceType) => {
                       disableRule(type)
                       enableRule(value)
@@ -543,7 +558,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-1.5 px-1.5">
-                                    <StackedFocusModal id={STACKED_MODAL_ID}>
+                                    <StackedFocusModal id={modalId}>
                                       <StackedFocusModal.Trigger asChild>
                                         <button
                                           type="button"
@@ -560,10 +575,12 @@ export const TaxRegionCreateTaxOverrideForm = ({
                                       </StackedFocusModal.Trigger>
                                       <StackedFocusModal.Content>
                                         <StackedFocusModal.Header>
-                                          <StackedFocusModal.Title className="sr-only">
-                                            {t(
-                                              "taxRegions.fields.targets.modal.header"
-                                            )}
+                                          <StackedFocusModal.Title asChild>
+                                            <Heading className="sr-only">
+                                              {t(
+                                                "taxRegions.fields.targets.modal.header"
+                                              )}
+                                            </Heading>
                                           </StackedFocusModal.Title>
                                           <StackedFocusModal.Description className="sr-only">
                                             {t(

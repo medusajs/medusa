@@ -325,9 +325,12 @@ const useReferenceValues = (
       }
     case RuleReferenceType.PRODUCT_TAG:
       return {
-        labels: tags.tags?.map((tag: any) => tag.value),
+        labels: tags.product_tags?.map((tag: any) => tag.value),
         isPending: tags.isPending,
-        additional: tags.tags && tags.count ? tags.count - tags.tags.length : 0,
+        additional:
+          tags.product_tags && tags.count
+            ? tags.count - tags.product_tags.length
+            : 0,
         isError: tags.isError,
         error: tags.error,
       }

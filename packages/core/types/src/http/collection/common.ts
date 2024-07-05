@@ -1,5 +1,5 @@
 import { BaseFilterable, OperatorMap } from "../../dal"
-import { SelectParams } from "../common"
+import { FindParams, SelectParams } from "../common"
 import { AdminProduct } from "../product"
 
 export interface BaseCollection {
@@ -16,7 +16,7 @@ export interface BaseCollection {
 export interface BaseCollectionParams extends SelectParams {}
 
 export interface BaseCollectionListParams
-  extends SelectParams,
+  extends FindParams,
     BaseFilterable<BaseCollectionListParams> {
   q?: string
   id?: string | string[]
@@ -24,5 +24,4 @@ export interface BaseCollectionListParams
   title?: string | string[]
   created_at?: OperatorMap<string>
   updated_at?: OperatorMap<string>
-  deleted_at?: OperatorMap<string>
 }
