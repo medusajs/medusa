@@ -98,4 +98,8 @@ export interface AdminGetCustomerGroupsParams {
    * Comma-separated relations that should be expanded in the returned customer groups.
    */
   expand?: string
+  /**
+   * Comma-separated fields that should be included in the returned customer groups.
+   */
+  fields?: string
 }

@@ -1,11 +1,17 @@
-import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
-  Check,
   Collection,
   Entity,
+  Filter,
   ManyToOne,
   OnInit,
   OneToMany,
@@ -23,76 +29,104 @@ type OptionalLineItemProps =
   | "compare_at_unit_price"
   | "requires_shipping"
   | "cart"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
+
+const CartIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_cart_id",
+  tableName: "cart_line_item",
+  columns: "cart_id",
+  where: "deleted_at IS NULL",
+}).MikroORMIndex
+
+const VariantIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_variant_id",
+  tableName: "cart_line_item",
+  columns: "variant_id",
+  where: "deleted_at IS NULL AND variant_id IS NOT NULL",
+}).MikroORMIndex
+
+const ProductIdIndex = createPsqlIndexStatementHelper({
+  name: "IDX_line_item_product_id",
+  tableName: "cart_line_item",
+  columns: "product_id",
+  where: "deleted_at IS NULL AND product_id IS NOT NULL",
+}).MikroORMIndex
+
+const DeletedAtIndex = createPsqlIndexStatementHelper({
+  tableName: "cart_line_item",
+  columns: "deleted_at",
+  where: "deleted_at IS NOT NULL",
+}).MikroORMIndex
 
 @Entity({ tableName: "cart_line_item" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class LineItem {
   [OptionalProps]?: OptionalLineItemProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({ columnType: "text" })
+  @CartIdIndex()
+  @ManyToOne({
+    entity: () => Cart,
+    columnType: "text",
+    fieldName: "cart_id",
+    mapToPk: true,
+  })
   cart_id: string
 
-  @ManyToOne(() => Cart, {
-    onDelete: "cascade",
-    index: "IDX_line_item_cart_id",
-    nullable: true,
-  })
-  cart?: Cart | null
+  @ManyToOne({ entity: () => Cart, persist: false })
+  cart: Cart
 
   @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  subtitle: string | null
+  subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  thumbnail?: string | null
+  thumbnail: string | null = null
 
   @Property({ columnType: "integer" })
   quantity: number
 
-  @Property({
-    columnType: "text",
-    nullable: true,
-    index: "IDX_line_item_variant_id",
-  })
-  variant_id?: string | null
+  @VariantIdIndex()
+  @Property({ columnType: "text", nullable: true })
+  variant_id: string | null = null
+
+  @ProductIdIndex()
+  @Property({ columnType: "text", nullable: true })
+  product_id: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_id?: string | null
+  product_title: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_title?: string | null
+  product_description: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_description?: string | null
+  product_subtitle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_subtitle?: string | null
+  product_type: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_type?: string | null
+  product_collection: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_collection?: string | null
+  product_handle: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  product_handle?: string | null
+  variant_sku: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_sku?: string | null
+  variant_barcode: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  variant_barcode?: string | null
-
-  @Property({ columnType: "text", nullable: true })
-  variant_title?: string | null
+  variant_title: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
-  variant_option_values?: Record<string, unknown> | null
+  variant_option_values: Record<string, unknown> | null = null
 
   @Property({ columnType: "boolean" })
   requires_shipping = true
@@ -103,55 +137,37 @@ export default class LineItem {
   @Property({ columnType: "boolean" })
   is_tax_inclusive = false
 
-  @Property({ columnType: "numeric", nullable: true })
-  compare_at_unit_price?: number
+  @MikroOrmBigNumberProperty({ nullable: true })
+  compare_at_unit_price?: BigNumber | number | null = null
 
-  @Property({ columnType: "numeric", serializer: Number })
-  @Check({ expression: "unit_price >= 0" }) // TODO: Validate that numeric types work with the expression
-  unit_price: number
+  @Property({ columnType: "jsonb", nullable: true })
+  raw_compare_at_unit_price: BigNumberRawValue | null = null
 
-  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.line_item, {
-    cascade: [Cascade.REMOVE],
+  @MikroOrmBigNumberProperty()
+  unit_price: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_unit_price: BigNumberRawValue
+
+  @OneToMany(() => LineItemTaxLine, (taxLine) => taxLine.item, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   tax_lines = new Collection<LineItemTaxLine>(this)
 
-  @OneToMany(
-    () => LineItemAdjustment,
-    (adjustment) => adjustment.item,
-    {
-      cascade: [Cascade.REMOVE],
-    }
-  )
+  @OneToMany(() => LineItemAdjustment, (adjustment) => adjustment.item, {
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
+  })
   adjustments = new Collection<LineItemAdjustment>(this)
 
-  /** COMPUTED PROPERTIES - START */
-
-  // compare_at_total?: number
-  // compare_at_subtotal?: number
-  // compare_at_tax_total?: number
-
-  // original_total: number
-  // original_subtotal: number
-  // original_tax_total: number
-
-  // item_total: number
-  // item_subtotal: number
-  // item_tax_total: number
-
-  // total: number
-  // subtotal: number
-  // tax_total: number
-  // discount_total: number
-  // discount_tax_total: number
-
-  /** COMPUTED PROPERTIES - END */
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  created_at?: Date
+  created_at: Date
 
   @Property({
     onCreate: () => new Date(),
@@ -159,7 +175,11 @@ export default class LineItem {
     columnType: "timestamptz",
     defaultRaw: "now()",
   })
-  updated_at?: Date
+  updated_at: Date
+
+  @DeletedAtIndex()
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date | null = null
 
   @BeforeCreate()
   onCreate() {

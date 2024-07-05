@@ -72,7 +72,6 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ["packages/admin-next/dashboard/**/dist"],
   overrides: [
     {
       files: ["*.ts"],
@@ -86,6 +85,7 @@ module.exports = {
           "./packages/medusa-payment-paypal/tsconfig.spec.json",
           "./packages/admin-ui/tsconfig.json",
           "./packages/admin-ui/tsconfig.spec.json",
+          "./packages/admin-next/dashboard/tsconfig.json",
           "./packages/event-bus-local/tsconfig.spec.json",
           "./packages/event-bus-redis/tsconfig.spec.json",
           "./packages/medusa-plugin-meilisearch/tsconfig.spec.json",
@@ -99,8 +99,11 @@ module.exports = {
           "./packages/orchestration/tsconfig.json",
           "./packages/workflows-sdk/tsconfig.spec.json",
           "./packages/core-flows/tsconfig.spec.json",
+          "./packages/types/tsconfig.json",
           "./packages/workflow-engine-redis/tsconfig.spec.json",
           "./packages/workflow-engine-inmemory/tsconfig.spec.json",
+          "./packages/fulfillment/tsconfig.spec.json",
+          "./packages/fulfillment-manual/tsconfig.spec.json",
         ],
       },
       rules: {
@@ -227,22 +230,51 @@ module.exports = {
       },
     },
     {
-      files: ["packages/admin-next/dashboard/src/**/*.{ts,tsx}"],
-      env: { browser: true, es2020: true, node: true },
+      files: [
+        "packages/admin-next/dashboard/**/*.ts",
+        "packages/admin-next/dashboard/**/*.tsx",
+      ],
+      plugins: ["unused-imports", "react-refresh"],
       extends: [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
         "plugin:react-hooks/recommended",
       ],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "tsconfig.json",
+        ecmaFeatures: {
+          jsx: true,
+        },
+        ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+        sourceType: "module", // Allows for the use of imports
+        project: "./packages/admin-next/dashboard/tsconfig.json",
       },
-      plugins: ["react-refresh"],
+      globals: {
+        __BASE__: "readonly",
+      },
+      env: {
+        browser: true,
+      },
       rules: {
+        "prettier/prettier": "error",
+        "react/prop-types": "off",
+        "new-cap": "off",
+        "require-jsdoc": "off",
+        "valid-jsdoc": "off",
         "react-refresh/only-export-components": [
           "warn",
           { allowConstantExport: true },
+        ],
+        "no-unused-expressions": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            vars: "all",
+            varsIgnorePattern: "^_",
+            args: "after-used",
+            argsIgnorePattern: "^_",
+          },
         ],
       },
     },

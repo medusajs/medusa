@@ -1,9 +1,9 @@
+import { SalesChannel } from "@medusajs/medusa"
 import {
-  Product,
-  ProductCollection,
-  ProductVariant,
-  SalesChannel,
-} from "@medusajs/medusa"
+  ProductCollectionDTO,
+  ProductDTO,
+  ProductVariantDTO,
+} from "@medusajs/types"
 import { StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Thumbnail } from "../thumbnail"
@@ -11,7 +11,7 @@ import { Thumbnail } from "../thumbnail"
 export const ProductVariantCell = ({
   variants,
 }: {
-  variants: ProductVariant[] | null
+  variants: ProductVariantDTO[] | null
 }) => {
   const { t } = useTranslation()
 
@@ -35,7 +35,7 @@ export const ProductVariantCell = ({
 export const ProductStatusCell = ({
   status,
 }: {
-  status: Product["status"]
+  status: ProductDTO["status"]
 }) => {
   const { t } = useTranslation()
 
@@ -95,7 +95,7 @@ export const ProductAvailabilityCell = ({
   )
 }
 
-export const ProductTitleCell = ({ product }: { product: Product }) => {
+export const ProductTitleCell = ({ product }: { product: ProductDTO }) => {
   const thumbnail = product.thumbnail
   const title = product.title
 
@@ -112,7 +112,7 @@ export const ProductTitleCell = ({ product }: { product: Product }) => {
 export const ProductCollectionCell = ({
   collection,
 }: {
-  collection: ProductCollection | null
+  collection: ProductCollectionDTO | null
 }) => {
   if (!collection) {
     return (

@@ -215,6 +215,11 @@ get:
       description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
+    - in: query
+      name: order
+      description: Field to sort retrieved orders by.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetOrdersParams
@@ -226,7 +231,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_orders/getundefined
+        $ref: ../code_samples/tsx/admin_orders/get.tsx
     - lang: Shell
       label: cURL
       source:

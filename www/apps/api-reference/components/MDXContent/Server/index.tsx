@@ -20,6 +20,9 @@ const MDXContentServer = ({ content, ...props }: MDXContentServerProps) => {
         components={getCustomComponents((props.scope as ScopeType) || {})}
         options={{
           scope: props.scope,
+          mdxOptions: {
+            development: process.env.NEXT_PUBLIC_ENV === "development",
+          },
         }}
         {...props}
       />

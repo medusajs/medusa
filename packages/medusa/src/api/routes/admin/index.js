@@ -41,6 +41,7 @@ import taxRateRoutes from "./tax-rates"
 import uploadRoutes from "./uploads"
 import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
+import workflowRoutes from "./workflows-executions"
 
 const route = Router()
 
@@ -115,6 +116,7 @@ export default (app, container, config) => {
   paymentCollectionRoutes(route)
   paymentRoutes(route)
   productCategoryRoutes(route)
+  workflowRoutes(route)
 
   return app
 }

@@ -2,14 +2,14 @@
 displayed_sidebar: workflowsSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # StepFunction
 
- **StepFunction**: keyof TInput extends [] ? () => [WorkflowData](workflows.WorkflowData.mdx)&#60;&#123; [K in string \| number \| symbol]: TOutput[K] &#125;&#62; : (`input`: TInput extends `object` ? &#123; [K in string \| number \| symbol]: TInput[K] \| WorkflowData&#60;TInput[K]&#62; &#125; : TInput \| [WorkflowData](workflows.WorkflowData.mdx)&#60;TInput&#62;) => [WorkflowData](workflows.WorkflowData.mdx)&#60;&#123; [K in string \| number \| symbol]: TOutput[K] &#125;&#62; & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;&#123; [K in keyof TOutput]: TOutput[K] &#125;&#62; & `object` & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;&#123; [K in keyof TOutput]: TOutput[K] &#125;&#62;
+ **StepFunction**: keyof TInput extends [] ? () => [WorkflowData](workflows.WorkflowData.mdx)&#60;&#123; [K in string \| number \| symbol]: TOutput[K] &#125;&#62; : (`input`: TInput extends `object` ? &#123; [K in string \| number \| symbol]: TInput[K] \| WorkflowData&#60;TInput[K]&#62; &#125; : TInput \| [WorkflowData](workflows.WorkflowData.mdx)&#60;TInput&#62;) => [WorkflowData](workflows.WorkflowData.mdx)&#60;&#123; [K in string \| number \| symbol]: TOutput[K] &#125;&#62; & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;&#123; [K in keyof TOutput]: TOutput[K] &#125;&#62; & [WorkflowDataProperties](workflows.WorkflowDataProperties.mdx)&#60;&#123; [K in keyof TOutput]: TOutput[K] &#125;&#62;
 
 A step function to be used in a workflow.
 
 ## Type Parameters
 
-<ParameterTypes parameters={[{"name":"TInput","type":"`object`","description":"The type of the input of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TOutput","type":"`object`","description":"The type of the output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TInput","type":"`object`","description":"The type of the input of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TOutput","type":"`object`","description":"The type of the output of the step.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="StepFunction"/>

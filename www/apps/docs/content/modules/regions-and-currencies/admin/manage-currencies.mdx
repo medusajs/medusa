@@ -120,7 +120,7 @@ You can list all available currencies in your system by sending a request to the
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/currencies' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -199,7 +199,7 @@ You can update a currency by sending a request to the [Update Currency API Route
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/currencies/<CODE>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "includes_tax": true
@@ -294,7 +294,7 @@ You can list currencies in a store by sending a request to the [Get Store Detail
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/store' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -362,7 +362,7 @@ You can add a currency to a store using the [Add a Currency Code API Route](http
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/store/currencies/<CODE>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -429,7 +429,7 @@ You can remove a currency from a store by sending a request to the [Delete Curre
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/store/currencies/<CODE>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

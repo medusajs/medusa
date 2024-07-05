@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.12
+
+### Patch Changes
+
+- [`43205914c`](https://github.com/medusajs/medusa/commit/43205914cb5ff3587f00ac5cd7202db0e1c3dc97) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Support custom template
+
 ## 1.3.11
 
 ### Patch Changes

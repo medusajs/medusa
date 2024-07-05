@@ -2,12 +2,6 @@
 
 Medusa Admin comes with multi-language support. This document covers the complete list of available languages, both official and by the community.
 
-:::note
-
-Can't find your language? Learn how you can contribute by translating the admin to other languages [here](../../contribution/admin-translations.md).
-
-:::
-
 ## Official Languages
 
 - English

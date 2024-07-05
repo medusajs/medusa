@@ -343,6 +343,81 @@ export default async (req, res) => {
 }
 
 /**
+ * The return's shipping method details.
+ */
+class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  /**
+   * The shipping method's price.
+   */
+  @IsInt()
+  @IsOptional()
+  price?: number
+}
+
+class ShippingMethod {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity: number
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsEnum(ClaimReason)
+  @IsOptional()
+  reason?: ClaimReason
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[]
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  images?: string[]
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity: number
+}
+
+/**
  * @schema AdminPostOrdersOrderClaimsReq
  * type: object
  * description: "The details of the claim to be created."
@@ -503,81 +578,6 @@ export class AdminPostOrdersOrderClaimsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
-}
-
-/**
- * The return's shipping method details.
- */
-class ReturnShipping {
-  /**
-   * The ID of the shipping option used for the return.
-   */
-  @IsString()
-  @IsOptional()
-  option_id?: string
-
-  /**
-   * The shipping method's price.
-   */
-  @IsInt()
-  @IsOptional()
-  price?: number
-}
-
-class ShippingMethod {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @IsString()
-  @IsOptional()
-  option_id?: string
-
-  @IsInt()
-  @IsOptional()
-  price?: number
-
-  @IsObject()
-  @IsOptional()
-  data?: Record<string, unknown>
-}
-
-class Item {
-  @IsString()
-  @IsNotEmpty()
-  item_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  quantity: number
-
-  @IsString()
-  @IsOptional()
-  note?: string
-
-  @IsEnum(ClaimReason)
-  @IsOptional()
-  reason?: ClaimReason
-
-  @IsArray()
-  @IsOptional()
-  @IsString({ each: true })
-  tags?: string[]
-
-  @IsArray()
-  @IsOptional()
-  @IsString({ each: true })
-  images?: string[]
-}
-
-class AdditionalItem {
-  @IsString()
-  @IsNotEmpty()
-  variant_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  quantity: number
 }
 
 export class AdminPostOrdersOrderClaimsParams extends FindParams {}

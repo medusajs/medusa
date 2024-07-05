@@ -3,9 +3,9 @@ import {
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "@medusajs/orchestration"
-import { RemoteJoinerQuery } from "@medusajs/types"
-import { TransactionHandlerType } from "@medusajs/utils"
-import { IWorkflowsModuleService } from "@medusajs/workflows-sdk"
+import { RemoteQueryFunction } from "@medusajs/types"
+import { TransactionHandlerType, TransactionStepState } from "@medusajs/utils"
+import { IWorkflowEngineService } from "@medusajs/workflows-sdk"
 import { knex } from "knex"
 import { setTimeout } from "timers/promises"
 import "../__fixtures__"
@@ -26,11 +26,8 @@ const afterEach_ = async () => {
 
 describe("Workflow Orchestrator module", function () {
   describe("Testing basic workflow", function () {
-    let workflowOrcModule: IWorkflowsModuleService
-    let query: (
-      query: string | RemoteJoinerQuery | object,
-      variables?: Record<string, unknown>
-    ) => Promise<any>
+    let workflowOrcModule: IWorkflowEngineService
+    let query: RemoteQueryFunction
 
     afterEach(afterEach_)
 
@@ -61,8 +58,7 @@ describe("Workflow Orchestrator module", function () {
 
       await runMigrations()
 
-      workflowOrcModule =
-        modules.workflows as unknown as IWorkflowsModuleService
+      workflowOrcModule = modules.workflows as unknown as IWorkflowEngineService
     })
 
     afterEach(afterEach_)
@@ -240,6 +236,65 @@ describe("Workflow Orchestrator module", function () {
       expect(
         TransactionTimeoutError.isTransactionTimeoutError(errors[0].error)
       ).toBe(true)
+    })
+
+    it("should complete an async workflow that returns a StepResponse", async () => {
+      const { transaction, result } = await workflowOrcModule.run(
+        "workflow_async_background",
+        {
+          input: {
+            myInput: "123",
+          },
+          transactionId: "transaction_1",
+          throwOnError: false,
+        }
+      )
+
+      expect(transaction.flow.state).toEqual(TransactionStepState.INVOKING)
+      expect(result).toEqual(undefined)
+
+      await setTimeout(205)
+
+      const trx = await workflowOrcModule.run("workflow_async_background", {
+        input: {
+          myInput: "123",
+        },
+        transactionId: "transaction_1",
+        throwOnError: false,
+      })
+
+      expect(trx.transaction.flow.state).toEqual(TransactionStepState.DONE)
+      expect(trx.result).toEqual({
+        myInput: "123",
+      })
+    })
+
+    it("should subsctibe to a async workflow and receive the response when it finishes", (done) => {
+      const transactionId = "trx_123"
+
+      const onFinish = jest.fn(() => {
+        done()
+      })
+
+      void workflowOrcModule.run("workflow_async_background", {
+        input: {
+          myInput: "123",
+        },
+        transactionId,
+        throwOnError: false,
+      })
+
+      void workflowOrcModule.subscribe({
+        workflowId: "workflow_async_background",
+        transactionId,
+        subscriber: (event) => {
+          if (event.eventType === "onFinish") {
+            onFinish()
+          }
+        },
+      })
+
+      expect(onFinish).toHaveBeenCalledTimes(0)
     })
   })
 })

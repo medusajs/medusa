@@ -311,8 +311,16 @@ export class Reporter {
    * A wrapper around winston's log method.
    */
   log = (...args) => {
-    // @ts-ignore
-    this.loggerInstance_.log(...args)
+    if (args.length > 1) {
+      // @ts-ignore
+      this.loggerInstance_.log(...args)
+    } else {
+      let message = args[0]
+      this.loggerInstance_.log({
+        level: "info",
+        message,
+      })
+    }
   }
 }
 

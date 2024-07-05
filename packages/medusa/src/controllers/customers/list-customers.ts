@@ -1,11 +1,11 @@
 import { omit, pickBy } from "lodash"
-import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
+import { isDefined } from "medusa-core-utils"
 import { AdminCustomersListRes } from "../../api"
+import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
+import { Customer } from "../../models/customer"
 import { CustomerService } from "../../services"
 import { FindConfig } from "../../types/common"
 import { validator } from "../../utils/validator"
-import { Customer } from "../../models/customer"
-import { isDefined } from "medusa-core-utils"
 
 const listAndCount = async (
   scope,
@@ -21,16 +21,29 @@ const listAndCount = async (
     expandFields = validatedQueryParams.expand.split(",")
   }
 
+  let orderBy: { [key: string]: "ASC" | "DESC" } | undefined = undefined
+  if (validatedQueryParams.order) {
+    const order = validatedQueryParams.order
+    const direction = order.startsWith("-") ? "DESC" : "ASC"
+    const field = order.replace(/^-/, "")
+    orderBy = {
+      [field]: direction,
+    }
+  }
+
   const listConfig: FindConfig<Customer> = {
     relations: expandFields,
     skip: validatedQueryParams.offset,
     take: validatedQueryParams.limit,
+    order: orderBy,
   }
 
   const filterableFields = omit(validatedQueryParams, [
     "limit",
     "offset",
     "expand",
+    "fields",
+    "order",
   ])
 
   const [customers, count] = await customerService.listAndCount(

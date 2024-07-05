@@ -59,6 +59,55 @@ get:
         discount.
       schema:
         type: string
+    - in: query
+      name: order
+      description: A discount field to sort-order the retrieved discounts by.
+      schema:
+        type: string
+    - in: query
+      name: created_at
+      description: Filter by a creation date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
+    - in: query
+      name: updated_at
+      description: Filter by an update date range.
+      schema:
+        type: object
+        properties:
+          lt:
+            type: string
+            description: filter by dates less than this date
+            format: date
+          gt:
+            type: string
+            description: filter by dates greater than this date
+            format: date
+          lte:
+            type: string
+            description: filter by dates less than or equal to this date
+            format: date
+          gte:
+            type: string
+            description: filter by dates greater than or equal to this date
+            format: date
   x-codegen:
     method: list
     queryParams: AdminGetDiscountsParams
@@ -70,7 +119,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_discounts/getundefined
+        $ref: ../code_samples/tsx/admin_discounts/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -138,7 +187,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_discounts/postundefined
+        $ref: ../code_samples/tsx/admin_discounts/post.tsx
     - lang: Shell
       label: cURL
       source:

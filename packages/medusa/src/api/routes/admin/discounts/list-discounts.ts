@@ -7,7 +7,10 @@ import {
 import { Transform, Type } from "class-transformer"
 
 import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
-import { extendedFindParamsMixin } from "../../../../types/common"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import { Request, Response } from "express"
 import { DiscountService } from "../../../../services"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
@@ -39,6 +42,51 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - (query) limit=20 {number} The number of discounts to return
  *   - (query) offset=0 {number} The number of discounts to skip when retrieving the discounts.
  *   - (query) expand {string} Comma-separated relations that should be expanded in each returned discount.
+ *   - (query) order {string} A discount field to sort-order the retrieved discounts by.
+ *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Filter by an update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetDiscountsParams
@@ -167,4 +215,27 @@ export class AdminGetDiscountsParams extends extendedFindParamsMixin({
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_disabled?: boolean
+
+  /**
+   * Date filters to apply on the discounts' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the discounts' `updated_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
 }

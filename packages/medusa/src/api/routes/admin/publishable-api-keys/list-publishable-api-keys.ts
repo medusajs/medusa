@@ -1,8 +1,12 @@
+import { IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import { IsOptional, IsString } from "class-validator"
 
-import { extendedFindParamsMixin } from "../../../../types/common"
+import { Type } from "class-transformer"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /admin/publishable-api-keys
@@ -16,6 +20,76 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - (query) offset=0 {number} The number of publishable API keys to skip when retrieving the publishable API keys.
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned publishable API keys.
  *   - (query) fields {string} Comma-separated fields that should be included in the returned publishable API keys.
+ *   - (query) order {string} A field to sort-order the retrieved publishable API keys by.
+ *   - in: query
+ *     name: created_at
+ *     required: false
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *           type: string
+ *           description: filter by dates less than this date
+ *           format: date
+ *         gt:
+ *           type: string
+ *           description: filter by dates greater than this date
+ *           format: date
+ *         lte:
+ *           type: string
+ *           description: filter by dates less than or equal to this date
+ *           format: date
+ *         gte:
+ *           type: string
+ *           description: filter by dates greater than or equal to this date
+ *           format: date
+ *   - in: query
+ *     name: updated_at
+ *     required: false
+ *     description: Filter by a update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *           type: string
+ *           description: filter by dates less than this date
+ *           format: date
+ *         gt:
+ *           type: string
+ *           description: filter by dates greater than this date
+ *           format: date
+ *         lte:
+ *           type: string
+ *           description: filter by dates less than or equal to this date
+ *           format: date
+ *         gte:
+ *           type: string
+ *           description: filter by dates greater than or equal to this date
+ *           format: date
+ *   - in: query
+ *     name: revoked_at
+ *     required: false
+ *     description: Filter by a revocation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *           type: string
+ *           description: filter by dates less than this date
+ *           format: date
+ *         gt:
+ *           type: string
+ *           description: filter by dates greater than this date
+ *           format: date
+ *         lte:
+ *           type: string
+ *           description: filter by dates less than or equal to this date
+ *           format: date
+ *         gte:
+ *           type: string
+ *           description: filter by dates greater than or equal to this date
+ *           format: date
  * x-codegen:
  *   method: list
  *   queryParams: GetPublishableApiKeysParams
@@ -129,4 +203,35 @@ export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  /**
+   * A field to sort-order the retrieved publishable API keys by.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
+
+  /**
+   * Date filters to apply on the publishable API keys' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the publishable API keys' `updated_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the publishable API keys' `revoked_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  revoked_at?: DateComparisonOperator
 }

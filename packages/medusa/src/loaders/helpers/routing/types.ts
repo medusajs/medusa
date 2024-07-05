@@ -41,6 +41,7 @@ export type RouteConfig = {
   shouldAppendCustomer?: boolean
   shouldAppendAdminCors?: boolean
   shouldAppendStoreCors?: boolean
+  shouldAppendAuthCors?: boolean
   routes?: RouteImplementation[]
 }
 
@@ -55,11 +56,12 @@ export type MedusaErrorHandlerFunction = (
   next: MedusaNextFunction
 ) => Promise<void> | void
 
-type ParserConfig =
-  | false
-  | {
-      sizeLimit?: string | number | undefined
-    }
+export type ParserConfigArgs = {
+  sizeLimit?: string | number | undefined
+  preserveRawBody?: boolean
+}
+
+type ParserConfig = false | ParserConfigArgs
 
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]

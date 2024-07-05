@@ -4,22 +4,17 @@ import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
 import type { Operation, PathsObject } from "@/types/openapi"
-import {
-  SidebarItemSections,
-  useSidebar,
-  type SidebarItemType,
-  swrFetcher,
-} from "docs-ui"
+import { useSidebar, swrFetcher, getLinkWithBasePath } from "docs-ui"
 import { Fragment, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
-import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import clsx from "clsx"
 import { useBaseSpecs } from "@/providers/base-specs"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { useLoading } from "@/providers/loading"
 import DividedLoading from "@/components/DividedLoading"
+import { SidebarItemSections, SidebarItemType } from "types"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")
@@ -47,7 +42,10 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     paths: PathsObject
   }>(
     !Object.keys(paths).length
-      ? getLinkWithBasePath(`/tag?tagName=${tagSlugName}&area=${area}`)
+      ? getLinkWithBasePath(
+          `/tag?tagName=${tagSlugName}&area=${area}`,
+          process.env.NEXT_PUBLIC_BASE_PATH
+        )
       : null,
     swrFetcher,
     {

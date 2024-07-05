@@ -5,7 +5,6 @@ export const InventoryModule = {
     defaultPackage: false,
     label: "InventoryService",
     isRequired: false,
-    canOverride: true,
     isQueryable: true,
     dependencies: [],
     defaultModuleDeclaration: {

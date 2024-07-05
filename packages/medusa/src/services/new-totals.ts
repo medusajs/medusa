@@ -79,8 +79,8 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * Calculate and return the items totals for either the legacy calculation or the new calculation
-   * @param items 
-   * @param param1 
+   * @param items
+   * @param param1
    */
   async getLineItemTotals(
     items: LineItem | LineItem[],
@@ -136,9 +136,9 @@ export default class NewTotalsService extends TransactionBaseService {
 
   /**
    * Calculate and return the totals for an item
-   * @param item 
-   * @param param1 
-   * @returns 
+   * @param item
+   * @param param1
+   * @returns
    */
   protected async getLineItemTotals_(
     item: LineItem,
@@ -455,7 +455,7 @@ export default class NewTotalsService extends TransactionBaseService {
     if (!giftCards && !giftCardTransactions) {
       throw new MedusaError(
         MedusaError.Types.UNEXPECTED_STATE,
-        "Cannot calculate the gift cart totals. Neither the gift cards or gift card transactions have been provided"
+        "Cannot calculate the gift card totals. Neither the gift cards or gift card transactions have been provided"
       )
     }
 

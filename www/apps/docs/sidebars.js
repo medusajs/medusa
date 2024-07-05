@@ -322,6 +322,10 @@ module.exports = {
       customProps: {
         sidebar_icon: "cloud-arrow-up",
       },
+      link: {
+        type: "doc",
+        id: "deployments/index",
+      },
       items: [
         {
           type: "category",
@@ -371,6 +375,10 @@ module.exports = {
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296578/Medusa%20Docs/Other/aF4ZuDS_t11rcu.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296612/Medusa%20Docs/Other/Lg7NHQk_qo6oax.png",
                 },
+                badge: {
+                  variant: "blue",
+                  children: "Community",
+                },
               },
             },
             {
@@ -382,6 +390,9 @@ module.exports = {
               },
             },
           ],
+          customProps: {
+            category_id: "deploy_backend",
+          },
         },
         {
           type: "category",
@@ -403,7 +414,18 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/admin/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
+              },
+            },
           ],
+          customProps: {
+            category_id: "deploy_admin",
+          },
         },
         {
           type: "category",
@@ -425,7 +447,18 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/storefront/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
+              },
+            },
           ],
+          customProps: {
+            category_id: "deploy_storefront",
+          },
         },
       ],
       className: "homepage-sidebar-item",
@@ -1937,6 +1970,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
+        },
+        {
           type: "category",
           label: "Feature Flag",
           items: [
@@ -2145,6 +2183,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/mime-error",
+          label: "Mime Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/eaddrinuse",
           label: "EADDRINUSE Error",
         },
@@ -2210,6 +2253,11 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/custom-hooks-error",
           label: "Custom Hooks Error",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/admin-webpack-build-types",
+          label: "Webpack Build Error",
         },
       ],
     },

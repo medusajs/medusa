@@ -1,3 +1,5 @@
+import { BigNumberInput } from "@medusajs/types"
+
 interface PartialUpsertLineItemDTO {
   subtitle?: string
   thumbnail?: string
@@ -20,13 +22,13 @@ interface PartialUpsertLineItemDTO {
   is_discountable?: boolean
   is_tax_inclusive?: boolean
 
-  compare_at_unit_price?: number
+  compare_at_unit_price?: BigNumberInput
 }
 
 export interface CreateLineItemDTO extends PartialUpsertLineItemDTO {
   title: string
-  quantity: number
-  unit_price: number
+  quantity: BigNumberInput
+  unit_price: BigNumberInput
   cart_id: string
 }
 

@@ -37,10 +37,11 @@ class GraphQLParser {
   }
 
   private parseValueNode(valueNode: ValueNode): unknown {
+    const obj = {}
+
     switch (valueNode.kind) {
       case Kind.VARIABLE:
-        const variableName = valueNode.name.value
-        return this.variables ? this.variables[variableName] : undefined
+        return this.variables ? this.variables[valueNode.name.value] : undefined
       case Kind.INT:
         return parseInt(valueNode.value, 10)
       case Kind.FLOAT:
@@ -55,7 +56,6 @@ class GraphQLParser {
       case Kind.LIST:
         return valueNode.values.map((v) => this.parseValueNode(v))
       case Kind.OBJECT:
-        let obj = {}
         for (const field of valueNode.fields) {
           obj[field.name.value] = this.parseValueNode(field.value)
         }

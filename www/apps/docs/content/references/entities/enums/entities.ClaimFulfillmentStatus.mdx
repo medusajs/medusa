@@ -2,25 +2,13 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ClaimFulfillmentStatus
 
 The claim's fulfillment status.
 
 ## Enumeration Members
-
-### CANCELED
-
- **CANCELED** = `"canceled"`
-
-The claim's fulfillments are canceled.
-
-### FULFILLED
-
- **FULFILLED** = `"fulfilled"`
-
-The claim's replacement items are fulfilled.
 
 ### NOT\_FULFILLED
 
@@ -34,11 +22,11 @@ The claim's replacement items are not fulfilled.
 
 Some of the claim's replacement items, but not all, are fulfilled.
 
-### PARTIALLY\_RETURNED
+### FULFILLED
 
- **PARTIALLY\_RETURNED** = `"partially_returned"`
+ **FULFILLED** = `"fulfilled"`
 
-Some of the claim's items, but not all, are returned.
+The claim's replacement items are fulfilled.
 
 ### PARTIALLY\_SHIPPED
 
@@ -46,11 +34,17 @@ Some of the claim's items, but not all, are returned.
 
 Some of the claim's replacement items, but not all, are shipped.
 
-### REQUIRES\_ACTION
+### SHIPPED
 
- **REQUIRES\_ACTION** = `"requires_action"`
+ **SHIPPED** = `"shipped"`
 
-The claim's fulfillment requires action.
+The claim's replacement items are shipped.
+
+### PARTIALLY\_RETURNED
+
+ **PARTIALLY\_RETURNED** = `"partially_returned"`
+
+Some of the claim's items, but not all, are returned.
 
 ### RETURNED
 
@@ -58,8 +52,14 @@ The claim's fulfillment requires action.
 
 The claim's items are returned.
 
-### SHIPPED
+### CANCELED
 
- **SHIPPED** = `"shipped"`
+ **CANCELED** = `"canceled"`
 
-The claim's replacement items are shipped.
+The claim's fulfillments are canceled.
+
+### REQUIRES\_ACTION
+
+ **REQUIRES\_ACTION** = `"requires_action"`
+
+The claim's fulfillment requires action.

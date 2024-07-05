@@ -6,6 +6,7 @@ import {
   TransactionMetadata,
   TransactionModelOptions,
   TransactionOrchestrator,
+  TransactionStep,
   TransactionStepHandler,
   TransactionStepsDefinition,
 } from "../transaction"
@@ -32,15 +33,21 @@ export type WorkflowHandler = Map<
   { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
 >
 
-export type WorkflowStepHandler = (args: {
+export type WorkflowStepHandlerArguments = {
   container: MedusaContainer
   payload: unknown
   invoke: { [actions: string]: unknown }
   compensate: { [actions: string]: unknown }
   metadata: TransactionMetadata
   transaction: DistributedTransaction
+  step: TransactionStep
+  orchestrator: TransactionOrchestrator
   context?: Context
-}) => unknown
+}
+
+export type WorkflowStepHandler = (
+  args: WorkflowStepHandlerArguments
+) => Promise<unknown>
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
@@ -81,7 +88,7 @@ export class WorkflowManager {
     const finalFlow = flow instanceof OrchestratorBuilder ? flow.build() : flow
 
     if (WorkflowManager.workflows.has(workflowId)) {
-      function excludeStepUuid(key, value) {
+      const excludeStepUuid = (key, value) => {
         return key === "uuid" ? undefined : value
       }
 
@@ -94,9 +101,11 @@ export class WorkflowManager {
         : true
 
       if (!areStepsEqual) {
-        throw new Error(
-          `Workflow with id "${workflowId}" and step definition already exists.`
-        )
+        if (process.env.MEDUSA_FF_MEDUSA_V2 == "true") {
+          throw new Error(
+            `Workflow with id "${workflowId}" and step definition already exists.`
+          )
+        }
       }
     }
 
@@ -169,8 +178,10 @@ export class WorkflowManager {
       return async (
         actionId: string,
         handlerType: TransactionHandlerType,
-        payload?: any,
-        transaction?: DistributedTransaction
+        payload: any,
+        transaction: DistributedTransaction,
+        step: TransactionStep,
+        orchestrator: TransactionOrchestrator
       ) => {
         const command = handlers.get(actionId)
 
@@ -192,6 +203,8 @@ export class WorkflowManager {
           compensate,
           metadata,
           transaction: transaction as DistributedTransaction,
+          step,
+          orchestrator,
           context,
         })
       }

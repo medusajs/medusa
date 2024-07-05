@@ -5,35 +5,41 @@ import {
   Filter,
   Index,
   OneToMany,
-  OptionalProps,
+  OnInit,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
-import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
+import {
+  createPsqlIndexStatementHelper,
+  DALUtils,
+  generateEntityId,
+  kebabCase,
+  Searchable,
+} from "@medusajs/utils"
 import Product from "./product"
-import { DAL } from "@medusajs/types"
 
-type OptionalRelations = "products"
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+const collectionHandleIndexName = "IDX_collection_handle_unique"
+const collectionHandleIndexStatement = createPsqlIndexStatementHelper({
+  name: collectionHandleIndexName,
+  tableName: "product_collection",
+  columns: ["handle"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+collectionHandleIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_collection" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductCollection {
-  [OptionalProps]?: OptionalRelations | OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 
   @Property({ columnType: "text" })
-  @Unique({
-    name: "IDX_product_collection_handle_unique",
-    properties: ["handle"],
-  })
   handle?: string
 
   @OneToMany(() => Product, (product) => product.collection)
@@ -61,11 +67,12 @@ class ProductCollection {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at?: Date
 
+  @OnInit()
   @BeforeCreate()
-  onCreate() {
+  onInit() {
     this.id = generateEntityId(this.id, "pcol")
 
-    if (!this.handle) {
+    if (!this.handle && this.title) {
       this.handle = kebabCase(this.title)
     }
   }

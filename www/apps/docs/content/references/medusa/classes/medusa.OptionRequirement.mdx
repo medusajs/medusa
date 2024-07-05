@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # OptionRequirement
 
@@ -12,4 +12,4 @@ ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"type","type":"[RequirementType](../../entities/enums/entities.RequirementType.mdx)","description":"The type of the requirement","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"MAX_SUBTOTAL","type":"`\"max_subtotal\"`","description":"The shipping option can only be applied if the subtotal is less than the requirement's amont.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"MIN_SUBTOTAL","type":"`\"min_subtotal\"`","description":"The shipping option can only be applied if the subtotal is greater than the requirement's amount.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"amount","type":"`number`","description":"The amount to compare with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"type","type":"[RequirementType](../../entities/enums/entities.RequirementType.mdx)","description":"The type of the requirement","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"MIN_SUBTOTAL","type":"`\"min_subtotal\"`","description":"The shipping option can only be applied if the subtotal is greater than the requirement's amount.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"MAX_SUBTOTAL","type":"`\"max_subtotal\"`","description":"The shipping option can only be applied if the subtotal is less than the requirement's amont.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"amount","type":"`number`","description":"The amount to compare with.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="OptionRequirement"/>

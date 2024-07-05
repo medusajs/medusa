@@ -1,6 +1,5 @@
-import { BaseFilterable } from "../../dal";
-import { CreateCurrencyDTO, CurrencyDTO } from "./currency";
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
+import { BaseFilterable } from "../../dal"
+import { BigNumberInput, BigNumberValue } from "../../totals"
 
 /**
  * @interface
@@ -17,27 +16,17 @@ export interface MoneyAmountDTO {
    */
   currency_code?: string
   /**
-   * The money amount's currency.
-   *
-   * @expandable
-   */
-  currency?: CurrencyDTO
-  /**
    * The price of this money amount.
    */
-  amount?: number
+  amount?: BigNumberValue
   /**
    * The minimum quantity required to be purchased for this price to be applied.
    */
-  min_quantity?: number
+  min_quantity?: BigNumberValue
   /**
    * The maximum quantity required to be purchased for this price to be applied.
    */
-  max_quantity?: number
-  /**
-   * The details of the relation between the money amount and its associated price set.
-   */
-  price_set_money_amount?: PriceSetMoneyAmountDTO
+  max_quantity?: BigNumberValue
   /**
    * When the money_amount was created.
    */
@@ -67,21 +56,17 @@ export interface CreateMoneyAmountDTO {
    */
   currency_code: string
   /**
-   * The currency of this money amount.
-   */
-  currency?: CreateCurrencyDTO
-  /**
    * The amount of this money amount.
    */
-  amount: number
+  amount: BigNumberInput
   /**
    * The minimum quantity required to be purchased for this money amount to be applied.
    */
-  min_quantity?: number | null
+  min_quantity?: BigNumberInput | null
   /**
    * The maximum quantity required to be purchased for this money amount to be applied.
    */
-  max_quantity?: number | null
+  max_quantity?: BigNumberInput | null
 }
 
 /**
@@ -97,19 +82,19 @@ export interface UpdateMoneyAmountDTO {
   /**
    * The code of the currency to associate with the money amount.
    */
-  currency_code?: string
+  currency_code?: string | null
   /**
    * The price of this money amount.
    */
-  amount?: number
+  amount?: BigNumberInput
   /**
    * The minimum quantity required to be purchased for this money amount to be applied.
    */
-  min_quantity?: number
+  min_quantity?: BigNumberInput
   /**
    * The maximum quantity required to be purchased for this money amount to be applied.
    */
-  max_quantity?: number
+  max_quantity?: BigNumberInput
 }
 
 /**

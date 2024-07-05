@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeInsert,
   Column,
@@ -27,6 +27,7 @@ export class StockLocation {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date | null
 
+  @Searchable()
   @Column({ type: "text" })
   name: string
 
@@ -34,6 +35,7 @@ export class StockLocation {
   @Column({ type: "text", nullable: true })
   address_id: string | null
 
+  @Searchable()
   @ManyToOne(() => StockLocationAddress)
   @JoinColumn({ name: "address_id" })
   address: StockLocationAddress | null

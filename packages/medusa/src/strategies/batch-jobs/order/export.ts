@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
-    OrderDescriptor,
-    OrderExportBatchJob,
-    OrderExportBatchJobContext,
-    orderExportPropertiesDescriptors,
+  OrderDescriptor,
+  OrderExportBatchJob,
+  OrderExportBatchJobContext,
+  orderExportPropertiesDescriptors,
 } from "."
 import { AdminPostBatchesReq } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
@@ -101,7 +101,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy {
       ...context
     } = batchJob.context as OrderExportBatchJobContext
 
-    const listConfig = prepareListQuery(
+    const { listConfig } = prepareListQuery(
       {
         limit,
         offset,

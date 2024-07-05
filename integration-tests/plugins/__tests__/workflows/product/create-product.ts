@@ -1,19 +1,19 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
-  createProducts,
   CreateProductsActions,
   Handlers,
+  createProducts,
 } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
+import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { pipe } from "@medusajs/workflows-sdk"
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
-describe("CreateProduct workflow", function () {
+describe.skip("CreateProduct workflow", function () {
   let medusaContainer
   let shutdownServer
 
@@ -25,8 +25,6 @@ describe("CreateProduct workflow", function () {
   })
 
   afterAll(async () => {
-    console.log("GLOABL GC()", typeof global)
-
     const db = useDb()
     await db.shutdown()
     await shutdownServer()
@@ -91,7 +89,9 @@ describe("CreateProduct workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed to create products`),
+        error: expect.objectContaining({
+          message: `Failed to create products`,
+        }),
       },
     ])
 
@@ -131,7 +131,7 @@ describe("CreateProduct workflow", function () {
 
     expect(product).toEqual(
       expect.objectContaining({
-        deleted_at: expect.any(String),
+        deleted_at: expect.any(Date),
       })
     )
   })

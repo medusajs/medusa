@@ -5,12 +5,13 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
   Unique,
 } from "typeorm"
 
+import { generateEntityId } from "../utils/generate-entity-id"
 import { LineItem } from "./line-item"
 import { TaxLine } from "./tax-line"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["item_id", "code"])
@@ -21,7 +22,7 @@ export class LineItemTaxLine extends TaxLine {
 
   @ManyToOne(() => LineItem, (li) => li.tax_lines)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   /**
    * @apiIgnore

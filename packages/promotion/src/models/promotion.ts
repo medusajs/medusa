@@ -1,5 +1,10 @@
-import { DAL, PromotionType } from "@medusajs/types"
-import { DALUtils, PromotionUtils, generateEntityId } from "@medusajs/utils"
+import { DAL, PromotionTypeValues } from "@medusajs/types"
+import {
+  DALUtils,
+  PromotionUtils,
+  Searchable,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
@@ -31,6 +36,7 @@ export default class Promotion {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   @Index({ name: "IDX_promotion_code" })
   @Unique({
@@ -39,20 +45,20 @@ export default class Promotion {
   })
   code: string
 
+  @Searchable()
   @ManyToOne(() => Campaign, {
-    joinColumn: "campaign",
     fieldName: "campaign_id",
     nullable: true,
     cascade: ["soft-remove"] as any,
   })
-  campaign?: Campaign | null
+  campaign: Campaign | null = null
 
   @Property({ columnType: "boolean", default: false })
   is_automatic: boolean = false
 
   @Index({ name: "IDX_promotion_type" })
   @Enum(() => PromotionUtils.PromotionType)
-  type: PromotionType
+  type: PromotionTypeValues
 
   @OneToOne({
     entity: () => ApplicationMethod,

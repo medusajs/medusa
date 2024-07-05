@@ -7,6 +7,7 @@ import {
 
 import { DataSource } from "typeorm"
 import faker from "faker"
+import { breaking } from "../helpers/breaking"
 
 export type ProductVariantFactoryData = {
   product_id: string
@@ -34,7 +35,7 @@ export const simpleProductVariantFactory = async (
 
   const id = data.id || `simple-variant-${Math.random() * 1000}`
 
-  const toSave = manager.create(ProductVariant, {
+  const toSave = await manager.create(ProductVariant, {
     id,
     product_id: data.product_id,
     sku: data.sku,
@@ -62,22 +63,24 @@ export const simpleProductVariantFactory = async (
     })
   }
 
-  const prices = data.prices || [{ currency: "usd", amount: 100 }]
-  for (const p of prices) {
-    const ma_id = `${p.currency}-${p.amount}-${Math.random()}`
-    await manager.insert(MoneyAmount, {
-      id: ma_id,
-      currency_code: p.currency,
-      amount: p.amount,
-      region_id: p.region_id,
-    })
+  await breaking(async () => {
+    const prices = data.prices || [{ currency: "usd", amount: 100 }]
+    for (const p of prices) {
+      const ma_id = `${p.currency}-${p.amount}-${Math.random()}`
+      await manager.insert(MoneyAmount, {
+        id: ma_id,
+        currency_code: p.currency,
+        amount: p.amount,
+        region_id: p.region_id,
+      })
 
-    await manager.insert(ProductVariantMoneyAmount, {
-      id: `${ma_id}-${id}-${Math.random()}`,
-      money_amount_id: ma_id,
-      variant_id: id,
-    })
-  }
+      await manager.insert(ProductVariantMoneyAmount, {
+        id: `${ma_id}-${id}-${Math.random()}`,
+        money_amount_id: ma_id,
+        variant_id: id,
+      })
+    }
+  })
 
   return variant
 }

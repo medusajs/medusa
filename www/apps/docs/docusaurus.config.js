@@ -224,6 +224,17 @@ const config = {
           position: "left",
         },
         {
+          type: "html",
+          position: "left",
+          value: "<div class='h-1 w-px bg-medusa-fg-disabled'></div>",
+        },
+        {
+          href: `https://docs.medusajs.com/v2`,
+          html: "<div class='flex gap-0.5'><span>Learn Medusa v2</span><span class='text-compact-x-small-plus px-docs_0.25 py-0 rounded-docs_sm border border-solid text-center bg-medusa-tag-blue-bg text-medusa-tag-blue-text border-medusa-tag-blue-border'>New</span></div>",
+          target: "_blank",
+          position: "left",
+        },
+        {
           type: "search",
           position: "right",
         },
@@ -292,8 +303,7 @@ const config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/www/apps/docs",
+          editUrl: "https://github.com/medusajs/medusa/edit/v1.x/www/apps/docs",
           path: "content",
           routeBasePath: "/",
           remarkPlugins: [

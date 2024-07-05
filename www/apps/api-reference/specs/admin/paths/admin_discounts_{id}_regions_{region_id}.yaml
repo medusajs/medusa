@@ -27,8 +27,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_discounts_{id}_regions_{region_id}/postundefined
+        $ref: ../code_samples/tsx/admin_discounts_{id}_regions_{region_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -91,7 +90,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_discounts_{id}_regions_{region_id}/deleteundefined
+          ../code_samples/tsx/admin_discounts_{id}_regions_{region_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

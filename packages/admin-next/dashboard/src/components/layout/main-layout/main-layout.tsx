@@ -1,6 +1,8 @@
 import {
+  Buildings,
   ChevronDownMini,
   CurrencyDollar,
+  Envelope,
   MinusMini,
   ReceiptPercent,
   ShoppingCart,
@@ -10,12 +12,12 @@ import {
 } from "@medusajs/icons"
 import { Avatar, Text } from "@medusajs/ui"
 import * as Collapsible from "@radix-ui/react-collapsible"
-import { useAdminStore } from "medusa-react"
 import { useTranslation } from "react-i18next"
 
+import { useStore } from "../../../hooks/api/store"
 import { Skeleton } from "../../common/skeleton"
-import { NavItem, NavItemProps } from "../nav-item"
-import { Shell } from "../shell"
+import { NavItem, NavItemProps } from "../../layout/nav-item"
+import { Shell } from "../../layout/shell"
 
 import extensions from "medusa-admin:routes/links"
 
@@ -45,7 +47,7 @@ const MainSidebar = () => {
 }
 
 const Header = () => {
-  const { store, isError, error } = useAdminStore()
+  const { store, isError, error } = useStore()
 
   const name = store?.name
   const fallback = store?.name?.slice(0, 1).toUpperCase()
@@ -61,14 +63,14 @@ const Header = () => {
           {fallback ? (
             <Avatar variant="squared" fallback={fallback} />
           ) : (
-            <Skeleton className="w-8 h-8 rounded-md" />
+            <Skeleton className="h-8 w-8 rounded-md" />
           )}
           {name ? (
             <Text size="small" weight="plus" leading="compact">
               {store.name}
             </Text>
           ) : (
-            <Skeleton className="w-[120px] h-[9px]" />
+            <Skeleton className="h-[9px] w-[120px]" />
           )}
         </div>
       </div>
@@ -108,9 +110,16 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
           label: t("giftCards.domain"),
           to: "/gift-cards",
         },
+      ],
+    },
+    {
+      icon: <Buildings />,
+      label: t("inventory.domain"),
+      to: "/inventory",
+      items: [
         {
-          label: t("inventory.domain"),
-          to: "/inventory",
+          label: t("reservations.domain"),
+          to: "/reservations",
         },
       ],
     },
@@ -127,13 +136,18 @@ const useCoreRoutes = (): Omit<NavItemProps, "pathname">[] => {
     },
     {
       icon: <ReceiptPercent />,
-      label: t("discounts.domain"),
-      to: "/discounts",
+      label: t("promotions.domain"),
+      to: "/promotions",
     },
     {
       icon: <CurrencyDollar />,
       label: t("pricing.domain"),
       to: "/pricing",
+    },
+    {
+      icon: <Envelope />,
+      label: t("shipping.domain"),
+      to: "/shipping",
     },
   ]
 }

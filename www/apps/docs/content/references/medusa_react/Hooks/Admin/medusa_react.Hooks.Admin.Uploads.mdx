@@ -3,7 +3,7 @@ displayed_sidebar: medusaReactSidebar
 slug: /references/medusa-react/hooks/admin/uploads
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # Uploads
 
@@ -47,11 +47,11 @@ export default UploadFile
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUploadFile"/>
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUploadFile"/>
 
 ### useAdminUploadProtectedFile
 
@@ -83,11 +83,11 @@ export default UploadFile
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminCreateUploadPayload","type":"`AdminCreateUploadPayload`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUploadProtectedFile"/>
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminUploadProtectedFile"/>
 
 ### useAdminCreatePresignedDownloadUrl
 
@@ -121,11 +121,11 @@ export default Image
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[{"name":"AdminPostUploadsDownloadUrlReq","type":"[AdminPostUploadsDownloadUrlReq](../../../medusa/classes/medusa.AdminPostUploadsDownloadUrlReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to retrieve its download URL.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminPostUploadsDownloadUrlReq","type":"[AdminPostUploadsDownloadUrlReq](../../../medusa/classes/medusa.AdminPostUploadsDownloadUrlReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to retrieve its download URL.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreatePresignedDownloadUrl"/>
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[{"name":"AdminUploadsDownloadUrlRes","type":"[AdminUploadsDownloadUrlRes](../../../medusa/types/medusa.AdminUploadsDownloadUrlRes.mdx)","optional":false,"defaultValue":"","description":"The download URL details.","expandable":false,"children":[{"name":"download_url","type":"`string`","description":"The Download URL of the file","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminUploadsDownloadUrlRes","type":"[AdminUploadsDownloadUrlRes](../../../medusa/types/medusa.AdminUploadsDownloadUrlRes.mdx)","optional":false,"defaultValue":"","description":"The download URL details.","expandable":false,"children":[{"name":"download_url","type":"`string`","description":"The Download URL of the file","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCreatePresignedDownloadUrl"/>
 
 ### useAdminDeleteFile
 
@@ -159,8 +159,8 @@ export default Image
 
 #### Mutation Function Parameters
 
-<ParameterTypes parameters={[{"name":"AdminDeleteUploadsReq","type":"[AdminDeleteUploadsReq](../../../medusa/classes/medusa.AdminDeleteUploadsReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to delete.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"AdminDeleteUploadsReq","type":"[AdminDeleteUploadsReq](../../../medusa/classes/medusa.AdminDeleteUploadsReq.mdx)","optional":false,"defaultValue":"","description":"The details of the file to delete.","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteFile"/>
 
 #### Mutation Function Returned Data
 
-<ParameterTypes parameters={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../medusa/interfaces/medusa.DeleteResponse.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields"/>
+<TypeList types={[{"name":"DeleteResponse","type":"[DeleteResponse](../../../medusa/interfaces/medusa.DeleteResponse.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminDeleteFile"/>

@@ -1,5 +1,48 @@
 # @medusajs/client-types
 
+## 0.2.11
+
+### Patch Changes
+
+- [#6812](https://github.com/medusajs/medusa/pull/6812) [`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli): fix tool not working in Medusa backends
+
+- [#6680](https://github.com/medusajs/medusa/pull/6680) [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(ui-preset): Pull latest styles from Figma.
+  fix(ui): Fix invalid state styling of Select, so it correctly shows when aria-invalid is true.
+  fix(medusa): Align query params between `/admin/products/:id/variants` and `/admin/variants`.
+  chore(client-types): Update `medusa` client types to reflect changes to the API.
+
+## 0.2.10
+
+### Patch Changes
+
+- [#6633](https://github.com/medusajs/medusa/pull/6633) [`e124762873`](https://github.com/medusajs/medusa/commit/e124762873cd43af8eefa9fee4698450fdf8c30f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Allows to filter price list products by multiple ids.
+
+- [#6550](https://github.com/medusajs/medusa/pull/6550) [`fb25471e92`](https://github.com/medusajs/medusa/commit/fb25471e927c0cc91525f5e0134b935cd36596b5) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Adds updated_at query param to list-reservations. Fixes OAS for list-inventory-items.
+
+- [#6606](https://github.com/medusajs/medusa/pull/6606) [`c2d56ca12b`](https://github.com/medusajs/medusa/commit/c2d56ca12b89af078b885a0acced20e29bf6f8f5) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Fixes pagination on list Tax Rate endpoint, and also adds missing query params like order, search and filters.
+
+- [#6658](https://github.com/medusajs/medusa/pull/6658) [`78e5ec459a`](https://github.com/medusajs/medusa/commit/78e5ec459a637946482a3ee9f8b437656686988f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Add missing query params to draft order list endpoint
+
+- [#6380](https://github.com/medusajs/medusa/pull/6380) [`d37ff8024d`](https://github.com/medusajs/medusa/commit/d37ff8024d8affbe84db3c0b6d79cd41016bfac4) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa,ui): Fixes list query params for the following endpoints: "/admin/customers", "/admin/customer-groups", "/admin/gift-cards", and "/admin/collections".
+
+- [#6483](https://github.com/medusajs/medusa/pull/6483) [`e076590ff2`](https://github.com/medusajs/medusa/commit/e076590ff2a9587d66ffdac672bdd254cb9918f1) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Add query params to Pub. API key endpoint
+
+- [#6428](https://github.com/medusajs/medusa/pull/6428) [`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa,medusa-js,medusa-react,icons): Fixes GET /admin/products/:id/variants endpoint in the core, and medusa-js and medusa-react. Pulls latest icons from Figma into `@medusajs/icons`.
+
+## 0.2.9
+
+### Patch Changes
+
+- [#6258](https://github.com/medusajs/medusa/pull/6258) [`90cff0777`](https://github.com/medusajs/medusa/commit/90cff0777fd351771f3713bf84f4c327c64d276c) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Adds support for ordering GET /admin/orders
+
+## 0.2.8
+
+### Patch Changes
+
+- [#6201](https://github.com/medusajs/medusa/pull/6201) [`489b7effb`](https://github.com/medusajs/medusa/commit/489b7effb013b2ffb38693ace14fb8cce2dd7ab4) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Support q search in currencies
+
+- [#6208](https://github.com/medusajs/medusa/pull/6208) [`134af7766`](https://github.com/medusajs/medusa/commit/134af77667c278622e3731ba41602d297852fedb) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Enable pagination, search and ordering of shipping option list endpoint
+
 ## 0.2.7
 
 ### Patch Changes

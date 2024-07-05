@@ -5,16 +5,17 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { Product } from "./product"
 import { ShippingOption } from "./shipping-option"
-import { SoftDeletableEntity } from "../interfaces"
 
 /**
  * @enum
- * 
+ *
  * The shipping profile's type.
  */
 export enum ShippingProfileType {
@@ -52,10 +53,10 @@ export class ShippingProfile extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  products: Product[]
+  products: Relation<Product>[]
 
   @OneToMany(() => ShippingOption, (so) => so.profile)
-  shipping_options: ShippingOption[]
+  shipping_options: Relation<ShippingOption>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>

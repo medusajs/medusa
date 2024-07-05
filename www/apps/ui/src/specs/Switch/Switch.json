@@ -11,15 +11,15 @@
       "description": "The switch's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"small\"",
+        "raw": "\"small\" \\| \"base\"",
         "elements": [
           {
             "name": "literal",
-            "value": "\"base\""
+            "value": "\"small\""
           },
           {
             "name": "literal",
-            "value": "\"small\""
+            "value": "\"base\""
           }
         ]
       },

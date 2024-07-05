@@ -1,13 +1,23 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
-import { getListConfig, pickByConfig } from "./utils/get-query-config"
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { identity, omit, pickBy } from "lodash"
+import { getListConfig, pickByConfig } from "./utils/get-query-config"
 
-import { IsType } from "../../../../utils/validators/is-type"
-import { NumericalComparisonOperator } from "../../../../types/common"
+import { isDefined } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
-import { Type } from "class-transformer"
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+} from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /admin/tax-rates
@@ -30,6 +40,72 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *   - (query) code {string} Filter by code.
  *   - in: query
+ *     name: created_at
+ *     description: Filter by a creation date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: updated_at
+ *     description: Filter by an update date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
+ *     name: deleted_at
+ *     description: Filter by a deletion date range.
+ *     schema:
+ *       type: object
+ *       properties:
+ *         lt:
+ *            type: string
+ *            description: filter by dates less than this date
+ *            format: date
+ *         gt:
+ *            type: string
+ *            description: filter by dates greater than this date
+ *            format: date
+ *         lte:
+ *            type: string
+ *            description: filter by dates less than or equal to this date
+ *            format: date
+ *         gte:
+ *            type: string
+ *            description: filter by dates greater than or equal to this date
+ *            format: date
+ *   - in: query
  *     name: rate
  *     style: form
  *     explode: false
@@ -51,6 +127,8 @@ import { validator } from "../../../../utils/validator"
  *            gte:
  *              type: number
  *              description: filter by rates greater than or equal to this number
+ *   - (query) q {string} Term used to search tax rates by name.
+ *   - (query) order {string} A tax rate field to sort-order the retrieved tax rates by.
  *   - (query) offset=0 {integer} The number of tax rates to skip when retrieving the tax rates.
  *   - (query) limit=50 {integer} Limit the number of tax rates returned.
  *   - in: query
@@ -151,7 +229,29 @@ export default async (req, res) => {
 
   const rateService: TaxRateService = req.scope.resolve("taxRateService")
 
-  const listConfig = getListConfig()
+  const order = value.order
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  if (isDefined(order)) {
+    let orderField = order
+    if (order.startsWith("-")) {
+      const [, field] = order.split("-")
+      orderField = field
+      orderBy = { [field]: "DESC" }
+    } else {
+      orderBy = { [order]: "ASC" }
+    }
+  } else {
+    const defaultOrder: string = "created_at"
+    orderBy = { [defaultOrder]: "DESC" }
+  }
+
+  const listConfig = getListConfig(
+    value.fields as (keyof TaxRate)[],
+    value.expand,
+    value.limit,
+    value.offset,
+    orderBy
+  )
 
   const filterableFields = omit(value, [
     "limit",
@@ -234,4 +334,39 @@ export class AdminGetTaxRatesParams {
   @IsArray()
   @IsOptional()
   fields?: string[]
+
+  @IsOptional()
+  @IsString()
+  order?: string
+
+  /**
+   * Date filters to apply on the tax rates' `update_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the customer tax rates' `created_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  /**
+   * Date filters to apply on the tax rates' `deleted_at` date.
+   */
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  deleted_at?: DateComparisonOperator
+
+  /**
+   * Term used to search tax rates by name.
+   */
+  @IsOptional()
+  @IsString()
+  q?: string
 }

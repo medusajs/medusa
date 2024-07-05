@@ -20,7 +20,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_return-reasons_{id}/getundefined
+        $ref: ../code_samples/tsx/admin_return-reasons_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -77,7 +77,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_return-reasons_{id}/postundefined
+        $ref: ../code_samples/tsx/admin_return-reasons_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -129,7 +129,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_return-reasons_{id}/deleteundefined
+        $ref: ../code_samples/tsx/admin_return-reasons_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

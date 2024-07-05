@@ -1,8 +1,4 @@
-import {
-  AllocationType,
-  DiscountConditionOperator,
-  DiscountRuleType,
-} from "../../../../models"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -16,14 +12,18 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { AdminUpsertConditionsReq } from "../../../../types/discount"
-import DiscountService from "../../../../services/discount"
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import {
+  AllocationType,
+  DiscountConditionOperator,
+  DiscountRuleType,
+} from "../../../../models"
+import DiscountService from "../../../../services/discount"
+import { FindParams } from "../../../../types/common"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
-import { Type } from "class-transformer"
-import { Request, Response } from "express"
-import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /admin/discounts
@@ -162,6 +162,49 @@ export default async (req: Request, res: Response) => {
   )
 
   res.status(200).json({ discount })
+}
+
+/**
+ * Details of the discount rule to create.
+ */
+export class AdminPostDiscountsDiscountRule {
+  /**
+   * The discount rule's description.
+   */
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  /**
+   * The discount rule's type.
+   */
+  @IsEnum(DiscountRuleType, {
+    message: `Invalid rule type, must be one of "fixed", "percentage" or "free_shipping"`,
+  })
+  type: DiscountRuleType
+
+  /**
+   * The discount rule's value.
+   */
+  @IsNumber()
+  value: number
+
+  /**
+   * The discount rule's allocation.
+   */
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation: AllocationType
+
+  /**
+   * The discount rule's conditions.
+   */
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminCreateCondition)
+  conditions?: AdminCreateCondition[]
 }
 
 /**
@@ -320,49 +363,6 @@ export class AdminPostDiscountsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
-}
-
-/**
- * Details of the discount rule to create.
- */
-export class AdminPostDiscountsDiscountRule {
-  /**
-   * The discount rule's description.
-   */
-  @IsString()
-  @IsOptional()
-  description?: string
-
-  /**
-   * The discount rule's type.
-   */
-  @IsEnum(DiscountRuleType, {
-    message: `Invalid rule type, must be one of "fixed", "percentage" or "free_shipping"`,
-  })
-  type: DiscountRuleType
-
-  /**
-   * The discount rule's value.
-   */
-  @IsNumber()
-  value: number
-
-  /**
-   * The discount rule's allocation.
-   */
-  @IsEnum(AllocationType, {
-    message: `Invalid allocation type, must be one of "total" or "item"`,
-  })
-  allocation: AllocationType
-
-  /**
-   * The discount rule's conditions.
-   */
-  @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => AdminCreateCondition)
-  conditions?: AdminCreateCondition[]
 }
 
 /**

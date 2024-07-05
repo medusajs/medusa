@@ -1,10 +1,10 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # types
 
 ## Namespaces
 
-- [AuthenticationTypes](../types/types.AuthenticationTypes.mdx)
+- [AuthTypes](../types/types.AuthTypes.mdx)
 - [CacheTypes](../types/types.CacheTypes.mdx)
 - [CartTypes](../types/types.CartTypes.mdx)
 - [CommonTypes](../types/types.CommonTypes.mdx)
@@ -12,6 +12,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [DAL](../types/types.DAL.mdx)
 - [EventBusTypes](../types/types.EventBusTypes.mdx)
 - [FeatureFlagTypes](../types/types.FeatureFlagTypes.mdx)
+- [FulfillmentTypes](../types/types.FulfillmentTypes.mdx)
 - [LoggerTypes](../types/types.LoggerTypes.mdx)
 - [ModulesSdkTypes](../types/types.ModulesSdkTypes.mdx)
 - [PromotionTypes](../types/types.PromotionTypes.mdx)
@@ -19,23 +20,19 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [SalesChannelTypes](../types/types.SalesChannelTypes.mdx)
 - [SearchTypes](../types/types.SearchTypes.mdx)
 - [TransactionBaseTypes](../types/types.TransactionBaseTypes.mdx)
+- [UserTypes](../types/types.UserTypes.mdx)
 - [WorkflowTypes](../types/types.WorkflowTypes.mdx)
 
 ## Enumerations
 
-- [ProviderDomain](../types/enums/types.ProviderDomain.mdx)
+- [PaymentCollectionStatus](../types/enums/types.PaymentCollectionStatus.mdx)
 - [PriceListStatus](../types/enums/types.PriceListStatus.mdx)
 - [PriceListType](../types/enums/types.PriceListType.mdx)
 
-## Classes
-
-- [AbstractAuthenticationModuleProvider](../types/classes/types.AbstractAuthenticationModuleProvider.mdx)
-
 ## Interfaces
 
-- [FilterableAuthProviderProps](../types/interfaces/types.FilterableAuthProviderProps.mdx)
 - [FilterableAuthUserProps](../types/interfaces/types.FilterableAuthUserProps.mdx)
-- [IAuthenticationModuleService](../types/interfaces/types.IAuthenticationModuleService.mdx)
+- [IAuthModuleService](../types/interfaces/types.IAuthModuleService.mdx)
 - [SessionOptions](../types/interfaces/types.SessionOptions.mdx)
 - [BaseRepositoryService](../types/interfaces/types.BaseRepositoryService.mdx)
 - [FileServiceUploadResult](../types/interfaces/types.FileServiceUploadResult.mdx)
@@ -51,6 +48,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [RemoteNestedExpands](../types/interfaces/types.RemoteNestedExpands.mdx)
 - [RemoteExpandProperty](../types/interfaces/types.RemoteExpandProperty.mdx)
 - [ILinkModule](../types/interfaces/types.ILinkModule.mdx)
+- [PaymentCollectionDTO](../types/interfaces/types.PaymentCollectionDTO.mdx)
+- [FilterablePaymentCollectionProps](../types/interfaces/types.FilterablePaymentCollectionProps.mdx)
+- [PaymentDTO](../types/interfaces/types.PaymentDTO.mdx)
+- [CaptureDTO](../types/interfaces/types.CaptureDTO.mdx)
+- [RefundDTO](../types/interfaces/types.RefundDTO.mdx)
+- [PaymentSessionDTO](../types/interfaces/types.PaymentSessionDTO.mdx)
+- [PaymentProviderDTO](../types/interfaces/types.PaymentProviderDTO.mdx)
+- [CreatePaymentCollectionDTO](../types/interfaces/types.CreatePaymentCollectionDTO.mdx)
+- [UpdatePaymentCollectionDTO](../types/interfaces/types.UpdatePaymentCollectionDTO.mdx)
+- [CreatePaymentDTO](../types/interfaces/types.CreatePaymentDTO.mdx)
+- [UpdatePaymentDTO](../types/interfaces/types.UpdatePaymentDTO.mdx)
+- [CreateCaptureDTO](../types/interfaces/types.CreateCaptureDTO.mdx)
+- [CreateRefundDTO](../types/interfaces/types.CreateRefundDTO.mdx)
+- [CreatePaymentSessionDTO](../types/interfaces/types.CreatePaymentSessionDTO.mdx)
+- [SetPaymentSessionsDTO](../types/interfaces/types.SetPaymentSessionsDTO.mdx)
 - [IPaymentModuleService](../types/interfaces/types.IPaymentModuleService.mdx)
 - [CurrencyDTO](../types/interfaces/types.CurrencyDTO.mdx)
 - [CreateCurrencyDTO](../types/interfaces/types.CreateCurrencyDTO.mdx)
@@ -112,26 +124,41 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [UpdateRuleTypeDTO](../types/interfaces/types.UpdateRuleTypeDTO.mdx)
 - [FilterableRuleTypeProps](../types/interfaces/types.FilterableRuleTypeProps.mdx)
 - [ProductCategoryTransformOptions](../types/interfaces/types.ProductCategoryTransformOptions.mdx)
+- [RegionDTO](../types/interfaces/types.RegionDTO.mdx)
+- [CountryDTO](../types/interfaces/types.CountryDTO.mdx)
+- [FilterableRegionProps](../types/interfaces/types.FilterableRegionProps.mdx)
+- [RegionCountryDTO](../types/interfaces/types.RegionCountryDTO.mdx)
+- [RegionCurrencyDTO](../types/interfaces/types.RegionCurrencyDTO.mdx)
+- [FilterableRegionCurrencyProps](../types/interfaces/types.FilterableRegionCurrencyProps.mdx)
+- [FilterableRegionCountryProps](../types/interfaces/types.FilterableRegionCountryProps.mdx)
+- [CreateRegionDTO](../types/interfaces/types.CreateRegionDTO.mdx)
+- [UpdateRegionDTO](../types/interfaces/types.UpdateRegionDTO.mdx)
+- [AddCountryToRegionDTO](../types/interfaces/types.AddCountryToRegionDTO.mdx)
+- [RemoveCountryFromRegionDTO](../types/interfaces/types.RemoveCountryFromRegionDTO.mdx)
+- [IRegionModuleService](../types/interfaces/types.IRegionModuleService.mdx)
 - [SharedContext](../types/interfaces/types.SharedContext.mdx)
+- [MessageAggregatorFormat](../types/interfaces/types.MessageAggregatorFormat.mdx)
+- [IMessageAggregator](../types/interfaces/types.IMessageAggregator.mdx)
 - [Context](../types/interfaces/types.Context.mdx)
 - [InputPrice](../types/interfaces/types.InputPrice.mdx)
 
 ## Type Aliases
 
 - [AddressDTO](../types/types/types.AddressDTO.mdx)
-- [AuthProviderDTO](../types/types/types.AuthProviderDTO.mdx)
-- [CreateAuthProviderDTO](../types/types/types.CreateAuthProviderDTO.mdx)
-- [UpdateAuthProviderDTO](../types/types/types.UpdateAuthProviderDTO.mdx)
 - [AuthUserDTO](../types/types/types.AuthUserDTO.mdx)
 - [CreateAuthUserDTO](../types/types/types.CreateAuthUserDTO.mdx)
 - [UpdateAuthUserDTO](../types/types/types.UpdateAuthUserDTO.mdx)
+- [AuthenticationResponse](../types/types/types.AuthenticationResponse.mdx)
+- [AuthModuleProviderConfig](../types/types/types.AuthModuleProviderConfig.mdx)
+- [AuthProviderScope](../types/types/types.AuthProviderScope.mdx)
+- [AuthenticationInput](../types/types/types.AuthenticationInput.mdx)
+- [JWTGenerationOptions](../types/types/types.JWTGenerationOptions.mdx)
 - [Dictionary](../types/types/types.Dictionary.mdx)
 - [Query](../types/types/types.Query.mdx)
 - [ExpandScalar](../types/types/types.ExpandScalar.mdx)
 - [Scalar](../types/types/types.Scalar.mdx)
 - [ReadonlyPrimary](../types/types/types.ReadonlyPrimary.mdx)
 - [Primary](../types/types/types.Primary.mdx)
-- [OperatorMap](../types/types/types.OperatorMap.mdx)
 - [FilterValue2](../types/types/types.FilterValue2.mdx)
 - [FilterValue](../types/types/types.FilterValue.mdx)
 - [PrevLimit](../types/types/types.PrevLimit.mdx)

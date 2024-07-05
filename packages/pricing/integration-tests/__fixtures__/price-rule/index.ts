@@ -13,17 +13,11 @@ export async function createPriceRules(
   const priceRules: PriceRule[] = []
 
   for (let priceRuleData of pricesRulesData) {
-    const priceRuleDataClone: any = { ...priceRuleData }
+    const priceRuleDataClone: CreatePriceRuleDTO = { ...priceRuleData }
 
-    priceRuleDataClone.price_set = priceRuleDataClone.price_set_id
-
-    priceRuleDataClone.rule_type = priceRuleDataClone.rule_type_id
-
-    const priceSetMoneyAmountId =
-      priceRuleDataClone.price_set_money_amount_id ||
-      priceRuleDataClone.price_set_money_amount?.id
-
-    priceRuleDataClone.price_set_money_amount = priceSetMoneyAmountId
+    priceRuleDataClone.price_set_id = priceRuleDataClone.price_set_id
+    priceRuleDataClone.rule_type_id = priceRuleDataClone.rule_type_id
+    priceRuleDataClone.price_id = priceRuleDataClone.price_id
 
     const priceRule = manager.create(PriceRule, priceRuleDataClone)
 

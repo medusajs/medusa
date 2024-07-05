@@ -16,7 +16,7 @@ async function run() {
 }
 
 const generateOASSources = async (outDir: string) => {
-  const params = ["oas", `--out-dir=${outDir}`, "--type=combined"]
+  const params = ["oas", `--out-dir=${outDir}`, "--type=combined", "--local"]
   const { all: logs } = await execa("medusa-oas", params, {
     cwd: basePath,
     all: true,

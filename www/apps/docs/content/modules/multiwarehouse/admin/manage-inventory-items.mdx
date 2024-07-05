@@ -31,7 +31,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ### Required Module
 
-This guide assumes you have the Inventory module installed on your Medusa backend. If not, you can learn how to install it using [this guide](../install-modules.md#inventory-module).
+This guide assumes you have the Inventory Module installed on your Medusa backend. If not, you can learn how to install it using [this guide](../install-modules.md#inventory-module).
 
 Furthermore, inventory levels are tied to a location ID. So, it’s recommended to use the [Stock Location module](../install-modules.md#stock-location-module) if you don’t have any location logic implemented in place.
 
@@ -121,7 +121,7 @@ You can list inventory items by sending a request to the [List Inventory Items A
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -206,7 +206,7 @@ You can create an inventory item by sending a request to the [Create Inventory I
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
               "variant_id": "variant_123"
@@ -285,7 +285,7 @@ You can retrieve an inventory item by sending a request to the [Get Inventory It
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -372,7 +372,7 @@ You can update an inventory item by sending a request to the [Update Inventory I
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
               "origin_country": "US"
@@ -461,7 +461,7 @@ You can list inventory levels of an inventory item by sending a request to the [
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -555,7 +555,7 @@ You can create a location level by sending a request to the [Create Inventory Le
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
               "location_id": "<LOCATION_ID>",
@@ -568,7 +568,7 @@ You can create a location level by sending a request to the [Create Inventory Le
 
 This API Route requires the inventory item ID as a path parameter. In the request body, it requires the following parameters:
 
-- `location_id`: The ID of the location associated with this location level. This ID is typically available through using the stock location module.
+- `location_id`: The ID of the location associated with this location level. This ID is typically available through using the Stock Location Module.
 - `stocked_quantity`: A number indicating the item’s quantity in stock.
 
 You can also pass other optional request body parameters, as explained in the [API reference](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsinventoryitemlocationlevels).
@@ -658,7 +658,7 @@ You can update a location level by sending a request to the [Update Location Lev
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels/<LOCATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
               "stocked_quantity": 10
@@ -740,7 +740,7 @@ You can delete a location level of an inventory item by sending a request to the
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels/<LOC_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -813,7 +813,7 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

@@ -5,11 +5,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group"
 import { Solutions } from "./Solutions"
 import { ExtraData, useAnalytics } from "@/providers/Analytics"
 import clsx from "clsx"
-import { TextArea } from "@/components/TextArea"
-import { Label } from "@/components/Label"
-import { Button } from "docs-ui"
-import { Details } from "@/components/Details"
-import { InputText } from "@/components/Input/Text"
+import { Button, TextArea, Label, Details, InputText } from "@/components"
 
 export type FeedbackProps = {
   event: string

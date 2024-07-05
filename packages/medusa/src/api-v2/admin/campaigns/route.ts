@@ -1,40 +1,64 @@
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../types/routing"
 import { createCampaignsWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { CreateCampaignDTO, IPromotionModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminCreateCampaignType } from "./validators"
+import { refetchCampaign } from "./helpers"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
-  )
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const [campaigns, count] = await promotionModuleService.listAndCountCampaigns(
-    req.filterableFields,
-    req.listConfig
-  )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "campaign",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const { limit, offset } = req.validatedQuery
+  const { rows: campaigns, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
     campaigns,
-    offset,
-    limit,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminCreateCampaignType>,
+  res: MedusaResponse
+) => {
   const createCampaigns = createCampaignsWorkflow(req.scope)
-  const campaignsData = [req.validatedBody as CreateCampaignDTO]
+  const campaignsData = [req.validatedBody]
 
   const { result, errors } = await createCampaigns.run({
     input: { campaignsData },
     throwOnError: false,
+    context: {
+      requestId: req.requestId,
+    },
   })
 
   if (Array.isArray(errors) && errors[0]) {
     throw errors[0].error
   }
 
-  res.status(200).json({ campaign: result[0] })
+  const campaign = await refetchCampaign(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ campaign })
 }

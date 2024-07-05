@@ -1,0 +1,109 @@
+---
+description: "In this document, learn about the general approach of deploying a Medusa project. This includes how to deploy the backend, admin, and storefront."
+---
+
+import DocCardList from '@theme/DocCardList';
+import { getCategoryItems } from '@site/src/utils/get-first-category-item';
+
+# Deployment Overview
+
+In this document, you’ll learn about the different ways you can deploy your Medusa project.
+
+## Overview
+
+A standard Medusa project is made up of the following:
+
+- Medusa backend
+- Medusa Admin
+- One or more storefronts
+    
+![Diagram showcasing the connection between the three deployed components](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999238/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_options_uxzmlx.jpg)
+
+This guide details options to consider when deploying each of these components in your Medusa project.
+
+---
+
+## Deploying the Medusa Backend
+
+You must deploy the Medusa backend before the admin or storefront, as both of them connect to the backend and won’t work without a deployed Medusa backend URL.
+
+![Diagram showcasing how the Medusa Admin and its associated services would be deployed](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999287/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_backend_deployment__1_twbdsd.jpg)
+
+The Medusa backend is a Node.js server. So, it must be deployed to a hosting provider that supports deploying servers, such as Railway, DigitalOcean, AWS, Heroku, etc…
+
+:::tip
+
+For optimal experience, make sure that the hosting provider and plan offer at least 2GB of RAM.
+
+:::
+
+Your backend connects to PostgreSQL and Redis databases. Most hosting providers support deploying and managing these databases along with your Medusa backend (such as Railway and DigitalOcean). You can also choose a separate hosting for either of them and connect to them with Medusa’s configurations.
+
+<DocCardList
+  items={getCategoryItems({
+    categoryCustomId: "deploy_backend"
+  })}
+/>
+
+---
+
+## Deploying the Medusa Admin
+
+There are two options to deploy the Medusa Admin:
+
+### Deploy Admin with Backend
+
+Since the Medusa Admin is a plugin installed in the backend, you may choose to host it along with the backend. 
+
+In this scenario, make sure the hosting provider and plan of your choice provide at least 2GB of RAM, as the admin build requires high RAM usage.
+
+![Diagram showcasing how the admin would be deployed along with the Medusa backend.](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999347/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_Admin_Deployment_q5qxan.jpg)
+
+The backend deployment guides mention details on how to deploy the admin along with the backend.
+
+### Deploy Admin through GitHub Action
+
+Alternatively, if you host your backend’s code on GitHub, you can:
+
+1. Disable the [`autoRebuild` option](../admin/configuration.mdx#plugin-options) of the admin plugin. 
+2. Create a GitHub action that builds the admin before the deployment is triggered.
+
+With this solution, the hosting provider doesn’t handle the admin building, decreasing the RAM usage.
+
+![Diagram showcasing how the admin can be built through a GitHub action before deployment](https://res.cloudinary.com/dza7lstvk/image/upload/v1705999378/Medusa%20Docs/Diagrams/Social_Media_Graphics_2024_admin_deployment_1_rdzzkp.jpg)
+
+### Deploy Admin Separately
+
+You may choose to deploy the admin into a separate hosting provider or instance. The admin can be hosted on providers that support front-end websites and frameworks, such as Vercel.
+
+:::note
+
+As per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the admin on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
+
+:::
+
+<DocCardList
+  items={getCategoryItems({
+    categoryCustomId: "deploy_admin"
+  })}
+/>
+
+---
+
+## Deploying the Storefront
+
+The storefront is deployed separately from the Medusa backend, and the hosting options depend on the tools and frameworks you use to create the storefront.
+
+If you’re using the Next.js starter, you may deploy the storefront to any hosting provider that supports frontend frameworks, such as Vercel.
+
+:::note
+
+As per Vercel’s [license and plans](https://vercel.com/pricing), their free plan can only be used for personal, non-commercial projects. So, you can deploy the storefront on the free plan for development purposes, but for commercial projects, you must update your Vercel plan.
+
+:::
+
+<DocCardList
+  items={getCategoryItems({
+    categoryCustomId: "deploy_storefront"
+  })}
+/>

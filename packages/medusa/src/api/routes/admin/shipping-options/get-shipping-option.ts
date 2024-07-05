@@ -1,4 +1,7 @@
-import { defaultFields, defaultRelations } from "."
+import {
+  shippingOptionsDefaultFields,
+  shippingOptionsDefaultRelations,
+} from "."
 
 /**
  * @oas [get] /admin/shipping-options/{id}
@@ -84,8 +87,8 @@ export default async (req, res) => {
   const optionService = req.scope.resolve("shippingOptionService")
 
   const data = await optionService.retrieve(option_id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: shippingOptionsDefaultFields,
+    relations: shippingOptionsDefaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })

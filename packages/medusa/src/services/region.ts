@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { Country, Currency, Region } from "../models"
 import { FindConfig, Selector } from "../types/common"
 import { CreateRegionInput, UpdateRegionInput } from "../types/region"
@@ -522,7 +522,7 @@ class RegionService extends TransactionBaseService {
    * @return {Promise} result of the find operation
    */
   async listAndCount(
-    selector: Selector<Region> = {},
+    selector: Selector<Region> & { q?: string } = {},
     config: FindConfig<Region> = {
       relations: [],
       skip: 0,
@@ -533,7 +533,28 @@ class RegionService extends TransactionBaseService {
       this.regionRepository_
     )
 
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<Region>
+
+      delete where.name
+
+      query.where = [
+        {
+          ...where,
+          name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
     return await regionRepo.findAndCount(query)
   }
 

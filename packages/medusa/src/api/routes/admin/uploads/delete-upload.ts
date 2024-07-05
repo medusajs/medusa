@@ -1,5 +1,6 @@
 import { IsString } from "class-validator"
-
+import { Request, Response } from "express"
+import { IFileService } from "../../../../interfaces"
 /**
  * @oas [delete] /admin/uploads
  * operationId: "DeleteUploads"
@@ -83,12 +84,14 @@ import { IsString } from "class-validator"
  *   "500":
  *     $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = req.validatedBody as AdminDeleteUploadsReq
 
-  const fileService = req.scope.resolve("fileService")
+  const fileService: IFileService = req.scope.resolve("fileService")
 
-  await fileService.delete(validated)
+  await fileService.delete({
+    fileKey: validated.file_key,
+  })
 
   res
     .status(200)

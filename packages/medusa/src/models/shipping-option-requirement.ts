@@ -7,11 +7,12 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
-import { ShippingOption } from "./shipping-option"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { ShippingOption } from "./shipping-option"
 
 /**
  * @enum
@@ -40,7 +41,7 @@ export class ShippingOptionRequirement {
 
   @ManyToOne(() => ShippingOption)
   @JoinColumn({ name: "shipping_option_id" })
-  shipping_option: ShippingOption
+  shipping_option: Relation<ShippingOption>
 
   @DbAwareColumn({ type: "enum", enum: RequirementType })
   type: RequirementType

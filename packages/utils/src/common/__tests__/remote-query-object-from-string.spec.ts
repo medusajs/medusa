@@ -33,6 +33,72 @@ describe("remoteQueryObjectFromString", function () {
   it("should return a remote query object", function () {
     const output = remoteQueryObjectFromString({
       entryPoint: "product",
+      variables: {
+        q: "name",
+        options: {
+          name: "option_name",
+        },
+        "options.values": {
+          value: 123,
+        },
+      },
+      fields,
+    })
+
+    expect(output).toEqual({
+      product: {
+        __args: {
+          q: "name",
+        },
+        fields: [
+          "id",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "url",
+          "metadata",
+        ],
+        isServiceAccess: false,
+        tags: {
+          fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
+        },
+
+        options: {
+          __args: {
+            name: "option_name",
+          },
+          fields: [
+            "id",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+            "title",
+            "product_id",
+            "metadata",
+          ],
+          values: {
+            __args: {
+              value: 123,
+            },
+            fields: [
+              "id",
+              "created_at",
+              "updated_at",
+              "deleted_at",
+              "value",
+              "option_id",
+              "variant_id",
+              "metadata",
+            ],
+          },
+        },
+      },
+    })
+  })
+
+  it("should return a remote query object using service entry point", function () {
+    const output = remoteQueryObjectFromString({
+      service: "product",
       variables: {},
       fields,
     })
@@ -48,6 +114,7 @@ describe("remoteQueryObjectFromString", function () {
           "url",
           "metadata",
         ],
+        isServiceAccess: true,
         tags: {
           fields: ["id", "created_at", "updated_at", "deleted_at", "value"],
         },

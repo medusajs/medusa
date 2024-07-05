@@ -41,8 +41,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_orders_{id}_swaps_{swap_id}_cancel/postundefined
+        $ref: ../code_samples/tsx/admin_orders_{id}_swaps_{swap_id}_cancel/post.tsx
     - lang: Shell
       label: cURL
       source:

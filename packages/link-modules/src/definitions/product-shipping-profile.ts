@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const ProductShippingProfile: ModuleJoinerConfig = {
   serviceName: LINKS.ProductShippingProfile,
@@ -12,6 +12,9 @@ export const ProductShippingProfile: ModuleJoinerConfig = {
   alias: [
     {
       name: "product_shipping_profile",
+      args: {
+        entity: "LinkProductShippingProfile",
+      },
     },
   ],
   primaryKeys: ["id", "product_id", "profile_id"],

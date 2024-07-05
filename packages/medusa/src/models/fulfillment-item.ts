@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  Relation,
+} from "typeorm"
 
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line-item"
@@ -13,11 +20,11 @@ export class FulfillmentItem {
 
   @ManyToOne(() => Fulfillment)
   @JoinColumn({ name: "fulfillment_id" })
-  fulfillment: Fulfillment
+  fulfillment: Relation<Fulfillment>
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Column({ type: "int" })
   quantity: number

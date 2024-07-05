@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`sales channels DELETE /admin/sales-channels/:id should delete the requested sales channel 1`] = `
+exports[` DELETE /admin/sales-channels/:id should delete the requested sales channel 1`] = `
 Object {
   "deleted": true,
   "id": Any<String>,
@@ -8,7 +8,7 @@ Object {
 }
 `;
 
-exports[`sales channels POST /admin/sales-channels successfully creates a disabled sales channel 1`] = `
+exports[` POST /admin/sales-channels successfully creates a disabled sales channel 1`] = `
 Object {
   "sales_channel": ObjectContaining {
     "is_disabled": true,
@@ -17,7 +17,7 @@ Object {
 }
 `;
 
-exports[`sales channels POST /admin/sales-channels successfully creates a sales channel 1`] = `
+exports[` POST /admin/sales-channels successfully creates a sales channel 1`] = `
 Object {
   "sales_channel": ObjectContaining {
     "description": "sales channel description",

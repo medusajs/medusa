@@ -128,7 +128,7 @@ You can list all reservations in your store by sending a request to the [List Re
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -223,7 +223,7 @@ You can create a reservation by sending a request to the [Create Reservation API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "location_id": "<LOC_ID>",
@@ -316,7 +316,7 @@ You can update a reservation by sending a request to the [Update Reservation API
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "quantity": 3
@@ -401,7 +401,7 @@ You can delete a reservation by sending a request to the [Delete Reservation API
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

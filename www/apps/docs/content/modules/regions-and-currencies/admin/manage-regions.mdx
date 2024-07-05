@@ -119,7 +119,7 @@ You can retrieve regions available on your backend using the [List Regions API R
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/regions' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -231,7 +231,7 @@ You can create a region by sending a request to the [Create a Region API Route](
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "Europe",
@@ -350,7 +350,7 @@ Alternatively, you can update the details of a region using the [Update a Region
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "countries": [
@@ -466,7 +466,7 @@ You can add a shipping option to a region by sending a request to the [Create Sh
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/shipping-options' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "PostFake",
@@ -565,7 +565,7 @@ You can delete a region by sending a request to the [Delete a Region API Route](
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/regions/<REGION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

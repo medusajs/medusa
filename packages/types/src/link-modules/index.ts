@@ -1,11 +1,9 @@
 import { FindConfig } from "../common"
 import { RestoreReturn, SoftDeleteReturn } from "../dal"
-import { ModuleJoinerConfig } from "../modules-sdk"
+import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 
-export interface ILinkModule {
-  __joinerConfig(): ModuleJoinerConfig
-
+export interface ILinkModule extends IModuleService {
   list(
     filters?: Record<string, unknown>,
     config?: FindConfig<unknown>,

@@ -5,11 +5,11 @@ import * as React from "react"
 import { clx } from "../../utils/clx"
 
 const hintVariants = cva({
-  base: "txt-small inline-flex items-center gap-x-2",
+  base: "txt-small",
   variants: {
     variant: {
       info: "text-ui-fg-subtle",
-      error: "text-ui-fg-error",
+      error: "text-ui-fg-error grid grid-cols-[20px_1fr] gap-2 items-start",
     },
   },
   defaultVariants: {

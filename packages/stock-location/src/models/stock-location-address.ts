@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeInsert,
   Column,
@@ -24,15 +24,19 @@ export class StockLocationAddress {
   @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date | null
 
+  @Searchable()
   @Column({ type: "text" })
   address_1: string
 
+  @Searchable()
   @Column({ type: "text", nullable: true })
   address_2: string | null
 
+  @Searchable()
   @Column({ type: "text", nullable: true })
   company: string | null
 
+  @Searchable()
   @Column({ type: "text", nullable: true })
   city: string | null
 
@@ -43,9 +47,11 @@ export class StockLocationAddress {
   @Column({ type: "text", nullable: true })
   phone: string | null
 
+  @Searchable()
   @Column({ type: "text", nullable: true })
   province: string | null
 
+  @Searchable()
   @Column({ type: "text", nullable: true })
   postal_code: string | null
 

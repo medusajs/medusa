@@ -109,7 +109,7 @@ You can create a customer group by sending a request to the Create Customer Grou
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "name": "VIP"
@@ -191,7 +191,7 @@ You can get a list of all customer groups by sending a request to the List Custo
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -260,7 +260,7 @@ You can retrieve a single customer group by sending a request to the Get a Custo
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -346,7 +346,7 @@ You can update a customer group’s data by sending a request to the Update Cust
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "metadata": {
@@ -424,7 +424,7 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -520,7 +520,7 @@ You can add a customer to a group by sending a request to the Customer Group’s
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "customer_ids": [
@@ -608,7 +608,7 @@ You can retrieve a list of all customers in a customer group using the List Cust
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -714,7 +714,7 @@ You can remove customers from a customer group by sending a request to the Remov
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "customer_ids": [

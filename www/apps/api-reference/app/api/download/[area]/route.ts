@@ -10,7 +10,7 @@ type DownloadParams = {
 
 export function GET(request: Request, { params }: DownloadParams) {
   const { area } = params
-  const filePath = path.join(process.cwd(), `specs/${area}/openapi.full.yaml`)
+  const filePath = path.join(process.cwd(), "specs", area, "openapi.full.yaml")
 
   if (!existsSync(filePath)) {
     return new NextResponse(null, {

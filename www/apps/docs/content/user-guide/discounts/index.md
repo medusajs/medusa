@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: 'Medusa admin allows merchants to manage discounts. Merchants can create discounts and manage their conditions.'
+description: 'Medusa Admin allows merchants to manage discounts. Merchants can create discounts and manage their conditions.'
 ---
 
 # Discounts Overview

@@ -3,7 +3,7 @@ displayed_sidebar: jsClientSidebar
 slug: /references/js-client/PaymentMethodsResource
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentMethodsResource
 
@@ -33,8 +33,8 @@ medusa.customers.paymentMethods.list()
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreCustomersListPaymentMethodsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the customer's payment methods.","expandable":false,"children":[{"name":"StoreCustomersListPaymentMethodsRes","type":"[StoreCustomersListPaymentMethodsRes](../../medusa/types/medusa.StoreCustomersListPaymentMethodsRes.mdx)","optional":false,"defaultValue":"","description":"The payment method's details.","expandable":false,"children":[{"name":"payment_methods","type":"`object`[]","description":"The details of the saved payment methods.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider_id","type":"`string`","description":"The ID of the Payment Provider where the payment method is saved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`object`","description":"The data needed for the Payment Provider to use the saved payment method.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;StoreCustomersListPaymentMethodsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the customer's payment methods.","expandable":false,"children":[{"name":"StoreCustomersListPaymentMethodsRes","type":"[StoreCustomersListPaymentMethodsRes](../../medusa/types/medusa.StoreCustomersListPaymentMethodsRes.mdx)","optional":false,"defaultValue":"","description":"The payment method's details.","expandable":false,"children":[{"name":"payment_methods","type":"`object`[]","description":"The details of the saved payment methods.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"provider_id","type":"`string`","description":"The ID of the Payment Provider where the payment method is saved.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`object`","description":"The data needed for the Payment Provider to use the saved payment method.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="list"/>

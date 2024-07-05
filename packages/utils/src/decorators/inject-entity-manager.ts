@@ -1,5 +1,7 @@
 import { Context, SharedContext } from "@medusajs/types"
+import { MedusaContextType } from "../modules-sdk/decorators"
 
+// @deprecated Use InjectManager instead
 export function InjectEntityManager(
   shouldForceTransaction: (target: any) => boolean = () => false,
   managerProperty: string | false = "manager_"
@@ -31,7 +33,7 @@ export function InjectEntityManager(
         : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
-          args[argIndex] = args[argIndex] ?? {}
+          args[argIndex] = args[argIndex] ?? { __type: MedusaContextType }
           args[argIndex].transactionManager = transactionManager
 
           return await originalMethod.apply(this, args)

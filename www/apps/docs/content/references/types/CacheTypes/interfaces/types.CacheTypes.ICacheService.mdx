@@ -1,4 +1,4 @@
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ICacheService
 
@@ -8,32 +8,32 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"T","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="get"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="get"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;null \\| T&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"null \\| T","type":"`null` \\| T","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;null \\| T&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"null \\| T","type":"`null` \\| T","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="get"/>
 
 ### set
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ttl","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ttl","type":"`number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="set"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="set"/>
 
 ### invalidate
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"key","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="invalidate"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="invalidate"/>

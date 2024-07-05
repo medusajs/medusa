@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
+  Relation,
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
@@ -16,7 +17,7 @@ import { Payment } from "./payment"
 
 /**
  * @enum
- * 
+ *
  * The reason of the refund.
  */
 export enum RefundReason {
@@ -54,11 +55,11 @@ export class Refund extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToOne(() => Payment, { nullable: true })
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment: Relation<Payment>
 
   @Column({ type: "int" })
   amount: number

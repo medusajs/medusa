@@ -33,7 +33,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_discounts_code_{code}/getundefined
+        $ref: ../code_samples/tsx/admin_discounts_code_{code}/get.tsx
     - lang: Shell
       label: cURL
       source:

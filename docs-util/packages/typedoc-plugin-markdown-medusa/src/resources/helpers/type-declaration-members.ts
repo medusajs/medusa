@@ -10,7 +10,10 @@ import { formatParameterComponent } from "../../utils/format-parameter-component
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeDeclarationMembers",
-    function (this: DeclarationReflection[]) {
+    function (
+      this: DeclarationReflection[],
+      options: Handlebars.HelperOptions
+    ) {
       const { parameterComponent, maxLevel, parameterComponentExtraProps } =
         theme.getFormattingOptionsForLocation()
       const comments = this.map(
@@ -24,6 +27,10 @@ export default function (theme: MarkdownTheme) {
         []
       ) as DeclarationReflection[]
 
+      // if (typeof options.hash.sectionTitle !== "string") {
+      //   console.log("here2")
+      // }
+
       let result = ""
       switch (theme.objectLiteralTypeDeclarationStyle) {
         case "list": {
@@ -36,6 +43,7 @@ export default function (theme: MarkdownTheme) {
             parameterComponent,
             maxLevel,
             parameterComponentExtraProps,
+            sectionTitle: options.hash.sectionTitle,
           })
           break
         }
@@ -65,11 +73,13 @@ function getComponentMarkdownContent({
   parameterComponent,
   maxLevel,
   parameterComponentExtraProps,
+  sectionTitle,
 }: {
   properties: DeclarationReflection[]
   parameterComponent?: string
   maxLevel?: number | undefined
   parameterComponentExtraProps?: Record<string, unknown>
+  sectionTitle: string
 }) {
   const parameters = properties.map((property) =>
     reflectionFormatter({
@@ -84,6 +94,7 @@ function getComponentMarkdownContent({
     parameterComponent,
     componentItems: parameters as Parameter[],
     extraProps: parameterComponentExtraProps,
+    sectionTitle,
   })
 }
 

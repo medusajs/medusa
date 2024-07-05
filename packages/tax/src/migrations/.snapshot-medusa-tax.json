@@ -1,0 +1,558 @@
+{
+  "namespaces": [
+    "public"
+  ],
+  "name": "public",
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "is_enabled": {
+          "name": "is_enabled",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "true",
+          "mappedType": "boolean"
+        }
+      },
+      "name": "tax_provider",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "tax_provider_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "provider_id": {
+          "name": "provider_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "country_code": {
+          "name": "country_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "province_code": {
+          "name": "province_code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "tax_region",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "parent_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_tax_region_parent_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "IDX_tax_region_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_region_deleted_at\" ON \"tax_region\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_tax_region_unique_country_province",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_region_unique_country_province\" ON \"tax_region\" (country_code, province_code)"
+        },
+        {
+          "keyName": "tax_region_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [
+        {
+          "name": "CK_tax_region_country_top_level",
+          "expression": "parent_id IS NULL OR province_code IS NOT NULL",
+          "definition": "check ((parent_id IS NULL OR province_code IS NOT NULL))"
+        },
+        {
+          "name": "CK_tax_region_provider_top_level",
+          "expression": "parent_id IS NULL OR provider_id IS NULL",
+          "definition": "check ((parent_id IS NULL OR provider_id IS NULL))"
+        }
+      ],
+      "foreignKeys": {
+        "tax_region_provider_id_foreign": {
+          "constraintName": "tax_region_provider_id_foreign",
+          "columnNames": [
+            "provider_id"
+          ],
+          "localTableName": "public.tax_region",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tax_provider",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "tax_region_parent_id_foreign": {
+          "constraintName": "tax_region_parent_id_foreign",
+          "columnNames": [
+            "parent_id"
+          ],
+          "localTableName": "public.tax_region",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tax_region",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "rate": {
+          "name": "rate",
+          "type": "real",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "float"
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "is_default": {
+          "name": "is_default",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "is_combinable": {
+          "name": "is_combinable",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "false",
+          "mappedType": "boolean"
+        },
+        "tax_region_id": {
+          "name": "tax_region_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "tax_rate",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_tax_rate_tax_region_id",
+          "columnNames": [
+            "tax_region_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_rate_tax_region_id\" ON \"tax_rate\" (tax_region_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_tax_rate_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_rate_deleted_at\" ON \"tax_rate\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_single_default_region",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_single_default_region\" ON \"tax_rate\" (tax_region_id) WHERE is_default = true AND deleted_at IS NULL"
+        },
+        {
+          "keyName": "tax_rate_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "tax_rate_tax_region_id_foreign": {
+          "constraintName": "tax_rate_tax_region_id_foreign",
+          "columnNames": [
+            "tax_region_id"
+          ],
+          "localTableName": "public.tax_rate",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tax_region",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "tax_rate_id": {
+          "name": "tax_rate_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "reference_id": {
+          "name": "reference_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "reference": {
+          "name": "reference",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "tax_rate_rule",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_tax_rate_rule_tax_rate_id",
+          "columnNames": [
+            "tax_rate_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_rate_rule_tax_rate_id\" ON \"tax_rate_rule\" (tax_rate_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_tax_rate_rule_reference_id",
+          "columnNames": [
+            "reference_id"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_rate_rule_reference_id\" ON \"tax_rate_rule\" (reference_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_tax_rate_rule_deleted_at",
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_rate_rule_deleted_at\" ON \"tax_rate_rule\" (deleted_at) WHERE deleted_at IS NOT NULL"
+        },
+        {
+          "keyName": "IDX_tax_rate_rule_unique_rate_reference",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_tax_rate_rule_unique_rate_reference\" ON \"tax_rate_rule\" (tax_rate_id, reference_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "tax_rate_rule_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "tax_rate_rule_tax_rate_id_foreign": {
+          "constraintName": "tax_rate_rule_tax_rate_id_foreign",
+          "columnNames": [
+            "tax_rate_id"
+          ],
+          "localTableName": "public.tax_rate_rule",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tax_rate",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    }
+  ]
+}

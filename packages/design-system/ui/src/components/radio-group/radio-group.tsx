@@ -110,14 +110,14 @@ const ChoiceBox = React.forwardRef<
       <div className="flex flex-col items-start">
         <Label
           htmlFor={id}
-          size="base"
+          size="small"
           weight="plus"
           className="group-disabled:text-ui-fg-disabled cursor-pointer group-disabled:cursor-not-allowed"
         >
           {label}
         </Label>
         <Hint
-          className="txt-compact-medium text-ui-fg-subtle group-disabled:text-ui-fg-disabled"
+          className="txt-compact-medium text-ui-fg-subtle group-disabled:text-ui-fg-disabled text-left"
           id={descriptionId}
         >
           {description}

@@ -26,7 +26,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_draft-orders_{id}_line-items/postundefined
+        $ref: ../code_samples/tsx/admin_draft-orders_{id}_line-items/post.tsx
     - lang: Shell
       label: cURL
       source:

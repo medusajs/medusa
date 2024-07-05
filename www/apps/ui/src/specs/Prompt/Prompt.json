@@ -2,5 +2,28 @@
   "description": "This component is based on the [Radix UI Alert Dialog](https://www.radix-ui.com/primitives/docs/components/alert-dialog) primitives.",
   "methods": [],
   "displayName": "Prompt",
-  "props": {}
+  "props": {
+    "variant": {
+      "required": false,
+      "tsType": {
+        "name": "union",
+        "raw": "\"danger\" | \"confirmation\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"danger\""
+          },
+          {
+            "name": "literal",
+            "value": "\"confirmation\""
+          }
+        ]
+      },
+      "description": "The variant of the prompt.",
+      "defaultValue": {
+        "value": "\"danger\"",
+        "computed": false
+      }
+    }
+  }
 }

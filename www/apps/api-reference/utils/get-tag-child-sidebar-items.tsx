@@ -1,4 +1,4 @@
-import type { SidebarItemType } from "docs-ui"
+import type { SidebarItemType } from "types"
 import type { Operation, PathsObject } from "@/types/openapi"
 import type { OpenAPIV3 } from "openapi-types"
 import dynamic from "next/dynamic"

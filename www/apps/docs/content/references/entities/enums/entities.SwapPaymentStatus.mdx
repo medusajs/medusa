@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # SwapPaymentStatus
 
@@ -10,17 +10,17 @@ The swap's payment status.
 
 ## Enumeration Members
 
+### NOT\_PAID
+
+ **NOT\_PAID** = `"not_paid"`
+
+The swap's additional payment isn't paid.
+
 ### AWAITING
 
  **AWAITING** = `"awaiting"`
 
 The swap is additional awaiting payment.
-
-### CANCELED
-
- **CANCELED** = `"canceled"`
-
-The swap's additional payment is canceled.
 
 ### CAPTURED
 
@@ -34,17 +34,17 @@ The swap's additional payment is captured.
 
 The swap's additional payment is confirmed.
 
+### CANCELED
+
+ **CANCELED** = `"canceled"`
+
+The swap's additional payment is canceled.
+
 ### DIFFERENCE\_REFUNDED
 
  **DIFFERENCE\_REFUNDED** = `"difference_refunded"`
 
 The negative difference amount between the returned item(s) and the new one(s) has been refuneded.
-
-### NOT\_PAID
-
- **NOT\_PAID** = `"not_paid"`
-
-The swap's additional payment isn't paid.
 
 ### PARTIALLY\_REFUNDED
 

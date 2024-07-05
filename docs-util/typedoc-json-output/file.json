@@ -1420,11 +1420,21 @@
 									"type": {
 										"type": "reference",
 										"target": {
-											"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-											"qualifiedName": "MedusaContainer"
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
 										},
-										"name": "MedusaContainer",
-										"package": "@medusajs/types"
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "unknown"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
 									}
 								},
 								{
@@ -1511,11 +1521,21 @@
 					"type": {
 						"type": "reference",
 						"target": {
-							"sourceFileName": "../../../packages/types/src/common/medusa-container.ts",
-							"qualifiedName": "MedusaContainer"
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
 						},
-						"name": "MedusaContainer",
-						"package": "@medusajs/types"
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
 					}
 				},
 				{

@@ -8,9 +8,24 @@ import {
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 import { asValue } from "awilix"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
-import { mikroOrmCreateConnection } from "../../dal"
+import {
+  FreeTextSearchFilterKey,
+  mikroOrmCreateConnection,
+  mikroOrmFreeTextSearchFilterOptionsFactory,
+} from "../../dal"
 import { loadDatabaseConfig } from "../load-module-database-config"
 
+/**
+ * Load a MikroORM connection into the container
+ *
+ * @param moduleName
+ * @param container
+ * @param options
+ * @param filters
+ * @param moduleDeclaration
+ * @param entities
+ * @param pathToMigrations
+ */
 export async function mikroOrmConnectionLoader({
   moduleName,
   container,
@@ -29,6 +44,9 @@ export async function mikroOrmConnectionLoader({
   logger?: Logger
   pathToMigrations: string
 }) {
+  const freeTextSearchGlobalFilter =
+    mikroOrmFreeTextSearchFilterOptionsFactory(entities)
+
   let manager = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.manager
@@ -52,7 +70,12 @@ export async function mikroOrmConnectionLoader({
       shouldSwallowError
     )
     return await loadShared({
-      database: dbConfig,
+      database: {
+        ...dbConfig,
+        filters: {
+          [FreeTextSearchFilterKey as string]: freeTextSearchGlobalFilter,
+        },
+      },
       container,
       entities,
       pathToMigrations,
@@ -77,7 +100,12 @@ export async function mikroOrmConnectionLoader({
   }
 
   manager ??= await loadDefault({
-    database: dbConfig,
+    database: {
+      ...dbConfig,
+      filters: {
+        [FreeTextSearchFilterKey as string]: freeTextSearchGlobalFilter,
+      },
+    },
     entities,
     pathToMigrations,
   })

@@ -32,8 +32,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_products_{id}_options_{option_id}/postundefined
+        $ref: ../code_samples/tsx/admin_products_{id}_options_{option_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -94,8 +93,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: >-
-          ../code_samples/tsx/admin_products_{id}_options_{option_id}/deleteundefined
+        $ref: ../code_samples/tsx/admin_products_{id}_options_{option_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

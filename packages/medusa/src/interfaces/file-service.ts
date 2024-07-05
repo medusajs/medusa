@@ -299,7 +299,7 @@ export abstract class AbstractFileService
    * Additionally, if you’re creating your file service as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,
    * you can access them in the constructor.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
    * @param {Record<string, unknown>} config - If this file service is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
@@ -334,7 +334,7 @@ export abstract class AbstractFileService
    * }
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {
     super(container, config)

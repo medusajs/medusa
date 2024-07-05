@@ -1,6 +1,5 @@
 import { BaseFilterable } from "../../dal"
 import { PriceSetDTO } from "./price-set"
-import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
 
 export interface PriceSetRuleTypeDTO {
@@ -11,8 +10,8 @@ export interface PriceSetRuleTypeDTO {
 }
 
 export interface CreatePriceSetRuleTypeDTO {
-  price_set: PriceSetDTO
-  rule_type: RuleTypeDTO
+  price_set_id: string
+  rule_type_id: string
 }
 
 export interface UpdatePriceSetRuleTypeDTO {

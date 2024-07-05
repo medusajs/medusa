@@ -25,6 +25,8 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 4. User-related events including reset passwords.
 5. Restock Notifications for when product stocks are low.
 
+You can also handle custom events.
+
 ---
 
 ## Prerequisites
@@ -121,7 +123,43 @@ The `api_key` and `from` options are required. Then, use the key of each templat
 
 You can also optionally pass the option `localization` if you want to support different languages. `localization` accepts an object that has the country and language codes as keys. The value for each code should be an object of template keys and their IDs as values. Make sure to include the localized template IDs in `.env` as well.
 
-It's important to note that the keys you add should also be present in the context field of the cart under the locale key `cart.context.locale`. This is crucial to ensure that the templates are used correctly based on the cart's localization.
+:::note[Important]
+
+The keys you add should also be present in the context field of the cart under the locale key `cart.context.locale`. This is crucial to ensure that the templates are used correctly based on the cart's localization.
+
+:::
+
+### Custom Templates
+
+Aside from the supported templates defined in the [reference](#template-reference) section, you may specify templates for Medusa defined or custom events.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      // other options...
+      product_created_template: 
+        process.env.SENDGRID_ORDER_CREATED_ID,
+      my_custom_event_template:
+        process.env.SENDGRID_CUSTOM_EVENT_ID,
+    },
+  },
+]
+```
+
+Make sure to replace every `.` in the event's name with a `_`.
+
+When a template is specified for an event that isn't mentioned in the [reference](#template-reference), the data passed to the template is the data payload of the event.
+
+:::tip
+
+Refer to the [events reference](../../development/events/events-list.md) for the expected payload of Medusa events.
+
+:::
 
 ---
 
@@ -4026,4 +4064,4 @@ You don’t have to create a template for every type in the reference. You can s
 ## See Also
 
 - [Notifications Overview](../../development/notification/overview.mdx)
-- Install the [Medusa admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
+- Install the [Medusa Admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

@@ -3,13 +3,13 @@ import Icons from '@theme/Icon'
 
 # Pricing Module Overview
 
-The Pricing module is the `@medusajs/pricing` NPM package that provides advanced pricing features in your Medusa and Node.js applications. It can be used to add prices to any resource, such as products or shipping options.
+The Pricing Module is the `@medusajs/pricing` NPM package that provides advanced pricing features in your Medusa and Node.js applications. It can be used to add prices to any resource, such as products or shipping options.
 
 ## Features
 
 ### Price Management
 
-With the Product module, you can store the prices of a resource and manage them through the main interface method. Prices are grouped in a price set, allowing you to add more than one price for a resource based on different conditions, such as currency code.
+With the Pricing Module, you can store the prices of a resource and manage them through the main interface method. Prices are grouped in a price set, allowing you to add more than one price for a resource based on different conditions, such as currency code.
 
 ```ts
 const priceSet = await pricingService.create({
@@ -102,7 +102,7 @@ const price = await pricingService.calculatePrices(
 
 The Pricing Module can be used in many use cases, including:
 
-- Medusa Backend: The Medusa backend uses the pricing module to implement some features. However, it's guarded by the [experimental feature flag](../index.md#enabling-experimental-features). If you want to use the pricing module in your backend's customizations, follow [this installation guide](./install-medusa.mdx).
+- Medusa Backend: The Medusa backend uses the Pricing Module to implement some features. However, it's guarded by the [experimental feature flag](../index.md#enabling-experimental-features). If you want to use the Pricing Module in your backend's customizations, follow [this installation guide](./install-medusa.mdx).
 - Serverless Application: Use the Pricing Module in a serverless application, such as a Next.js application, without having to manage a fully-fledged ecommerce system. You can use it by [installing it in your Node.js project as an NPM package](./install-nodejs.md).
 - Node.js Application: Use the Pricing Module in any Node.js application. Follow [this guide](./install-nodejs.md) to learn how to install it.
 
@@ -116,7 +116,7 @@ The Pricing Module can be used in many use cases, including:
     label: 'Pricing Concepts',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn about the main concepts in the Pricing module.'
+      description: 'Learn about the main concepts in the Pricing Module.'
     }
   }}
 />

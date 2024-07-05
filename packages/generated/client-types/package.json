@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/client-types",
-  "version": "0.2.7",
+  "version": "0.2.11",
   "description": "Client types for Medusa Commerce Rest API",
   "main": "dist/index.js",
   "files": [
@@ -24,7 +24,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
-    "@medusajs/medusa-oas-cli": "0.2.24",
+    "@medusajs/medusa-oas-cli": "0.3.2",
     "cross-env": "^7.0.3",
     "execa": "^5.1.1",
     "jest": "^27.4.7",

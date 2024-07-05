@@ -23,7 +23,7 @@ const Edit = () => {
 
   const { discount, isLoading, error } = useAdminDiscount(
     id!,
-    { expand: "rule,rule.conditions" },
+    { expand: "rule,rule.conditions,regions" },
     {
       enabled: !!id,
     }

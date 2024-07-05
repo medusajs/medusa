@@ -131,18 +131,6 @@ export const typography = {
     "fontWeight": "400",
     "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
   },
-  ".code-body": {
-    "fontSize": "0.8125rem",
-    "lineHeight": "1.5rem",
-    "fontWeight": "400",
-    "fontFamily": "Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
-  },
-  ".code-label": {
-    "fontSize": "0.8125rem",
-    "lineHeight": "1.25rem",
-    "fontWeight": "400",
-    "fontFamily": "Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
-  },
   ".txt-compact-xlarge-plus": {
     "fontSize": "1.125rem",
     "lineHeight": "1.25rem",
@@ -190,5 +178,17 @@ export const typography = {
     "lineHeight": "1.75rem",
     "fontWeight": "500",
     "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji"
+  },
+  ".code-label": {
+    "fontSize": "0.75rem",
+    "lineHeight": "1.25rem",
+    "fontWeight": "400",
+    "fontFamily": "Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
+  },
+  ".code-body": {
+    "fontSize": "0.75rem",
+    "lineHeight": "1.375rem",
+    "fontWeight": "400",
+    "fontFamily": "Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
   }
 }

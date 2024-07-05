@@ -1,5 +1,5 @@
-import { OrchestrationUtils } from "@medusajs/utils"
 import { PermanentStepFailureError } from "@medusajs/orchestration"
+import { OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * This class is used to create the response returned by a step. A step return its data by returning an instance of `StepResponse`.
@@ -40,7 +40,7 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    * Creates a StepResponse that indicates that the step has failed and the retry mechanism should not kick in anymore.
    *
    * @param message - An optional message to be logged.
-   * 
+   *
    * @example
    * import { Product } from "@medusajs/medusa"
    * import {
@@ -48,11 +48,11 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    *   StepResponse,
    *   createWorkflow
    * } from "@medusajs/workflows-sdk"
-   * 
+   *
    * interface CreateProductInput {
    *   title: string
    * }
-   * 
+   *
    * export const createProductStep = createStep(
    *   "createProductStep",
    *   async function (
@@ -62,7 +62,7 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    *     const productService = context.container.resolve(
    *       "productService"
    *     )
-   *     
+   *
    *     try {
    *       const product = await productService.create(input)
    *       return new StepResponse({
@@ -75,22 +75,22 @@ export class StepResponse<TOutput, TCompensateInput = TOutput> {
    *     }
    *   }
    * )
-   * 
+   *
    * interface WorkflowInput {
    *  title: string
    * }
-   * 
+   *
    * const myWorkflow = createWorkflow<
    *     WorkflowInput,
    *     Product
    *   >("my-workflow", (input) => {
    *    // Everything here will be executed and resolved later
    *    // during the execution. Including the data access.
-   * 
+   *
    *     const product = createProductStep(input)
    *   }
    * )
-   * 
+   *
    * myWorkflow()
    *   .run({
    *     input: {

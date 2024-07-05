@@ -1,5 +1,6 @@
-import { ArrowUturnLeft } from "@medusajs/icons"
+import { ArrowUturnLeft, MinusMini } from "@medusajs/icons"
 import { IconButton, Text } from "@medusajs/ui"
+import * as Collapsible from "@radix-ui/react-collapsible"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
@@ -37,6 +38,10 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/regions",
       },
       {
+        label: t("returnReasons.domain"),
+        to: "/settings/return-reasons",
+      },
+      {
         label: "Taxes",
         to: "/settings/taxes",
       },
@@ -49,8 +54,30 @@ const useSettingRoutes = (): NavItemProps[] => {
         to: "/settings/sales-channels",
       },
       {
-        label: t("apiKeyManagement.domain"),
-        to: "/settings/api-key-management",
+        label: t("shippingProfile.domain"),
+        to: "/settings/shipping-profiles",
+      },
+    ],
+    [t]
+  )
+}
+
+const useDeveloperRoutes = (): NavItemProps[] => {
+  const { t } = useTranslation()
+
+  return useMemo(
+    () => [
+      {
+        label: t("apiKeyManagement.domain.publishable"),
+        to: "/settings/publishable-api-keys",
+      },
+      {
+        label: t("apiKeyManagement.domain.secret"),
+        to: "/settings/secret-api-keys",
+      },
+      {
+        label: t("workflowExecutions.domain"),
+        to: "/settings/workflows",
       },
     ],
     [t]
@@ -59,6 +86,7 @@ const useSettingRoutes = (): NavItemProps[] => {
 
 const SettingsSidebar = () => {
   const routes = useSettingRoutes()
+  const developerRoutes = useDeveloperRoutes()
   const { t } = useTranslation()
 
   const location = useLocation()
@@ -80,19 +108,60 @@ const SettingsSidebar = () => {
             </IconButton>
           </Link>
           <Text leading="compact" weight="plus" size="small">
-            {t("general.settings")}
+            {t("nav.settings")}
           </Text>
         </div>
       </div>
       <div className="px-3">
         <div className="border-ui-border-strong h-px w-full border-b border-dashed" />
       </div>
-      <div className="flex flex-1 flex-col gap-y-4 overflow-y-auto py-2">
-        <nav className="flex flex-col gap-y-1">
-          {routes.map((setting) => (
-            <NavItem key={setting.to} {...setting} />
-          ))}
-        </nav>
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        <Collapsible.Root defaultOpen className="py-3">
+          <div className="px-3">
+            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+              <Text size="small" leading="compact">
+                {t("nav.general")}
+              </Text>
+              <Collapsible.Trigger asChild>
+                <IconButton size="2xsmall" variant="transparent">
+                  <MinusMini className="text-ui-fg-muted" />
+                </IconButton>
+              </Collapsible.Trigger>
+            </div>
+          </div>
+          <Collapsible.Content>
+            <div className="pt-0.5">
+              <nav className="flex flex-col gap-y-1">
+                {routes.map((setting) => (
+                  <NavItem key={setting.to} {...setting} />
+                ))}
+              </nav>
+            </div>
+          </Collapsible.Content>
+        </Collapsible.Root>
+        <Collapsible.Root defaultOpen className="py-3">
+          <div className="px-3">
+            <div className="text-ui-fg-muted flex h-7 items-center justify-between px-2">
+              <Text size="small" leading="compact">
+                {t("nav.developer")}
+              </Text>
+              <Collapsible.Trigger asChild>
+                <IconButton size="2xsmall" variant="transparent">
+                  <MinusMini className="text-ui-fg-muted" />
+                </IconButton>
+              </Collapsible.Trigger>
+            </div>
+          </div>
+          <Collapsible.Content>
+            <div className="pt-0.5">
+              <nav className="flex flex-col gap-y-1">
+                {developerRoutes.map((setting) => (
+                  <NavItem key={setting.to} {...setting} />
+                ))}
+              </nav>
+            </div>
+          </Collapsible.Content>
+        </Collapsible.Root>
       </div>
     </aside>
   )

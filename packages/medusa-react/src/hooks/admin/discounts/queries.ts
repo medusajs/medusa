@@ -28,19 +28,19 @@ export const adminDiscountKeys = {
 type DiscountQueryKeys = typeof adminDiscountKeys
 
 /**
- * This hook retrieves a list of Discounts. The discounts can be filtered by fields such as `rule` or `is_dynamic`. 
+ * This hook retrieves a list of Discounts. The discounts can be filtered by fields such as `rule` or `is_dynamic`.
  * The discounts can also be paginated.
- * 
+ *
  * @example
  * To list discounts:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
- * 
+ *
  * const Discounts = () => {
  *   const { discounts, isLoading } = useAdminDiscounts()
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -57,21 +57,21 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Discounts
  * ```
- * 
+ *
  * To specify relations that should be retrieved within the discounts:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
- * 
+ *
  * const Discounts = () => {
  *   const { discounts, isLoading } = useAdminDiscounts({
  *     expand: "rule"
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -88,19 +88,19 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Discounts
  * ```
- * 
+ *
  * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
- * 
+ *
  * ```tsx
  * import React from "react"
  * import { useAdminDiscounts } from "medusa-react"
- * 
+ *
  * const Discounts = () => {
- *   const { 
- *     discounts, 
+ *   const {
+ *     discounts,
  *     limit,
  *     offset,
  *     isLoading
@@ -109,7 +109,7 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  *     limit: 10,
  *     offset: 0
  *   })
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -126,10 +126,10 @@ type DiscountQueryKeys = typeof adminDiscountKeys
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Discounts
  * ```
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
@@ -155,20 +155,20 @@ export const useAdminDiscounts = (
 
 /**
  * This hook retrieves a discount.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminDiscount } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  * }
- * 
+ *
  * const Discount = ({ discountId }: Props) => {
  *   const { discount, isLoading } = useAdminDiscount(
  *     discountId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -176,9 +176,9 @@ export const useAdminDiscounts = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
@@ -209,20 +209,20 @@ export const useAdminDiscount = (
 /**
  * This hook adds a batch of resources to a discount condition. The type of resource depends on the type of discount condition. For example, if the discount condition's type is `products`,
  * the resources being added should be products.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminGetDiscountByCode } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountCode: string
  * }
- * 
+ *
  * const Discount = ({ discountCode }: Props) => {
  *   const { discount, isLoading } = useAdminGetDiscountByCode(
  *     discountCode
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -230,9 +230,9 @@ export const useAdminDiscount = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default Discount
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */
@@ -258,28 +258,28 @@ export const useAdminGetDiscountByCode = (
 
 /**
  * This hook retries a Discount Condition's details.
- * 
+ *
  * @example
  * import React from "react"
  * import { useAdminGetDiscountCondition } from "medusa-react"
- * 
+ *
  * type Props = {
  *   discountId: string
  *   discountConditionId: string
  * }
- * 
+ *
  * const DiscountCondition = ({
  *   discountId,
  *   discountConditionId
  * }: Props) => {
- *   const { 
- *     discount_condition, 
+ *   const {
+ *     discount_condition,
  *     isLoading
  *   } = useAdminGetDiscountCondition(
  *     discountId,
  *     discountConditionId
  *   )
- * 
+ *
  *   return (
  *     <div>
  *       {isLoading && <span>Loading...</span>}
@@ -289,9 +289,9 @@ export const useAdminGetDiscountByCode = (
  *     </div>
  *   )
  * }
- * 
+ *
  * export default DiscountCondition
- * 
+ *
  * @customNamespace Hooks.Admin.Discounts
  * @category Queries
  */

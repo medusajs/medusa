@@ -10,7 +10,7 @@ In this document, you’ll learn about the Redis cache module and how you can in
 
 Medusa’s modular architecture allows developers to extend or replace the logic used for [caching](../overview.mdx). You can create a custom module, or you can use the modules Medusa provides.
 
-One of these modules is the Redis module. This module allows you to utilize Redis for the caching functionality. This document will you guide you through installing the Redis module.
+One of these modules is the Redis Module. This module allows you to utilize Redis for the caching functionality. This document will you guide you through installing the Redis Module.
 
 ---
 
@@ -74,7 +74,7 @@ You also pass the option `ttl`. This means time-to-live, and it indicates the nu
 
 Other available options include:
 
-- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://luin.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
+- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://redis.github.io/ioredis/classes/Redis.html#options). By default, it’s an empty object.
 - `namespace`: a string used to prefix event keys. By default, it's `medusa`.
 
 ---

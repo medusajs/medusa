@@ -1,13 +1,19 @@
 import { IdMap } from "medusa-test-utils"
+import {
+  defaultAdminGetProductsVariantsFields,
+  defaultAdminGetProductsVariantsRelations,
+} from ".."
 import { request } from "../../../../../helpers/test-request"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("GET /admin/products/:id/variants", () => {
   describe("successfully gets a product variants", () => {
-    let subject
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
 
-    beforeAll(async () => {
-      subject = await request(
+    it("should call listAndCount with the default config", async () => {
+      await request(
         "GET",
         `/admin/products/${IdMap.getId("product1")}/variants`,
         {
@@ -18,36 +24,22 @@ describe("GET /admin/products/:id/variants", () => {
           },
         }
       )
-    })
 
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("should cal the get product from productService with the expected parameters without giving any config", () => {
       expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledWith(
         {
           product_id: IdMap.getId("product1"),
         },
-        {
-          relations: [],
-          select: ["id", "product_id"],
+        expect.objectContaining({
+          relations: defaultAdminGetProductsVariantsRelations,
+          select: defaultAdminGetProductsVariantsFields,
           skip: 0,
-          take: 100
-        }
+          take: 100,
+        })
       )
     })
 
-    it("should returns product decorated", () => {
-      expect(subject.body.variants.length).toEqual(2)
-      expect(subject.body.variants).toEqual(expect.arrayContaining([
-        expect.objectContaining({ product_id: IdMap.getId("product1") }),
-        expect.objectContaining({ product_id: IdMap.getId("product1") }),
-      ]))
-    })
-
-    it("should call the get product from productService with the expected parameters including the config that has been given", async () => {
+    it("should call listAndCount with the provided query params", async () => {
       await request(
         "GET",
         `/admin/products/${IdMap.getId("product1")}/variants`,
@@ -58,24 +50,24 @@ describe("GET /admin/products/:id/variants", () => {
             },
           },
           query: {
-            expand: "variants.options",
-            fields: "id, variants.id",
+            expand: "product",
+            fields: "id",
             limit: 10,
-          }
+          },
         }
       )
 
-      expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledTimes(2)
+      expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.listAndCount).toHaveBeenLastCalledWith(
         {
           product_id: IdMap.getId("product1"),
         },
-        {
-          relations: ["variants.options"],
-          select: ["id", "product_id", "variants.id"],
+        expect.objectContaining({
+          relations: ["product"],
+          select: ["id", "created_at"],
           skip: 0,
-          take: 10
-        }
+          take: 10,
+        })
       )
     })
   })

@@ -125,6 +125,13 @@ get:
         customer groups.
       schema:
         type: string
+    - in: query
+      name: fields
+      description: >-
+        Comma-separated fields that should be included in the returned customer
+        groups.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetCustomerGroupsParams
@@ -136,7 +143,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customer-groups/getundefined
+        $ref: ../code_samples/tsx/admin_customer-groups/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -186,7 +193,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_customer-groups/postundefined
+        $ref: ../code_samples/tsx/admin_customer-groups/post.tsx
     - lang: Shell
       label: cURL
       source:

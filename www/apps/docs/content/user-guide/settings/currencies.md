@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: 'This user guide explains how to manage currencies on the Medusa admin. Learn how to add currencies and set default currency.'
+description: 'This user guide explains how to manage currencies on the Medusa Admin. Learn how to add currencies and set default currency.'
 addHowToData: true
 ---
 

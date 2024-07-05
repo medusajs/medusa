@@ -1,33 +1,45 @@
 import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "../../../../types/routing"
+import {
   deleteCampaignsWorkflow,
   updateCampaignsWorkflow,
 } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
-import { MedusaRequest, MedusaResponse } from "../../../../types/routing"
 
-export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
-  const promotionModuleService: IPromotionModuleService = req.scope.resolve(
-    ModuleRegistrationName.PROMOTION
-  )
+import { refetchCampaign } from "../helpers"
+import { AdminUpdateCampaignType } from "../validators"
+import { MedusaError } from "@medusajs/utils"
 
-  const campaign = await promotionModuleService.retrieveCampaign(
+export const GET = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
+  const campaign = await refetchCampaign(
     req.params.id,
-    {
-      select: req.retrieveConfig.select,
-      relations: req.retrieveConfig.relations,
-    }
+    req.scope,
+    req.remoteQueryConfig.fields
   )
+
+  if (!campaign) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Campaign with id: ${req.params.id} was not found`
+    )
+  }
 
   res.status(200).json({ campaign })
 }
 
-export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
+export const POST = async (
+  req: AuthenticatedMedusaRequest<AdminUpdateCampaignType>,
+  res: MedusaResponse
+) => {
   const updateCampaigns = updateCampaignsWorkflow(req.scope)
   const campaignsData = [
     {
       id: req.params.id,
-      ...(req.validatedBody || {}),
+      ...req.validatedBody,
     },
   ]
 
@@ -40,17 +52,23 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     throw errors[0].error
   }
 
-  res.status(200).json({ campaign: result[0] })
+  const campaign = await refetchCampaign(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ campaign })
 }
 
-export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) => {
   const id = req.params.id
-  const manager = req.scope.resolve("manager")
   const deleteCampaigns = deleteCampaignsWorkflow(req.scope)
 
   const { errors } = await deleteCampaigns.run({
     input: { ids: [id] },
-    context: { manager },
     throwOnError: false,
   })
 

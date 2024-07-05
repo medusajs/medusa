@@ -1,3 +1,4 @@
+import { selectorConstraintsToString } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { Between, EntityManager, MoreThanOrEqual, Not } from "typeorm"
 import { EventBusService } from "."
@@ -17,7 +18,6 @@ import {
   UpdateProductCategoryInput,
 } from "../types/product-category"
 import { buildQuery, nullableValue, setMetadata } from "../utils"
-import {selectorConstraintsToString} from "@medusajs/utils";
 
 type InjectedDependencies = {
   manager: EntityManager

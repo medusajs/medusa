@@ -5,11 +5,10 @@ export async function getVariantsFromPriceList(
   priceListId: string
 ) {
   const remoteQuery = container.resolve("remoteQuery")
-
   const query = {
     price_list: {
       __args: { id: [priceListId] },
-      price_set_money_amounts: {
+      prices: {
         price_set: {
           variant_link: { variant: { fields: ["id", "product_id"] } },
         },
@@ -21,8 +20,8 @@ export async function getVariantsFromPriceList(
   const variants: ProductVariantDTO[] = []
 
   priceLists.forEach((priceList) => {
-    priceList.price_set_money_amounts?.forEach((psma) => {
-      const variant = psma.price_set?.variant_link?.variant
+    priceList.prices?.forEach((price) => {
+      const variant = price.price_set?.variant_link?.variant
 
       if (variant) {
         variants.push(variant)
