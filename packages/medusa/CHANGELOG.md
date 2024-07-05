@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.20.7
+
+### Patch Changes
+
+- [`dc8fe63bb3`](https://github.com/medusajs/medusa/commit/dc8fe63bb3c1700bc0596f6c52aebeea30094bc8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix: Use tx isolation level REPEATABLE READ in batch job subscriber
+
+- Updated dependencies [[`b7e32e47ee`](https://github.com/medusajs/medusa/commit/b7e32e47eef94f691dcacc4e954ffcdff152eca4)]:
+  - @medusajs/workflows-sdk@0.1.7
+
 ## 1.20.6
 
 ### Patch Changes

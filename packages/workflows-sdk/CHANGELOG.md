@@ -1,5 +1,11 @@
 # @medusajs/workflows-sdk
 
+## 0.1.7
+
+### Patch Changes
+
+- [#7590](https://github.com/medusajs/medusa/pull/7590) [`b7e32e47ee`](https://github.com/medusajs/medusa/commit/b7e32e47eef94f691dcacc4e954ffcdff152eca4) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - fix(workflows-sdk): workflow registration
+
 ## 0.1.6
 
 ### Patch Changes

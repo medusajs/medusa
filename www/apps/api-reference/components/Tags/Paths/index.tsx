@@ -15,7 +15,6 @@ import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 import { useLoading } from "@/providers/loading"
 import DividedLoading from "@/components/DividedLoading"
 import { SidebarItemSections, SidebarItemType } from "types"
-import { useVersion } from "../../../providers/version"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")
@@ -28,7 +27,6 @@ export type TagPathsProps = {
 const TagPaths = ({ tag, className }: TagPathsProps) => {
   const tagSlugName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
-  const { version } = useVersion()
   const { items, addItems, findItemInSection } = useSidebar()
   const { baseSpecs } = useBaseSpecs()
   const { loading } = useLoading()
@@ -45,7 +43,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   }>(
     !Object.keys(paths).length
       ? getLinkWithBasePath(
-          `/tag?tagName=${tagSlugName}&area=${area}&version=${version}`,
+          `/tag?tagName=${tagSlugName}&area=${area}`,
           process.env.NEXT_PUBLIC_BASE_PATH
         )
       : null,

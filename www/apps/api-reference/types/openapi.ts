@@ -1,7 +1,6 @@
 import type { OpenAPIV3 } from "openapi-types"
 
 export type Area = "admin" | "store"
-export type Version = "1" | "2"
 
 export type Code = {
   lang: string
@@ -88,6 +87,7 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   isRequired?: boolean
   "x-featureFlag"?: string
   "x-expandable"?: string
+  "x-ignore"?: boolean
 }
 
 export type PropertiesObject = {
