@@ -10,6 +10,26 @@ process.env.LOG_LEVEL = "error"
 
 const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
+const customPaymentProvider = {
+  resolve: {
+    services: [require("@medusajs/payment/dist/providers/system").default],
+  },
+  options: {
+    config: {
+      default_2: {},
+    },
+  },
+}
+
+const customFulfillmentProvider = {
+  resolve: "@medusajs/fulfillment-manual",
+  options: {
+    config: {
+      "test-provider": {},
+    },
+  },
+}
+
 module.exports = {
   plugins: [],
   projectConfig: {
@@ -70,20 +90,18 @@ module.exports = {
     [Modules.STORE]: true,
     [Modules.TAX]: true,
     [Modules.CURRENCY]: true,
-    [Modules.PAYMENT]: true,
+    [Modules.ORDER]: true,
+    [Modules.PAYMENT]: {
+      resolve: "@medusajs/payment",
+      /** @type {import('@medusajs/payment').PaymentModuleOptions}*/
+      options: {
+        providers: [customPaymentProvider],
+      },
+    },
     [Modules.FULFILLMENT]: {
       /** @type {import('@medusajs/fulfillment').FulfillmentModuleOptions} */
       options: {
-        providers: [
-          {
-            resolve: "@medusajs/fulfillment-manual",
-            options: {
-              config: {
-                "test-provider": {},
-              },
-            },
-          },
-        ],
+        providers: [customFulfillmentProvider],
       },
     },
   },

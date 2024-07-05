@@ -6,14 +6,26 @@ import {
   ServiceZoneDTO,
   UpdateFulfillmentSetDTO,
 } from "@medusajs/types"
-import { GeoZoneType } from "@medusajs/utils"
+import { FulfillmentEvents, GeoZoneType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
+import { MockEventBusService } from "medusa-test-utils/dist"
+import { buildExpectedEventMessageShape } from "../../__fixtures__"
 
 jest.setTimeout(100000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.FULFILLMENT,
   testSuite: ({ service }: SuiteOptions<IFulfillmentModuleService>) => {
+    let eventBusEmitSpy
+
+    beforeEach(() => {
+      eventBusEmitSpy = jest.spyOn(MockEventBusService.prototype, "emit")
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
     describe("Fulfillment Module Service", () => {
       describe("read", () => {
         it("should list fulfillment sets with a filter", async function () {
@@ -153,6 +165,15 @@ moduleIntegrationTestRunner({
                 type: data.type,
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets", async function () {
@@ -180,6 +201,18 @@ moduleIntegrationTestRunner({
                   type: data_.type,
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -210,6 +243,21 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.service_zone_created,
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones", async function () {
@@ -262,6 +310,24 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -305,6 +371,27 @@ moduleIntegrationTestRunner({
                 ]),
               })
             )
+
+            expect(eventBusEmitSpy).toHaveBeenCalledWith([
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.created,
+                action: "created",
+                object: "fulfillment_set",
+                data: { id: fulfillmentSet.id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.service_zone_created,
+                action: "created",
+                object: "service_zone",
+                data: { id: fulfillmentSet.service_zones[0].id },
+              }),
+              buildExpectedEventMessageShape({
+                eventName: FulfillmentEvents.geo_zone_created,
+                action: "created",
+                object: "geo_zone",
+                data: { id: fulfillmentSet.service_zones[0].geo_zones[0].id },
+              }),
+            ])
           })
 
           it("should create a collection of fulfillment sets with new service zones and new geo zones", async function () {
@@ -385,6 +472,32 @@ moduleIntegrationTestRunner({
                   ]),
                 })
               )
+
+              expect(eventBusEmitSpy).toHaveBeenCalledWith(
+                expect.arrayContaining([
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.created,
+                    action: "created",
+                    object: "fulfillment_set",
+                    data: { id: fulfillmentSets[i].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.service_zone_created,
+                    action: "created",
+                    object: "service_zone",
+                    data: { id: fulfillmentSets[i].service_zones[0].id },
+                  }),
+                  buildExpectedEventMessageShape({
+                    eventName: FulfillmentEvents.geo_zone_created,
+                    action: "created",
+                    object: "geo_zone",
+                    data: {
+                      id: fulfillmentSets[i].service_zones[0].geo_zones[0].id,
+                    },
+                  }),
+                ])
+              )
+
               ++i
             }
           })
@@ -399,7 +512,7 @@ moduleIntegrationTestRunner({
             const err = await service.create(data).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should fail on creating a new fulfillment set with new service zones and new geo zones that are not valid", async function () {
@@ -724,7 +837,7 @@ moduleIntegrationTestRunner({
             const err = await service.update(updateData).catch((e) => e)
 
             expect(err).toBeDefined()
-            expect(err.constraint).toBe("IDX_fulfillment_set_name_unique")
+            expect(err.message).toContain("exists")
           })
 
           it("should update a collection of fulfillment sets and replace old service zones by new ones", async function () {

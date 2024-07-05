@@ -1,9 +1,12 @@
-import { Country } from "@medusajs/medusa"
 import { useTranslation } from "react-i18next"
+import { RegionCountryDTO } from "@medusajs/types"
+
 import { PlaceholderCell } from "../../common/placeholder-cell"
+import { ListSummary } from "../../../../common/list-summary"
+import { countries as COUNTRIES } from "../../../../../lib/countries"
 
 type CountriesCellProps = {
-  countries?: Country[] | null
+  countries?: RegionCountryDTO[] | null
 }
 
 export const CountriesCell = ({ countries }: CountriesCellProps) => {
@@ -13,26 +16,14 @@ export const CountriesCell = ({ countries }: CountriesCellProps) => {
     return <PlaceholderCell />
   }
 
-  const displayValue = countries
-    .slice(0, 2)
-    .map((c) => c.display_name)
-    .join(", ")
-
-  const additionalCountries = countries
-    .slice(2)
-    .map((c) => c.display_name).length
-
-  const text = `${displayValue}${
-    additionalCountries > 0
-      ? ` ${t("general.plusCountMore", {
-          count: additionalCountries,
-        })}`
-      : ""
-  }`
-
   return (
     <div className="flex size-full items-center overflow-hidden">
-      <span className="truncate">{text}</span>
+      <ListSummary
+        list={countries.map(
+          (country) =>
+            COUNTRIES.find((c) => c.iso_2 === country.iso_2)!.display_name
+        )}
+      />
     </div>
   )
 }

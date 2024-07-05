@@ -40,12 +40,12 @@ export const DiscountDetail = () => {
           </div>
         )
       })}
-      <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-[1fr,400px]">
-        <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
+        <div className="flex w-full flex-col gap-y-2">
           <DiscountGeneralSection discount={discount} />
           <DiscountConfigurationSection discount={discount} />
           <DiscountConditionsSection discount={discount} />
-          <div className="flex flex-col gap-y-2 lg:hidden">
+          <div className="flex w-full flex-col gap-y-2 xl:hidden">
             <RedemptionsSection redemptions={discount.usage_count} />
             <DetailsSection discount={discount} />
           </div>
@@ -58,7 +58,7 @@ export const DiscountDetail = () => {
           })}
           <JsonViewSection data={discount} />
         </div>
-        <div className="hidden flex-col gap-y-2 lg:flex">
+        <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
           <RedemptionsSection redemptions={discount.usage_count} />
           <DetailsSection discount={discount} />
         </div>

@@ -32,8 +32,6 @@ async function resolveProperty(property, transactionContext) {
  * @internal
  */
 export async function resolveValue(input, transactionContext) {
-  const copiedInput = deepCopy(input)
-
   const unwrapInput = async (
     inputTOUnwrap: Record<string, unknown>,
     parentRef: any
@@ -65,6 +63,11 @@ export async function resolveValue(input, transactionContext) {
 
     return parentRef
   }
+
+  const copiedInput =
+    input?.__type === OrchestrationUtils.SymbolWorkflowWorkflowData
+      ? deepCopy(input.output)
+      : deepCopy(input)
 
   const result = copiedInput?.__type
     ? await resolveProperty(copiedInput, transactionContext)

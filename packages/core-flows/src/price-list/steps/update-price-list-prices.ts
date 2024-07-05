@@ -1,7 +1,7 @@
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPricingModuleService,
-  PriceSetMoneyAmountDTO,
+  PriceDTO,
   UpdatePriceListPriceDTO,
   UpdatePriceListPricesDTO,
   UpdatePriceListPriceWorkflowStepDTO,
@@ -42,32 +42,34 @@ export const updatePriceListPricesStep = createStep(
     }
 
     const existingPrices = priceIds.length
-      ? await pricingModule.listPriceSetMoneyAmounts(
+      ? await pricingModule.listPrices(
           { id: priceIds },
           { relations: ["price_list"] }
         )
       : []
 
-    const priceListPsmaMap = new Map<string, PriceSetMoneyAmountDTO[]>()
+    const priceListPricesMap = new Map<string, PriceDTO[]>()
     const dataBeforePriceUpdate: UpdatePriceListPricesDTO[] = []
 
     for (const price of existingPrices) {
       const priceListId = price.price_list!.id
-      const psmas = priceListPsmaMap.get(priceListId) || []
+      const prices = priceListPricesMap.get(priceListId) || []
 
-      priceListPsmaMap.set(priceListId, psmas)
+      priceListPricesMap.set(priceListId, prices)
     }
 
-    for (const [priceListId, psmas] of Object.entries(priceListPsmaMap)) {
+    for (const [priceListId, prices] of Object.entries(priceListPricesMap)) {
       dataBeforePriceUpdate.push({
         price_list_id: priceListId,
-        prices: buildPriceSetPricesForModule(psmas),
+        prices: buildPriceSetPricesForModule(prices),
       })
     }
 
-    await pricingModule.updatePriceListPrices(priceListPricesToUpdate)
+    const updatedPrices = await pricingModule.updatePriceListPrices(
+      priceListPricesToUpdate
+    )
 
-    return new StepResponse(null, dataBeforePriceUpdate)
+    return new StepResponse(updatedPrices, dataBeforePriceUpdate)
   },
   async (dataBeforePriceUpdate, { container }) => {
     if (!dataBeforePriceUpdate?.length) {

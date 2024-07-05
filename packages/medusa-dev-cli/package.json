@@ -43,7 +43,7 @@
   },
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests -- src",
     "build": "tsc",
     "watch": "tsc --watch"
   },

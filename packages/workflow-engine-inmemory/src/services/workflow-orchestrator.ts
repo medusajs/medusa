@@ -5,11 +5,12 @@ import {
   TransactionStep,
 } from "@medusajs/orchestration"
 import { ContainerLike, Context, MedusaContainer } from "@medusajs/types"
-import { InjectSharedContext, isString, MedusaContext } from "@medusajs/utils"
+import { InjectSharedContext, MedusaContext, isString } from "@medusajs/utils"
 import {
-  type FlowRunOptions,
   MedusaWorkflow,
   ReturnWorkflow,
+  resolveValue,
+  type FlowRunOptions,
 } from "@medusajs/workflows-sdk"
 import { ulid } from "ulid"
 import { InMemoryDistributedTransactionStorage } from "../utils"
@@ -462,31 +463,49 @@ export class WorkflowOrchestratorService {
 
         notify({ eventType: "onStepBegin", step })
       },
-      onStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().invoke[step.id]
+      onStepSuccess: async ({ step, transaction }) => {
+        const stepName = step.definition.action!
+        const response = await resolveValue(
+          transaction.getContext().invoke[stepName],
+          transaction
+        )
         customEventHandlers?.onStepSuccess?.({ step, transaction, response })
 
         notify({ eventType: "onStepSuccess", step, response })
       },
       onStepFailure: ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.INVOKE)[
-          step.id
-        ]
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.INVOKE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         notify({ eventType: "onStepFailure", step, errors })
       },
+      onStepAwaiting: ({ step, transaction }) => {
+        customEventHandlers?.onStepAwaiting?.({ step, transaction })
+
+        notify({ eventType: "onStepAwaiting", step })
+      },
 
       onCompensateStepSuccess: ({ step, transaction }) => {
-        const response = transaction.getContext().compensate[step.id]
-        customEventHandlers?.onStepSuccess?.({ step, transaction, response })
+        const stepName = step.definition.action!
+        const response = transaction.getContext().compensate[stepName]
+        customEventHandlers?.onCompensateStepSuccess?.({
+          step,
+          transaction,
+          response,
+        })
 
         notify({ eventType: "onCompensateStepSuccess", step, response })
       },
       onCompensateStepFailure: ({ step, transaction }) => {
-        const errors = transaction.getErrors(TransactionHandlerType.COMPENSATE)[
-          step.id
-        ]
+        const stepName = step.definition.action!
+        const errors = transaction
+          .getErrors(TransactionHandlerType.COMPENSATE)
+          .filter((err) => err.action === stepName)
+
         customEventHandlers?.onStepFailure?.({ step, transaction, errors })
 
         notify({ eventType: "onCompensateStepFailure", step, errors })

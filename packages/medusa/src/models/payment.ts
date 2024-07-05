@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToOne,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -29,7 +30,7 @@ export class Payment extends BaseEntity {
 
   @OneToOne(() => Swap)
   @JoinColumn({ name: "swap_id" })
-  swap: Swap
+  swap: Relation<Swap>
 
   @Index()
   @Column({ nullable: true })
@@ -37,7 +38,7 @@ export class Payment extends BaseEntity {
 
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Index()
   @Column({ nullable: true })
@@ -45,7 +46,7 @@ export class Payment extends BaseEntity {
 
   @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column({ type: "int" })
   amount: number
@@ -56,7 +57,7 @@ export class Payment extends BaseEntity {
 
   @ManyToOne(() => Currency)
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
-  currency: Currency
+  currency: Relation<Currency>
 
   @Column({ type: "int", default: 0 })
   amount_refunded: number

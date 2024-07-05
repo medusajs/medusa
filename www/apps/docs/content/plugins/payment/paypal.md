@@ -164,7 +164,7 @@ Then, add the Client ID as an environment variable based on the framework you’
 
 Next, create the file that will hold the PayPal component with the following content:
 
-```jsx
+```tsx
 import { 
   PayPalButtons, 
   PayPalScriptProcessor,
@@ -237,6 +237,8 @@ function Paypal() {
             )}
             <PayPalButtons 
               style={{ layout: "horizontal" }}
+              createOrder={async () =>
+                cart.payment_session.data.id as string}
               onApprove={handlePayment}
               disabled={processing}
             />
@@ -253,7 +255,7 @@ Here’s briefly what this code snippet does:
 
 1. At the beginning of the component, the Medusa client is initialized using the JS Client you installed.
 2. You also need to retrieve the cart. Ideally, the cart should be managed through a context. So, every time the cart has been updated the cart should be updated in the context to be accessed from all components.
-3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProcessor` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added.
+3. This component renders a PayPal button to initialize the payment using PayPal. You use the components from the PayPal React components library to render the button and you pass the `PayPalScriptProcessor` component the Client ID. Make sure to replace `<CLIENT_ID>` with the environment variable you added. The PayPal button uses `id` provided from backend to inject total amount with currency.
 4. When the button is clicked, the `handlePayment` function is executed. In this method, you initialize the payment authorization using `actions.order.authorize()`. It takes the customer to another page to log in with PayPal and authorize the payment.
 5. After the payment is authorized successfully on PayPal’s portal, the fulfillment function passed to `actions.order.authorize().then` will be executed.
 6. In the fulfillment function, you first ensure that the payment session for the PayPal payment processor is set as the [selected Payment Session in the cart](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession). Then, you send a request to the backend to [update the payment session](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionupdate) data with the authorization data received from PayPal.

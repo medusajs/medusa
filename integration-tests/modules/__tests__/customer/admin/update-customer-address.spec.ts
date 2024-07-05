@@ -42,7 +42,7 @@ medusaIntegrationTestRunner({
         })
 
         const response = await api.post(
-          `/admin/customers/${customer.id}/addresses/${address.id}`,
+          `/admin/customers/${customer.id}/addresses/${address.id}?fields=*addresses`,
           {
             first_name: "Jane",
           },
@@ -50,12 +50,14 @@ medusaIntegrationTestRunner({
         )
 
         expect(response.status).toEqual(200)
-        expect(response.data.address).toEqual(
-          expect.objectContaining({
-            id: expect.any(String),
-            first_name: "Jane",
-            last_name: "Doe",
-          })
+        expect(response.data.customer.addresses).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              first_name: "Jane",
+              last_name: "Doe",
+            }),
+          ])
         )
       })
 

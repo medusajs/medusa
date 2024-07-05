@@ -1,6 +1,6 @@
-import { DAL } from "@medusajs/types"
 import {
   DALUtils,
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -14,18 +14,11 @@ import {
   ManyToOne,
   OnInit,
   OneToMany,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
-
-type OptionalRelations =
-  | "values"
-  | "product"
-  | DAL.SoftDeletableEntityDateColumns
-type OptionalFields = "product_id"
 
 const optionProductIdTitleIndexName = "IDX_option_product_id_title_unique"
 const optionProductIdTitleIndexStatement = createPsqlIndexStatementHelper({
@@ -40,25 +33,30 @@ optionProductIdTitleIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_option" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOption {
-  [OptionalProps]?: OptionalRelations | OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 
-  @Property({ columnType: "text", nullable: true })
-  product_id!: string
+  @ManyToOne(() => Product, {
+    columnType: "text",
+    fieldName: "product_id",
+    mapToPk: true,
+    nullable: true,
+    onDelete: "cascade",
+  })
+  product_id: string | null
 
   @ManyToOne(() => Product, {
-    fieldName: "product_id",
+    persist: false,
     nullable: true,
   })
-  product!: Product
+  product: Product | null
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
+    cascade: [Cascade.PERSIST, "soft-remove" as any],
   })
   values = new Collection<ProductOptionValue>(this)
 
@@ -85,13 +83,10 @@ class ProductOption {
   deleted_at?: Date
 
   @OnInit()
+  @BeforeCreate()
   onInit() {
     this.id = generateEntityId(this.id, "opt")
-  }
-
-  @BeforeCreate()
-  beforeCreate() {
-    this.id = generateEntityId(this.id, "opt")
+    this.product_id ??= this.product?.id ?? null
   }
 }
 

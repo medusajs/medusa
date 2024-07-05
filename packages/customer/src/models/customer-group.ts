@@ -1,5 +1,5 @@
 import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -24,6 +24,7 @@ export default class CustomerGroup {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   name: string | null = null
 

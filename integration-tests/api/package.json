@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration": "jest --silent=false --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "jest --silent --no-cache --bail --maxWorkers=50% --forceExit --detectOpenHandles --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -37,7 +38,10 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "babel-preset-medusa-package": "*",
+    "form-data": "^4.0.0",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"
   }

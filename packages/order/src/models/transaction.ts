@@ -7,7 +7,6 @@ import {
 } from "@medusajs/utils"
 import {
   BeforeCreate,
-  Cascade,
   Entity,
   ManyToOne,
   OnInit,
@@ -45,7 +44,7 @@ export default class Transaction {
     entity: () => Order,
     columnType: "text",
     fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
     mapToPk: true,
   })
   @OrderIdIndex.MikroORMIndex()

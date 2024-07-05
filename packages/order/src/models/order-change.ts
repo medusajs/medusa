@@ -49,7 +49,7 @@ export default class OrderChange {
     entity: () => Order,
     columnType: "text",
     fieldName: "order_id",
-    cascade: [Cascade.REMOVE],
+    onDelete: "cascade",
     mapToPk: true,
   })
   @OrderIdIndex.MikroORMIndex()
@@ -65,7 +65,7 @@ export default class OrderChange {
   version: number
 
   @OneToMany(() => OrderChangeAction, (action) => action.order_change, {
-    cascade: [Cascade.PERSIST],
+    cascade: [Cascade.PERSIST, "sotf-remove" as Cascade],
   })
   actions = new Collection<OrderChangeAction>(this)
 
@@ -82,7 +82,7 @@ export default class OrderChange {
   @Property({ columnType: "text", nullable: true })
   internal_note: string | null = null
 
-  @Property({ columnType: "text" })
+  @Property({ columnType: "text", nullable: true })
   created_by: string // customer, user, third party, etc.
 
   @Property({ columnType: "text", nullable: true })

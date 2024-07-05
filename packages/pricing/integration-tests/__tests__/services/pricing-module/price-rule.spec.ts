@@ -1,15 +1,12 @@
-import { CreatePriceRuleDTO, IPricingModuleService } from "@medusajs/types"
+import { Modules } from "@medusajs/modules-sdk"
+import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
-import { PriceSetMoneyAmount } from "../../../../src"
-import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
+import { SuiteOptions, moduleIntegrationTestRunner } from "medusa-test-utils"
+import { Price } from "../../../../src"
+import { createPrices } from "../../../__fixtures__/price"
 import { createPriceRules } from "../../../__fixtures__/price-rule"
 import { createPriceSets } from "../../../__fixtures__/price-set"
-import { createPriceSetMoneyAmounts } from "../../../__fixtures__/price-set-money-amount"
-import { createPriceSetMoneyAmountRules } from "../../../__fixtures__/price-set-money-amount-rules"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
-import { Modules } from "@medusajs/modules-sdk"
-import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 
 jest.setTimeout(30000)
 
@@ -24,11 +21,9 @@ moduleIntegrationTestRunner({
       beforeEach(async () => {
         testManager = await MikroOrmWrapper.forkManager()
 
-        await createMoneyAmounts(testManager)
         await createPriceSets(testManager)
         await createRuleTypes(testManager)
-        await createPriceSetMoneyAmounts(testManager)
-        await createPriceSetMoneyAmountRules(testManager)
+        await createPrices(testManager)
         await createPriceRules(testManager)
       })
 
@@ -78,6 +73,7 @@ moduleIntegrationTestRunner({
               price_set: {
                 id: "price-set-1",
               },
+              price_set_id: "price-set-1",
             },
           ])
         })
@@ -133,6 +129,7 @@ moduleIntegrationTestRunner({
                 price_set: {
                   id: "price-set-1",
                 },
+                price_set_id: "price-set-1",
               },
             ])
           })
@@ -276,44 +273,33 @@ moduleIntegrationTestRunner({
           })
 
           it("should create a PriceRule successfully", async () => {
-            const [ma] = await createMoneyAmounts(testManager, [
-              {
-                amount: 100,
-                currency_code: "EUR",
-              },
-            ])
+            const price: Price = testManager.create(Price, {
+              currency_code: "EUR",
+              amount: 100,
+              price_set_id: "price-set-1",
+              title: "test",
+              rules_count: 0,
+            })
 
-            const psma: PriceSetMoneyAmount = testManager.create(
-              PriceSetMoneyAmount,
-              {
-                price_set: "price-set-1",
-                money_amount: ma.id,
-                title: "test",
-                rules_count: 0,
-              }
-            )
+            await testManager.persist(price).flush()
 
-            await testManager.persist(psma).flush()
+            await service.createPriceRules({
+              id: "price-rule-new",
+              price_set_id: "price-set-1",
+              rule_type_id: "rule-type-1",
+              value: "region_1",
+              price_list_id: "test",
+              price_id: price.id,
+            })
 
-            await service.createPriceRules([
-              {
-                id: "price-rule-new",
-                price_set_id: "price-set-1",
-                rule_type_id: "rule-type-1",
-                value: "region_1",
-                price_list_id: "test",
-                price_set_money_amount_id: psma.id,
-              } as unknown as CreatePriceRuleDTO,
-            ])
-
-            const [pricerule] = await service.listPriceRules({
+            const [priceRule] = await service.listPriceRules({
               id: ["price-rule-new"],
             })
 
-            expect(pricerule).toEqual(
+            expect(priceRule).toEqual(
               expect.objectContaining({
                 id: "price-rule-new",
-              } as unknown as CreatePriceRuleDTO)
+              })
             )
           })
         })

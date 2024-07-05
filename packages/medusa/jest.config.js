@@ -9,17 +9,11 @@ module.exports = {
   //      useCoverage ? `jest-junit` : []
   //    )
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
-  globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.spec.json",
-      isolatedModules: false,
-    },
-  },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": "@swc/jest",
   },
-  modulePathIgnorePatterns: ["__fixtures__"],
+  modulePathIgnorePatterns: ["__fixtures__", "node_modules", "dist"],
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 }

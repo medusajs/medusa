@@ -16,7 +16,9 @@ import {
 import { MedusaError, promiseAll, TransactionStepState } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import {
+  isErrorLike,
   PermanentStepFailureError,
+  serializeError,
   TransactionStepTimeoutError,
   TransactionTimeoutError,
 } from "./errors"
@@ -479,6 +481,10 @@ export class TransactionOrchestrator extends EventEmitter {
   ): Promise<void> {
     step.failures++
 
+    if (isErrorLike(error)) {
+      error = serializeError(error)
+    }
+
     if (
       !isTimeout &&
       step.getStates().status !== TransactionStepStatus.PERMANENT_FAILURE
@@ -631,27 +637,41 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction,
         })
 
+        const isAsync = step.isCompensating()
+          ? step.definition.compensateAsync
+          : step.definition.async
+
         const setStepFailure = async (
           error: Error | any,
           { endRetry }: { endRetry?: boolean } = {}
         ) => {
-          return TransactionOrchestrator.setStepFailure(
+          await TransactionOrchestrator.setStepFailure(
             transaction,
             step,
             error,
             endRetry ? 0 : step.definition.maxRetries
           )
-        }
 
-        const isAsync = step.isCompensating()
-          ? step.definition.compensateAsync
-          : step.definition.async
+          if (isAsync) {
+            await transaction.scheduleRetry(
+              step,
+              step.definition.retryInterval ?? 0
+            )
+          }
+        }
 
         if (!isAsync) {
           hasSyncSteps = true
           execution.push(
             transaction
-              .handler(step.definition.action + "", type, payload, transaction)
+              .handler(
+                step.definition.action + "",
+                type,
+                payload,
+                transaction,
+                step,
+                this
+              )
               .then(async (response: any) => {
                 if (this.hasExpired({ transaction, step }, Date.now())) {
                   await this.checkStepTimeout(transaction, step)
@@ -694,8 +714,37 @@ export class TransactionOrchestrator extends EventEmitter {
                   step.definition.action + "",
                   type,
                   payload,
-                  transaction
+                  transaction,
+                  step,
+                  this
                 )
+                .then(async (response: any) => {
+                  if (!step.definition.backgroundExecution) {
+                    const eventName = DistributedTransactionEvent.STEP_AWAITING
+                    transaction.emit(eventName, { step, transaction })
+
+                    return
+                  }
+
+                  if (this.hasExpired({ transaction, step }, Date.now())) {
+                    await this.checkStepTimeout(transaction, step)
+                    await this.checkTransactionTimeout(
+                      transaction,
+                      nextSteps.next.includes(step) ? nextSteps.next : [step]
+                    )
+                  }
+
+                  await TransactionOrchestrator.setStepSuccess(
+                    transaction,
+                    step,
+                    response
+                  )
+
+                  await transaction.scheduleRetry(
+                    step,
+                    step.definition.retryInterval ?? 0
+                  )
+                })
                 .catch(async (error) => {
                   if (
                     PermanentStepFailureError.isPermanentStepFailureError(error)
@@ -781,7 +830,7 @@ export class TransactionOrchestrator extends EventEmitter {
     if (flow.state === TransactionState.FAILED) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
-        `Cannot revert a perment failed transaction.`
+        `Cannot revert a permanent failed transaction.`
       )
     }
 

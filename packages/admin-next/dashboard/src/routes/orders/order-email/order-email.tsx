@@ -4,12 +4,15 @@ import { useTranslation } from "react-i18next"
 import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/route-modal"
 import { EditOrderEmailForm } from "./components/edit-order-email-form"
+import { orderExpand } from "../order-detail/constants"
 
 export const OrderEmail = () => {
   const { id } = useParams()
   const { t } = useTranslation()
 
-  const { order, isLoading, isError, error } = useAdminOrder(id!)
+  const { order, isLoading, isError, error } = useAdminOrder(id!, {
+    expand: orderExpand,
+  })
 
   const ready = !isLoading && order
 

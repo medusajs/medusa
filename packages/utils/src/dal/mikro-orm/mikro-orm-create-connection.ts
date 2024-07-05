@@ -1,6 +1,7 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { isString } from "../../common"
+import { FilterDef } from "@mikro-orm/core/typings"
 
 // Monkey patch due to the compilation version issue which prevents us from creating a proper class that extends the TSMigrationGenerator
 const originalCreateStatement = TSMigrationGenerator.prototype.createStatement
@@ -67,15 +68,22 @@ TSMigrationGenerator.prototype.createStatement = function (
 
 export { TSMigrationGenerator }
 
+export type Filter = {
+  name?: string
+} & Omit<FilterDef, "name">
+
 export async function mikroOrmCreateConnection(
-  database: ModuleServiceInitializeOptions["database"] & { connection?: any },
+  database: ModuleServiceInitializeOptions["database"] & {
+    connection?: any
+    filters?: Record<string, Filter>
+  },
   entities: any[],
   pathToMigrations: string
 ) {
   let schema = database.schema || "public"
 
   let driverOptions = database.driverOptions ?? {
-    connection: { ssl: true },
+    connection: { ssl: false },
   }
 
   let clientUrl = database.clientUrl
@@ -100,7 +108,9 @@ export async function mikroOrmCreateConnection(
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
+    filters: database.filters ?? {},
     migrations: {
+      disableForeignKeys: false,
       path: pathToMigrations,
       generator: TSMigrationGenerator,
       silent: !(
@@ -108,6 +118,9 @@ export async function mikroOrmCreateConnection(
         process.env.NODE_ENV?.startsWith("dev") ??
         false
       ),
+    },
+    schemaGenerator: {
+      disableForeignKeys: false
     },
     pool: database.pool as any,
   })

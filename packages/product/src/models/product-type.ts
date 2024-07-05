@@ -4,24 +4,34 @@ import {
   Filter,
   Index,
   OnInit,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { DAL } from "@medusajs/types"
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  Searchable,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+const typeValueIndexName = "IDX_type_value_unique"
+const typeValueIndexStatement = createPsqlIndexStatementHelper({
+  name: typeValueIndexName,
+  tableName: "product_type",
+  columns: ["value"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+typeValueIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_type" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductType {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   value: string
 
@@ -48,12 +58,8 @@ class ProductType {
   deleted_at?: Date
 
   @OnInit()
-  onInit() {
-    this.id = generateEntityId(this.id, "ptyp")
-  }
-
   @BeforeCreate()
-  onCreate() {
+  onInit() {
     this.id = generateEntityId(this.id, "ptyp")
   }
 }

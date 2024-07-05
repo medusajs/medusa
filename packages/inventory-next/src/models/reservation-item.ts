@@ -97,11 +97,11 @@ export class ReservationItem {
 
   @BeforeCreate()
   private beforeCreate(): void {
-    this.id = generateEntityId(this.id, "ilev")
+    this.id = generateEntityId(this.id, "resitem")
   }
 
   @OnInit()
   private onInit(): void {
-    this.id = generateEntityId(this.id, "ilev")
+    this.id = generateEntityId(this.id, "resitem")
   }
 }

@@ -20,6 +20,7 @@ import { Link } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
+import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
 type OrderFulfillmentSectionProps = {
@@ -265,6 +266,15 @@ const Fulfillment = ({
           )}
         </div>
       )}
+      <div className="text-ui-fg-subtle grid grid-cols-2 items-center px-6 py-4">
+        <Text size="small" leading="compact" weight="plus">
+          {t("fields.provider")}
+        </Text>
+
+        <Text size="small" leading="compact">
+          {formatProvider(fulfillment.provider_id)}
+        </Text>
+      </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
           {t("orders.fulfillment.trackingLabel")}

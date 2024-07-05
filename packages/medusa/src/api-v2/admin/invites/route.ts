@@ -7,32 +7,27 @@ import {
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
-import { CreateInviteDTO } from "@medusajs/types"
 import { createInvitesWorkflow } from "@medusajs/core-flows"
+import { AdminCreateInviteType, AdminGetInvitesParamsType } from "./validators"
+import { refetchInvite } from "./helpers"
 
-// List invites
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminGetInvitesParamsType>,
   res: MedusaResponse
 ) => {
   const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
-
-  const query = remoteQueryObjectFromString({
+  const queryObject = remoteQueryObjectFromString({
     entryPoint: "invite",
     variables: {
       filters: req.filterableFields,
-      order: req.listConfig.order,
-      skip: req.listConfig.skip,
-      take: req.listConfig.take,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: req.listConfig.select as string[],
+    fields: req.remoteQueryConfig.fields,
   })
 
-  const { rows: invites, metadata } = await remoteQuery({
-    ...query,
-  })
+  const { rows: invites, metadata } = await remoteQuery(queryObject)
 
-  res.status(200).json({
+  res.json({
     invites,
     count: metadata.count,
     offset: metadata.skip,
@@ -40,9 +35,8 @@ export const GET = async (
   })
 }
 
-// Create invite
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateInviteDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateInviteType>,
   res: MedusaResponse
 ) => {
   const workflow = createInvitesWorkflow(req.scope)
@@ -54,7 +48,11 @@ export const POST = async (
   }
 
   const { result } = await workflow.run(input)
+  const invite = await refetchInvite(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
 
-  const [invite] = result
   res.status(200).json({ invite })
 }

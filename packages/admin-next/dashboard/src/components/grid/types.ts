@@ -5,7 +5,7 @@ export type DataGridMeta<TFieldValues extends FieldValues = FieldValues> = {
   control: Control<TFieldValues>
 }
 
-export interface FieldProps<TFieldValues extends FieldValues = FieldValues> {
+export interface CellProps<TFieldValues extends FieldValues = FieldValues> {
   field: Path<TFieldValues>
   meta: DataGridMeta<TFieldValues>
 }

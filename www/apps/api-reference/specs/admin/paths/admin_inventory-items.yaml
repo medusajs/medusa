@@ -41,6 +41,11 @@ get:
       schema:
         type: string
     - in: query
+      name: order
+      description: Field to sort-order inventory items by.
+      schema:
+        type: string
+    - in: query
       name: location_id
       style: form
       explode: false

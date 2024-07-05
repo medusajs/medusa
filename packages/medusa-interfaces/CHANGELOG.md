@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.9
+
+### Patch Changes
+
+- [#6700](https://github.com/medusajs/medusa/pull/6700) [`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Version all modules to allow for initial testing
+
 ## 1.3.8
 
 ### Patch Changes

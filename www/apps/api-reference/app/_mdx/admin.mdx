@@ -1,11 +1,8 @@
 import { Feedback, CodeTabs, CodeTab } from "docs-ui"
 import SectionContainer from "@/components/Section/Container"
 import formatReportLink from "@/utils/format-report-link"
-import VersionNote from "@/components/VersionNote"
 
 <SectionContainer noTopPadding={true}>
-
-<VersionNote />
 
 This API reference includes Medusa's Admin APIs, which are REST APIs exposed by the Medusa backend. They are typically used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
 
@@ -322,21 +319,24 @@ const App = () => {
 
 <SectionContainer noTopPadding={true}>
 
-## Expanding Fields
+## Expanding Relations
 
-In many API Routes you'll find an `expand` query parameter that can be passed
-to the API Route. You can use the `expand` query parameter to unpack an
+Many API Routes accept an `expand` that unpacks an
 entity's relations and return them in the response.
 
 
-Please note that the relations you pass to `expand` replace any relations
+<Note type="warning">
+
+The relations you pass to `expand` replace any relations
 that are expanded by default in the request.
+
+</Note>
 
 
 ### Expanding One Relation
 
 
-For example, when you retrieve products, you can retrieve their collection
+For example, when you retrieve products, retrieve their collection
 by passing to the `expand` query parameter the value `collection`:
 
 <CodeTabs group="clients">
@@ -390,7 +390,7 @@ by passing to the `expand` query parameter the value `collection`:
 ### Expanding Multiple Relations
 
 
-You can expand more than one relation by separating the relations in the
+Expand more than one relation by separating the relations in the
 `expand` query parameter with a comma.
 
 
@@ -429,6 +429,62 @@ pass to the `expand` query parameter the value `variants,collection`:
     const Products = () => {
       const { products, isLoading } = useAdminProducts({
         expand: "variants,collection"
+      })
+
+      return (
+        <div>
+          {/** ... **/}
+        </div>
+      )
+    }
+
+    export default Products
+    ```
+
+  </CodeTab>
+</CodeTabs>
+
+### Expanding Nested Relations
+
+
+Expand nested relations (the relations of a relation) using dot notation.
+
+
+For example, to retrieve the variants of a product along with its option values,
+pass to the `expand` query parameter `variants.options`:
+
+<CodeTabs group="clients">
+  <CodeTab label="cURL" value="curl">
+    
+    ```bash
+    curl "http://localhost:9000/admin/products?expand=variants.options" \
+        -H 'x-medusa-access-token: {api_token}'
+    ```
+
+  </CodeTab>
+  <CodeTab label="Medusa JS Client" value="js-client">
+    
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+    // must be previously logged in or use api token
+    medusa.admin.products.list({
+      expand: "variants.options"
+    })
+    .then(({ products, limit, offset, count }) => {
+      console.log(products.length);
+    });
+    ```
+
+  </CodeTab>
+  <CodeTab label="Medusa React" value="medusa-react">
+    
+    ```tsx
+    import { useAdminProducts } from "medusa-react"
+
+    const Products = () => {
+      const { products, isLoading } = useAdminProducts({
+        expand: "variants.options"
       })
 
       return (

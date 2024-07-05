@@ -1,4 +1,4 @@
-import { ExclamationCircle, MagnifyingGlass } from "@medusajs/icons"
+import { ExclamationCircle, MagnifyingGlass, PlusMini } from "@medusajs/icons"
 import { Button, Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -32,21 +32,44 @@ export const NoResults = ({ title, message, className }: NoResultsProps) => {
   )
 }
 
-type NoRecordsProps = {
-  title?: string
-  message?: string
+type ActionProps = {
   action?: {
     to: string
     label: string
   }
-  className?: string
 }
+
+type NoRecordsProps = {
+  title?: string
+  message?: string
+  className?: string
+  buttonVariant?: string
+} & ActionProps
+
+const DefaultButton = ({ action }: ActionProps) =>
+  action && (
+    <Link to={action.to}>
+      <Button variant="secondary" size="small">
+        {action.label}
+      </Button>
+    </Link>
+  )
+
+const TransparentIconLeftButton = ({ action }: ActionProps) =>
+  action && (
+    <Link to={action.to}>
+      <Button variant="transparent" className="text-ui-fg-interactive">
+        <PlusMini /> {action.label}
+      </Button>
+    </Link>
+  )
 
 export const NoRecords = ({
   title,
   message,
   action,
   className,
+  buttonVariant = "default",
 }: NoRecordsProps) => {
   const { t } = useTranslation()
 
@@ -59,19 +82,19 @@ export const NoRecords = ({
     >
       <div className="flex flex-col items-center gap-y-2">
         <ExclamationCircle />
+
         <Text size="small" leading="compact" weight="plus">
           {title ?? t("general.noRecordsTitle")}
         </Text>
+
         <Text size="small" className="text-ui-fg-muted">
           {message ?? t("general.noRecordsMessage")}
         </Text>
       </div>
-      {action && (
-        <Link to={action.to}>
-          <Button variant="secondary" size="small">
-            {action.label}
-          </Button>
-        </Link>
+
+      {buttonVariant === "default" && <DefaultButton action={action} />}
+      {buttonVariant === "transparentIconLeft" && (
+        <TransparentIconLeftButton action={action} />
       )}
     </div>
   )

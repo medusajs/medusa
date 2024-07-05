@@ -78,7 +78,6 @@ medusaIntegrationTestRunner({
               ends_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
                 type: "spend",
                 limit: 1000,
                 used: 0,
@@ -108,7 +107,6 @@ medusaIntegrationTestRunner({
               ends_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
                 type: "usage",
                 limit: 1000,
                 used: 0,
@@ -132,6 +130,20 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should support search on campaigns", async () => {
+        const response = await api.get(
+          `/admin/campaigns?q=ign%202`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.campaigns).toEqual([
+          expect.objectContaining({
+            name: "campaign 2",
+          }),
+        ])
+      })
+
       it("should get all campaigns and its count filtered", async () => {
         const response = await api.get(
           `/admin/campaigns?fields=name,created_at,budget.id`,
@@ -148,7 +160,6 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
               },
             },
             {
@@ -157,7 +168,6 @@ medusaIntegrationTestRunner({
               created_at: expect.any(String),
               budget: {
                 id: expect.any(String),
-                campaign: expect.any(Object),
               },
             },
           ])

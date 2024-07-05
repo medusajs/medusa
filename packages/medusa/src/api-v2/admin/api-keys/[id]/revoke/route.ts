@@ -1,24 +1,22 @@
+import { revokeApiKeysWorkflow } from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../../types/routing"
-
-import { RevokeApiKeyDTO } from "@medusajs/types"
-import { revokeApiKeysWorkflow } from "@medusajs/core-flows"
+import { AdminRevokeApiKeyType } from "../../validators"
+import { refetchApiKey } from "../../helpers"
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<AdminRevokeApiKeyType>,
   res: MedusaResponse
 ) => {
-  const id = req.params.id
-
-  const { result, errors } = await revokeApiKeysWorkflow(req.scope).run({
+  const { errors } = await revokeApiKeysWorkflow(req.scope).run({
     input: {
       selector: { id: req.params.id },
       revoke: {
-        ...(req.validatedBody as Omit<RevokeApiKeyDTO, "revoked_by">),
+        ...req.validatedBody,
         revoked_by: req.auth.actor_id,
-      } as RevokeApiKeyDTO,
+      },
     },
     throwOnError: false,
   })
@@ -27,5 +25,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ apiKey: result[0] })
+  const apiKey = await refetchApiKey(
+    req.params.id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ api_key: apiKey })
 }

@@ -4,6 +4,7 @@ import { IFulfillmentModuleService } from "@medusajs/types"
 
 export * from "./shipping-options"
 export * from "./fulfillment"
+export * from "./events"
 
 export async function createFullDataStructure(
   service: IFulfillmentModuleService,

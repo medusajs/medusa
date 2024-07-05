@@ -55,6 +55,32 @@ describe("module definitions loader", () => {
     )
   })
 
+  it("Resolves a custom module without pre-defined definition", () => {
+    const res = registerMedusaModule("customModulesABC", {
+      options: {
+        test: 123,
+      },
+    })
+
+    expect(res).toEqual({
+      customModulesABC: expect.objectContaining({
+        resolutionPath: "@medusajs/test-service-resolved",
+        definition: expect.objectContaining({
+          key: "customModulesABC",
+          label: "Custom: customModulesABC",
+          registrationName: "customModulesABC",
+        }),
+        moduleDeclaration: {
+          resources: "shared",
+          scope: "internal",
+        },
+        options: {
+          test: 123,
+        },
+      }),
+    })
+  })
+
   describe("boolean config", () => {
     it("Resolves module with no resolution path when given false", () => {
       Object.assign(ModulesDefinition, {

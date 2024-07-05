@@ -1,39 +1,42 @@
 import {
   AuthenticatedMedusaRequest,
-  MedusaRequest,
   MedusaResponse,
 } from "../../../types/routing"
-import { CreateCustomerGroupDTO, ICustomerModuleService } from "@medusajs/types"
-
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { createCustomerGroupsWorkflow } from "@medusajs/core-flows"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { AdminCreateCustomerGroupType } from "./validators"
+import { refetchCustomerGroup } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  const customerModuleService = req.scope.resolve<ICustomerModuleService>(
-    ModuleRegistrationName.CUSTOMER
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
-  const [groups, count] =
-    await customerModuleService.listAndCountCustomerGroups(
-      req.filterableFields,
-      req.listConfig
-    )
+  const query = remoteQueryObjectFromString({
+    entryPoint: "customer_group",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const { offset, limit } = req.validatedQuery
+  const { rows: customer_groups, metadata } = await remoteQuery(query)
 
   res.json({
-    count,
-    customer_groups: groups,
-    offset,
-    limit,
+    customer_groups,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<CreateCustomerGroupDTO>,
+  req: AuthenticatedMedusaRequest<AdminCreateCustomerGroupType>,
   res: MedusaResponse
 ) => {
   const createGroups = createCustomerGroupsWorkflow(req.scope)
@@ -53,5 +56,11 @@ export const POST = async (
     throw errors[0].error
   }
 
-  res.status(200).json({ customer_group: result[0] })
+  const customerGroup = await refetchCustomerGroup(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
+  res.status(200).json({ customer_group: customerGroup })
 }

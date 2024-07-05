@@ -5,6 +5,7 @@ import { Container, Copy, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useAdminReservations } from "medusa-react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
+import { Divider } from "../../../../../components/common/divider"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
 import {
   getLocaleAmount,
@@ -47,6 +48,69 @@ const Header = () => {
           },
         ]}
       />
+    </div>
+  )
+}
+
+const CustomItem = ({
+  item,
+  currencyCode,
+  reservation,
+}: {
+  item: {
+    id: string
+    title: string
+    unit_price: number
+    subtotal: number
+    quantity: number
+  }
+  currencyCode: string
+  reservation?: ReservationItemDTO | null
+}) => {
+  const { t } = useTranslation()
+
+  return (
+    <div
+      key={item.id}
+      className="text-ui-fg-subtle grid grid-cols-2 items-start gap-x-4 px-6 py-4"
+    >
+      <Text
+        size="small"
+        leading="compact"
+        weight="plus"
+        className="text-ui-fg-base"
+      >
+        {item.title}
+      </Text>
+      <div className="grid grid-cols-3 items-center gap-x-4">
+        <div className="flex items-center justify-end gap-x-4">
+          <Text size="small">
+            {getLocaleAmount(item.unit_price, currencyCode)}
+          </Text>
+        </div>
+        <div className="flex items-center gap-x-2">
+          <div className="w-fit min-w-[27px]">
+            <Text>
+              <span className="tabular-nums">{item.quantity}</span>x
+            </Text>
+          </div>
+          <div className="overflow-visible">
+            <StatusBadge
+              color={reservation ? "green" : "orange"}
+              className="text-nowrap"
+            >
+              {reservation
+                ? t("orders.reservations.allocatedLabel")
+                : t("orders.reservations.notAllocatedLabel")}
+            </StatusBadge>
+          </div>
+        </div>
+        <div className="flex items-center justify-end">
+          <Text size="small">
+            {getLocaleAmount(item.subtotal || 0, currencyCode)}
+          </Text>
+        </div>
+      </div>
     </div>
   )
 }
@@ -129,9 +193,19 @@ const ItemBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
     throw error
   }
 
+  const variantBasedItems = draftOrder.cart.items.filter(
+    (i) => i.variant_id !== null
+  )
+
+  const customItems = draftOrder.cart.items.filter((i) => i.variant_id === null)
+
+  const showDivider = variantBasedItems.length > 0 && customItems.length > 0
+
+  console.log("customItems", customItems)
+
   return (
     <div>
-      {draftOrder.cart.items.map((item) => {
+      {variantBasedItems.map((item) => {
         const reservation = reservations
           ? reservations.find((r) => r.line_item_id === item.id)
           : null
@@ -140,6 +214,27 @@ const ItemBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
           <Item
             key={item.id}
             item={item}
+            currencyCode={draftOrder.cart.region.currency_code}
+            reservation={reservation}
+          />
+        )
+      })}
+      {showDivider && <Divider variant="dashed" />}
+      {customItems.map((item) => {
+        const reservation = reservations
+          ? reservations.find((r) => r.line_item_id === item.id)
+          : null
+
+        return (
+          <CustomItem
+            key={item.id}
+            item={{
+              id: item.id,
+              title: item.title,
+              unit_price: item.unit_price,
+              subtotal: item.unit_price * item.quantity,
+              quantity: item.quantity,
+            }}
             currencyCode={draftOrder.cart.region.currency_code}
             reservation={reservation}
           />
@@ -194,7 +289,7 @@ const CostBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
   const { t } = useTranslation()
 
   // Calculate tax rate since it's not included in the cart
-  const taxRate = calculateCartTaxRate(draftOrder.cart)
+  const taxRate = calculateCartTaxRate(draftOrder.cart).toFixed(2)
 
   return (
     <div className="text-ui-fg-subtle flex flex-col gap-y-2 px-6 py-4">
@@ -236,7 +331,7 @@ const CostBreakdown = ({ draftOrder }: { draftOrder: DraftOrder }) => {
       />
       <Cost
         label={t("fields.tax")}
-        secondaryValue={`${taxRate || 0}%`}
+        secondaryValue={`${taxRate || 0} %`}
         value={
           draftOrder.cart.tax_total
             ? getLocaleAmount(

@@ -24,7 +24,7 @@ const run = async () => {
 }
 
 const generateOASSource = async (outDir, apiType) => {
-  const commandParams = ["oas", `--type=${apiType}`, `--out-dir=${outDir}`]
+  const commandParams = ["oas", `--type=${apiType}`, `--out-dir=${outDir}`, "--local"]
   if (v2) {
     commandParams.push(`--v2`)
   }

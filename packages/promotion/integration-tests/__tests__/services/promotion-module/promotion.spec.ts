@@ -958,7 +958,6 @@ moduleIntegrationTestRunner({
               code: "PROMOTION_1",
               application_method: {
                 id: expect.any(String),
-                promotion: expect.any(Object),
                 type: "fixed",
               },
             },

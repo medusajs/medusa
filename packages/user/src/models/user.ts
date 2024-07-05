@@ -14,6 +14,7 @@ import {
   DALUtils,
   createPsqlIndexStatementHelper,
   generateEntityId,
+  Searchable,
 } from "@medusajs/utils"
 
 const userEmailIndexName = "IDX_user_email"
@@ -47,17 +48,20 @@ export default class User {
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   first_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   last_name: string | null = null
 
-  @Property({ columnType: "text" })
   @Index({
     name: userEmailIndexName,
     expression: userEmailIndexStatement,
   })
+  @Searchable()
+  @Property({ columnType: "text" })
   email: string
 
   @Property({ columnType: "text", nullable: true })

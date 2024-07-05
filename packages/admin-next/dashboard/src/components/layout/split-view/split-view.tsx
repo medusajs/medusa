@@ -1,16 +1,12 @@
 import { Button, clx } from "@medusajs/ui"
-import { AnimatePresence, motion } from "framer-motion"
+import * as Dialog from "@radix-ui/react-dialog"
 import {
   ComponentPropsWithoutRef,
   PropsWithChildren,
   createContext,
   useContext,
   useRef,
-  useState,
 } from "react"
-import FocusLock from "react-focus-lock"
-
-import { useMediaQuery } from "../../../hooks/use-media-query"
 
 type SplitViewContextValue = {
   open: boolean
@@ -34,136 +30,66 @@ type SplitViewProps = PropsWithChildren<{
   onOpenChange?: (open: boolean) => void
 }>
 
-const Root = ({
-  open: controlledOpen,
-  onOpenChange,
-  children,
-}: SplitViewProps) => {
+const Root = ({ open, onOpenChange, children }: SplitViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const isControlled = controlledOpen !== undefined
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
-
-  const open = isControlled ? controlledOpen : uncontrolledOpen
-
-  const handleOpenChange = (newOpen: boolean) => {
-    if (!isControlled) {
-      setUncontrolledOpen(newOpen)
-    }
-
-    if (onOpenChange) {
-      onOpenChange(newOpen)
-    }
-  }
-
   return (
-    <SplitViewContext.Provider value={{ open, onOpenChange: handleOpenChange }}>
-      <div
-        ref={containerRef}
-        className="relative flex size-full overflow-hidden"
-      >
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <div ref={containerRef} className="relative size-full overflow-hidden">
         {children}
       </div>
-    </SplitViewContext.Provider>
+    </Dialog.Root>
   )
 }
 
-const Content = ({ children }: PropsWithChildren) => {
-  const { open, onOpenChange } = useSplitViewContext()
-  const isLargeScreenSize = useMediaQuery("(min-width: 1024px)")
-
-  const contentWidth = !isLargeScreenSize ? "100%" : open ? "50%" : "100%"
-
+const Content = ({
+  children,
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"div">) => {
   return (
-    <motion.div
-      initial={{ width: "100%" }}
-      animate={{ width: contentWidth }}
-      transition={isLargeScreenSize ? { duration: 0.3 } : undefined}
-      className="relative h-full overflow-y-auto"
+    <div
+      className={clx("relative h-full overflow-y-auto", className)}
+      {...props}
     >
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="bg-ui-bg-base absolute inset-0 z-[1000] h-full cursor-pointer"
-            tabIndex={-1}
-            onClick={() => onOpenChange(false)}
-          />
-        )}
-      </AnimatePresence>
-
       {children}
-    </motion.div>
+    </div>
   )
 }
-
-const MotionFocusLock = motion(FocusLock)
 
 const Drawer = ({ children }: PropsWithChildren) => {
-  const { open } = useSplitViewContext()
-  const isLargeScreenSize = useMediaQuery("(min-width: 1024px)")
-
   return (
-    <AnimatePresence mode={isLargeScreenSize ? "popLayout" : undefined}>
-      {open && (
-        <MotionFocusLock
-          key="drawer"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.3 }}
-          className={clx(
-            "bg-ui-bg-base absolute right-0 top-0 z-[9999] flex h-full w-4/5 overflow-hidden border-l lg:static lg:z-auto lg:w-1/2"
-          )}
-        >
-          {children}
-        </MotionFocusLock>
-      )}
-    </AnimatePresence>
+    <div>
+      <Dialog.Overlay
+        className={clx(
+          "bg-ui-bg-base absolute inset-0 opacity-40",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
+        )}
+      />
+      <Dialog.Content
+        className={clx(
+          "bg-ui-bg-base border-ui-border-base absolute inset-y-0 right-0 flex w-full max-w-[calc(100%-128px)] flex-1 flex-col border-l focus:outline-none md:max-w-[80%] lg:max-w-[50%]",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-1/2 data-[state=open]:slide-in-from-right-1/2 duration-200"
+        )}
+      >
+        {children}
+      </Dialog.Content>
+    </div>
   )
 }
 
 const Close = ({
   variant = "secondary",
   size = "small",
-  onClick,
   children,
   ...props
 }: ComponentPropsWithoutRef<typeof Button>) => {
-  const { onOpenChange } = useSplitViewContext()
-  const handleClick = onClick ?? (() => onOpenChange(false))
-
   return (
-    <Button size={size} variant={variant} onClick={handleClick} {...props}>
-      {children}
-    </Button>
-  )
-}
-
-const Open = ({
-  variant = "secondary",
-  size = "small",
-  onClick,
-  children,
-  ...props
-}: ComponentPropsWithoutRef<typeof Button>) => {
-  const { onOpenChange } = useSplitViewContext()
-  const handleClick = onClick ?? (() => onOpenChange(true))
-
-  return (
-    <Button
-      id="split-view-open"
-      size={size}
-      variant={variant}
-      onClick={handleClick}
-      {...props}
-    >
-      {children}
-    </Button>
+    <Dialog.Close asChild>
+      <Button size={size} variant={variant} {...props}>
+        {children}
+      </Button>
+    </Dialog.Close>
   )
 }
 
@@ -174,5 +100,4 @@ export const SplitView = Object.assign(Root, {
   Content,
   Drawer,
   Close,
-  Open,
 })

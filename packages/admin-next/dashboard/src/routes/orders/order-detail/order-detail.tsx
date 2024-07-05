@@ -1,6 +1,7 @@
 import { useAdminOrder } from "medusa-react"
 import { Outlet, useLoaderData, useParams } from "react-router-dom"
 import { JsonViewSection } from "../../../components/common/json-view-section"
+import { OrderActivitySection } from "./components/order-activity-section"
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
@@ -33,19 +34,21 @@ export const OrderDetail = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-x-4 xl:grid-cols-[1fr,400px]">
-      <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-x-4 xl:flex-row xl:items-start">
+      <div className="flex w-full flex-col gap-y-2">
         <OrderGeneralSection order={order} />
         <OrderSummarySection order={order} />
         <OrderPaymentSection order={order} />
         <OrderFulfillmentSection order={order} />
-        <div className="flex flex-col gap-y-2 lg:hidden">
+        <div className="flex flex-col gap-y-2 xl:hidden">
           <OrderCustomerSection order={order} />
+          <OrderActivitySection order={order} />
         </div>
         <JsonViewSection data={order} />
       </div>
-      <div className="hidden flex-col gap-y-2 lg:flex">
+      <div className="hidden w-full max-w-[400px] flex-col gap-y-2 xl:flex">
         <OrderCustomerSection order={order} />
+        <OrderActivitySection order={order} />
       </div>
       <Outlet />
     </div>

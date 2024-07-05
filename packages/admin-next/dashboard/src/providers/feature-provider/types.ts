@@ -5,12 +5,12 @@ const featureFlags = [
   "publishable_api_keys",
   "sales_channels",
   "tax_inclusive_pricing",
-] as const;
+] as const
 
-type FeatureFlag = (typeof featureFlags)[number];
+type FeatureFlag = (typeof featureFlags)[number]
 
-const modules = ["inventory"] as const;
+const modules = ["inventory"] as const
 
-type Module = (typeof modules)[number];
+type Module = (typeof modules)[number]
 
-export type Feature = FeatureFlag | Module;
+export type Feature = FeatureFlag | Module

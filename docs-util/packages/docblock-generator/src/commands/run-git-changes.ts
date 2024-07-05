@@ -40,7 +40,7 @@ export default async function runGitChanges({
       ...options,
     })
 
-    oasGenerator.run()
+    await oasGenerator.run()
   }
 
   console.log(`Finished generating docs for ${files.length} files.`)

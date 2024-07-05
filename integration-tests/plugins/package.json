@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --runInBand --bail --detectOpenHandles --logHeapUsage --clearMocks --forceExit",
+    "test:integration": "jest --silent=false  --maxWorkers=50% --bail --detectOpenHandles --clearMocks --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -40,6 +40,8 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@medusajs/types": "workspace:^",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "babel-preset-medusa-package": "*",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"

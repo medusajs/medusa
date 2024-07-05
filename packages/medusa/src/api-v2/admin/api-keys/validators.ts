@@ -1,82 +1,44 @@
-import { OperatorMap } from "@medusajs/types"
-import { Type } from "class-transformer"
+import { z } from "zod"
 import {
-  IsArray,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
-import { FindParams, extendedFindParamsMixin } from "../../../types/common"
-import { OperatorMapValidator } from "../../../types/validators/operator-map"
+  createFindParams,
+  createOperatorMap,
+  createSelectParams,
+} from "../../utils/validators"
 import { ApiKeyType } from "@medusajs/utils"
 
-export class AdminGetApiKeysApiKeyParams extends FindParams {}
-/**
- * Parameters used to filter and configure the pagination of the retrieved api keys.
- */
-export class AdminGetApiKeysParams extends extendedFindParamsMixin({
-  limit: 50,
+export const AdminGetApiKeyParams = createSelectParams()
+
+export type AdminGetApiKeysParamsType = z.infer<typeof AdminGetApiKeysParams>
+export const AdminGetApiKeysParams = createFindParams({
   offset: 0,
-}) {
-  /**
-   * Search parameter for api keys.
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  id?: string | string[]
+  limit: 50,
+}).merge(
+  z.object({
+    q: z.string().optional(),
+    id: z.union([z.string(), z.array(z.string())]).optional(),
+    title: z.union([z.string(), z.array(z.string())]).optional(),
+    token: z.union([z.string(), z.array(z.string())]).optional(),
+    type: z.nativeEnum(ApiKeyType).optional(),
+    created_at: createOperatorMap().optional(),
+    updated_at: createOperatorMap().optional(),
+    deleted_at: createOperatorMap().optional(),
+    $and: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
+    $or: z.lazy(() => AdminGetApiKeysParams.array()).optional(),
+  })
+)
 
-  /**
-   * Filter by title
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  title?: string | string[]
+export type AdminCreateApiKeyType = z.infer<typeof AdminCreateApiKey>
+export const AdminCreateApiKey = z.object({
+  title: z.string(),
+  type: z.nativeEnum(ApiKeyType),
+})
 
-  /**
-   * Filter by token
-   */
-  @IsString({ each: true })
-  @IsOptional()
-  token?: string | string[]
+export type AdminUpdateApiKeyType = z.infer<typeof AdminUpdateApiKey>
+export const AdminUpdateApiKey = z.object({
+  title: z.string(),
+})
 
-  /**
-   * Filter by type
-   */
-  @IsEnum(ApiKeyType, { each: true })
-  @IsOptional()
-  type?: ApiKeyType
-
-  // Additional filters from BaseFilterable
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetApiKeysParams)
-  $and?: AdminGetApiKeysParams[]
-
-  @IsOptional()
-  @ValidateNested({ each: true })
-  @Type(() => AdminGetApiKeysParams)
-  $or?: AdminGetApiKeysParams[]
-}
-
-export class AdminPostApiKeysReq {
-  @IsString()
-  title: string
-
-  @IsEnum(ApiKeyType, {})
-  type: ApiKeyType
-}
-
-export class AdminPostApiKeysApiKeyReq {
-  @IsString()
-  title: string
-}
-
-export class AdminRevokeApiKeysApiKeyReq {
-  @IsOptional()
-  @IsNumber()
-  revoke_in?: number
-}
-
-export class AdminDeleteApiKeysApiKeyReq {}
+export type AdminRevokeApiKeyType = z.infer<typeof AdminRevokeApiKey>
+export const AdminRevokeApiKey = z.object({
+  revoke_in: z.number().optional(),
+})

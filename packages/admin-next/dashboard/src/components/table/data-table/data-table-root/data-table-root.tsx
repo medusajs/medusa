@@ -182,6 +182,7 @@ export const DataTableRoot = <TData,>({
               {table.getRowModel().rows.map((row) => {
                 const to = navigateTo ? navigateTo(row) : undefined
                 const isRowDisabled = hasSelect && !row.getCanSelect()
+
                 return (
                   <Table.Row
                     key={row.id}
@@ -192,7 +193,8 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "bg-ui-bg-subtle hover:bg-ui-bg-subtle": isRowDisabled,
+                        "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
+                          isRowDisabled,
                       }
                     )}
                     onClick={to ? () => navigate(to) : undefined}
@@ -211,6 +213,15 @@ export const DataTableRoot = <TData,>({
 
                       const isStickyCell = isSelectCell || isFirstCell
 
+                      /**
+                       * If the table has nested rows, we need to offset the cell padding
+                       * to indicate the depth of the row.
+                       */
+                      const depthOffset =
+                        row.depth > 0 && isFirstCell
+                          ? row.depth * 14 + 24
+                          : undefined
+
                       return (
                         <Table.Cell
                           key={cell.id}
@@ -221,9 +232,14 @@ export const DataTableRoot = <TData,>({
                               isStickyCell && hasSelect && !isSelectCell,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "bg-ui-bg-subtle hover:bg-ui-bg-subtle":
+                            "!bg-ui-bg-disabled !hover:bg-ui-bg-disabled":
                               isRowDisabled,
                           })}
+                          style={{
+                            paddingLeft: depthOffset
+                              ? `${depthOffset}px`
+                              : undefined,
+                          }}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

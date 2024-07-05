@@ -202,8 +202,8 @@ export interface PaymentProcessor {
    *
    * @example
    * import {
-   *   PaymentContext,
-   *   PaymentSessionResponse,
+   *   PaymentProcessorContext,
+   *   PaymentProcessorSessionResponse,
    *   // ...
    * } from "@medusajs/medusa"
    *
@@ -677,13 +677,13 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
   ) {}
 
   /**
-  * @ignore
-  */
+   * @ignore
+   */
   static _isPaymentProcessor = true
 
   /**
-  * @ignore
-  */
+   * @ignore
+   */
   static isPaymentProcessor(object): boolean {
     return object?.constructor?._isPaymentProcessor
   }

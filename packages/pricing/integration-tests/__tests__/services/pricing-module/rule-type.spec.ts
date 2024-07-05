@@ -1,8 +1,9 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { moduleIntegrationTestRunner, SuiteOptions } from "medusa-test-utils"
 import { Modules } from "@medusajs/modules-sdk"
 import { IPricingModuleService } from "@medusajs/types"
+
+jest.setTimeout(30000)
 
 moduleIntegrationTestRunner({
   moduleName: Modules.PRICING,

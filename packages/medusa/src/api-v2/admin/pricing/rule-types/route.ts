@@ -1,42 +1,44 @@
 import { createPricingRuleTypesWorkflow } from "@medusajs/core-flows"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IPricingModuleService } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
 } from "../../../../types/routing"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { defaultAdminPricingRuleTypeFields } from "../query-config"
 import {
-  AdminGetPricingRuleTypesParams,
-  AdminPostPricingRuleTypesReq,
+  AdminCreatePricingRuleTypeType,
+  AdminGetPricingRuleTypesParamsType,
 } from "../validators"
+import {
+  ContainerRegistrationKeys,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { refetchRuleType } from "../helpers"
 
 export const GET = async (
-  req: AuthenticatedMedusaRequest<AdminGetPricingRuleTypesParams>,
+  req: AuthenticatedMedusaRequest<AdminGetPricingRuleTypesParamsType>,
   res: MedusaResponse
 ) => {
-  const pricingModule: IPricingModuleService = req.scope.resolve(
-    ModuleRegistrationName.PRICING
-  )
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const queryObject = remoteQueryObjectFromString({
+    entryPoint: "rule_type",
+    variables: {
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
+    },
+    fields: req.remoteQueryConfig.fields,
+  })
 
-  const [ruleTypes, count] = await pricingModule.listAndCountRuleTypes(
-    req.filterableFields,
-    req.listConfig
-  )
-
-  const { limit, offset } = req.validatedQuery
+  const { rows: rule_types, metadata } = await remoteQuery(queryObject)
 
   res.json({
-    count,
-    rule_types: ruleTypes,
-    offset,
-    limit,
+    rule_types: rule_types,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
   })
 }
 
 export const POST = async (
-  req: AuthenticatedMedusaRequest<AdminPostPricingRuleTypesReq>,
+  req: AuthenticatedMedusaRequest<AdminCreatePricingRuleTypeType>,
   res: MedusaResponse
 ) => {
   const workflow = createPricingRuleTypesWorkflow(req.scope)
@@ -51,7 +53,13 @@ export const POST = async (
     throw errors[0].error
   }
 
+  const ruleType = await refetchRuleType(
+    result[0].id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+
   res.status(200).json({
-    rule_type: cleanResponseData(result[0], defaultAdminPricingRuleTypeFields),
+    rule_type: ruleType,
   })
 }

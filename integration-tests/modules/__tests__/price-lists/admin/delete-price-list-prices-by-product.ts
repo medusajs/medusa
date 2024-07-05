@@ -4,10 +4,10 @@ import {
 } from "../../../../factories"
 
 import { IPricingModuleService } from "@medusajs/types"
+import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
-import { medusaIntegrationTestRunner } from "medusa-test-utils"
 
 jest.setTimeout(50000)
 
@@ -100,11 +100,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete prices in batch based on product ids", async () => {
-        let priceSetMoneyAmounts =
-          await pricingModuleService.listPriceSetMoneyAmounts({
-            price_set_id: [priceSet.id],
-          })
-        expect(priceSetMoneyAmounts.length).toEqual(2)
+        let prices = await pricingModuleService.listPrices({
+          price_set_id: [priceSet.id],
+        })
+        expect(prices.length).toEqual(2)
 
         const deleteRes = await api.delete(
           `/admin/price-lists/${priceListId}/products/prices/batch`,
@@ -117,13 +116,12 @@ medusaIntegrationTestRunner({
         )
         expect(deleteRes.status).toEqual(200)
 
-        priceSetMoneyAmounts =
-          await pricingModuleService.listPriceSetMoneyAmounts({
-            price_set_id: [priceSet.id],
-          })
+        prices = await pricingModuleService.listPrices({
+          price_set_id: [priceSet.id],
+        })
 
-        expect(priceSetMoneyAmounts.length).toEqual(1)
-        expect(priceSetMoneyAmounts).toEqual([
+        expect(prices.length).toEqual(1)
+        expect(prices).toEqual([
           expect.objectContaining({
             price_list: null,
           }),
@@ -131,11 +129,10 @@ medusaIntegrationTestRunner({
       })
 
       it("should delete prices based on single product id", async () => {
-        let priceSetMoneyAmounts =
-          await pricingModuleService.listPriceSetMoneyAmounts({
-            price_set_id: [priceSet.id],
-          })
-        expect(priceSetMoneyAmounts.length).toEqual(2)
+        let prices = await pricingModuleService.listPrices({
+          price_set_id: [priceSet.id],
+        })
+        expect(prices.length).toEqual(2)
 
         const deleteRes = await api.delete(
           `/admin/price-lists/${priceListId}/products/${product.id}/prices`,
@@ -143,13 +140,12 @@ medusaIntegrationTestRunner({
         )
         expect(deleteRes.status).toEqual(200)
 
-        priceSetMoneyAmounts =
-          await pricingModuleService.listPriceSetMoneyAmounts({
-            price_set_id: [priceSet.id],
-          })
+        prices = await pricingModuleService.listPrices({
+          price_set_id: [priceSet.id],
+        })
 
-        expect(priceSetMoneyAmounts.length).toEqual(1)
-        expect(priceSetMoneyAmounts).toEqual([
+        expect(prices.length).toEqual(1)
+        expect(prices).toEqual([
           expect.objectContaining({
             price_list: null,
           }),

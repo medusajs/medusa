@@ -5,6 +5,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm"
 import { SoftDeletableEntity } from "../interfaces"
 import { generateEntityId } from "../utils"
@@ -22,7 +23,7 @@ export class ProductVariantInventoryItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant, (variant) => variant.inventory_items)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @Column({ type: "int", default: 1 })
   required_quantity: number

@@ -1,5 +1,11 @@
 # Change Log
 
+## 6.0.3
+
+### Patch Changes
+
+- [#6806](https://github.com/medusajs/medusa/pull/6806) [`bacfa3e17b`](https://github.com/medusajs/medusa/commit/bacfa3e17b36b14c74e81e027ab0ba29458ed933) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-payment-paypal,medusa-payment-stripe): speed up unit tests in CI
+
 ## 6.0.2
 
 ### Patch Changes

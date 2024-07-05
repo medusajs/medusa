@@ -676,20 +676,22 @@ export default class InventoryModuleService<
       context
     )
 
-    const levelAdjustmentUpdates = inventoryLevels.map((level) => {
-      const adjustment = adjustments
-        .get(level.inventory_item_id)
-        ?.get(level.location_id)
+    const levelAdjustmentUpdates = inventoryLevels
+      .map((level) => {
+        const adjustment = adjustments
+          .get(level.inventory_item_id)
+          ?.get(level.location_id)
 
-      if (!adjustment) {
-        return
-      }
+        if (!adjustment) {
+          return
+        }
 
-      return {
-        id: level.id,
-        reserved_quantity: level.reserved_quantity + adjustment,
-      }
-    })
+        return {
+          id: level.id,
+          reserved_quantity: level.reserved_quantity + adjustment,
+        }
+      })
+      .filter(Boolean)
 
     await this.inventoryLevelService_.update(levelAdjustmentUpdates, context)
 

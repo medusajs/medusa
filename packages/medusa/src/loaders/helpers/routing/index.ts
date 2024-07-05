@@ -11,6 +11,7 @@ import {
   requireCustomerAuthentication,
 } from "../../../api/middlewares"
 import { ConfigModule } from "../../../types/global"
+import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 import logger from "../../logger"
 import {
   AsyncRouteHandler,
@@ -19,12 +20,11 @@ import {
   MiddlewareRoute,
   MiddlewareVerb,
   MiddlewaresConfig,
+  ParserConfigArgs,
   RouteConfig,
   RouteDescriptor,
   RouteVerb,
-  ParserConfigArgs,
 } from "./types"
-import { MedusaRequest, MedusaResponse } from "../../../types/routing"
 
 const log = ({
   activityId,

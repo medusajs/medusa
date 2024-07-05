@@ -12,7 +12,7 @@ In this document, you'll learn about the different ways you can configure the ad
 
 The plugin accepts the following options:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -27,6 +27,7 @@ const plugins = [
       develop: {
         open: true,
         port: 7001,
+        host: "example.com",
         logLevel: "error",
         stats: "normal",
         allowedHosts: "auto",
@@ -106,6 +107,15 @@ const plugins = [
         optional: true,
         defaultValue: "7001",
         description: "The port the admin dashboard runs on.",
+        expandable: false,
+        children: []
+      },
+      {
+        name: "host",
+        type: "string",
+        optional: true,
+        defaultValue: "localhost",
+        description: "The host of the backend. This is useful if you're running a development server remotely.",
         expandable: false,
         children: []
       },
@@ -238,15 +248,13 @@ You can add the following options to the `medusa-admin develop` command:
 
 ## Change Backend URL
 
-### In Development
+### In Development - Disabled Serve
 
-To change the backend's URL that the admin sends request to in development, you must disable the `serve` plugin option and set the `backend` option to the URL of your Medusa backend.
-
-However, this requires you to also set-up the [develop command](#develop-command-options) as the admin will no longer start with the Medusa backend.
+To change the backend's URL that the admin sends request to in development when the `serve` option is disabled, set the `backend` option to the URL of your Medusa backend.
 
 For example:
 
-```js title=medusa-config.js
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
@@ -256,6 +264,29 @@ const plugins = [
       serve: false,
       backend: "http://localhost:9001",
       // other options...
+    },
+  },
+]
+```
+
+### In Development - Enabled Serve
+
+To change the backend's URL when the `serve` option is enabled, set the `host` and `port` properties of the `develop` option to those of the Medusa backend. This is useful when running Medusa remotely in development, such as using GitHub Codespace.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // other options...
+      develop: {
+        port: 7000,
+        host: "example.com",
+      },
     },
   },
 ]
@@ -319,9 +350,11 @@ This is an advanced feature and requires knowledge of configuring webpack. If co
 For example:
 
 ```js title="src/admin/webpack.config.js"
-import { withCustomWebpackConfig } from "@medusajs/admin"
+const withCustomWebpackConfig = require(
+    "@medusajs/admin"
+  ).withCustomWebpackConfig
 
-export default withCustomWebpackConfig((config, webpack) => {
+module.exports = withCustomWebpackConfig((config, webpack) => {
   config.plugins.push(
     new webpack.DefinePlugin({
     "process.env": {

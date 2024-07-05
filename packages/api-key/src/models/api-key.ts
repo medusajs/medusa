@@ -1,4 +1,5 @@
 import {
+  Searchable,
   createPsqlIndexStatementHelper,
   generateEntityId,
 } from "@medusajs/utils"
@@ -6,10 +7,10 @@ import {
 import {
   BeforeCreate,
   Entity,
+  Enum,
   OnInit,
   PrimaryKey,
   Property,
-  Enum,
 } from "@mikro-orm/core"
 
 const TypeIndex = createPsqlIndexStatementHelper({
@@ -35,9 +36,11 @@ export default class ApiKey {
   @Property({ columnType: "text" })
   salt: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   redacted: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   title: string
 

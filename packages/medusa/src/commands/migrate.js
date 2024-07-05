@@ -72,9 +72,8 @@ const main = async function ({ directory }) {
   args.shift()
   args.shift()
 
-  const featureFlagRouter = featureFlagLoader(configModule)
   const configModule = configModuleLoader(directory)
-  const dataSource = await getDataSource(directory)
+  const featureFlagRouter = featureFlagLoader(configModule)
 
   if (args[0] === "run") {
     if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
@@ -91,6 +90,7 @@ const main = async function ({ directory }) {
         { registerInContainer: false }
       )
     } else {
+      const dataSource = await getDataSource(directory)
       await dataSource.runMigrations()
       await dataSource.destroy()
       await runIsolatedModulesMigration(configModule)
@@ -101,11 +101,13 @@ const main = async function ({ directory }) {
 
     Logger.info("Migrations completed.")
   } else if (args[0] === "revert") {
+    const dataSource = await getDataSource(directory)
     await dataSource.undoLastMigration({ transaction: "all" })
     await dataSource.destroy()
     await revertIsolatedModulesMigration(configModule)
     Logger.info("Migrations reverted.")
   } else if (args[0] === "show") {
+    const dataSource = await getDataSource(directory)
     const unapplied = await dataSource.showMigrations()
     Logger.info(unapplied)
     await dataSource.destroy()

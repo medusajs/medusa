@@ -1,29 +1,31 @@
 import * as QueryConfig from "./query-config"
-
-import { transformBody, transformQuery } from "../../../api/middlewares"
-import {
-  AdminGetPromotionsParams,
-  AdminGetPromotionsPromotionParams,
-  AdminPostPromotionsPromotionReq,
-  AdminPostPromotionsPromotionRulesBatchAddReq,
-  AdminPostPromotionsPromotionRulesBatchRemoveReq,
-  AdminPostPromotionsPromotionRulesBatchUpdateReq,
-  AdminPostPromotionsReq,
-} from "./validators"
-
 import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
+import {
+  AdminCreatePromotion,
+  AdminCreatePromotionRule,
+  AdminGetPromotionParams,
+  AdminGetPromotionRuleParams,
+  AdminGetPromotionRuleTypeParams,
+  AdminGetPromotionsParams,
+  AdminGetPromotionsRuleValueParams,
+  AdminUpdatePromotion,
+  AdminUpdatePromotionRule,
+} from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
+import { createBatchBody } from "../../utils/validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/promotions*",
-    middlewares: [authenticate("admin", ["bearer", "session"])],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
     matcher: "/admin/promotions",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetPromotionsParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -32,14 +34,20 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/promotions",
-    middlewares: [transformBody(AdminPostPromotionsReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreatePromotion),
+      validateAndTransformQuery(
+        AdminGetPromotionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/promotions/:id",
     middlewares: [
-      transformQuery(
-        AdminGetPromotionsPromotionParams,
+      validateAndTransformQuery(
+        AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -47,49 +55,72 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/promotions/:id",
-    middlewares: [transformBody(AdminPostPromotionsPromotionReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/promotions/:id/rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/promotions/:id/target-rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/promotions/:id/buy-rules/batch/add",
-    middlewares: [transformBody(AdminPostPromotionsPromotionRulesBatchAddReq)],
-  },
-  {
-    method: ["POST"],
-    matcher: "/admin/promotions/:id/rules/batch/update",
     middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchUpdateReq),
+      validateAndTransformBody(AdminUpdatePromotion),
+      validateAndTransformQuery(
+        AdminGetPromotionParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/admin/promotions/:id/:rule_type",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetPromotionRuleTypeParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/rules/batch/remove",
+    matcher: "/admin/promotions/:id/rules/batch",
     middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+      validateAndTransformBody(
+        createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
+      ),
+      validateAndTransformQuery(
+        AdminGetPromotionRuleParams,
+        QueryConfig.retrieveRuleTransformQueryConfig
+      ),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/target-rules/batch/remove",
+    matcher: "/admin/promotions/:id/target-rules/batch",
     middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+      validateAndTransformBody(
+        createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
+      ),
+      validateAndTransformQuery(
+        AdminGetPromotionRuleParams,
+        QueryConfig.retrieveRuleTransformQueryConfig
+      ),
     ],
   },
   {
     method: ["POST"],
-    matcher: "/admin/promotions/:id/buy-rules/batch/remove",
+    matcher: "/admin/promotions/:id/buy-rules/batch",
     middlewares: [
-      transformBody(AdminPostPromotionsPromotionRulesBatchRemoveReq),
+      validateAndTransformBody(
+        createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
+      ),
+      validateAndTransformQuery(
+        AdminGetPromotionRuleParams,
+        QueryConfig.retrieveRuleTransformQueryConfig
+      ),
+    ],
+  },
+  {
+    method: ["GET"],
+    matcher:
+      "/admin/promotions/rule-value-options/:rule_type/:rule_attribute_id",
+    middlewares: [
+      validateAndTransformQuery(
+        AdminGetPromotionsRuleValueParams,
+        QueryConfig.listRuleValueTransformQueryConfig
+      ),
     ],
   },
 ]

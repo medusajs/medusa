@@ -19,8 +19,8 @@ import {
 } from "@mikro-orm/core"
 import Address from "./address"
 import OrderItem from "./order-item"
+import OrderShippingMethod from "./order-shipping-method"
 import OrderSummary from "./order-summary"
-import ShippingMethod from "./shipping-method"
 import Transaction from "./transaction"
 
 type OptionalOrderProps =
@@ -70,6 +70,12 @@ const BillingAddressIdIndex = createPsqlIndexStatementHelper({
   where: "deleted_at IS NOT NULL",
 })
 
+const IsDraftOrderIndex = createPsqlIndexStatementHelper({
+  tableName: "order",
+  columns: "is_draft_order",
+  where: "deleted_at IS NOT NULL",
+})
+
 @Entity({ tableName: "order" })
 export default class Order {
   [OptionalProps]?: OptionalOrderProps
@@ -106,6 +112,12 @@ export default class Order {
 
   @Enum({ items: () => OrderStatus, default: OrderStatus.PENDING })
   status: OrderStatus
+
+  @Property({
+    columnType: "boolean",
+  })
+  @IsDraftOrderIndex.MikroORMIndex()
+  is_draft_order = false
 
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
@@ -154,10 +166,14 @@ export default class Order {
   })
   items = new Collection<OrderItem>(this)
 
-  @OneToMany(() => ShippingMethod, (shippingMethod) => shippingMethod.order, {
-    cascade: [Cascade.PERSIST],
-  })
-  shipping_methods = new Collection<ShippingMethod>(this)
+  @OneToMany(
+    () => OrderShippingMethod,
+    (shippingMethod) => shippingMethod.order,
+    {
+      cascade: [Cascade.PERSIST],
+    }
+  )
+  shipping_methods = new Collection<OrderShippingMethod>(this)
 
   @OneToMany(() => Transaction, (transaction) => transaction.order, {
     cascade: [Cascade.PERSIST],

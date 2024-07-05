@@ -8,7 +8,7 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 
-import { isObject } from "@medusajs/utils"
+import { isObject, isString } from "@medusajs/utils"
 import resolveCwd from "resolve-cwd"
 import { ModulesDefinition } from "../definitions"
 
@@ -24,14 +24,6 @@ export const registerMedusaModule = (
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
   const modDefinition = definition ?? ModulesDefinition[moduleKey]
-
-  if (modDefinition === undefined) {
-    moduleResolutions[moduleKey] = getCustomModuleResolution(
-      moduleKey,
-      moduleDeclaration as InternalModuleDeclaration
-    )
-    return moduleResolutions
-  }
 
   const modDeclaration =
     moduleDeclaration ??
@@ -49,6 +41,14 @@ export const registerMedusaModule = (
     throw new Error("External Modules are not supported yet.")
   }
 
+  if (modDefinition === undefined) {
+    moduleResolutions[moduleKey] = getCustomModuleResolution(
+      moduleKey,
+      moduleDeclaration as InternalModuleDeclaration
+    )
+    return moduleResolutions
+  }
+
   moduleResolutions[moduleKey] = getInternalModuleResolution(
     modDefinition,
     moduleDeclaration as InternalModuleDeclaration,
@@ -62,10 +62,15 @@ function getCustomModuleResolution(
   key: string,
   moduleConfig: InternalModuleDeclaration | string
 ): ModuleResolution {
-  const isString = typeof moduleConfig === "string"
   const resolutionPath = resolveCwd(
-    isString ? moduleConfig : (moduleConfig.resolve as string)
+    isString(moduleConfig) ? moduleConfig : (moduleConfig.resolve as string)
   )
+
+  const conf = isObject(moduleConfig)
+    ? moduleConfig
+    : ({} as InternalModuleDeclaration)
+
+  const dependencies = conf?.dependencies ?? []
 
   return {
     resolutionPath,
@@ -74,7 +79,7 @@ function getCustomModuleResolution(
       label: `Custom: ${key}`,
       isRequired: false,
       defaultPackage: "",
-      dependencies: [],
+      dependencies,
       registrationName: key,
       defaultModuleDeclaration: {
         resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -82,11 +87,11 @@ function getCustomModuleResolution(
       },
     },
     moduleDeclaration: {
-      resources: MODULE_RESOURCE_TYPE.SHARED,
+      resources: conf?.resources ?? MODULE_RESOURCE_TYPE.SHARED,
       scope: MODULE_SCOPE.INTERNAL,
     },
-    dependencies: [],
-    options: {},
+    dependencies,
+    options: conf?.options ?? {},
   }
 }
 
@@ -126,14 +131,14 @@ function getInternalModuleResolution(
     }
   }
 
-  const isObj = typeof moduleConfig === "object"
+  const isObj = isObject(moduleConfig)
   let resolutionPath = definition.defaultPackage
 
   // If user added a module and it's overridable, we resolve that instead
-  const isString = typeof moduleConfig === "string"
-  if (isString || (isObj && moduleConfig.resolve)) {
+  const isStr = isString(moduleConfig)
+  if (isStr || (isObj && moduleConfig.resolve)) {
     resolutionPath = !moduleExports
-      ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
+      ? resolveCwd(isStr ? moduleConfig : (moduleConfig.resolve as string))
       : // Explicitly assign an empty string, later, we will check if the value is exactly false.
         // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
         ""

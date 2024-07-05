@@ -4,26 +4,26 @@ import {
 } from "@medusajs/utils"
 import { MedusaRequest, MedusaResponse } from "../../../../../types/routing"
 
-import { AdminPostInventoryItemsItemLocationLevelsReq } from "../../validators"
-import { MedusaError } from "@medusajs/utils"
 import { createInventoryLevelsWorkflow } from "@medusajs/core-flows"
-import { defaultAdminInventoryItemFields } from "../../query-config"
+import {
+  AdminCreateInventoryLocationLevelType,
+  AdminGetInventoryLocationLevelsParamsType,
+} from "../../validators"
+import { refetchInventoryItem } from "../../helpers"
 
 export const POST = async (
-  req: MedusaRequest<AdminPostInventoryItemsItemLocationLevelsReq>,
+  req: MedusaRequest<AdminCreateInventoryLocationLevelType>,
   res: MedusaResponse
 ) => {
   const { id } = req.params
-
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
 
   const workflow = createInventoryLevelsWorkflow(req.scope)
   const { errors } = await workflow.run({
     input: {
       inventory_levels: [
         {
-          inventory_item_id: id,
           ...req.validatedBody,
+          inventory_item_id: id,
         },
       ],
     },
@@ -34,15 +34,35 @@ export const POST = async (
     throw errors[0].error
   }
 
-  const itemQuery = remoteQueryObjectFromString({
-    entryPoint: "inventory_items",
+  const inventoryItem = await refetchInventoryItem(
+    id,
+    req.scope,
+    req.remoteQueryConfig.fields
+  )
+  res.status(200).json({ inventory_item: inventoryItem })
+}
+
+export const GET = async (
+  req: MedusaRequest<AdminGetInventoryLocationLevelsParamsType>,
+  res: MedusaResponse
+) => {
+  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+
+  const query = remoteQueryObjectFromString({
+    entryPoint: "inventory_levels",
     variables: {
-      id,
+      filters: req.filterableFields,
+      ...req.remoteQueryConfig.pagination,
     },
-    fields: defaultAdminInventoryItemFields,
+    fields: req.remoteQueryConfig.fields,
   })
 
-  const [inventory_item] = await remoteQuery(itemQuery)
+  const { rows: inventory_levels, metadata } = await remoteQuery(query)
 
-  res.status(200).json({ inventory_item })
+  res.status(200).json({
+    inventory_levels,
+    count: metadata.count,
+    offset: metadata.skip,
+    limit: metadata.take,
+  })
 }

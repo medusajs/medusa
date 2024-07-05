@@ -25,10 +25,6 @@ export enum ProductEvents {
   PRODUCT_DELETED = "product.deleted",
 }
 
-export type UpdateProductInput = ProductTypes.UpdateProductDTO & {
-  id: string
-}
-
 export type ProductCollectionEventData = {
   id: string
 }
@@ -37,6 +33,10 @@ export enum ProductCollectionEvents {
   COLLECTION_UPDATED = "product-collection.updated",
   COLLECTION_CREATED = "product-collection.created",
   COLLECTION_DELETED = "product-collection.deleted",
+}
+
+export type UpdateProductInput = ProductTypes.UpdateProductDTO & {
+  id: string
 }
 
 export type UpdateProductCollection =
@@ -53,6 +53,15 @@ export type UpdateCollectionInput = ProductTypes.UpdateProductCollectionDTO & {
   id: string
 }
 
+export type UpdateTypeInput = ProductTypes.UpdateProductTypeDTO & {
+  id: string
+}
+
 export type UpdateProductVariantInput = ProductTypes.UpdateProductVariantDTO & {
-  product_id: string
+  id: string
+  product_id?: string | null
+}
+
+export type UpdateProductOptionInput = ProductTypes.UpdateProductOptionDTO & {
+  id: string
 }

@@ -66,7 +66,7 @@ describe("CreateInventoryItem workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed`),
+        error: expect.objectContaining({ message: `Failed` }),
       },
     ])
 

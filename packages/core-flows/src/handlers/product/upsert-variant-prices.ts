@@ -1,4 +1,4 @@
-import { PricingTypes } from "@medusajs/types"
+import { BigNumberInput, PricingTypes } from "@medusajs/types"
 import { MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
@@ -6,9 +6,9 @@ type VariantPrice = {
   id?: string
   region_id?: string
   currency_code: string
-  amount: number
-  min_quantity?: number
-  max_quantity?: number
+  amount: BigNumberInput
+  min_quantity?: BigNumberInput
+  max_quantity?: BigNumberInput
   rules: Record<string, string>
 }
 

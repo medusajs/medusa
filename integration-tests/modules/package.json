@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --ci --silent=false -i --detectOpenHandles --logHeapUsage --forceExit",
+    "test:integration": "jest --silent --no-cache --maxWorkers=50% --bail --detectOpenHandles --forceExit --logHeapUsage",
+    "test:integration:chunk": "jest --silent --no-cache --bail --maxWorkers=50% --forceExit --testPathPattern=$(echo $CHUNKS | jq -r \".[${CHUNK}] | .[]\")",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -14,6 +15,8 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/customer": "workspace:^",
     "@medusajs/event-bus-local": "workspace:*",
+    "@medusajs/fulfillment": "workspace:^",
+    "@medusajs/fulfillment-manual": "workspace:^",
     "@medusajs/inventory-next": "workspace:^",
     "@medusajs/medusa": "workspace:*",
     "@medusajs/modules-sdk": "workspace:^",
@@ -40,6 +43,8 @@
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@medusajs/types": "workspace:^",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "babel-preset-medusa-package": "*",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2"

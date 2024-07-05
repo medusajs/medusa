@@ -354,18 +354,15 @@ moduleIntegrationTestRunner({
           let error
 
           try {
-            await service.upsertCollections([
-              {
-                id: "does-not-exist",
-                title: "New Collection",
-              },
-            ])
+            await service.updateCollections("does-not-exist", {
+              title: "New Collection",
+            })
           } catch (e) {
             error = e
           }
 
           expect(error.message).toEqual(
-            'ProductCollection with id "does-not-exist" not found'
+            "ProductCollection with id: does-not-exist was not found"
           )
         })
       })
