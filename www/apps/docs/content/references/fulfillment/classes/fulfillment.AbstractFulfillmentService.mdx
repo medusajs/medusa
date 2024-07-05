@@ -158,7 +158,7 @@ class MyFulfillmentService extends AbstractFulfillmentService {
   async validateOption(
     data: Record<string, unknown>
   ): Promise<boolean> {
-    return data.id === "my-fulfillment"
+    return data.id == "my-fulfillment"
   }
 }
 ```

@@ -41,7 +41,7 @@ module.exports = {
 
 It's highly recommended to store the values of configurations in environment variables, then reference them within `medusa-config.js`.
 
-During development, you can set your environment variables in the `.env` file at the root of your Medusa backend project. In production,
+During development, you can set your environment variables in the `.env` file at the root of your Medusa backend project. In production, 
 setting the environment variables depends on the hosting provider.
 
 ---
@@ -54,7 +54,7 @@ This property holds essential configurations related to the Medusa backend, such
 
 The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
 
-`store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+`store_cors` is a string used to specify the accepted URLs or patterns for store API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. 
 
 Every origin in that list must either be:
 
@@ -104,7 +104,7 @@ module.exports = {
 
 The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
 
-`admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins.
+`admin_cors` is a string used to specify the accepted URLs or patterns for admin API Routes. It can either be one accepted origin, or a comma-separated list of accepted origins. 
 
 Every origin in that list must either be:
 
@@ -150,61 +150,11 @@ module.exports = {
 }
 ```
 
-### auth\_cors
-
-The Medusa backend’s API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
-
-`auth_cors` is a string used to specify the accepted URLs or patterns for API Routes starting with `/auth`. It can either be one accepted origin, or a comma-separated list of accepted origins.
-
-Every origin in that list must either be:
-
-1. A URL. For example, `http://localhost:7001`. The URL must not end with a backslash;
-2. Or a regular expression pattern that can match more than one origin. For example, `.example.com`. The regex pattern that the backend tests for is `^([/~@;%#'])(.*?)\1([gimsuy]*)$`.
-
-#### Example
-
-Some example values of common use cases:
-
-```bash
-# Allow different ports locally starting with 700
-AUTH_CORS=/http://localhost:700\d+$/
-
-# Allow any origin ending with vercel.app. For example, admin.vercel.app
-AUTH_CORS=/vercel\.app$/
-
-# Allow all HTTP requests
-AUTH_CORS=/http://.+/
-```
-
-Then, set the configuration in `medusa-config.js`:
-
-```js title="medusa-config.js"
-module.exports = {
-  projectConfig: {
-    auth_cors: process.env.AUTH_CORS,
-    // ...
-  },
-  // ...
-}
-```
-
-If you’re adding the value directly within `medusa-config.js`, make sure to add an extra escaping `/` for every backslash in the pattern. For example:
-
-```js title="medusa-config.js"
-module.exports = {
-  projectConfig: {
-    auth_cors: "/http:\\/\\/localhost:700\\d+$/",
-    // ...
-  },
-  // ...
-}
-```
-
 ### cookie\_secret
 
 A random string used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security.
 
-In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and
+In a development environment, if this option is not set, the default secret is `supersecret` However, in production, if this configuration is not set, an error is thrown and 
 the backend crashes.
 
 #### Example
@@ -244,7 +194,7 @@ module.exports = {
 
 The name of the database to connect to. If specified in `database_url`, then it’s not required to include it.
 
-Make sure to create the PostgreSQL database before using it. You can check how to create a database in
+Make sure to create the PostgreSQL database before using it. You can check how to create a database in 
 [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
 
 #### Example
@@ -252,7 +202,7 @@ Make sure to create the PostgreSQL database before using it. You can check how t
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    database_database: process.env.DATABASE_DATABASE ||
+    database_database: process.env.DATABASE_DATABASE || 
       "medusa-store",
     // ...
   },
@@ -273,7 +223,7 @@ Where:
 - `[user]`: (required) your PostgreSQL username. If not specified, the system's username is used by default. The database user that you use must have create privileges. If you're using the `postgres` superuser, then it should have these privileges by default. Otherwise, make sure to grant your user create privileges. You can learn how to do that in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/ddl-priv.html).
 - `[:password]`: an optional password for the user. When provided, make sure to put `:` before the password.
 - `[host]`: (required) your PostgreSQL host. When run locally, it should be `localhost`.
-- `[:port]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port.
+- `[:post]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port.
 - `[dbname]`: (required) the name of the database.
 
 You can learn more about the connection URL format in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
@@ -305,7 +255,7 @@ The database schema to connect to. This is not required to provide if you’re u
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    database_schema: process.env.DATABASE_SCHEMA ||
+    database_schema: process.env.DATABASE_SCHEMA || 
       "custom",
     // ...
   },
@@ -339,10 +289,10 @@ module.exports = {
 
 ### database\_extra
 
-An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
+An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is 
 `ssl` which enables support for TLS/SSL connections.
 
-This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
+This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`. 
 During development, it’s recommended not to pass this option.
 
 #### Example
@@ -350,7 +300,7 @@ During development, it’s recommended not to pass this option.
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    database_extra:
+    database_extra: 
       process.env.NODE_ENV !== "development"
         ? { ssl: { rejectUnauthorized: false } }
         : {},
@@ -363,33 +313,6 @@ module.exports = {
 #### Properties
 
 <TypeList types={[{"name":"ssl","type":"`object`","description":"Configure support for TLS/SSL connection","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"rejectUnauthorized","type":"`false`","description":"Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="database_extra"/>
-
-### database\_driver\_options
-
-An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
-`ssl` which enables support for TLS/SSL connections.
-
-This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
-During development, it’s recommended not to pass this option.
-
-#### Example
-
-```js title="medusa-config.js"
-module.exports = {
-  projectConfig: {
-    database_driver_options:
-      process.env.NODE_ENV !== "development"
-        ? { connection: { ssl: { rejectUnauthorized: false } } }
-        : {},
-    // ...
-  },
-  // ...
-}
-```
-
-#### Properties
-
-<TypeList types={[{"name":"connection","type":"`object`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"ssl","type":"`object`","description":"Configure support for TLS/SSL connection","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"rejectUnauthorized","type":"`false`","description":"Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="database_driver_options"/>
 
 ### redis\_url
 
@@ -414,7 +337,7 @@ For a local Redis installation, the connection URL should be `redis://localhost:
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    redis_url: process.env.REDIS_URL ||
+    redis_url: process.env.REDIS_URL || 
       "redis://localhost:6379",
     // ...
   },
@@ -424,7 +347,7 @@ module.exports = {
 
 ### redis\_prefix
 
-The prefix set on all keys stored in Redis. The default value is `sess:`.
+The prefix set on all keys stored in Redis. The default value is `sess:`. 
 
 If this configuration option is provided, it is prepended to `sess:`.
 
@@ -433,7 +356,7 @@ If this configuration option is provided, it is prepended to `sess:`.
 ```js title="medusa-config.js"
 module.exports = {
   projectConfig: {
-    redis_prefix: process.env.REDIS_PREFIX ||
+    redis_prefix: process.env.REDIS_PREFIX || 
       "medusa:",
     // ...
   },
@@ -443,7 +366,7 @@ module.exports = {
 
 ### redis\_options
 
-An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
+An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions) 
 for the list of available options.
 
 #### Example
@@ -452,7 +375,7 @@ for the list of available options.
 module.exports = {
   projectConfig: {
     redis_options: {
-      connectionName: process.env.REDIS_CONNECTION_NAME ||
+      connectionName: process.env.REDIS_CONNECTION_NAME || 
         "medusa",
     },
     // ...
@@ -471,7 +394,7 @@ An object of options to pass to [express-session](https://www.npmjs.com/package/
 module.exports = {
   projectConfig: {
     session_options: {
-      name: process.env.SESSION_NAME ||
+      name: process.env.SESSION_NAME || 
         "custom",
     },
     // ...
@@ -486,7 +409,7 @@ module.exports = {
 
 ### http\_compression
 
-Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
+Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. 
 However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
 
 Its value is an object that has the following properties:
@@ -512,11 +435,11 @@ module.exports = {
 
 #### Properties
 
-<TypeList types={[{"name":"enabled","type":"`boolean`","description":"Whether HTTP compression is enabled. By default, it's `false`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"level","type":"`number`","description":"The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete.\nA lower level will result in less compression but will be much faster. The default value is `6`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"memLevel","type":"`number`","description":"How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level).\nThe default value is `8`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"threshold","type":"`string` \\| `number`","description":"The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the\n[bytes](https://www.npmjs.com/package/bytes) module. The default value is `1024`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="http_compression"/>
+<TypeList types={[{"name":"enabled","type":"`boolean`","description":"Whether HTTP compression is enabled. By default, it's `false`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"level","type":"`number`","description":"The level of zlib compression to apply to responses. A higher level will result in better compression but will take longer to complete. \nA lower level will result in less compression but will be much faster. The default value is `6`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"memLevel","type":"`number`","description":"How much memory should be allocated to the internal compression state. It's an integer in the range of 1 (minimum level) and 9 (maximum level). \nThe default value is `8`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"threshold","type":"`string` \\| `number`","description":"The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the \n[bytes](https://www.npmjs.com/package/bytes) module. The default value is `1024`.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="http_compression"/>
 
 ### jobs\_batch\_size
 
-Configure the number of staged jobs that are polled from the database. Default is `1000`.
+Configure the number of staged jobs that are polled from the database. Default is 1000.
 
 #### Example
 
@@ -530,33 +453,11 @@ module.exports = {
 }
 ```
 
-### worker\_mode
-
-Configure the application's worker mode. Default is `shared`.
-
-- Use `shared` to run the application in a single process.
-- Use `worker` to run the a worker process only.
-- Use `server` to run the application server only.
-
-Learn more in [this guide](https://docs.medusajs.com/development/medusa-worker).
-
-#### Example
-
-```js title="medusa-config.js"
-module.exports = {
-  projectConfig: {
-    worker_mode: "shared"
-    // ...
-  },
-  // ...
-}
-```
-
 ___
 
 ## plugins
 
-On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services.
+On your Medusa backend, you can use [Plugins](https://docs.medusajs.com/development/plugins/overview) to add custom features or integrate third-party services. 
 For example, installing a plugin to use Stripe as a payment processor.
 
 Aside from installing the plugin with NPM, you need to pass the plugin you installed into the `plugins` array defined in `medusa-config.js`.
@@ -577,7 +478,7 @@ module.exports = {
     {
       resolve: `medusa-my-plugin`,
       options: {
-        apiKey: process.env.MY_API_KEY ||
+        apiKey: process.env.MY_API_KEY || 
           `test`,
       },
     },
@@ -591,7 +492,7 @@ ___
 
 ## modules
 
-In Medusa, commerce and core logic are modularized to allow developers to extend or replace certain [modules](https://docs.medusajs.com/development/modules/overview)
+In Medusa, commerce and core logic are modularized to allow developers to extend or replace certain [modules](https://docs.medusajs.com/development/modules/overview) 
 with custom implementations.
 
 Aside from installing the module with NPM, you must add it to the exported object in `medusa-config.js`.
@@ -617,7 +518,7 @@ module.exports = {
     },
     cacheService: {
       resolve: "@medusajs/cache-redis",
-      options: {
+      options: { 
         redisUrl: process.env.CACHE_REDIS_URL,
         ttl: 30,
       },
@@ -634,7 +535,7 @@ ___
 
 Some features in the Medusa backend are guarded by a feature flag. This ensures constant shipping of new features while maintaining the engine’s stability.
 
-You can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment
+You can specify whether a feature should or shouldn’t be used in your backend by enabling its feature flag. Feature flags can be enabled through either environment 
 variables or through this configuration exported in `medusa-config.js`.
 
 If you want to use the environment variables method, learn more about it in the [Feature Flags documentation](https://docs.medusajs.com/development/feature-flags/toggle#method-one-using-environment-variables).

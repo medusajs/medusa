@@ -64,7 +64,7 @@ class AdminAuthResource extends BaseResource {
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-   * medusa.admin.AdminAuthResource.createSession({
+   * medusa.admin.auth.createSession({
    *   email: "user@example.com",
    *   password: "supersecret"
    * })
