@@ -18,9 +18,9 @@ type OrderOutput =
       metadata: any
     }
 
-export const getOrdersListlWorkflowId = "get-orders-list"
-export const getOrdersListlWorkflow = createWorkflow(
-  getOrdersListlWorkflowId,
+export const getOrdersListWorkflowId = "get-orders-list"
+export const getOrdersListWorkflow = createWorkflow(
+  getOrdersListWorkflowId,
   (
     input: WorkflowData<{
       fields: string[]
