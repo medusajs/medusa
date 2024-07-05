@@ -1,4 +1,4 @@
-import { getOrdersListlWorkflow } from "@medusajs/core-flows"
+import { getOrdersListWorkflow } from "@medusajs/core-flows"
 import { OrderDTO } from "@medusajs/types"
 import {
   AuthenticatedMedusaRequest,
@@ -17,7 +17,7 @@ export const GET = async (
     ...req.remoteQueryConfig.pagination,
   }
 
-  const workflow = getOrdersListlWorkflow(req.scope)
+  const workflow = getOrdersListWorkflow(req.scope)
   const { result } = await workflow.run({
     input: {
       fields: req.remoteQueryConfig.fields,

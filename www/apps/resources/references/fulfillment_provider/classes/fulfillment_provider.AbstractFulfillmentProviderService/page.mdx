@@ -50,10 +50,11 @@ Create the file `src/modules/my-fulfillment/index.ts` with the following content
 
 ```ts title="src/modules/my-fulfillment/index.ts"
 import MyFulfillmentProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-fulfillment", {
   service: MyFulfillmentProviderService,
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyFulfillmentProviderService` is the main service of the module.
@@ -78,12 +79,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-fulfillment",
+            id: "my-fulfillment",
             options: {
-              config: {
-                "my-fulfillment": {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],

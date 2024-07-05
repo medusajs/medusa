@@ -1,0 +1,61 @@
+---
+displayed_sidebar: pricingReference
+slug: /references/pricing/upsertPricePreferences
+sidebar_label: upsertPricePreferences
+---
+
+import { TypeList } from "docs-ui"
+
+# upsertPricePreferences - Pricing Module Reference
+
+This documentation provides a reference to the `upsertPricePreferences` method. This belongs to the Pricing Module.
+
+## upsertPricePreferences(data, sharedContext?): Promise&#60;[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)[]&#62;
+
+This method updates existing price preferences, or creates new ones if they don't exist.
+
+### Example
+
+```ts
+const pricePreferences = await pricingModuleService.upsertPricePreferences([
+  {
+     id: "prpref_123",
+     attribute: 'region_id',
+     value: 'DE',
+     is_tax_inclusive: true
+  },
+])
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpsertPricePreferenceDTO](../../../interfaces/pricing.UpsertPricePreferenceDTO/page.mdx)[]","description":"The attributes to update or create for each price preference.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a price preference.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`null` \\| `string`","description":"The rule attribute for the preference","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`null` \\| `string`","description":"The rule value for the preference","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Flag specifying whether prices for the specified rule are tax inclusive.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upsertPricePreferences"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The updated and created price preferences.","expandable":false,"children":[{"name":"PricePreferenceDTO[]","type":"[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"PricePreferenceDTO","type":"`object`","description":"A price preference's data.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upsertPricePreferences"/>
+
+## upsertPricePreferences(data, sharedContext?): Promise&#60;[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)&#62;
+
+This method updates the price preference if it exists, or creates a new ones if it doesn't.
+
+### Example
+
+```ts
+const pricePreference = await pricingModuleService.upsertPricePreferences(
+  {
+     id: "prpref_123",
+     attribute: 'region_id',
+     value: 'DE',
+     is_tax_inclusive: true
+  }
+)
+```
+
+### Parameters
+
+<TypeList types={[{"name":"data","type":"[UpsertPricePreferenceDTO](../../../interfaces/pricing.UpsertPricePreferenceDTO/page.mdx)","description":"The attributes to update or create for the new price preference.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a price preference.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`null` \\| `string`","description":"The rule attribute for the preference","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`null` \\| `string`","description":"The rule value for the preference","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Flag specifying whether prices for the specified rule are tax inclusive.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"sharedContext","type":"[Context](../../../interfaces/pricing.Context/page.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"TManager","description":"An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"TManager","description":"An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationLevel","type":"`string`","description":"A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"enableNestedTransactions","type":"`boolean`","description":"A boolean value indicating whether nested transactions are enabled.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"eventGroupId","type":"`string`","description":"A string indicating the ID of the group to aggregate the events to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionId","type":"`string`","description":"A string indicating the ID of the current transaction.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"messageAggregator","type":"[IMessageAggregator](../../../interfaces/pricing.IMessageAggregator/page.mdx)","description":"An instance of a message aggregator, which is used to aggregate messages to be emitted at a later point.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"requestId","type":"`string`","description":"A string indicating the ID of the current request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"`string`","description":"A string indicating the idempotencyKey of the current workflow execution.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="upsertPricePreferences"/>
+
+### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The updated or created price preference.","expandable":false,"children":[{"name":"PricePreferenceDTO","type":"[PricePreferenceDTO](../../../interfaces/pricing.PricePreferenceDTO/page.mdx)","optional":false,"defaultValue":"","description":"A price preference's data.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of a price preference.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"attribute","type":"`null` \\| `string`","description":"The rule attribute for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`null` \\| `string`","description":"The rule value for the preference","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_tax_inclusive","type":"`boolean`","description":"Flag specifying whether prices for the specified rule are tax inclusive.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"When the price preference was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"When the price preference was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"When the price preference was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="upsertPricePreferences"/>
