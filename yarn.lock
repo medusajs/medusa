@@ -4531,6 +4531,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/file@workspace:packages/modules/file"
   dependencies:
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.15
     "@medusajs/utils": ^1.11.8
     "@mikro-orm/cli": 5.9.7
@@ -4996,9 +4997,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
