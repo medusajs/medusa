@@ -74,6 +74,9 @@ export const CustomerListTable = () => {
         navigateTo={(row) => row.original.id}
         search
         queryObject={raw}
+        noRecords={{
+          message: t("customers.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

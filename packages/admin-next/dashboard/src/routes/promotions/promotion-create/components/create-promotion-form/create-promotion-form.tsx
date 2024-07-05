@@ -357,7 +357,7 @@ export const CreatePromotionForm = () => {
                     className="w-full"
                     value={Tab.PROMOTION}
                   >
-                    {t("promotions.tabs.promotion")}
+                    {t("promotions.tabs.details")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger className="w-full" value={Tab.CAMPAIGN}>
@@ -627,7 +627,7 @@ export const CreatePromotionForm = () => {
                 />
               )}
 
-              <div className="flex gap-y-4 gap-x-2">
+              <div className="flex gap-x-2 gap-y-4">
                 {!currentTemplate?.hiddenFields?.includes(
                   "application_method.value"
                 ) && (
