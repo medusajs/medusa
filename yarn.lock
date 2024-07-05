@@ -4578,9 +4578,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
