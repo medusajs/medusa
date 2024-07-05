@@ -24,14 +24,16 @@ async function scanFiles(options = {}) {
   for (const file of files) {
     const filePath = path.join(fullPath, file)
     const fileBasename = path.basename(file)
-    if (fileBasename !== "page.mdx" && statSync(filePath).isDirectory()) {
-      filesMap.push(
-        ...(await scanFiles({
-          dir: filePath.replace(basePath, ""),
-          basePath,
-          baseSlug,
-        }))
-      )
+    if (fileBasename !== "page.mdx") {
+      if (statSync(filePath).isDirectory()) {
+        filesMap.push(
+          ...(await scanFiles({
+            dir: filePath.replace(basePath, ""),
+            basePath,
+            baseSlug,
+          }))
+        )
+      }
       continue
     }
 
