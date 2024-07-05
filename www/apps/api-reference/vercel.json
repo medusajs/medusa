@@ -1,6 +1,6 @@
 {
   "crons": [{
-    "path": "/v2/api/algolia",
+    "path": "/v2/api/api/algolia",
     "schedule": "0 0 * * 4"
   }],
   "framework": "nextjs",
