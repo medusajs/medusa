@@ -19,7 +19,7 @@ import { useProductTypes } from "../../../../../hooks/api/product-types"
 import { useProducts } from "../../../../../hooks/api/products"
 import { useTags } from "../../../../../hooks/api/tags"
 import { formatPercentage } from "../../../../../lib/percentage-helpers"
-import { RuleReferenceType } from "../../constants"
+import { TaxRateRuleReferenceType } from "../../constants"
 
 interface TaxOverrideCardProps extends ComponentPropsWithoutRef<"div"> {
   taxRate: HttpTypes.AdminTaxRate
@@ -42,9 +42,9 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
     return acc
   }, {} as Record<string, string[]>)
 
-  const validKeys = Object.values(RuleReferenceType)
+  const validKeys = Object.values(TaxRateRuleReferenceType)
   const numberOfTargets = Object.keys(groupedRules).map((key) =>
-    validKeys.includes(key as RuleReferenceType)
+    validKeys.includes(key as TaxRateRuleReferenceType)
   ).length
 
   return (
@@ -133,7 +133,7 @@ export const TaxOverrideCard = ({ taxRate }: TaxOverrideCardProps) => {
                     >
                       <Reference
                         key={reference}
-                        reference={reference as RuleReferenceType}
+                        reference={reference as TaxRateRuleReferenceType}
                         ids={ids}
                       />
                       {index < Object.keys(groupedRules).length - 1 && (
@@ -161,7 +161,7 @@ const Reference = ({
   reference,
   ids,
 }: {
-  reference: RuleReferenceType
+  reference: TaxRateRuleReferenceType
   ids: string[]
 }) => {
   return (
@@ -172,24 +172,28 @@ const Reference = ({
   )
 }
 
-const ReferenceBadge = ({ reference }: { reference: RuleReferenceType }) => {
+const ReferenceBadge = ({
+  reference,
+}: {
+  reference: TaxRateRuleReferenceType
+}) => {
   const { t } = useTranslation()
   let label: string | null = null
 
   switch (reference) {
-    case RuleReferenceType.PRODUCT:
+    case TaxRateRuleReferenceType.PRODUCT:
       label = t("taxRegions.fields.targets.tags.product")
       break
-    case RuleReferenceType.PRODUCT_COLLECTION:
+    case TaxRateRuleReferenceType.PRODUCT_COLLECTION:
       label = t("taxRegions.fields.targets.tags.productCollection")
       break
-    case RuleReferenceType.PRODUCT_TAG:
+    case TaxRateRuleReferenceType.PRODUCT_TAG:
       label = t("taxRegions.fields.targets.tags.productTag")
       break
-    case RuleReferenceType.PRODUCT_TYPE:
+    case TaxRateRuleReferenceType.PRODUCT_TYPE:
       label = t("taxRegions.fields.targets.tags.productType")
       break
-    case RuleReferenceType.CUSTOMER_GROUP:
+    case TaxRateRuleReferenceType.CUSTOMER_GROUP:
       label = t("taxRegions.fields.targets.tags.customerGroup")
       break
   }
@@ -205,7 +209,7 @@ const ReferenceValues = ({
   type,
   ids,
 }: {
-  type: RuleReferenceType
+  type: TaxRateRuleReferenceType
   ids: string[]
 }) => {
   const { t } = useTranslation()
@@ -252,7 +256,7 @@ const ReferenceValues = ({
 }
 
 const useReferenceValues = (
-  type: RuleReferenceType,
+  type: TaxRateRuleReferenceType,
   ids: string[]
 ): {
   labels: string[] | undefined
@@ -267,7 +271,7 @@ const useReferenceValues = (
       limit: 10,
     },
     {
-      enabled: !!ids.length && type === RuleReferenceType.PRODUCT,
+      enabled: !!ids.length && type === TaxRateRuleReferenceType.PRODUCT,
     }
   )
 
@@ -277,7 +281,7 @@ const useReferenceValues = (
       limit: 10,
     },
     {
-      enabled: !!ids.length && type === RuleReferenceType.PRODUCT_TAG,
+      enabled: !!ids.length && type === TaxRateRuleReferenceType.PRODUCT_TAG,
     }
   )
 
@@ -287,7 +291,7 @@ const useReferenceValues = (
       limit: 10,
     },
     {
-      enabled: !!ids.length && type === RuleReferenceType.PRODUCT_TYPE,
+      enabled: !!ids.length && type === TaxRateRuleReferenceType.PRODUCT_TYPE,
     }
   )
 
@@ -297,7 +301,8 @@ const useReferenceValues = (
       limit: 10,
     },
     {
-      enabled: !!ids.length && type === RuleReferenceType.PRODUCT_COLLECTION,
+      enabled:
+        !!ids.length && type === TaxRateRuleReferenceType.PRODUCT_COLLECTION,
     }
   )
 
@@ -307,12 +312,12 @@ const useReferenceValues = (
       limit: 10,
     },
     {
-      enabled: !!ids.length && type === RuleReferenceType.CUSTOMER_GROUP,
+      enabled: !!ids.length && type === TaxRateRuleReferenceType.CUSTOMER_GROUP,
     }
   )
 
   switch (type) {
-    case RuleReferenceType.PRODUCT:
+    case TaxRateRuleReferenceType.PRODUCT:
       return {
         labels: products.products?.map((product) => product.title),
         isPending: products.isPending,
@@ -323,7 +328,7 @@ const useReferenceValues = (
         isError: products.isError,
         error: products.error,
       }
-    case RuleReferenceType.PRODUCT_TAG:
+    case TaxRateRuleReferenceType.PRODUCT_TAG:
       return {
         labels: tags.product_tags?.map((tag: any) => tag.value),
         isPending: tags.isPending,
@@ -334,7 +339,7 @@ const useReferenceValues = (
         isError: tags.isError,
         error: tags.error,
       }
-    case RuleReferenceType.PRODUCT_TYPE:
+    case TaxRateRuleReferenceType.PRODUCT_TYPE:
       return {
         labels: productTypes.product_types?.map((type) => type.value),
         isPending: productTypes.isPending,
@@ -345,7 +350,7 @@ const useReferenceValues = (
         isError: productTypes.isError,
         error: productTypes.error,
       }
-    case RuleReferenceType.PRODUCT_COLLECTION:
+    case TaxRateRuleReferenceType.PRODUCT_COLLECTION:
       return {
         labels: collections.collections?.map((collection) => collection.title!),
         isPending: collections.isPending,
@@ -356,7 +361,7 @@ const useReferenceValues = (
         isError: collections.isError,
         error: collections.error,
       }
-    case RuleReferenceType.CUSTOMER_GROUP:
+    case TaxRateRuleReferenceType.CUSTOMER_GROUP:
       return {
         labels: customerGroups.customer_groups?.map((group) => group.name!),
         isPending: customerGroups.isPending,

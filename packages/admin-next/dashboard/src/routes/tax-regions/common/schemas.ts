@@ -1,30 +1,16 @@
 import { z } from "zod"
-import { RuleReferenceType } from "./constants"
+import { TaxRateRuleReferenceType } from "./constants"
 
-const ReferenceSchema = z.object({
+export const TaxRateRuleReferenceSchema = z.object({
   value: z.string(),
   label: z.string(),
 })
 
-export type Reference = z.infer<typeof ReferenceSchema>
+export type TaxRateRuleReference = z.infer<typeof TaxRateRuleReferenceSchema>
 
-export const TargetSchema = z.object({
-  reference_type: z.nativeEnum(RuleReferenceType),
-  references: z.array(ReferenceSchema),
+export const TaxRateRuleTargetSchema = z.object({
+  reference_type: z.nativeEnum(TaxRateRuleReferenceType),
+  references: z.array(TaxRateRuleReferenceSchema),
 })
 
-export type Target = z.infer<typeof TargetSchema>
-
-export const TaxRateRuleValueSchema = z.object({
-  value: z.string(),
-  label: z.string(),
-})
-
-export type TaxRateRuleValue = z.infer<typeof TaxRateRuleValueSchema>
-
-export const TaxRateRulesSchema = z.record(
-  z.nativeEnum(RuleReferenceType),
-  z.array(TaxRateRuleValueSchema).optional()
-)
-
-export type TaxRateRules = z.infer<typeof TaxRateRulesSchema>
+export type TaxRateRuleTarget = z.infer<typeof TaxRateRuleTargetSchema>

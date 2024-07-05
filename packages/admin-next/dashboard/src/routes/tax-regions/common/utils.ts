@@ -1,9 +1,9 @@
 import { HttpTypes } from "@medusajs/types"
 
-import { Target } from "./schemas"
+import { TaxRateRuleTarget } from "./schemas"
 
 export const createTaxRulePayload = (
-  target: Target
+  target: TaxRateRuleTarget
 ): HttpTypes.AdminCreateTaxRate["rules"] => {
   return target.references.map((reference) => ({
     reference: target.reference_type,

@@ -12,7 +12,7 @@ import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
-import { useCreateTaxRegion } from "../../../../../hooks/api/tax-regions"
+import { useCreateTaxRegion } from "../../../../../hooks/api"
 
 type TaxRegionCreateFormProps = {
   parentId?: string

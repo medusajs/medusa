@@ -1,10 +1,10 @@
-import { RuleReferenceType } from "../common/constants"
-import { TaxRateRuleValue } from "../common/schemas"
+import { TaxRateRuleReferenceType } from "../common/constants"
+import { TaxRateRuleReference } from "../common/schemas"
 
 export type InitialRuleValues = {
-  [RuleReferenceType.PRODUCT]: TaxRateRuleValue[]
-  [RuleReferenceType.PRODUCT_COLLECTION]: TaxRateRuleValue[]
-  [RuleReferenceType.PRODUCT_TAG]: TaxRateRuleValue[]
-  [RuleReferenceType.PRODUCT_TYPE]: TaxRateRuleValue[]
-  [RuleReferenceType.CUSTOMER_GROUP]: TaxRateRuleValue[]
+  [TaxRateRuleReferenceType.PRODUCT]: TaxRateRuleReference[]
+  [TaxRateRuleReferenceType.PRODUCT_COLLECTION]: TaxRateRuleReference[]
+  [TaxRateRuleReferenceType.PRODUCT_TAG]: TaxRateRuleReference[]
+  [TaxRateRuleReferenceType.PRODUCT_TYPE]: TaxRateRuleReference[]
+  [TaxRateRuleReferenceType.CUSTOMER_GROUP]: TaxRateRuleReference[]
 }

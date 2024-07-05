@@ -44,17 +44,17 @@ import {
   useProductTypeTableQuery,
 } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { RuleReferenceType } from "../../constants"
-import { Reference } from "../../schemas"
+import { TaxRateRuleReferenceType } from "../../constants"
+import { TaxRateRuleReference } from "../../schemas"
 
 type TargetFormProps = {
-  referenceType: RuleReferenceType
+  referenceType: TaxRateRuleReferenceType
   type: "focus" | "drawer"
-  state: Reference[]
-  setState: (state: Reference[]) => void
+  state: TaxRateRuleReference[]
+  setState: (state: TaxRateRuleReference[]) => void
 }
 
-function initRowSelection(state: Reference[]) {
+function initRowSelection(state: TaxRateRuleReference[]) {
   return state.reduce((acc, reference) => {
     acc[reference.value] = true
     return acc
@@ -70,7 +70,8 @@ export const TargetForm = ({
   const { t } = useTranslation()
   const Component = type === "focus" ? StackedFocusModal : StackedDrawer
 
-  const [intermediate, setIntermediate] = useState<Reference[]>(state)
+  const [intermediate, setIntermediate] =
+    useState<TaxRateRuleReference[]>(state)
 
   const handleSave = () => {
     setState(intermediate)
@@ -101,23 +102,23 @@ export const TargetForm = ({
 }
 
 type TableProps = {
-  referenceType: RuleReferenceType
+  referenceType: TaxRateRuleReferenceType
   initialRowState: RowSelectionState
-  intermediate: Reference[]
-  setIntermediate: (state: Reference[]) => void
+  intermediate: TaxRateRuleReference[]
+  setIntermediate: (state: TaxRateRuleReference[]) => void
 }
 
 const Table = ({ referenceType, ...props }: TableProps) => {
   switch (referenceType) {
-    case RuleReferenceType.CUSTOMER_GROUP:
+    case TaxRateRuleReferenceType.CUSTOMER_GROUP:
       return <CustomerGroupTable {...props} />
-    case RuleReferenceType.PRODUCT:
+    case TaxRateRuleReferenceType.PRODUCT:
       return <ProductTable {...props} />
-    case RuleReferenceType.PRODUCT_COLLECTION:
+    case TaxRateRuleReferenceType.PRODUCT_COLLECTION:
       return <ProductCollectionTable {...props} />
-    case RuleReferenceType.PRODUCT_TYPE:
+    case TaxRateRuleReferenceType.PRODUCT_TYPE:
       return <ProductTypeTable {...props} />
-    case RuleReferenceType.PRODUCT_TAG:
+    case TaxRateRuleReferenceType.PRODUCT_TAG:
       return <ProductTagTable {...props} />
     default:
       return null
@@ -126,8 +127,8 @@ const Table = ({ referenceType, ...props }: TableProps) => {
 
 type TableImplementationProps = {
   initialRowState: RowSelectionState
-  intermediate: Reference[]
-  setIntermediate: (state: Reference[]) => void
+  intermediate: TaxRateRuleReference[]
+  setIntermediate: (state: TaxRateRuleReference[]) => void
 }
 
 const PAGE_SIZE = 50

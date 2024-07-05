@@ -1,4 +1,4 @@
-export enum RuleReferenceType {
+export enum TaxRateRuleReferenceType {
   PRODUCT = "products",
   PRODUCT_COLLECTION = "product_collections",
   PRODUCT_TAG = "product_tags",

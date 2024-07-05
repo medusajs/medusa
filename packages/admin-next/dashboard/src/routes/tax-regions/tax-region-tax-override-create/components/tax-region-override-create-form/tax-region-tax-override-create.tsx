@@ -29,10 +29,10 @@ import {
 import { useCreateTaxRate } from "../../../../../hooks/api/tax-rates"
 import { TargetForm } from "../../../common/components/target-form/target-form"
 import { TargetItem } from "../../../common/components/target-item/target-item"
-import { RuleReferenceType } from "../../../common/constants"
+import { TaxRateRuleReferenceType } from "../../../common/constants"
 import {
-  TaxRateRuleValue,
-  TaxRateRuleValueSchema,
+  TaxRateRuleReference,
+  TaxRateRuleReferenceSchema,
 } from "../../../common/schemas"
 import { createTaxRulePayload } from "../../../common/utils"
 
@@ -53,11 +53,11 @@ const TaxRegionCreateTaxOverrideSchema = z.object({
     product_types: z.boolean(),
     customer_groups: z.boolean(),
   }),
-  products: z.array(TaxRateRuleValueSchema).optional(),
-  product_collections: z.array(TaxRateRuleValueSchema).optional(),
-  product_tags: z.array(TaxRateRuleValueSchema).optional(),
-  product_types: z.array(TaxRateRuleValueSchema).optional(),
-  customer_groups: z.array(TaxRateRuleValueSchema).optional(),
+  products: z.array(TaxRateRuleReferenceSchema).optional(),
+  product_collections: z.array(TaxRateRuleReferenceSchema).optional(),
+  product_tags: z.array(TaxRateRuleReferenceSchema).optional(),
+  product_types: z.array(TaxRateRuleReferenceSchema).optional(),
+  customer_groups: z.array(TaxRateRuleReferenceSchema).optional(),
 })
 
 type TaxRegionCreateTaxOverrideFormProps = {
@@ -65,7 +65,7 @@ type TaxRegionCreateTaxOverrideFormProps = {
 }
 
 const STACKED_MODAL_ID = "tr"
-const getStackedModalId = (type: RuleReferenceType) =>
+const getStackedModalId = (type: TaxRateRuleReferenceType) =>
   `${STACKED_MODAL_ID}-${type}`
 
 export const TaxRegionCreateTaxOverrideForm = ({
@@ -111,23 +111,23 @@ export const TaxRegionCreateTaxOverrideForm = ({
     } = values
 
     const productRules = createTaxRulePayload({
-      reference_type: RuleReferenceType.PRODUCT,
+      reference_type: TaxRateRuleReferenceType.PRODUCT,
       references: products || [],
     })
     const customerGroupRules = createTaxRulePayload({
-      reference_type: RuleReferenceType.CUSTOMER_GROUP,
+      reference_type: TaxRateRuleReferenceType.CUSTOMER_GROUP,
       references: customer_groups || [],
     })
     const productCollectionRules = createTaxRulePayload({
-      reference_type: RuleReferenceType.PRODUCT_COLLECTION,
+      reference_type: TaxRateRuleReferenceType.PRODUCT_COLLECTION,
       references: product_collections || [],
     })
     const productTagRules = createTaxRulePayload({
-      reference_type: RuleReferenceType.PRODUCT_TAG,
+      reference_type: TaxRateRuleReferenceType.PRODUCT_TAG,
       references: product_tags || [],
     })
     const productTypeRules = createTaxRulePayload({
-      reference_type: RuleReferenceType.PRODUCT_TYPE,
+      reference_type: TaxRateRuleReferenceType.PRODUCT_TYPE,
       references: product_types || [],
     })
 
@@ -187,67 +187,67 @@ export const TaxRegionCreateTaxOverrideForm = ({
     name: "customer_groups",
   })
 
-  const getControls = (type: RuleReferenceType) => {
+  const getControls = (type: TaxRateRuleReferenceType) => {
     switch (type) {
-      case RuleReferenceType.PRODUCT:
+      case TaxRateRuleReferenceType.PRODUCT:
         return products
-      case RuleReferenceType.PRODUCT_COLLECTION:
+      case TaxRateRuleReferenceType.PRODUCT_COLLECTION:
         return productCollections
-      case RuleReferenceType.PRODUCT_TAG:
+      case TaxRateRuleReferenceType.PRODUCT_TAG:
         return productTags
-      case RuleReferenceType.PRODUCT_TYPE:
+      case TaxRateRuleReferenceType.PRODUCT_TYPE:
         return productTypes
-      case RuleReferenceType.CUSTOMER_GROUP:
+      case TaxRateRuleReferenceType.CUSTOMER_GROUP:
         return customerGroups
     }
   }
 
   const referenceTypeOptions = [
     {
-      value: RuleReferenceType.PRODUCT,
+      value: TaxRateRuleReferenceType.PRODUCT,
       label: t("taxRegions.fields.targets.options.product"),
     },
     {
-      value: RuleReferenceType.PRODUCT_COLLECTION,
+      value: TaxRateRuleReferenceType.PRODUCT_COLLECTION,
       label: t("taxRegions.fields.targets.options.productCollection"),
     },
     {
-      value: RuleReferenceType.PRODUCT_TAG,
+      value: TaxRateRuleReferenceType.PRODUCT_TAG,
       label: t("taxRegions.fields.targets.options.productTag"),
     },
     {
-      value: RuleReferenceType.PRODUCT_TYPE,
+      value: TaxRateRuleReferenceType.PRODUCT_TYPE,
       label: t("taxRegions.fields.targets.options.productType"),
     },
     {
-      value: RuleReferenceType.CUSTOMER_GROUP,
+      value: TaxRateRuleReferenceType.CUSTOMER_GROUP,
       label: t("taxRegions.fields.targets.options.customerGroup"),
     },
   ]
 
   const searchPlaceholders = {
-    [RuleReferenceType.PRODUCT]: t(
+    [TaxRateRuleReferenceType.PRODUCT]: t(
       "taxRegions.fields.targets.placeholders.product"
     ),
-    [RuleReferenceType.PRODUCT_COLLECTION]: t(
+    [TaxRateRuleReferenceType.PRODUCT_COLLECTION]: t(
       "taxRegions.fields.targets.placeholders.productCollection"
     ),
-    [RuleReferenceType.PRODUCT_TAG]: t(
+    [TaxRateRuleReferenceType.PRODUCT_TAG]: t(
       "taxRegions.fields.targets.placeholders.productTag"
     ),
-    [RuleReferenceType.PRODUCT_TYPE]: t(
+    [TaxRateRuleReferenceType.PRODUCT_TYPE]: t(
       "taxRegions.fields.targets.placeholders.productType"
     ),
-    [RuleReferenceType.CUSTOMER_GROUP]: t(
+    [TaxRateRuleReferenceType.CUSTOMER_GROUP]: t(
       "taxRegions.fields.targets.placeholders.customerGroup"
     ),
   }
 
-  const getFieldHandler = (type: RuleReferenceType) => {
+  const getFieldHandler = (type: TaxRateRuleReferenceType) => {
     const { fields, remove, append } = getControls(type)
     const modalId = getStackedModalId(type)
 
-    return (references: TaxRateRuleValue[]) => {
+    return (references: TaxRateRuleReference[]) => {
       if (!references.length) {
         form.setValue(type, [], {
           shouldDirty: true,
@@ -273,9 +273,11 @@ export const TaxRegionCreateTaxOverrideForm = ({
     }
   }
 
-  const displayOrder = new Set<RuleReferenceType>([RuleReferenceType.PRODUCT])
+  const displayOrder = new Set<TaxRateRuleReferenceType>([
+    TaxRateRuleReferenceType.PRODUCT,
+  ])
 
-  const disableRule = (type: RuleReferenceType) => {
+  const disableRule = (type: TaxRateRuleReferenceType) => {
     form.setValue(type, [], {
       shouldDirty: true,
     })
@@ -286,7 +288,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
     displayOrder.delete(type)
   }
 
-  const enableRule = (type: RuleReferenceType) => {
+  const enableRule = (type: TaxRateRuleReferenceType) => {
     form.setValue(`enabled_rules.${type}`, true, {
       shouldDirty: true,
     })
@@ -304,11 +306,11 @@ export const TaxRegionCreateTaxOverrideForm = ({
 
   const addRule = () => {
     const firstDisabledRule = Object.keys(watchedEnabledRules).find(
-      (key) => !watchedEnabledRules[key as RuleReferenceType]
+      (key) => !watchedEnabledRules[key as TaxRateRuleReferenceType]
     )
 
     if (firstDisabledRule) {
-      enableRule(firstDisabledRule as RuleReferenceType)
+      enableRule(firstDisabledRule as TaxRateRuleReferenceType)
     }
   }
 
@@ -319,7 +321,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
       return orderArray.indexOf(b.value) - orderArray.indexOf(a.value)
     })
 
-  const getAvailableRuleTypes = (type: RuleReferenceType) => {
+  const getAvailableRuleTypes = (type: TaxRateRuleReferenceType) => {
     return referenceTypeOptions.filter((option) => {
       return (
         !visibleRuleTypes.some(
@@ -339,18 +341,7 @@ export const TaxRegionCreateTaxOverrideForm = ({
         onSubmit={handleSubmit}
         className="flex h-full flex-col overflow-hidden"
       >
-        <RouteFocusModal.Header>
-          <div className="flex items-center justify-end gap-x-2">
-            <RouteFocusModal.Close asChild>
-              <Button size="small" variant="secondary">
-                {t("actions.cancel")}
-              </Button>
-            </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
-              {t("actions.save")}
-            </Button>
-          </div>
-        </RouteFocusModal.Header>
+        <RouteFocusModal.Header />
         <RouteFocusModal.Body className="flex flex-1 flex-col overflow-hidden">
           <div className="flex flex-1 flex-col items-center overflow-y-auto">
             <div className="flex w-full max-w-[720px] flex-col gap-y-8 px-2 py-16">
@@ -494,7 +485,9 @@ export const TaxRegionCreateTaxOverrideForm = ({
 
                     const modalId = getStackedModalId(type)
 
-                    const handleChangeType = (value: RuleReferenceType) => {
+                    const handleChangeType = (
+                      value: TaxRateRuleReferenceType
+                    ) => {
                       disableRule(type)
                       enableRule(value)
                     }
@@ -635,6 +628,18 @@ export const TaxRegionCreateTaxOverrideForm = ({
             </div>
           </div>
         </RouteFocusModal.Body>
+        <RouteFocusModal.Footer>
+          <div className="flex items-center justify-end gap-x-2">
+            <RouteFocusModal.Close asChild>
+              <Button size="small" variant="secondary">
+                {t("actions.cancel")}
+              </Button>
+            </RouteFocusModal.Close>
+            <Button size="small" type="submit" isLoading={isPending}>
+              {t("actions.save")}
+            </Button>
+          </div>
+        </RouteFocusModal.Footer>
       </form>
     </RouteFocusModal.Form>
   )

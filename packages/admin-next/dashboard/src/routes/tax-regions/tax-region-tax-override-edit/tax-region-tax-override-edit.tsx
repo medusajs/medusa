@@ -10,7 +10,7 @@ import { useProductTypes } from "../../../hooks/api/product-types"
 import { useProducts } from "../../../hooks/api/products"
 import { useTags } from "../../../hooks/api/tags"
 import { useTaxRate } from "../../../hooks/api/tax-rates"
-import { RuleReferenceType } from "../common/constants"
+import { TaxRateRuleReferenceType } from "../common/constants"
 import { TaxRegionTaxOverrideEditForm } from "./components/tax-region-tax-override-edit-form"
 import { InitialRuleValues } from "./types"
 
@@ -56,25 +56,25 @@ const useDefaultRulesValues = (
   const rules = taxRate?.rules || []
 
   const idsByReferenceType: {
-    [key in RuleReferenceType]: string[]
+    [key in TaxRateRuleReferenceType]: string[]
   } = {
-    [RuleReferenceType.PRODUCT]: [],
-    [RuleReferenceType.PRODUCT_COLLECTION]: [],
-    [RuleReferenceType.PRODUCT_TAG]: [],
-    [RuleReferenceType.PRODUCT_TYPE]: [],
-    [RuleReferenceType.CUSTOMER_GROUP]: [],
+    [TaxRateRuleReferenceType.PRODUCT]: [],
+    [TaxRateRuleReferenceType.PRODUCT_COLLECTION]: [],
+    [TaxRateRuleReferenceType.PRODUCT_TAG]: [],
+    [TaxRateRuleReferenceType.PRODUCT_TYPE]: [],
+    [TaxRateRuleReferenceType.CUSTOMER_GROUP]: [],
   }
 
   rules.forEach((rule) => {
-    const reference = rule.reference as RuleReferenceType
+    const reference = rule.reference as TaxRateRuleReferenceType
     idsByReferenceType[reference]?.push(rule.reference_id)
   })
 
   const queries = [
     {
-      ids: idsByReferenceType[RuleReferenceType.PRODUCT],
+      ids: idsByReferenceType[TaxRateRuleReferenceType.PRODUCT],
       hook: useProducts,
-      key: RuleReferenceType.PRODUCT,
+      key: TaxRateRuleReferenceType.PRODUCT,
       getResult: (result: HttpTypes.AdminProductListResponse) =>
         result.products.map((product) => ({
           label: product.title,
@@ -82,9 +82,9 @@ const useDefaultRulesValues = (
         })),
     },
     {
-      ids: idsByReferenceType[RuleReferenceType.PRODUCT_COLLECTION],
+      ids: idsByReferenceType[TaxRateRuleReferenceType.PRODUCT_COLLECTION],
       hook: useCollections,
-      key: RuleReferenceType.PRODUCT_COLLECTION,
+      key: TaxRateRuleReferenceType.PRODUCT_COLLECTION,
       getResult: (result: HttpTypes.AdminCollectionListResponse) =>
         result.collections.map((collection) => ({
           label: collection.title!,
@@ -92,9 +92,9 @@ const useDefaultRulesValues = (
         })),
     },
     {
-      ids: idsByReferenceType[RuleReferenceType.PRODUCT_TAG],
+      ids: idsByReferenceType[TaxRateRuleReferenceType.PRODUCT_TAG],
       hook: useTags,
-      key: RuleReferenceType.PRODUCT_TAG,
+      key: TaxRateRuleReferenceType.PRODUCT_TAG,
       getResult: (result: any) =>
         result.tags.map((tag: any) => ({
           label: tag.value,
@@ -102,9 +102,9 @@ const useDefaultRulesValues = (
         })),
     },
     {
-      ids: idsByReferenceType[RuleReferenceType.PRODUCT_TYPE],
+      ids: idsByReferenceType[TaxRateRuleReferenceType.PRODUCT_TYPE],
       hook: useProductTypes,
-      key: RuleReferenceType.PRODUCT_TYPE,
+      key: TaxRateRuleReferenceType.PRODUCT_TYPE,
       getResult: (result: HttpTypes.AdminProductTypeListResponse) =>
         result.product_types.map((productType) => ({
           label: productType.value,
@@ -112,9 +112,9 @@ const useDefaultRulesValues = (
         })),
     },
     {
-      ids: idsByReferenceType[RuleReferenceType.CUSTOMER_GROUP],
+      ids: idsByReferenceType[TaxRateRuleReferenceType.CUSTOMER_GROUP],
       hook: useCustomerGroups,
-      key: RuleReferenceType.CUSTOMER_GROUP,
+      key: TaxRateRuleReferenceType.CUSTOMER_GROUP,
       getResult: (
         result: HttpTypes.PaginatedResponse<{
           customer_groups: HttpTypes.AdminCustomerGroup[]
