@@ -319,7 +319,7 @@ export const CategoryCombobox = forwardRef<
                   {query ? (
                     <Trans
                       i18n={i18n}
-                      i18nKey={"general.noSearchResultsFor"}
+                      i18nKey={"general.noResultsTitle"}
                       tOptions={{
                         query: query,
                       }}
@@ -328,7 +328,7 @@ export const CategoryCombobox = forwardRef<
                       ]}
                     />
                   ) : (
-                    t("general.noRecordsFound")
+                    t("general.noResultsTitle")
                   )}
                 </Text>
               </div>

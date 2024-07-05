@@ -3,7 +3,7 @@ import { Button, Text, clx } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-type NoResultsProps = {
+export type NoResultsProps = {
   title?: string
   message?: string
   className?: string

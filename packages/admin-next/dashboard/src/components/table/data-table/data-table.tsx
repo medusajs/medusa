@@ -1,6 +1,6 @@
 import { clx } from "@medusajs/ui"
 import { memo } from "react"
-import { NoRecords } from "../../common/empty-table-content"
+import { NoRecords, NoResultsProps } from "../../common/empty-table-content"
 import { TableSkeleton } from "../../common/skeleton"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
@@ -11,6 +11,7 @@ interface DataTableProps<TData>
   isLoading?: boolean
   pageSize: number
   queryObject?: Record<string, any>
+  noRecords?: Pick<NoResultsProps, "title" | "message">
 }
 
 // Maybe we should use the memoized version of DataTableRoot
@@ -32,6 +33,7 @@ export const DataTable = <TData,>({
   pageSize,
   isLoading = false,
   layout = "fit",
+  noRecords: noRecordsProps = {},
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -57,6 +59,7 @@ export const DataTable = <TData,>({
         className={clx({
           "flex h-full flex-col overflow-hidden": layout === "fill",
         })}
+        {...noRecordsProps}
       />
     )
   }

@@ -140,6 +140,9 @@ export const ApiKeySalesChannelSection = ({
         pageSize={PAGE_SIZE}
         pagination
         search
+        noRecords={{
+          message: t("apiKeyManagement.salesChannels.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )
