@@ -1,5 +1,23 @@
 # @medusajs/link-modules
 
+## 0.2.12
+
+### Patch Changes
+
+- [#7341](https://github.com/medusajs/medusa/pull/7341) [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Preview release changeset
+
+- [#7262](https://github.com/medusajs/medusa/pull/7262) [`521b4e79268d3998d9fc8ebde3450e629d9c5daf`](https://github.com/medusajs/medusa/commit/521b4e79268d3998d9fc8ebde3450e629d9c5daf) Thanks [@fPolic](https://github.com/fPolic)! - feat: add Order<>Fulfillment link
+
+- [#7225](https://github.com/medusajs/medusa/pull/7225) [`39c3f6d92a9f77b8befdde2693bd8a215080f90e`](https://github.com/medusajs/medusa/commit/39c3f6d92a9f77b8befdde2693bd8a215080f90e) Thanks [@fPolic](https://github.com/fPolic)! - Default MedusaApp schema scalar
+
+- [#7243](https://github.com/medusajs/medusa/pull/7243) [`5443c69794d77a086fbbdc68b9beaca4c8c6334e`](https://github.com/medusajs/medusa/commit/5443c69794d77a086fbbdc68b9beaca4c8c6334e) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat(link-module): Order Product link
+
+- [#7169](https://github.com/medusajs/medusa/pull/7169) [`9d3f49531493b4cf73def5a10a57ff0d432cc6db`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Fulfillment - shipping options with context
+
+- Updated dependencies [[`0430e63b0bc1b3ed9c13bb6514b22474676e9509`](https://github.com/medusajs/medusa/commit/0430e63b0bc1b3ed9c13bb6514b22474676e9509), [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e), [`521b4e79268d3998d9fc8ebde3450e629d9c5daf`](https://github.com/medusajs/medusa/commit/521b4e79268d3998d9fc8ebde3450e629d9c5daf), [`bc0c65c6b3d7162f5df5b09beadefa897c2e08db`](https://github.com/medusajs/medusa/commit/bc0c65c6b3d7162f5df5b09beadefa897c2e08db), [`144e09e852a5be625d1e325b70f9255aa36369a5`](https://github.com/medusajs/medusa/commit/144e09e852a5be625d1e325b70f9255aa36369a5), [`45e2228a07fef92c68e0ac3a209554f7e02b5773`](https://github.com/medusajs/medusa/commit/45e2228a07fef92c68e0ac3a209554f7e02b5773), [`a736e728b8a527119bc9ac331878a030a1e8a2f0`](https://github.com/medusajs/medusa/commit/a736e728b8a527119bc9ac331878a030a1e8a2f0), [`39c3f6d92a9f77b8befdde2693bd8a215080f90e`](https://github.com/medusajs/medusa/commit/39c3f6d92a9f77b8befdde2693bd8a215080f90e), [`5228b14ca94d3a73e1af519fc0c1b12fcaefd462`](https://github.com/medusajs/medusa/commit/5228b14ca94d3a73e1af519fc0c1b12fcaefd462), [`9d3f49531493b4cf73def5a10a57ff0d432cc6db`](https://github.com/medusajs/medusa/commit/9d3f49531493b4cf73def5a10a57ff0d432cc6db)]:
+  - @medusajs/utils@1.12.0
+  - @medusajs/modules-sdk@1.13.0
+
 ## 0.2.11
 
 ### Patch Changes

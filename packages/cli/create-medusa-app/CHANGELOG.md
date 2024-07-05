@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.2.9
+
+### Patch Changes
+
+- [#7341](https://github.com/medusajs/medusa/pull/7341) [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Preview release changeset
+
+- [#7253](https://github.com/medusajs/medusa/pull/7253) [`e7a35283678474b93364dac44da125bbf973aea0`](https://github.com/medusajs/medusa/commit/e7a35283678474b93364dac44da125bbf973aea0) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): don't open browser to admin if v2 option is passed
+
+- Updated dependencies [[`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e)]:
+  - medusa-telemetry@0.0.18
+
 ## 1.2.8
 
 ### Patch Changes

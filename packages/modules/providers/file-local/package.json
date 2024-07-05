@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file-local-next",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Local filesystem file storage for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -29,7 +29,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.7"
+    "@medusajs/utils": "^1.12.0"
   },
   "keywords": [
     "medusa-plugin",

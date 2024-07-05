@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -19,7 +19,7 @@
     "commander": "^10.0.1",
     "glob": "^7.1.6",
     "inquirer": "^9.2.2",
-    "medusa-telemetry": "^0.0.17",
+    "medusa-telemetry": "^0.0.18",
     "nanoid": "^4.0.2",
     "node-emoji": "^2.0.2",
     "node-fetch": "^3.3.1",

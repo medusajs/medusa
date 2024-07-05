@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/notification-local",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Local (logging) notification provider for Medusa, useful for testing purposes and log audits",
   "main": "dist/index.js",
   "repository": {
@@ -30,7 +30,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.11.7"
+    "@medusajs/utils": "^1.12.0"
   },
   "keywords": [
     "medusa-provider",

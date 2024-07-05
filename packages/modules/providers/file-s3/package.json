@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file-s3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "S3 protocol file storage for Medusa. Supports any S3-compatible storage provider",
   "main": "dist/index.js",
   "repository": {
@@ -33,7 +33,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.556.0",
     "@aws-sdk/s3-request-presigner": "^3.556.0",
-    "@medusajs/utils": "^1.11.7",
+    "@medusajs/utils": "^1.12.0",
     "ulid": "^2.3.0"
   },
   "keywords": [

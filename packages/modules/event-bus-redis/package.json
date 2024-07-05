@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/event-bus-redis",
-  "version": "1.8.13",
+  "version": "1.8.14",
   "description": "Redis Event Bus Module for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -20,10 +20,10 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
+    "@medusajs/types": "^1.12.0",
     "cross-env": "^5.2.1",
     "jest": "^29.7.0",
-    "medusa-test-utils": "^1.1.44",
+    "medusa-test-utils": "^1.1.45",
     "rimraf": "^5.0.1",
     "typescript": "^5.1.6"
   },
@@ -34,8 +34,8 @@
     "test": "jest --silent --bail --maxWorkers=50% --forceExit"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.11",
-    "@medusajs/utils": "^1.11.9",
+    "@medusajs/modules-sdk": "^1.13.0",
+    "@medusajs/utils": "^1.12.0",
     "awilix": "^8.0.0",
     "bullmq": "^5.4.2",
     "ioredis": "^5.2.5"

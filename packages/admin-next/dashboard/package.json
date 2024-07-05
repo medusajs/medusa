@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/dashboard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "generate:static": "node ./scripts/generate-countries.js && prettier --write ./src/lib/countries.ts && node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
     "dev": "vite",
@@ -32,9 +32,9 @@
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@hookform/resolvers": "3.4.2",
-    "@medusajs/icons": "1.2.1",
-    "@medusajs/js-sdk": "0.0.1",
-    "@medusajs/ui": "3.0.0",
+    "@medusajs/icons": "1.2.2",
+    "@medusajs/js-sdk": "0.0.2",
+    "@medusajs/ui": "3.0.1",
     "@radix-ui/react-collapsible": "1.1.0",
     "@radix-ui/react-hover-card": "1.1.1",
     "@tanstack/react-query": "^5.28.14",
@@ -63,10 +63,10 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@medusajs/admin-shared": "^0.0.1",
-    "@medusajs/admin-vite-plugin": "0.0.1",
-    "@medusajs/types": "1.11.16",
-    "@medusajs/ui-preset": "1.1.3",
+    "@medusajs/admin-shared": "^0.0.2",
+    "@medusajs/admin-vite-plugin": "0.0.2",
+    "@medusajs/types": "1.12.0",
+    "@medusajs/ui-preset": "1.1.4",
     "@types/node": "^20.11.15",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",

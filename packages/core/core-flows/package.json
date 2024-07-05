@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/core-flows",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Set of workflow definitions for Medusa",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.11.16",
+    "@medusajs/types": "^1.12.0",
     "@swc/core": "^1.5.29",
     "@swc/jest": "^0.2.36",
     "cross-env": "^5.2.1",
@@ -30,10 +30,10 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.12.11",
-    "@medusajs/orchestration": "^0.5.7",
-    "@medusajs/utils": "^1.11.9",
-    "@medusajs/workflows-sdk": "^0.1.6",
+    "@medusajs/modules-sdk": "^1.13.0",
+    "@medusajs/orchestration": "^0.5.8",
+    "@medusajs/utils": "^1.12.0",
+    "@medusajs/workflows-sdk": "^0.1.7",
     "awilix": "^8.0.1",
     "ulid": "^2.3.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin-vite-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@babel/parser": "7.23.5",
     "@babel/traverse": "7.23.5",
-    "@medusajs/admin-shared": "0.0.1",
+    "@medusajs/admin-shared": "0.0.2",
     "chokidar": "3.5.3",
     "fdir": "6.1.1",
     "magic-string": "0.30.5"

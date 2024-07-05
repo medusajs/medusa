@@ -1,5 +1,18 @@
 # @medusajs/oas-github-ci
 
+## 1.0.28
+
+### Patch Changes
+
+- [#7341](https://github.com/medusajs/medusa/pull/7341) [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Preview release changeset
+
+- [#7245](https://github.com/medusajs/medusa/pull/7245) [`651b953db79c9002c7f502fbbeee44319670ff74`](https://github.com/medusajs/medusa/commit/651b953db79c9002c7f502fbbeee44319670ff74) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli, oas-github-ci): updated paths to docs directories following monorepo reorganization
+
+- [#7304](https://github.com/medusajs/medusa/pull/7304) [`8b2429d24f3eb8d65f0185fa7a23cc02523921b7`](https://github.com/medusajs/medusa/commit/8b2429d24f3eb8d65f0185fa7a23cc02523921b7) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(oas-github-ci): remove v2 option
+
+- Updated dependencies [[`8b2429d24f3eb8d65f0185fa7a23cc02523921b7`](https://github.com/medusajs/medusa/commit/8b2429d24f3eb8d65f0185fa7a23cc02523921b7), [`2e42e053d4c9d5445d227bdc268c66713aad8e2e`](https://github.com/medusajs/medusa/commit/2e42e053d4c9d5445d227bdc268c66713aad8e2e), [`651b953db79c9002c7f502fbbeee44319670ff74`](https://github.com/medusajs/medusa/commit/651b953db79c9002c7f502fbbeee44319670ff74)]:
+  - @medusajs/medusa-oas-cli@1.0.0
+
 ## 1.0.27
 
 ### Patch Changes
