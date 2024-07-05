@@ -1126,11 +1126,11 @@
       "header": "Overrides",
       "create": {
         "header": "Create Override",
-        "hint": "Create a new tax override to define the taxes applied under specific conditions."
+        "hint": "Create a tax rate that overrides the default tax rates for selected conditions."
       },
       "edit": {
         "header": "Edit Override",
-        "hint": "Edit the tax override to define the taxes applied under specific conditions."
+        "hint": "Edit the tax rate that overrides the default tax rates for selected conditions."
       }
     },
     "taxRates": {
@@ -1152,7 +1152,7 @@
     "fields": {
       "isCombinable": {
         "label": "Combine with parents",
-        "hint": "If enabled, this tax rate will be combined with parent tax rates.",
+        "hint": "Whether this tax rate can be combined with the default rate from the tax region.",
         "true": "Combinable",
         "false": "Not combinable"
       },
