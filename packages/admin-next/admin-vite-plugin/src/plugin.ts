@@ -695,28 +695,17 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
        * We also need to reload all modules that import the route.
        */
       if (!_extensionGraph.has(file)) {
-        const moduleId = getVirtualId(file)
-        const resolvedModuleId = resolveVirtualId(moduleId)
-        const module = server?.moduleGraph.getModuleById(resolvedModuleId)
-        if (module) {
-          await server?.reloadModule(module)
-        }
-      }
+        const imports = new Set<string>()
 
-      if (_extensionGraph.has(file)) {
-        const modules = _extensionGraph.get(file)
-
-        if (!modules) {
-          return
-        }
-
-        for (const moduleId of modules) {
-          const module = server?.moduleGraph.getModuleById(moduleId)
-
+        for (const resolvedModuleId of RESOLVED_ROUTE_MODULES) {
+          const module = server?.moduleGraph.getModuleById(resolvedModuleId)
           if (module) {
+            imports.add(resolvedModuleId)
             await server?.reloadModule(module)
           }
         }
+
+        _extensionGraph.set(file, imports)
       }
     }
 
@@ -813,7 +802,6 @@ export const medusaVitePlugin: MedusaVitePlugin = (options) => {
     async load(id) {
       if (RESOLVED_WIDGET_MODULES.includes(id)) {
         const zone = getWidgetZone(id)
-
         return register(id, { type: "widget", get: zone })
       }
 

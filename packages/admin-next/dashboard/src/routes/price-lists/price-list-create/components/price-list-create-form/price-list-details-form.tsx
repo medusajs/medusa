@@ -262,7 +262,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                         <StackedFocusModal.Trigger asChild>
                           <button
                             type="button"
-                            className="bg-ui-bg-field shadow-borders-base txt-compact-small text-ui-fg-muted flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5"
+                            className="bg-ui-bg-field-component hover:bg-ui-bg-field-component-hover shadow-borders-base txt-compact-small text-ui-fg-muted transition-fg focus-visible:shadow-borders-interactive-with-active flex flex-1 items-center gap-x-2 rounded-md px-2 py-1.5 outline-none"
                           >
                             <MagnifyingGlass />
                             {t(
