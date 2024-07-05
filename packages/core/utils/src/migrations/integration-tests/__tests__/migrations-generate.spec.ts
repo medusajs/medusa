@@ -22,6 +22,8 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
+console.log(pgGodCredentials)
+
 describe("Generate migrations", () => {
   beforeEach(async () => {
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
