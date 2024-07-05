@@ -9,7 +9,7 @@ moduleIntegrationTestRunner<IRegionModuleService>({
   moduleName: Modules.REGION,
   testSuite: ({ service }) => {
     describe("Region Module Service", () => {
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.REGION, {
           service: RegionModuleService,
         }).linkable

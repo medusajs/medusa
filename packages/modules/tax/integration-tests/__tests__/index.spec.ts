@@ -10,7 +10,7 @@ moduleIntegrationTestRunner<ITaxModuleService>({
   moduleName: Modules.TAX,
   testSuite: ({ service }) => {
     describe("TaxModuleService", function () {
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.TAX, {
           service: TaxModuleService,
         }).linkable

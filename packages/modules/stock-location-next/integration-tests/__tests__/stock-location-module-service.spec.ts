@@ -10,7 +10,7 @@ moduleIntegrationTestRunner<IStockLocationService>({
   moduleName: Modules.STOCK_LOCATION,
   testSuite: ({ service }) => {
     describe("Stock Location Module Service", () => {
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.STOCK_LOCATION, {
           service: StockLocationModuleService,
         }).linkable

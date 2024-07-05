@@ -103,7 +103,7 @@ moduleIntegrationTestRunner({
     service,
   }: SuiteOptions<IFulfillmentModuleService>) =>
     describe("Fulfillment Module Service", () => {
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.FULFILLMENT, {
           service: FulfillmentModuleService,
         }).linkable

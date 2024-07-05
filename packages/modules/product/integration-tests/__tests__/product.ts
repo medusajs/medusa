@@ -41,7 +41,7 @@ moduleIntegrationTestRunner<Service>({
       categoryService = moduleService.productCategoryService_
     })
 
-    it.only(`should export the appropriate linkable configuration`, () => {
+    it(`should export the appropriate linkable configuration`, () => {
       const linkable = Module(Modules.PRODUCT, {
         service: ProductModuleService,
       }).linkable

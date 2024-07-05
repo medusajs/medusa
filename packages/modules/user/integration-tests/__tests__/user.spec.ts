@@ -1,9 +1,10 @@
 import { IUserModuleService } from "@medusajs/types"
-import { Modules, UserEvents } from "@medusajs/utils"
+import { Module, Modules, UserEvents } from "@medusajs/utils"
 import {
   MockEventBusService,
   moduleIntegrationTestRunner,
 } from "medusa-test-utils"
+import { UserModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -27,6 +28,37 @@ moduleIntegrationTestRunner<IUserModuleService>({
     eventBusModuleService: new MockEventBusService(),
   },
   testSuite: ({ service }) => {
+    it.only(`should export the appropriate linkable configuration`, () => {
+      const linkable = Module(Modules.USER, {
+        service: UserModuleService,
+      }).linkable
+
+      expect(Object.keys(linkable)).toEqual(["invite", "user"])
+
+      Object.keys(linkable).forEach((key) => {
+        delete linkable[key].toJSON
+      })
+
+      expect(linkable).toEqual({
+        invite: {
+          id: {
+            linkable: "invite_id",
+            primaryKey: "id",
+            serviceName: "user",
+            field: "invite",
+          },
+        },
+        user: {
+          id: {
+            linkable: "user_id",
+            primaryKey: "id",
+            serviceName: "user",
+            field: "user",
+          },
+        },
+      })
+    })
+
     describe("UserModuleService - User", () => {
       afterEach(async () => {
         jest.clearAllMocks()

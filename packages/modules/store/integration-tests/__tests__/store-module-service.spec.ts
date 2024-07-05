@@ -10,7 +10,7 @@ moduleIntegrationTestRunner<IStoreModuleService>({
   moduleName: Modules.STORE,
   testSuite: ({ service }) => {
     describe("Store Module Service", () => {
-      it.only(`should export the appropriate linkable configuration`, () => {
+      it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.STORE, {
           service: StoreModuleService,
         }).linkable
