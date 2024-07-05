@@ -19,7 +19,8 @@ export const TightLayout = ({
       <div
         className={clsx(
           "relative flex w-full flex-1 items-start justify-center",
-          " px-docs_1 pb-docs_2 pt-docs_7 md:px-docs_2 lg:px-docs_4 lg:py-docs_7"
+          "px-docs_1 pb-docs_2 pt-docs_7 md:px-docs_2 lg:px-docs_4 lg:py-docs_7",
+          "mb-docs_4 sm:mb-0"
         )}
       >
         <main className="h-full w-full lg:max-w-[720px] lg:px-px">

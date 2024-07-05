@@ -1,5 +1,5 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -47,7 +47,12 @@ export const ProductTypeListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("productTypes.domain")}</Heading>
+        <div>
+          <Heading>{t("productTypes.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("productTypes.subtitle")}
+          </Text>
+        </div>
         <Button size="small" variant="secondary" asChild>
           <Link to="create">{t("actions.create")}</Link>
         </Button>

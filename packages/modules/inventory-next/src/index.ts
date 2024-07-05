@@ -1,7 +1,6 @@
-import { ModuleExports } from "@medusajs/types"
-import InventoryService from "./services/inventory-module"
+import InventoryModuleService from "./services/inventory-module"
+import { Module, Modules } from "@medusajs/utils"
 
-const moduleDefinition: ModuleExports = {
-  service: InventoryService,
-}
-export default moduleDefinition
+export default Module(Modules.INVENTORY, {
+  service: InventoryModuleService,
+})

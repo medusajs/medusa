@@ -357,7 +357,7 @@ export const CreatePromotionForm = () => {
                     className="w-full"
                     value={Tab.PROMOTION}
                   >
-                    {t("promotions.tabs.promotion")}
+                    {t("promotions.tabs.details")}
                   </ProgressTabs.Trigger>
 
                   <ProgressTabs.Trigger className="w-full" value={Tab.CAMPAIGN}>

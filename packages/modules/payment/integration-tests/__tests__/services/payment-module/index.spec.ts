@@ -1,11 +1,12 @@
 import { IPaymentModuleService } from "@medusajs/types"
-import { Modules, promiseAll } from "@medusajs/utils"
+import { Module, Modules, promiseAll } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   createPaymentCollections,
-  createPaymentSessions,
   createPayments,
+  createPaymentSessions,
 } from "../../../__fixtures__"
+import { PaymentModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -13,6 +14,49 @@ moduleIntegrationTestRunner<IPaymentModuleService>({
   moduleName: Modules.PAYMENT,
   testSuite: ({ MikroOrmWrapper, service }) => {
     describe("Payment Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.PAYMENT, {
+          service: PaymentModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "payment",
+          "paymentCollection",
+          "paymentProvider",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          payment: {
+            id: {
+              linkable: "payment_id",
+              primaryKey: "id",
+              serviceName: "payment",
+              field: "payment",
+            },
+          },
+          paymentCollection: {
+            id: {
+              linkable: "payment_collection_id",
+              primaryKey: "id",
+              serviceName: "payment",
+              field: "paymentCollection",
+            },
+          },
+          paymentProvider: {
+            id: {
+              linkable: "payment_provider_id",
+              primaryKey: "id",
+              serviceName: "payment",
+              field: "paymentProvider",
+            },
+          },
+        })
+      })
+
       describe("Payment Flow", () => {
         it("complete payment flow successfully", async () => {
           let paymentCollection = await service.createPaymentCollections({

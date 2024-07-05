@@ -32,7 +32,7 @@ import { accessSync } from "fs"
  * then it will be inferred from the entity name of the alias args.
  *
  * @param serviceName
- * @param alias
+ * @param alias custom aliases will be merged with the computed aliases from the provided models. Though, if a custom alias correspond to a computed alias for the same model then the custom alias will take place. Also, note that the methodSuffix will be inferred from the entity name if not provided as part of the args.
  * @param schema
  * @param models
  * @param linkableKeys
@@ -69,13 +69,20 @@ export function defineJoinerConfig(
     loadedModels = []
 
     let index = 1
-    const maxSearchIndex = 6
 
     while (true) {
       ++index
-      const fullPath = getCallerFilePath(index)
+      let fullPath = getCallerFilePath(index)
       if (!fullPath) {
         break
+      }
+
+      /**
+       * Handle integration-tests/__tests__ path based on conventional naming
+       */
+      if (fullPath.includes("integration-tests/__tests__")) {
+        const sourcePath = fullPath.split("integration-tests/__tests__")[0]
+        fullPath = path.join(sourcePath, "src")
       }
 
       const srcDir = fullPath.includes("dist") ? "dist" : "src"
@@ -101,7 +108,7 @@ export function defineJoinerConfig(
 
       loadedModels = loadModels(basePath)
 
-      if (index === maxSearchIndex || loadedModels.length) {
+      if (loadedModels.length) {
         break
       }
     }
@@ -298,10 +305,10 @@ export function buildLinkableKeysFromMikroOrmObjects(
  * // {
  * //   user: {
  * //     id: {
- * //       serviceName: 'userService',
- * //       field: 'user',
- * //       linkable: 'user_id',
- * //       primaryKey: 'id'
+ * //       serviceName: 'userService', // The name of the module service it originate from
+ * //       field: 'user',              // The field name of the entity, the query field is inferred from it as kebab cased singular/plural
+ * //       linkable: 'user_id',        // The linkable key
+ * //       primaryKey: 'id'            // The primary key if refers to in the original object representation, it will be used to be passed to the filters of the corresponding public service method
  * //     },
  * //     toJSON() { ... }
  * //   },

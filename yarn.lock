@@ -4226,7 +4226,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/api-key@workspace:packages/modules/api-key"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4235,9 +4234,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4289,10 +4286,8 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
-    knex: 2.4.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     scrypt-kdf: ^2.0.1
@@ -4336,7 +4331,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/cart@workspace:packages/modules/cart"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4345,9 +4339,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4380,7 +4372,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/currency@workspace:packages/modules/currency"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -4389,9 +4380,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4413,9 +4402,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4544,7 +4531,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/file@workspace:packages/modules/file"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.10
+    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.15
     "@medusajs/utils": ^1.11.8
     "@mikro-orm/cli": 5.9.7
@@ -4553,11 +4540,8 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     faker: ^5.5.3
     jest: ^29.7.0
-    knex: 2.4.2
-    lodash: ^4.17.21
     medusa-test-utils: ^1.1.43
     pg-god: ^1.0.12
     rimraf: ^3.0.2
@@ -4595,9 +4579,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4653,9 +4635,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.43
     rimraf: ^5.0.1
     ts-node: ^10.9.1
@@ -4905,9 +4885,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4953,9 +4931,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -4998,9 +4974,7 @@ __metadata:
     awilix: ^8.0.0
     bignumber.js: ^9.1.2
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -5014,7 +4988,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/pricing@workspace:packages/modules/pricing"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5023,9 +4996,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -5039,7 +5010,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5048,11 +5018,8 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     faker: ^5.5.3
     jest: ^29.7.0
-    knex: 2.4.2
-    lodash: ^4.17.21
     medusa-test-utils: ^1.1.44
     pg-god: ^1.0.12
     rimraf: ^3.0.2
@@ -5066,7 +5033,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/promotion@workspace:packages/modules/promotion"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": 1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5075,9 +5041,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -5091,7 +5055,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/region@workspace:packages/modules/region"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5100,9 +5063,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -5115,7 +5076,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/sales-channel@workspace:packages/modules/sales-channel"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.9
     "@medusajs/types": ^1.11.14
     "@medusajs/utils": ^1.11.7
     "@mikro-orm/cli": 5.9.7
@@ -5124,9 +5084,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -5148,9 +5106,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^5.0.1
     ts-node: ^10.9.1
@@ -5163,7 +5119,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/store@workspace:packages/modules/store"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5172,9 +5127,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: "workspace:^"
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -5196,9 +5149,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.42
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -5342,7 +5293,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/user@workspace:packages/modules/user"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.10
     "@medusajs/types": ^1.11.15
     "@medusajs/utils": ^1.11.8
     "@mikro-orm/cli": 5.9.7
@@ -5353,10 +5303,8 @@ __metadata:
     "@swc/jest": ^0.2.36
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
     jsonwebtoken: ^9.0.2
-    knex: 2.4.2
     medusa-test-utils: ^1.1.43
     rimraf: ^3.0.2
     ts-node: ^10.9.1
@@ -5394,7 +5342,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflow-engine-inmemory@workspace:packages/modules/workflow-engine-inmemory"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@medusajs/workflows-sdk": ^0.1.6
@@ -5405,9 +5352,7 @@ __metadata:
     awilix: ^8.0.0
     cron-parser: ^4.9.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     jest: ^29.7.0
-    knex: 2.4.2
     medusa-test-utils: ^1.1.44
     rimraf: ^3.0.2
     ts-node: ^10.9.1
