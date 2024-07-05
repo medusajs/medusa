@@ -676,24 +676,12 @@ export const filesMap = [
     "pathname": "/deployment/storefront/vercel"
   },
   {
-    "filePath": "/www/apps/resources/app/favicon.ico",
-    "pathname": "/"
-  },
-  {
-    "filePath": "/www/apps/resources/app/globals.css",
-    "pathname": "/"
-  },
-  {
     "filePath": "/www/apps/resources/app/integrations/page.mdx",
     "pathname": "/integrations"
   },
   {
     "filePath": "/www/apps/resources/app/js-client/page.mdx",
     "pathname": "/js-client"
-  },
-  {
-    "filePath": "/www/apps/resources/app/layout.tsx",
-    "pathname": "/"
   },
   {
     "filePath": "/www/apps/resources/app/medusa-cli/page.mdx",
@@ -762,10 +750,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/recipes/subscriptions/page.mdx",
     "pathname": "/recipes/subscriptions"
-  },
-  {
-    "filePath": "/www/apps/resources/app/references/[...slug]/page.tsx",
-    "pathname": "/references/[...slug]"
   },
   {
     "filePath": "/www/apps/resources/app/storefront-development/cart/context/page.mdx",
@@ -936,82 +920,6 @@ export const filesMap = [
     "pathname": "/troubleshooting/_s3-plugin-acl-error"
   },
   {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/cli-installation-errors/permission-errors.mdx",
-    "pathname": "/troubleshooting/_sections/cli-installation-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/cli-installation-errors/powershell-error.mdx",
-    "pathname": "/troubleshooting/_sections/cli-installation-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/cli-installation-errors/reusable-section.mdx",
-    "pathname": "/troubleshooting/_sections/cli-installation-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/cli-installation-errors/yarn-error.mdx",
-    "pathname": "/troubleshooting/_sections/cli-installation-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/common-installation-errors/module-x-error.mdx",
-    "pathname": "/troubleshooting/_sections/common-installation-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/db-url-error.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/eagain-error.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/forwarding.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/no-browser-token-error.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/other-errors.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/create-medusa-app-errors/typeerror.mdx",
-    "pathname": "/troubleshooting/_sections/create-medusa-app-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/database-errors/connection-error.mdx",
-    "pathname": "/troubleshooting/_sections/database-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/database-errors/docker.mdx",
-    "pathname": "/troubleshooting/_sections/database-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/database-errors/privileges.mdx",
-    "pathname": "/troubleshooting/_sections/database-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/database-errors/sasl.mdx",
-    "pathname": "/troubleshooting/_sections/database-errors"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/nextjs/cma-option.mdx",
-    "pathname": "/troubleshooting/_sections/nextjs"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/other/cors-errors.mdx",
-    "pathname": "/troubleshooting/_sections/other"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/other/eaddrinuse.mdx",
-    "pathname": "/troubleshooting/_sections/other"
-  },
-  {
-    "filePath": "/www/apps/resources/app/troubleshooting/_sections/other/s3-acl.mdx",
-    "pathname": "/troubleshooting/_sections/other"
-  },
-  {
     "filePath": "/www/apps/resources/app/troubleshooting/_transaction-promise-all/page.mdx",
     "pathname": "/troubleshooting/_transaction-promise-all"
   },
@@ -1054,14 +962,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/usage/page.mdx",
     "pathname": "/usage"
-  },
-  {
-    "filePath": "/www/apps/resources/references/.nojekyll",
-    "pathname": "/references"
-  },
-  {
-    "filePath": "/www/apps/resources/references/_index.mdx",
-    "pathname": "/references"
   },
   {
     "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.authenticate/page.mdx",
