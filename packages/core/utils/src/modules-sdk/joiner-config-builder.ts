@@ -32,7 +32,7 @@ import { accessSync } from "fs"
  * then it will be inferred from the entity name of the alias args.
  *
  * @param serviceName
- * @param alias
+ * @param alias custom aliases will be merged with the computed aliases from the provided models. Though, if a custom alias correspond to a computed alias for the same model then the custom alias will take place. Also, note that the methodSuffix will be inferred from the entity name if not provided as part of the args.
  * @param schema
  * @param models
  * @param linkableKeys

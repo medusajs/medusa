@@ -5011,7 +5011,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/modules/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.12.11
     "@medusajs/types": ^1.11.16
     "@medusajs/utils": ^1.11.9
     "@mikro-orm/cli": 5.9.7
@@ -5020,11 +5019,8 @@ __metadata:
     "@mikro-orm/postgresql": 5.9.7
     awilix: ^8.0.0
     cross-env: ^5.2.1
-    dotenv: ^16.4.5
     faker: ^5.5.3
     jest: ^29.7.0
-    knex: 2.4.2
-    lodash: ^4.17.21
     medusa-test-utils: ^1.1.44
     pg-god: ^1.0.12
     rimraf: ^3.0.2
