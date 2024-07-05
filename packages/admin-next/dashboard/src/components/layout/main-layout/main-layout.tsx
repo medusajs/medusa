@@ -173,11 +173,9 @@ const ExtensionRouteSection = () => {
 
   const links = routes.links
 
-  console.log("links", links, "routes", routes)
-
-  const extensionLinks = links.filter(
-    (link) => !settingsRouteRegex.test(link.path)
-  )
+  const extensionLinks = links
+    .filter((link) => !settingsRouteRegex.test(link.path))
+    .sort((a, b) => a.label.localeCompare(b.label))
 
   if (!extensionLinks.length) {
     return null
