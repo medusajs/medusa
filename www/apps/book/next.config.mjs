@@ -127,7 +127,7 @@ const nextConfig = {
         //   basePath: false,
         // },
         {
-          source: "/:path*",
+          source: "/:path((?!v2).*)",
           destination: `${
             process.env.NEXT_PUBLIC_API_V1_URL || "https://localhost:3001"
           }/:path*`,

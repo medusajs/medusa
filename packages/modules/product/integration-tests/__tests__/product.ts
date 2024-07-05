@@ -9,9 +9,13 @@ import {
 } from "../__fixtures__/product"
 
 import { IProductModuleService, ProductDTO } from "@medusajs/types"
-import { kebabCase, Modules, ProductStatus } from "@medusajs/utils"
+import { kebabCase, Module, Modules, ProductStatus } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductCategoryService, ProductService } from "@services"
+import {
+  ProductCategoryService,
+  ProductModuleService,
+  ProductService,
+} from "@services"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import {
   categoriesData,
@@ -35,6 +39,94 @@ moduleIntegrationTestRunner<Service>({
     beforeEach(() => {
       service = moduleService.productService_
       categoryService = moduleService.productCategoryService_
+    })
+
+    it(`should export the appropriate linkable configuration`, () => {
+      const linkable = Module(Modules.PRODUCT, {
+        service: ProductModuleService,
+      }).linkable
+
+      expect(Object.keys(linkable)).toEqual([
+        "product",
+        "productVariant",
+        "productOption",
+        "productType",
+        "productImage",
+        "productTag",
+        "productCollection",
+        "productCategory",
+      ])
+
+      Object.keys(linkable).forEach((key) => {
+        delete linkable[key].toJSON
+      })
+
+      expect(linkable).toEqual({
+        product: {
+          id: {
+            linkable: "product_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "product",
+          },
+        },
+        productVariant: {
+          id: {
+            linkable: "product_variant_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productVariant",
+          },
+        },
+        productOption: {
+          id: {
+            linkable: "product_option_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productOption",
+          },
+        },
+        productType: {
+          id: {
+            linkable: "product_type_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productType",
+          },
+        },
+        productImage: {
+          id: {
+            linkable: "product_image_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productImage",
+          },
+        },
+        productTag: {
+          id: {
+            linkable: "product_tag_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productTag",
+          },
+        },
+        productCollection: {
+          id: {
+            linkable: "product_collection_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productCollection",
+          },
+        },
+        productCategory: {
+          id: {
+            linkable: "product_category_id",
+            primaryKey: "id",
+            serviceName: "productService",
+            field: "productCategory",
+          },
+        },
+      })
     })
 
     describe("Product Service", () => {

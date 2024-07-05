@@ -1,8 +1,10 @@
 import {
+  IDmlEntity,
   JoinerServiceConfigAlias,
   ModuleJoinerConfig,
   PropertyType,
 } from "@medusajs/types"
+import * as path from "path"
 import { dirname, join } from "path"
 import {
   camelToSnakeCase,
@@ -12,6 +14,7 @@ import {
   lowerCaseFirst,
   MapToConfig,
   pluralize,
+  toCamelCase,
   upperCaseFirst,
 } from "../common"
 import { loadModels } from "./loaders/load-models"
@@ -19,6 +22,7 @@ import { DmlEntity } from "../dml"
 import { BaseRelationship } from "../dml/relations/base"
 import { PrimaryKeyModifier } from "../dml/properties/primary-key"
 import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
+import { accessSync } from "fs"
 
 /**
  * Define joiner config for a module based on the models (object representation or entities) present in the models directory. This action will be sync until
@@ -28,7 +32,7 @@ import { InferLinkableKeys, InfersLinksConfig } from "./types/links-config"
  * then it will be inferred from the entity name of the alias args.
  *
  * @param serviceName
- * @param alias
+ * @param alias custom aliases will be merged with the computed aliases from the provided models. Though, if a custom alias correspond to a computed alias for the same model then the custom alias will take place. Also, note that the methodSuffix will be inferred from the entity name if not provided as part of the args.
  * @param schema
  * @param models
  * @param linkableKeys
@@ -59,39 +63,81 @@ export function defineJoinerConfig(
       "serviceName" | "primaryKeys" | "linkableKeys" | "alias"
     >
   > {
-  const fullPath = getCallerFilePath()
-  const srcDir = fullPath.includes("dist") ? "dist" : "src"
-  const splitPath = fullPath.split(srcDir)
+  let loadedModels = models
 
-  let basePath = splitPath[0] + srcDir
+  if (!loadedModels) {
+    loadedModels = []
 
-  const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
-  if (isMedusaProject) {
-    basePath = dirname(fullPath)
+    let index = 1
+
+    while (true) {
+      ++index
+      let fullPath = getCallerFilePath(index)
+      if (!fullPath) {
+        break
+      }
+
+      /**
+       * Handle integration-tests/__tests__ path based on conventional naming
+       */
+      if (fullPath.includes("integration-tests/__tests__")) {
+        const sourcePath = fullPath.split("integration-tests/__tests__")[0]
+        fullPath = path.join(sourcePath, "src")
+      }
+
+      const srcDir = fullPath.includes("dist") ? "dist" : "src"
+      const splitPath = fullPath.split(srcDir)
+
+      let basePath = splitPath[0] + srcDir
+
+      const isMedusaProject = fullPath.includes(`${srcDir}/modules/`)
+      if (isMedusaProject) {
+        basePath = dirname(fullPath)
+      }
+
+      basePath = join(basePath, "models")
+      let doesModelsDirExist = false
+      try {
+        accessSync(path.resolve(basePath))
+        doesModelsDirExist = true
+      } catch (e) {}
+
+      if (!doesModelsDirExist) {
+        continue
+      }
+
+      loadedModels = loadModels(basePath)
+
+      if (loadedModels.length) {
+        break
+      }
+    }
   }
 
-  basePath = join(basePath, "models")
-
-  let loadedModels = models ?? loadModels(basePath)
-  const modelDefinitions = new Map(
-    loadedModels
-      .filter((model) => !!DmlEntity.isDmlEntity(model))
+  const modelDefinitions = new Map<string, DmlEntity<any, any>>(
+    loadedModels!
+      .filter(
+        (model): model is DmlEntity<any, any> => !!DmlEntity.isDmlEntity(model)
+      )
       .map((model) => [model.name, model])
   )
-  const mikroOrmObjects = new Map(
-    loadedModels
-      .filter((model) => !DmlEntity.isDmlEntity(model))
+  const mikroOrmObjects = new Map<string, Function>(
+    loadedModels!
+      .filter((model): model is Function => !DmlEntity.isDmlEntity(model))
       .map((model) => [model.name, model])
   )
 
   // We prioritize DML if there is any equivalent Mikro orm entities found
-  loadedModels = [...modelDefinitions.values()]
+  const deduplicatedLoadedModels = [...modelDefinitions.values()] as (
+    | DmlEntity<any, any>
+    | { name: string }
+  )[]
   mikroOrmObjects.forEach((model) => {
     if (modelDefinitions.has(model.name)) {
       return
     }
 
-    loadedModels.push(model)
+    deduplicatedLoadedModels.push(model)
   })
 
   if (!linkableKeys) {
@@ -108,13 +154,14 @@ export function defineJoinerConfig(
   }
 
   if (!primaryKeys && modelDefinitions.size) {
-    const linkConfig = buildLinkConfigFromDmlObjects(serviceName, [
-      ...modelDefinitions.values(),
-    ])
+    const linkConfig = buildLinkConfigFromModelObjects(
+      serviceName,
+      Object.fromEntries(modelDefinitions)
+    )
 
     primaryKeys = deduplicate(
       Object.values(linkConfig).flatMap((entityLinkConfig) => {
-        return (Object.values(entityLinkConfig) as any[])
+        return (Object.values(entityLinkConfig as any) as any[])
           .filter((linkableConfig) => isObject(linkableConfig))
           .map((linkableConfig) => {
             return linkableConfig.primaryKey
@@ -140,7 +187,7 @@ export function defineJoinerConfig(
             pluralize(upperCaseFirst(alias.args.entity)),
         },
       })),
-      ...loadedModels
+      ...deduplicatedLoadedModels
         .filter((model) => {
           return (
             !alias || !alias.some((alias) => alias.args?.entity === model.name)
@@ -152,7 +199,7 @@ export function defineJoinerConfig(
             `${pluralize(camelToSnakeCase(entity.name).toLowerCase())}`,
           ],
           args: {
-            entity: entity.name,
+            entity: upperCaseFirst(entity.name),
             methodSuffix: pluralize(upperCaseFirst(entity.name)),
           },
         })),
@@ -174,6 +221,8 @@ export function defineJoinerConfig(
  *   number_plate: model.text().primaryKey(),
  *   test: model.text(),
  * })
+ *
+ * const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
  *
  * // output:
  * // {
@@ -213,7 +262,7 @@ export function buildLinkableKeysFromDmlObjects<
 
     if (primaryKeys.length) {
       primaryKeys.forEach((primaryKey) => {
-        linkableKeys[primaryKey] = model.name
+        linkableKeys[primaryKey] = upperCaseFirst(model.name)
       })
     }
   }
@@ -250,16 +299,16 @@ export function buildLinkableKeysFromMikroOrmObjects(
  *   test: model.text(),
  * })
  *
- * const links = buildLinkConfigFromDmlObjects('userService', [user, car])
+ * const links = buildLinkConfigFromModelObjects('userService', { user, car })
  *
  * // output:
  * // {
  * //   user: {
  * //     id: {
- * //       serviceName: 'userService',
- * //       field: 'user',
- * //       linkable: 'user_id',
- * //       primaryKey: 'id'
+ * //       serviceName: 'userService', // The name of the module service it originate from
+ * //       field: 'user',              // The field name of the entity, the query field is inferred from it as kebab cased singular/plural
+ * //       linkable: 'user_id',        // The linkable key
+ * //       primaryKey: 'id'            // The primary key if refers to in the original object representation, it will be used to be passed to the filters of the corresponding public service method
  * //     },
  * //     toJSON() { ... }
  * //   },
@@ -277,21 +326,19 @@ export function buildLinkableKeysFromMikroOrmObjects(
  * @param serviceName
  * @param models
  */
-export function buildLinkConfigFromDmlObjects<
+export function buildLinkConfigFromModelObjects<
   const ServiceName extends string,
-  const T extends DmlEntity<any, any>[]
->(
-  serviceName: ServiceName,
-  models: T = [] as unknown as T
-): InfersLinksConfig<ServiceName, T> {
+  const T extends Record<string, IDmlEntity<any, any>>
+>(serviceName: ServiceName, models: T): InfersLinksConfig<ServiceName, T> {
   const linkConfig = {} as InfersLinksConfig<ServiceName, T>
 
-  for (const model of models) {
+  for (const model of Object.values(models) ?? []) {
     if (!DmlEntity.isDmlEntity(model)) {
       continue
     }
 
     const schema = model.schema
+    // @ts-ignore
     const modelLinkConfig = (linkConfig[lowerCaseFirst(model.name)] ??= {
       toJSON: function () {
         const linkables = Object.entries(this)
@@ -322,7 +369,41 @@ export function buildLinkConfigFromDmlObjects<
     }
   }
 
-  return linkConfig as InfersLinksConfig<ServiceName, T> & Record<any, any>
+  return linkConfig as InfersLinksConfig<ServiceName, T>
+}
+
+/**
+ * @deprecated temporary supports for mikro orm entities to get the linkable available from the module export while waiting for the migration to DML
+ *
+ * @param serviceName
+ * @param linkableKeys
+ */
+export function buildLinkConfigFromLinkableKeys<
+  const ServiceName extends string,
+  const T extends Record<string, string>
+>(serviceName: ServiceName, linkableKeys: T): Record<string, any> {
+  const linkConfig = {} as Record<string, any>
+
+  for (const [linkable, modelName] of Object.entries(linkableKeys)) {
+    const kebabCasedModelName = camelToSnakeCase(toCamelCase(modelName))
+    const inferredReferenceProperty = linkable.replace(
+      `${kebabCasedModelName}_`,
+      ""
+    )
+
+    const config = {
+      linkable: linkable,
+      primaryKey: inferredReferenceProperty,
+      serviceName,
+      field: lowerCaseFirst(modelName),
+    }
+    linkConfig[lowerCaseFirst(modelName)] = {
+      [inferredReferenceProperty]: config,
+      toJSON: () => config,
+    }
+  }
+
+  return linkConfig as Record<string, any>
 }
 
 /**

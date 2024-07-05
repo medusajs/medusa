@@ -1,46 +1,66 @@
-import { Constructor, ModuleExports } from "@medusajs/types"
+import { Constructor, IDmlEntity, ModuleExports } from "@medusajs/types"
 import { MedusaServiceModelObjectsSymbol } from "./medusa-service"
 import {
-  buildLinkConfigFromDmlObjects,
+  buildLinkConfigFromLinkableKeys,
+  buildLinkConfigFromModelObjects,
   defineJoinerConfig,
 } from "./joiner-config-builder"
 import { InfersLinksConfig } from "./types/links-config"
 import { DmlEntity } from "../dml"
 
 /**
- * Wrapper to build the module export and auto generate the joiner config if needed as well as
- * return a links object based on the DML objects
+ * Wrapper to build the module export and auto generate the joiner config if not already provided in the module service, as well as
+ * return a linkable object based on the models
  *
  * @param serviceName
  * @param service
  * @param loaders
- * @constructor
  */
 export function Module<
   const ServiceName extends string,
   const Service extends Constructor<any>,
-  const ModelObjects extends DmlEntity<any, any>[] = Service extends {
-    $modelObjects: infer $DmlObjects
+  ModelObjects extends Record<string, IDmlEntity<any, any>> = Service extends {
+    $modelObjects: any
   }
-    ? $DmlObjects
-    : [],
-  Links = keyof ModelObjects extends never
+    ? Service["$modelObjects"]
+    : {},
+  Linkable = keyof ModelObjects extends never
     ? Record<string, any>
     : InfersLinksConfig<ServiceName, ModelObjects>
 >(
   serviceName: ServiceName,
   { service, loaders }: ModuleExports<Service>
 ): ModuleExports<Service> & {
-  links: Links
+  linkable: Linkable
 } {
-  service.prototype.__joinerConfig ??= defineJoinerConfig(serviceName)
+  const defaultJoinerConfig = defineJoinerConfig(serviceName)
+  service.prototype.__joinerConfig ??= () => defaultJoinerConfig
 
-  const dmlObjects = service[MedusaServiceModelObjectsSymbol]
+  const modelObjects = service[MedusaServiceModelObjectsSymbol] ?? {}
+
+  let linkable = {} as Linkable
+
+  if (Object.keys(modelObjects)?.length) {
+    const dmlObjects = Object.entries(modelObjects).filter(([, model]) =>
+      DmlEntity.isDmlEntity(model)
+    )
+
+    if (dmlObjects.length) {
+      linkable = buildLinkConfigFromModelObjects<ServiceName, ModelObjects>(
+        serviceName,
+        modelObjects
+      ) as Linkable
+    } else {
+      linkable = buildLinkConfigFromLinkableKeys(
+        serviceName,
+        service.prototype.__joinerConfig().linkableKeys
+      ) as Linkable
+    }
+  }
+
   return {
     service,
     loaders,
-    links: (dmlObjects?.length
-      ? buildLinkConfigFromDmlObjects<ServiceName, ModelObjects>(dmlObjects)
-      : {}) as Links,
+    linkable,
   }
 }

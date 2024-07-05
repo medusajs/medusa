@@ -4,7 +4,6 @@ import {
   InferEntityType,
   INotificationModuleService,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   NotificationTypes,
 } from "@medusajs/types"
@@ -17,7 +16,6 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { Notification } from "@models"
-import { joinerConfig } from "../joiner-config"
 import NotificationProviderService from "./notification-provider"
 
 type InjectedDependencies = {
@@ -53,10 +51,6 @@ export default class NotificationModuleService
     this.baseRepository_ = baseRepository
     this.notificationService_ = notificationService
     this.notificationProviderService_ = notificationProviderService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

@@ -14,10 +14,12 @@ import {
  * ## Overview
  *
  * A payment provider is used to handle and process payments, such as authorizing, capturing, and refund payments.
- *
- * Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-provider/) to learn more about payment providers.
  * 
- * Refer to [this guide](https://docs.medusajs.com/experimental/payment/payment-flow/) to learn more about the payment flow.
+ * :::note
+ * 
+ * This guide is a work in progress.
+ * 
+ * :::
  * 
  * ---
  * 
@@ -71,7 +73,7 @@ import {
  *
  * ## PROVIDER Property
  *
- * The `PROVIDER` static property is used when registering the provider in the dependency container. Typically, it would have the
+ * The `PROVIDER` static property is used when registering the provider in the module's container. Typically, it would have the
  * same value as the `identifier` property.
  *
  * ```ts
@@ -142,14 +144,14 @@ export abstract class AbstractPaymentProvider<TConfig = Record<string, unknown>>
   implements IPaymentProvider
 {
   /**
-   * You can use the `constructor` of your Payment Provider to have access to resources in your application through the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection).
+   * You can use the `constructor` of your payment provider to have access to resources in your application through the module's container.
    *
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,
    * you can initialize it in the constructor and use it in other methods in the service.
    *
    * The payment provider also can access the configurations of the module or plugin it's created in as a second parameter.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources in the [dependency container](https://docs.medusajs.com/development/fundamentals/dependency-injection)
+   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources in the module's container.
    * @param {Record<string, unknown>} config - If this provider processor is created in a module or plugin, their options are passed in this parameter.
    *
    * @example

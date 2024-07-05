@@ -4,7 +4,11 @@ import {
   ModuleJoinerConfig,
   PluginDetails,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  DefineLinkSymbol,
+  isObject,
+} from "@medusajs/utils"
 
 /**
  * import files from the links directory to retrieve the links to be loaded
@@ -42,8 +46,12 @@ export async function resolvePluginsLinks(
               return import_.default
             })
           )
-        ).filter(Boolean)
+        ).filter((value) => {
+          return isObject(value) && !value[DefineLinkSymbol]
+        })
       })
     )
-  ).flat(Infinity)
+  )
+    .flat(Infinity)
+    .filter(Boolean)
 }

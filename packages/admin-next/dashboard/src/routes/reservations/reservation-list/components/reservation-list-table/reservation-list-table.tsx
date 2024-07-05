@@ -1,4 +1,4 @@
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 
 import { DataTable } from "../../../../../components/table/data-table"
 import { Link } from "react-router-dom"
@@ -41,7 +41,12 @@ export const ReservationListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("reservations.domain")}</Heading>
+        <div>
+          <Heading>{t("reservations.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("reservations.subtitle")}
+          </Text>
+        </div>
         <Button variant="secondary" size="small" asChild>
           <Link to="create">{t("actions.create")}</Link>
         </Button>

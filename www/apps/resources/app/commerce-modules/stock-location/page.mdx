@@ -47,10 +47,10 @@ For example:
 <CodeTabs groupId="resource-type">
   <CodeTab label="API Route" value="api-route">
 
-```ts title="src/api/store/custom/route.ts"
-import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
-import { IStockLocationService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts title="src/api/store/custom/route.ts"
+  import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export async function GET(
   request: MedusaRequest,
@@ -68,10 +68,10 @@ export async function GET(
   </CodeTab>
   <CodeTab label="Subscriber" value="subscribers">
 
-```ts title="src/subscribers/custom-handler.ts"
-import { SubscriberArgs } from "@medusajs/medusa"
-import { IStockLocationService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts title="src/subscribers/custom-handler.ts"
+  import { SubscriberArgs } from "@medusajs/medusa"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 export default async function subscriberHandler({ container }: SubscriberArgs) {
   const stockLocationModuleService: IStockLocationService = container.resolve(
@@ -85,10 +85,10 @@ export default async function subscriberHandler({ container }: SubscriberArgs) {
   </CodeTab>
   <CodeTab label="Workflow Step" value="workflow-step">
 
-```ts title="src/workflows/hello-world/step1.ts"
-import { createStep } from "@medusajs/workflows-sdk"
-import { IStockLocationService } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+  ```ts title="src/workflows/hello-world/step1.ts"
+  import { createStep } from "@medusajs/workflows-sdk"
+  import { IStockLocationService } from "@medusajs/types"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
 const step1 = createStep("step-1", async (_, { container }) => {
   const stockLocationModuleService: IStockLocationService = container.resolve(

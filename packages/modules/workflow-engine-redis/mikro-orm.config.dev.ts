@@ -1,8 +1,7 @@
 import * as entities from "./src/models"
+import { defineMikroOrmCliConfig, Modules } from "@medusajs/utils"
 
-module.exports = {
+export default defineMikroOrmCliConfig(Modules.WORKFLOW_ENGINE, {
   entities: Object.values(entities),
-  schema: "public",
-  clientUrl: "postgres://postgres@localhost/medusa-workflow-engine-redis",
-  type: "postgresql",
-}
+  databaseName: "medusa-workflow-engine-redis",
+})

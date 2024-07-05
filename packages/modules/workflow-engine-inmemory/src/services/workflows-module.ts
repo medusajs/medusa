@@ -2,7 +2,6 @@ import {
   Context,
   DAL,
   InternalModuleDeclaration,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   WorkflowsSdkTypes,
 } from "@medusajs/types"
@@ -17,7 +16,6 @@ import type {
 } from "@medusajs/workflows-sdk"
 import { WorkflowExecution } from "@models"
 import { WorkflowOrchestratorService } from "@services"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -48,10 +46,6 @@ export class WorkflowsModuleService<
     this.baseRepository_ = baseRepository
     this.workflowExecutionService_ = workflowExecutionService
     this.workflowOrchestratorService_ = workflowOrchestratorService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   @InjectSharedContext()

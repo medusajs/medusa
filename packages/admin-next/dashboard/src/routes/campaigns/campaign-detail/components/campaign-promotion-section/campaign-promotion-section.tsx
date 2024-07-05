@@ -115,6 +115,9 @@ export const CampaignPromotionSection = ({
             shortcut: "r",
           },
         ]}
+        noRecords={{
+          message: t("campaigns.promotions.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

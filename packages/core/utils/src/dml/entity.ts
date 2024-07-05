@@ -9,11 +9,11 @@ import {
   IsDmlEntity,
   QueryCondition,
 } from "@medusajs/types"
-import { isObject, isString, toCamelCase, upperCaseFirst } from "../common"
+import { isObject, isString, toCamelCase } from "../common"
 import { transformIndexWhere } from "./helpers/entity-builder/build-indexes"
 import { BelongsTo } from "./relations/belongs-to"
 
-function extractNameAndTableName<Config extends IDmlEntityConfig>(
+function extractNameAndTableName<const Config extends IDmlEntityConfig>(
   nameOrConfig: Config
 ) {
   const result = {
@@ -27,9 +27,8 @@ function extractNameAndTableName<Config extends IDmlEntityConfig>(
   if (isString(nameOrConfig)) {
     const [schema, ...rest] = nameOrConfig.split(".")
     const name = rest.length ? rest.join(".") : schema
-    result.name = upperCaseFirst(
-      toCamelCase(name)
-    ) as InferDmlEntityNameFromConfig<Config>
+    result.name = toCamelCase(name) as InferDmlEntityNameFromConfig<Config>
+
     result.tableName = nameOrConfig
   }
 
@@ -44,9 +43,7 @@ function extractNameAndTableName<Config extends IDmlEntityConfig>(
     const [schema, ...rest] = potentialName.split(".")
     const name = rest.length ? rest.join(".") : schema
 
-    result.name = upperCaseFirst(
-      toCamelCase(name)
-    ) as InferDmlEntityNameFromConfig<Config>
+    result.name = toCamelCase(name) as InferDmlEntityNameFromConfig<Config>
     result.tableName = nameOrConfig.tableName
   }
 
@@ -59,7 +56,7 @@ function extractNameAndTableName<Config extends IDmlEntityConfig>(
  */
 export class DmlEntity<
   Schema extends DMLSchema,
-  TConfig extends IDmlEntityConfig
+  const TConfig extends IDmlEntityConfig
 > implements IDmlEntity<Schema, TConfig>
 {
   [IsDmlEntity]: true = true

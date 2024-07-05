@@ -6,7 +6,6 @@ import {
   InferEntityType,
   InternalModuleDeclaration,
   IRegionModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   RegionCountryDTO,
   RegionDTO,
@@ -26,9 +25,8 @@ import {
   promiseAll,
   removeUndefined,
 } from "@medusajs/utils"
-import { Region, RegionCountry as Country } from "@models"
+import { Country, Region } from "@models"
 import { UpdateRegionInput } from "@types"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -40,9 +38,11 @@ export default class RegionModuleService
   extends MedusaService<{
     Region: {
       dto: RegionDTO
+      model: typeof Region
     }
     Country: {
       dto: RegionCountryDTO
+      model: typeof Country
     }
   }>({ Region, Country })
   implements IRegionModuleService
@@ -64,10 +64,6 @@ export default class RegionModuleService
     this.baseRepository_ = baseRepository
     this.regionService_ = regionService
     this.countryService_ = countryService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

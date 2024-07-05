@@ -1,7 +1,8 @@
 import {
   buildLinkableKeysFromDmlObjects,
   buildLinkableKeysFromMikroOrmObjects,
-  buildLinkConfigFromDmlObjects,
+  buildLinkConfigFromLinkableKeys,
+  buildLinkConfigFromModelObjects,
   defineJoinerConfig,
 } from "../joiner-config-builder"
 import { Modules } from "../definition"
@@ -25,6 +26,7 @@ import {
   ShippingOptionRule,
   ShippingProfile,
 } from "../__fixtures__/joiner-config/entities"
+import { upperCaseFirst } from "../../common"
 
 describe("joiner-config-builder", () => {
   describe("defineJoiner | Mikro orm objects", () => {
@@ -420,14 +422,15 @@ describe("joiner-config-builder", () => {
       })
 
       const linkableKeys = buildLinkableKeysFromDmlObjects([user, car])
+
       expectTypeOf(linkableKeys).toMatchTypeOf<{
         user_id: "User"
         car_number_plate: "Car"
       }>()
 
       expect(linkableKeys).toEqual({
-        user_id: user.name,
-        car_number_plate: car.name,
+        user_id: upperCaseFirst(user.name),
+        car_number_plate: upperCaseFirst(car.name),
       })
     })
   })
@@ -446,19 +449,114 @@ describe("joiner-config-builder", () => {
     })
   })
 
-  describe("buildLinkConfigFromDmlObjects", () => {
+  describe("buildLinkConfigFromLinkableKeys", () => {
+    it("should return a link config object based on the linkable keys", () => {
+      class User {}
+      class Car {}
+
+      const linkableKeys = buildLinkableKeysFromMikroOrmObjects([Car, User])
+
+      const linkConfig = buildLinkConfigFromLinkableKeys(
+        "myService",
+        linkableKeys
+      )
+
+      expect(linkConfig).toEqual({
+        car: {
+          id: {
+            field: "car",
+            linkable: "car_id",
+            primaryKey: "id",
+            serviceName: "myService",
+          },
+          toJSON: expect.any(Function),
+        },
+        user: {
+          id: {
+            field: "user",
+            linkable: "user_id",
+            primaryKey: "id",
+            serviceName: "myService",
+          },
+          toJSON: expect.any(Function),
+        },
+      })
+
+      expect(linkConfig.car.toJSON()).toEqual({
+        field: "car",
+        linkable: "car_id",
+        primaryKey: "id",
+        serviceName: "myService",
+      })
+      expect(linkConfig.user.toJSON()).toEqual({
+        field: "user",
+        linkable: "user_id",
+        primaryKey: "id",
+        serviceName: "myService",
+      })
+    })
+
+    it("should return a link config object based on the custom linkable keys", () => {
+      const linkConfig = buildLinkConfigFromLinkableKeys("myService", {
+        user_id: "User",
+        currency_code: "currency",
+      })
+
+      expect(linkConfig).toEqual({
+        user: {
+          id: {
+            field: "user",
+            linkable: "user_id",
+            primaryKey: "id",
+            serviceName: "myService",
+          },
+          toJSON: expect.any(Function),
+        },
+        currency: {
+          code: {
+            field: "currency",
+            linkable: "currency_code",
+            primaryKey: "code",
+            serviceName: "myService",
+          },
+          toJSON: expect.any(Function),
+        },
+      })
+
+      expect(linkConfig.user.toJSON()).toEqual({
+        field: "user",
+        linkable: "user_id",
+        primaryKey: "id",
+        serviceName: "myService",
+      })
+      expect(linkConfig.currency.toJSON()).toEqual({
+        field: "currency",
+        linkable: "currency_code",
+        primaryKey: "code",
+        serviceName: "myService",
+      })
+    })
+  })
+
+  describe("buildLinkConfigFromModelObjects", () => {
     it("should return a link config object based on the DML's primary keys", () => {
       const user = model.define("user", {
         id: model.id().primaryKey(),
         name: model.text(),
       })
 
-      const car = model.define("car", {
-        id: model.id(),
-        number_plate: model.text().primaryKey(),
-      })
+      const car = model.define(
+        { name: "car", tableName: "car" },
+        {
+          id: model.id(),
+          number_plate: model.text().primaryKey(),
+        }
+      )
 
-      const linkConfig = buildLinkConfigFromDmlObjects("myService", [user, car])
+      const linkConfig = buildLinkConfigFromModelObjects("myService", {
+        user,
+        car,
+      })
 
       expectTypeOf(linkConfig).toMatchTypeOf<{
         user: {

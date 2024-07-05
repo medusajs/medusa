@@ -8,7 +8,7 @@ In this chapter, you'll learn how to add a compensation function to a step.
 
 ## Compensation Function
 
-Errors can occur in a workflow. To avoid data inconsistency, define a function to run when an error occurs in a step. This function is called the compensation function.
+To avoid data inconsistency when an error is thrown in a workflow, define a function (called a compensation function) and pass it as a second parameter to the `createStep` function.
 
 For example:
 
@@ -34,9 +34,11 @@ const step1 = createStep(
 )
 ```
 
-Each step can have a compensation function. The compensation function only runs if an error occurs throughout the Workflow. It’s useful to undo or roll back actions you’ve performed in a step.
+Each step can have a compensation function. The compensation function only runs if an error occurs throughout the workflow. It’s useful to undo or roll back actions you’ve performed in a step.
 
-### Test Compensation Function
+---
+
+## Test the Compensation Function
 
 1. Add another step that throws an error:
 
@@ -107,7 +109,7 @@ npm run dev
 
 5. Send a `GET` request to `/store/workflow`:
 
-```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflows"
+```bash apiTesting testApiMethod="GET" testApiUrl="http://localhost:9000/store/workflow"
 curl http://localhost:9000/store/workflow
 ```
 

@@ -4,17 +4,23 @@ import {
   IWorkflowEngineService,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { Modules, TransactionHandlerType } from "@medusajs/utils"
+import { Module, Modules, TransactionHandlerType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
-import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
+import {
+  conditionalStep2Invoke,
+  conditionalStep3Invoke,
+  workflow2Step2Invoke,
+  workflow2Step3Invoke,
+} from "../__fixtures__"
 import {
   eventGroupWorkflowId,
   workflowEventGroupIdStep1Mock,
   workflowEventGroupIdStep2Mock,
 } from "../__fixtures__/workflow_event_group_id"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
+import { WorkflowsModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -27,6 +33,29 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
 
       beforeEach(() => {
         query = medusaApp.query
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.WORKFLOW_ENGINE, {
+          service: WorkflowsModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["workflowExecution"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          workflowExecution: {
+            id: {
+              linkable: "workflow_execution_id",
+              primaryKey: "id",
+              serviceName: "workflows",
+              field: "workflowExecution",
+            },
+          },
+        })
       })
 
       it("should execute an async workflow keeping track of the event group id provided in the context", async () => {
@@ -92,6 +121,10 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
       })
 
       describe("Testing basic workflow", function () {
+        beforeEach(() => {
+          jest.clearAllMocks()
+        })
+
         it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
           await workflowOrcModule.run("workflow_1", {
             input: {
@@ -231,6 +264,46 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           })
 
           expect(onFinish).toHaveBeenCalledTimes(0)
+        })
+
+        it("should run conditional steps if condition is true", (done) => {
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_conditional_step",
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+                expect(conditionalStep2Invoke).toHaveBeenCalledTimes(2)
+                expect(conditionalStep3Invoke).toHaveBeenCalledTimes(1)
+              }
+            },
+          })
+
+          workflowOrcModule.run("workflow_conditional_step", {
+            input: {
+              runNewStepName: true,
+            },
+            throwOnError: true,
+          })
+        })
+
+        it("should not run conditional steps if condition is false", (done) => {
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_conditional_step",
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+                expect(conditionalStep2Invoke).toHaveBeenCalledTimes(1)
+                expect(conditionalStep3Invoke).toHaveBeenCalledTimes(0)
+              }
+            },
+          })
+
+          workflowOrcModule.run("workflow_conditional_step", {
+            input: {
+              runNewStepName: false,
+            },
+            throwOnError: true,
+          })
         })
       })
 

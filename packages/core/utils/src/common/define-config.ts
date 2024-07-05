@@ -1,5 +1,5 @@
 import { ConfigModule } from "@medusajs/types"
-import { Modules } from "../modules-sdk"
+import { Modules } from "../modules-sdk/definition"
 
 const DEFAULT_SECRET = "supersecret"
 const DEFAULT_ADMIN_URL = "http://localhost:9000"

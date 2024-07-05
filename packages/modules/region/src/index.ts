@@ -1,9 +1,8 @@
-import { ModuleExports } from "@medusajs/types"
 import { RegionModuleService } from "./services"
 import loadDefaults from "./loaders/defaults"
+import { Module, Modules } from "@medusajs/utils"
 
-const moduleDefinition: ModuleExports = {
+export default Module(Modules.REGION, {
   service: RegionModuleService,
   loaders: [loadDefaults],
-}
-export default moduleDefinition
+})

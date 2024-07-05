@@ -65,6 +65,8 @@ export function formatOrder(
         const sm = { ...shippingMethod.shipping_method }
 
         delete shippingMethod.shipping_method
+        cleanNestedRelations(shippingMethod)
+
         return {
           ...sm,
           order_id: shippingMethod.order_id,
@@ -87,6 +89,13 @@ export function formatOrder(
   return isArray ? orders : orders[0]
 }
 
+function cleanNestedRelations(obj) {
+  delete obj.order
+  delete obj.return
+  delete obj.claim
+  delete obj.exchange
+}
+
 function formatOrderReturn(orderReturn, mainOrder) {
   orderReturn.items.forEach((orderItem) => {
     const item = mainOrder.items?.find((item) => item.id === orderItem.item_id)
@@ -105,7 +114,7 @@ function formatClaim(claim) {
       const item = claim.order.items?.find(
         (item) => item.id === orderItem.item_id
       )
-
+      cleanNestedRelations(item)
       orderItem.detail = item?.detail
     })
   }
@@ -122,6 +131,7 @@ function formatClaim(claim) {
       (item) => item.id === orderItem.item_id
     )
 
+    cleanNestedRelations(item)
     orderItem.detail = item?.detail
   })
 }
@@ -136,6 +146,7 @@ function formatExchange(exchange) {
       (item) => item.id === orderItem.item_id
     )
 
+    cleanNestedRelations(item)
     orderItem.detail = item?.detail
   })
 }
@@ -150,6 +161,7 @@ function formatReturn(returnOrder) {
       (item) => item.id === orderItem.item_id
     )
 
+    cleanNestedRelations(item)
     orderItem.detail = item?.detail
   })
 }

@@ -9,7 +9,11 @@ const DownloadFull = () => {
 
   return (
     <Button variant="secondary">
-      <Link href={`/api/download/${area}`} download target="_blank">
+      <Link
+        href={`${process.env.NEXT_PUBLIC_BASE_PATH}/download/${area}`}
+        download
+        target="_blank"
+      >
         Download openapi.yaml
       </Link>
     </Button>

@@ -8,9 +8,7 @@ In this chapter, you’ll learn about loaders and how to use them.
 
 ## What is a Loader?
 
-A loader is a function executed when the Medusa application starts.
-
-A module can define loaders to execute on application start-up.
+A loader is a function executed when the Medusa application starts. You define and export it in a module.
 
 ---
 
@@ -30,25 +28,23 @@ export default function helloWorldLoader() {
 
 ### Export Loader in Module Definition
 
-You must export your loaders in the module definition.
-
-To do that, import the loader in `src/modules/hello/index.ts` and export it in the module's definition:
+Import the loader in `src/modules/hello/index.ts` and export it in the module's definition:
 
 ```ts title="src/modules/hello/index.ts"
 // other imports...
 import helloWorldLoader from "./loaders/hello-world"
 
-// ...
-
-export default {
+export default Module("hello", {
   // ...
   loaders: [helloWorldLoader],
-}
+})
 ```
 
 The value of the `loaders` property is an array of loader functions.
 
-### Test Loader
+---
+
+## Test the Loader
 
 Start the Medusa application:
 
@@ -75,6 +71,6 @@ Among the messages logged in the terminal, you’ll see the following message:
 
 <Note title="Don't use loaders if" type="error">
 
-- You want to perform an action continuously or at a set time pattern in the application. Use scheduled jobs instead, which is explained in the next chapter.
+- You want to perform an action continuously or at a set time pattern in the application. Use scheduled jobs instead, which is explained in an upcoming chapter.
 
 </Note>
