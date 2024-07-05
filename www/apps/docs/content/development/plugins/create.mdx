@@ -161,7 +161,7 @@ Finally, update the `build` scripts in your project and add a new `prepare` comm
 "scripts": {
   // other scripts...
   "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
-  "build:server": "cross-env npm run clean && tsc -p tsconfig.json",
+  "build:server": "cross-env npm run clean && tsc -p tsconfig.server.json",
   "build:admin": "cross-env medusa-admin build",
   "prepare": "cross-env NODE_ENV=production npm run build:server && medusa-admin bundle"
 }
