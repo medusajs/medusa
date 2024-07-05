@@ -69,7 +69,6 @@ export function defineJoinerConfig(
     loadedModels = []
 
     let index = 1
-    const maxSearchIndex = 6
 
     while (true) {
       ++index
@@ -101,7 +100,7 @@ export function defineJoinerConfig(
 
       loadedModels = loadModels(basePath)
 
-      if (index === maxSearchIndex || loadedModels.length) {
+      if (loadedModels.length) {
         break
       }
     }
