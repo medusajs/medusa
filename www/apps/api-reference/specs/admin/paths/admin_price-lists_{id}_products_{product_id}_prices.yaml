@@ -28,7 +28,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_price-lists_{id}_products_{product_id}_prices/deleteundefined
+          ../code_samples/tsx/admin_price-lists_{id}_products_{product_id}_prices/delete.tsx
     - lang: Shell
       label: cURL
       source:

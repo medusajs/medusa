@@ -1,3 +1,4 @@
+export { Alert } from "./components/alert"
 export { Avatar } from "./components/avatar"
 export { Badge } from "./components/badge"
 export { Button } from "./components/button"
@@ -21,6 +22,7 @@ export { IconButton } from "./components/icon-button"
 export { Input } from "./components/input"
 export { Kbd } from "./components/kbd"
 export { Label } from "./components/label"
+export { Popover } from "./components/popover"
 export { ProgressAccordion } from "./components/progress-accordion"
 export { ProgressTabs } from "./components/progress-tabs"
 export { Prompt } from "./components/prompt"
@@ -35,15 +37,14 @@ export { Textarea } from "./components/textarea"
 export { Toast } from "./components/toast"
 export { Toaster } from "./components/toaster"
 export { Tooltip } from "./components/tooltip"
-export { Popover } from "./components/popover"
 
 // Hooks
 export { usePrompt } from "./hooks/use-prompt"
-export { useToast } from "./hooks/use-toast"
 export { useToggleState } from "./hooks/use-toggle-state"
 
 // Utils
 export { clx } from "./utils/clx"
+export { toast } from "./utils/toast"
 
 // Types
 export * from "./types"

@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # CartService
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new CartService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressRepository_","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartRepository_","type":"Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customShippingOptionService_","type":"[CustomShippingOptionService](services.CustomShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountService_","type":"[DiscountService](services.DiscountService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardService_","type":"[GiftCardService](services.GiftCardService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemAdjustmentService_","type":"[LineItemAdjustmentService](services.LineItemAdjustmentService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemRepository_","type":"Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemService_","type":"[LineItemService](services.LineItemService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentProviderService_","type":"[PaymentProviderService](services.PaymentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionRepository_","type":"Repository&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceSelectionStrategy_","type":"[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"pricingService_","type":"[PricingService](services.PricingService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productService_","type":"[ProductService](services.ProductService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantInventoryService_","type":"[ProductVariantInventoryService](services.ProductVariantInventoryService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantService_","type":"[ProductVariantService](services.ProductVariantService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"remoteLink_","type":"`RemoteLink`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"remoteQuery_","type":"[RemoteQueryFunction](../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFunction.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"salesChannelService_","type":"[SalesChannelService](services.SalesChannelService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingMethodRepository_","type":"Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingOptionService_","type":"[ShippingOptionService](services.ShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingProfileService_","type":"[ShippingProfileService](services.ShippingProfileService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"storeService_","type":"[StoreService](services.StoreService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsService_","type":"[TotalsService](services.TotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.created\"","expandable":false,"children":[]},{"name":"Events.CUSTOMER_UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.customer_updated\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.updated\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CUSTOMER_UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.customer_updated\"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.created\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"cart.updated\"","expandable":false,"children":[]},{"name":"shippingMethodRepository_","type":"Repository&#60;[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cartRepository_","type":"Repository&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressRepository_","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionRepository_","type":"Repository&#60;[PaymentSession](../../entities/classes/entities.PaymentSession.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemRepository_","type":"Repository&#60;[LineItem](../../entities/classes/entities.LineItem.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantService_","type":"[ProductVariantService](services.ProductVariantService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productService_","type":"[ProductService](services.ProductService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"storeService_","type":"[StoreService](services.StoreService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"salesChannelService_","type":"[SalesChannelService](services.SalesChannelService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemService_","type":"[LineItemService](services.LineItemService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentProviderService_","type":"[PaymentProviderService](services.PaymentProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingOptionService_","type":"[ShippingOptionService](services.ShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shippingProfileService_","type":"[ShippingProfileService](services.ShippingProfileService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountService_","type":"[DiscountService](services.DiscountService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardService_","type":"[GiftCardService](services.GiftCardService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsService_","type":"[TotalsService](services.TotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newTotalsService_","type":"[NewTotalsService](services.NewTotalsService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customShippingOptionService_","type":"[CustomShippingOptionService](services.CustomShippingOptionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"priceSelectionStrategy_","type":"[IPriceSelectionStrategy](../../medusa/interfaces/medusa.IPriceSelectionStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemAdjustmentService_","type":"[LineItemAdjustmentService](services.LineItemAdjustmentService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"remoteQuery_","type":"[RemoteQueryFunction](../../types/ModulesSdkTypes/types/types.ModulesSdkTypes.RemoteQueryFunction.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"remoteLink_","type":"`RemoteLink`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"productVariantInventoryService_","type":"[ProductVariantInventoryService](services.ProductVariantInventoryService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"pricingService_","type":"[PricingService](services.PricingService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CartService"/>
 
 ___
 
@@ -26,11 +26,153 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type Parameters
+
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+
+#### Parameters
+
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
+
+### list
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"`FilterableCartProps`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"config object","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+### retrieve
+
+Gets a cart by id.
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"the options to get a cart","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the cart document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+
+### retrieveLegacy
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveLegacy"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveLegacy"/>
+
+#### Deprecated
+
+### retrieveWithTotals
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveWithTotals"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveWithTotals"/>
+
+### create
+
+Creates a cart.
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`CartCreateProps`","description":"the data to create the cart with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
+
+### getValidatedSalesChannel
+
+#### Parameters
+
+<TypeList types={[{"name":"salesChannelId","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getValidatedSalesChannel"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getValidatedSalesChannel"/>
+
+### removeLineItem
+
+Removes a line item from the cart.
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string` \\| `string`[]","description":"the line item(s) to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeLineItem"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="removeLineItem"/>
+
+### validateLineItemShipping\_
+
+Checks if a given line item has a shipping method that can fulfill it.
+Returns true if all products in the cart can be fulfilled with the current
+shipping methods.
+
+#### Parameters
+
+<TypeList types={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"the set of shipping methods to check from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemShippingProfiledId","type":"`string`","description":"the line item","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateLineItemShipping_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"boolean representing whether shipping method is validated","expandable":false,"children":[]}]}  sectionTitle="validateLineItemShipping_"/>
+
+### validateLineItem
+
+Check if line item's variant belongs to the cart's sales channel.
+
+#### Parameters
+
+<TypeList types={[{"name":"sales_channel_id","type":"`object`","description":"the cart for the line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id.sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"`LineItemValidateData`","description":"the line item being added","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateLineItem"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"a boolean indicating validation result","expandable":false,"children":[]}]}  sectionTitle="validateLineItem"/>
 
 ### addLineItem
 
@@ -38,11 +180,11 @@ Adds a line item to the cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will add to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"validateSalesChannels - should check if product belongs to the same sales channel as cart\n                           (if cart has associated sales channel)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config.validateSalesChannels","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will add to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"the line item to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"validateSalesChannels - should check if product belongs to the same sales channel as cart\n                           (if cart has associated sales channel)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config.validateSalesChannels","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}  sectionTitle="addLineItem"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="addLineItem"/>
 
 #### Deprecated
 
@@ -55,27 +197,23 @@ to have has\_shipping to false. Finally, the adjustments will be updated.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will add to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the line items to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"validateSalesChannels - should check if product belongs to the same sales channel as cart\n                           (if cart has associated sales channel)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config.validateSalesChannels","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will add to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItems","type":"[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"the line items to add.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"validateSalesChannels - should check if product belongs to the same sales channel as cart\n                           (if cart has associated sales channel)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config.validateSalesChannels","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}  sectionTitle="addOrUpdateLineItems"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="addOrUpdateLineItems"/>
 
-### addShippingMethod
+### updateLineItem
 
-Adds the shipping method to the list of shipping methods associated with
-the cart. Shipping Methods are the ways that an order is shipped, whereas a
-Shipping Option is a possible way to ship an order. Shipping Methods may
-also have additional details in the data field such as an id for a package
-shop.
+Updates a cart's existing line item.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the id of the cart to add shipping method to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string`","description":"id of shipping option to add as valid method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the fulmillment data for the method","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"the id of the line item to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`LineItemUpdate`","description":"the line item to update. Must include an id field.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateLineItem"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="updateLineItem"/>
 
 ### adjustFreeShipping\_
 
@@ -86,11 +224,91 @@ if a free shipping was present, we set shipping methods to original amount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to adjust free shipping for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shouldAdd","type":"`boolean`","description":"flag to indicate, if we should add or remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to adjust free shipping for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shouldAdd","type":"`boolean`","description":"flag to indicate, if we should add or remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="adjustFreeShipping_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]}  sectionTitle="adjustFreeShipping_"/>
+
+### update
+
+#### Parameters
+
+<TypeList types={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`CartUpdateProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+
+### onSalesChannelChange
+
+Remove the cart line item that does not belongs to the newly assigned sales channel
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"The cart being updated","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newSalesChannelId","type":"`string`","description":"The new sales channel being assigned to the cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="onSalesChannelChange"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]}  sectionTitle="onSalesChannelChange"/>
+
+### updateCustomerId\_
+
+Sets the customer id of a cart
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to add email to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the customer to add to cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateCustomerId_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="updateCustomerId_"/>
+
+### createOrFetchGuestCustomerFromEmail\_
+
+Creates or fetches a user based on an email.
+
+#### Parameters
+
+<TypeList types={[{"name":"email","type":"`string`","description":"the email to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createOrFetchGuestCustomerFromEmail_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the resultign customer object","expandable":false,"children":[]}]}  sectionTitle="createOrFetchGuestCustomerFromEmail_"/>
+
+### updateBillingAddress\_
+
+Updates the cart's billing address.
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the billing address to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addrRepo","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the repository to use for address updates","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateBillingAddress_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="updateBillingAddress_"/>
+
+### updateShippingAddress\_
+
+Updates the cart's shipping address.
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the shipping address to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addrRepo","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the repository to use for address updates","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateShippingAddress_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="updateShippingAddress_"/>
+
+### applyGiftCard\_
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="applyGiftCard_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="applyGiftCard_"/>
 
 ### applyDiscount
 
@@ -101,11 +319,11 @@ Throws if discount regions does not include the cart region
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCode","type":"`string`","description":"the discount code","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCode","type":"`string`","description":"the discount code","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="applyDiscount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]}  sectionTitle="applyDiscount"/>
 
 ### applyDiscounts
 
@@ -116,39 +334,35 @@ Throws if discount regions does not include the cart region
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCodes","type":"`string`[]","description":"the discount code(s) to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCodes","type":"`string`[]","description":"the discount code(s) to apply","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="applyDiscounts"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Updates the cart's discounts.\nIf discount besides free shipping is already applied, this\nwill be overwritten\nThrows if discount regions does not include the cart region","expandable":false,"children":[]}]}  sectionTitle="applyDiscounts"/>
 
-### applyGiftCard\_
+### removeDiscount
+
+Removes a discount based on a discount code.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCode","type":"`string`","description":"the discount code to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeDiscount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]}  sectionTitle="removeDiscount"/>
 
-### atomicPhase\_
+### updatePaymentSession
 
-Wraps some work within a transactional block. If the service already has
-a transaction manager attached this will be reused, otherwise a new
-transaction manager is created.
-
-#### Type Parameters
-
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+Updates the currently selected payment session.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to update the payment session for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`Record<string, unknown>`","description":"the data to update the payment session with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updatePaymentSession"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]}  sectionTitle="updatePaymentSession"/>
 
 ### authorizePayment
 
@@ -160,252 +374,11 @@ set the payment on the cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrId","type":"`string` \\| [WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;","description":"the id of the cart to authorize payment for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"object containing whatever is relevant for\n   authorizing the payment with the payment provider. As an example,\n   this could be IP address or similar for fraud handling.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartOrId","type":"`string` \\| [WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;","description":"the id of the cart to authorize payment for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"object containing whatever is relevant for\n   authorizing the payment with the payment provider. As an example,\n   this could be IP address or similar for fraud handling.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
-
-### create
-
-Creates a cart.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"`CartCreateProps`","description":"the data to create the cart with","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
-
-### createOrFetchGuestCustomerFromEmail\_
-
-Creates or fetches a user based on an email.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"the email to use","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the resultign customer object","expandable":false,"children":[]}]} />
-
-### createTaxLines
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### decorateTotals
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### decorateTotals\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"[TotalField](../../medusa/types/medusa.TotalField.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-#### Deprecated
-
-Use decorateTotals instead
-
-### delete
-
-Deletes a cart from the database. Completed carts cannot be deleted.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the deleted cart or undefined if the cart was not found.","expandable":false,"children":[]}]} />
-
-### deletePaymentSession
-
-Removes a payment session from the cart.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider whose payment session\n   should be removed.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]} />
-
-### deleteTaxLines
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### findCustomShippingOption
-
-Finds the cart's custom shipping options based on the passed option id.
-throws if custom options is not empty and no shipping option corresponds to optionId
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartCustomShippingOptions","type":"[CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)[]","description":"the cart's custom shipping options","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string`","description":"id of the normal or custom shipping option to find in the cartCustomShippingOptions","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"undefined \\| CustomShippingOption","type":"`undefined` \\| [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)","optional":false,"defaultValue":"","description":"custom shipping option","expandable":false,"children":[]}]} />
-
-### getTotalsRelations
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### getValidatedSalesChannel
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"salesChannelId","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[SalesChannel](../../entities/classes/entities.SalesChannel.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### list
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"`FilterableCartProps`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"config object","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-### onSalesChannelChange
-
-Remove the cart line item that does not belongs to the newly assigned sales channel
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"The cart being updated","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"newSalesChannelId","type":"`string`","description":"The new sales channel being assigned to the cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
-
-### refreshAdjustments\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### refreshPaymentSession
-
-Refreshes a payment session on a cart
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider whose payment session\n   should be removed.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]} />
-
-### removeDiscount
-
-Removes a discount based on a discount code.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"discountCode","type":"`string`","description":"the discount code to remove","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
-
-### removeLineItem
-
-Removes a line item from the cart.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart that we will remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string` \\| `string`[]","description":"the line item(s) to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-### retrieve
-
-Gets a cart by id.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"the options to get a cart","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the cart document.","expandable":false,"children":[]}]} />
-
-### retrieveLegacy
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-#### Deprecated
-
-### retrieveWithTotals
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### setMetadata
-
-Dedicated method to set metadata for a cart.
-To ensure that plugins does not overwrite each
-others metadata fields, setMetadata is provided.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the cart to apply metadata to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"key for metadata field","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string` \\| `number`","description":"value for metadata field.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the updated result.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
 
 ### setPaymentSession
 
@@ -413,11 +386,11 @@ Selects a payment session for a cart and creates a payment object in the externa
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to add payment method to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider to be set to the cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to add payment method to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider to be set to the cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Selects a payment session for a cart and creates a payment object in the external provider system","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Selects a payment session for a cart and creates a payment object in the external provider system","expandable":false,"children":[]}]}  sectionTitle="setPaymentSession"/>
 
 ### setPaymentSessions
 
@@ -429,11 +402,74 @@ that are not available for the cart's region.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrCartId","type":"`string` \\| [WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;","description":"the id of the cart to set payment session for","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartOrCartId","type":"`string` \\| [WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;","description":"the id of the cart to set payment session for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessions"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation.","expandable":false,"children":[]}]}  sectionTitle="setPaymentSessions"/>
+
+### deletePaymentSession
+
+Removes a payment session from the cart.
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider whose payment session\n   should be removed.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deletePaymentSession"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]}  sectionTitle="deletePaymentSession"/>
+
+### refreshPaymentSession
+
+Refreshes a payment session on a cart
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to remove from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"providerId","type":"`string`","description":"the id of the provider whose payment session\n   should be removed.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the resulting cart.","expandable":false,"children":[]}]}  sectionTitle="refreshPaymentSession"/>
+
+### addShippingMethod
+
+Adds the shipping method to the list of shipping methods associated with
+the cart. Shipping Methods are the ways that an order is shipped, whereas a
+Shipping Option is a possible way to ship an order. Shipping Methods may
+also have additional details in the data field such as an id for a package
+shop.
+
+#### Parameters
+
+<TypeList types={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"the id of the cart to add shipping method to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string`","description":"id of shipping option to add as valid method","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"the fulmillment data for the method","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="addShippingMethod"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="addShippingMethod"/>
+
+### findCustomShippingOption
+
+Finds the cart's custom shipping options based on the passed option id.
+throws if custom options is not empty and no shipping option corresponds to optionId
+
+#### Parameters
+
+<TypeList types={[{"name":"cartCustomShippingOptions","type":"[CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)[]","description":"the cart's custom shipping options","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"optionId","type":"`string`","description":"id of the normal or custom shipping option to find in the cartCustomShippingOptions","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="findCustomShippingOption"/>
+
+#### Returns
+
+<TypeList types={[{"name":"undefined \\| CustomShippingOption","type":"`undefined` \\| [CustomShippingOption](../../entities/classes/entities.CustomShippingOption.mdx)","optional":false,"defaultValue":"","description":"custom shipping option","expandable":false,"children":[]}]}  sectionTitle="findCustomShippingOption"/>
+
+### updateUnitPrices\_
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateUnitPrices_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateUnitPrices_"/>
 
 ### setRegion\_
 
@@ -441,144 +477,108 @@ Set's the region of a cart.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to set region on","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"the id of the region to set the region to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"countryCode","type":"`null` \\| `string`","description":"the country code to set the country to","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to set region on","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"the id of the region to set the region to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"countryCode","type":"`null` \\| `string`","description":"the country code to set the country to","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setRegion_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="setRegion_"/>
 
-### shouldRetryTransaction\_
+### delete
+
+Deletes a cart from the database. Completed carts cannot be deleted.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the cart to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the deleted cart or undefined if the cart was not found.","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### setMetadata
+
+Dedicated method to set metadata for a cart.
+To ensure that plugins does not overwrite each
+others metadata fields, setMetadata is provided.
+
+#### Parameters
+
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the cart to apply metadata to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"key for metadata field","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"value","type":"`string` \\| `number`","description":"value for metadata field.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setMetadata"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the updated result.","expandable":false,"children":[]}]}  sectionTitle="setMetadata"/>
+
+### createTaxLines
+
+#### Parameters
+
+<TypeList types={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="createTaxLines"/>
+
+### deleteTaxLines
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteTaxLines"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="deleteTaxLines"/>
+
+### decorateTotals
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsConfig","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="decorateTotals"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[WithRequiredProperty](../../medusa/types/medusa.WithRequiredProperty.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx), \"total\"&#62;&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="decorateTotals"/>
+
+### refreshAdjustments\_
+
+#### Parameters
+
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refreshAdjustments_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="refreshAdjustments_"/>
 
 ### transformQueryForTotals\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transformQueryForTotals_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"FindConfig","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"[TotalField](../../medusa/types/medusa.TotalField.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"FindConfig","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"[TotalField](../../medusa/types/medusa.TotalField.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transformQueryForTotals_"/>
 
-### update
+### decorateTotals\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartOrId","type":"`string` \\| [Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`CartUpdateProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"totalsToSelect","type":"[TotalField](../../medusa/types/medusa.TotalField.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`TotalsConfig`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="decorateTotals_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="decorateTotals_"/>
 
-### updateBillingAddress\_
+#### Deprecated
 
-Updates the cart's billing address.
+Use decorateTotals instead
+
+### getTotalsRelations
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the billing address to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addrRepo","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the repository to use for address updates","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getTotalsRelations"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-### updateCustomerId\_
-
-Sets the customer id of a cart
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to add email to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerId","type":"`string`","description":"the customer to add to cart","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-### updateLineItem
-
-Updates a cart's existing line item.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemId","type":"`string`","description":"the id of the line item to update.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`LineItemUpdate`","description":"the line item to update. Must include an id field.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-### updatePaymentSession
-
-Updates the currently selected payment session.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the cart to update the payment session for","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`Record<string, unknown>`","description":"the data to update the payment session with","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Cart](../../entities/classes/entities.Cart.mdx)&#62;","optional":false,"defaultValue":"","description":"the resulting cart","expandable":false,"children":[]}]} />
-
-### updateShippingAddress\_
-
-Updates the cart's shipping address.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"the cart to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`string` \\| [AddressPayload](../../medusa/classes/medusa.AddressPayload.mdx) \\| Partial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the shipping address to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addrRepo","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the repository to use for address updates","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-### updateUnitPrices\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionId","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer_id","type":"`string`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### validateLineItem
-
-Check if line item's variant belongs to the cart's sales channel.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"sales_channel_id","type":"`object`","description":"the cart for the line item","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"sales_channel_id.sales_channel_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem","type":"`LineItemValidateData`","description":"the line item being added","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"a boolean indicating validation result","expandable":false,"children":[]}]} />
-
-### validateLineItemShipping\_
-
-Checks if a given line item has a shipping method that can fulfill it.
-Returns true if all products in the cart can be fulfilled with the current
-shipping methods.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"the set of shipping methods to check from","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItemShippingProfiledId","type":"`string`","description":"the line item","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"boolean representing whether shipping method is validated","expandable":false,"children":[]}]} />
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"string[]","type":"`string`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getTotalsRelations"/>

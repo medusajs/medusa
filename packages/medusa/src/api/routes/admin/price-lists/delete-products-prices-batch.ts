@@ -1,11 +1,8 @@
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { removePriceListProductPrices } from "@medusajs/core-flows"
 import { ArrayNotEmpty, IsString } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
-import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/products/prices/batch
@@ -114,43 +111,16 @@ export default async (req: Request, res: Response) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
-
-  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
-    MedusaV2Flag.key
-  )
-
   let deletedPriceIds: string[] = []
 
-  if (isMedusaV2FlagEnabled) {
-    const deletePriceListProductsWorkflow = removePriceListProductPrices(
-      req.scope
-    )
+  const [deletedIds] = await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .deleteProductPrices(id, validated.product_ids)
+  })
 
-    const input = {
-      product_ids: validated.product_ids,
-      price_list_id: id,
-    } as WorkflowTypes.PriceListWorkflow.RemovePriceListProductsWorkflowInputDTO
-
-    const { result } = await deletePriceListProductsWorkflow.run({
-      input,
-      context: {
-        manager,
-      },
-    })
-    deletedPriceIds = result
-  } else {
-    const [deletedIds] = await manager.transaction(
-      async (transactionManager) => {
-        return await priceListService
-          .withTransaction(transactionManager)
-          .deleteProductPrices(id, validated.product_ids)
-      }
-    )
-
-    deletedPriceIds = deletedIds
-  }
+  deletedPriceIds = deletedIds
 
   return res.json({
     ids: deletedPriceIds,

@@ -1,22 +1,18 @@
 import path from "path"
-import DocblockGenerator from "../classes/docblock-generator.js"
+import DocblockGenerator from "../classes/generators/docblock.js"
 import getMonorepoRoot from "../utils/get-monorepo-root.js"
-import promiseExec from "../utils/promise-exec.js"
-import filterFiles from "../utils/filter-files.js"
+import { GitManager } from "../classes/helpers/git-manager.js"
+import { CommonCliOptions } from "../types/index.js"
+import OasGenerator from "../classes/generators/oas.js"
 
-export default async function runGitChanges() {
+export default async function runGitChanges({
+  type,
+  ...options
+}: CommonCliOptions) {
   const monorepoPath = getMonorepoRoot()
   // retrieve the changed files under `packages` in the monorepo root.
-  const childProcess = await promiseExec(
-    `git diff --name-only -- "packages/**/**.ts" "packages/**/*.js" "packages/**/*.tsx" "packages/**/*.jsx"`,
-    {
-      cwd: monorepoPath,
-    }
-  )
-
-  let files = filterFiles(
-    childProcess.stdout.toString().split("\n").filter(Boolean)
-  )
+  const gitManager = new GitManager()
+  let files = await gitManager.getDiffFiles()
 
   if (!files.length) {
     console.log(`No file changes detected.`)
@@ -29,12 +25,23 @@ export default async function runGitChanges() {
 
   files = files.map((filePath) => path.resolve(monorepoPath, filePath))
 
-  // generate docblocks for each of the files.
-  const docblockGenerator = new DocblockGenerator({
-    paths: files,
-  })
+  if (type === "all" || type === "docs") {
+    const docblockGenerator = new DocblockGenerator({
+      paths: files,
+      ...options,
+    })
 
-  await docblockGenerator.run()
+    await docblockGenerator.run()
+  }
+
+  if (type === "all" || type === "oas") {
+    const oasGenerator = new OasGenerator({
+      paths: files,
+      ...options,
+    })
+
+    await oasGenerator.run()
+  }
 
   console.log(`Finished generating docs for ${files.length} files.`)
 }

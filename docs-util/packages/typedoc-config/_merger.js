@@ -71,10 +71,8 @@ module.exports = {
       showCommentsAsHeader: true,
       sections: baseSectionsOptions,
       parameterStyle: "component",
-      parameterComponent: "ParameterTypes",
-      mdxImports: [
-        `import ParameterTypes from "@site/src/components/ParameterTypes"`,
-      ],
+      parameterComponent: "TypeList",
+      mdxImports: [`import TypeList from "@site/src/components/TypeList"`],
     },
     internal: {
       maxLevel: 1,
@@ -231,7 +229,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -285,7 +283,9 @@ npx medusa develop
 This document assumes you already followed along with the [Prepare Environment documentation](https://docs.medusajs.com/development/backend/prepare-environment) and have a Medusa backend installed.
       
 ---`,
-      reflectionTitle: "Configure Medusa Backend",
+      reflectionTitle: {
+        fullReplacement: "Configure Medusa Backend",
+      },
       expandMembers: true,
       expandProperties: true,
       // parameterStyle: "list",
@@ -636,7 +636,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -679,7 +679,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 
@@ -778,7 +778,7 @@ npx medusa develop
       reflectionTitle: {
         kind: false,
         typeParameters: false,
-        suffix: " Reference",
+        suffix: "Reference",
       },
     },
 

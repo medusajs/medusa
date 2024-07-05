@@ -1,5 +1,33 @@
 # @medusajs/oas-github-ci
 
+## 1.0.27
+
+### Patch Changes
+
+- [#6812](https://github.com/medusajs/medusa/pull/6812) [`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-oas-cli): fix tool not working in Medusa backends
+
+- Updated dependencies [[`e005987adf`](https://github.com/medusajs/medusa/commit/e005987adf2a2dd8c2748e7abc360cc93e7c05ad)]:
+  - @medusajs/medusa-oas-cli@0.3.2
+
+## 1.0.26
+
+### Patch Changes
+
+- [#6338](https://github.com/medusajs/medusa/pull/6338) [`374a3f4dab`](https://github.com/medusajs/medusa/commit/374a3f4dab7bf893ba3c579fa7f9c346fa30ad64) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(@medusajs/medusa-oas-cli): added v2 flag
+  feat(@medusajs/oas-github-ci): added v2 flag
+
+- [#6710](https://github.com/medusajs/medusa/pull/6710) [`bb87db8342`](https://github.com/medusajs/medusa/commit/bb87db83424e2625e273fd5cf06cece37245b6da) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(oas-github-ci): output specs into `specs-v2` directory when the `--v2` option is passed
+
+- Updated dependencies [[`374a3f4dab`](https://github.com/medusajs/medusa/commit/374a3f4dab7bf893ba3c579fa7f9c346fa30ad64)]:
+  - @medusajs/medusa-oas-cli@0.3.1
+
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies [[`e84847be3`](https://github.com/medusajs/medusa/commit/e84847be36c88c5bd8e49e1e8aca734ce941a7c2)]:
+  - @medusajs/medusa-oas-cli@0.3.0
+
 ## 1.0.24
 
 ### Patch Changes

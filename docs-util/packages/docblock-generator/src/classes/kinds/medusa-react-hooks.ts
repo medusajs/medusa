@@ -9,7 +9,6 @@ import {
   DOCBLOCK_START,
   DOCBLOCK_DOUBLE_LINES,
 } from "../../constants.js"
-import nodeHasComments from "../../utils/node-has-comments.js"
 import {
   CUSTOM_NAMESPACE_TAG,
   getCustomNamespaceTag,
@@ -20,6 +19,7 @@ import {
  * it extends the {@link FunctionKindGenerator} class.
  */
 class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
+  public name = "medusa-react"
   /**
    * Checks whether the generator can retrieve the docblock of the specified node. It uses the parent generator
    * to check that the node is a function, then checks if the function is a mutation using the {@link isMutation} method,
@@ -81,9 +81,12 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
    * @param {FunctionNode & ts.VariableDeclaration} node - The node to retrieve its docblock.
    * @returns {string} The node's docblock.
    */
-  getDocBlock(node: FunctionNode & ts.VariableDeclaration): string {
+  async getDocBlock(
+    node: FunctionNode & ts.VariableDeclaration
+  ): Promise<string> {
+    // TODO use the AiGenerator to generate summary + examples
     if (!this.isAllowed(node)) {
-      return super.getDocBlock(node)
+      return await super.getDocBlock(node)
     }
 
     const actualNode = ts.isVariableStatement(node)
@@ -91,25 +94,29 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
       : node
 
     if (!actualNode) {
-      return super.getDocBlock(node)
+      return await super.getDocBlock(node)
     }
     const isMutation = this.isMutation(actualNode)
 
-    let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary(node)}`
+    let str = `${DOCBLOCK_START}This hook ${this.getFunctionSummary({
+      node,
+    })}`
 
     // add example
-    str += this.getFunctionExample()
+    str += this.getFunctionPlaceholderExample()
 
     // loop over parameters that aren't query/mutation parameters
     // and add docblock to them
-    this.getActualParameters(actualNode).forEach((parameter) => {
-      ts.addSyntheticLeadingComment(
-        parameter,
-        ts.SyntaxKind.MultiLineCommentTrivia,
-        super.getDocBlock(parameter),
-        true
-      )
-    })
+    await Promise.all(
+      this.getActualParameters(actualNode).map(async (parameter) => {
+        ts.addSyntheticLeadingComment(
+          parameter,
+          ts.SyntaxKind.MultiLineCommentTrivia,
+          await super.getDocBlock(parameter),
+          true
+        )
+      })
+    )
 
     // check if mutation parameter is an intrinsic type and, if so, add the `@typeParamDefinition`
     // tag to the hook
@@ -152,7 +159,7 @@ class MedusaReactHooksKindGenerator extends FunctionKindGenerator {
       return (
         !parameterTypeStr?.startsWith("UseQueryOptionsWrapper") &&
         !parameterTypeStr?.startsWith("UseMutationOptions") &&
-        !nodeHasComments(parameter)
+        !this.nodeHasComments(parameter)
       )
     })
   }

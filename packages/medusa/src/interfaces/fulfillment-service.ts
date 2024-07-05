@@ -17,7 +17,7 @@ type ShippingMethodData = Record<string, unknown>
  * A fulfillment provider is a service that extends the `AbstractFulfillmentService` and implements its methods. So, adding a fulfillment provider is as simple as creating a service file in `src/services`.
  * The file's name is the fulfillment provider's class name as a slug and without the word `Service`. For example, if you're creating a `MyFulfillmentService` class, the file name is `src/services/my-fulfillment.ts`.
  *
- * ```ts title=src/services/my-fulfillment.ts
+ * ```ts title="src/services/my-fulfillment.ts"
  * import { AbstractFulfillmentService } from "@medusajs/medusa"
  *
  * class MyFulfillmentService extends AbstractFulfillmentService {
@@ -415,7 +415,7 @@ export abstract class AbstractFulfillmentService
    * You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
    * Additionally, if you’re creating your fulfillment provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.
    * @param {Record<string, unknown>} config - If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
@@ -433,7 +433,7 @@ export abstract class AbstractFulfillmentService
    * }
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {
     super(container, config)

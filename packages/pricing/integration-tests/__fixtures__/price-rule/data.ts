@@ -9,7 +9,7 @@ export const defaultPriceRuleData = [
     rule_type_id: "rule-type-1",
     value: "USD",
     price_list_id: "test",
-    price_set_money_amount_id: "price-set-money-amount-USD",
+    price_id: "price-set-money-amount-USD",
   },
   {
     id: "price-rule-2",
@@ -17,6 +17,6 @@ export const defaultPriceRuleData = [
     rule_type_id: "rule-type-2",
     value: "region_1",
     price_list_id: "test",
-    price_set_money_amount_id: "price-set-money-amount-EUR",
+    price_id: "price-set-money-amount-EUR",
   },
 ] as unknown as CreatePriceRuleDTO[]

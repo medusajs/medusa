@@ -1970,6 +1970,11 @@ module.exports = {
           ],
         },
         {
+          type: "doc",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
+        },
+        {
           type: "category",
           label: "Feature Flag",
           items: [
@@ -2178,6 +2183,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/mime-error",
+          label: "Mime Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/eaddrinuse",
           label: "EADDRINUSE Error",
         },
@@ -2243,6 +2253,11 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/custom-hooks-error",
           label: "Custom Hooks Error",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/admin-webpack-build-types",
+          label: "Webpack Build Error",
         },
       ],
     },

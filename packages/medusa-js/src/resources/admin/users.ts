@@ -189,6 +189,7 @@ class AdminUsersResource extends BaseResource {
    * @example
    * To list users:
    *
+   * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
    * // must be previously logged in or use api token
@@ -196,6 +197,7 @@ class AdminUsersResource extends BaseResource {
    * .then(({ users }) => {
    *   console.log(users.length);
    * })
+   * ```
    *
    * By default, only the first `20` users are returned. You can control pagination by specifying the `limit` and `offset` properties:
    *

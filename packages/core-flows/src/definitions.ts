@@ -1,24 +1,24 @@
 export enum Workflows {
   // Product workflows
-  CreateProducts = "create-products",
-  UpdateProducts = "update-products",
+  CreateProducts = "create-products-old",
+  UpdateProducts = "update-products-old",
 
   // Product Variant workflows
-  CreateProductVariants = "create-product-variants",
-  UpdateProductVariants = "update-product-variants",
+  CreateProductVariants = "create-product-variants-old",
+  UpdateProductVariants = "update-product-variants-old",
 
   // Cart workflows
-  CreateCart = "create-cart",
+  CreateCart = "create-cart-old",
 
-  CreateInventoryItems = "create-inventory-items",
+  CreateInventoryItems = "create-inventory-items-old",
 
   // Price list workflows
-  CreatePriceList = "create-price-list",
-  UpdatePriceLists = "update-price-lists",
-  DeletePriceLists = "delete-price-lists",
-  RemovePriceListProductPrices = "remove-price-list-products",
-  RemovePriceListVariantPrices = "remove-price-list-variants",
-  RemovePriceListPrices = "remove-price-list-prices",
+  CreatePriceList = "create-price-list-old",
+  UpdatePriceLists = "update-price-lists-old",
+  DeletePriceLists = "delete-price-lists-old",
+  RemovePriceListProductPrices = "remove-price-list-products-old",
+  RemovePriceListVariantPrices = "remove-price-list-variants-old",
+  RemovePriceListPrices = "remove-price-list-prices-old",
 }
 
 export enum InputAlias {

@@ -6,8 +6,9 @@ module.exports = {
     },
   },
   transform: {
-    "^.+\\.[jt]s?$": "ts-jest",
+    "^.+\\.[jt]s?$": "@swc/jest",
   },
   testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
+  moduleFileExtensions: [`js`, `ts`, `json`],
+  modulePathIgnorePatterns: ["dist", "node_modules"],
 }

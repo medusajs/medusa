@@ -1,6 +1,3 @@
-import { updatePriceLists } from "@medusajs/core-flows"
-import { MedusaContainer } from "@medusajs/types"
-import { MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
@@ -9,7 +6,6 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
-import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
@@ -124,48 +120,22 @@ import { getPriceListPricingModule } from "./modules-queries"
  */
 export default async (req, res) => {
   const { id } = req.params
-  let priceList
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
   const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const updatePriceListWorkflow = updatePriceLists(req.scope)
+  await manager.transaction(async (transactionManager) => {
+    await priceListService
+      .withTransaction(transactionManager)
+      .addPrices(id, validated.prices, validated.override)
+  })
 
-    const input = {
-      price_lists: [
-        {
-          id,
-          ...validated,
-        },
-      ],
-    }
-
-    await updatePriceListWorkflow.run({
-      input,
-      context: {
-        manager,
-      },
-    })
-
-    priceList = await getPriceListPricingModule(id, {
-      container: req.scope as MedusaContainer,
-    })
-  } else {
-    await manager.transaction(async (transactionManager) => {
-      await priceListService
-        .withTransaction(transactionManager)
-        .addPrices(id, validated.prices, validated.override)
-    })
-
-    priceList = await priceListService.retrieve(id, {
-      select: defaultAdminPriceListFields as (keyof PriceList)[],
-      relations: defaultAdminPriceListRelations,
-    })
-  }
+  const priceList = await priceListService.retrieve(id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
+  })
 
   res.json({ price_list: priceList })
 }

@@ -15,6 +15,7 @@ import {
   defaultAdminProductRelations,
   defaultAdminProductRemoteQueryObject,
 } from "."
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import {
   PricingService,
   ProductService,
@@ -767,4 +768,10 @@ export class AdminPostProductsReq {
   @IsObject()
   @IsOptional()
   metadata?: Record<string, unknown>
+
+  constructor() {
+    if (!featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
+      delete this.sales_channels
+    }
+  }
 }

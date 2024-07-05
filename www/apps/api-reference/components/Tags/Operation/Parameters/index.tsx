@@ -58,6 +58,10 @@ const TagOperationParameters = ({
   const propertyName = schemaObject.parameterName || schemaObject.title || ""
 
   const getElement = () => {
+    if (schemaObject["x-ignore"]) {
+      return <></>
+    }
+
     if (schemaObject.anyOf || schemaObject.allOf) {
       return (
         <TagOperationParametersUnion
@@ -106,8 +110,6 @@ const TagOperationParameters = ({
         isRequired={isRequired}
       />
     )
-
-    return <></>
   }
 
   return <div className={className}>{getElement()}</div>

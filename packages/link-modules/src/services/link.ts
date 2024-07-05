@@ -87,15 +87,24 @@ export default class LinkService<TEntity> {
 
   @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async softDelete(
-    data: any,
+    data: any[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
-    const filter = {}
-    for (const key in data) {
-      filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
+  ): Promise<[object[], Record<string, string[]>]> {
+    const deleteFilters = {
+      $or: data.map((dataEntry) => {
+        const filter = {}
+        for (const key in dataEntry) {
+          filter[key] = {
+            $in: Array.isArray(dataEntry[key])
+              ? dataEntry[key]
+              : [dataEntry[key]],
+          }
+        }
+        return filter
+      }),
     }
 
-    return await this.linkRepository_.softDelete(filter, {
+    return await this.linkRepository_.softDelete(deleteFilters, {
       transactionManager: sharedContext.transactionManager,
     })
   }
@@ -104,13 +113,22 @@ export default class LinkService<TEntity> {
   async restore(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[string[], Record<string, string[]>]> {
-    const filter = {}
-    for (const key in data) {
-      filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
+  ): Promise<[object[], Record<string, string[]>]> {
+    const restoreFilters = {
+      $or: data.map((dataEntry) => {
+        const filter = {}
+        for (const key in dataEntry) {
+          filter[key] = {
+            $in: Array.isArray(dataEntry[key])
+              ? dataEntry[key]
+              : [dataEntry[key]],
+          }
+        }
+        return filter
+      }),
     }
 
-    return await this.linkRepository_.restore(data, {
+    return await this.linkRepository_.restore(restoreFilters, {
       transactionManager: sharedContext.transactionManager,
     })
   }

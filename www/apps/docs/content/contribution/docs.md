@@ -15,9 +15,15 @@ This guide is specific to contributing to the documentation. If you’re interes
 
 ## Documentation Workspace
 
-Medusa's documentation projects are all part of the documentation yarn workspace, which you can find in the [medusa repository](https://github.com/medusajs/medusa) under the `www` directory.
+Medusa's documentation projects are all part of the documentation yarn workspace, which you can find in the [medusa repository](https://github.com/medusajs/medusa/tree/v1.x) under the `www` directory.
 
 The workspace has the following two directories:
+
+:::note
+
+This describes the structure under the [v1.x branch](https://github.com/medusajs/medusa/tree/v1.x) of the Medusa repository.
+
+:::
 
 - `apps`: this directory holds the different documentation websites and projects.
   - `docs`: includes the codebase for the main documentation website (the one you're viewing this documentation on). It's built with [Docusaurus](https://docusaurus.io/).
@@ -35,13 +41,13 @@ The workspace has the following two directories:
 
 ### Main Documentation Website
 
-The documentation content is written in Markdown format and is located in the [www/apps/docs/content](https://github.com/medusajs/medusa/tree/develop/www/apps/docs/content) directory of the Medusa repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
+The documentation content is written in Markdown format and is located in the [www/apps/docs/content](https://github.com/medusajs/medusa/tree/v1.x/www/apps/docs/content) directory of the `v1.x` branch of the Medusa repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
 
 You’ll also find MDX files. MDX files combine the power of Markdown with React. So, the content of the file can contain JSX components and import statements, among other features. You can learn more about [MDX in docusaurus’s guide.](https://docusaurus.io/docs/markdown-features/react).
 
 :::note
 
-Documentation pages under the `www/apps/docs/content/references` directory are generated automatically from the source code under the `packages/medusa` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
+Documentation pages under the `www/apps/docs/content/references` directory are generated automatically from the source code under the `packages` directory. So, you can't directly make changes to them. Instead, you'll have to make changes to the comments in the original source code.
 
 :::
 
@@ -49,7 +55,7 @@ Documentation pages under the `www/apps/docs/content/references` directory are g
 
 The API reference's content is split into two types:
 
-1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the [www/apps/api-reference/app/_mdx](https://github.com/medusajs/medusa/tree/develop/www/apps/api-reference/app/_mdx) directory. They are MDX files.
+1. Static content, which are the content related to getting started, expanding fields, and more. These are located in the [www/apps/api-reference/app/_mdx](https://github.com/medusajs/medusa/tree/v1.x/www/apps/api-reference/app/_mdx) directory. They are MDX files.
 2. OpenAPI specs that are shown to developers when checking the reference of an API Route. These are automatically generated from comments on API Routes. So, if you find issues in them or want to make improvements, you have to find the API Routes under the [`packages/medusa/src/api`](https://github.com/medusajs/medusa/tree/develop/packages/medusa/src/api) directory and make changes to its comments.
 
 ### Medusa UI Documentation
@@ -76,7 +82,7 @@ If you’re adding a new page or contributing to the codebase, you need to fork 
 
 When you make an edit to an existing documentation page or fork the repository to make changes to the documentation, you have to create a new branch.
 
-Documentation contributions always use `develop` as the base branch. Make sure to also open your PR against the `develop` branch.
+Documentation contributions to this documentation website always use `v1.x` as the base branch. Make sure to also open your PR against the `v1.x` branch.
 
 ### Branch Name
 
@@ -365,7 +371,7 @@ import TabItem from '@theme/TabItem';
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/uploads' \
-      -H 'Authorization: Bearer <API_TOKEN>' \
+      -H 'x-medusa-access-token: <API_TOKEN>' \
       -H 'Content-Type: text/csv' \
       -F 'files=@"<FILE_PATH_1>"'
     ```

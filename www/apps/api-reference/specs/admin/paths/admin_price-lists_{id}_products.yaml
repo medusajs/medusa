@@ -21,9 +21,17 @@ get:
         type: string
     - in: query
       name: id
-      description: Filter by product ID
+      style: form
+      explode: false
+      description: Filter by product IDs.
       schema:
-        type: string
+        oneOf:
+          - type: string
+            description: ID of the product.
+          - type: array
+            items:
+              type: string
+              description: ID of a product.
     - in: query
       name: status
       description: Filter by product status
@@ -79,7 +87,7 @@ get:
       name: is_giftcard
       description: A boolean value to filter by whether the product is a gift card or not.
       schema:
-        type: string
+        type: boolean
     - in: query
       name: type
       description: Filter product type.
@@ -191,7 +199,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_price-lists_{id}_products/getundefined
+        $ref: ../code_samples/tsx/admin_price-lists_{id}_products/get.tsx
     - lang: Shell
       label: cURL
       source:

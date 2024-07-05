@@ -1,13 +1,28 @@
-import { mockContainer, nonExistingProductId } from "../__fixtures__/product"
+import {
+  nonExistingProductId,
+  productRepositoryMock,
+} from "../__fixtures__/product"
+import { createMedusaContainer } from "@medusajs/utils"
+import { asValue } from "awilix"
+import ContainerLoader from "../../loaders/container"
 
 describe("Product service", function () {
-  beforeEach(function () {
+  let container
+
+  beforeEach(async function () {
     jest.clearAllMocks()
+
+    container = createMedusaContainer()
+    container.register("manager", asValue({}))
+
+    await ContainerLoader({ container })
+
+    container.register(productRepositoryMock)
   })
 
   it("should retrieve a product", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
     const productId = "existing-product"
 
     await productService.retrieve(productId)
@@ -30,8 +45,8 @@ describe("Product service", function () {
   })
 
   it("should fail to retrieve a product", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
 
     const err = await productService
       .retrieve(nonExistingProductId)
@@ -59,8 +74,8 @@ describe("Product service", function () {
   })
 
   it("should list products", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
 
     const filters = {}
     const config = {
@@ -76,6 +91,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -85,8 +103,8 @@ describe("Product service", function () {
   })
 
   it("should list products with filters", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
 
     const filters = {
       tags: {
@@ -114,6 +132,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           populate: [],
           withDeleted: undefined,
         },
@@ -123,8 +144,8 @@ describe("Product service", function () {
   })
 
   it("should list products with filters and relations", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
 
     const filters = {
       tags: {
@@ -152,6 +173,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },
@@ -161,8 +185,8 @@ describe("Product service", function () {
   })
 
   it("should list and count the products with filters and relations", async function () {
-    const productService = mockContainer.resolve("productService")
-    const productRepository = mockContainer.resolve("productRepository")
+    const productService = container.resolve("productService")
+    const productRepository = container.resolve("productRepository")
 
     const filters = {
       tags: {
@@ -190,6 +214,9 @@ describe("Product service", function () {
           fields: undefined,
           limit: 15,
           offset: 0,
+          orderBy: {
+            id: "ASC",
+          },
           withDeleted: undefined,
           populate: ["tags"],
         },

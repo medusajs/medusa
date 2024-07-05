@@ -1,7 +1,8 @@
 import { DAL } from "@medusajs/types"
+import { BigNumber, MikroOrmBigNumberProperty } from "@medusajs/utils"
 import { OptionalProps, PrimaryKey, Property } from "@mikro-orm/core"
 
-type OptionalAdjustmentLineProps = DAL.EntityDateColumns // TODO: To be revisited when more clear
+type OptionalAdjustmentLineProps = DAL.SoftDeletableEntityDateColumns
 
 /**
  * As per the Mikro ORM docs, superclasses should use the abstract class definition
@@ -17,16 +18,19 @@ export default abstract class AdjustmentLine {
   description: string | null = null
 
   @Property({ columnType: "text", nullable: true })
-  promotion_id: string | null = null
-
-  @Property({ columnType: "text", nullable: true })
   code: string | null = null
 
-  @Property({ columnType: "numeric", serializer: Number })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: Record<string, unknown>
 
   @Property({ columnType: "text", nullable: true })
   provider_id: string | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),

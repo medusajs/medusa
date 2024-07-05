@@ -154,10 +154,10 @@ export default class TypedocManager {
       // push a prop into the `propsToRemove` set.
       Object.entries(spec.props!).forEach(([propName, propDetails]) => {
         // retrieve the reflection of the prop
-        const reflectionPropType = props.find(
+        const reflectionProp = props.find(
           (propType) => propType.name === propName
         )
-        if (!reflectionPropType) {
+        if (!reflectionProp) {
           // if the reflection doesn't exist and the
           // prop doesn't have a description, it should
           // be removed.
@@ -172,7 +172,7 @@ export default class TypedocManager {
         if (
           this.shouldExcludeExternal({
             parentReflection: reflection,
-            childReflection: reflectionPropType,
+            childReflection: reflectionProp,
             propDescription: propDetails.description,
             signature,
           })
@@ -180,9 +180,18 @@ export default class TypedocManager {
           propsToRemove.add(propName)
           return
         }
+
+        // if the prop doesn't have a default value, try to retrieve it
+        if (!propDetails.defaultValue) {
+          propDetails.defaultValue = this.getReflectionDefaultValue(
+            reflectionProp,
+            propDetails.description
+          )
+        }
+
         // if the prop doesn't have description, retrieve it using Typedoc
         propDetails.description =
-          propDetails.description || this.getDescription(reflectionPropType)
+          propDetails.description || this.getDescription(reflectionProp)
         // if the prop still doesn't have description, remove it.
         if (!propDetails.description) {
           propsToRemove.add(propName)
@@ -218,15 +227,15 @@ export default class TypedocManager {
         .forEach((prop) => {
           // If the prop has description (retrieved)
           // through Typedoc, it's added into the spec.
-          const description = this.normalizeDescription(
-            this.getDescription(prop)
-          )
+          const rawDescription = this.getDescription(prop)
+          const description = this.normalizeDescription(rawDescription)
           if (!description) {
             return
           }
           spec.props![prop.name] = {
             description,
             required: !prop.flags.isOptional,
+            defaultValue: this.getReflectionDefaultValue(prop, rawDescription),
             tsType: prop.type
               ? this.getTsType(prop.type)
               : prop.signatures?.length
@@ -379,11 +388,29 @@ export default class TypedocManager {
   // prop or component's description. These aren't removed
   // by React Docgen.
   normalizeDescription(description: string): string {
-    return description
+    let normalizedDescription = description
       .replace("@keep", "")
       .replace("@ignore", "")
       .replace("@excludeExternal", "")
       .trim()
+
+    // check if `@defaultValue` tag is in the description and remove it
+    const defaultValueIndex = normalizedDescription.indexOf("@defaultValue")
+    if (defaultValueIndex !== -1) {
+      // if there are tags after the default value, keep them and only
+      // remove the default value.
+      const possibleEndIndex = normalizedDescription.indexOf(
+        "@",
+        defaultValueIndex + "@defaultValue".length
+      )
+      normalizedDescription =
+        normalizedDescription.slice(0, defaultValueIndex) +
+        (possibleEndIndex === -1
+          ? ""
+          : normalizedDescription.slice(possibleEndIndex))
+    }
+
+    return normalizedDescription
   }
 
   // Retrieve the description of a reflection (component or prop)
@@ -608,6 +635,43 @@ export default class TypedocManager {
 
           return true
         }) as DeclarationReflection)
+      : undefined
+  }
+
+  getReflectionDefaultValue(
+    reflection: DeclarationReflection,
+    description?: string
+  ):
+    | {
+        value: string
+        computed: boolean
+      }
+    | undefined {
+    let value: string | undefined
+    if (!reflection.defaultValue) {
+      // try to infer default value from description
+      const valueIndexInDescription = description
+        ? description.indexOf("@defaultValue")
+        : -1
+      if (valueIndexInDescription !== -1) {
+        const sliceStart = valueIndexInDescription + "@defaultValue ".length
+        // the default value ends either at the end of the description or
+        // until the next tag.
+        const sliceEnd = description!.indexOf("@", sliceStart)
+        value = description!.slice(
+          sliceStart,
+          sliceEnd !== -1 ? sliceEnd : undefined
+        )
+      }
+    } else {
+      value = JSON.stringify(reflection.defaultValue)
+    }
+
+    return value
+      ? {
+          value,
+          computed: false,
+        }
       : undefined
   }
 }

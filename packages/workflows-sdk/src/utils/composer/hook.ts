@@ -1,4 +1,5 @@
-import { OrchestrationUtils } from "@medusajs/utils"
+import { WorkflowStepHandlerArguments } from "@medusajs/orchestration"
+import { OrchestrationUtils, deepCopy } from "@medusajs/utils"
 import { resolveValue } from "./helpers"
 import {
   CreateWorkflowComposerContext,
@@ -108,17 +109,27 @@ export function hook<TOutput>(
 
   return hookBinder(name, function (context) {
     return {
-      __value: async function (transactionContext) {
+      __value: async function (
+        transactionContext: WorkflowStepHandlerArguments
+      ) {
+        const metadata = transactionContext.metadata
+        const idempotencyKey = metadata.idempotency_key
+
+        transactionContext.context!.idempotencyKey = idempotencyKey
+
         const executionContext: StepExecutionContext = {
+          workflowId: metadata.model_id,
+          stepName: metadata.action,
+          action: metadata.action_type,
+          idempotencyKey,
+          attempt: metadata.attempt,
           container: transactionContext.container,
-          metadata: transactionContext.metadata,
-          context: transactionContext.context,
+          metadata,
+          context: transactionContext.context!,
         }
 
         const allValues = await resolveValue(value, transactionContext)
-        const stepValue = allValues
-          ? JSON.parse(JSON.stringify(allValues))
-          : allValues
+        const stepValue = allValues ? deepCopy(allValues) : allValues
 
         let finalResult
         const functions = context.hooksCallback_[name]

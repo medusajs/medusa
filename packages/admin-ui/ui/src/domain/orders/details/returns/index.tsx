@@ -1,10 +1,9 @@
 import {
   AdminGetVariantsVariantInventoryRes,
   AdminPostOrdersOrderReturnsReq,
-  InventoryLevelDTO,
+  LevelWithAvailability,
   Order,
   LineItem as RawLineItem,
-  StockLocationDTO,
 } from "@medusajs/medusa"
 import LayeredModal, {
   LayeredModalContext,
@@ -100,7 +99,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
   }, [order.items])
 
   const [inventoryMap, setInventoryMap] = useState<
-    Map<string, InventoryLevelDTO[]>
+    Map<string, LevelWithAvailability[]>
   >(new Map())
 
   React.useEffect(() => {
@@ -122,7 +121,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
           .filter((it) => !!it)
           .map((item) => {
             const { variant } = item as AdminGetVariantsVariantInventoryRes
-            return [variant.id, variant.inventory[0].location_levels]
+            return [variant.id, variant.inventory[0]?.location_levels]
           })
       )
     }

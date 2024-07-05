@@ -1,4 +1,7 @@
+import { BaseFilterable, OperatorMap } from "../dal"
+
 import { StringComparisonOperator } from "../common/common"
+import { FulfillmentSetDTO } from "../fulfillment"
 
 /**
  * @schema StockLocationAddressDTO
@@ -65,18 +68,69 @@ import { StringComparisonOperator } from "../common/common"
  *     example: {car: "white"}
  */
 export type StockLocationAddressDTO = {
+  /**
+   * The ID of the stock location address.
+   */
   id?: string
+
+  /**
+   * The address 1 of the stock location address.
+   */
   address_1: string
+
+  /**
+   * The address 2 of the stock location address.
+   */
   address_2?: string | null
+
+  /**
+   * The company of the stock location address.
+   */
   company?: string | null
+
+  /**
+   * The country code of the stock location address.
+   */
   country_code: string
+
+  /**
+   * The city of the stock location address.
+   */
   city?: string | null
+
+  /**
+   * The phone of the stock location address.
+   */
   phone?: string | null
+
+  /**
+   * The postal code of the stock location address.
+   */
   postal_code?: string | null
+
+  /**
+   * The province of the stock location address.
+   */
   province?: string | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
+
+  /**
+   * The creation date of the stock location address.
+   */
   created_at: string | Date
+
+  /**
+   * The update date of the stock location address.
+   */
   updated_at: string | Date
+
+  /**
+   * The deletion date of the stock location address.
+   */
   deleted_at: string | Date | null
 }
 
@@ -127,13 +181,49 @@ export type StockLocationAddressDTO = {
  *     format: date-time
  */
 export type StockLocationDTO = {
+  /**
+   * The ID of the stock location.
+   */
   id: string
+
+  /**
+   * The name of the stock location.
+   */
   name: string
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata: Record<string, unknown> | null
+
+  /**
+   * The associated address's ID.
+   */
   address_id: string
+
+  /**
+   * The address of the stock location.
+   */
   address?: StockLocationAddressDTO
+
+  /**
+   * Fulfillment sets for the location
+   */
+  fulfillment_sets: FulfillmentSetDTO[]
+
+  /**
+   * The creation date of the stock location.
+   */
   created_at: string | Date
+
+  /**
+   * The update date of the stock location.
+   */
   updated_at: string | Date
+
+  /**
+   * The deletion date of the stock location.
+   */
   deleted_at: string | Date | null
 }
 
@@ -148,23 +238,33 @@ export type StockLocationDTO = {
  *         $ref: "#/components/schemas/SalesChannel"
  */
 export type StockLocationExpandedDTO = StockLocationDTO & {
+  /**
+   * The list of sales channels.
+   */
   sales_channels?: any[] // TODO: SalesChannel type
 }
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on the retrieved stock locations.
  */
-export type FilterableStockLocationProps = {
+export interface FilterableStockLocationProps
+  extends BaseFilterable<FilterableStockLocationProps> {
+  /**
+   * Search parameter for stock location names
+   */
+  q?: string
+
   /**
    * The IDs to filter stock locations by.
    */
   id?: string | string[]
+
   /**
    * The names to filter stock locations by.
    */
-  name?: string | string[] | StringComparisonOperator
+  name?: string | string[] | OperatorMap<string>
 }
 
 /**
@@ -210,14 +310,45 @@ export type FilterableStockLocationProps = {
  *     example: {car: "white"}
  */
 export type StockLocationAddressInput = {
+  /**
+   * The first line of the stock location address.
+   */
   address_1: string
-  address_2?: string
+
+  /**
+   * The second line of the stock location address.
+   */
+  address_2?: string | null
+
+  /**
+   * The country code of the stock location address.
+   */
   country_code: string
-  city?: string
-  phone?: string
-  province?: string
-  postal_code?: string
-  metadata?: Record<string, unknown>
+
+  /**
+   * The city of the stock location address.
+   */
+  city?: string | null
+
+  /**
+   * The phone of the stock location address.
+   */
+  phone?: string | null
+
+  /**
+   * The province of the stock location address.
+   */
+  province?: string | null
+
+  /**
+   * The postal code of the stock location address.
+   */
+  postal_code?: string | null
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
+  metadata?: Record<string, unknown> | null
 }
 
 /**
@@ -245,9 +376,24 @@ export type StockLocationAddressInput = {
  *     example: {car: "white"}
  */
 export type CreateStockLocationInput = {
+  /**
+   * The name of the stock location.
+   */
   name: string
+
+  /**
+   * The associated address's ID.
+   */
   address_id?: string
+
+  /**
+   * The associated address.
+   */
   address?: string | StockLocationAddressInput
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown>
 }
 
@@ -274,8 +420,43 @@ export type CreateStockLocationInput = {
  *     example: {car: "white"}
  */
 export type UpdateStockLocationInput = {
+  /**
+   * The name of the stock location.
+   */
   name?: string
+
+  /**
+   * The associated address's ID.
+   */
   address_id?: string
+
+  /**
+   * The associated address's details.
+   */
   address?: StockLocationAddressInput
+
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown>
 }
+
+/**
+ * @interface
+ *
+ * The attributes to update in a stock location.
+ */
+export type UpdateStockLocationNextInput = UpdateStockLocationInput & {
+  /**
+   * The ID of the stock location.
+   */
+  id: string
+}
+
+/**
+ * @interface
+ *
+ * A stock location to create or update. If the `id` property isn't provided,
+ * the stock location is created. In that case, the `name` property is required.
+ */
+export type UpsertStockLocationInput = Partial<UpdateStockLocationNextInput>

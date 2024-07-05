@@ -1,28 +1,25 @@
-import { MedusaV2Flag } from "@medusajs/utils"
-import {
-  isFeatureFlagEnabled,
-  transformBody,
-  transformQuery,
-} from "../../../api/middlewares"
-import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
 import * as QueryConfig from "./query-config"
+import { MiddlewareRoute } from "../../../loaders/helpers/routing/types"
+import { authenticate } from "../../../utils/authenticate-middleware"
+import { validateAndTransformQuery } from "../../utils/validate-query"
 import {
-  AdminGetCampaignsCampaignParams,
+  AdminCreateCampaign,
+  AdminGetCampaignParams,
   AdminGetCampaignsParams,
-  AdminPostCampaignsCampaignReq,
-  AdminPostCampaignsReq,
+  AdminUpdateCampaign,
 } from "./validators"
+import { validateAndTransformBody } from "../../utils/validate-body"
 
 export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/campaigns*",
-    middlewares: [isFeatureFlagEnabled(MedusaV2Flag.key)],
+    middlewares: [authenticate("admin", ["bearer", "session", "api-key"])],
   },
   {
     method: ["GET"],
     matcher: "/admin/campaigns",
     middlewares: [
-      transformQuery(
+      validateAndTransformQuery(
         AdminGetCampaignsParams,
         QueryConfig.listTransformQueryConfig
       ),
@@ -31,14 +28,20 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/campaigns",
-    middlewares: [transformBody(AdminPostCampaignsReq)],
+    middlewares: [
+      validateAndTransformBody(AdminCreateCampaign),
+      validateAndTransformQuery(
+        AdminGetCampaignParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
   {
     method: ["GET"],
     matcher: "/admin/campaigns/:id",
     middlewares: [
-      transformQuery(
-        AdminGetCampaignsCampaignParams,
+      validateAndTransformQuery(
+        AdminGetCampaignParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
@@ -46,6 +49,12 @@ export const adminCampaignRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/campaigns/:id",
-    middlewares: [transformBody(AdminPostCampaignsCampaignReq)],
+    middlewares: [
+      validateAndTransformBody(AdminUpdateCampaign),
+      validateAndTransformQuery(
+        AdminGetCampaignParams,
+        QueryConfig.retrieveTransformQueryConfig
+      ),
+    ],
   },
 ]

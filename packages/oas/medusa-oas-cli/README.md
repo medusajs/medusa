@@ -167,7 +167,7 @@ Specify in which directory should the files be outputted. Accepts relative and a
 If the directory doesn't exist, it will be created. Defaults to `./`.
 
 ```bash
-yarn medusa-oas docs --out-dir ./docs`
+yarn medusa-oas docs --src-file ./store.oas.json --out-dir ./docs`
 ```
 
 #### `--config <path>`
@@ -175,7 +175,7 @@ yarn medusa-oas docs --out-dir ./docs`
 Specify the path to a Redocly config file.
 
 ```bash
-yarn medusa-oas --config ./redocly-config.yaml
+yarn medusa-oas --src-file ./store.oas.json --config ./redocly-config.yaml
 ```
 
 #### `--dry-run`
@@ -183,7 +183,7 @@ yarn medusa-oas --config ./redocly-config.yaml
 Will sanitize the OAS but will not output file. Useful for troubleshooting circular reference issues.
 
 ```bash
-yarn medusa-oas docs --dry-run
+yarn medusa-oas docs --src-file ./store.oas.json --dry-run
 ```
 
 #### `--clean`
@@ -191,7 +191,7 @@ yarn medusa-oas docs --dry-run
 Delete destination directory content before generating client.
 
 ```bash
-yarn medusa-oas docs --clean
+yarn medusa-oas docs --src-file ./store.oas.json --clean
 ```
 
 #### `--split`
@@ -199,7 +199,7 @@ yarn medusa-oas docs --clean
 Creates a multi-file structure output. Uses `redocly split` internally.
 
 ```bash
-yarn medusa-oas docs --split
+yarn medusa-oas docs --src-file ./store.oas.json --split
 ```
 
 #### `--preview`
@@ -207,7 +207,7 @@ yarn medusa-oas docs --split
 Generate a preview of the API documentation in a browser. Does not output files. Uses `redocly preview-docs` internally.
 
 ```bash
-yarn medusa-oas docs --preview
+yarn medusa-oas docs --src-file ../../../www/apps/api-reference/specs/store.oas.json --preview
 ```
 
 #### `--html`
@@ -215,5 +215,5 @@ yarn medusa-oas docs --preview
 Generate a zero-dependency static HTML file. Uses `redocly build-docs` internally.
 
 ```bash
-yarn medusa-oas docs --html
+yarn medusa-oas docs --src-file ./store.oas.json --html
 ```

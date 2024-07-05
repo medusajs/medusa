@@ -63,7 +63,7 @@ class BatchJobSubscriber {
 
   processBatchJob = async (data): Promise<void> => {
     try {
-      await this.manager_.transaction(async (manager) => {
+      await this.manager_.transaction("REPEATABLE READ", async (manager) => {
         const batchJobServiceTx = this.batchJobService_.withTransaction(manager)
         const batchJob = await batchJobServiceTx.retrieve(data.id)
 

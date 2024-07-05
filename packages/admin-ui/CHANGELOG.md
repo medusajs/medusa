@@ -1,5 +1,43 @@
 # @medusajs/admin-ui
 
+## 2.1.15
+
+### Patch Changes
+
+- [#7203](https://github.com/medusajs/medusa/pull/7203) [`1422cd2900`](https://github.com/medusajs/medusa/commit/1422cd2900d9883ddac0cab2ca66449fdc1f8bea) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin,admin-ui,medusa): Fixes an issue where the `host` option did not have a default value. Updates the version of `tailwindcss`, `autoprefixer`, and `postcss` in `@medusajs/admin-ui`, to avoid issues when importing components using `tailwindcss@4`. Fixes an issue in `@medusajs/medusa` where the `develop` command would throw an error when `@medusajs/admin` was not installed.
+
+## 2.1.14
+
+### Patch Changes
+
+- [#7128](https://github.com/medusajs/medusa/pull/7128) [`40686ba980`](https://github.com/medusajs/medusa/commit/40686ba98077c1c509744c0bd44fea4d4786abaa) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa,admin-ui): Remove forced `backendUrl` from develop command. Allow specifying an alternative host value
+
+- [#6952](https://github.com/medusajs/medusa/pull/6952) [`0bf0bf819b`](https://github.com/medusajs/medusa/commit/0bf0bf819b04e0c96aabf1e959d4a592970e64ec) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(admin-ui): Resolve `node-gyp` error during installation with npm
+
+- Updated dependencies [[`0c0b425de7`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83), [`c3260a2c5a`](https://github.com/medusajs/medusa/commit/c3260a2c5add86ada641db91e834d9f9de62ed14), [`eadc5e8a79`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984), [`5e30b8cce6`](https://github.com/medusajs/medusa/commit/5e30b8cce63524d939a5068050798b0d8fcb9a53)]:
+  - medusa-react@9.0.17
+  - @medusajs/ui@3.0.0
+
+## 2.1.13
+
+### Patch Changes
+
+- [#6824](https://github.com/medusajs/medusa/pull/6824) [`ef58826dd2`](https://github.com/medusajs/medusa/commit/ef58826dd240ef4093a08fbafb6788f1f7e4087f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui, admin): Add missing regions relation
+
+- Updated dependencies [[`247ca3c3fa`](https://github.com/medusajs/medusa/commit/247ca3c3fadd69a1e90415041643727b53458e41), [`26531c5a38`](https://github.com/medusajs/medusa/commit/26531c5a38bf09ab3e77a1444cefd65a073ae713)]:
+  - @medusajs/ui@2.4.3
+  - @medusajs/ui-preset@1.1.3
+
+## 2.1.12
+
+### Patch Changes
+
+- [#6306](https://github.com/medusajs/medusa/pull/6306) [`58baead34`](https://github.com/medusajs/medusa/commit/58baead34e32abff3c587dbc1c6b11b527be8381) Thanks [@erikengervall](https://github.com/erikengervall)! - fix(admin-ui) Refactor `use-copy-promotion` to map product IDs
+
+- Updated dependencies [[`8cbf6c60f`](https://github.com/medusajs/medusa/commit/8cbf6c60fec7fe8ddf59dcf420b9339f84b8636c), [`73fd92a1a`](https://github.com/medusajs/medusa/commit/73fd92a1afdec88c0d5f4aeed16349f2bd62cfa2)]:
+  - @medusajs/ui-preset@1.1.1
+  - @medusajs/ui@2.4.0
+
 ## 2.1.11
 
 ### Patch Changes

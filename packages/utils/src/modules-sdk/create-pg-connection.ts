@@ -1,5 +1,6 @@
-import knex from "knex"
+import { knex } from "@mikro-orm/knex"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
+import { isDefined } from "../common"
 
 type Options = ModuleServiceInitializeOptions["database"]
 
@@ -9,7 +10,10 @@ type Options = ModuleServiceInitializeOptions["database"]
  */
 export function createPgConnection(options: Options) {
   const { pool, schema = "public", clientUrl, driverOptions } = options
-  const ssl = options.driverOptions?.ssl ?? false
+  const ssl =
+    options.driverOptions?.ssl ??
+    options.driverOptions?.connection?.ssl ??
+    false
 
   return knex<any, any>({
     client: "pg",

@@ -1,6 +1,10 @@
 "use client"
-import { Highlight, themes } from "prism-react-renderer"
+import { Highlight, Prism, themes } from "prism-react-renderer"
 import * as React from "react"
+;(typeof global !== "undefined" ? global : window).Prism = Prism
+
+// @ts-ignore
+import("prismjs/components/prism-json")
 
 import { Copy } from "@/components/copy"
 import { clx } from "@/utils/clx"
@@ -101,7 +105,7 @@ const HeaderComponent = ({
   return (
     <div
       className={clx(
-        "border-b-ui-code-border bg-ui-code-bg-header flex items-center gap-2 border-b px-4 py-3",
+        "border-b-ui-code-border bg-ui-code-bg-subtle flex items-center gap-2 border-b px-4 py-3",
         className
       )}
       {...props}
@@ -110,9 +114,9 @@ const HeaderComponent = ({
         snippets.map((snippet) => (
           <div
             className={clx(
-              "text-ui-code-text-subtle txt-compact-small-plus cursor-pointer rounded-full border border-transparent px-3 py-2 transition-all",
+              "text-ui-code-fg-subtle txt-compact-small-plus transition-fg cursor-pointer rounded-full border border-transparent px-3 py-2",
               {
-                "text-ui-code-text-base border-ui-code-border bg-ui-code-bg-base cursor-default":
+                "text-ui-code-fg-base border-ui-code-border bg-ui-code-bg-base cursor-default":
                   active.label === snippet.label,
               }
             )}
@@ -137,7 +141,10 @@ const Meta = ({
 }: React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={clx("text-ui-code-text-subtle ml-auto", className)}
+      className={clx(
+        "txt-compact-small text-ui-code-fg-subtle ml-auto",
+        className
+      )}
       {...props}
     />
   )
@@ -165,7 +172,7 @@ const Body = ({
       {!active.hideCopy && (
         <Copy
           content={active.code}
-          className="text-ui-code-icon absolute right-4 top-4"
+          className="text-ui-code-fg-muted absolute right-4 top-4"
         />
       )}
       <div className="max-w-[90%]">
@@ -213,6 +220,12 @@ const Body = ({
                 },
               },
               {
+                types: ["property"],
+                style: {
+                  color: "rgb(247,208,25)",
+                },
+              },
+              {
                 types: ["maybe-class-name"],
                 style: {
                   color: "rgb(255,203,107)",
@@ -227,7 +240,7 @@ const Body = ({
               {
                 types: ["comment"],
                 style: {
-                  color: "rgb(52,211,153)",
+                  color: "var(--code-fg-subtle)",
                 },
               },
             ],
@@ -237,12 +250,9 @@ const Body = ({
         >
           {({ style, tokens, getLineProps, getTokenProps }) => (
             <pre
-              className={clx(
-                "txt-compact-small whitespace-pre-wrap bg-transparent font-mono",
-                {
-                  "grid grid-cols-[auto,1fr] gap-x-4": !active.hideLineNumbers,
-                }
-              )}
+              className={clx("code-body whitespace-pre-wrap bg-transparent", {
+                "grid grid-cols-[auto,1fr] gap-x-4": !active.hideLineNumbers,
+              })}
               style={{
                 ...style,
                 background: "transparent",
@@ -253,7 +263,7 @@ const Body = ({
                   {tokens.map((_, i) => (
                     <span
                       key={i}
-                      className="text-ui-code-text-subtle tabular-nums"
+                      className="text-ui-code-fg-subtle tabular-nums"
                     >
                       {i + 1}
                     </span>

@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # SearchService
 
@@ -10,114 +10,94 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new SearchService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"isDefault","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../medusa/types/medusa.Logger.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options_","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"_isSearchService","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
-
-## Accessors
-
-### options
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"isDefault","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../medusa/types/medusa.Logger.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options_","type":"`Record<string, unknown>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SearchService"/>
 
 ___
 
 ## Methods
 
-### addDocuments
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
 ### createIndex
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createIndex"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### deleteAllDocuments
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### deleteDocument
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"document_id","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="createIndex"/>
 
 ### getIndex
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getIndex"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getIndex"/>
+
+### addDocuments
+
+#### Parameters
+
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addDocuments"/>
 
 ### replaceDocuments
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="replaceDocuments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="replaceDocuments"/>
+
+### deleteDocument
+
+#### Parameters
+
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"document_id","type":"`string` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteDocument"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="deleteDocument"/>
+
+### deleteAllDocuments
+
+#### Parameters
+
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteAllDocuments"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="deleteAllDocuments"/>
 
 ### search
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="search"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="search"/>
 
 ### updateSettings
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"settings","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"settings","type":"`unknown`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateSettings"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### isSearchService
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"obj","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateSettings"/>

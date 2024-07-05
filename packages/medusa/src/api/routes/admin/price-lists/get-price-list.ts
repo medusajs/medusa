@@ -1,9 +1,6 @@
-import { MedusaContainer } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { getPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists/{id}
@@ -87,22 +84,13 @@ import { getPriceListPricingModule } from "./modules-queries"
 export default async (req, res) => {
   const { id } = req.params
 
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  let priceList
-
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    priceList = await getPriceListPricingModule(id, {
-      container: req.scope as MedusaContainer,
-    })
-  } else {
-    priceList = await priceListService.retrieve(id, {
-      select: defaultAdminPriceListFields as (keyof PriceList)[],
-      relations: defaultAdminPriceListRelations,
-    })
-  }
+  const priceList = await priceListService.retrieve(id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
+  })
 
   res.status(200).json({ price_list: priceList })
 }

@@ -127,7 +127,7 @@ You can retrieve a list of publishable API keys by sending a request to the [Lis
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -217,7 +217,7 @@ You can create a publishable API key by sending a request to the [Create Publish
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "title": "Web API Key"
@@ -310,7 +310,7 @@ You can update a publishable API key’s details by sending a request to the [Up
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "title": "Web API Key"
@@ -398,7 +398,7 @@ You can revoke a publishable API key by sending a request to the [Revoke Publish
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/revoke' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -475,7 +475,7 @@ You can delete a publishable API key by sending a request to the [Delete Publish
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -573,7 +573,7 @@ You can retrieve the list of sales channels associated with a publishable API ke
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -681,7 +681,7 @@ You can add a sales channel to a publishable API key by sending a request to the
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "sales_channel_ids": [
@@ -801,7 +801,7 @@ You can delete a sales channel from a publishable API key by sending a request t
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "sales_channel_ids": [

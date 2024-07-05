@@ -1,6 +1,7 @@
 import {
   MODULE_PACKAGE_NAMES,
   MedusaApp,
+  MedusaAppMigrateUp,
   MedusaAppOutput,
   MedusaModule,
   Modules,
@@ -9,15 +10,19 @@ import {
 import {
   CommonTypes,
   InternalModuleDeclaration,
+  LoadedModule,
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  FlagRouter,
+  MedusaV2Flag,
+  isObject,
+} from "@medusajs/utils"
 
-import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { remoteQueryFetchData } from ".."
-import { joinerConfig } from "../joiner-config"
+import { remoteQueryFetchData } from "../utils/remote-query-fetch-data"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -35,6 +40,71 @@ export function mergeDefaultModules(
   }
 
   return configModules
+}
+
+export async function migrateMedusaApp(
+  {
+    configModule,
+    container,
+  }: {
+    configModule: {
+      modules?: CommonTypes.ConfigModule["modules"]
+      projectConfig: CommonTypes.ConfigModule["projectConfig"]
+    }
+    container: MedusaContainer
+  },
+  config = { registerInContainer: true }
+): Promise<void> {
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
+  }
+
+  const sharedResourcesConfig = {
+    database: {
+      clientUrl:
+        injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]?.client
+          ?.config?.connection?.connectionString ??
+        configModule.projectConfig.database_url,
+      driverOptions: configModule.projectConfig.database_driver_options,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
+    },
+  }
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: sharedResourcesConfig.database.clientUrl,
+          clientUrl: sharedResourcesConfig.database.clientUrl,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
+
+  await MedusaAppMigrateUp({
+    modulesConfig: configModules,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    sharedResourcesConfig,
+    injectedDependencies,
+  })
 }
 
 export const loadMedusaApp = async (
@@ -56,12 +126,16 @@ export const loadMedusaApp = async (
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
     ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
   }
 
   const sharedResourcesConfig = {
     database: {
       clientUrl: configModule.projectConfig.database_url,
-      driverOptions: configModule.projectConfig.database_extra,
+      driverOptions: configModule.projectConfig.database_driver_options,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
     },
   }
 
@@ -72,7 +146,7 @@ export const loadMedusaApp = async (
 
   // Apply default options to legacy modules
   for (const moduleKey of Object.keys(configModules)) {
-    if (!ModulesDefinition[moduleKey].isLegacy) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
       continue
     }
 
@@ -92,8 +166,8 @@ export const loadMedusaApp = async (
   }
 
   const medusaApp = await MedusaApp({
+    workerMode: configModule.projectConfig.worker_mode,
     modulesConfig: configModules,
-    servicesConfig: joinerConfig,
     remoteFetchData: remoteQueryFetchData(container),
     sharedContainer: container,
     sharedResourcesConfig,
@@ -128,28 +202,98 @@ export const loadMedusaApp = async (
     return medusaApp
   }
 
-  container.register("remoteLink", asValue(medusaApp.link))
+  container.register(
+    ContainerRegistrationKeys.REMOTE_LINK,
+    asValue(medusaApp.link)
+  )
   container.register(
     ContainerRegistrationKeys.REMOTE_QUERY,
     asValue(medusaApp.query)
   )
 
-  for (const [serviceKey, moduleService] of Object.entries(medusaApp.modules)) {
+  for (const moduleService of Object.values(medusaApp.modules)) {
+    const loadedModule = moduleService as LoadedModule
     container.register(
-      ModulesDefinition[serviceKey].registrationName,
+      loadedModule.__definition.registrationName,
       asValue(moduleService)
     )
   }
 
   // Register all unresolved modules as undefined to be present in the container with undefined value by defaul
   // but still resolvable
-  for (const [, moduleDefinition] of Object.entries(ModulesDefinition)) {
+  for (const moduleDefinition of Object.values(ModulesDefinition)) {
     if (!container.hasRegistration(moduleDefinition.registrationName)) {
       container.register(moduleDefinition.registrationName, asValue(undefined))
     }
   }
 
   return medusaApp
+}
+
+/**
+ * Run the modules loader without taking care of anything else. This is useful for running the loader as a separate action or to re run all modules loaders.
+ *
+ * @param configModule
+ * @param container
+ */
+export async function runModulesLoader({
+  configModule,
+  container,
+}: {
+  configModule: {
+    modules?: CommonTypes.ConfigModule["modules"]
+    projectConfig: CommonTypes.ConfigModule["projectConfig"]
+  }
+  container: MedusaContainer
+}): Promise<void> {
+  const injectedDependencies = {
+    [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
+      ContainerRegistrationKeys.PG_CONNECTION
+    ),
+    [ContainerRegistrationKeys.LOGGER]: container.resolve(
+      ContainerRegistrationKeys.LOGGER
+    ),
+  }
+
+  const sharedResourcesConfig = {
+    database: {
+      clientUrl: configModule.projectConfig.database_url,
+      driverOptions: configModule.projectConfig.database_driver_options,
+      debug: !!(configModule.projectConfig.database_logging ?? false),
+    },
+  }
+
+  const configModules = mergeDefaultModules(configModule.modules)
+
+  // Apply default options to legacy modules
+  for (const moduleKey of Object.keys(configModules)) {
+    if (!ModulesDefinition[moduleKey]?.isLegacy) {
+      continue
+    }
+
+    if (isObject(configModules[moduleKey])) {
+      ;(
+        configModules[moduleKey] as Partial<InternalModuleDeclaration>
+      ).options ??= {
+        database: {
+          type: "postgres",
+          url: configModule.projectConfig.database_url,
+          extra: configModule.projectConfig.database_extra,
+          schema: configModule.projectConfig.database_schema,
+          logging: configModule.projectConfig.database_logging,
+        },
+      }
+    }
+  }
+
+  await MedusaApp({
+    modulesConfig: configModules,
+    remoteFetchData: remoteQueryFetchData(container),
+    sharedContainer: container,
+    sharedResourcesConfig,
+    injectedDependencies,
+    loaderOnly: true,
+  })
 }
 
 export default loadMedusaApp

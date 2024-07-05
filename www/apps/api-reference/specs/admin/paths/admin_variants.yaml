@@ -48,6 +48,25 @@ get:
         type: number
         default: '100'
     - in: query
+      name: order
+      description: >-
+        The field to sort the data by. By default, the sort order is ascending.
+        To change the order to descending, prefix the field name with `-`.
+      schema:
+        type: string
+    - in: query
+      name: manage_inventory
+      description: Filter product variants by whether their inventory is managed or not.
+      schema:
+        type: boolean
+    - in: query
+      name: allow_backorder
+      description: >-
+        Filter product variants by whether they are allowed to be backordered or
+        not.
+      schema:
+        type: boolean
+    - in: query
       name: cart_id
       style: form
       explode: false
@@ -137,7 +156,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_variants/getundefined
+        $ref: ../code_samples/tsx/admin_variants/get.tsx
     - lang: Shell
       label: cURL
       source:

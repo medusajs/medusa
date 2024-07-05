@@ -113,7 +113,7 @@ You can list invites by sending a request to the [List Invite API Route](https:/
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/invites' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -191,7 +191,7 @@ You can create an invite by sending a request to the [Create Invite API Route](h
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/invites' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "user": "user@example.com",
@@ -379,7 +379,7 @@ You can resend an invite if it’s not accepted yet. To resend an invite, send a
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/invites/<INVITE_ID>/resend' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -452,7 +452,7 @@ You can delete an invite by sending a request to the [Delete Invite API Route](h
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/invites/<INVITE_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

@@ -1,12 +1,18 @@
 export const SymbolMedusaWorkflowComposerContext = Symbol.for(
   "MedusaWorkflowComposerContext"
-)
-export const SymbolInputReference = Symbol.for("WorkflowInputReference")
-export const SymbolWorkflowStep = Symbol.for("WorkflowStep")
-export const SymbolWorkflowHook = Symbol.for("WorkflowHook")
-export const SymbolWorkflowWorkflowData = Symbol.for("WorkflowWorkflowData")
-export const SymbolWorkflowStepResponse = Symbol.for("WorkflowStepResponse")
-export const SymbolWorkflowStepBind = Symbol.for("WorkflowStepBind")
+).toString()
+export const SymbolInputReference = Symbol.for(
+  "WorkflowInputReference"
+).toString()
+export const SymbolWorkflowStep = Symbol.for("WorkflowStep").toString()
+export const SymbolWorkflowHook = Symbol.for("WorkflowHook").toString()
+export const SymbolWorkflowWorkflowData = Symbol.for(
+  "WorkflowWorkflowData"
+).toString()
+export const SymbolWorkflowStepResponse = Symbol.for(
+  "WorkflowStepResponse"
+).toString()
+export const SymbolWorkflowStepBind = Symbol.for("WorkflowStepBind").toString()
 export const SymbolWorkflowStepTransformer = Symbol.for(
   "WorkflowStepTransformer"
-)
+).toString()

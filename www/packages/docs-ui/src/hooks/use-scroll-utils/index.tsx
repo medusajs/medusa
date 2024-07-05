@@ -19,7 +19,7 @@ import React, {
   type ReactNode,
   useState,
 } from "react"
-import { getScrolledTop as getScrolledTopUtil } from "../../utils"
+import { getScrolledTop as getScrolledTopUtil, isElmWindow } from "../../utils"
 
 type EventFunc = (...args: never[]) => unknown
 
@@ -61,9 +61,12 @@ type ScrollController = {
   getScrolledTop: () => number
 }
 
-function useScrollControllerContextValue(
+function useScrollControllerContextValue({
+  scrollableSelector,
+}: {
   scrollableSelector: string
-): ScrollController {
+  restoreScrollOnReload?: boolean
+}): ScrollController {
   const scrollEventsEnabledRef = useRef(true)
 
   const [scrollableElement, setScrollableElement] = useState<
@@ -106,8 +109,11 @@ export function ScrollControllerProvider({
 }: {
   children: ReactNode
   scrollableSelector?: string
+  restoreScrollOnReload?: boolean
 }): JSX.Element {
-  const value = useScrollControllerContextValue(scrollableSelector)
+  const value = useScrollControllerContextValue({
+    scrollableSelector,
+  })
   return (
     <ScrollMonitorContext.Provider value={value}>
       {children}

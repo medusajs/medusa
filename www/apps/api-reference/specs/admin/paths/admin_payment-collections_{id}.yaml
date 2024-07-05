@@ -35,7 +35,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_payment-collections_{id}/getundefined
+        $ref: ../code_samples/tsx/admin_payment-collections_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -92,7 +92,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_payment-collections_{id}/postundefined
+        $ref: ../code_samples/tsx/admin_payment-collections_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -146,7 +146,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_payment-collections_{id}/deleteundefined
+        $ref: ../code_samples/tsx/admin_payment-collections_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

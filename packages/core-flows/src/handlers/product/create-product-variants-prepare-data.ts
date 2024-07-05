@@ -1,13 +1,12 @@
-import { ProductWorkflow, WorkflowTypes } from "@medusajs/types"
-
+import { BigNumberInput, ProductWorkflow, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "@medusajs/workflows-sdk"
 
 type VariantPrice = {
   region_id?: string
   currency_code?: string
-  amount: number
-  min_quantity?: number
-  max_quantity?: number
+  amount: BigNumberInput
+  min_quantity?: BigNumberInput
+  max_quantity?: BigNumberInput
 }
 
 export type CreateProductVariantsPreparedData = {
@@ -22,7 +21,8 @@ export type CreateProductVariantsPreparedData = {
 export async function createProductVariantsPrepareData({
   container,
   data,
-}: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductVariantsWorkflowInputDTO>): Promise<CreateProductVariantsPreparedData> {
+}: // eslint-disable-next-line max-len
+WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductVariantsWorkflowInputDTO>): Promise<CreateProductVariantsPreparedData> {
   const productVariants: ProductWorkflow.CreateProductVariantsInputDTO[] =
     data.productVariants || []
 

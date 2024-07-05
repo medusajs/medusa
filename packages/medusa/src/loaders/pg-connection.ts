@@ -14,18 +14,18 @@ export default async ({ container, configModule }: Options): Promise<any> => {
 
   // Share a knex connection to be consumed by the shared modules
   const connectionString = configModule.projectConfig.database_url
-  const extra: any = configModule.projectConfig.database_extra || {}
+  const driverOptions: any =
+    configModule.projectConfig.database_driver_options || {}
   const schema = configModule.projectConfig.database_schema || "public"
-  const idleTimeoutMillis = extra.idleTimeoutMillis ?? undefined // prevent null to be passed
-  const poolMax = extra.max
+  const idleTimeoutMillis = driverOptions.pool?.idleTimeoutMillis ?? undefined // prevent null to be passed
+  const poolMax = driverOptions.pool?.max
 
-  delete extra.max
-  delete extra.idleTimeoutMillis
+  delete driverOptions.pool
 
   const pgConnection = ModulesSdkUtils.createPgConnection({
     clientUrl: connectionString,
     schema,
-    driverOptions: extra,
+    driverOptions,
     pool: {
       max: poolMax,
       idleTimeoutMillis,

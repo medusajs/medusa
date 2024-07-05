@@ -141,7 +141,7 @@ You can list product categories by sending a request to the [List Product Catego
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -242,7 +242,7 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories/<CAT_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -358,7 +358,7 @@ You can retrieve the details of a category by its handle by sending a request to
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories?handle=women' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

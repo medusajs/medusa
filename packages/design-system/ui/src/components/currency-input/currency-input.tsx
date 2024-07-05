@@ -108,6 +108,8 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
           role="presentation"
         >
           <Text
+            size="small"
+            leading="compact"
             className={clx(
               "text-ui-fg-muted pointer-events-none select-none uppercase",
               {
@@ -136,6 +138,8 @@ const CurrencyInput = React.forwardRef<HTMLInputElement, CurrencyInputProps>(
           role="presentation"
         >
           <Text
+            size="small"
+            leading="compact"
             className={clx("text-ui-fg-muted pointer-events-none select-none", {
               "text-ui-fg-disabled": disabled,
             })}

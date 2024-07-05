@@ -150,10 +150,14 @@ const { withStoreConfig } = require("./store-config")
 
 module.exports = withStoreConfig({
   // ...
-  images: {
-    domains: [
+ images: {
+    remotePatterns: [
       // ...
-      "<YOUR_SPACE_URL>",
+      {
+        protocol: "https",
+        hostname:"<YOUR_SPACE_URL>",
+      },
+      // ...
     ],
   },
 })

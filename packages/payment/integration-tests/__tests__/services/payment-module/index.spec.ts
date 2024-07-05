@@ -1,212 +1,691 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { IPaymentModuleService } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { initialize } from "../../../../src/initialize"
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
-import { createPaymentCollections } from "../../../__fixtures__/payment-collection"
+import {
+  moduleIntegrationTestRunner,
+  SuiteOptions,
+} from "medusa-test-utils/dist"
+import {
+  createPaymentCollections,
+  createPayments,
+  createPaymentSessions,
+} from "../../../__fixtures__"
 
 jest.setTimeout(30000)
 
-describe("Payment Module Service", () => {
-  let service: IPaymentModuleService
-  let repositoryManager: SqlEntityManager
-
-  beforeEach(async () => {
-    await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
-
-    service = await initialize({
-      database: {
-        clientUrl: DB_URL,
-        schema: process.env.MEDUSA_PAYMNET_DB_SCHEMA,
-      },
-    })
-
-    await createPaymentCollections(repositoryManager)
-  })
-
-  afterEach(async () => {
-    await MikroOrmWrapper.clearDatabase()
-  })
-
-  describe("create", () => {
-    it("should throw an error when required params are not passed", async () => {
-      let error = await service
-        .createPaymentCollection([
-          {
+moduleIntegrationTestRunner({
+  moduleName: Modules.PAYMENT,
+  testSuite: ({
+    MikroOrmWrapper,
+    service,
+  }: SuiteOptions<IPaymentModuleService>) => {
+    describe("Payment Module Service", () => {
+      describe("Payment Flow", () => {
+        it("complete payment flow successfully", async () => {
+          let paymentCollection = await service.createPaymentCollections({
+            currency_code: "usd",
             amount: 200,
-            region_id: "req_123",
-          } as any,
-        ])
-        .catch((e) => e)
+            region_id: "reg_123",
+          })
 
-      expect(error.message).toContain(
-        "Value for PaymentCollection.currency_code is required, 'undefined' found"
-      )
+          const paymentSession = await service.createPaymentSession(
+            paymentCollection.id,
+            {
+              provider_id: "pp_system_default",
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
+                customer: {},
+                billing_address: {},
+                email: "test@test.test.com",
+              },
+            }
+          )
 
-      error = await service
-        .createPaymentCollection([
-          {
-            currency_code: "USD",
-            region_id: "req_123",
-          } as any,
-        ])
-        .catch((e) => e)
+          const payment = await service.authorizePaymentSession(
+            paymentSession.id,
+            {}
+          )
 
-      expect(error.message).toContain(
-        "Value for PaymentCollection.amount is required, 'undefined' found"
-      )
-
-      error = await service
-        .createPaymentCollection([
-          {
-            currency_code: "USD",
+          await service.capturePayment({
             amount: 200,
-          } as any,
-        ])
-        .catch((e) => e)
+            payment_id: payment.id,
+          })
 
-      expect(error.message).toContain(
-        "Value for PaymentCollection.region_id is required, 'undefined' found"
-      )
-    })
+          await service.completePaymentCollections(paymentCollection.id)
 
-    it("should create a payment collection successfully", async () => {
-      const [createdPaymentCollection] = await service.createPaymentCollection([
-        { currency_code: "USD", amount: 200, region_id: "reg_123" },
-      ])
+          paymentCollection = await service.retrievePaymentCollection(
+            paymentCollection.id,
+            { relations: ["payment_sessions", "payments.captures"] }
+          )
 
-      expect(createdPaymentCollection).toEqual(
-        expect.objectContaining({
-          id: expect.any(String),
-          status: "not_paid",
-          payment_providers: [],
-          payment_sessions: [],
-          payments: [],
-          currency_code: "USD",
-          amount: 200,
+          expect(paymentCollection).toEqual(
+            expect.objectContaining({
+              id: expect.any(String),
+              currency_code: "usd",
+              amount: 200,
+              // TODO
+              // authorized_amount: 200,
+              // status: "authorized",
+              region_id: "reg_123",
+              deleted_at: null,
+              completed_at: expect.any(Date),
+              payment_sessions: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  currency_code: "usd",
+                  amount: 200,
+                  provider_id: "pp_system_default",
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                }),
+              ],
+              payments: [
+                expect.objectContaining({
+                  id: expect.any(String),
+                  amount: 200,
+                  currency_code: "usd",
+                  provider_id: "pp_system_default",
+                  captures: [
+                    expect.objectContaining({
+                      amount: 200,
+                    }),
+                  ],
+                }),
+              ],
+            })
+          )
         })
-      )
-    })
-  })
-
-  describe("delete", () => {
-    it("should delete a Payment Collection", async () => {
-      let collection = await service.listPaymentCollections({
-        id: ["pay-col-id-1"],
       })
 
-      expect(collection.length).toEqual(1)
+      describe("PaymentCollection", () => {
+        beforeEach(async () => {
+          const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      await service.deletePaymentCollection(["pay-col-id-1"])
+          await createPaymentCollections(repositoryManager)
+          await createPaymentSessions(repositoryManager)
+          await createPayments(repositoryManager)
+        })
 
-      collection = await service.listPaymentCollections({
-        id: ["pay-col-id-1"],
+        describe("create", () => {
+          it("should throw an error when required params are not passed", async () => {
+            let error = await service
+              .createPaymentCollections([
+                {
+                  amount: 200,
+                  region_id: "req_123",
+                } as any,
+              ])
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "Value for PaymentCollection.currency_code is required, 'undefined' found"
+            )
+
+            error = await service
+              .createPaymentCollections([
+                {
+                  currency_code: "USD",
+                  region_id: "req_123",
+                } as any,
+              ])
+              .catch((e) => e)
+
+            // TODO: Change error thrown by Mikro for BigNumber fields
+            expect(error.message).toContain(
+              "Value for PaymentCollection.amount is required, 'undefined' found"
+            )
+
+            error = await service
+              .createPaymentCollections([
+                {
+                  currency_code: "USD",
+                  amount: 200,
+                } as any,
+              ])
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "Value for PaymentCollection.region_id is required, 'undefined' found"
+            )
+          })
+
+          it("should create a payment collection successfully", async () => {
+            const [createdPaymentCollection] =
+              await service.createPaymentCollections([
+                { currency_code: "USD", amount: 200, region_id: "reg_123" },
+              ])
+
+            expect(createdPaymentCollection).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                status: "not_paid",
+                payment_providers: [],
+                payment_sessions: [],
+                payments: [],
+                currency_code: "USD",
+                amount: 200,
+              })
+            )
+          })
+        })
+
+        describe("delete", () => {
+          it("should delete a Payment Collection", async () => {
+            let collection = await service.listPaymentCollections({
+              id: ["pay-col-id-1"],
+            })
+
+            expect(collection.length).toEqual(1)
+
+            await service.deletePaymentCollections(["pay-col-id-1"])
+
+            collection = await service.listPaymentCollections({
+              id: ["pay-col-id-1"],
+            })
+
+            expect(collection.length).toEqual(0)
+          })
+        })
+
+        describe("retrieve", () => {
+          it("should retrieve a Payment Collection", async () => {
+            let collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                amount: 200,
+                region_id: "region-id-1",
+                currency_code: "usd",
+              })
+            )
+          })
+
+          it("should fail to retrieve a non existent Payment Collection", async () => {
+            let error = await service
+              .retrievePaymentCollection("pay-col-id-not-exists")
+              .catch((e) => e)
+
+            expect(error.message).toContain(
+              "PaymentCollection with id: pay-col-id-not-exists was not found"
+            )
+          })
+        })
+
+        describe("list", () => {
+          it("should list and count Payment Collection", async () => {
+            let [collections, count] =
+              await service.listAndCountPaymentCollections()
+
+            expect(count).toEqual(3)
+
+            expect(collections).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: "pay-col-id-1",
+                  amount: 100,
+                  region_id: "region-id-1",
+                  currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  id: "pay-col-id-2",
+                  amount: 200,
+                  region_id: "region-id-1",
+                  currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  id: "pay-col-id-3",
+                  amount: 300,
+                  region_id: "region-id-2",
+                  currency_code: "usd",
+                }),
+              ])
+            )
+          })
+
+          it("should list Payment Collections by region_id", async () => {
+            let collections = await service.listPaymentCollections(
+              {
+                region_id: "region-id-1",
+              },
+              { select: ["id", "amount", "region_id"] }
+            )
+
+            expect(collections.length).toEqual(2)
+
+            expect(collections).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: "pay-col-id-1",
+                  amount: 100,
+                  region_id: "region-id-1",
+                }),
+                expect.objectContaining({
+                  id: "pay-col-id-2",
+                  amount: 200,
+                  region_id: "region-id-1",
+                }),
+              ])
+            )
+          })
+        })
+
+        describe("update", () => {
+          it("should update a Payment Collection", async () => {
+            await service.updatePaymentCollections("pay-col-id-2", {
+              currency_code: "eur",
+              region_id: "reg-2",
+            })
+
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-2"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-2",
+                region_id: "reg-2",
+                currency_code: "eur",
+              })
+            )
+          })
+        })
+
+        describe("complete", () => {
+          it("should complete a Payment Collection", async () => {
+            await service.completePaymentCollections("pay-col-id-1")
+
+            const collection = await service.retrievePaymentCollection(
+              "pay-col-id-1"
+            )
+
+            expect(collection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-1",
+                completed_at: expect.any(Date),
+              })
+            )
+          })
+        })
       })
 
-      expect(collection.length).toEqual(0)
-    })
-  })
+      describe("PaymentSession", () => {
+        beforeEach(async () => {
+          const repositoryManager = await MikroOrmWrapper.forkManager()
 
-  describe("retrieve", () => {
-    it("should retrieve a Payment Collection", async () => {
-      let collection = await service.retrievePaymentCollection("pay-col-id-2")
-
-      expect(collection).toEqual(
-        expect.objectContaining({
-          id: "pay-col-id-2",
-          amount: 200,
-          region_id: "region-id-1",
-          currency_code: "usd",
+          await createPaymentCollections(repositoryManager)
+          await createPaymentSessions(repositoryManager)
+          await createPayments(repositoryManager)
         })
-      )
-    })
 
-    it("should fail to retrieve a non existent Payment Collection", async () => {
-      let error = await service
-        .retrievePaymentCollection("pay-col-id-not-exists")
-        .catch((e) => e)
+        describe("create", () => {
+          it("should create a payment session successfully", async () => {
+            await service.createPaymentSession("pay-col-id-1", {
+              provider_id: "pp_system_default",
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
+                customer: {},
+                billing_address: {},
+                email: "test@test.test.com",
+                resource_id: "cart_test",
+              },
+            })
 
-      expect(error.message).toContain(
-        "PaymentCollection with id: pay-col-id-not-exists was not found"
-      )
-    })
-  })
+            const paymentCollection = await service.retrievePaymentCollection(
+              "pay-col-id-1",
+              { relations: ["payment_sessions"] }
+            )
 
-  describe("list", () => {
-    it("should list and count Payment Collection", async () => {
-      let [collections, count] = await service.listAndCountPaymentCollections()
+            expect(paymentCollection).toEqual(
+              expect.objectContaining({
+                id: "pay-col-id-1",
+                status: "not_paid",
+                payment_sessions: expect.arrayContaining([
+                  expect.objectContaining({
+                    id: expect.any(String),
+                    data: {},
+                    status: "pending",
+                    authorized_at: null,
+                    currency_code: "usd",
+                    amount: 200,
+                    provider_id: "pp_system_default",
+                  }),
+                ]),
+              })
+            )
+          })
+        })
 
-      expect(count).toEqual(3)
+        describe("update", () => {
+          it("should update a payment session successfully", async () => {
+            let session = await service.createPaymentSession("pay-col-id-1", {
+              provider_id: "pp_system_default",
+              amount: 200,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
+                customer: {},
+                billing_address: {},
+                email: "test@test.test.com",
+                resource_id: "cart_test",
+              },
+            })
 
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: "pay-col-id-1",
-            amount: 100,
-            region_id: "region-id-1",
-            currency_code: "usd",
-          }),
-          expect.objectContaining({
-            id: "pay-col-id-2",
-            amount: 200,
-            region_id: "region-id-1",
-            currency_code: "usd",
-          }),
-          expect.objectContaining({
-            id: "pay-col-id-3",
-            amount: 300,
-            region_id: "region-id-2",
-            currency_code: "usd",
-          }),
-        ])
-      )
-    })
+            session = await service.updatePaymentSession({
+              id: session.id,
+              amount: 200,
+              currency_code: "eur",
+              data: {},
+              context: {
+                resource_id: "res_id",
+                extra: {},
+                customer: {},
+                billing_address: {},
+                email: "new@test.tsst",
+              },
+            })
 
-    it("should list Payment Collections by region_id", async () => {
-      let collections = await service.listPaymentCollections(
-        {
-          region_id: "region-id-1",
-        },
-        { select: ["id", "amount", "region_id"] }
-      )
+            expect(session).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                status: "pending",
+                currency_code: "eur",
+                amount: 200,
+              })
+            )
+          })
+        })
 
-      expect(collections.length).toEqual(2)
+        describe("authorize", () => {
+          it("should authorize a payment session", async () => {
+            const collection = await service.createPaymentCollections({
+              amount: 200,
+              region_id: "test-region",
+              currency_code: "usd",
+            })
 
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: "pay-col-id-1",
-            amount: 100,
-            region_id: "region-id-1",
-          }),
-          expect.objectContaining({
-            id: "pay-col-id-2",
-            amount: 200,
-            region_id: "region-id-1",
-          }),
-        ])
-      )
-    })
-  })
+            const session = await service.createPaymentSession(collection.id, {
+              provider_id: "pp_system_default",
+              amount: 100,
+              currency_code: "usd",
+              data: {},
+              context: {
+                extra: {},
+                resource_id: "test",
+                email: "test@test.com",
+                billing_address: {},
+                customer: {},
+              },
+            })
 
-  describe("update", () => {
-    it("should update a Payment Collection", async () => {
-      await service.updatePaymentCollection({
-        id: "pay-col-id-2",
-        currency_code: "eur",
-        authorized_amount: 200,
+            const payment = await service.authorizePaymentSession(
+              session.id,
+              {}
+            )
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: expect.any(String),
+                amount: 100,
+                currency_code: "usd",
+                provider_id: "pp_system_default",
+                refunds: [],
+                captures: [],
+                data: {},
+                cart_id: null,
+                order_id: null,
+                customer_id: null,
+                deleted_at: null,
+                captured_at: null,
+                canceled_at: null,
+                payment_collection_id: expect.any(String),
+                payment_session: expect.objectContaining({
+                  id: expect.any(String),
+                  updated_at: expect.any(Date),
+                  created_at: expect.any(Date),
+                  currency_code: "usd",
+                  amount: 100,
+                  raw_amount: { value: "100", precision: 20 },
+                  provider_id: "pp_system_default",
+                  data: {},
+                  status: "authorized",
+                  authorized_at: expect.any(Date),
+                  payment_collection: expect.objectContaining({
+                    id: expect.any(String),
+                  }),
+                  payment_collection_id: expect.any(String),
+                }),
+              })
+            )
+          })
+        })
       })
 
-      const collection = await service.retrievePaymentCollection("pay-col-id-2")
+      describe("Payment", () => {
+        beforeEach(async () => {
+          const repositoryManager = await MikroOrmWrapper.forkManager()
 
-      expect(collection).toEqual(
-        expect.objectContaining({
-          id: "pay-col-id-2",
-          authorized_amount: 200,
-          currency_code: "eur",
+          await createPaymentCollections(repositoryManager)
+          await createPaymentSessions(repositoryManager)
+          await createPayments(repositoryManager)
         })
-      )
+
+        describe("update", () => {
+          it("should update a payment successfully", async () => {
+            const updatedPayment = await service.updatePayment({
+              id: "pay-id-1",
+              cart_id: "new-cart",
+            })
+
+            expect(updatedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                cart_id: "new-cart",
+              })
+            )
+          })
+        })
+
+        describe("capture", () => {
+          it("should capture a payment successfully and update captured_at", async () => {
+            const capturedPayment = await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+
+                captures: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 100,
+                  }),
+                ],
+                captured_at: expect.any(Date),
+              })
+            )
+          })
+
+          it("should split a payment in two captures a payment successfully", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            const capturedPayment = await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            expect(capturedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-1",
+                amount: 100,
+
+                captures: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 50,
+                  }),
+                ],
+              })
+            )
+          })
+
+          it("should fail to capture amount greater than authorized", async () => {
+            const error = await service
+              .capturePayment({
+                amount: 200,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture amount greater than what is already captured", async () => {
+            await service.capturePayment({
+              amount: 99,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 2,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture already captured payment", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot capture more than the authorized amount substracted by what is already captured."
+            )
+          })
+
+          it("should fail to capture a canceled payment", async () => {
+            await service.cancelPayment("pay-id-1")
+
+            const error = await service
+              .capturePayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "The payment: pay-id-1 has been canceled."
+            )
+          })
+        })
+
+        describe("refund", () => {
+          it("should refund a payments successfully", async () => {
+            await service.capturePayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            const refundedPayment = await service.refundPayment({
+              amount: 100,
+              payment_id: "pay-id-2",
+            })
+
+            expect(refundedPayment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                amount: 100,
+                refunds: [
+                  expect.objectContaining({
+                    created_by: null,
+                    amount: 100,
+                  }),
+                ],
+                // captured_amount: 100,
+                // refunded_amount: 100,
+              })
+            )
+          })
+
+          it("should throw if refund is greater than captured amount", async () => {
+            await service.capturePayment({
+              amount: 50,
+              payment_id: "pay-id-1",
+            })
+
+            const error = await service
+              .refundPayment({
+                amount: 100,
+                payment_id: "pay-id-1",
+              })
+              .catch((e) => e)
+
+            expect(error.message).toEqual(
+              "You cannot refund more than what is captured on the payment."
+            )
+          })
+        })
+
+        describe("cancel", () => {
+          it("should cancel a payment", async () => {
+            const payment = await service.cancelPayment("pay-id-2")
+
+            expect(payment).toEqual(
+              expect.objectContaining({
+                id: "pay-id-2",
+                canceled_at: expect.any(Date),
+              })
+            )
+          })
+
+          // TODO: revisit when totals are implemented
+          // it("should throw if trying to cancel a captured payment", async () => {
+          //   await service.capturePayment({ payment_id: "pay-id-2", amount: 100 })
+          //
+          //   const error = await service
+          //     .cancelPayment("pay-id-2")
+          //     .catch((e) => e.message)
+          //
+          //   expect(error).toEqual(
+          //     "Cannot cancel a payment: pay-id-2 that has been captured."
+          //   )
+          // })
+        })
+      })
     })
-  })
+  },
 })

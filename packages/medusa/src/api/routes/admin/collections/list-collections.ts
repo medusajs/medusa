@@ -1,9 +1,9 @@
 import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
+import ProductCollectionService from "../../../../services/product-collection"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /admin/collections
@@ -17,6 +17,7 @@ import { Type } from "class-transformer"
  *   - (query) title {string} Filter collections by their title.
  *   - (query) handle {string} Filter collections by their handle.
  *   - (query) q {string} a term to search collections by their title or handle.
+ *   - (query) order {string} A field to sort-order the retrieved collections by.
  *   - (query) discount_condition_id {string} Filter collections by a discount condition ID associated with them.
  *   - in: query
  *     name: created_at
@@ -247,6 +248,13 @@ export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationPara
   @IsString()
   @IsOptional()
   q?: string
+
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
+  @IsString()
+  @IsOptional()
+  order?: string
 
   /**
    * Filter product collections by their associated discount condition's ID.

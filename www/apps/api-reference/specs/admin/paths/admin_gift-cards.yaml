@@ -23,6 +23,11 @@ get:
       description: a term to search gift cards' code or display ID
       schema:
         type: string
+    - in: query
+      name: order
+      description: A gift card field to sort-order the retrieved gift cards by.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: AdminGetGiftCardsParams
@@ -34,7 +39,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_gift-cards/getundefined
+        $ref: ../code_samples/tsx/admin_gift-cards/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -86,7 +91,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_gift-cards/postundefined
+        $ref: ../code_samples/tsx/admin_gift-cards/post.tsx
     - lang: Shell
       label: cURL
       source:

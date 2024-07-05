@@ -7,9 +7,9 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
@@ -46,7 +46,7 @@ export default class InventoryLevelService {
   async list(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -65,7 +65,7 @@ export default class InventoryLevelService {
   async listAndCount(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<[InventoryLevel[], number]> {
     const manager = context.transactionManager ?? this.manager_
     const levelRepository = manager.getRepository(InventoryLevel)
@@ -85,7 +85,7 @@ export default class InventoryLevelService {
   async retrieve(
     inventoryLevelId: string,
     config: FindConfig<InventoryLevel> = {},
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevel> {
     if (!isDefined(inventoryLevelId)) {
       throw new MedusaError(
@@ -319,7 +319,7 @@ export default class InventoryLevelService {
   async getStockedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
@@ -348,7 +348,7 @@ export default class InventoryLevelService {
   async getAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]
@@ -377,7 +377,7 @@ export default class InventoryLevelService {
   async getReservedQuantity(
     inventoryItemId: string,
     locationIds: string[] | string,
-    context: SharedContext = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<number> {
     if (!Array.isArray(locationIds)) {
       locationIds = [locationIds]

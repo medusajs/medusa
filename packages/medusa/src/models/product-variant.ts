@@ -8,14 +8,15 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, generateEntityId } from "../utils"
 
+import { SoftDeletableEntity } from "../interfaces"
 import { MoneyAmount } from "./money-amount"
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
 import { ProductVariantInventoryItem } from "./product-variant-inventory-item"
-import { SoftDeletableEntity } from "../interfaces"
 
 @Entity()
 export class ProductVariant extends SoftDeletableEntity {
@@ -28,7 +29,7 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @ManyToOne(() => Product, (product) => product.variants)
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product: Relation<Product>
 
   @ManyToMany(() => MoneyAmount, {
     cascade: ["remove", "soft-remove", "recover"],
@@ -44,7 +45,7 @@ export class ProductVariant extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  prices: MoneyAmount[]
+  prices: Relation<MoneyAmount>[]
 
   @Column({ nullable: true, type: "text" })
   @Index({ unique: true, where: "deleted_at IS NULL" })
@@ -101,7 +102,7 @@ export class ProductVariant extends SoftDeletableEntity {
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: true,
   })
-  options: ProductOptionValue[]
+  options: Relation<ProductOptionValue>[]
 
   @OneToMany(
     () => ProductVariantInventoryItem,
@@ -110,7 +111,7 @@ export class ProductVariant extends SoftDeletableEntity {
       cascade: ["soft-remove", "remove"],
     }
   )
-  inventory_items: ProductVariantInventoryItem[]
+  inventory_items: Relation<ProductVariantInventoryItem>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

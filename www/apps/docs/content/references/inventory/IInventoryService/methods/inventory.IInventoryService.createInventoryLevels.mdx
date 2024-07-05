@@ -4,7 +4,7 @@ slug: /references/inventory/createInventoryLevels
 sidebar_label: createInventoryLevels
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # createInventoryLevels - Inventory Module Reference
 
@@ -15,7 +15,7 @@ This method is used to create inventory levels.
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
@@ -36,8 +36,8 @@ async function createInventoryLevels (items: {
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"data","type":"[CreateInventoryLevelInput](../../interfaces/inventory.CreateInventoryLevelInput.mdx)[]","description":"The details of the inventory levels to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"`number`","description":"The reserved quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"data","type":"[CreateInventoryLevelInput](../../interfaces/inventory.CreateInventoryLevelInput.mdx)[]","description":"The details of the inventory levels to create.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"inventory_item_id","type":"`string`","description":"The ID of the associated inventory item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"stocked_quantity","type":"`number`","description":"The stocked quantity of the associated inventory item in the associated location.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"reserved_quantity","type":"`number`","description":"The reserved quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"incoming_quantity","type":"`number`","description":"The incoming quantity of the associated inventory item in the associated location.","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="createInventoryLevels"/>
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[InventoryLevelDTO](../../types/inventory.InventoryLevelDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created inventory levels' details.","expandable":false,"children":[{"name":"InventoryLevelDTO[]","type":"[InventoryLevelDTO](../../types/inventory.InventoryLevelDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"InventoryLevelDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[InventoryLevelDTO](../../types/inventory.InventoryLevelDTO.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The created inventory levels' details.","expandable":false,"children":[{"name":"InventoryLevelDTO[]","type":"[InventoryLevelDTO](../../types/inventory.InventoryLevelDTO.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"InventoryLevelDTO","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="createInventoryLevels"/>

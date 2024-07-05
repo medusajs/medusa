@@ -3,7 +3,7 @@ displayed_sidebar: core
 slug: /development/search/create
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # How to Create a Search Service
 
@@ -135,13 +135,13 @@ class MySearchService extends AbstractSearchService {
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"`any`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"If this search service is created in a plugin, the plugin's options are passed in this parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"container","type":"`any`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`any`","description":"If this search service is created in a plugin, the plugin's options are passed in this parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractSearchService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"isDefault","type":"`any`","description":"This property is used to pinpoint the default search service defined in the Medusa core. For custom search services, the `isDefault` property must be `false`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options_","type":"`Record<string, unknown>`","description":"If your search service is created in a plugin, the plugin's options will be available in this property.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"isDefault","type":"`any`","description":"This property is used to pinpoint the default search service defined in the Medusa core. For custom search services, the `isDefault` property must be `false`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options_","type":"`Record<string, unknown>`","description":"If your search service is created in a plugin, the plugin's options will be available in this property.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AbstractSearchService"/>
 
 ___
 
@@ -183,11 +183,11 @@ class MeiliSearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The name of the index to create.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"Any options that may be relevant to your search service. This parameter doesn't have \nany defined format as it depends on your custom implementation.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The name of the index to create.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"Any options that may be relevant to your search service. This parameter doesn't have \nany defined format as it depends on your custom implementation.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createIndex"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"No required format of returned data, as it depends on your custom implementation.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"No required format of returned data, as it depends on your custom implementation.","expandable":false,"children":[]}]}  sectionTitle="createIndex"/>
 
 ### getIndex
 
@@ -207,11 +207,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The name of the index","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The name of the index","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getIndex"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"No required format of returned data, as it depends on your custom implementation.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"No required format of returned data, as it depends on your custom implementation.","expandable":false,"children":[]}]}  sectionTitle="getIndex"/>
 
 ### addDocuments
 
@@ -239,11 +239,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The name of the index to add the documents to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"The list of documents to add. For example, an array of [products](../../entities/classes/entities.Product.mdx).","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The type of documents being indexed. For example, `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The name of the index to add the documents to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"The list of documents to add. For example, an array of [products](../../entities/classes/entities.Product.mdx).","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The type of documents being indexed. For example, `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addDocuments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of saving the documents in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of saving the documents in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]}  sectionTitle="addDocuments"/>
 
 ### replaceDocuments
 
@@ -270,11 +270,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The name of the index that the documents belong to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"The list of documents to index. For example, it can be an array of [products](../../entities/classes/entities.Product.mdx).\nBased on your search engine implementation, the documents should include an identification key that allows replacing the existing documents.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The type of documents being replaced. For example, `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The name of the index that the documents belong to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documents","type":"`unknown`","description":"The list of documents to index. For example, it can be an array of [products](../../entities/classes/entities.Product.mdx).\nBased on your search engine implementation, the documents should include an identification key that allows replacing the existing documents.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"type","type":"`string`","description":"The type of documents being replaced. For example, `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="replaceDocuments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of replacing the documents in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of replacing the documents in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]}  sectionTitle="replaceDocuments"/>
 
 ### deleteDocument
 
@@ -300,11 +300,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The name of the index that the document belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"document_id","type":"`string` \\| `number`","description":"The ID of the item indexed. For example, if the deleted item is a product, then this is\nthe ID of the product.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The name of the index that the document belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"document_id","type":"`string` \\| `number`","description":"The ID of the item indexed. For example, if the deleted item is a product, then this is\nthe ID of the product.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteDocument"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of deleting the document in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of deleting the document in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]}  sectionTitle="deleteDocument"/>
 
 ### deleteAllDocuments
 
@@ -325,11 +325,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The index's name.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The index's name.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deleteAllDocuments"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of deleting the documents of that index in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of deleting the documents of that index in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]}  sectionTitle="deleteAllDocuments"/>
 
 ### search
 
@@ -361,11 +361,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The index's name. In the case of the Search Products API Routes, its value is `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`null` \\| `string`","description":"The search query to retrieve results for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"Options that can configure the search process. The Search Products API route passes an object having the properties:\n\n- `paginationOptions`: An object having an `offset` and `limit` properties, which are passed in the API Route's body.\n- `filter`: Filters that are passed in the API Route's request body. Its format is unknown, so you can pass filters based on your search service.\n- `additionalOptions`: Any other parameters that may be passed in the request's body.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The index's name. In the case of the Search Products API Routes, its value is `products`.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"`null` \\| `string`","description":"The search query to retrieve results for.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`unknown`","description":"Options that can configure the search process. The Search Products API route passes an object having the properties:\n\n- `paginationOptions`: An object having an `offset` and `limit` properties, which are passed in the API Route's body.\n- `filter`: Filters that are passed in the API Route's request body. Its format is unknown, so you can pass filters based on your search service.\n- `additionalOptions`: Any other parameters that may be passed in the request's body.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="search"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The list of results. For example, an array of products.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The list of results. For example, an array of products.","expandable":false,"children":[]}]}  sectionTitle="search"/>
 
 ### updateSettings
 
@@ -392,11 +392,11 @@ class MySearchService extends AbstractSearchService {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"indexName","type":"`string`","description":"The index's name to update its settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"settings","type":"`unknown`","description":"The settings to update. Its format depends on your use case.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"indexName","type":"`string`","description":"The index's name to update its settings.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"settings","type":"`unknown`","description":"The settings to update. Its format depends on your use case.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateSettings"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of updating the index in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"unknown","type":"`unknown`","optional":false,"defaultValue":"","description":"The response of updating the index in the search engine, but there’s no required format of the response.","expandable":false,"children":[]}]}  sectionTitle="updateSettings"/>
 
 ---
 

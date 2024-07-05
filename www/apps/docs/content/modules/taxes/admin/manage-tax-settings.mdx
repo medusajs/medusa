@@ -114,7 +114,7 @@ You can list all tax providers of a store using the [List Tax Providers API Rout
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/store/tax-providers' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -193,7 +193,7 @@ You can change the tax provider of a region using the [Update Region API Route](
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "tax_provider_id": "<TAX_PROVIDER_ID>"
@@ -292,7 +292,7 @@ In addition to changing the tax provider, you can use the same [Update Region AP
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "tax_provider_id": "<TAX_PROVIDER_ID>",

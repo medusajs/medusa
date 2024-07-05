@@ -1,5 +1,7 @@
 import { AddressPayload } from "./common"
 
+export type DraftOrderStatusValue = "open" | "completed"
+
 export type DraftOrderListSelector = { q?: string }
 
 export type DraftOrderCreateProps = {

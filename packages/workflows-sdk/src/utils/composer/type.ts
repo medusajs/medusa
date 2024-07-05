@@ -8,9 +8,18 @@ import {
 import { Context, MedusaContainer } from "@medusajs/types"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
-  (
-    this: CreateWorkflowComposerContext
-  ) => WorkflowData<{ [K in keyof TOutput]: TOutput[K] }>
+  (this: CreateWorkflowComposerContext) => WorkflowData<TOutput>
+
+type StepFunctionReturnConfig<TOutput> = {
+  config(
+    config: { name?: string } & Omit<
+      TransactionStepsDefinition,
+      "next" | "uuid" | "action"
+    >
+  ): WorkflowData<TOutput>
+}
+
+type KeysOfUnion<T> = T extends T ? keyof T : never
 
 /**
  * A step function to be used in a workflow.
@@ -18,32 +27,23 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
  * @typeParam TInput - The type of the input of the step.
  * @typeParam TOutput - The type of the output of the step.
  */
-export type StepFunction<TInput, TOutput = unknown> = (keyof TInput extends []
+export type StepFunction<
+  TInput,
+  TOutput = unknown
+> = (KeysOfUnion<TInput> extends []
   ? // Function that doesn't expect any input
     {
-      (): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (): WorkflowData<TOutput> & StepFunctionReturnConfig<TOutput>
     }
   : // function that expects an input object
     {
-      (
-        input: TInput extends object
-          ? { [K in keyof TInput]: WorkflowData<TInput[K]> | TInput[K] }
-          : WorkflowData<TInput> | TInput
-      ): WorkflowData<{
-        [K in keyof TOutput]: TOutput[K]
-      }>
+      (input: WorkflowData<TInput> | TInput): WorkflowData<TOutput> &
+        StepFunctionReturnConfig<TOutput>
     }) &
-  WorkflowDataProperties<{
-    [K in keyof TOutput]: TOutput[K]
-  }> &
-  WorkflowDataProperties<{
-    [K in keyof TOutput]: TOutput[K]
-  }>
+  WorkflowDataProperties<TOutput>
 
 export type WorkflowDataProperties<T = unknown> = {
-  __type: Symbol
+  __type: string
   __step__: string
 }
 
@@ -52,26 +52,21 @@ export type WorkflowDataProperties<T = unknown> = {
  *
  * @typeParam T - The type of a step's input or result.
  */
-export type WorkflowData<T = unknown> = (T extends object
+export type WorkflowData<T = unknown> = (T extends Array<infer Item>
+  ? Array<Item | WorkflowData<Item>>
+  : T extends object
   ? {
-      [Key in keyof T]: WorkflowData<T[Key]>
+      [Key in keyof T]: T[Key] | WorkflowData<T[Key]>
     }
-  : WorkflowDataProperties<T>) &
+  : T & WorkflowDataProperties<T>) &
+  T &
   WorkflowDataProperties<T> & {
     config(
       config: { name?: string } & Omit<
         TransactionStepsDefinition,
         "next" | "uuid" | "action"
       >
-    ): T extends object
-      ? WorkflowData<
-          T extends object
-            ? {
-                [K in keyof T]: T[K]
-              }
-            : T
-        >
-      : T
+    ): WorkflowData<T>
   }
 
 export type CreateWorkflowComposerContext = {
@@ -96,6 +91,31 @@ export type CreateWorkflowComposerContext = {
  * The step's context.
  */
 export interface StepExecutionContext {
+  /**
+   * The ID of the workflow.
+   */
+  workflowId: string
+
+  /**
+   * The attempt number of the step.
+   */
+  attempt: number
+
+  /**
+   * The idempoency key of the step.
+   */
+  idempotencyKey: string
+
+  /**
+   * The name of the step.
+   */
+  stepName: string
+
+  /**
+   * The action of the step.
+   */
+  action: "invoke" | "compensate"
+
   /**
    * The container used to access resources, such as services, in the step.
    */

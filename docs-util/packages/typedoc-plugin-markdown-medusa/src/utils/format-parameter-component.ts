@@ -54,7 +54,7 @@ export function formatParameterComponent({
   }
   // reorder component items to show required items first
   componentItems = sortComponentItems(componentItems)
-  return `<${parameterComponent} parameters={${JSON.stringify(
+  return `<${parameterComponent} types={${JSON.stringify(
     componentItems
   )}} ${extraPropsArr.join(" ")} sectionTitle="${sectionTitle}"/>`
 }

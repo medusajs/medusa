@@ -1,7 +1,14 @@
+import {
+  getSetDifference,
+  isPresent,
+  stringToSelectRelationObject,
+} from "@medusajs/utils"
 import { pick } from "lodash"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BaseEntity } from "../interfaces"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
+import { featureFlagRouter } from "../loaders/feature-flags"
+import MedusaV2 from "../loaders/feature-flags/medusa-v2"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -19,93 +26,150 @@ export function pickByConfig<TModel extends BaseEntity>(
   return obj
 }
 
-export function getRetrieveConfig<TModel extends BaseEntity>(
-  defaultFields: (keyof TModel)[],
-  defaultRelations: string[],
-  fields?: (keyof TModel)[],
-  expand?: string[]
-): FindConfig<TModel> {
-  let includeFields: (keyof TModel)[] = []
-  if (isDefined(fields)) {
-    includeFields = Array.from(new Set([...fields, "id"])).map((field) => {
-      return typeof field === "string" ? field.trim() : field
-    }) as (keyof TModel)[]
-  }
-
-  let expandFields: string[] = []
-  if (isDefined(expand)) {
-    expandFields = expand.map((expandRelation) => expandRelation.trim())
-  }
-
-  return {
-    select: includeFields.length ? includeFields : defaultFields,
-    relations: isDefined(expand) ? expandFields : defaultRelations,
-  }
-}
-
-export function getListConfig<TModel extends BaseEntity>(
-  defaultFields: (keyof TModel)[],
-  defaultRelations: string[],
-  fields?: (keyof TModel)[],
-  expand?: string[],
-  limit = 50,
-  offset = 0,
-  order: { [k: string | symbol]: "DESC" | "ASC" } = {}
-): FindConfig<TModel> {
-  let includeFields: (keyof TModel)[] = []
-  if (isDefined(fields)) {
-    const fieldSet = new Set(fields)
-    // Ensure created_at is included, since we are sorting on this
-    fieldSet.add("created_at")
-    fieldSet.add("id")
-    includeFields = Array.from(fieldSet) as (keyof TModel)[]
-  }
-
-  let expandFields: string[] = []
-  if (isDefined(expand)) {
-    expandFields = expand
-  }
-
-  const orderBy = order
-
-  if (!Object.keys(order).length) {
-    orderBy["created_at"] = "DESC"
-  }
-
-  return {
-    select: includeFields.length ? includeFields : defaultFields,
-    relations: isDefined(expand) ? expandFields : defaultRelations,
-    skip: offset,
-    take: limit,
-    order: orderBy,
-  }
-}
-
 export function prepareListQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
->(validated: T, queryConfig?: QueryConfig<TEntity>) {
-  const { order, fields, expand, limit, offset } = validated
+>(validated: T, queryConfig: QueryConfig<TEntity> = {}) {
+  const isMedusaV2 = featureFlagRouter.isFeatureEnabled(MedusaV2.key)
 
-  let expandRelations: string[] | undefined = undefined
-  if (isDefined(expand)) {
-    expandRelations = expand.split(",").filter((v) => v)
-  }
+  // TODO: this function will be simplified a lot once we drop support for the old api
+  const { order, fields, limit = 50, expand, offset = 0 } = validated
+  let {
+    allowed = [],
+    defaults = [],
+    defaultFields = [],
+    defaultLimit,
+    allowedFields = [],
+    allowedRelations = [],
+    defaultRelations = [],
+    isList,
+  } = queryConfig
 
-  let expandFields: (keyof TEntity)[] | undefined = undefined
+  allowedFields = allowed.length ? allowed : allowedFields
+  defaultFields = defaults.length ? defaults : defaultFields
+
+  // e.g *product.variants meaning that we want all fields from the product.variants
+  // in that case it wont be part of the select but it will be part of the relations.
+  // For the remote query we will have to add the fields to the fields array as product.variants.*
+  const starFields: Set<string> = new Set()
+
+  let allFields = new Set(defaultFields) as Set<string>
+
   if (isDefined(fields)) {
-    expandFields = (fields.split(",") as (keyof TEntity)[]).filter((v) => v)
+    const customFields = fields.split(",").filter(Boolean)
+    const shouldReplaceDefaultFields =
+      !customFields.length ||
+      customFields.some((field) => {
+        return !(
+          field.startsWith("-") ||
+          field.startsWith("+") ||
+          field.startsWith("*")
+        )
+      })
+    if (shouldReplaceDefaultFields) {
+      allFields = new Set(customFields.map((f) => f.replace(/^[+-]/, "")))
+    } else {
+      customFields.forEach((field) => {
+        if (field.startsWith("+")) {
+          allFields.add(field.replace(/^\+/, ""))
+        } else if (field.startsWith("-")) {
+          allFields.delete(field.replace(/^-/, ""))
+        } else {
+          allFields.add(field)
+        }
+      })
+    }
+
+    // TODO: Maintain backward compatibility, remove in future. the created at was only added in the list query for default order
+    if (queryConfig.isList) {
+      allFields.add("created_at")
+    }
+    allFields.add("id")
   }
 
-  if (expandFields?.length && queryConfig?.allowedFields?.length) {
-    validateFields(expandFields as string[], queryConfig.allowedFields)
+  allFields.forEach((field) => {
+    if (field.startsWith("*")) {
+      starFields.add(field.replace(/^\*/, ""))
+      allFields.delete(field)
+    }
+  })
+
+  const allAllowedFields = new Set(allowedFields) // In case there is no allowedFields, allow all fields
+  const notAllowedFields: string[] = []
+
+  if (allowedFields.length) {
+    ;[...allFields, ...Array.from(starFields)].forEach((field) => {
+      const hasAllowedField = allowedFields.includes(field)
+
+      if (hasAllowedField) {
+        return
+      }
+
+      // Select full relation in that case it must match an allowed field fully
+      // e.g product.variants in that case we must have a product.variants in the allowedFields
+      if (starFields.has(field)) {
+        if (hasAllowedField) {
+          return
+        }
+        notAllowedFields.push(field)
+        return
+      }
+
+      const fieldStartsWithAllowedField = allowedFields.some((allowedField) =>
+        field.startsWith(allowedField)
+      )
+
+      if (!fieldStartsWithAllowedField) {
+        notAllowedFields.push(field)
+        return
+      }
+    })
   }
 
-  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
-    validateRelations(expandRelations, queryConfig.allowedRelations)
+  if (allFields.size && notAllowedFields.length) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `Requested fields [${Array.from(notAllowedFields).join(
+        ", "
+      )}] are not valid`
+    )
   }
 
-  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  // TODO: maintain backward compatibility, remove in the future
+  const { select, relations } = stringToSelectRelationObject(
+    Array.from(allFields)
+  )
+
+  let allRelations = new Set([
+    ...relations,
+    ...defaultRelations,
+    ...Array.from(starFields),
+  ])
+
+  if (isDefined(expand)) {
+    allRelations = new Set(expand.split(",").filter(Boolean))
+  }
+
+  if (allowedRelations.length && expand) {
+    const allAllowedRelations = new Set([...allowedRelations])
+
+    const notAllowedRelations = getSetDifference(
+      allRelations,
+      allAllowedRelations
+    )
+
+    if (allRelations.size && notAllowedRelations.size) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Requested fields [${Array.from(notAllowedRelations).join(
+          ", "
+        )}] are not valid`
+      )
+    }
+  }
+  // End of expand compatibility
+
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined = {}
   if (isDefined(order)) {
     let orderField = order
     if (order.startsWith("-")) {
@@ -125,82 +189,55 @@ export function prepareListQuery<
         `Order field ${orderField} is not valid`
       )
     }
+  } else {
+    if (!isMedusaV2) {
+      orderBy["created_at"] = "DESC"
+    }
   }
 
-  return getListConfig<TEntity>(
-    queryConfig?.defaultFields as (keyof TEntity)[],
-    (queryConfig?.defaultRelations ?? []) as string[],
-    expandFields,
-    expandRelations,
-    limit ?? queryConfig?.defaultLimit,
-    offset ?? 0,
-    orderBy
-  )
+  const finalOrder = isPresent(orderBy) ? orderBy : undefined
+  return {
+    listConfig: {
+      select: select.length ? select : undefined,
+      relations: Array.from(allRelations),
+      skip: offset,
+      take: limit ?? defaultLimit,
+      order: finalOrder,
+    },
+    remoteQueryConfig: {
+      // Add starFields that are relations only on which we want all properties with a dedicated format to the remote query
+      fields: [
+        ...Array.from(allFields),
+        ...Array.from(starFields).map((f) => `${f}.*`),
+      ],
+      pagination: isList
+        ? {
+            skip: offset,
+            take: limit ?? defaultLimit,
+            order: finalOrder,
+          }
+        : {},
+    },
+  }
 }
 
 export function prepareRetrieveQuery<
   T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig?: QueryConfig<TEntity>) {
-  const { fields, expand } = validated
-
-  let expandRelations: string[] | undefined = undefined
-  if (isDefined(expand)) {
-    expandRelations = expand.split(",").filter((v) => v)
-  }
-
-  let expandFields: (keyof TEntity)[] | undefined = undefined
-  if (isDefined(fields)) {
-    expandFields = (fields.split(",") as (keyof TEntity)[]).filter((v) => v)
-  }
-
-  if (expandFields?.length && queryConfig?.allowedFields?.length) {
-    validateFields(expandFields as string[], queryConfig.allowedFields)
-  }
-
-  if (expandRelations?.length && queryConfig?.allowedRelations?.length) {
-    validateRelations(expandRelations, queryConfig.allowedRelations)
-  }
-
-  return getRetrieveConfig<TEntity>(
-    queryConfig?.defaultFields as (keyof TEntity)[],
-    (queryConfig?.defaultRelations ?? []) as string[],
-    expandFields,
-    expandRelations
+  const { listConfig, remoteQueryConfig } = prepareListQuery(
+    validated,
+    queryConfig
   )
-}
 
-function validateRelations(
-  relations: string[],
-  allowed: string[]
-): void | never {
-  const disallowedRelationsFound: string[] = []
-  relations?.forEach((field) => {
-    if (!allowed.includes(field as string)) {
-      disallowedRelationsFound.push(field)
-    }
-  })
-
-  if (disallowedRelationsFound.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Relations [${disallowedRelationsFound.join(", ")}] are not valid`
-    )
-  }
-}
-
-function validateFields(fields: string[], allowed: string[]): void | never {
-  const disallowedFieldsFound: string[] = []
-  fields?.forEach((field) => {
-    if (!allowed.includes(field as string)) {
-      disallowedFieldsFound.push(field)
-    }
-  })
-
-  if (disallowedFieldsFound.length) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      `Fields [${disallowedFieldsFound.join(", ")}] are not valid`
-    )
+  return {
+    retrieveConfig: {
+      select: listConfig.select,
+      relations: listConfig.relations,
+    },
+    remoteQueryConfig: {
+      fields: remoteQueryConfig.fields,
+      pagination: {},
+    },
   }
 }

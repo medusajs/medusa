@@ -55,8 +55,20 @@
       "description": "The button's size.",
       "tsType": {
         "name": "union",
-        "raw": "\"base\" \\| \"large\" \\| \"xlarge\"",
+        "raw": "\"2xsmall\" \\| \"xsmall\" \\| \"small\" \\| \"base\" \\| \"large\" \\| \"xlarge\"",
         "elements": [
+          {
+            "name": "literal",
+            "value": "\"2xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"xsmall\""
+          },
+          {
+            "name": "literal",
+            "value": "\"small\""
+          },
           {
             "name": "literal",
             "value": "\"base\""

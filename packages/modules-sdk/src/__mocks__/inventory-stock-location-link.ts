@@ -4,7 +4,6 @@ export const InventoryStockLocationLink = {
     registrationName: "inventoryStockLocationLink",
     defaultPackage: "",
     label: "inventoryStockLocationLink",
-    canOverride: true,
     isRequired: false,
     isQueryable: true,
     defaultModuleDeclaration: {

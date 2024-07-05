@@ -1,32 +1,40 @@
-import { EntityManager, In } from "typeorm"
 import {
   IEventBusService,
   IInventoryService,
+  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  IStockLocationService,
+  RemoteQueryFunction,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  isDefined,
+  promiseAll,
+  remoteQueryObjectFromString,
+} from "@medusajs/utils"
+import { EntityManager, In } from "typeorm"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError, promiseAll } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
+import { TransactionBaseService } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
+import { getSetDifference } from "../utils/diff-set"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
-import { TransactionBaseService } from "../interfaces"
-import { getSetDifference } from "../utils/diff-set"
 
 type InjectedDependencies = {
   manager: EntityManager
   salesChannelLocationService: SalesChannelLocationService
   salesChannelInventoryService: SalesChannelInventoryService
   productVariantService: ProductVariantService
-  stockLocationService: IStockLocationService
-  inventoryService: IInventoryService
   eventBusService: IEventBusService
+  featureFlagRouter: FlagRouter
+  remoteQuery: RemoteQueryFunction
 }
 
 type AvailabilityContext = {
@@ -42,6 +50,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
   protected readonly salesChannelInventoryService_: SalesChannelInventoryService
   protected readonly productVariantService_: ProductVariantService
   protected readonly eventBusService_: IEventBusService
+  protected readonly featureFlagRouter_: FlagRouter
+  protected readonly remoteQuery_: RemoteQueryFunction
 
   protected get inventoryService_(): IInventoryService {
     return this.__container__.inventoryService
@@ -56,6 +66,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
     salesChannelInventoryService,
     productVariantService,
     eventBusService,
+    featureFlagRouter,
+    remoteQuery,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -64,6 +76,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
     this.salesChannelInventoryService_ = salesChannelInventoryService
     this.productVariantService_ = productVariantService
     this.eventBusService_ = eventBusService
+    this.featureFlagRouter_ = featureFlagRouter
+    this.remoteQuery_ = remoteQuery
   }
 
   /**
@@ -307,16 +321,29 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     // Verify that variant exists
-    const variants = await this.productVariantService_
-      .withTransaction(this.activeManager_)
-      .list(
-        {
-          id: data.map((d) => d.variantId),
-        },
-        {
-          select: ["id"],
-        }
+    let variants
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+      variants = await this.remoteQuery_(
+        remoteQueryObjectFromString({
+          entryPoint: "variants",
+          variables: {
+            id: data.map((d) => d.variantId),
+          },
+          fields: ["id"],
+        })
       )
+    } else {
+      variants = await this.productVariantService_
+        .withTransaction(this.activeManager_)
+        .list(
+          {
+            id: data.map((d) => d.variantId),
+          },
+          {
+            select: ["id"],
+          }
+        )
+    }
 
     const foundVariantIds = new Set(variants.map((v) => v.id))
     const requestedVariantIds = new Set(data.map((v) => v.variantId))
@@ -404,7 +431,11 @@ class ProductVariantInventoryService extends TransactionBaseService {
       ): tc is ProductVariantInventoryItem => !!tc
     )
 
-    return await variantInventoryRepo.save(toCreate)
+    const createdVariantInventoryItems = await variantInventoryRepo.save(
+      toCreate
+    )
+
+    return createdVariantInventoryItems
   }
 
   /**

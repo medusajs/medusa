@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  Relation,
+} from "typeorm"
 
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
@@ -15,11 +22,11 @@ export class ReturnItem {
 
   @ManyToOne(() => Return)
   @JoinColumn({ name: "return_id" })
-  return_order: Return
+  return_order: Relation<Return>
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Column({ type: "int" })
   quantity: number
@@ -38,7 +45,7 @@ export class ReturnItem {
 
   @ManyToOne(() => ReturnReason)
   @JoinColumn({ name: "reason_id" })
-  reason: ReturnReason
+  reason: Relation<ReturnReason>
 
   @Column({ nullable: true })
   note: string

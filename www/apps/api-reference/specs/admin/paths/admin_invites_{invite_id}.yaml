@@ -20,7 +20,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_invites_{invite_id}/deleteundefined
+        $ref: ../code_samples/tsx/admin_invites_{invite_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

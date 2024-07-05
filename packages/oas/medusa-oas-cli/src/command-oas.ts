@@ -53,6 +53,14 @@ export const commandOptions: Option[] = [
     "Custom base OAS file to use for swagger-inline."
   ),
   new Option("-F, --force", "Ignore OAS validation and output OAS files."),
+  new Option(
+    "--v2", 
+    "Generate OAS files for V2 endpoints. This loads OAS from docs-util/oas-output/operations directory"
+  ),
+  new Option(
+    "--local",
+    "Generate OAS from local files rather than public OAS. This is useful for generating references in the Medusa monorepo."
+  )
 ]
 
 export function getCommand() {
@@ -75,6 +83,8 @@ export async function execute(cliParams: OptionValues) {
    */
   const dryRun = !!cliParams.dryRun
   const force = !!cliParams.force
+  const v2 = !!cliParams.v2
+  const local = !!cliParams.local
 
   const apiType: ApiType = cliParams.type
 
@@ -107,11 +117,11 @@ export async function execute(cliParams: OptionValues) {
   console.log(`🟣 Generating OAS - ${apiType}`)
 
   if (apiType === "combined") {
-    const adminOAS = await getOASFromCodebase("admin")
-    const storeOAS = await getOASFromCodebase("store")
+    const adminOAS = !local ? await getPublicOas("admin", v2) :  await getOASFromCodebase("admin", v2)
+    const storeOAS = !local ? await getPublicOas("store", v2) :  await getOASFromCodebase("store", v2)
     oas = await combineOAS(adminOAS, storeOAS)
   } else {
-    oas = await getOASFromCodebase(apiType)
+    oas = !local ? await getPublicOas(apiType, v2) :  await getOASFromCodebase(apiType, v2)
   }
 
   if (additionalPaths.length || baseFile) {
@@ -137,10 +147,26 @@ export async function execute(cliParams: OptionValues) {
  */
 async function getOASFromCodebase(
   apiType: ApiType,
-  customBaseFile?: string
+  v2?: boolean
 ): Promise<OpenAPIObject> {
+  /**
+   * OAS output directory
+   * 
+   * @privateRemark
+   * This should be the only directory OAS is loaded from for Medusa V2.
+   * For now, we only use it if the --v2 flag it passed to the CLI tool.
+   */
+  const oasOutputPath = path.resolve(
+    __dirname, "..", "..", "..", "..", "docs-util", "oas-output"
+  )
   const gen = await swaggerInline(
-    [
+    v2 ? [
+      path.resolve(oasOutputPath, "operations", apiType),
+      path.resolve(oasOutputPath, "schemas"),
+      // We currently load error schemas from here. If we change
+      // that in the future, we should change the path.
+      path.resolve(medusaPackagePath, "dist", "api/middlewares"),
+    ] : [
       path.resolve(medusaTypesPath, "dist"),
       path.resolve(medusaUtilsPath, "dist"),
       path.resolve(medusaPackagePath, "dist", "models"),
@@ -149,13 +175,19 @@ async function getOASFromCodebase(
       path.resolve(medusaPackagePath, "dist", `api/routes/${apiType}`),
     ],
     {
-      base:
-        customBaseFile ??
-        path.resolve(medusaPackagePath, "oas", `${apiType}.oas.base.yaml`),
+      base: path.resolve(oasOutputPath, v2 ? "base-v2" : "base", `${apiType}.oas.base.yaml`),
       format: ".json",
     }
   )
   return (await OpenAPIParser.parse(JSON.parse(gen))) as OpenAPIObject
+}
+
+async function getPublicOas(
+  apiType: ApiType,
+  v2?: boolean
+) {
+  const url = `https://docs.medusajs.com/api/download/${apiType}?version=${v2 ? "2" : "1"}`
+  return await OpenAPIParser.parse(url) as OpenAPIObject
 }
 
 async function getOASFromPaths(

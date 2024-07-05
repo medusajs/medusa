@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-paypal",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "description": "Paypal Payment provider for Medusa Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -18,13 +18,15 @@
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
-    "test": "jest --passWithNoTests src",
+    "test": "jest --silent --bail --maxWorkers=50% --forceExit",
     "build": "rimraf dist && tsc",
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.12.2",
-    "@medusajs/types": "^1.8.10",
+    "@medusajs/medusa": "^1.20.4",
+    "@medusajs/types": "^1.11.15",
+    "@swc/core": "^1.4.8",
+    "@swc/jest": "^0.2.36",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",

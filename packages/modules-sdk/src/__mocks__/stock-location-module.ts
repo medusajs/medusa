@@ -5,7 +5,6 @@ export const StockLocationModule = {
     defaultPackage: false,
     label: "StockLocationService",
     isRequired: false,
-    canOverride: true,
     isQueryable: true,
     dependencies: ["eventBusService"],
     defaultModuleDeclaration: {

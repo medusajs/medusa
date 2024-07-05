@@ -23,6 +23,7 @@ async function main() {
           repo: "medusa",
           path: path.join("www", "apps", "docs", "announcement.json"),
           per_page: 1,
+          sha: "v1.x"
         }
       )
 
@@ -47,6 +48,7 @@ async function main() {
       {
         owner: "medusajs",
         repo: "medusa",
+        sha: "v1.x"
       }
     )
 

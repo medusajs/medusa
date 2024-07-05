@@ -40,29 +40,31 @@ Next, you can create a workflow using the `createWorkflow` function:
 
 ```ts title=src/workflows/hello-world.ts
 import {
-  createStep, 
+  createStep,
   StepResponse,
   createWorkflow,
 } from "@medusajs/workflows-sdk"
 
 type WorkflowOutput = {
-  message: string;
-};
+  message: string
+}
 
 const step1 = createStep("step-1", async () => {
   return new StepResponse(`Hello from step one!`)
 })
 
-const myWorkflow = createWorkflow<any, WorkflowOutput>(
+const myWorkflow = createWorkflow<unknown, WorkflowOutput>(
   "hello-world",
   function () {
-    const str1 = step1({})
+    const str1 = step1()
 
     return {
       message: str1,
     }
   }
 )
+
+export default myWorkflow
 ```
 
 This creates a `hello-world` workflow. When you create a workflow, it’s constructed but not executed yet.
@@ -202,29 +204,52 @@ import {
 // ...
 
 const myWorkflow = createWorkflow<
-  WorkflowInput, WorkflowOutput
->(
-  "hello-world",
-  function (input) {
-    const str1 = step1({})
-    const str2 = step2(input)
+  WorkflowInput,
+  WorkflowOutput
+>("hello-world", function (input) {
+  const str1 = step1()
+  const str2 = step2(input)
 
-    const result = transform(
-      {
-        str1,
-        str2,
-      },
-      (input) => ({
-        message: `${input.str1}\n${input.str2}`,
-      })
-    )
+  const result = transform(
+    {
+      str1,
+      str2,
+    },
+    (input) => ({
+      message: `${input.str1}\n${input.str2}`,
+    })
+  )
 
-    return result
-  }
-)
+  return result
+})
+
+export default myWorkflow
 ```
 
 Notice that to use the results of the steps, you must use the `transform` utility function. It gives you access to the real-time results of the steps once the workflow is executed.
+
+Then, pass the necessary input to the workflow when you execute it. For example, in the API Route executing the workflow:
+
+```ts title="src/api/store/custom/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/medusa"
+import myWorkflow from "../../../workflows/hello-world"
+
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await myWorkflow(req.scope).run({
+    input: {
+      name: req.query.name as string,
+    },
+  })
+
+  res.send(result)
+}
+```
 
 If you execute the workflow again, you’ll see:
 
@@ -240,18 +265,22 @@ The compensation function only runs if an error occurs throughout the Workflow. 
 For example, change step one to add a compensation function and step two to throw an error:
 
 ```ts title=src/workflows/hello-world.ts
-const step1 = createStep("step-1", async () => {
-  const message = `Hello from step one!`
-    
-  console.log(message)
+const step1 = createStep(
+  "step-1",
+  async () => {
+    const message = `Hello from step one!`
 
-  return new StepResponse(message)
-}, async () => {
-  console.log("Oops! Rolling back my changes...")
-})
+    console.log(message)
+
+    return new StepResponse(message)
+  },
+  async () => {
+    console.log("Oops! Rolling back my changes...")
+  }
+)
 
 const step2 = createStep(
-  "step-2", 
+  "step-2",
   async ({ name }: WorkflowInput) => {
     throw new Error("Throwing an error...")
   }
@@ -317,7 +346,7 @@ const updateProduct = createStep(
         select: ["title", "description", "images"],
       }
     )
-    const product = productService.update(id, updateData)
+    const product = await productService.update(id, updateData)
 
     return new StepResponse(product, {
       id,
@@ -327,7 +356,7 @@ const updateProduct = createStep(
     const productService: ProductService = 
       context.container.resolve("productService")
 
-    productService.update(id, previousProductData)
+    await productService.update(id, previousProductData)
   }
 )
 ```
@@ -364,7 +393,7 @@ const myWorkflow = createWorkflow<WorkflowInput, WorkflowOutput>
 - Since the constructor function only defines how the workflow works, you can’t directly manipulate data within the function. To do that, you must use the `transform` function:
 
 ```ts
-1// Don't
+// Don't
 const myWorkflow = createWorkflow<
   WorkflowInput, 
   WorkflowOutput

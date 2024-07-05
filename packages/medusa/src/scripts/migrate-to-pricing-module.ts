@@ -6,7 +6,7 @@ import express from "express"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 import { PriceList } from "../models"
-import { CurrencyService, PriceListService } from "../services"
+import { PriceListService } from "../services"
 import { createDefaultRuleTypes } from "./utils/create-default-rule-types"
 import { migrateProductVariantPricing } from "./utils/migrate-money-amounts-to-pricing-module"
 
@@ -109,7 +109,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         pricingModuleService.addPriceListPrices(
           priceListsToUpdate.map((priceList) => {
             return {
-              priceListId: priceList.id,
+              price_list_id: priceList.id,
               prices: priceList.prices
                 .filter((price) =>
                   variantIdPriceSetIdMap.has(price.variants?.[0]?.id)
@@ -136,7 +136,7 @@ const migratePriceLists = async (container: AwilixContainer) => {
         pricingModuleService.createPriceLists(
           priceListsToCreate.map(
             ({ name: title, prices, customer_groups, ...priceList }) => {
-              const createData: PricingTypes.CreatePriceListDTO = {
+              const createData: any = {
                 ...priceList,
                 title,
               }
@@ -176,33 +176,6 @@ const migratePriceLists = async (container: AwilixContainer) => {
   }
 }
 
-const ensureCurrencies = async (container: AwilixContainer) => {
-  const currenciesService: CurrencyService =
-    container.resolve("currencyService")
-
-  const pricingModuleService: IPricingModuleService = container.resolve(
-    "pricingModuleService"
-  )
-
-  const [coreCurrencies, totalCurrencies] =
-    await currenciesService.listAndCount({}, {})
-
-  const moduleCurrencies = await pricingModuleService.listCurrencies(
-    {},
-    { take: 100000 }
-  )
-
-  const moduleCurrenciesSet = new Set(moduleCurrencies.map(({ code }) => code))
-
-  const currenciesToCreate = coreCurrencies
-    .filter(({ code }) => {
-      return !moduleCurrenciesSet.has(code)
-    })
-    .map(({ includes_tax, ...currency }) => currency)
-
-  await pricingModuleService.createCurrencies(currenciesToCreate)
-}
-
 const migrate = async function ({ directory }) {
   const app = express()
 
@@ -211,11 +184,6 @@ const migrate = async function ({ directory }) {
     expressApp: app,
     isTest: false,
   })
-
-  Logger.info("-----------------------------------------------")
-  Logger.info("------------- Creating currencies -------------")
-  Logger.info("-----------------------------------------------")
-  await ensureCurrencies(container)
 
   Logger.info("-----------------------------------------------")
   Logger.info("--------- Creating default rule types ---------")

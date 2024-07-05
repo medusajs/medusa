@@ -11,9 +11,9 @@ In this document, you’ll learn about the Redis events module and how you can i
 
 Medusa’s modular architecture allows developers to extend or completely replace the logic used for events. You can create a custom module, or you can use the modules Medusa provides.
 
-One of these modules is the Redis module. This module allows you to utilize Redis for the event bus functionality. When installed, the Medusa’s events system is powered by BullMQ and `io-redis`. BullMQ is responsible for the message queue and worker, and `io-redis` is the underlying Redis client that BullMQ connects to for events storage.
+One of these modules is the Redis Module. This module allows you to utilize Redis for the event bus functionality. When installed, the Medusa’s events system is powered by BullMQ and `io-redis`. BullMQ is responsible for the message queue and worker, and `io-redis` is the underlying Redis client that BullMQ connects to for events storage.
 
-This document will you guide you through installing the Redis module.
+This document will you guide you through installing the Redis Module.
 
 ---
 
@@ -76,7 +76,7 @@ Other available options include:
 
 - `queueName`: a string indicating the name of the BullMQ queue. By default, it’s `events-queue`.
 - `queueOptions`: an object containing options for the BullMQ queue. You can learn about available options in [BullMQ’s documentation](https://api.docs.bullmq.io/interfaces/QueueOptions.html). By default, it’s an empty object.
-- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://luin.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
+- `redisOptions`: an object containing options for the Redis instance. You can learn about available options in [io-redis’s documentation](https://redis.github.io/ioredis/index.html#RedisOptions). By default, it’s an empty object.
 
 ---
 

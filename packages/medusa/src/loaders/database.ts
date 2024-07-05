@@ -1,3 +1,4 @@
+import { handlePostgresDatabaseError } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import {
   DataSource,
@@ -7,7 +8,6 @@ import {
 } from "typeorm"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
-import { handlePostgresDatabaseError } from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule

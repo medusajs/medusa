@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # BatchJobService
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new BatchJobService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"batchJobRepository_","type":"Repository&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"batchJobStatusMapToProps","type":"Map&#60;[BatchJobStatus](../../medusa/enums/medusa.BatchJobStatus.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"strategyResolver_","type":"[StrategyResolverService](services.StrategyResolverService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CANCELED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.canceled\"","expandable":false,"children":[]},{"name":"Events.COMPLETED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.completed\"","expandable":false,"children":[]},{"name":"Events.CONFIRMED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.confirmed\"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.created\"","expandable":false,"children":[]},{"name":"Events.FAILED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.failed\"","expandable":false,"children":[]},{"name":"Events.PRE_PROCESSED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.pre_processed\"","expandable":false,"children":[]},{"name":"Events.PROCESSING","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.processing\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.updated\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.created\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.updated\"","expandable":false,"children":[]},{"name":"Events.PRE_PROCESSED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.pre_processed\"","expandable":false,"children":[]},{"name":"Events.CONFIRMED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.confirmed\"","expandable":false,"children":[]},{"name":"Events.PROCESSING","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.processing\"","expandable":false,"children":[]},{"name":"Events.COMPLETED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.completed\"","expandable":false,"children":[]},{"name":"Events.CANCELED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.canceled\"","expandable":false,"children":[]},{"name":"Events.FAILED","type":"`string`","description":"","optional":false,"defaultValue":"\"batch.failed\"","expandable":false,"children":[]},{"name":"batchJobRepository_","type":"Repository&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"strategyResolver_","type":"[StrategyResolverService](services.StrategyResolverService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"batchJobStatusMapToProps","type":"Map&#60;[BatchJobStatus](../../medusa/enums/medusa.BatchJobStatus.mdx), object&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="BatchJobService"/>
 
 ___
 
@@ -26,11 +26,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -40,152 +60,132 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
-
-### cancel
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### complete
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### confirm
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### create
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"[BatchJobCreateProps](../../medusa/types/medusa.BatchJobCreateProps.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### listAndCount
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[FilterableBatchJobProps](../../medusa/classes/medusa.FilterableBatchJobProps.mdx)","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[BatchJob](../../entities/classes/entities.BatchJob.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### prepareBatchJobForProcessing
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"[CreateBatchJobInput](../../medusa/types/medusa.CreateBatchJobInput.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"req","type":"Request&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CreateBatchJobInput](../../medusa/types/medusa.CreateBatchJobInput.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### retrieve
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"batchJobId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"batchJobId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
-### setFailed
+### listAndCount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string` \\| [BatchJobResultError](../../medusa/types/medusa.BatchJobResultError.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"selector","type":"[FilterableBatchJobProps](../../medusa/classes/medusa.FilterableBatchJobProps.mdx)","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[BatchJob](../../entities/classes/entities.BatchJob.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
-### setPreProcessingDone
+### create
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"data","type":"[BatchJobCreateProps](../../medusa/types/medusa.BatchJobCreateProps.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### setProcessing
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### shouldRetryTransaction\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### update
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"Partial&#60;Pick&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx), \"context\" \\| \"result\"&#62;&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"Partial&#60;Pick&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx), \"context\" \\| \"result\"&#62;&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+
+### confirm
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="confirm"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="confirm"/>
+
+### complete
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="complete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="complete"/>
+
+### cancel
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancel"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="cancel"/>
+
+### setPreProcessingDone
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setPreProcessingDone"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="setPreProcessingDone"/>
+
+### setProcessing
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setProcessing"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="setProcessing"/>
+
+### setFailed
+
+#### Parameters
+
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`string` \\| [BatchJobResultError](../../medusa/types/medusa.BatchJobResultError.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="setFailed"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="setFailed"/>
+
+### prepareBatchJobForProcessing
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"[CreateBatchJobInput](../../medusa/types/medusa.CreateBatchJobInput.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"req","type":"Request&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="prepareBatchJobForProcessing"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CreateBatchJobInput](../../medusa/types/medusa.CreateBatchJobInput.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="prepareBatchJobForProcessing"/>
 
 ### updateStatus
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[BatchJobStatus](../../medusa/enums/medusa.BatchJobStatus.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"batchJobOrId","type":"`string` \\| [BatchJob](../../entities/classes/entities.BatchJob.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"status","type":"[BatchJobStatus](../../medusa/enums/medusa.BatchJobStatus.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateStatus"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[BatchJob](../../entities/classes/entities.BatchJob.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateStatus"/>

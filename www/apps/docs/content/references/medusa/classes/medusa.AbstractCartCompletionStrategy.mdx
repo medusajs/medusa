@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AbstractCartCompletionStrategy
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="new AbstractCartCompletionStrategy"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"_isCartCompletionStrategy","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"_isCartCompletionStrategy","type":"`boolean`","description":"","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="AbstractCartCompletionStrategy"/>
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="activeManager_"/>
 
 ___
 
@@ -36,11 +36,11 @@ ___
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"object","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"object","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="isCartCompletionStrategy"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"object","type":"object is ICartCompletionStrategy","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"object","type":"object is ICartCompletionStrategy","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="isCartCompletionStrategy"/>
 
 ### complete
 
@@ -49,31 +49,31 @@ creating an order or confirming a swap.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"cartId","type":"`string`","description":"the id of the Cart to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"[IdempotencyKey](../../entities/classes/entities.IdempotencyKey.mdx)","description":"Idempotency Key is used to continue a process in case of any failure that might occur.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"created_at","type":"`Date`","description":"Date which the idempotency key was locked.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"id","type":"`string`","description":"The idempotency key's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"The unique randomly generated key used to determine the state of a process.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locked_at","type":"`Date`","description":"Date which the idempotency key was locked.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"recovery_point","type":"`string`","description":"Where to continue from.","optional":false,"defaultValue":"started","expandable":false,"children":[]},{"name":"request_method","type":"`string`","description":"The method of the request","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"request_params","type":"`Record<string, unknown>`","description":"The parameters passed to the request","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"request_path","type":"`string`","description":"The request's path","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"response_body","type":"`Record<string, unknown>`","description":"The response's body","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"response_code","type":"`number`","description":"The response's code.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"context","type":"[RequestContext](../types/medusa.RequestContext.mdx)","description":"the request context for the completion request","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ip","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"cartId","type":"`string`","description":"the id of the Cart to complete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotencyKey","type":"[IdempotencyKey](../../entities/classes/entities.IdempotencyKey.mdx)","description":"Idempotency Key is used to continue a process in case of any failure that might occur.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The idempotency key's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"idempotency_key","type":"`string`","description":"The unique randomly generated key used to determine the state of a process.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"Date which the idempotency key was locked.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"locked_at","type":"`Date`","description":"Date which the idempotency key was locked.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"request_method","type":"`string`","description":"The method of the request","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"request_params","type":"`Record<string, unknown>`","description":"The parameters passed to the request","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"request_path","type":"`string`","description":"The request's path","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"response_code","type":"`number`","description":"The response's code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"response_body","type":"`Record<string, unknown>`","description":"The response's body","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"recovery_point","type":"`string`","description":"Where to continue from.","optional":false,"defaultValue":"started","expandable":false,"children":[]}]},{"name":"context","type":"[RequestContext](../types/medusa.RequestContext.mdx)","description":"the request context for the completion request","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"ip","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="complete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CartCompletionResponse](../types/medusa.CartCompletionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"the response for the completion request","expandable":false,"children":[{"name":"CartCompletionResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CartCompletionResponse](../types/medusa.CartCompletionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"the response for the completion request","expandable":false,"children":[{"name":"CartCompletionResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="complete"/>
 
 ### withTransaction
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="withTransaction"/>
 
 ### shouldRetryTransaction\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="shouldRetryTransaction_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -83,12 +83,12 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[{"name":"TResult","type":"TResult","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="atomicPhase_"/>

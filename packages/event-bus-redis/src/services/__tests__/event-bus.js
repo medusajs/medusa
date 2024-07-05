@@ -296,7 +296,7 @@ describe("RedisEventBusService", () => {
               completedSubscriberIds: ["1"],
             },
             attemptsMade: 2,
-            update: (data) => data,
+            updateData: (data) => data,
             opts: { attempts: 3 },
           })
           .catch((err) => void 0)

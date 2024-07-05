@@ -68,7 +68,7 @@ const triggerVariants = cva({
     "hover:bg-ui-bg-field-hover",
     "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",
     "aria-[invalid=true]:border-ui-border-error aria-[invalid=true]:shadow-borders-error",
-    "invalid::border-ui-border-error invalid:shadow-borders-error",
+    "invalid:border-ui-border-error invalid:shadow-borders-error",
     "disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
     "group/trigger"
   ),

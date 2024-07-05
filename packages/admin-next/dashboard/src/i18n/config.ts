@@ -6,22 +6,26 @@ import { initReactI18next } from "react-i18next"
 
 import { Language } from "./types"
 
-i18n
+void i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init<HttpBackendOptions>({
-    fallbackLng: "en",
+    fallbackLng: "en-US",
+    load: "languageOnly",
     debug: process.env.NODE_ENV === "development",
     interpolation: {
       escapeValue: false,
+    },
+    backend: {
+      loadPath: "/locales/{{lng}}/{{ns}}.json",
     },
   })
 
 export const languages: Language[] = [
   {
-    code: "en",
-    display_name: "English",
+    code: "en-US",
+    display_name: "English (US)",
     ltr: true,
     date_locale: enUS,
   },

@@ -4,11 +4,9 @@ import {
   TransactionCheckpoint,
   TransactionStep,
 } from "@medusajs/orchestration"
+import { ModulesSdkTypes } from "@medusajs/types"
 import { TransactionState } from "@medusajs/utils"
-import {
-  WorkflowExecutionService,
-  WorkflowOrchestratorService,
-} from "@services"
+import { WorkflowOrchestratorService } from "@services"
 import { Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 
@@ -21,7 +19,7 @@ enum JobType {
 // eslint-disable-next-line max-len
 export class RedisDistributedTransactionStorage extends DistributedTransactionStorage {
   private static TTL_AFTER_COMPLETED = 60 * 15 // 15 minutes
-  private workflowExecutionService_: WorkflowExecutionService
+  private workflowExecutionService_: ModulesSdkTypes.InternalModuleService<any>
   private workflowOrchestratorService_: WorkflowOrchestratorService
 
   private redisClient: Redis
@@ -34,7 +32,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     redisWorkerConnection,
     redisQueueName,
   }: {
-    workflowExecutionService: WorkflowExecutionService
+    workflowExecutionService: ModulesSdkTypes.InternalModuleService<any>
     redisConnection: Redis
     redisWorkerConnection: Redis
     redisQueueName: string
@@ -64,6 +62,15 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       },
       { connection: redisWorkerConnection }
     )
+  }
+
+  async onApplicationPrepareShutdown() {
+    // Close worker gracefully, i.e. wait for the current jobs to finish
+    await this.worker.close()
+  }
+
+  async onApplicationShutdown() {
+    await this.queue.close()
   }
 
   setWorkflowOrchestratorService(workflowOrchestratorService) {
@@ -101,26 +108,10 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     })
   }
 
-  private stringifyWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "symbol") {
-      return Symbol.keyFor(value)
-    }
-
-    return value
-  }
-
-  private jsonWithSymbol(key, value) {
-    if (key === "__type" && typeof value === "string") {
-      return Symbol.for(value)
-    }
-
-    return value
-  }
-
   async get(key: string): Promise<TransactionCheckpoint | undefined> {
     const data = await this.redisClient.get(key)
 
-    return data ? JSON.parse(data, this.jsonWithSymbol) : undefined
+    return data ? JSON.parse(data) : undefined
   }
 
   async list(): Promise<TransactionCheckpoint[]> {
@@ -131,7 +122,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     for (const key of keys) {
       const data = await this.redisClient.get(key)
       if (data) {
-        transactions.push(JSON.parse(data, this.jsonWithSymbol))
+        transactions.push(JSON.parse(data))
       }
     }
     return transactions
@@ -161,33 +152,28 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
       })
     }
 
+    const stringifiedData = JSON.stringify(data)
+    const parsedData = JSON.parse(stringifiedData)
+
     if (!hasFinished) {
       if (ttl) {
-        await this.redisClient.set(
-          key,
-          JSON.stringify(data, this.stringifyWithSymbol),
-          "EX",
-          ttl
-        )
+        await this.redisClient.set(key, stringifiedData, "EX", ttl)
       } else {
-        await this.redisClient.set(
-          key,
-          JSON.stringify(data, this.stringifyWithSymbol)
-        )
+        await this.redisClient.set(key, stringifiedData)
       }
     }
 
     if (hasFinished && !retentionTime) {
-      await this.deleteFromDb(data)
+      await this.deleteFromDb(parsedData)
     } else {
-      await this.saveToDb(data)
+      await this.saveToDb(parsedData)
     }
 
     if (hasFinished) {
       // await this.redisClient.del(key)
       await this.redisClient.set(
         key,
-        JSON.stringify(data, this.stringifyWithSymbol),
+        stringifiedData,
         "EX",
         RedisDistributedTransactionStorage.TTL_AFTER_COMPLETED
       )
@@ -208,7 +194,7 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
         stepId: step.id,
       },
       {
-        delay: interval * 1000,
+        delay: interval > 0 ? interval * 1000 : undefined,
         jobId: this.getJobId(JobType.RETRY, transaction, step),
         removeOnComplete: true,
       }
@@ -283,7 +269,10 @@ export class RedisDistributedTransactionStorage extends DistributedTransactionSt
     const key = [type, transaction.modelId, transaction.transactionId]
 
     if (step) {
-      key.push(step.id)
+      key.push(step.id, step.attempts + "")
+      if (step.isCompensating()) {
+        key.push("compensate")
+      }
     }
 
     return key.join(":")

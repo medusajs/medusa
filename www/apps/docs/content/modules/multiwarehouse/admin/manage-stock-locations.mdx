@@ -123,7 +123,7 @@ You can list stock locations by using the [List Stock Locations API Route](https
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/stock-locations' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -202,7 +202,7 @@ You can create a stock location using the [Create a Stock Location API Route](ht
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/stock-locations' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "name": "Main Warehouse"
@@ -281,7 +281,7 @@ You can retrieve a stock location by sending a request to the [Get Stock Locatio
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -369,7 +369,7 @@ You can associate a stock location with a sales channel by sending a request to 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "location_id": "<LOC_ID>"
@@ -467,7 +467,7 @@ You can remove the association between a stock location and a sales channel by s
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<CHANNEL_ID>/stock-locations' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "location_id": "<LOC_ID>"
@@ -568,7 +568,7 @@ You can update a stock location by sending a request to the [Update Stock Locati
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>' \
+        -H 'x-medusa-access-token: <API_TOKEN>' \
         -H 'Content-Type: application/json' \
         --data-raw '{
             "name": "Main Warehouse"
@@ -647,7 +647,7 @@ You can delete a stock location by sending a request to the [Delete Stock Locati
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/stock-locations/<LOC_ID>' \
-        -H 'Authorization: Bearer <API_TOKEN>'
+        -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

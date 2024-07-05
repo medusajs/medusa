@@ -53,7 +53,7 @@ So, to test out the API Route, run the following command in the root of your pro
 npx medusa develop
 ```
 
-Then, create a dynamic discount. You can do that either using the [Medusa admin](../../user-guide/discounts/create.mdx) which is available (if installed) at `http://localhost:7001` after starting the backend, or using the [Admin REST APIs](../../modules/discounts/admin/manage-discounts.mdx).
+Then, create a dynamic discount. You can do that either using the [Medusa Admin](../../user-guide/discounts/create.mdx) which is available (if installed) at `http://localhost:7001` after starting the backend, or using the [Admin REST APIs](../../modules/discounts/admin/manage-discounts.mdx).
 
 After that, send a `POST` request to the `/discount-code` API Route, passing the `discount_code` parameter in the request body with the value being the code of the dynamic discount you just created. A new discount will be created with the same attributes as the dynamic discount code and returned in the response.
 

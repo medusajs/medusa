@@ -1158,6 +1158,38 @@
 						"name": "HttpCompressionOptions",
 						"package": "@medusajs/types"
 					}
+				},
+				{
+					"id": 26,
+					"name": "jobs_batch_size",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isOptional": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Configure the number of staged jobs that are polled from the database. Default is 1000."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```js title=\"medusa-config.js\"\nmodule.exports = {\n  projectConfig: {\n    jobs_batch_size: 100\n    // ...\n  },\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "number"
+					}
 				}
 			],
 			"groups": [
@@ -1177,13 +1209,14 @@
 						22,
 						23,
 						24,
-						25
+						25,
+						26
 					]
 				}
 			]
 		},
 		{
-			"id": 26,
+			"id": 27,
 			"name": "ConfigModule",
 			"variant": "declaration",
 			"kind": 256,
@@ -1214,7 +1247,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "projectConfig",
-						"target": 27,
+						"target": 28,
 						"tsLinkText": "projectConfig"
 					},
 					{
@@ -1225,7 +1258,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "plugins",
-						"target": 28,
+						"target": 29,
 						"tsLinkText": "plugins"
 					},
 					{
@@ -1236,7 +1269,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "modules",
-						"target": 32,
+						"target": 33,
 						"tsLinkText": "modules"
 					},
 					{
@@ -1247,7 +1280,7 @@
 						"kind": "inline-tag",
 						"tag": "@link",
 						"text": "featureFlags",
-						"target": 33,
+						"target": 34,
 						"tsLinkText": "featureFlags"
 					},
 					{
@@ -1282,7 +1315,7 @@
 			},
 			"children": [
 				{
-					"id": 27,
+					"id": 28,
 					"name": "projectConfig",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1303,7 +1336,7 @@
 					}
 				},
 				{
-					"id": 28,
+					"id": 29,
 					"name": "plugins",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1371,14 +1404,14 @@
 								{
 									"type": "reflection",
 									"declaration": {
-										"id": 29,
+										"id": 30,
 										"name": "__type",
 										"variant": "declaration",
 										"kind": 65536,
 										"flags": {},
 										"children": [
 											{
-												"id": 30,
+												"id": 31,
 												"name": "resolve",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1389,7 +1422,7 @@
 												}
 											},
 											{
-												"id": 31,
+												"id": 32,
 												"name": "options",
 												"variant": "declaration",
 												"kind": 1024,
@@ -1419,8 +1452,8 @@
 											{
 												"title": "Properties",
 												"children": [
-													30,
-													31
+													31,
+													32
 												]
 											}
 										]
@@ -1431,7 +1464,7 @@
 					}
 				},
 				{
-					"id": 32,
+					"id": 33,
 					"name": "modules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1605,7 +1638,7 @@
 					}
 				},
 				{
-					"id": 33,
+					"id": 34,
 					"name": "featureFlags",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1683,10 +1716,10 @@
 				{
 					"title": "Properties",
 					"children": [
-						27,
 						28,
-						32,
-						33
+						29,
+						33,
+						34
 					]
 				}
 			]
@@ -1698,7 +1731,7 @@
 			"children": [
 				1,
 				6,
-				26
+				27
 			]
 		}
 	],
@@ -1806,33 +1839,37 @@
 		},
 		"26": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "ConfigModule"
+			"qualifiedName": "__type.jobs_batch_size"
 		},
 		"27": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.projectConfig"
+			"qualifiedName": "ConfigModule"
 		},
 		"28": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.plugins"
+			"qualifiedName": "__type.projectConfig"
 		},
 		"29": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "__type.plugins"
 		},
 		"30": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.resolve"
+			"qualifiedName": "__type"
 		},
 		"31": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.options"
+			"qualifiedName": "__type.resolve"
 		},
 		"32": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
-			"qualifiedName": "__type.modules"
+			"qualifiedName": "__type.options"
 		},
 		"33": {
+			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
+			"qualifiedName": "__type.modules"
+		},
+		"34": {
 			"sourceFileName": "../../../packages/types/src/common/config-module.ts",
 			"qualifiedName": "__type.featureFlags"
 		}

@@ -27,7 +27,7 @@ export async function revertUpdateProducts({
     product.variants = product.variants.map((v) => ({ id: v.id }))
   })
 
-  return await productModuleService.update(
+  return await productModuleService.upsert(
     data.originalProducts as unknown as UpdateProductDTO[]
   )
 }

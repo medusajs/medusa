@@ -34,7 +34,7 @@ post:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_draft-orders_{id}_line-items_{line_id}/postundefined
+          ../code_samples/tsx/admin_draft-orders_{id}_line-items_{line_id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -95,7 +95,7 @@ delete:
       label: Medusa React
       source:
         $ref: >-
-          ../code_samples/tsx/admin_draft-orders_{id}_line-items_{line_id}/deleteundefined
+          ../code_samples/tsx/admin_draft-orders_{id}_line-items_{line_id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

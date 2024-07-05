@@ -1,6 +1,6 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
-import { EmitData, Logger } from "@medusajs/types"
-import { AbstractEventBusModuleService } from "@medusajs/utils"
+import { EmitData, Logger, Message } from "@medusajs/types"
+import { AbstractEventBusModuleService, isString } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"
 import { BullJob, EmitOptions, EventBusRedisModuleOptions } from "../types"
@@ -20,8 +20,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
   protected readonly moduleOptions_: EventBusRedisModuleOptions
   // eslint-disable-next-line max-len
   protected readonly moduleDeclaration_: InternalModuleDeclaration
+  protected readonly eventBusRedisConnection_: Redis
 
   protected queue_: Queue
+  protected bullWorker_: Worker
 
   constructor(
     { logger, eventBusRedisConnection }: InjectedDependencies,
@@ -31,6 +33,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
+
+    this.eventBusRedisConnection_ = eventBusRedisConnection
 
     this.moduleOptions_ = moduleOptions
     this.logger_ = logger
@@ -42,11 +46,29 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     })
 
     // Register our worker to handle emit calls
-    new Worker(moduleOptions.queueName ?? "events-queue", this.worker_, {
-      prefix: `${this.constructor.name}`,
-      ...(moduleOptions.workerOptions ?? {}),
-      connection: eventBusRedisConnection,
-    })
+    const shouldStartWorker = moduleDeclaration.worker_mode !== "server"
+    if (shouldStartWorker) {
+      this.bullWorker_ = new Worker(
+        moduleOptions.queueName ?? "events-queue",
+        this.worker_,
+        {
+          prefix: `${this.constructor.name}`,
+          ...(moduleOptions.workerOptions ?? {}),
+          connection: eventBusRedisConnection,
+        }
+      )
+    }
+  }
+
+  __hooks = {
+    onApplicationShutdown: async () => {
+      await this.queue_.close()
+      // eslint-disable-next-line max-len
+      this.eventBusRedisConnection_.disconnect()
+    },
+    onApplicationPrepareShutdown: async () => {
+      await this.bullWorker_?.close()
+    },
   }
 
   /**
@@ -67,7 +89,9 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    */
   async emit<T>(data: EmitData<T>[]): Promise<void>
 
-  async emit<T, TInput extends string | EmitData<T>[] = string>(
+  async emit<T>(data: Message<T>[]): Promise<void>
+
+  async emit<T, TInput extends string | EmitData<T>[] | Message<T>[] = string>(
     eventNameOrData: TInput,
     data?: T,
     options: BulkJobOptions | JobsOptions = {}
@@ -84,10 +108,17 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       ...globalJobOptions,
     } as EmitOptions
 
+    const dataBody = isString(eventNameOrData)
+      ? data ?? (data as Message<T>).body
+      : undefined
+
     const events = isBulkEmit
       ? eventNameOrData.map((event) => ({
           name: event.eventName,
-          data: { eventName: event.eventName, data: event.data },
+          data: {
+            eventName: event.eventName,
+            data: (event as EmitData).data ?? (event as Message<T>).body,
+          },
           opts: {
             ...opts,
             // local options
@@ -97,7 +128,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       : [
           {
             name: eventNameOrData as string,
-            data: { eventName: eventNameOrData, data },
+            data: { eventName: eventNameOrData, data: dataBody },
             opts: {
               ...opts,
               // local options
@@ -188,7 +219,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       job.data.completedSubscriberIds = updatedCompletedSubscribers
 
-      await job.update(job.data)
+      await job.updateData(job.data)
 
       const errorMessage = `One or more subscribers of ${eventName} failed. Retrying...`
 

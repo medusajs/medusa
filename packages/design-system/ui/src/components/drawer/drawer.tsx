@@ -125,7 +125,7 @@ const DrawerFooter = ({
   return (
     <div
       className={clx(
-        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-scroll border-t px-6 py-4",
+        "border-ui-border-base flex items-center justify-end space-x-2 overflow-y-auto border-t px-6 py-4",
         className
       )}
       {...props}

@@ -3,7 +3,7 @@ displayed_sidebar: modules
 slug: /modules/carts-and-checkout/backend/add-payment-provider
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # How to Create a Payment Processor
 
@@ -137,11 +137,55 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"container","type":"[MedusaContainer](../../medusa/types/medusa.MedusaContainer.mdx)","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"container","type":"`Record<string, unknown>`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this payment processor is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractPaymentProcessor"/>
 
 ___
 
 ## Methods
+
+### capturePayment
+
+This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
+
+This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments\_postpaymentspaymentcapture).
+
+You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
+
+#### Example
+
+```ts
+import {
+  PaymentProcessorError,
+  // ...
+} from "@medusajs/medusa"
+// ...
+
+class MyPaymentService extends AbstractPaymentProcessor {
+  // ...
+  async capturePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<Record<string, unknown> | PaymentProcessorError> {
+    const paymentId = paymentSessionData.id
+
+    // assuming client is an initialized client
+    // communicating with a third-party service.
+    const captureData = this.client.catch(paymentId)
+
+    return {
+      id: paymentId,
+      ...captureData
+    }
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment for its first parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="capturePayment"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="capturePayment"/>
 
 ### authorizePayment
 
@@ -206,11 +250,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context of the authorization. It may include some of the following fields:\n\n- `ip`: The customer’s IP.\n- `idempotency_key`: The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- `cart_id`: The ID of a cart. This is only during operations like placing an order or creating a swap.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The context of the authorization. It may include some of the following fields:\n\n- `ip`: The customer’s IP.\n- `idempotency_key`: The [Idempotency Key](https://docs.medusajs.com/modules/carts-and-checkout/payment#idempotency-key) that is associated with the current cart. It is useful when retrying payments, retrying checkout at a failed point, or for payments that require additional actions from the customer.\n- `cart_id`: The ID of a cart. This is only during operations like placing an order or creating a swap.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authorizePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| object&#62;","optional":false,"defaultValue":"","description":"The authorization details or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| object","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| object&#62;","optional":false,"defaultValue":"","description":"The authorization details or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| object","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| `object`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="authorizePayment"/>
 
 ### cancelPayment
 
@@ -252,43 +296,43 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancelPayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelPayment"/>
 
-### capturePayment
+### initiatePayment
 
-This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
+This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts\_postcartscartpaymentsession),
+which occurs when the customer selects their preferred payment method during checkout.
 
-This method is also used for capturing payments of a swap of an order, or when a request is sent to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments\_postpaymentspaymentcapture).
-
-You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
+It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer.
 
 #### Example
 
 ```ts
 import {
-  PaymentProcessorError,
+  PaymentProcessorContext,
+  PaymentProcessorSessionResponse,
   // ...
 } from "@medusajs/medusa"
-// ...
 
 class MyPaymentService extends AbstractPaymentProcessor {
   // ...
-  async capturePayment(
-    paymentSessionData: Record<string, unknown>
-  ): Promise<Record<string, unknown> | PaymentProcessorError> {
-    const paymentId = paymentSessionData.id
-
+  async initiatePayment(
+    context: PaymentProcessorContext
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse
+  > {
     // assuming client is an initialized client
     // communicating with a third-party service.
-    const captureData = this.client.catch(paymentId)
+    const clientPayment = await this.client.initiate(context)
 
     return {
-      id: paymentId,
-      ...captureData
+      session_data: {
+        id: clientPayment.id
+      },
     }
   }
 }
@@ -296,11 +340,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment for its first parameter.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"context","type":"[PaymentProcessorContext](../interfaces/payment.PaymentProcessorContext.mdx)","description":"The context of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The customer's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The selected currency code, typically associated with the customer's cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"The payment's amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The cart's context.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's `data` field.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="initiatePayment"/>
 
 ### deletePayment
 
@@ -337,11 +381,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment Session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of the Payment Session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="deletePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an empty object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or an empty object.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="deletePayment"/>
 
 ### getPaymentStatus
 
@@ -373,55 +417,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment as a parameter. You can use this data to interact with the third-party provider to check the status of the payment if necessary.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getPaymentStatus"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the Payment or Payment Session.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-### initiatePayment
-
-This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts\_postcartscartpaymentsession),
-which occurs when the customer selects their preferred payment method during checkout.
-
-It is used to allow you to make any necessary calls to the third-party provider to initialize the payment. For example, in Stripe this method is used to create a Payment Intent for the customer.
-
-#### Example
-
-```ts
-import {
-  PaymentContext,
-  PaymentSessionResponse,
-  // ...
-} from "@medusajs/medusa"
-
-class MyPaymentService extends AbstractPaymentProcessor {
-  // ...
-  async initiatePayment(
-    context: PaymentProcessorContext
-  ): Promise<
-    PaymentProcessorError | PaymentProcessorSessionResponse
-  > {
-    // assuming client is an initialized client
-    // communicating with a third-party service.
-    const clientPayment = await this.client.initiate(context)
-
-    return {
-      session_data: {
-        id: clientPayment.id
-      },
-    }
-  }
-}
-```
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"context","type":"[PaymentProcessorContext](../interfaces/payment.PaymentProcessorContext.mdx)","description":"The context of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"amount","type":"`number`","description":"The payment's amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The cart's context.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The selected currency code, typically associated with the customer's cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The customer's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's `data` field.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"[PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[PaymentSessionStatus](../../entities/enums/entities.PaymentSessionStatus.mdx)&#62;","optional":false,"defaultValue":"","description":"The status of the Payment or Payment Session.","expandable":false,"children":[{"name":"PaymentSessionStatus","type":"`object`","description":"The status of a payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getPaymentStatus"/>
 
 ### refundPayment
 
@@ -462,11 +462,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"`number`","description":"the amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"refundAmount","type":"`number`","description":"the amount to refund.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="refundPayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"Either an error object or a value that's stored in the `data` field of the Payment.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="refundPayment"/>
 
 ### retrievePayment
 
@@ -498,11 +498,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment Session. Make sure to store in the `data` field any necessary data that would allow you to retrieve the payment data from the third-party provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"The `data` field of a Payment Session. Make sure to store in the `data` field any necessary data that would allow you to retrieve the payment data from the third-party provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrievePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"The payment's data, typically retrieved from a third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"The payment's data, typically retrieved from a third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="retrievePayment"/>
 
 ### updatePayment
 
@@ -545,11 +545,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"context","type":"[PaymentProcessorContext](../interfaces/payment.PaymentProcessorContext.mdx)","description":"The context of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"amount","type":"`number`","description":"The payment's amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The cart's context.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The selected currency code, typically associated with the customer's cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The customer's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's `data` field.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"context","type":"[PaymentProcessorContext](../interfaces/payment.PaymentProcessorContext.mdx)","description":"The context of the payment.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"email","type":"`string`","description":"The customer's email.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The selected currency code, typically associated with the customer's cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"amount","type":"`number`","description":"The payment's amount.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"resource_id","type":"`string`","description":"The ID of the resource the payment is associated with. For example, the cart's ID.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`Record<string, unknown>`","description":"The cart's context.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"paymentSessionData","type":"`Record<string, unknown>`","description":"If the payment session hasn't been created or initiated yet, it'll be an empty object.\nIf the payment session exists, it'll be the value of the payment session's `data` field.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"`null` \\| [Address](../../entities/classes/entities.Address.mdx)","description":"The payment's billing address.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The customer associated with this payment.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"`void` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)&#62;","optional":false,"defaultValue":"","description":"Either the payment's data or an error object.","expandable":false,"children":[{"name":"void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse","type":"`void` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../interfaces/payment.PaymentProcessorSessionResponse.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePayment"/>
 
 ### updatePaymentData
 
@@ -598,21 +598,11 @@ class MyPaymentService extends AbstractPaymentProcessor {
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"sessionId","type":"`string`","description":"The ID of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data to be updated in the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"sessionId","type":"`string`","description":"The ID of the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The data to be updated in the payment session.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updatePaymentData"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"the data to store in the `data` field of the payment session.\nYou can keep the data as-is, or make changes to it by communicating with the third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} />
-
-### isPaymentProcessor
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"object","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)&#62;","optional":false,"defaultValue":"","description":"the data to store in the `data` field of the payment session.\nYou can keep the data as-is, or make changes to it by communicating with the third-party provider.","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62; \\| PaymentProcessorError","type":"`Record<string, unknown>` \\| [PaymentProcessorError](../interfaces/payment.PaymentProcessorError.mdx)","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="updatePaymentData"/>
 
 ---
 

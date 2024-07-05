@@ -85,11 +85,11 @@ These are the directories present at the root of your Medusa backend.
 
 ### .cache
 
-This directory will only be available if you have the Medusa admin installed and you’ve already started your Medusa backend at least once before. It holds all cached files related to building the Medusa admin assets.
+This directory will only be available if you have the Medusa Admin installed and you’ve already started your Medusa backend at least once before. It holds all cached files related to building the Medusa Admin assets.
 
 ### build
 
-This directory will only be available if you have the Medusa admin installed and you’ve either built your admin files or ran the Medusa backend at least once before. It holds the built files that are used to serve the admin in your browser.
+This directory will only be available if you have the Medusa Admin installed and you’ve either built your admin files or ran the Medusa backend at least once before. It holds the built files that are used to serve the admin in your browser.
 
 ### data
 
@@ -129,10 +129,10 @@ If any of these directories are not available, you can create them yourself.
 
 ### admin
 
-This directory holds all Medusa admin customizations. The main subdirectories of this directory are:
+This directory holds all Medusa Admin customizations. The main subdirectories of this directory are:
 
-- `widgets`: Holds all [Medusa admin widgets](../../admin/widgets.md).
-- `routes`: Holds all [Medusa admin UI routes](../../admin/routes.md).
+- `widgets`: Holds all [Medusa Admin widgets](../../admin/widgets.md).
+- `routes`: Holds all [Medusa Admin UI routes](../../admin/routes.md).
 
 ### api
 

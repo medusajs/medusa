@@ -1,5 +1,5 @@
 import type { Code } from "@/types/openapi"
-import { CodeTabs } from "docs-ui"
+import { LegacyCodeTabs } from "docs-ui"
 import slugify from "slugify"
 
 export type TagOperationCodeSectionRequestSamplesProps = {
@@ -12,7 +12,7 @@ const TagOperationCodeSectionRequestSamples = ({
   return (
     <div>
       <h3>Request samples</h3>
-      <CodeTabs
+      <LegacyCodeTabs
         tabs={codeSamples.map((codeSample) => ({
           label: codeSample.label,
           value: slugify(codeSample.label),

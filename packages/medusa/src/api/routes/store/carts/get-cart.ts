@@ -112,7 +112,7 @@ export default async (req, res) => {
     rel.includes("variant")
   )
 
-  const select = [...req.retrieveConfig.select]
+  const select = [...(req.retrieveConfig.select ?? [])]
   const salesChannelsEnabled = featureFlagRouter.isFeatureEnabled(
     SalesChannelFeatureFlag.key
   )

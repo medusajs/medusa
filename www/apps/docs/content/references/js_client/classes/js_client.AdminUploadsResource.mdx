@@ -3,7 +3,7 @@ displayed_sidebar: jsClientSidebar
 slug: /references/js-client/AdminUploadsResource
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminUploadsResource
 
@@ -17,16 +17,6 @@ The methods in this class are used to upload any type of resources. For example,
 Related Guide: [How to upload CSV file when importing a product](https://docs.medusajs.com/modules/products/admin/import-products#1-upload-csv-file).
 
 ## Methods
-
-### \_createPayload
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"FormData","type":"`FormData`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
 
 ### create
 
@@ -46,11 +36,11 @@ medusa.admin.uploads.create(file)
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"The file(s) to upload.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"The file(s) to upload.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the uploaded file details.","expandable":false,"children":[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the uploaded file details.","expandable":false,"children":[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="create"/>
 
 ### createProtected
 
@@ -70,11 +60,11 @@ medusa.admin.uploads.createProtected(file)
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"The file to upload.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"The file to upload.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createProtected"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the uploaded file details.","expandable":false,"children":[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the uploaded file details.","expandable":false,"children":[{"name":"AdminUploadsRes","type":"[AdminUploadsRes](../../medusa/types/medusa.AdminUploadsRes.mdx)","optional":false,"defaultValue":"","description":"The list of uploaded files.","expandable":false,"children":[{"name":"uploads","type":"[FileServiceUploadResult](../../medusa/interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="createProtected"/>
 
 ### delete
 
@@ -96,11 +86,11 @@ medusa.admin.uploads.delete({
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"payload","type":"[AdminDeleteUploadsReq](../../medusa/classes/medusa.AdminDeleteUploadsReq.mdx)","description":"The uploaded file to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"payload","type":"[AdminDeleteUploadsReq](../../medusa/classes/medusa.AdminDeleteUploadsReq.mdx)","description":"The uploaded file to delete.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to delete. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;DeleteResponse&#62;","optional":false,"defaultValue":"","description":"Resolves to the deletion operation's details.","expandable":false,"children":[{"name":"DeleteResponse","type":"[DeleteResponse](../../medusa/interfaces/medusa.DeleteResponse.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;DeleteResponse&#62;","optional":false,"defaultValue":"","description":"Resolves to the deletion operation's details.","expandable":false,"children":[{"name":"DeleteResponse","type":"[DeleteResponse](../../medusa/interfaces/medusa.DeleteResponse.mdx)","optional":false,"defaultValue":"","description":"The response returned for a \n\n`DELETE`\n\n request.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the deleted item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"object","type":"`string`","description":"The type of the deleted item.","optional":false,"defaultValue":"product-collection","expandable":false,"children":[]},{"name":"deleted","type":"`boolean`","description":"Whether the item was deleted successfully.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
 
 ### getPresignedDownloadUrl
 
@@ -122,8 +112,18 @@ medusa.admin.uploads.getPresignedDownloadUrl({
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"payload","type":"[AdminPostUploadsDownloadUrlReq](../../medusa/classes/medusa.AdminPostUploadsDownloadUrlReq.mdx)","description":"The uploaded file to get a presigned download URL for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"payload","type":"[AdminPostUploadsDownloadUrlReq](../../medusa/classes/medusa.AdminPostUploadsDownloadUrlReq.mdx)","description":"The uploaded file to get a presigned download URL for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"file_key","type":"`string`","description":"key of the file to obtain the download link for. This is obtained when you first uploaded the file, or by the file service if you used it directly.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getPresignedDownloadUrl"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsDownloadUrlRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the download URL details.","expandable":false,"children":[{"name":"AdminUploadsDownloadUrlRes","type":"[AdminUploadsDownloadUrlRes](../../medusa/types/medusa.AdminUploadsDownloadUrlRes.mdx)","optional":false,"defaultValue":"","description":"The download URL details.","expandable":false,"children":[{"name":"download_url","type":"`string`","description":"The Download URL of the file","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;AdminUploadsDownloadUrlRes&#62;","optional":false,"defaultValue":"","description":"Resolves to the download URL details.","expandable":false,"children":[{"name":"AdminUploadsDownloadUrlRes","type":"[AdminUploadsDownloadUrlRes](../../medusa/types/medusa.AdminUploadsDownloadUrlRes.mdx)","optional":false,"defaultValue":"","description":"The download URL details.","expandable":false,"children":[{"name":"download_url","type":"`string`","description":"The Download URL of the file","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="getPresignedDownloadUrl"/>
+
+### \_createPayload
+
+#### Parameters
+
+<TypeList types={[{"name":"file","type":"`AdminCreateUploadPayload`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="_createPayload"/>
+
+#### Returns
+
+<TypeList types={[{"name":"FormData","type":"`FormData`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="_createPayload"/>

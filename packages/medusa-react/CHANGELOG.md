@@ -1,5 +1,47 @@
 # Change Log
 
+## 9.0.17
+
+### Patch Changes
+
+- [#6827](https://github.com/medusajs/medusa/pull/6827) [`0c0b425de7`](https://github.com/medusajs/medusa/commit/0c0b425de7b154b80b712ab17b16215cf62d1e83) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,types,dashboard): added empty state for promotions list page
+
+- [#6883](https://github.com/medusajs/medusa/pull/6883) [`eadc5e8a79`](https://github.com/medusajs/medusa/commit/eadc5e8a794ec07f7b523808aa0fec2ac394c984) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat: Admin V2 API keys
+
+- [#6882](https://github.com/medusajs/medusa/pull/6882) [`5e30b8cce6`](https://github.com/medusajs/medusa/commit/5e30b8cce63524d939a5068050798b0d8fcb9a53) Thanks [@riqwan](https://github.com/riqwan)! - feat(dashboard): added details page for promotions
+
+## 9.0.16
+
+### Patch Changes
+
+- [#6441](https://github.com/medusajs/medusa/pull/6441) [`8dad2b51a2`](https://github.com/medusajs/medusa/commit/8dad2b51a26c4c3c14a6c95f70424c8bef2ad63e) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa-react,medusa,utils): fix login for medusa v2 admin next dashboard
+
+- [#6700](https://github.com/medusajs/medusa/pull/6700) [`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Version all modules to allow for initial testing
+
+- [#6428](https://github.com/medusajs/medusa/pull/6428) [`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(medusa,medusa-js,medusa-react,icons): Fixes GET /admin/products/:id/variants endpoint in the core, and medusa-js and medusa-react. Pulls latest icons from Figma into `@medusajs/icons`.
+
+- Updated dependencies [[`8f8a4f9b13`](https://github.com/medusajs/medusa/commit/8f8a4f9b1353087d98f6cc75346d43a7f49901a8), [`44d43e8155`](https://github.com/medusajs/medusa/commit/44d43e8155d1b1ca0af5e900787411c7d0b027c0)]:
+  - @medusajs/medusa-js@6.1.8
+
+## 9.0.15
+
+### Patch Changes
+
+- [`ef64f3740`](https://github.com/medusajs/medusa/commit/ef64f3740d90a8b8565ed10d33e8e35a640cd1ae) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add missing changeset for medusa-react
+
+- Updated dependencies [[`20cefa033`](https://github.com/medusajs/medusa/commit/20cefa0335384e3c37f593c9698651895765234e)]:
+  - @medusajs/medusa-js@6.1.7
+
+## 9.0.14
+
+### Patch Changes
+
+- [#6190](https://github.com/medusajs/medusa/pull/6190) [`d68089b2a`](https://github.com/medusajs/medusa/commit/d68089b2aa2fb4ab52640424ed1a378cd649364f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Implements `listAndCount` method for UserService, and updates list endpoint to accept the expected params.
+  fix(medusa-js): Update `admin.users.list` to accept query params.
+  fix(medusa-react): Update `useAdminUsers` hook to accept query params.
+- Updated dependencies [[`db4da5602`](https://github.com/medusajs/medusa/commit/db4da56023c1c0563a545bffb2bec9cf0e1c4c4a), [`d68089b2a`](https://github.com/medusajs/medusa/commit/d68089b2aa2fb4ab52640424ed1a378cd649364f), [`4c4c0f655`](https://github.com/medusajs/medusa/commit/4c4c0f655bad4feb4c34848d195cac4fe8a902d4)]:
+  - @medusajs/medusa-js@6.1.6
+
 ## 9.0.13
 
 ### Patch Changes

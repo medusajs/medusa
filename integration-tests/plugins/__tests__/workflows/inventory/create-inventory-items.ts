@@ -1,9 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import {
   CreateInventoryItemActions,
   createInventoryItems,
 } from "@medusajs/core-flows"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 
 import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
@@ -66,7 +66,7 @@ describe("CreateInventoryItem workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed`),
+        error: expect.objectContaining({ message: `Failed` }),
       },
     ])
 
