@@ -2,7 +2,7 @@ import { TypeList } from "docs-ui"
 
 # InferIndexableProperties
 
- **InferIndexableProperties**: keyof T extends [IDmlEntity](../../interfaces/types.DmlTypes.IDmlEntity/page.mdx)&#60;infer Schema&#62; ? &#123; [K in keyof Schema as Schema[K] extends Object ? Type extends RelationshipTypes ? never : K : K]: string &#125; & [InferForeignKeys](../types.DmlTypes.InferForeignKeys/page.mdx)&#60;T&#62; : `never`
+ **InferIndexableProperties**: keyof T extends [IDmlEntity](../../interfaces/types.DmlTypes.IDmlEntity/page.mdx)&#60;infer Schema, any&#62; ? &#123; [K in keyof Schema as Schema[K] extends Object ? Type extends RelationshipTypes ? never : K : K]: string &#125; & [InferForeignKeys](../types.DmlTypes.InferForeignKeys/page.mdx)&#60;Schema&#62; : `never`
 
 Infer all indexable properties from a DML entity including inferred foreign keys and excluding relationship
 

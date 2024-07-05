@@ -2065,6 +2065,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim",
+    "newSlug": "/references/order/cancelClaim",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange",
+    "newSlug": "/references/order/cancelExchange",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment",
     "newSlug": "/references/order/cancelFulfillment",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment/page.mdx"
@@ -2073,6 +2083,11 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange",
     "newSlug": "/references/order/cancelOrderChange",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn",
+    "newSlug": "/references/order/cancelReturn",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder",
@@ -2785,6 +2800,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences",
+    "newSlug": "/references/pricing/createPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules",
     "newSlug": "/references/pricing/createPriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules/page.mdx"
@@ -2803,6 +2823,11 @@ export const slugChanges = [
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceLists",
     "newSlug": "/references/pricing/deletePriceLists",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceLists/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences",
+    "newSlug": "/references/pricing/deletePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceRules",
@@ -2850,6 +2875,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences",
+    "newSlug": "/references/pricing/listPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules",
     "newSlug": "/references/pricing/listPriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules/page.mdx"
@@ -2880,6 +2910,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences",
+    "newSlug": "/references/pricing/restorePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices",
     "newSlug": "/references/pricing/restorePrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices/page.mdx"
@@ -2893,6 +2928,11 @@ export const slugChanges = [
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceListRule",
     "newSlug": "/references/pricing/retrievePriceListRule",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceListRule/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference",
+    "newSlug": "/references/pricing/retrievePricePreference",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceRule",
@@ -2915,6 +2955,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences",
+    "newSlug": "/references/pricing/softDeletePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices",
     "newSlug": "/references/pricing/softDeletePrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices/page.mdx"
@@ -2930,6 +2975,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences",
+    "newSlug": "/references/pricing/updatePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules",
     "newSlug": "/references/pricing/updatePriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules/page.mdx"
@@ -2938,6 +2988,11 @@ export const slugChanges = [
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets",
     "newSlug": "/references/pricing/updatePriceSets",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences",
+    "newSlug": "/references/pricing/upsertPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets",
@@ -2963,6 +3018,11 @@ export const slugChanges = [
     "origSlug": "/references/pricing_models/classes/pricing_models.PriceListRule",
     "newSlug": "/references/pricing/models/PriceListRule",
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceListRule/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing_models/classes/pricing_models.PricePreference",
+    "newSlug": "/references/pricing/models/PricePreference",
+    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PricePreference/page.mdx"
   },
   {
     "origSlug": "/references/pricing_models/classes/pricing_models.PriceRule",
@@ -3580,14 +3640,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/region/interfaces/region.IRegionModuleService/page.mdx"
   },
   {
+    "origSlug": "/references/region_models/variables/region_models.Country",
+    "newSlug": "/references/region/models/Country",
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Country/page.mdx"
+  },
+  {
     "origSlug": "/references/region_models/variables/region_models.Region",
     "newSlug": "/references/region/models/Region",
     "filePath": "/www/apps/resources/references/region_models/variables/region_models.Region/page.mdx"
-  },
-  {
-    "origSlug": "/references/region_models/variables/region_models.RegionCountry",
-    "newSlug": "/references/region/models/RegionCountry",
-    "filePath": "/www/apps/resources/references/region_models/variables/region_models.RegionCountry/page.mdx"
   },
   {
     "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.createSalesChannels",

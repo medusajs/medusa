@@ -46,10 +46,9 @@ erDiagram
 	OrderShippingMethod }|--|{ Return : return
 	OrderShippingMethod }|--|{ ShippingMethod : shipping_method
 	Return }|--|{ Order : order
-	Return ||--|| OrderItem : items
+	Return ||--|| ReturnItem : items
 	Return ||--|| Transaction : transactions
 	ReturnItem }|--|{ ReturnReason : reason
-	ReturnItem }|--|{ Return : return
 	ReturnItem }|--|{ LineItem : item
 	ReturnReason }|--|{ ReturnReason : parent_return_reason
 	ShippingMethod ||--|| ShippingMethodTaxLine : tax_lines

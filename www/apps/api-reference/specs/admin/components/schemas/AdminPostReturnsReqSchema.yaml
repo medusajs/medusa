@@ -4,7 +4,6 @@ x-schemaName: AdminPostReturnsReqSchema
 required:
   - order_id
   - items
-  - return_shipping
   - internal_note
   - location_id
 properties:
