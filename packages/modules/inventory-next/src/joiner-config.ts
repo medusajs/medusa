@@ -10,13 +10,6 @@ export const joinerConfig = defineJoinerConfig(Modules.INVENTORY, {
       },
     },
     {
-      name: ["inventory_level", "inventory_levels"],
-      args: {
-        entity: "InventoryLevel",
-        methodSuffix: "InventoryLevels",
-      },
-    },
-    {
       name: [
         "reservation",
         "reservations",

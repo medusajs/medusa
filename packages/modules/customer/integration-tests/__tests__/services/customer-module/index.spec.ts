@@ -14,7 +14,12 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
           service: CustomerModuleService,
         }).linkable
 
-        expect(Object.keys(linkable)).toEqual(["address"])
+        expect(Object.keys(linkable)).toEqual([
+          "address",
+          "customerGroupCustomer",
+          "customerGroup",
+          "customer",
+        ])
 
         Object.keys(linkable).forEach((key) => {
           delete linkable[key].toJSON
@@ -27,6 +32,30 @@ moduleIntegrationTestRunner<ICustomerModuleService>({
               primaryKey: "id",
               serviceName: "customer",
               field: "address",
+            },
+          },
+          customerGroupCustomer: {
+            id: {
+              linkable: "customer_group_customer_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customerGroupCustomer",
+            },
+          },
+          customerGroup: {
+            id: {
+              linkable: "customer_group_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customerGroup",
+            },
+          },
+          customer: {
+            id: {
+              linkable: "customer_id",
+              primaryKey: "id",
+              serviceName: "customer",
+              field: "customer",
             },
           },
         })
