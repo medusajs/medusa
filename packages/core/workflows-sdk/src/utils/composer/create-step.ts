@@ -4,9 +4,9 @@ import {
   WorkflowStepHandler,
   WorkflowStepHandlerArguments,
 } from "@medusajs/orchestration"
-import { deepCopy, isString, OrchestrationUtils } from "@medusajs/utils"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
 import { ulid } from "ulid"
-import { resolveValue, StepResponse } from "./helpers"
+import { StepResponse, resolveValue } from "./helpers"
 import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
@@ -214,24 +214,60 @@ function applyStep<
         >
       ) => {
         const newStepName = localConfig.name ?? stepName
+        const newConfig = {
+          ...stepConfig,
+          ...localConfig,
+        }
 
         delete localConfig.name
 
         this.handlers.set(newStepName, handler)
 
-        this.flow.replaceAction(stepConfig.uuid!, newStepName, {
-          ...stepConfig,
-          ...localConfig,
-        })
+        this.flow.replaceAction(stepConfig.uuid!, newStepName, newConfig)
 
         ret.__step__ = newStepName
         WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
+        const confRef = proxify(ret)
+
+        if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
+          const flagSteps =
+            global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
+              .steps
+
+          const idx = flagSteps.findIndex((a) => a.__step__ === ret.__step__)
+          if (idx > -1) {
+            flagSteps.splice(idx, 1)
+          }
+          flagSteps.push(confRef)
+        }
+
+        return confRef
+      },
+      if: (
+        input: any,
+        condition: (...args: any) => boolean | WorkflowData
+      ): WorkflowData<TInvokeResultOutput> => {
+        if (typeof condition !== "function") {
+          throw new Error("Condition must be a function")
+        }
+
+        wrapConditionalStep(input, condition, handler)
+        this.handlers.set(ret.__step__, handler)
 
         return proxify(ret)
       },
     }
 
-    return proxify(ret)
+    const refRet = proxify(ret) as WorkflowData<TInvokeResultOutput>
+
+    if (global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]) {
+      global[
+        OrchestrationUtils.SymbolMedusaWorkflowComposerCondition
+      ].steps.push(refRet)
+    }
+
+    return refRet
   }
 }
 
@@ -288,6 +324,39 @@ function wrapAsyncHandler(
         return response
       }
     }
+  }
+}
+
+/**
+ * @internal
+ *
+ * Internal function to handle conditional steps.
+ *
+ * @param condition
+ * @param handle
+ */
+function wrapConditionalStep(
+  input: any,
+  condition: (...args: any) => boolean | WorkflowData,
+  handle: {
+    invoke: WorkflowStepHandler
+    compensate?: WorkflowStepHandler
+  }
+) {
+  const originalInvoke = handle.invoke
+  handle.invoke = async (stepArguments: WorkflowStepHandlerArguments) => {
+    const args = await resolveValue(input, stepArguments)
+    const canContinue = await condition(args)
+
+    if (stepArguments.step.definition?.async) {
+      stepArguments.step.definition.backgroundExecution = true
+    }
+
+    if (!canContinue) {
+      return
+    }
+
+    return await originalInvoke(stepArguments)
   }
 }
 

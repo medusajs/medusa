@@ -29,3 +29,13 @@ export interface AdminPrice {
   updated_at: string
   deleted_at: string | null
 }
+
+export interface AdminPricePreference {
+  id: string
+  attribute: string | null
+  value: string | null
+  is_tax_inclusive: boolean
+  created_at: string
+  updated_at: string
+  deleted_at: null | string
+}

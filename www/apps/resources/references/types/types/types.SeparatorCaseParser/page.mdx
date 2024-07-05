@@ -1,0 +1,11 @@
+import { TypeList } from "docs-ui"
+
+# SeparatorCaseParser
+
+ **SeparatorCaseParser**: Type extends \`$&#123;infer Word&#125;$&#123;Separator&#125;$&#123;infer Tail&#125;\` ? [SeparatorCaseParser](page.mdx)&#60;Tail, [...Tuple, Lowercase&#60;Word&#62;]&#62; : Type extends \`$&#123;infer Word&#125;\` ? [...Tuple, Lowercase&#60;Word&#62;] : Tuple
+
+snake\_case, CONSTANT\_CASE, kebab-case or COBOL-CASE
+
+## Type Parameters
+
+<TypeList types={[{"name":"Type","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Tuple","type":"readonly `any`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="SeparatorCaseParser"/>

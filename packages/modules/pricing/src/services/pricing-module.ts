@@ -734,7 +734,10 @@ export default class PricingModuleService
       sharedContext
     )
 
-    return await this.baseRepository_.serialize<any[]>(preferences)
+    const serialized = await this.baseRepository_.serialize<
+      PricePreferenceDTO[]
+    >(preferences)
+    return Array.isArray(data) ? serialized : serialized[0]
   }
 
   async upsertPricePreferences(
@@ -800,11 +803,38 @@ export default class PricingModuleService
     data: PricingTypes.UpdatePricePreferenceDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<PricePreferenceDTO | PricePreferenceDTO[]> {
-    const preferences = await this.pricePreferenceService_.update(
-      data,
+    let normalizedInput: ServiceTypes.UpdatePricePreferenceInput[] = []
+    if (isString(idOrSelector)) {
+      // Check if the ID exists, it will throw if not.
+      await this.pricePreferenceService_.retrieve(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+      normalizedInput = [{ id: idOrSelector, ...data }]
+    } else {
+      const pricePreferences = await this.pricePreferenceService_.list(
+        idOrSelector,
+        {},
+        sharedContext
+      )
+
+      normalizedInput = pricePreferences.map((pricePreference) => ({
+        id: pricePreference.id,
+        ...data,
+      }))
+    }
+
+    const updateResult = await this.pricePreferenceService_.update(
+      normalizedInput,
       sharedContext
     )
-    return await this.baseRepository_.serialize<any[]>(preferences)
+
+    const pricePreferences = await this.baseRepository_.serialize<
+      PricePreferenceDTO[] | PricePreferenceDTO
+    >(updateResult)
+
+    return isString(idOrSelector) ? pricePreferences[0] : pricePreferences
   }
 
   @InjectTransactionManager("baseRepository_")

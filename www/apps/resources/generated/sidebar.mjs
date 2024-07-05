@@ -2377,6 +2377,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/cancelClaim",
+                        "title": "cancelClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelExchange",
+                        "title": "cancelExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/cancelFulfillment",
                         "title": "cancelFulfillment",
                         "children": []
@@ -2386,6 +2400,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/cancelOrderChange",
                         "title": "cancelOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelReturn",
+                        "title": "cancelReturn",
                         "children": []
                       },
                       {
@@ -3606,6 +3627,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/createPricePreferences",
+                        "title": "createPricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/createPriceRules",
                         "title": "createPriceRules",
                         "children": []
@@ -3629,6 +3657,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/deletePriceLists",
                         "title": "deletePriceLists",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/deletePricePreferences",
+                        "title": "deletePricePreferences",
                         "children": []
                       },
                       {
@@ -3697,6 +3732,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/listPricePreferences",
+                        "title": "listPricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/listPriceRules",
                         "title": "listPriceRules",
                         "children": []
@@ -3739,6 +3781,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/restorePricePreferences",
+                        "title": "restorePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/restorePrices",
                         "title": "restorePrices",
                         "children": []
@@ -3755,6 +3804,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/retrievePriceListRule",
                         "title": "retrievePriceListRule",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/retrievePricePreference",
+                        "title": "retrievePricePreference",
                         "children": []
                       },
                       {
@@ -3788,6 +3844,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/softDeletePricePreferences",
+                        "title": "softDeletePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/softDeletePrices",
                         "title": "softDeletePrices",
                         "children": []
@@ -3809,6 +3872,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/updatePricePreferences",
+                        "title": "updatePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/updatePriceRules",
                         "title": "updatePriceRules",
                         "children": []
@@ -3818,6 +3888,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/updatePriceSets",
                         "title": "updatePriceSets",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/upsertPricePreferences",
+                        "title": "upsertPricePreferences",
                         "children": []
                       },
                       {
@@ -3865,6 +3942,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/models/PriceListRule",
                         "title": "PriceListRule",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/models/PricePreference",
+                        "title": "PricePreference",
                         "children": []
                       },
                       {
@@ -4963,15 +5047,15 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/models/Region",
-                        "title": "Region",
+                        "path": "/references/region/models/Country",
+                        "title": "Country",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/models/RegionCountry",
-                        "title": "RegionCountry",
+                        "path": "/references/region/models/Region",
+                        "title": "Region",
                         "children": []
                       }
                     ]

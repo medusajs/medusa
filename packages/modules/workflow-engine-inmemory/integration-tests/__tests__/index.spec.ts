@@ -8,7 +8,12 @@ import { Module, Modules, TransactionHandlerType } from "@medusajs/utils"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { setTimeout as setTimeoutPromise } from "timers/promises"
 import "../__fixtures__"
-import { workflow2Step2Invoke, workflow2Step3Invoke } from "../__fixtures__"
+import {
+  conditionalStep2Invoke,
+  conditionalStep3Invoke,
+  workflow2Step2Invoke,
+  workflow2Step3Invoke,
+} from "../__fixtures__"
 import {
   eventGroupWorkflowId,
   workflowEventGroupIdStep1Mock,
@@ -116,6 +121,10 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
       })
 
       describe("Testing basic workflow", function () {
+        beforeEach(() => {
+          jest.clearAllMocks()
+        })
+
         it("should return a list of workflow executions and remove after completed when there is no retentionTime set", async () => {
           await workflowOrcModule.run("workflow_1", {
             input: {
@@ -255,6 +264,46 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           })
 
           expect(onFinish).toHaveBeenCalledTimes(0)
+        })
+
+        it("should run conditional steps if condition is true", (done) => {
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_conditional_step",
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+                expect(conditionalStep2Invoke).toHaveBeenCalledTimes(2)
+                expect(conditionalStep3Invoke).toHaveBeenCalledTimes(1)
+              }
+            },
+          })
+
+          workflowOrcModule.run("workflow_conditional_step", {
+            input: {
+              runNewStepName: true,
+            },
+            throwOnError: true,
+          })
+        })
+
+        it("should not run conditional steps if condition is false", (done) => {
+          void workflowOrcModule.subscribe({
+            workflowId: "workflow_conditional_step",
+            subscriber: (event) => {
+              if (event.eventType === "onFinish") {
+                done()
+                expect(conditionalStep2Invoke).toHaveBeenCalledTimes(1)
+                expect(conditionalStep3Invoke).toHaveBeenCalledTimes(0)
+              }
+            },
+          })
+
+          workflowOrcModule.run("workflow_conditional_step", {
+            input: {
+              runNewStepName: false,
+            },
+            throwOnError: true,
+          })
         })
       })
 
