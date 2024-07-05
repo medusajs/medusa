@@ -14,7 +14,7 @@ type ThenFunc = <ThenResolver extends () => any>(
   resolver: ThenResolver
 ) => ReturnType<ThenResolver> extends WorkflowData<infer ReturnedWorkflowData>
   ? Partial<WorkflowData<ReturnedWorkflowData>>
-  : never
+  : ReturnType<ThenResolver>
 
 export function when<T extends object | WorkflowData, Then extends Function>(
   values: T,
