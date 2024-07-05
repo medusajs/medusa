@@ -1151,7 +1151,7 @@
     },
     "fields": {
       "isCombinable": {
-        "label": "Combine with parents",
+        "label": "Combinable",
         "hint": "Whether this tax rate can be combined with the default rate from the tax region.",
         "true": "Combinable",
         "false": "Not combinable"
