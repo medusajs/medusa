@@ -14,13 +14,13 @@ import * as Collapsible from "@radix-ui/react-collapsible"
 import { useTranslation } from "react-i18next"
 
 import { useStore } from "../../../hooks/api/store"
+import { settingsRouteRegex } from "../../../lib/extension-helpers"
+import { Divider } from "../../common/divider"
 import { Skeleton } from "../../common/skeleton"
 import { NavItem, NavItemProps } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
 import routes from "virtual:medusa/routes/links"
-import { settingsRouteRegex } from "../../../lib/extension-helpers"
-import { Divider } from "../../common/divider"
 
 export const MainLayout = () => {
   return (
@@ -172,6 +172,8 @@ const ExtensionRouteSection = () => {
   const { t } = useTranslation()
 
   const links = routes.links
+
+  console.log("links", links, "routes", routes)
 
   const extensionLinks = links.filter(
     (link) => !settingsRouteRegex.test(link.path)
