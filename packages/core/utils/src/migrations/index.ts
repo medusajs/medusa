@@ -5,7 +5,6 @@ import { MigrationResult } from "@mikro-orm/migrations"
  * Exposes the API to programmatically manage Mikro ORM migrations
  */
 export class Migrations {
-  #connection?: MikroORM
   #config: MikroORMOptions
 
   constructor(config: MikroORMOptions) {
@@ -17,17 +16,13 @@ export class Migrations {
    * one
    */
   async #getConnection() {
-    if (!this.#connection) {
-      this.#connection = await MikroORM.init({
-        ...this.#config,
-        migrations: {
-          ...this.#config.migrations,
-          silent: true,
-        },
-      })
-    }
-
-    return this.#connection
+    return MikroORM.init({
+      ...this.#config,
+      migrations: {
+        ...this.#config.migrations,
+        silent: true,
+      },
+    })
   }
 
   /**
