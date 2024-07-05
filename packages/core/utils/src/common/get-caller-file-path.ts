@@ -4,13 +4,7 @@
  */
 export function getCallerFilePath(position = 2) {
   if (position >= Error.stackTraceLimit) {
-    throw new TypeError(
-      "getCallerFile(position) requires position be less then Error.stackTraceLimit but position was: `" +
-        position +
-        "` and Error.stackTraceLimit was: `" +
-        Error.stackTraceLimit +
-        "`"
-    )
+    return null
   }
 
   const oldPrepareStackTrace = Error.prepareStackTrace
