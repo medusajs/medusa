@@ -183,6 +183,9 @@ export const AddCustomerGroupsForm = ({
             layout="fill"
             search
             queryObject={raw}
+            noRecords={{
+              message: t("customers.groups.add.list.noRecordsMessage"),
+            }}
           />
         </RouteFocusModal.Body>
       </form>

@@ -75,6 +75,9 @@ export const ProductListTable = () => {
         queryObject={raw}
         navigateTo={(row) => `${row.original.id}`}
         orderBy={["title", "created_at", "updated_at"]}
+        noRecords={{
+          message: t("products.list.noRecordsMessage"),
+        }}
       />
       <Outlet />
     </Container>

@@ -149,6 +149,9 @@ export const CustomerGroupSection = ({
           },
         ]}
         queryObject={raw}
+        noRecords={{
+          message: t("customers.groups.list.noRecordsMessage")
+        }}
       />
     </Container>
   )

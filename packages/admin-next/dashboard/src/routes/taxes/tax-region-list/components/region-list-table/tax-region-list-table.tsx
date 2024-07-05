@@ -1,6 +1,6 @@
 import { Trash } from "@medusajs/icons"
 import { AdminTaxRegionResponse } from "@medusajs/types"
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
 import { t } from "i18next"
 import { useMemo } from "react"
@@ -47,7 +47,12 @@ export const TaxRegionListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading level="h2">{t("taxes.domain")}</Heading>
+        <div>
+          <Heading level="h2">{t("taxes.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("taxRegions.subtitle")}
+          </Text>
+        </div>
         <Button size="small" variant="secondary" asChild>
           <Link to="/settings/taxes/create">{t("actions.create")}</Link>
         </Button>
