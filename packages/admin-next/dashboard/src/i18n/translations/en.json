@@ -1149,11 +1149,10 @@
     },
     "tabs": {
       "template": "Type",
-      "promotion": "Details",
+      "details": "Details",
       "campaign": "Campaign"
     },
     "fields": {
-      "method": "Campaign",
       "type": "Type",
       "value_type": "Value Type",
       "value": "Value",

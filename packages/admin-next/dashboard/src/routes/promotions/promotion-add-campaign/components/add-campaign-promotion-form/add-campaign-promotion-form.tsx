@@ -51,7 +51,7 @@ export const AddCampaignPromotionFields = ({
         render={({ field }) => {
           return (
             <Form.Item>
-              <Form.Label>{t("promotions.fields.method")}</Form.Label>
+              <Form.Label>{t("promotions.fields.campaign")}</Form.Label>
 
               <Form.Control>
                 <RadioGroup
