@@ -4,7 +4,6 @@ import {
   ColorModeProvider,
   MobileProvider,
   ModalProvider,
-  NavbarProvider,
   AnalyticsProvider,
   ScrollControllerProvider,
 } from "docs-ui"
@@ -23,9 +22,7 @@ const Providers = ({ children }: ProvidersProps) => {
           <ModalProvider>
             <ScrollControllerProvider scrollableSelector="#main">
               <SidebarProvider>
-                <NavbarProvider basePath={process.env.NEXT_PUBLIC_BASE_PATH}>
-                  <SearchProvider>{children}</SearchProvider>
-                </NavbarProvider>
+                <SearchProvider>{children}</SearchProvider>
               </SidebarProvider>
             </ScrollControllerProvider>
           </ModalProvider>

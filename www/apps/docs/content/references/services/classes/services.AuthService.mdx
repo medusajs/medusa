@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AuthService
 
@@ -12,13 +12,13 @@ Can authenticate a user based on email password combination
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AuthService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../types/LoggerTypes/interfaces/types.LoggerTypes.Logger.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"userService_","type":"[UserService](services.UserService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"userService_","type":"[UserService](services.UserService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"logger_","type":"[Logger](../../medusa/interfaces/medusa.Logger-1.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="AuthService"/>
 
 ___
 
@@ -28,11 +28,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -42,17 +62,39 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
-___
+### comparePassword\_
+
+Verifies if a password is valid given the provided password hash
+
+#### Parameters
+
+<TypeList types={[{"name":"password","type":"`string`","description":"the raw password to check","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"hash","type":"`string`","description":"the hash to compare against","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="comparePassword_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"the result of the comparison","expandable":false,"children":[]}]}  sectionTitle="comparePassword_"/>
+
+### authenticateAPIToken
+
+Authenticates a given user with an API token
+
+#### Parameters
+
+<TypeList types={[{"name":"token","type":"`string`","description":"the api\\_token of the user to authenticate","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authenticateAPIToken"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message","expandable":false,"children":[]}]}  sectionTitle="authenticateAPIToken"/>
 
 ### authenticate
 
@@ -61,27 +103,11 @@ scrypt to match password with hashed value.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"the email of the user","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"the password of the user","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"email","type":"`string`","description":"the email of the user","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"the password of the user","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authenticate"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message","expandable":false,"children":[]}]} />
-
-___
-
-### authenticateAPIToken
-
-Authenticates a given user with an API token
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"token","type":"`string`","description":"the api\\_token of the user to authenticate","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message","expandable":false,"children":[]}]}  sectionTitle="authenticate"/>
 
 ### authenticateCustomer
 
@@ -90,46 +116,8 @@ scrypt to match password with hashed value.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"the email of the user","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"the password of the user","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"email","type":"`string`","description":"the email of the user","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"password","type":"`string`","description":"the password of the user","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="authenticateCustomer"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   customer: the customer document if authentication succeded\n   error: a string with the error message","expandable":false,"children":[]}]} />
-
-___
-
-### comparePassword\_
-
-Verifies if a password is valid given the provided password hash
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"password","type":"`string`","description":"the raw password to check","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"hash","type":"`string`","description":"the hash to compare against","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"the result of the comparison","expandable":false,"children":[]}]} />
-
-___
-
-### shouldRetryTransaction\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;AuthenticateResult&#62;","optional":false,"defaultValue":"","description":"success: whether authentication succeeded\n   customer: the customer document if authentication succeded\n   error: a string with the error message","expandable":false,"children":[]}]}  sectionTitle="authenticateCustomer"/>

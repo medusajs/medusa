@@ -16,4 +16,8 @@ export interface AdminGetGiftCardsParams {
    * a term to search gift cards' code or display ID
    */
   q?: string
+  /**
+   * A gift card field to sort-order the retrieved gift cards by.
+   */
+  order?: string
 }

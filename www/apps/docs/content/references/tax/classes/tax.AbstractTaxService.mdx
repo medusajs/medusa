@@ -1,0 +1,185 @@
+---
+displayed_sidebar: modules
+slug: /modules/taxes/backend/create-tax-provider
+---
+
+import TypeList from "@site/src/components/TypeList"
+
+# How to Create a Tax Provider
+
+In this document, you’ll learn how to create a tax provider in the Medusa backend and the methods you must implement in it.
+
+## Overview
+
+A tax provider is used to retrieve the tax lines in a cart. The Medusa backend provides a default `system` provider. You can create your own tax provider,
+either in a plugin or directly in your Medusa backend, then use it in any region.
+
+A tax provider class is defined in a TypeScript or JavaScript file under the `src/services` directory and the class must extend the
+`AbstractTaxService` class imported from `@medusajs/medusa`. The file's name is the tax provider's class name as a slug and without the word `Service`.
+
+For example, you can create the file `src/services/my-tax.ts` with the following content:
+
+```ts title="src/services/my-tax.ts"
+import {
+  AbstractTaxService,
+  ItemTaxCalculationLine,
+  ShippingTaxCalculationLine,
+  TaxCalculationContext,
+} from "@medusajs/medusa"
+import {
+  ProviderTaxLine,
+} from "@medusajs/medusa/dist/types/tax-service"
+
+class MyTaxService extends AbstractTaxService {
+  async getTaxLines(
+    itemLines: ItemTaxCalculationLine[],
+    shippingLines: ShippingTaxCalculationLine[],
+    context: TaxCalculationContext):
+    Promise<ProviderTaxLine[]> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+export default MyTaxService
+```
+
+---
+
+## Identifier Property
+
+The `TaxProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the tax provider service is used when the tax provider is added to the database.
+
+The value of this property is also used to reference the tax provider throughout Medusa. For example, it is used to [change the tax provider](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) to a region.
+
+```ts title="src/services/my-tax.ts"
+class MyTaxService extends AbstractTaxService {
+  static identifier = "my-tax"
+  // ...
+}
+```
+
+---
+
+## constructor
+
+You can use the `constructor` of your tax provider to access the different services in Medusa through dependency injection.
+
+You can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs, you can initialize it in the constructor and use it in other methods in the service.
+Additionally, if you’re creating your tax provider as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin, you can access it in the constructor.
+
+### Example
+
+```ts
+// ...
+import { LineItemService } from "@medusajs/medusa"
+
+type InjectedDependencies = {
+  lineItemService: LineItemService
+}
+
+class MyTaxService extends AbstractTaxService {
+  protected readonly lineItemService_: LineItemService
+
+  constructor({ lineItemService }: InjectedDependencies) {
+    super(arguments[0])
+    this.lineItemService_ = lineItemService
+
+    // you can also initialize a client that
+    // communicates with a third-party service.
+    this.client = new Client(options)
+  }
+
+  // ...
+}
+
+export default MyTaxService
+```
+
+### Parameters
+
+<TypeList types={[{"name":"container","type":"`Record<string, unknown>`","description":"An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`Record<string, unknown>`","description":"If this tax provider is created in a plugin, the plugin's options are passed in this parameter.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new AbstractTaxService"/>
+
+___
+
+## Methods
+
+### getTaxLines
+
+This method is used when retrieving the tax lines for line items and shipping methods.
+This occurs during checkout or when calculating totals for orders, swaps, or returns.
+
+#### Example
+
+An example of how this method is implemented in the `system` provider implemented in the Medusa backend:
+
+```ts
+// ...
+
+class SystemTaxService extends AbstractTaxService {
+  // ...
+
+  async getTaxLines(
+    itemLines: ItemTaxCalculationLine[],
+    shippingLines: ShippingTaxCalculationLine[],
+    context: TaxCalculationContext
+  ): Promise<ProviderTaxLine[]> {
+    let taxLines: ProviderTaxLine[] = itemLines.flatMap((l) => {
+      return l.rates.map((r) => ({
+        rate: r.rate || 0,
+        name: r.name,
+        code: r.code,
+        item_id: l.item.id,
+      }))
+    })
+
+    taxLines = taxLines.concat(
+      shippingLines.flatMap((l) => {
+        return l.rates.map((r) => ({
+          rate: r.rate || 0,
+          name: r.name,
+          code: r.code,
+          shipping_method_id: l.shipping_method.id,
+        }))
+      })
+    )
+
+    return taxLines
+  }
+}
+```
+
+#### Parameters
+
+<TypeList types={[{"name":"itemLines","type":"[ItemTaxCalculationLine](../types/tax.ItemTaxCalculationLine.mdx)[]","description":"The line item lines to calculate taxes for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"The line item to calculate taxes for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The line item's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart_id","type":"`string`","description":"The ID of the cart that the line item may belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"The details of the cart that the line item may belongs to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"order_id","type":"`null` \\| `string`","description":"The ID of the order that the line item may belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"The details of the order that the line item may belongs to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"swap_id","type":"`string`","description":"The ID of the swap that the line item may belong to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swap","type":"[Swap](../../entities/classes/entities.Swap.mdx)","description":"The details of the swap that the line item may belong to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"claim_order_id","type":"`string`","description":"The ID of the claim that the line item may belong to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_order","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)","description":"The details of the claim that the line item may belong to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_lines","type":"[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]","description":"The details of the item's tax lines.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"adjustments","type":"[LineItemAdjustment](../../entities/classes/entities.LineItemAdjustment.mdx)[]","description":"The details of the item's adjustments, which are available when a discount is applied on the item.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"title","type":"`string`","description":"The title of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"description","type":"`null` \\| `string`","description":"A more detailed description of the contents of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"thumbnail","type":"`null` \\| `string`","description":"A URL string to a small image of the contents of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_return","type":"`boolean`","description":"Is the item being returned","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"is_giftcard","type":"`boolean`","description":"Flag to indicate if the Line Item is a Gift Card.","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"should_merge","type":"`boolean`","description":"Flag to indicate if new Line Items with the same variant should be merged or added as an additional Line Item.","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"allow_discounts","type":"`boolean`","description":"Flag to indicate if the Line Item should be included when doing discount calculations.","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"has_shipping","type":"`null` \\| `boolean`","description":"Flag to indicate if the Line Item has fulfillment associated with it.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"unit_price","type":"`number`","description":"The price of one unit of the content in the Line Item. This should be in the currency defined by the Cart/Order/Swap/Claim that the Line Item belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant_id","type":"`null` \\| `string`","description":"The id of the Product Variant contained in the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"variant","type":"[ProductVariant](../../entities/classes/entities.ProductVariant.mdx)","description":"The details of the product variant that this item was created from.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"product_id","type":"`null` \\| `string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the content in the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfilled_quantity","type":"`null` \\| `number`","description":"The quantity of the Line Item that has been fulfilled.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"returned_quantity","type":"`null` \\| `number`","description":"The quantity of the Line Item that has been returned.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipped_quantity","type":"`null` \\| `number`","description":"The quantity of the Line Item that has been shipped.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"includes_tax","type":"`boolean`","description":"Indicates if the line item unit\\_price include tax","optional":false,"defaultValue":"false","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]},{"name":"original_item_id","type":"`null` \\| `string`","description":"The ID of the original line item. This is useful if the line item belongs to a resource that references an order, such as a return or an order edit.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order_edit_id","type":"`null` \\| `string`","description":"The ID of the order edit that the item may belong to.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"order_edit","type":"`null` \\| [OrderEdit](../../entities/classes/entities.OrderEdit.mdx)","description":"The details of the order edit.","optional":true,"defaultValue":"","expandable":true,"children":[]},{"name":"refundable","type":"`null` \\| `number`","description":"The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"subtotal","type":"`null` \\| `number`","description":"The subtotal of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`null` \\| `number`","description":"The total of tax of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`null` \\| `number`","description":"The total amount of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"original_total","type":"`null` \\| `number`","description":"The original total amount of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"original_tax_total","type":"`null` \\| `number`","description":"The original tax total amount of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"discount_total","type":"`null` \\| `number`","description":"The total of discount of the line item rounded","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"raw_discount_total","type":"`null` \\| `number`","description":"The total of discount of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_card_total","type":"`null` \\| `number`","description":"The total of the gift card of the line item","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rates","type":"[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]","description":"The rates applicable on the item.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The tax rate's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string` \\| `null`","description":"The tax rate's code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`number` \\| `null`","description":"The tax rate.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"shippingLines","type":"[ShippingTaxCalculationLine](../types/tax.ShippingTaxCalculationLine.mdx)[]","description":"The shipping method lines to calculate taxes for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"shipping_method","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"The shipping method to calculate taxes for.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The shipping method's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_id","type":"`string`","description":"The ID of the Shipping Option that the Shipping Method is built from.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"The ID of the order that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"The details of the order that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"claim_order_id","type":"`null` \\| `string`","description":"The ID of the claim that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_order","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)","description":"The details of the claim that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"cart_id","type":"`string`","description":"The ID of the cart that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"The details of the cart that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"swap_id","type":"`string`","description":"The ID of the swap that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swap","type":"[Swap](../../entities/classes/entities.Swap.mdx)","description":"The details of the swap that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"return_id","type":"`string`","description":"The ID of the return that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_order","type":"[Return](../../entities/classes/entities.Return.mdx)","description":"The details of the return that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"The details of the shipping option the method was created from.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_lines","type":"[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]","description":"The details of the tax lines applied on the shipping method.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"price","type":"`number`","description":"The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"includes_tax","type":"`boolean`","description":"Whether the shipping method price include tax","optional":false,"defaultValue":"false","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"The total amount of the shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`number`","description":"The total of tax","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"rates","type":"[TaxServiceRate](../../medusa/types/medusa.TaxServiceRate.mdx)[]","description":"The rates applicable on the shipping method.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"name","type":"`string`","description":"The tax rate's name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"code","type":"`string` \\| `null`","description":"The tax rate's code.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"rate","type":"`number` \\| `null`","description":"The tax rate.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]},{"name":"context","type":"[TaxCalculationContext](../types/tax.TaxCalculationContext.mdx)","description":"Context relevant and useful for the taxes calculation.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"shipping_address","type":"[Address](../../entities/classes/entities.Address.mdx) \\| `null`","description":"The shipping address used in the cart.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"The customer that the cart belongs to.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The customer's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"email","type":"`string`","description":"The customer's email","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"first_name","type":"`string`","description":"The customer's first name","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"last_name","type":"`string`","description":"The customer's last name","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address_id","type":"`null` \\| `string`","description":"The customer's billing address ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"billing_address","type":"[Address](../../entities/classes/entities.Address.mdx)","description":"The details of the billing address associated with the customer.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_addresses","type":"[Address](../../entities/classes/entities.Address.mdx)[]","description":"The details of the shipping addresses associated with the customer.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"password_hash","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"phone","type":"`string`","description":"The customer's phone number","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"has_account","type":"`boolean`","description":"Whether the customer has an account or not","optional":false,"defaultValue":"false","expandable":false,"children":[]},{"name":"orders","type":"[Order](../../entities/classes/entities.Order.mdx)[]","description":"The details of the orders this customer placed.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"groups","type":"[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]","description":"The customer groups the customer belongs to.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"The cart's region.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The region's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"created_at","type":"`Date`","description":"The date with timezone at which the resource was created.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"updated_at","type":"`Date`","description":"The date with timezone at which the resource was updated.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"deleted_at","type":"`null` \\| `Date`","description":"The date with timezone at which the resource was deleted.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"name","type":"`string`","description":"The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency_code","type":"`string`","description":"The three character currency code used in the region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"currency","type":"[Currency](../../entities/classes/entities.Currency.mdx)","description":"The details of the currency used in the region.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_rate","type":"`number`","description":"The tax rate that should be charged on purchases in the Region.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_rates","type":"`null` \\| [TaxRate](../../entities/classes/entities.TaxRate.mdx)[]","description":"The details of the tax rates used in the region, aside from the default rate.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_code","type":"`string`","description":"The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"gift_cards_taxable","type":"`boolean`","description":"Whether the gift cards are taxable or not in this region.","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"automatic_taxes","type":"`boolean`","description":"Whether taxes should be automated in this region.","optional":false,"defaultValue":"true","expandable":false,"children":[]},{"name":"countries","type":"[Country](../../entities/classes/entities.Country.mdx)[]","description":"The details of the countries included in this region.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_provider_id","type":"`null` \\| `string`","description":"The ID of the tax provider used in this region","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_provider","type":"[TaxProvider](../../entities/classes/entities.TaxProvider.mdx)","description":"The details of the tax provider used in the region.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"payment_providers","type":"[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]","description":"The details of the payment providers that can be used to process payments in the region.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"fulfillment_providers","type":"[FulfillmentProvider](../../entities/classes/entities.FulfillmentProvider.mdx)[]","description":"The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"metadata","type":"`Record<string, unknown>`","description":"An optional key-value map with additional details","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"includes_tax","type":"`boolean`","description":"Whether the prices for the region include tax","optional":false,"defaultValue":"false","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]}]},{"name":"is_return","type":"`boolean`","description":"Whether the cart is used in a return flow.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_methods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"The shipping methods used in the cart.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The shipping method's ID","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"shipping_option_id","type":"`string`","description":"The ID of the Shipping Option that the Shipping Method is built from.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order_id","type":"`string`","description":"The ID of the order that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"[Order](../../entities/classes/entities.Order.mdx)","description":"The details of the order that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"claim_order_id","type":"`null` \\| `string`","description":"The ID of the claim that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"claim_order","type":"[ClaimOrder](../../entities/classes/entities.ClaimOrder.mdx)","description":"The details of the claim that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"cart_id","type":"`string`","description":"The ID of the cart that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"[Cart](../../entities/classes/entities.Cart.mdx)","description":"The details of the cart that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"swap_id","type":"`string`","description":"The ID of the swap that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"swap","type":"[Swap](../../entities/classes/entities.Swap.mdx)","description":"The details of the swap that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"return_id","type":"`string`","description":"The ID of the return that the shipping method is used in.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"return_order","type":"[Return](../../entities/classes/entities.Return.mdx)","description":"The details of the return that the shipping method is used in.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"shipping_option","type":"[ShippingOption](../../entities/classes/entities.ShippingOption.mdx)","description":"The details of the shipping option the method was created from.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"tax_lines","type":"[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]","description":"The details of the tax lines applied on the shipping method.","optional":false,"defaultValue":"","expandable":true,"children":[]},{"name":"price","type":"`number`","description":"The amount to charge for the Shipping Method. The currency of the price is defined by the Region that the Order that the Shipping Method belongs to is a part of.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"includes_tax","type":"`boolean`","description":"Whether the shipping method price include tax","optional":false,"defaultValue":"false","expandable":false,"featureFlag":"tax_inclusive_pricing","children":[]},{"name":"subtotal","type":"`number`","description":"The subtotal of the shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"The total amount of the shipping","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`number`","description":"The total of tax","optional":true,"defaultValue":"","expandable":false,"children":[]}]},{"name":"allocation_map","type":"[LineAllocationsMap](../../medusa/types/medusa.LineAllocationsMap.mdx)","description":"The gift cards and discounts applied on line items.\nEach object key or property is an ID of a line item","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="getTaxLines"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ProviderTaxLine](../../medusa/types/medusa.ProviderTaxLine.mdx)[]&#62;","optional":false,"defaultValue":"","description":"The list of calculated line item and shipping method tax lines.\nIf an item in the array has the `shipping_method_id` property, then it's a shipping method tax line. Otherwise, if it has\nthe `item_id` property, then it's a line item tax line.","expandable":false,"children":[{"name":"ProviderTaxLine[]","type":"[ProviderTaxLine](../../medusa/types/medusa.ProviderTaxLine.mdx)[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"ProviderTaxLine","type":"[ProviderLineItemTaxLine](../../medusa/types/medusa.ProviderLineItemTaxLine.mdx) \\| [ProviderShippingMethodTaxLine](../../medusa/types/medusa.ProviderShippingMethodTaxLine.mdx)","description":"A union type of the possible provider tax lines.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getTaxLines"/>
+
+---
+
+## Test Implementation
+
+:::note
+
+If you created your tax provider in a plugin, refer to [this guide on how to test plugins](https://docs.medusajs.com/development/plugins/create#test-your-plugin).
+
+:::
+
+After finishing your tax provider implementation:
+
+1\. Run the `build` command in the root of your Medusa backend:
+
+```bash npm2yarn
+npm run build
+```
+
+2\. Start the backend with the `develop` command:
+
+```bash
+npx medusa develop
+```
+
+3\. Use the tax provider in a region. You can do that either using the [Admin APIs](https://docs.medusajs.com/modules/taxes/admin/manage-tax-settings#change-tax-provider-of-a-region) or the [Medusa Admin](https://docs.medusajs.com/user-guide/taxes/manage#change-tax-provider).
+
+4\. To test out your tax provider implementation, you can [trigger taxes calculation manually](https://docs.medusajs.com/modules/taxes/storefront/manual-calculation).

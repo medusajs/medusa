@@ -147,14 +147,16 @@ export const ShippingOptionServiceMock = {
     return Promise.resolve({ _id: methodId })
   }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
-  createShippingMethod: jest.fn().mockImplementation((optionId, data, config) => {
-    return Promise.resolve({
-      ...config,
-      id: "test-shipping-method",
-      shipping_option_id: optionId,
-      data,
-    })
-  }),
+  createShippingMethod: jest
+    .fn()
+    .mockImplementation((optionId, data, config) => {
+      return Promise.resolve({
+        ...config,
+        id: "test-shipping-method",
+        shipping_option_id: optionId,
+        data,
+      })
+    }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

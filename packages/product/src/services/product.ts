@@ -1,22 +1,30 @@
-import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  FindConfig,
+  ProductTypes,
+  BaseFilterable,
+  FilterableProductProps,
+} from "@medusajs/types"
 import { InjectManager, MedusaContext, ModulesSdkUtils } from "@medusajs/utils"
 import { Product } from "@models"
-import { IProductRepository, ProductServiceTypes } from "@types"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
 }
 
+type NormalizedFilterableProductProps = ProductTypes.FilterableProductProps & {
+  categories?: {
+    id: string | { $in: string[] }
+  }
+}
+
 export default class ProductService<
   TEntity extends Product = Product
-> extends ModulesSdkUtils.abstractServiceFactory<
-  InjectedDependencies,
-  {
-    create: ProductTypes.CreateProductOnlyDTO
-    update: ProductServiceTypes.UpdateProductDTO
-  }
->(Product)<TEntity> {
-  protected readonly productRepository_: IProductRepository<TEntity>
+> extends ModulesSdkUtils.internalModuleServiceFactory<InjectedDependencies>(
+  Product
+)<TEntity> {
+  protected readonly productRepository_: DAL.RepositoryService<TEntity>
 
   constructor({ productRepository }: InjectedDependencies) {
     // @ts-ignore
@@ -27,50 +35,48 @@ export default class ProductService<
   }
 
   @InjectManager("productRepository_")
-  async list<TEntityMethod = ProductTypes.ProductDTO>(
+  async list(
     filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<TEntityMethod> = {},
+    config: FindConfig<TEntity> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    if (filters.category_id) {
-      if (Array.isArray(filters.category_id)) {
-        filters.categories = {
-          id: { $in: filters.category_id },
-        }
-      } else {
-        filters.categories = {
-          id: filters.category_id,
-        }
-      }
-      delete filters.category_id
-    }
-
-    return await super.list<TEntityMethod>(filters, config, sharedContext)
-  }
-
-  @InjectManager("productRepository_")
-  async listAndCount<TEntityMethod = ProductTypes.ProductDTO>(
-    filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<TEntityMethod> = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], number]> {
-    if (filters.category_id) {
-      if (Array.isArray(filters.category_id)) {
-        filters.categories = {
-          id: { $in: filters.category_id },
-        }
-      } else {
-        filters.categories = {
-          id: filters.category_id,
-        }
-      }
-      delete filters.category_id
-    }
-
-    return await super.listAndCount<TEntityMethod>(
-      filters,
+    return await super.list(
+      ProductService.normalizeFilters(filters),
       config,
       sharedContext
     )
+  }
+
+  @InjectManager("productRepository_")
+  async listAndCount(
+    filters: ProductTypes.FilterableProductProps = {},
+    config: FindConfig<any> = {},
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<[TEntity[], number]> {
+    return await super.listAndCount(
+      ProductService.normalizeFilters(filters),
+      config,
+      sharedContext
+    )
+  }
+
+  protected static normalizeFilters(
+    filters: FilterableProductProps = {}
+  ): NormalizedFilterableProductProps {
+    const normalized = filters as NormalizedFilterableProductProps
+    if (normalized.category_id) {
+      if (Array.isArray(normalized.category_id)) {
+        normalized.categories = {
+          id: { $in: normalized.category_id },
+        }
+      } else {
+        normalized.categories = {
+          id: normalized.category_id as string,
+        }
+      }
+      delete normalized.category_id
+    }
+
+    return normalized
   }
 }

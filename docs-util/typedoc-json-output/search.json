@@ -1,0 +1,1459 @@
+{
+	"id": 0,
+	"name": "search",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "AbstractSearchService",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {
+				"isAbstract": true
+			},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "## Overview\n\nA search service class is in a TypeScript or JavaScript file created in the "
+					},
+					{
+						"kind": "code",
+						"text": "`src/services`"
+					},
+					{
+						"kind": "text",
+						"text": " directory. The class must extend the "
+					},
+					{
+						"kind": "code",
+						"text": "`AbstractSearchService`"
+					},
+					{
+						"kind": "text",
+						"text": " class imported\n from the "
+					},
+					{
+						"kind": "code",
+						"text": "`@medusajs/utils`"
+					},
+					{
+						"kind": "text",
+						"text": " package.\n\nBased on services’ naming conventions, the file’s name should be the slug version of the search service’s name without "
+					},
+					{
+						"kind": "code",
+						"text": "`service`"
+					},
+					{
+						"kind": "text",
+						"text": ", and the class’s name should be the \npascal case of the search service’s name following by "
+					},
+					{
+						"kind": "code",
+						"text": "`Service`"
+					},
+					{
+						"kind": "text",
+						"text": ".\n\nFor example, create the "
+					},
+					{
+						"kind": "code",
+						"text": "`MySearchService`"
+					},
+					{
+						"kind": "text",
+						"text": " class in the file "
+					},
+					{
+						"kind": "code",
+						"text": "`src/services/my-search.ts`"
+					},
+					{
+						"kind": "text",
+						"text": ":\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts title=\"src/services/my-search.ts\"\nimport { AbstractSearchService } from \"@medusajs/utils\"\n\nclass MySearchService extends AbstractSearchService {\n  isDefault = false\n  \n  createIndex(indexName: string, options: Record<string, any>) {\n    throw new Error(\"Method not implemented.\")\n  }\n  getIndex(indexName: string) {\n    throw new Error(\"Method not implemented.\")\n  }\n  addDocuments(\n    indexName: string,\n    documents: Record<string, any>[],\n    type: string\n  ) {\n    throw new Error(\"Method not implemented.\")\n  }\n  replaceDocuments(\n    indexName: string,\n    documents: Record<string, any>[],\n    type: string\n  ) {\n    throw new Error(\"Method not implemented.\")\n  }\n  deleteDocument(\n    indexName: string,\n    document_id: string | number\n  ) {\n    throw new Error(\"Method not implemented.\")\n  }\n  deleteAllDocuments(indexName: string) {\n    throw new Error(\"Method not implemented.\")\n  }\n  search(\n    indexName: string,\n    query: string, \n    options: Record<string, any>\n  ) {\n    return {\n      message: \"test\",\n    }\n  }\n  updateSettings(\n    indexName: string, \n    settings: Record<string, any>\n  ) {\n    throw new Error(\"Method not implemented.\")\n  }\n\n}\n\nexport default MySearchService\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n---\n\n## Notes About Class Methods\n\nAlthough there are several helper methods in this class, the main methods used by the Medusa backend are "
+					},
+					{
+						"kind": "code",
+						"text": "`addDocuments`"
+					},
+					{
+						"kind": "text",
+						"text": ", "
+					},
+					{
+						"kind": "code",
+						"text": "`deleteDocument`"
+					},
+					{
+						"kind": "text",
+						"text": ", and "
+					},
+					{
+						"kind": "code",
+						"text": "`search`"
+					},
+					{
+						"kind": "text",
+						"text": ". \nThe rest of the methods are provided in case you need them for custom use cases.\n\n---"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 10,
+					"name": "isDefault",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isAbstract": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "This property is used to pinpoint the default search service defined in the Medusa core. For custom search services, the "
+							},
+							{
+								"kind": "code",
+								"text": "`isDefault`"
+							},
+							{
+								"kind": "text",
+								"text": " property must be "
+							},
+							{
+								"kind": "code",
+								"text": "`false`"
+							},
+							{
+								"kind": "text",
+								"text": "."
+							}
+						]
+					},
+					"type": {
+						"type": "intrinsic",
+						"name": "any"
+					}
+				},
+				{
+					"id": 11,
+					"name": "options_",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isProtected": true,
+						"isReadonly": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "If your search service is created in a plugin, the plugin's options will be available in this property."
+							}
+						]
+					},
+					"type": {
+						"type": "reference",
+						"target": {
+							"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+							"qualifiedName": "Record"
+						},
+						"typeArguments": [
+							{
+								"type": "intrinsic",
+								"name": "string"
+							},
+							{
+								"type": "intrinsic",
+								"name": "unknown"
+							}
+						],
+						"name": "Record",
+						"package": "typescript"
+					}
+				},
+				{
+					"id": 6,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {
+						"isProtected": true
+					},
+					"signatures": [
+						{
+							"id": 7,
+							"name": "new AbstractSearchService",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "You can use the "
+									},
+									{
+										"kind": "code",
+										"text": "`constructor`"
+									},
+									{
+										"kind": "text",
+										"text": " of your search service to access the different services in Medusa through dependency injection.\n\nYou can also use the constructor to initialize your integration with the third-party provider. For example, if you use a client to connect to the third-party provider’s APIs,\nyou can initialize it in the constructor and use it in other methods in the service.\n\nAdditionally, if you’re creating your search service as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,\nyou can access them in the constructor. The default constructor already sets the value of the class proeprty "
+									},
+									{
+										"kind": "code",
+										"text": "`options_`"
+									},
+									{
+										"kind": "text",
+										"text": " to the passed options."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\n// ...\nimport { ProductService } from \"@medusajs/medusa\"\n\ntype InjectedDependencies = {\n  productService: ProductService\n}\n\nclass MySearchService extends AbstractSearchService {\n  // ...\n  protected readonly productService_: ProductService\n\n  constructor({ productService }: InjectedDependencies) {\n    // @ts-expect-error prefer-rest-params\n    super(...arguments)\n    this.productService_ = productService\n\n    // you can also initialize a client that\n    // communicates with a third-party service.\n    this.client = new Client(options)\n  }\n\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 8,
+									"name": "container",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "An instance of "
+											},
+											{
+												"kind": "code",
+												"text": "`MedusaContainer`"
+											},
+											{
+												"kind": "text",
+												"text": " that allows you to access other resources, such as services, in your Medusa backend."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "any"
+									}
+								},
+								{
+									"id": 9,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "If this search service is created in a plugin, the plugin's options are passed in this parameter."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "any"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "AbstractSearchService",
+								"package": "@medusajs/utils"
+							}
+						}
+					]
+				},
+				{
+					"id": 14,
+					"name": "createIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 15,
+							"name": "createIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to create an index in the search engine."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "No required format of returned data, as it depends on your custom implementation."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An example implementation, assuming "
+											},
+											{
+												"kind": "code",
+												"text": "`client`"
+											},
+											{
+												"kind": "text",
+												"text": " would interact with a third-party service:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts title=\"src/services/my-search.ts\"\nclass MySearchService extends AbstractSearchService {\n  // ...\n  createIndex(indexName: string, options: Record<string, any>) {\n    return this.client_.initIndex(indexName)\n  }\n  // ...\n}\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nAnother example of how the [MeiliSearch plugin](https://docs.medusajs.com/plugins/search/meilisearch) uses the\n"
+											},
+											{
+												"kind": "code",
+												"text": "`options`"
+											},
+											{
+												"kind": "text",
+												"text": " parameter:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nclass MeiliSearchService extends AbstractSearchService {\n  // ...\n  async createIndex(\n    indexName: string,\n    options: Record<string, unknown> = { primaryKey: \"id\" }\n  ) {\n    return await this.client_.createIndex(indexName, options)\n  }\n  // ...\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 16,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index to create."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 17,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Any options that may be relevant to your search service. This parameter doesn't have \nany defined format as it depends on your custom implementation."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.createIndex"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.createIndex"
+					}
+				},
+				{
+					"id": 18,
+					"name": "getIndex",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 19,
+							"name": "getIndex",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to retrieve an index’s results from the search engine."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "No required format of returned data, as it depends on your custom implementation."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  getIndex(indexName: string) {\n    return this.client_.getIndex(indexName)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 20,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index"
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.getIndex"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.getIndex"
+					}
+				},
+				{
+					"id": 21,
+					"name": "addDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 22,
+							"name": "addDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to add a document to an index in the search engine.\n\nWhen the Medusa backend loads, it triggers indexing for all products available in the Medusa backend, which uses this method to add or update documents.\nIt’s also used whenever a new product is added or a product is updated."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The response of saving the documents in the search engine, but there’s no required format of the response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async addDocuments(\n    indexName: string,\n    documents: Record<string, any>[],\n    type: string\n  ) {\n    return await this.client_\n      .addDocuments(indexName, documents)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 23,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index to add the documents to."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 24,
+									"name": "documents",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of documents to add. For example, an array of "
+											},
+											{
+												"kind": "inline-tag",
+												"tag": "@link",
+												"text": "entities!Product | products"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								},
+								{
+									"id": 25,
+									"name": "type",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The type of documents being indexed. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`products`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.addDocuments"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.addDocuments"
+					}
+				},
+				{
+					"id": 26,
+					"name": "replaceDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 27,
+							"name": "replaceDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to replace existing documents in the search engine of an index with new documents."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The response of replacing the documents in the search engine, but there’s no required format of the response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async replaceDocuments(\n    indexName: string,\n    documents: Record<string, any>[],\n    type: string\n  ) {\n    await this.client_\n      .removeDocuments(indexName)\n    return await this.client_\n      .addDocuments(indexName, documents)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 28,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index that the documents belong to."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 29,
+									"name": "documents",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The list of documents to index. For example, it can be an array of "
+											},
+											{
+												"kind": "inline-tag",
+												"tag": "@link",
+												"text": "entities!Product | products"
+											},
+											{
+												"kind": "text",
+												"text": ".\nBased on your search engine implementation, the documents should include an identification key that allows replacing the existing documents."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								},
+								{
+									"id": 30,
+									"name": "type",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The type of documents being replaced. For example, "
+											},
+											{
+												"kind": "code",
+												"text": "`products`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.replaceDocuments"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.replaceDocuments"
+					}
+				},
+				{
+					"id": 31,
+					"name": "deleteDocument",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 32,
+							"name": "deleteDocument",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to delete a document from an index.\n\nWhen a product is deleted in the Medusa backend, this method is used to delete the product from the search engine’s index."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The response of deleting the document in the search engine, but there’s no required format of the response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async deleteDocument(\n    indexName: string,\n    document_id: string | number\n  ) {\n    return await this.client_\n      .deleteDocument(indexName, document_id)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 33,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The name of the index that the document belongs to."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 34,
+									"name": "document_id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the item indexed. For example, if the deleted item is a product, then this is\nthe ID of the product."
+											}
+										]
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.deleteDocument"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.deleteDocument"
+					}
+				},
+				{
+					"id": 35,
+					"name": "deleteAllDocuments",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 36,
+							"name": "deleteAllDocuments",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to delete all documents from an index."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The response of deleting the documents of that index in the search engine, but there’s no required format of the response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async deleteAllDocuments(indexName: string) {\n    return await this.client_\n      .deleteDocuments(indexName)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 37,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index's name."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.deleteAllDocuments"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.deleteAllDocuments"
+					}
+				},
+				{
+					"id": 38,
+					"name": "search",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 39,
+							"name": "search",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to search through an index by a query.\n\nIn the Medusa backend, this method is used within the [Search Products API Route](https://docs.medusajs.com/api/store#products_postproductssearch) \nto retrieve the search results. The API route's response type is an array of items, though the item's format is not defined as it depends on the\ndata returned by this method."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The list of results. For example, an array of products."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async search(\n    indexName: string,\n    query: string,\n    options: Record<string, any>\n  ) {\n    const hits = await this.client_\n      .search(indexName, query)\n    return {\n      hits,\n    }\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 40,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index's name. In the case of the Search Products API Routes, its value is "
+											},
+											{
+												"kind": "code",
+												"text": "`products`"
+											},
+											{
+												"kind": "text",
+												"text": "."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 41,
+									"name": "query",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The search query to retrieve results for."
+											}
+										]
+									},
+									"type": {
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": null
+											},
+											{
+												"type": "intrinsic",
+												"name": "string"
+											}
+										]
+									}
+								},
+								{
+									"id": 42,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Options that can configure the search process. The Search Products API route passes an object having the properties:\n\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`paginationOptions`"
+											},
+											{
+												"kind": "text",
+												"text": ": An object having an "
+											},
+											{
+												"kind": "code",
+												"text": "`offset`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`limit`"
+											},
+											{
+												"kind": "text",
+												"text": " properties, which are passed in the API Route's body.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`filter`"
+											},
+											{
+												"kind": "text",
+												"text": ": Filters that are passed in the API Route's request body. Its format is unknown, so you can pass filters based on your search service.\n- "
+											},
+											{
+												"kind": "code",
+												"text": "`additionalOptions`"
+											},
+											{
+												"kind": "text",
+												"text": ": Any other parameters that may be passed in the request's body."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.search"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.search"
+					}
+				},
+				{
+					"id": 43,
+					"name": "updateSettings",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {
+						"isAbstract": true
+					},
+					"signatures": [
+						{
+							"id": 44,
+							"name": "updateSettings",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method is used to update the settings of an index within the search service. This is useful if you want to update the index settings when the plugin options change.\n\nFor example, in the Algolia plugin, a loader, which runs when the Medusa backend loads, is used to update the settings of indices based on the plugin options. \nThe loader uses this method to update the settings."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The response of updating the index in the search engine, but there’s no required format of the response."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MySearchService extends AbstractSearchService {\n  // ...\n\n  async updateSettings(\n    indexName: string,\n    settings: Record<string, any>\n  ) {\n    return await this.client_\n      .updateSettings(indexName, settings)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"parameters": [
+								{
+									"id": 45,
+									"name": "indexName",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The index's name to update its settings."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 46,
+									"name": "settings",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The settings to update. Its format depends on your use case."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "unknown"
+									}
+								}
+							],
+							"type": {
+								"type": "intrinsic",
+								"name": "unknown"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "SearchTypes.ISearchService.updateSettings"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "SearchTypes.ISearchService.updateSettings"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						6
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						10,
+						11
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						14,
+						18,
+						21,
+						26,
+						31,
+						35,
+						38,
+						43
+					]
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../packages/types/src/search/interface.ts",
+						"qualifiedName": "ISearchService"
+					},
+					"name": "ISearchService",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService"
+		},
+		"6": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.__constructor"
+		},
+		"7": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService"
+		},
+		"8": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "container"
+		},
+		"9": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "options"
+		},
+		"10": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.isDefault"
+		},
+		"11": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.options_"
+		},
+		"14": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.createIndex"
+		},
+		"15": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.createIndex"
+		},
+		"16": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"17": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "options"
+		},
+		"18": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.getIndex"
+		},
+		"19": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.getIndex"
+		},
+		"20": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"21": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.addDocuments"
+		},
+		"22": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.addDocuments"
+		},
+		"23": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"24": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "documents"
+		},
+		"25": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "type"
+		},
+		"26": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.replaceDocuments"
+		},
+		"27": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.replaceDocuments"
+		},
+		"28": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"29": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "documents"
+		},
+		"30": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "type"
+		},
+		"31": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.deleteDocument"
+		},
+		"32": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.deleteDocument"
+		},
+		"33": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"34": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "document_id"
+		},
+		"35": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
+		},
+		"36": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.deleteAllDocuments"
+		},
+		"37": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"38": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.search"
+		},
+		"39": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.search"
+		},
+		"40": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"41": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "query"
+		},
+		"42": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "options"
+		},
+		"43": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.updateSettings"
+		},
+		"44": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "AbstractSearchService.updateSettings"
+		},
+		"45": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "indexName"
+		},
+		"46": {
+			"sourceFileName": "../../../packages/utils/src/search/abstract-service.ts",
+			"qualifiedName": "settings"
+		}
+	}
+}

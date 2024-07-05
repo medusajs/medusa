@@ -56,14 +56,6 @@
 
 {{/if}}
 
-{{#unless @last}}
-{{#unless hasOwnDocument}}
-{{#unless removeSeparator}}
-___
-{{/unless}}
-{{/unless}}
-{{/unless}}
-
 {{#unless hasOwnDocument}}
 
 {{#if name}}
@@ -73,3 +65,13 @@ ___
 {{/if}}
 
 {{/unless}}
+
+{{#ifShowSeparatorForTitleLevel}}
+{{#unless @last}}
+{{#unless hasOwnDocument}}
+{{#unless removeSeparator}}
+___
+{{/unless}}
+{{/unless}}
+{{/unless}}
+{{/ifShowSeparatorForTitleLevel}}

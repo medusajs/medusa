@@ -19,7 +19,7 @@ Alternatively, you can use this button to deploy the Medusa backend to Heroku di
 
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
-Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../development/backend/configurations.md) to learn how to do that.
+Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx) to learn how to do that.
 
 ### Needed Accounts
 
@@ -87,7 +87,7 @@ This uses the lowest plan in Stackhero Redis. You can check out [the plans and p
 
 ### 4. Configure Environment Variables on Heroku
 
-Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa backend](../../development/backend/configurations.md) document.
+Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa backend](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx) document.
 
 Run the following commands in the root directory of your Medusa backend to set some environment variables:
 
@@ -178,7 +178,7 @@ Where `<YOUR_STOREFRONT_URL>` is the URL of your storefront.
 
 ### 5. Configure Medusa Backend
 
-Before jumping into the deployment, you need to configure your Medusa backend to ensure it uses the previous environment variables and the recommended production configurations.
+Before jumping into the deployment, you must configure your Medusa backend to use the previous environment variables and the recommended production configurations.
 
 #### medusa-config.js
 
@@ -216,7 +216,65 @@ Update `scripts` to include the following scripts:
 },
 ```
 
-### 6. Launch your Medusa Backend
+### (Optional) 6. Configure the Admin
+
+If you're using the Medusa Admin plugin, you have two options to deploy it: either with the backend or separately.
+
+#### Deploying with the Backend
+
+To deploy the admin with the backend:
+
+1. Your chosen plan must offer at least 2GB of RAM.
+2. Enable the [autoRebuild option](../../admin/configuration.mdx#plugin-options) of the admin plugin:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      autoRebuild: true,
+      // other options...
+    },
+  },
+]
+```
+
+Alternatively, you can use a GitHub action to build the admin as explained [here](../index.mdx#deploy-admin-through-github-action).
+
+#### Deploying Separately
+
+If you choose to deploy the admin separately, disable the admin plugin's [serve option](../../admin/configuration.mdx#plugin-options):
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...
+  {
+    resolve: "@medusajs/admin",
+    /** @type {import('@medusajs/admin').PluginOptions} */
+    options: {
+      // only enable `serve` in development
+      // you may need to add the NODE_ENV variable
+      // manually
+      serve: process.env.NODE_ENV === "development",
+      // other options...
+    },
+  },
+]
+```
+
+This ensures that the admin isn't built or served in production. You can also change `@medusajs/admin` dependency to be a dev dependency in `package.json`.
+
+You can alternatively remove the admin plugin for the plugins array.
+
+:::tip
+
+Refer to the [admin deployment guides on how to deploy the admin separately](../admin/index.mdx).
+
+:::
+
+### 7. Launch your Medusa Backend
 
 Finally, commit and push all changes to Heroku:
 
@@ -227,6 +285,8 @@ git push heroku HEAD:master
 ```
 
 This triggers a redeploy of the Medusa backend with all the new configurations.
+
+---
 
 ## Test your Backend
 
@@ -248,17 +308,13 @@ You can access `/health` to get health status of your deployed backend.
 
 ### Testing the Admin
 
-:::note
+If you deployed the [admin dashboard with the backend](#deploying-with-the-backend), you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
-Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/configuration.mdx#build-command-options) command as part of the `serve` command of your backend.
+---
 
-:::
+## Troubleshooting
 
-If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
-
-### Troubleshooting
-
-#### Inspect Build Logs
+### Inspect Build Logs
 
 If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa backend:
 
@@ -268,7 +324,7 @@ heroku logs -n 500000 --remote heroku --tail -a <APP_NAME>
 
 Where `<APP_NAME>` is the name of the app.
 
-#### Error: Babel not found
+### Error: Babel not found
 
 If you get the following error in the logs of your application:
 
@@ -307,10 +363,10 @@ Where `<APP_NAME>` is the name of the app and `<COMMAND>` is the command you wan
 For example, to create an admin user you can run the following command:
 
 ```bash
-heroku run -a <APP_NAME> -- medusa user -e "<EMAIL>" -p "<PASSWORD>"
+heroku run -a <APP_NAME> -- npx medusa user -e "<EMAIL>" -p "<PASSWORD>"
 ```
 
-Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>` are the credentials you want to use to log in to the Medusa admin dashboard.
+Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>` are the credentials you want to use to log in to the Medusa Admin dashboard.
 
 ---
 
@@ -330,5 +386,5 @@ Where `<APP_NAME>` is the name of your Heroku app, `<ENV_NAME>` is the name of t
 
 ## See Also
 
-- [Deploy your Medusa admin](../admin/index.mdx)
+- [Deploy your Medusa Admin](../admin/index.mdx)
 - [Deploy your storefront](../storefront/index.mdx)

@@ -146,7 +146,7 @@ class AdminInvitesResource extends BaseResource {
    * })
    */
   resend(id: string, customHeaders: Record<string, any> = {}): ResponsePromise {
-    const path = `/admin/invites/${id}`
+    const path = `/admin/invites/${id}/resend`
     return this.client.request("POST", path, undefined, {}, customHeaders)
   }
 }

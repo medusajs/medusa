@@ -10,7 +10,7 @@ In this document, you will learn how to build your own Medusa cache module.
 
 Medusa provides ready-made modules for cache, including in-memory and Redis modules. If you prefer another technology used for caching in your commerce application, you can build a module locally and use it in your Medusa backend. You can also publish to NPM and reuse it across multiple Medusa backend instances.
 
-In this document, you will learn how to build your own Medusa cache module based on Memcached as an example. This gives you a real-life example of creating the cache module. You can follow the general steps with any other caching system or service.
+In this document, you will learn how to build your own Medusa cache module based on Memcached as an example. This gives you a real-life example of creating the Cache Module. You can follow the general steps with any other caching system or service.
 
 ---
 
@@ -250,7 +250,7 @@ module.exports = {
 
 Make sure to replace the `path/to/custom-module` with a relative path from your Medusa backend to your module. You can learn more about module reference in the [Create Module documentation](../modules/create.mdx#module-reference).
 
-You can also add any necessary options to the module. The options added in the example above are relevant to the memcached module and you can replace them with your own options.
+You can also add any necessary options to the module. The options added in the example above are relevant to the Memcached Module and you can replace them with your own options.
 
 Then, to test the module, run the Medusa backend which also runs your module:
 

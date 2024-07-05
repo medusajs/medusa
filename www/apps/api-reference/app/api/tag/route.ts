@@ -20,12 +20,7 @@ export async function GET(request: Request) {
   }
 
   // this is just to ensure that vercel picks up these files on build
-  path.join(process.cwd(), "specs/admin/code_samples")
-  path.join(process.cwd(), "specs/admin/components")
-  path.join(process.cwd(), "specs/admin/paths")
-  path.join(process.cwd(), "specs/store/code_samples")
-  path.join(process.cwd(), "specs/store/components")
-  path.join(process.cwd(), "specs/store/paths")
+  path.join(process.cwd(), "specs")
 
   // get path files
   const paths = await getPathsOfTag(tagName, area)

@@ -9,3 +9,8 @@ export interface CreatePromotionRuleDTO {
 export interface UpdatePromotionRuleDTO {
   id: string
 }
+
+export enum ApplicationMethodRuleTypes {
+  TARGET_RULES = "target_rules",
+  BUY_RULES = "buy_rules",
+}

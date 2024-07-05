@@ -1,179 +1,413 @@
 const jwt = require("jsonwebtoken")
-const path = require("path")
 
-const setupServer = require("../../../environment-helpers/setup-server")
-const { useApi } = require("../../../environment-helpers/use-api")
-const { initDb, useDb } = require("../../../environment-helpers/use-db")
-
-const userSeeder = require("../../../helpers/user-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
+const { medusaIntegrationTestRunner } = require("medusa-test-utils")
 const {
-  simpleAnalyticsConfigFactory,
-} = require("../../../factories/simple-analytics-config-factory")
-const startServerWithEnvironment =
-  require("../../../environment-helpers/start-server-with-environment").default
+  createAdminUser,
+  adminHeaders,
+} = require("../../../helpers/create-admin-user")
+const { breaking } = require("../../../helpers/breaking")
+const { ModuleRegistrationName } = require("@medusajs/modules-sdk")
 
 jest.setTimeout(30000)
 
-const adminReqConfig = {
-  headers: {
-    "x-medusa-access-token": "test_token",
-  },
-}
+let userSeeder = {}
+let simpleAnalyticsConfigFactory = {}
 
-describe("/admin/users", () => {
-  let medusaProcess
-  let dbConnection
+medusaIntegrationTestRunner({
+  // env: { MEDUSA_FF_MEDUSA_V2: true },
+  testSuite: ({ dbConnection, getContainer, api }) => {
+    let container
+    let userModuleService
 
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
-  })
+    beforeAll(() => {
+      userSeeder = require("../../../helpers/user-seeder")
+      simpleAnalyticsConfigFactory = require("../../../factories/simple-analytics-config-factory")
+    })
 
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-    medusaProcess.kill()
-  })
-
-  describe("GET /admin/users", () => {
     beforeEach(async () => {
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
+      container = getContainer()
+
+      userModuleService = container.resolve(ModuleRegistrationName.USER)
+
+      await createAdminUser(dbConnection, adminHeaders, container)
     })
 
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("returns user by id", async () => {
-      const api = useApi()
-
-      const response = await api.get("/admin/users/admin_user", adminReqConfig)
-
-      expect(response.status).toEqual(200)
-      expect(response.data.user).toMatchSnapshot({
-        id: "admin_user",
-        email: "admin@medusa.js",
-        api_token: "test_token",
-        role: "admin",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
-    })
-
-    it("lists users", async () => {
-      const api = useApi()
-
-      const response = await api
-        .get("/admin/users", adminReqConfig)
-        .catch((err) => {
-          console.log(err)
+    describe("GET /admin/users/:id", () => {
+      beforeEach(async () => {
+        await breaking(async () => {
+          await userSeeder(dbConnection)
         })
+      })
 
-      expect(response.status).toEqual(200)
+      it("should return user by id", async () => {
+        const response = await api.get("/admin/users/admin_user", adminHeaders)
 
-      expect(response.data.users).toMatchSnapshot([
-        {
+        const v1Response = {
           id: "admin_user",
           email: "admin@medusa.js",
           api_token: "test_token",
           role: "admin",
           created_at: expect.any(String),
           updated_at: expect.any(String),
-        },
-        {
-          id: "member-user",
-          role: "member",
-          email: "member@test.com",
-          first_name: "member",
-          last_name: "user",
+        }
+
+        const v2Response = {
+          id: "admin_user",
+          email: "admin@medusa.js",
           created_at: expect.any(String),
           updated_at: expect.any(String),
-        },
-      ])
+        }
+
+        expect(response.status).toEqual(200)
+        expect(response.data.user).toEqual(
+          expect.objectContaining(
+            breaking(
+              () => v1Response,
+              () => v2Response
+            )
+          )
+        )
+      })
     })
-  })
 
-  describe("POST /admin/users", () => {
-    let user
-    beforeEach(async () => {
-      const api = useApi()
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-
-      const response = await api
-        .post(
-          "/admin/users",
-          {
-            email: "test@forgottenPassword.com",
-            role: "member",
-            password: "test123453",
+    describe("GET /admin/users", () => {
+      beforeEach(async () => {
+        await breaking(
+          async () => {
+            await userSeeder(dbConnection)
           },
-          adminReqConfig
+          async () => {
+            await userModuleService.create({
+              id: "member-user",
+              email: "member@test.com",
+              first_name: "member",
+              last_name: "user",
+            })
+          }
         )
-        .catch((err) => console.log(err))
+      })
 
-      user = response.data.user
-    })
+      it("should list users", async () => {
+        const response = await api
+          .get("/admin/users", adminHeaders)
+          .catch((err) => {
+            console.log(err)
+          })
 
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
+        expect(response.status).toEqual(200)
 
-    it("creates a user", async () => {
-      const api = useApi()
+        const v1Response = [
+          expect.objectContaining({
+            id: "admin_user",
+            email: "admin@medusa.js",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            api_token: "test_token",
+            role: "admin",
+          }),
+          expect.objectContaining({
+            id: "member-user",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            role: "member",
+          }),
+        ]
 
-      const payload = {
-        email: "test@test123.com",
-        role: "member",
-        password: "test123",
-      }
+        const v2Response = [
+          expect.objectContaining({
+            id: "admin_user",
+            email: "admin@medusa.js",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+          expect.objectContaining({
+            id: "member-user",
+            email: "member@test.com",
+            first_name: "member",
+            last_name: "user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ]
 
-      const response = await api
-        .post("/admin/users", payload, adminReqConfig)
-        .catch((err) => console.log(err))
+        expect(response.data.users).toEqual(
+          expect.arrayContaining(
+            breaking(
+              () => v1Response,
+              () => v2Response
+            )
+          )
+        )
+      })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.user).toMatchSnapshot({
-        id: expect.stringMatching(/^usr_*/),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        role: "member",
-        email: "test@test123.com",
+      it("should list users that match the free text search", async () => {
+        const response = await api.get("/admin/users?q=member", adminHeaders)
+
+        expect(response.status).toEqual(200)
+
+        expect(response.data.users.length).toEqual(1)
+        expect(response.data.users).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              id: "member-user",
+              email: "member@test.com",
+              first_name: "member",
+              last_name: "user",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              ...breaking(
+                () => ({ role: "member" }),
+                () => ({})
+              ),
+            }),
+          ])
+        )
       })
     })
 
-    it("updates a user", async () => {
-      const api = useApi()
+    describe("POST /admin/users", () => {
+      let token
 
-      const updateResponse = await api
-        .post(
-          "/admin/users/member-user",
-          { first_name: "karl" },
-          adminReqConfig
+      beforeEach(async () => {
+        token = await breaking(
+          () => null,
+          async () => {
+            const emailPassResponse = await api.post("/auth/admin/emailpass", {
+              email: "test@test123.com",
+              password: "test123",
+            })
+
+            return emailPassResponse.data.token
+          }
         )
-        .catch((err) => console.log(err.response.data.message))
+      })
 
-      expect(updateResponse.status).toEqual(200)
-      expect(updateResponse.data.user).toMatchSnapshot({
-        id: "member-user",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        role: "member",
-        email: "member@test.com",
-        first_name: "karl",
-        last_name: "user",
+      it("should create a user", async () => {
+        const payload = {
+          email: "test@test123.com",
+          ...breaking(
+            () => ({ role: "member", password: "test123" }),
+            () => ({})
+          ),
+        }
+
+        // In V2, the flow to create an authenticated user depends on the token or session of a previously created auth user
+        const headers = breaking(
+          () => adminHeaders,
+          () => {
+            return {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          }
+        )
+
+        const response = await api
+          .post("/admin/users", payload, headers)
+          .catch((err) => console.log(err))
+
+        expect(response.status).toEqual(200)
+        expect(response.data.user).toEqual(
+          expect.objectContaining({
+            id: expect.stringMatching(
+              breaking(
+                () => /^usr_*/,
+                () => /^user_*/
+              )
+            ),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            email: "test@test123.com",
+            ...breaking(
+              () => ({ role: "member" }),
+              () => ({})
+            ),
+          })
+        )
+      })
+
+      // V2 only test
+      it.skip("should throw, if session/bearer auth is present for existing user", async () => {
+        const emailPassResponse = await api.post("/auth/admin/emailpass", {
+          email: "test@test123.com",
+          password: "test123",
+        })
+
+        const token = emailPassResponse.data.token
+
+        const headers = (token) => ({
+          headers: { Authorization: `Bearer ${token}` },
+        })
+
+        // Create user
+        const res = await api
+          .post(
+            "/admin/users",
+            {
+              email: "test@test123.com",
+            },
+            headers(token)
+          )
+          .catch((err) => console.log(err))
+
+        const payload = {
+          email: "different@email.com",
+        }
+
+        const { response: errorResponse } = await api
+          .post("/admin/users", payload, headers(res.data.token))
+          .catch((err) => err)
+
+        expect(errorResponse.status).toEqual(400)
+        expect(errorResponse.data.message).toEqual(
+          "Request carries authentication for an existing user"
+        )
       })
     })
 
-    describe("Password reset", () => {
+    describe("POST /admin/users/:id", () => {
+      beforeEach(async () => {
+        await breaking(
+          async () => {
+            await userSeeder(dbConnection)
+          },
+          async () => {
+            await userModuleService.create([
+              {
+                id: "member-user",
+                email: "member@test.com",
+                first_name: "member",
+                last_name: "user",
+              },
+            ])
+          }
+        )
+      })
+
+      it("should update a user", async () => {
+        const updateResponse = await api
+          .post(
+            "/admin/users/member-user",
+            { first_name: "karl" },
+            adminHeaders
+          )
+          .catch((err) => console.log(err.response.data.message))
+
+        expect(updateResponse.status).toEqual(200)
+        expect(updateResponse.data.user).toEqual(
+          expect.objectContaining({
+            id: "member-user",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            email: "member@test.com",
+            first_name: "karl",
+            last_name: "user",
+            ...breaking(
+              () => ({ role: "member" }),
+              () => ({})
+            ),
+          })
+        )
+      })
+    })
+
+    describe("DELETE /admin/users", () => {
+      beforeEach(async () => {
+        await breaking(
+          async () => {
+            await userSeeder(dbConnection)
+          },
+          async () => {
+            await userModuleService.create([
+              {
+                id: "member-user",
+                email: "member@test.com",
+                first_name: "member",
+                last_name: "user",
+              },
+            ])
+          }
+        )
+      })
+
+      it("Deletes a user", async () => {
+        const userId = "member-user"
+
+        const response = await api.delete(
+          `/admin/users/${userId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          id: userId,
+          object: "user",
+          deleted: true,
+        })
+      })
+
+      // TODO: Migrate when analytics config is implemented in 2.0
+      it.skip("Deletes a user and their analytics config", async () => {
+        const userId = "member-user"
+
+        await simpleAnalyticsConfigFactory(dbConnection, {
+          user_id: userId,
+        })
+
+        const response = await api.delete(
+          `/admin/users/${userId}`,
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data).toEqual({
+          id: userId,
+          object: "user",
+          deleted: true,
+        })
+
+        const configs = await dbConnection.manager.query(
+          `SELECT * FROM public.analytics_config WHERE user_id = '${userId}'`
+        )
+
+        expect(configs).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              created_at: expect.any(Date),
+              updated_at: expect.any(Date),
+              deleted_at: expect.any(Date),
+              id: expect.any(String),
+              user_id: userId,
+              opt_out: false,
+              anonymize: false,
+            }),
+          ])
+        )
+      })
+    })
+
+    // TODO: Migrate when implemented in 2.0
+    describe("POST /admin/users/reset-password + POST /admin/users/password-token", () => {
+      let user
+      beforeEach(async () => {
+        const response = await api
+          .post(
+            "/admin/users",
+            {
+              email: "test@forgottenPassword.com",
+              role: "member",
+              password: "test123453",
+            },
+            adminHeaders
+          )
+          .catch((err) => console.log(err))
+
+        user = response.data.user
+      })
+
       it("Doesn't fail to fetch user when resetting password for an unknown email (unauthorized endpoint)", async () => {
-        const api = useApi()
-
         const resp = await api.post("/admin/users/password-token", {
           email: "test-doesnt-exist@test.com",
         })
@@ -182,8 +416,6 @@ describe("/admin/users", () => {
       })
 
       it("Doesn't fail when generating password reset token (unauthorized endpoint)", async () => {
-        const api = useApi()
-
         const resp = await api
           .post("/admin/users/password-token", {
             email: user.email,
@@ -197,8 +429,6 @@ describe("/admin/users", () => {
       })
 
       it("Resets the password given a valid token (unauthorized endpoint)", async () => {
-        const api = useApi()
-
         const expiry = Math.floor(Date.now() / 1000) + 60 * 15
         const dbUser = await dbConnection.manager.query(
           `SELECT * FROM public.user WHERE email = '${user.email}'`
@@ -243,8 +473,6 @@ describe("/admin/users", () => {
       })
 
       it("Resets the password given a valid token without including email(unauthorized endpoint)", async () => {
-        const api = useApi()
-
         const expiry = Math.floor(Date.now() / 1000) + 60 * 15
         const dbUser = await dbConnection.manager.query(
           `SELECT * FROM public.user WHERE email = '${user.email}'`
@@ -289,7 +517,6 @@ describe("/admin/users", () => {
 
       it("Fails to Reset the password given an invalid token (unauthorized endpoint)", async () => {
         expect.assertions(2)
-        const api = useApi()
 
         const token = "test.test.test"
 
@@ -305,129 +532,5 @@ describe("/admin/users", () => {
           })
       })
     })
-  })
-
-  describe("DELETE /admin/users", () => {
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("Deletes a user", async () => {
-      const api = useApi()
-
-      const userId = "member-user"
-
-      const usersBeforeDeleteResponse = await api.get(
-        "/admin/users",
-        adminReqConfig
-      )
-
-      const usersBeforeDelete = usersBeforeDeleteResponse.data.users
-
-      const response = await api.delete(`/admin/users/${userId}`, {
-        headers: { "x-medusa-access-token": "test_token" },
-      })
-
-      const usersAfterDeleteResponse = await api.get(
-        "/admin/users",
-        adminReqConfig
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data).toEqual({
-        id: userId,
-        object: "user",
-        deleted: true,
-      })
-
-      const usersAfterDelete = usersAfterDeleteResponse.data.users
-
-      expect(usersAfterDelete.length).toEqual(usersBeforeDelete.length - 1)
-      expect(usersBeforeDelete).toEqual(
-        expect.arrayContaining([expect.objectContaining({ id: userId })])
-      )
-
-      expect(usersAfterDelete).toEqual(
-        expect.not.arrayContaining([expect.objectContaining({ id: userId })])
-      )
-    })
-  })
-})
-
-describe("[MEDUSA_FF_ANALYTICS] /admin/analytics-config", () => {
-  let medusaProcess
-  let dbConnection
-
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
-      cwd,
-      env: { MEDUSA_FF_ANALYTICS: true },
-    })
-    dbConnection = connection
-    medusaProcess = process
-  })
-
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-
-    medusaProcess.kill()
-  })
-
-  describe("DELETE /admin/users", () => {
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
-      await userSeeder(dbConnection)
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("Deletes a user and their analytics config", async () => {
-      const api = useApi()
-
-      const userId = "member-user"
-
-      await simpleAnalyticsConfigFactory(dbConnection, {
-        user_id: userId,
-      })
-
-      const response = await api.delete(
-        `/admin/users/${userId}`,
-        adminReqConfig
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data).toEqual({
-        id: userId,
-        object: "user",
-        deleted: true,
-      })
-
-      const configs = await dbConnection.manager.query(
-        `SELECT * FROM public.analytics_config WHERE user_id = '${userId}'`
-      )
-
-      expect(configs).toMatchSnapshot([
-        {
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
-          deleted_at: expect.any(Date),
-          id: expect.any(String),
-          user_id: userId,
-          opt_out: false,
-          anonymize: false,
-        },
-      ])
-    })
-  })
+  },
 })

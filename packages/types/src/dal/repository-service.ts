@@ -1,6 +1,12 @@
 import { RepositoryTransformOptions } from "../common"
 import { Context } from "../shared-context"
-import { FindOptions } from "./index"
+import {
+  BaseFilterable,
+  FilterQuery,
+  FindOptions,
+  FilterQuery as InternalFilterQuery,
+  UpsertWithReplaceConfig,
+} from "./index"
 
 /**
  * Data access layer (DAL) interface to implements for any repository service.
@@ -29,12 +35,7 @@ interface BaseRepositoryService<T = any> {
 
 type DtoBasedMutationMethods = "create" | "update"
 
-export interface RepositoryService<
-  T = any,
-  TDTOs extends { [K in DtoBasedMutationMethods]?: any } = {
-    [K in DtoBasedMutationMethods]?: any
-  }
-> extends BaseRepositoryService<T> {
+export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
   findAndCount(
@@ -42,32 +43,38 @@ export interface RepositoryService<
     context?: Context
   ): Promise<[T[], number]>
 
-  create(data: TDTOs["create"][], context?: Context): Promise<T[]>
+  create(data: any[], context?: Context): Promise<T[]>
 
-  update(data: TDTOs["update"][], context?: Context): Promise<T[]>
+  update(data: { entity; update }[], context?: Context): Promise<T[]>
 
-  delete(ids: string[], context?: Context): Promise<void>
+  delete(
+    idsOrPKs: FilterQuery<T> & BaseFilterable<FilterQuery<T>>,
+    context?: Context
+  ): Promise<void>
 
   /**
    * Soft delete entities and cascade to related entities if configured.
    *
-   * @param ids
+   * @param idsOrFilter
    * @param context
    *
    * @returns [T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted
    */
   softDelete(
-    ids: string[],
+    idsOrFilter: string[] | InternalFilterQuery,
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
   restore(
-    ids: string[],
+    idsOrFilter: string[] | InternalFilterQuery,
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
-  upsert(
-    data: (TDTOs["create"] | TDTOs["update"])[],
+  upsert(data: any[], context?: Context): Promise<T[]>
+
+  upsertWithReplace(
+    data: any[],
+    config?: UpsertWithReplaceConfig<T>,
     context?: Context
   ): Promise<T[]>
 }

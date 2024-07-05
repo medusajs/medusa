@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminUploadsRes
 
@@ -10,6 +10,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 The list of uploaded files.
 
-## Type declaration
+## Properties
 
-<ParameterTypes parameters={[{"name":"uploads","type":"[FileServiceUploadResult](medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"uploads","type":"[FileServiceUploadResult](../interfaces/medusa.FileServiceUploadResult.mdx)[]","description":"Uploaded files details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"url","type":"`string`","description":"The file's URL.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"key","type":"`string`","description":"The file's key. This key is used in other operations,\nsuch as deleting a file.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="AdminUploadsRes"/>

@@ -1,25 +1,14 @@
-import { moduleDefinition } from "./module-definition"
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { Modules } from "@medusajs/modules-sdk"
-import * as ProductModels from "@models"
+import {
+  moduleDefinition,
+  revertMigration,
+  runMigrations,
+} from "./module-definition"
 
 export default moduleDefinition
-
-const migrationScriptOptions = {
-  moduleName: Modules.PRODUCT,
-  models: ProductModels,
-  pathToMigrations: __dirname + "/migrations",
-}
-
-export const runMigrations = ModulesSdkUtils.buildMigrationScript(
-  migrationScriptOptions
-)
-export const revertMigration = ModulesSdkUtils.buildRevertMigrationScript(
-  migrationScriptOptions
-)
+export { revertMigration, runMigrations }
 
 export * from "./initialize"
-export * from "./types"
-export * from "./loaders"
+// TODO: remove export from models and services
 export * from "./models"
 export * from "./services"
+export * from "./types"

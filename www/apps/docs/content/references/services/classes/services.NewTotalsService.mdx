@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # NewTotalsService
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new NewTotalsService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxProviderService_","type":"[TaxProviderService](services.TaxProviderService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"featureFlagRouter_","type":"`FlagRouter`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"taxCalculationStrategy_","type":"[ITaxCalculationStrategy](../../medusa/interfaces/medusa.ITaxCalculationStrategy.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="NewTotalsService"/>
 
 ___
 
@@ -26,11 +26,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -40,85 +60,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
-
-___
-
-### getGiftCardTotals
-
-Calculate and return the gift cards totals
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"giftCardableAmount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.giftCardTransactions","type":"`GiftCardTransaction`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.giftCards","type":"[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### getGiftCardTransactionsTotals
-
-Calculate and return the gift cards totals based on their transactions
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"param0","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.giftCardTransactions","type":"`GiftCardTransaction`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region.gift_cards_taxable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region.tax_rate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-<ParameterTypes parameters={[{"name":"tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-___
-
-### getGiftCardableAmount
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.discount_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.shipping_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.gift_cards_taxable","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### getLineItemRefund
-
-Return the amount that can be refund on a line item
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"lineItem","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.includes_tax","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.tax_lines","type":"[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.unit_price","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### getLineItemRefundLegacy
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"lineItem","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.includes_tax","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.unit_price","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### getLineItemTotals
 
@@ -126,27 +76,11 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"items","type":"[LineItem](../../entities/classes/entities.LineItem.mdx) \\| [LineItem](../../entities/classes/entities.LineItem.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### getLineItemTotalsLegacy
-
-Calculate and return the legacy calculated totals using the tax rate
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"item","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.discount","type":"[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.gift_card","type":"[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"Calculate and return the items totals for either the legacy calculation or the new calculation","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals"/>
 
 ### getLineItemTotals\_
 
@@ -154,13 +88,71 @@ Calculate and return the totals for an item
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"item","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.discount","type":"[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.gift_card","type":"[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxLines","type":"[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"item","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.gift_card","type":"[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)","description":"The gift card applied on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.discount","type":"[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)","description":"The discount applied on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxLines","type":"[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"Calculate and return the totals for an item","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotals_"/>
 
-___
+### getLineItemTotalsLegacy
+
+Calculate and return the legacy calculated totals using the tax rate
+
+#### Parameters
+
+<TypeList types={[{"name":"item","type":"[LineItem](../../entities/classes/entities.LineItem.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.gift_card","type":"[GiftCardAllocation](../../medusa/types/medusa.GiftCardAllocation.mdx)","description":"The gift card applied on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.lineItemAllocation.discount","type":"[DiscountAllocation](../../medusa/types/medusa.DiscountAllocation.mdx)","description":"The discount applied on the line item.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotalsLegacy"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;LineItemTotals&#62;","optional":false,"defaultValue":"","description":"Calculate and return the legacy calculated totals using the tax rate","expandable":false,"children":[]}]}  sectionTitle="getLineItemTotalsLegacy"/>
+
+### getLineItemRefund
+
+Return the amount that can be refund on a line item
+
+#### Parameters
+
+<TypeList types={[{"name":"lineItem","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.unit_price","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.includes_tax","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.tax_lines","type":"[LineItemTaxLine](../../entities/classes/entities.LineItemTaxLine.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
+
+#### Returns
+
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"Return the amount that can be refund on a line item","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefund"/>
+
+### getLineItemRefundLegacy
+
+#### Parameters
+
+<TypeList types={[{"name":"lineItem","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.unit_price","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.includes_tax","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"lineItem.quantity","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefundLegacy"/>
+
+#### Returns
+
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getLineItemRefundLegacy"/>
+
+### getGiftCardTotals
+
+Calculate and return the gift cards totals
+
+#### Parameters
+
+<TypeList types={[{"name":"giftCardableAmount","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.giftCardTransactions","type":"`GiftCardTransaction`[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.giftCards","type":"[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotals"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"Calculate and return the gift cards totals","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTotals"/>
+
+### getGiftCardTransactionsTotals
+
+Calculate and return the gift cards totals based on their transactions
+
+#### Parameters
+
+<TypeList types={[{"name":"param0","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.giftCardTransactions","type":"`GiftCardTransaction`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region.gift_cards_taxable","type":"`boolean`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param0.region.tax_rate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTransactionsTotals"/>
+
+#### Returns
+
+<TypeList types={[{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTransactionsTotals"/>
+
+<TypeList types={[{"name":"total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardTransactionsTotals"/>
 
 ### getShippingMethodTotals
 
@@ -168,27 +160,21 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"shippingMethods","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx) \\| [ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`null` \\| `number`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;object&#62;","optional":false,"defaultValue":"","description":"Calculate and return the shipping methods totals for either the legacy calculation or the new calculation","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals"/>
 
-___
-
-### getShippingMethodTotalsLegacy
-
-Calculate and return the shipping method totals legacy using the tax rate
+### getGiftCardableAmount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.subtotal","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.shipping_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.discount_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.tax_total","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__namedParameters.gift_cards_taxable","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"number","type":"`number`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getGiftCardableAmount"/>
 
 ### getShippingMethodTotals\_
 
@@ -196,32 +182,20 @@ Calculate and return the shipping method totals
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxLines","type":"[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.includeTax","type":"`boolean`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxLines","type":"[ShippingMethodTaxLine](../../entities/classes/entities.ShippingMethodTaxLine.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"Calculate and return the shipping method totals","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotals_"/>
 
-___
+### getShippingMethodTotalsLegacy
 
-### shouldRetryTransaction\_
+Calculate and return the shipping method totals legacy using the tax rate
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"shippingMethod","type":"[ShippingMethod](../../entities/classes/entities.ShippingMethod.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.calculationContext","type":"[TaxCalculationContext](../../medusa/types/medusa.TaxCalculationContext.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.taxRate","type":"`number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"param1.discounts","type":"[Discount](../../entities/classes/entities.Discount.mdx)[]","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotalsLegacy"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;ShippingMethodTotals&#62;","optional":false,"defaultValue":"","description":"Calculate and return the shipping method totals legacy using the tax rate","expandable":false,"children":[]}]}  sectionTitle="getShippingMethodTotalsLegacy"/>

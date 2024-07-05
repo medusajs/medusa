@@ -1,11 +1,4 @@
-import { MedusaContainer, PricingTypes, WorkflowTypes } from "@medusajs/types"
-import {
-  FlagRouter,
-  MedusaV2Flag,
-  PriceListStatus,
-  PriceListType,
-} from "@medusajs/utils"
-import { createPriceLists } from "@medusajs/core-flows"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { Transform, Type } from "class-transformer"
 import {
   IsArray,
@@ -18,6 +11,7 @@ import {
 import { Request } from "express"
 import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import { featureFlagRouter } from "../../../../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
@@ -26,7 +20,6 @@ import {
   CreatePriceListInput,
 } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { getPriceListPricingModule } from "./modules-queries"
 import { transformOptionalDate } from "../../../../utils/validators/date-transform"
 
 /**
@@ -155,57 +148,17 @@ export default async (req: Request, res) => {
     req.scope.resolve("priceListService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  let priceList
 
-  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
-    MedusaV2Flag.key
-  )
+  let priceList = await manager.transaction(async (transactionManager) => {
+    return await priceListService
+      .withTransaction(transactionManager)
+      .create(req.validatedBody as CreatePriceListInput)
+  })
 
-  if (isMedusaV2FlagEnabled) {
-    const createPriceListWorkflow = createPriceLists(req.scope)
-    const validatedInput = req.validatedBody as CreatePriceListInput
-    const rules: PricingTypes.CreatePriceListRules = {}
-    const customerGroups = validatedInput?.customer_groups || []
-    delete validatedInput.customer_groups
-
-    if (customerGroups.length) {
-      rules["customer_group_id"] = customerGroups.map((cg) => cg.id)
-    }
-
-    const input = {
-      price_lists: [
-        {
-          ...validatedInput,
-          rules,
-        },
-      ],
-    } as WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO
-
-    const { result } = await createPriceListWorkflow.run({
-      input,
-      context: {
-        manager,
-      },
-    })
-
-    priceList = result[0]!.priceList
-
-    priceList = await getPriceListPricingModule(priceList.id, {
-      container: req.scope as MedusaContainer,
-    })
-  } else {
-    priceList = await manager.transaction(async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .create(req.validatedBody as CreatePriceListInput)
-    })
-
-    priceList = await priceListService.retrieve(priceList.id, {
-      select: defaultAdminPriceListFields as (keyof PriceList)[],
-      relations: defaultAdminPriceListRelations,
-    })
-  }
+  priceList = await priceListService.retrieve(priceList.id, {
+    select: defaultAdminPriceListFields as (keyof PriceList)[],
+    relations: defaultAdminPriceListRelations,
+  })
 
   res.json({ price_list: priceList })
 }

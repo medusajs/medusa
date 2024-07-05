@@ -322,6 +322,10 @@ module.exports = {
       customProps: {
         sidebar_icon: "cloud-arrow-up",
       },
+      link: {
+        type: "doc",
+        id: "deployments/index",
+      },
       items: [
         {
           type: "category",
@@ -371,6 +375,10 @@ module.exports = {
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296578/Medusa%20Docs/Other/aF4ZuDS_t11rcu.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296612/Medusa%20Docs/Other/Lg7NHQk_qo6oax.png",
                 },
+                badge: {
+                  variant: "blue",
+                  children: "Community",
+                },
               },
             },
             {
@@ -382,6 +390,9 @@ module.exports = {
               },
             },
           ],
+          customProps: {
+            category_id: "deploy_backend",
+          },
         },
         {
           type: "category",
@@ -403,7 +414,18 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/admin/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
+              },
+            },
           ],
+          customProps: {
+            category_id: "deploy_admin",
+          },
         },
         {
           type: "category",
@@ -425,7 +447,18 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/storefront/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
+              },
+            },
           ],
+          customProps: {
+            category_id: "deploy_storefront",
+          },
         },
       ],
       className: "homepage-sidebar-item",
@@ -1004,12 +1037,12 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/create-tax-provider",
+          id: "references/tax/classes/tax.AbstractTaxService",
           label: "Backend: Create Tax Provider",
         },
         {
           type: "doc",
-          id: "modules/taxes/backend/tax-calculation-strategy",
+          id: "references/tax_calculation/classes/tax_calculation.AbstractTaxCalculationStrategy",
           label: "Backend: Override Tax Calculation",
         },
         {
@@ -1148,11 +1181,6 @@ module.exports = {
           label: "Price Lists",
         },
         {
-          type: "doc",
-          id: "modules/price-lists/price-selection-strategy",
-          label: "Price Selection Strategy",
-        },
-        {
           type: "html",
           value: "How-to",
           customProps: {
@@ -1161,7 +1189,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "modules/price-lists/backend/override-price-selection-strategy",
+          id: "references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy",
           label: "Backend: Override Price Selection",
         },
         {
@@ -1319,7 +1347,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "development/backend/configurations",
+          id: "references/medusa_config/interfaces/medusa_config.ConfigModule",
           label: "Configurations",
         },
       ],
@@ -1816,7 +1844,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/notification/create-notification-provider",
+              id: "references/notification/classes/notification.AbstractNotificationService",
               label: "Create a Notification Provider",
             },
           ],
@@ -1839,7 +1867,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/file-service/create-file-service",
+              id: "references/file/classes/file.AbstractFileService",
               label: "Create a File Service",
             },
           ],
@@ -1862,7 +1890,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "development/search/create",
+              id: "references/search/classes/search.AbstractSearchService",
               label: "Create a Search Service",
             },
           ],
@@ -1940,6 +1968,11 @@ module.exports = {
               label: "Override a Strategy",
             },
           ],
+        },
+        {
+          type: "doc",
+          id: "development/worker-mode/index",
+          label: "Worker Mode",
         },
         {
           type: "category",
@@ -2150,6 +2183,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "troubleshooting/mime-error",
+          label: "Mime Error",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/eaddrinuse",
           label: "EADDRINUSE Error",
         },
@@ -2215,6 +2253,11 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/custom-hooks-error",
           label: "Custom Hooks Error",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/admin-webpack-build-types",
+          label: "Webpack Build Error",
         },
       ],
     },

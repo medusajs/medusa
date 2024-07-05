@@ -58,6 +58,7 @@ async function scanDirectory(startPath: string) {
         repo: "medusa",
         path: filePath,
         per_page: 1,
+        sha: "v1.x"
       }
     )
 
@@ -73,14 +74,15 @@ async function scanDirectory(startPath: string) {
       commitResponse.data[0].commit.committer.date
     )
     const monthsSinceEdited = getMonthDifference(lastEditedDate, today)
+    const monthsThreshold = 2
 
-    if (monthsSinceEdited > 6) {
+    if (monthsSinceEdited > monthsThreshold) {
       //file was edited more than 6 months ago.
       //check if there's an issue created for this file since the commit date
       const existingIssue = await linearClient.issues({
         filter: {
           createdAt: {
-            gte: subtractMonths(monthsSinceEdited - 6, today),
+            gte: subtractMonths(monthsSinceEdited - monthsThreshold, today),
           },
           title: {
             containsIgnoreCase: `Freshness check for ${filePath}`,

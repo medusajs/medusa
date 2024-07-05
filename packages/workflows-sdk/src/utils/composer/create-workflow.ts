@@ -5,7 +5,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { OrchestrationUtils } from "@medusajs/utils"
+import { isString, OrchestrationUtils } from "@medusajs/utils"
 import { ExportedWorkflow, exportWorkflow } from "../../helper"
 import { proxify } from "./helpers/proxy"
 import {
@@ -63,17 +63,33 @@ global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = null
  * }
  * ```
  */
-type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
+export type ReturnWorkflow<
+  TData,
+  TResult,
+  THooks extends Record<string, Function>
+> = {
   <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<
     LocalWorkflow,
-    "run" | "registerStepSuccess" | "registerStepFailure"
+    "run" | "registerStepSuccess" | "registerStepFailure" | "cancel"
   > &
     ExportedWorkflow<TData, TResult, TDataOverride, TResultOverride>
 } & THooks & {
     getName: () => string
+  } & {
+    config: (config: TransactionModelOptions) => void
   }
+
+/**
+ * Extract the raw type of the expected input data of a workflow.
+ *
+ * @example
+ * type WorkflowInputData = UnwrapWorkflowInputDataType<typeof myWorkflow>
+ */
+export type UnwrapWorkflowInputDataType<
+  T extends ReturnWorkflow<any, any, any>
+> = T extends ReturnWorkflow<infer TData, infer R, infer THooks> ? TData : never
 
 /**
  * This function creates a workflow with the provided name and a constructor function.
@@ -136,9 +152,9 @@ export function createWorkflow<
   THooks extends Record<string, Function> = Record<string, Function>
 >(
   /**
-   * The name of the workflow.
+   * The name of the workflow or its configuration.
    */
-  name: string,
+  nameOrConfig: string | ({ name: string } & TransactionModelOptions),
   /**
    * The constructor function that is executed when the `run` method in {@link ReturnWorkflow} is used.
    * The function can't be an arrow function or an asynchronus function. It also can't directly manipulate data.
@@ -151,9 +167,11 @@ export function createWorkflow<
         [K in keyof TResult]:
           | WorkflowData<TResult[K]>
           | WorkflowDataProperties<TResult[K]>
-      },
-  options?: TransactionModelOptions
+      }
 ): ReturnWorkflow<TData, TResult, THooks> {
+  const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
+  const options = isString(nameOrConfig) ? {} : nameOrConfig
+
   const handlers: WorkflowHandler = new Map()
 
   if (WorkflowManager.getWorkflow(name)) {
@@ -185,13 +203,17 @@ export function createWorkflow<
   const inputPlaceHolder = proxify<WorkflowData>({
     __type: OrchestrationUtils.SymbolInputReference,
     __step__: "",
+    config: () => {
+      // TODO: config default value?
+      throw new Error("Config is not available for the input object.")
+    },
   })
 
   const returnedStep = composer.apply(context, [inputPlaceHolder])
 
   delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
 
-  WorkflowManager.update(name, context.flow, handlers)
+  WorkflowManager.update(name, context.flow, handlers, options)
 
   const workflow = exportWorkflow<TData, TResult>(
     name,
@@ -206,8 +228,12 @@ export function createWorkflow<
     container?: LoadedModule[] | MedusaContainer
   ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(container)
+    const expandedFlow: any = workflow_
+    expandedFlow.config = (config) => {
+      workflow_.setOptions(config)
+    }
 
-    return workflow_
+    return expandedFlow
   }
 
   let shouldRegisterHookHandler = true

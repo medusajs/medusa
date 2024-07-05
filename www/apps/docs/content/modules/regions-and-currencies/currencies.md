@@ -74,17 +74,17 @@ The relation is available on the `Order` entity by expanding the `currency` rela
 
 The `Payment` entity is used to represent a payment of any kind, such as for orders. Each payment is associated with a currency.
 
-The relation is available on the `Payment` entity by expanding the `currency` relation and accessing `payment.currency_code`. You can also access the currency code through the attribute `currency_code` on the payment.
+The relation is available on the `Payment` entity by expanding the `currency` relation and accessing `payment.currency`. You can also access the currency code through the attribute `currency_code` on the payment.
 
 ### PaymentCollection
 
 The `PaymentCollection` entity is used to represent a collection of payments. Each payment collection is associated with a currency.
 
-The relation is available on the `PaymentCollection` entity by expanding the `currency` relation and accessing `payment_collection.currency_code`. You can also access the currency code through the attribute `currency_code` on the payment collection.
+The relation is available on the `PaymentCollection` entity by expanding the `currency` relation and accessing `payment_collection.currency`. You can also access the currency code through the attribute `currency_code` on the payment collection.
 
 ---
 
 ## See Also
 
-- [Price Selection Strategy](../price-lists/price-selection-strategy.md)
+- [Price Selection Strategy](../../references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy.mdx)
 - [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md)

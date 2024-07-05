@@ -35,7 +35,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/getundefined
+        $ref: ../code_samples/tsx/admin_inventory-items_{id}/get.tsx
     - lang: Shell
       label: cURL
       source:
@@ -107,7 +107,7 @@ post:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/postundefined
+        $ref: ../code_samples/tsx/admin_inventory-items_{id}/post.tsx
     - lang: Shell
       label: cURL
       source:
@@ -161,7 +161,7 @@ delete:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/admin_inventory-items_{id}/deleteundefined
+        $ref: ../code_samples/tsx/admin_inventory-items_{id}/delete.tsx
     - lang: Shell
       label: cURL
       source:

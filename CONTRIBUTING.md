@@ -27,6 +27,12 @@ If you, as a community contributor, wish to work on more extensive features, ple
 
 ### Branches
 
+There are currently two base branches:
+- `develop` - development of Medusa 2.0
+- `v1.x` - development of Medusa v1.x
+
+Note, if you wish to patch v1.x you should use `v1.x` as the base branch for your pull request. This is not the default when you clone the repository.
+
 All changes should be part of a branch and submitted as a pull request - your branches should be prefixed with one of:
 
 - `fix/` for bug fixes
@@ -39,7 +45,13 @@ Strive towards keeping your commits small and isolated - this helps the reviewer
 
 ### Pull Requests
 
-Once your changes are ready you must submit your branch as a pull request. Your pull request should be opened against the `develop` branch in the main Medusa repo.
+**Base branch**
+
+If you wish to patch v1.x your base branch should be `v1.x`. 
+
+If your changes should result in a new version of Medusa, you will need to generate a **changelog**. Follow [this guide](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) on how to generate a changeset.
+
+Finally, submit your branch as a pull request. Your pull request should be opened against the `develop` branch in the main Medusa repo.
 
 In your PR's description you should follow the structure:
 
@@ -71,4 +83,6 @@ Check out our [local development documentation](https://docs.medusajs.com/usage/
 
 ### Release
 
-The Medusa team will regularly create releases from the develop branch.
+The Medusa team will regularly create releases from two release branches:
+- `develop` - preview releases of Medusa 2.0
+- `v1.x` - official releases of Medusa 1.x

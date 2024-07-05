@@ -45,11 +45,11 @@ You can use any of the following conditions:
 
 ## How are Price Lists Applied
 
-When a product or a line item is retrieved or manipulated on the storefront, Medusa determines its price using a Price Selection Strategy. The price selection strategy determines the best price to apply in a given [context](./price-selection-strategy.md#context-object). Part of determining the price depends on the price list.
+When a product or a line item is retrieved or manipulated on the storefront, Medusa determines its price using a Price Selection Strategy. The price selection strategy determines the best price to apply in a given context. Part of determining the price depends on the price list.
 
 :::info
 
-This section explains how the price selection strategy uses price lists when it determines the price of a product variant. If you want full details on how the price selection strategy works, check out this documentation instead.
+This section explains how the [price selection strategy](../../references/price_selection/interfaces/price_selection.IPriceSelectionStrategy.mdx) uses price lists when it determines the price of a product variant. If you want full details on how the price selection strategy works, check out [this documentation](../../references/price_selection/interfaces/price_selection.IPriceSelectionStrategy.mdx) instead.
 
 :::
 
@@ -59,7 +59,7 @@ When the strategy calculates the prices of a product variant, it retrieves both 
 
 The original price depends on the selected region or currency code in the current context, where the region has higher precedence.
 
-The calculated price is the lowest price among all retrieved prices. Retrieved prices can include the original price and the price lists that can be applied. Prices are retrieved based on the [context](./price-selection-strategy.md#context-object).
+The calculated price is the lowest price among all retrieved prices. Retrieved prices can include the original price and the price lists that can be applied. Prices are retrieved based on the provided context, such as region ID or currency code.
 
 In the [Get Product](https://docs.medusajs.com/api/store#products_getproductsproduct) and [List Product](https://docs.medusajs.com/api/store#products_getproducts) API Routes, you must pass either the `region_id` or `currency_code` to retrieve the correct prices, as they are part of the price selection strategy context.
 
@@ -87,5 +87,5 @@ Since the line item belongs to a cart, there’s no need to pass the `region_id`
 
 ## See Also
 
-- [Price Selection Strategy Overview](./price-selection-strategy.md)
+- [Price Selection Strategy](../../references/price_selection/classes/price_selection.AbstractPriceSelectionStrategy.mdx)
 - [Manage price lists using the admin APIs](./admin/manage-price-lists.mdx)

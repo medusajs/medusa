@@ -1,4 +1,4 @@
-import { CodeTabs } from "docs-ui"
+import { CodeTabs, CodeTab } from "docs-ui"
 import Space from "@/components/Space"
 import DownloadFull from "@/components/DownloadFull"
 
@@ -10,26 +10,22 @@ Check out the [quickstart guide](https://docs.medusajs.com/create-medusa-app).
 
 ### Client Libraries
 
-<CodeTabs 
-  tabs={[
-    {
-      label: 'Medusa JS Client',
-      value: 'js-client',
-      code: {
-        source: `npm install @medusajs/medusa-js`,
-        lang: `bash`,
-      }
-    },
-    {
-      label: 'Medusa React',
-      value: 'medusa-react',
-      code: {
-        source: `npm install medusa-react @tanstack/react-query @medusajs/medusa`,
-        lang: `bash`,
-      }
-    }
-  ]}
-/>
+<CodeTabs group="clients">
+  <CodeTab label="Medusa JS Client" value="js-client">
+    
+    ```bash
+    npm install @medusajs/medusa-js
+    ```
+
+  </CodeTab>
+  <CodeTab label="Medusa React" value="medusa-react">
+    
+    ```bash
+    npm install medusa-react @tanstack/react-query @medusajs/medusa
+    ```
+
+  </CodeTab>
+</CodeTabs>
 
 ### Download Full Reference
 

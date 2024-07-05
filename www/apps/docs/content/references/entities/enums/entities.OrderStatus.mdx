@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # OrderStatus
 
@@ -10,21 +10,11 @@ The order's status.
 
 ## Enumeration Members
 
-### ARCHIVED
+### PENDING
 
- **ARCHIVED** = `"archived"`
+ **PENDING** = `"pending"`
 
-The order is archived.
-
-___
-
-### CANCELED
-
- **CANCELED** = `"canceled"`
-
-The order is canceled.
-
-___
+The order is pending.
 
 ### COMPLETED
 
@@ -34,15 +24,17 @@ The order is completed, meaning that
 the items have been fulfilled and the payment
 has been captured.
 
-___
+### ARCHIVED
 
-### PENDING
+ **ARCHIVED** = `"archived"`
 
- **PENDING** = `"pending"`
+The order is archived.
 
-The order is pending.
+### CANCELED
 
-___
+ **CANCELED** = `"canceled"`
+
+The order is canceled.
 
 ### REQUIRES\_ACTION
 

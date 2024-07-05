@@ -17,6 +17,7 @@ module.exports = {
   excludeExternals: true,
   excludeReferences: true,
   disableSources: true,
+  sort: ["source-order"],
   validation: {
     notExported: false,
     // invalidLink: false,

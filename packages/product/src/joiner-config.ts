@@ -11,7 +11,6 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
-import moduleSchema from "./schema"
 
 export const LinkableKeys = {
   product_id: Product.name,
@@ -40,95 +39,59 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
   linkableKeys: LinkableKeys,
-  schema: moduleSchema,
   alias: [
     {
-      name: "product",
-    },
-    {
-      name: "products",
-    },
-    {
-      name: "variant",
+      name: ["product", "products"],
       args: {
+        entity: "Product",
+      },
+    },
+    {
+      name: ["product_variant", "product_variants", "variant", "variants"],
+      args: {
+        entity: "ProductVariant",
         methodSuffix: "Variants",
       },
     },
     {
-      name: "variants",
+      name: ["product_option", "product_options"],
       args: {
-        methodSuffix: "Variants",
-      },
-    },
-    {
-      name: "product_option",
-      args: {
+        entity: "ProductOption",
         methodSuffix: "Options",
       },
     },
     {
-      name: "product_options",
+      name: ["product_type", "product_types"],
       args: {
-        methodSuffix: "Options",
-      },
-    },
-    {
-      name: "product_type",
-      args: {
+        entity: "ProductType",
         methodSuffix: "Types",
       },
     },
     {
-      name: "product_types",
+      name: ["product_image", "product_images"],
       args: {
-        methodSuffix: "Types",
-      },
-    },
-    {
-      name: "product_image",
-      args: {
+        entity: "ProductImage",
         methodSuffix: "Images",
       },
     },
     {
-      name: "product_images",
+      name: ["product_tag", "product_tags"],
       args: {
-        methodSuffix: "Images",
-      },
-    },
-    {
-      name: "product_tag",
-      args: {
+        entity: "ProductTag",
         methodSuffix: "Tags",
       },
     },
     {
-      name: "product_tags",
+      name: ["product_collection", "product_collections"],
       args: {
-        methodSuffix: "Tags",
-      },
-    },
-    {
-      name: "product_collection",
-      args: {
+        entity: "ProductCollection",
         methodSuffix: "Collections",
       },
     },
     {
-      name: "product_collections",
+      name: ["product_category", "product_categories"],
       args: {
-        methodSuffix: "Collections",
-      },
-    },
-    {
-      name: "product_category",
-      args: {
-        methodSuffix: "Categories",
-      },
-    },
-    {
-      name: "product_categories",
-      args: {
+        entity: "ProductCategory",
         methodSuffix: "Categories",
       },
     },

@@ -5,10 +5,12 @@ import {
 } from "@medusajs/types"
 
 import { isObject, promiseAll, toPascalCase } from "@medusajs/utils"
+import { Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
+import { linkingErrorMessage } from "./utils/linking-error"
 
 export type DeleteEntityInput = {
-  [moduleName: string]: { [linkableKey: string]: string | string[] }
+  [moduleName: string | Modules]: Record<string, string | string[]>
 }
 export type RestoreEntityInput = DeleteEntityInput
 
@@ -353,7 +355,13 @@ export class RemoteLink {
 
       if (!service) {
         throw new Error(
-          `Module to link ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
+          linkingErrorMessage({
+            moduleA,
+            moduleAKey,
+            moduleB,
+            moduleBKey,
+            type: "link",
+          })
         )
       } else if (!serviceLinks.has(service.__definition.key)) {
         serviceLinks.set(service.__definition.key, [])
@@ -404,7 +412,13 @@ export class RemoteLink {
 
       if (!service) {
         throw new Error(
-          `Module to dismiss link ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
+          linkingErrorMessage({
+            moduleA,
+            moduleAKey,
+            moduleB,
+            moduleBKey,
+            type: "dismiss",
+          })
         )
       } else if (!serviceLinks.has(service.__definition.key)) {
         serviceLinks.set(service.__definition.key, [])

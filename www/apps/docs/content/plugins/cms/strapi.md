@@ -5,198 +5,238 @@ addHowToData: true
 
 # Strapi
 
-In this document, you’ll learn how to integrate Strapi with Medusa to add rich Content Management System (CMS) functionalities.
+In this document, you’ll learn how to integrate Medusa with Strapi.
 
-:::info
+:::note
 
-This plugin is a [community plugin](https://github.com/Deathwish98/medusa-plugin-strapi) and is not managed by the official Medusa team. At the moment, it supports v4 of Strapi.
+This plugin is a [community plugin](https://github.com/SGFGOV/medusa-strapi-repo) and is not managed by the official Medusa team. It supports v4 of Strapi. If you run into any issues, please refer to the [repository of the community plugin](https://github.com/SGFGOV/medusa-strapi-repo).
 
 :::
 
 ## Overview
 
-[Strapi](https://strapi.io/) is an open source headless CMS service that allows developers to have complete control over their content models. It can be integrated into many other frameworks, including Medusa.
+[Strapi](https://strapi.io/) is an open source headless CMS service that allows developers to have complete control over their content models. It can be integrated into many other frameworks, including Medusa.
 
-By integrating Strapi to Medusa, you can benefit from powerful features in your ecommerce store including detailed product CMS details, [two-way sync](#test-two-way-sync), an easy-to-use interface to use for static content and pages, and much more.
+By integrating Strapi into Medusa, you can benefit from powerful features in your ecommerce store, including detailed product CMS details, two-way sync, an easy-to-use interface to use for static content and pages, and much more.
 
 ---
 
 ## Prerequisites
 
-### Medusa CLI
+### Medusa Components
 
-[Medusa’s CLI tool](../../cli/reference.mdx#how-to-install-cli-tool) is required to set up a new Medusa backend.
+This guide assumes you already have a Medusa backend installed. If not, you can learn how to install [it here](../../create-medusa-app.mdx).
 
-### Redis
+An event bus module must be installed and configured on your Medusa backend to sync data from Medusa to Strapi. You can install the [Redis event bus module](../../development/events/modules/redis.md).
 
-Redis is required for the Strapi plugin to work as expected on your Medusa backend. If you don’t have it installed, you can learn [how to install it in this documentation](../../development/backend/prepare-environment.mdx#redis).
+### Strapi Database
 
----
-
-## Create Strapi Project
-
-The first step is to create a Strapi project using the Medusa template:
-
-```bash
-npx create-strapi-app strapi-medusa --template shahednasser/strapi-medusa-template
-```
-
-This creates the Strapi project in the directory `strapi-medusa`.
-
-Once the installation is finished, the Strapi development backend will run on `localhost:1337`. A new page will also open in your default browser to create a new admin user and log in.
-
-![Create User Form in Strapi](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001083/Medusa%20Docs/Strapi/9pFE1Ij_h2dicv.png)
-
-Once you log in, you can access the Strapi dashboard.
-
-### Create a Strapi User
-
-The Strapi plugin in Medusa requires the credentials of a Strapi user. To create a new user, go to Content Manager, then choose User under Collection Types.
-
-![Showing the users under Content Manager](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001096/Medusa%20Docs/Strapi/YyGJPUf_mr5sx7.png)
-
-Click on the Create new entry button at the top right. This opens a new form to enter the user’s details.
-
-![Create User Form on Strapi](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001105/Medusa%20Docs/Strapi/mdMhSlV_vy7ygv.png)
-
-Enter the user’s username, email, and password. Once you’re done, click on the Save button at the top right.
+You must create a PostgreSQL database to be used with Strapi. You can refer to [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html) for more details.
 
 ---
 
-## Modify Permissions
+## Setup Strapi Project
 
-By default, created users have the “Authenticated” role. Before you start using the Strapi plugin on your Medusa backend, you must modify this role’s permissions to allow making changes to Medusa’s models in Strapi.
+In this section, you’ll setup a Strapi project with a Medusa plugin installed. To do that:
 
-On your Strapi dashboard, go to Settings → Roles → Authenticated. Then, under the Permissions section, expand the accordion of each content model type and check the Select All checkbox.
-
-![An example of modifying permissions on the Product content type](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001116/Medusa%20Docs/Strapi/QgckXqS_wlyxe8.png)
-
-Once you’re done, click the Save button at the top right.
-
----
-
-## Create Medusa Backend
-
-:::note
-
-You can use the Strapi plugin on an existing Medusa backend, however, existing data (such as existing products) will not be imported. Only newer data will be imported.
-
-:::
-
-To create your Medusa backend, run the following command:
+1\. Clone the Strapi project repository:
 
 ```bash
-npx @medusajs/medusa-cli@latest new medusa-backend
+git clone https://github.com/SGFGOV/medusa-strapi-repo.git
 ```
 
-### Configure your Backend
+2\. Change to the `medusa-strapi-repo/packages/medusa-strapi` directory.
 
-Once the command is done executing, change to the newly created `medusa-backend` directory:
+3\. Copy the `.env.test` file to a new `.env` file.
+
+### Change Strapi Environment Variables
+
+In the `.env` file, change the following environment variables:
 
 ```bash
-cd medusa-backend
+# IMPORTANT: Change supersecret with random and unique strings
+APP_KEYS=supersecret
+API_TOKEN_SALT=supersecret
+ADMIN_JWT_SECRET=supersecret
+JWT_SECRET=supersecret
+
+MEDUSA_STRAPI_SECRET=supersecret
+
+MEDUSA_BACKEND_URL=http://localhost:9000
+MEDUSA_BACKEND_ADMIN=http://localhost:7001
+
+SUPERUSER_EMAIL=support@medusa-commerce.com
+SUPERUSER_USERNAME=SuperUser
+SUPERUSER_PASSWORD=MedusaStrapi1
+
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=postgres_strapi
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=
+DATABASE_SSL=false
+DATABASE_SCHEMA=public
 ```
 
-You must then configure your backend to:
+1. Change `APP_KEYS`, `API_TOKEN_SALT`, `JWT_SECRET`, and `ADMIN_JWT_SECRET` to a random and unique string. These keys are used by Strapi to sign session cookies, generate API tokens, and more.
+2. Change `MEDUSA_STRAPI_SECRET` to a random unique string. The value of this environment variable is used later in your Medusa configurations.
+3. Change `MEDUSA_BACKEND_URL` to the URL of your Medusa backend. If you’re running it locally, it should be `http://localhost:9000`.
+4. Change `MEDUSA_BACKEND_ADMIN` to the URL of your Medusa Admin. If you’re running it locally, it should be `http://localhost:7001`.
+5. Change the following environment variables to define the Strapi super user:
+    1. `SUPERUSER_EMAIL`: the super user’s email. By default, it’s `support@medusa-commerce.com`.
+    2. `SUPERUSER_USERNAME`: the super user’s username. By default, it’s `SuperUser`.
+    3. `SUPERUSER_PASSWORD`: the super user’s password. By default, it’s `MedusaStrapi1`.
+    4. `SUPERUSER_FIRSTNAME`: the super user’s first name. By default, it’s `Medusa`.
+    5. `SUPERUSER_LASTNAME`: the super user’s last name. By default, it’s `Commerce`.
+6. Change the database environment variables based on your database configurations. All database environment variables start with `DATABASE_`.
+7. You can optionally configure other services, such as S3 or MeiliSearch, as explained [here](https://github.com/SGFGOV/medusa-strapi-repo/tree/development/packages/medusa-strapi#media-bucket).
 
-- Connect to a PostgreSQL database, as explained [here](../../development/backend/configurations.md#database-configuration)
-- Install and configure an event-bus module, as explained [here](../../development/backend/configurations.md#recommended-event-bus-modules)
+### Build Packages
 
-### Run Migrations
+Once you’re done, install and build packages in the root `medusa-strapi-repo` directory:
 
-After configuring the connection to the database, you must run migrations to add the necessary database schema definitions in your database. To do that, run the following command in the `medusa-backend` directory:
-
-```bash
-npx @medusajs/medusa-cli@latest migrations run
-```
-
-You can optionally seed your database with demo data by running the `seed` command:
-
-```bash
-npx @medusajs/medusa-cli@latest seed --seed-file=data/seed.json
+```bash npm2yarn
+# Install packages
+npm install
+# Build packages
+npm run build
 ```
 
 ---
 
-## Install the Strapi Plugin
+## Install Plugin in Medusa
 
 In the directory of your Medusa backend, run the following command to install the Strapi plugin:
 
 ```bash npm2yarn
-npm install medusa-plugin-strapi
+npm install medusa-plugin-strapi-ts
 ```
 
-Then, add the following environment variables:
+### Configure Plugin
 
-```bash
-STRAPI_USER=<STRAPI_IDENTIFIER>
-STRAPI_PASSWORD=<STRAPI_PASSWORD>
-STRAPI_PROTOCOL=http # Optional
-STRAPI_URL=<STRAPI_URL> # Optional
-STRAPI_PORT=<STRAPI_PORT> # Optional
-```
+Next, add the plugin to the `plugins` array in `medusa-config.js`:
 
-Where:
-
-- `<STRAPI_IDENTIFIER>` is either the email address or username of the user you created in the previous step.
-- `<STRAPI_PASSWORD>` is the password of the user you created in the previous step.
-- `<STRAPI_PROTOCOL>` is the protocol of your Strapi backend. If you’re using a local Strapi backend, set this to `http`. The default value is `https`.
-- `<STRAPI_URL>` is the URL of your Strapi backend. By default, the URL is `localhost`.
-- `<STRAPI_PORT>` is the port the Strapi backend runs on. By default, the port is `1337`.
-
-Finally, open `medusa-config.js` and add the following new item to the `plugins` array:
-
-```jsx title="medusa-config.js"
+```js title="medusa-config.js"
 const plugins = [
   // ...
   {
-    resolve: `medusa-plugin-strapi`,
+    resolve: "medusa-plugin-strapi-ts",
     options: {
-      strapi_medusa_user: process.env.STRAPI_USER,
-      strapi_medusa_password: process.env.STRAPI_PASSWORD,
-      strapi_url: process.env.STRAPI_URL, // optional
-      strapi_port: process.env.STRAPI_PORT, // optional
-      strapi_protocol: process.env.STRAPI_PROTOCOL, // optional
+      strapi_protocol: process.env.STRAPI_PROTOCOL,
+      strapi_host: process.env.STRAPI_SERVER_HOSTNAME,
+      strapi_port: process.env.STRAPI_PORT,
+      strapi_secret: process.env.STRAPI_SECRET,
+      strapi_default_user: {
+          username: process.env.STRAPI_MEDUSA_USER,
+          password: process.env.STRAPI_MEDUSA_PASSWORD,
+          email: process.env.STRAPI_MEDUSA_EMAIL,
+          confirmed: true,
+          blocked: false,
+          provider: "local",
+      },
+      strapi_admin: {
+          username: process.env.STRAPI_SUPER_USERNAME,
+          password: process.env.STRAPI_SUPER_PASSWORD,
+          email: process.env.STRAPI_SUPER_USER_EMAIL,
+      },
+      auto_start: true,
     },
   },
 ]
 ```
 
+The plugin accepts the following options:
+
+1. `strapi_protocol`: The protocol of the Strapi server. If running locally, it should be `http`. Otherwise, it should be `https`.
+2. `strapi_host`: the domain of the Strapi server. If running locally, use `127.0.0.1`.
+3. `strapi_port`: the port that the Strapi server is running on, if any. If running locally, use `1337`.
+4. `strapi_secret`: the same secret used for the `MEDUSA_STRAPI_SECRET` environment variable in the Strapi project.
+5. `strapi_default_user`: The details of an existing user or a user to create in the Strapi backend that is used to update data in Strapi. It’s an object accepting the following properties:
+    1. `username`: The user’s username.
+    2. `password`: The user’s password.
+    3. `email`: The user’s email.
+    4. `confirmed`: Whether the user is confirmed.
+    5. `blocked`: Whether the user is blocked.
+    6. `provider`:  The name of the authentication provider.
+6. `strapi_admin`: The details of the super admin. The super admin is only used to create the default user if it doesn’t exist. It’s an object accepting the following properties:
+    1. `username`: the super admin’s username. Its value is the same as that of the `SUPERUSER_USERNAME` environment variable in the Strapi project.
+    2. `password`: the super admin’s password. Its value is the same as that of the `SUPERUSER_PASSWORD` environment variable in the Strapi project.
+    3. `email`: the super admin’s email. Its value is the same as that of the `SUPERUSER_EMAIL` environment variable in the Strapi project.
+7. `auto_start`: Whether to initialize the Strapi connection when Medusa starts. Disabling this may cause issues when syncing data from Medusa to Strapi.
+
+Refer to the [plugin’s README](https://github.com/SGFGOV/medusa-strapi-repo/blob/development/packages/medusa-plugin-strapi-ts/README.md) for more options.
+
+Make sure to add the necessary environment variables for the above options in `.env`:
+
+```bash
+STRAPI_PROTOCOL=http
+STRAPI_SERVER_HOSTNAME=127.0.0.1
+STRAPI_PORT=1337
+STRAPI_SECRET=supersecret
+
+STRAPI_MEDUSA_USER=medusa
+STRAPI_MEDUSA_PASSWORD=supersecret
+STRAPI_MEDUSA_EMAIL=admin@medusa-test.com
+
+STRAPI_SUPER_USERNAME=SuperUser
+STRAPI_SUPER_PASSWORD=MedusaStrapi1
+STRAPI_SUPER_USER_EMAIL=support@medusa-commerce.com
+```
+
 ---
 
-## Run Medusa Backend
+## Test Integration
 
-Make sure the Strapi backend is still running. If not, you can run the following command to run the Strapi backend in the directory of the Strapi project:
+To test the integration between Medusa and Strapi, first, start the Strapi server by running the following command in the `medusa-strapi-repo/packages/medusa-strapi` directory:
 
-```bash npm2yarn
+```bash title="medusa-strapi-repo/packages/medusa-strapi" npm2yarn
 npm run develop
 ```
 
-Then, in the directory of your Medusa backend, run the following command to start the Medusa backend:
+Then, start the Medusa backend by running the following command in the root directory of your Medusa backend:
 
-```bash npm2yarn
+```bash title="Medusa Backend" npm2yarn
 npx medusa develop
 ```
 
-Once you start your Medusa backend, if you ran the `--seed` command when you created your Medusa backend, you’ll see that `product.created` events have been triggered along with similar events. This will update Strapi with the products you seeded.
+If the connection to Strapi is successful, you’ll find the following message logged in your Medusa backend with no errors:
+
+```bash
+info:    Checking Strapi Health ,data: 
+debug:   check-url: http://127.0.0.1:1337/_health ,data: 
+info:    Strapi Subscriber Initialized
+```
+
+### Two-Way Syncing
+
+To test syncing data from Medusa to Strapi, try creating or updating a product either using the Medusa Admin or the [REST APIs](https://docs.medusajs.com/api/admin#products_postproducts). This triggers the associated event in Medusa, which makes the updates in Strapi.
+
+:::tip
+
+If data isn’t synced with Strapi when making updates in Medusa, make sure that you’ve installed the event bus module as explained in the [Prerequisites section](#medusa-components) and that the events are triggered.
+
+:::
+
+To test syncing data from Strapi to Medusa, try updating one of the products in the Strapi dashboard. If you check the product’s details in Medusa, they’re updated as expected.
+
+:::tip
+
+Data is only synced to Strapi once you create or update them. So, if you have products in your Medusa backend from before integrating Strapi, they won’t be available by default in Strapi. You’ll have to make updates to them, which triggers the update in Strapi.
+
+:::
+
+### Synced Entities
+
+The Medusa and Strapi plugins support syncing the following Medusa entities:
+
+- `Region`
+- `Product`
+- `ProductVariant`
+- `ProductCollection`
+- `ProductCategory`
 
 ---
 
-## Test Two-Way Sync
+## Learn More
 
-This plugin ensures a two-way sync between the Medusa backend and the Strapi backend. So, if you update data on Strapi, it will be reflected on your Medusa backend, and vice-versa.
-
-### Update Products on Strapi
-
-Try updating any products on Strapi by going to Content Manager → Products and choosing a product from the list. Then, make changes to the product and click Save. If you view the products on your backend now, either using the [REST APIs](https://docs.medusajs.com/api/admin#products_getproducts) or using [the Medusa Admin](../../user-guide/products/index.mdx), you’ll see that the product has been updated.
-
-### Update Products on Medusa
-
-If you try to update products on Medusa either using the [REST APIs](https://docs.medusajs.com/api/admin#products_postproductsproduct) or using [the Medusa Admin](../../user-guide/products/manage.mdx), you’ll see that the product is also updated on Strapi.
-
----
-
-## See Also
-
-- [Deploy the Medusa backend](../../deployments/server/index.mdx)
-- [Create your own plugin](../../development/plugins/create.mdx)
+To learn more about the integration between Medusa and Strapi, refer to the [community plugin](https://github.com/SGFGOV/medusa-strapi-repo).

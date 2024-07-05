@@ -1,5 +1,5 @@
+import { TransactionState } from "@medusajs/utils"
 import { TransactionCheckpoint } from "../distributed-transaction"
-import { TransactionModelOptions } from "../types"
 import { DistributedTransactionStorage } from "./abstract-storage"
 
 // eslint-disable-next-line max-len
@@ -24,14 +24,16 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     data: TransactionCheckpoint,
     ttl?: number
   ): Promise<void> {
-    this.storage.set(key, data)
-  }
+    const hasFinished = [
+      TransactionState.DONE,
+      TransactionState.REVERTED,
+      TransactionState.FAILED,
+    ].includes(data.flow.state)
 
-  async delete(key: string): Promise<void> {
-    this.storage.delete(key)
-  }
-
-  async archive(key: string, options?: TransactionModelOptions): Promise<void> {
-    this.storage.delete(key)
+    if (hasFinished) {
+      this.storage.delete(key)
+    } else {
+      this.storage.set(key, data)
+    }
   }
 }

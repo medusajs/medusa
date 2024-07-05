@@ -1,14 +1,14 @@
-import { EventBusTypes, Logger } from "@medusajs/types"
+import { EmitData, EventBusTypes, Logger, Message } from "@medusajs/types"
 import { DatabaseErrorCode, EventBusUtils } from "@medusajs/utils"
+import { EOL } from "os"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { StagedJob } from "../models"
+import { FindConfig } from "../types/common"
 import { ConfigModule } from "../types/global"
 import { isString } from "../utils"
 import { sleep } from "../utils/sleep"
 import StagedJobService from "./staged-job"
-import { FindConfig } from "../types/common"
-import { EOL } from "os"
 
 type InjectedDependencies = {
   stagedJobService: StagedJobService
@@ -38,7 +38,7 @@ export default class EventBusService
 
   constructor(
     { stagedJobService, logger }: InjectedDependencies,
-    config,
+    config: ConfigModule,
     isSingleton = true
   ) {
     // eslint-disable-next-line prefer-rest-params
@@ -118,6 +118,8 @@ export default class EventBusService
    */
   async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<StagedJob[] | void>
 
+  async emit<T>(data: EventBusTypes.Message<T>[]): Promise<StagedJob[] | void>
+
   /**
    * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
@@ -133,7 +135,10 @@ export default class EventBusService
 
   async emit<
     T,
-    TInput extends string | EventBusTypes.EmitData<T>[] = string,
+    TInput extends
+      | string
+      | EventBusTypes.EmitData<T>[]
+      | EventBusTypes.Message<T>[] = string,
     TResult = TInput extends EventBusTypes.EmitData<T>[]
       ? StagedJob[]
       : StagedJob
@@ -144,16 +149,19 @@ export default class EventBusService
   ): Promise<TResult | void> {
     const manager = this.activeManager_
     const isBulkEmit = !isString(eventNameOrData)
+    const dataBody = isString(eventNameOrData)
+      ? data ?? (data as Message<T>).body
+      : undefined
     const events: EventBusTypes.EmitData[] = isBulkEmit
       ? eventNameOrData.map((event) => ({
           eventName: event.eventName,
-          data: event.data,
+          data: (event as EmitData).data ?? (event as Message<T>).body.data,
           options: event.options,
         }))
       : [
           {
             eventName: eventNameOrData,
-            data: data,
+            data: dataBody,
             options: options,
           },
         ]
@@ -193,7 +201,7 @@ export default class EventBusService
     const listConfig = {
       relations: [],
       skip: 0,
-      take: 1000,
+      take: this.config_.projectConfig.jobs_batch_size ?? 1000,
     }
 
     while (this.shouldEnqueuerRun) {

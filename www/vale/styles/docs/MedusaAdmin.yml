@@ -1,0 +1,10 @@
+extends: substitution
+message: "Consider using '%s' instead of '%s'."
+level: error
+ignorecase: false
+action:
+  name: replace
+swap:
+  medusa admin: Medusa Admin
+  Medusa admin: Medusa Admin
+  medusa Admin: Medusa Admin

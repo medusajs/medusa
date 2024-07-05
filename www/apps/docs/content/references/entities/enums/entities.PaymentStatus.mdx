@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentStatus
 
@@ -10,21 +10,17 @@ The order's payment status.
 
 ## Enumeration Members
 
+### NOT\_PAID
+
+ **NOT\_PAID** = `"not_paid"`
+
+The order's payment is not paid.
+
 ### AWAITING
 
  **AWAITING** = `"awaiting"`
 
 The order's payment is awaiting capturing.
-
-___
-
-### CANCELED
-
- **CANCELED** = `"canceled"`
-
-The order's payment is canceled.
-
-___
 
 ### CAPTURED
 
@@ -32,23 +28,11 @@ ___
 
 The order's payment is captured.
 
-___
-
-### NOT\_PAID
-
- **NOT\_PAID** = `"not_paid"`
-
-The order's payment is not paid.
-
-___
-
 ### PARTIALLY\_REFUNDED
 
  **PARTIALLY\_REFUNDED** = `"partially_refunded"`
 
 Some of the order's payment amount is refunded.
-
-___
 
 ### REFUNDED
 
@@ -56,7 +40,11 @@ ___
 
 The order's payment amount is refunded.
 
-___
+### CANCELED
+
+ **CANCELED** = `"canceled"`
+
+The order's payment is canceled.
 
 ### REQUIRES\_ACTION
 

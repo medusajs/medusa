@@ -4,7 +4,7 @@ slug: /references/inventory/deleteReservationItem
 sidebar_label: deleteReservationItem
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # deleteReservationItem - Inventory Module Reference
 
@@ -15,7 +15,7 @@ This method is used to delete a reservation item or multiple reservation items b
 ## Example
 
 ```ts
-import { 
+import {
   initialize as initializeInventoryModule,
 } from "@medusajs/inventory"
 
@@ -32,8 +32,8 @@ async function deleteReservationItems (
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"reservationItemId","type":"`string` \\| `string`[]","description":"The ID(s) of the reservation item(s) to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} />
+<TypeList types={[{"name":"reservationItemId","type":"`string` \\| `string`[]","description":"The ID(s) of the reservation item(s) to delete.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"[SharedContext](../../interfaces/inventory.SharedContext.mdx)","description":"A context used to share resources, such as transaction manager, between the application and the module.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"transactionManager","type":"`EntityManager`","description":"An instance of a transaction manager.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"manager","type":"`EntityManager`","description":"An instance of an entity manager.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="deleteReservationItem"/>
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the reservation item(s) are successfully deleted.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"Resolves when the reservation item(s) are successfully deleted.","expandable":false,"children":[]}]}  sectionTitle="deleteReservationItem"/>

@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # MiddlewareService
 
@@ -14,113 +14,31 @@ ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"postAuthentication_","type":"`middlewareType`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"preAuthentication_","type":"`middlewareType`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"preCartCreation_","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"routers","type":"`Record<string, Router[]>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"postAuthentication_","type":"`middlewareType`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"preAuthentication_","type":"`middlewareType`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"preCartCreation_","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"routers","type":"`Record<string, Router[]>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="MiddlewareService"/>
 
 ___
 
 ## Methods
 
-### addPostAuthentication
-
-Adds a middleware function to be called after authentication is completed.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"middleware","type":"`middlewareHandlerType`","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"the arguments that will be passed to the\n  middleware","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
-
-___
-
-### addPreAuthentication
-
-Adds a middleware function to be called before authentication is completed.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"middleware","type":"`middlewareHandlerType`","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"the arguments that will be passed to the\n  middleware","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]} />
-
-___
-
-### addPreCartCreation
-
-Adds a middleware function to be called before cart creation
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"middleware","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
 ### addRouter
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"router","type":"`Router`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"path","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"router","type":"`Router`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addRouter"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addRouter"/>
 
 ### getRouters
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"path","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getRouters"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Router[]","type":"`Router`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### usePostAuthentication
-
-Adds post authentication middleware to an express app.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"app","type":"`Router`","description":"the express app to add the middleware to","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### usePreAuthentication
-
-Adds pre authentication middleware to an express app.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"app","type":"`Router`","description":"the express app to add the middleware to","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### usePreCartCreation
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Router[]","type":"`Router`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getRouters"/>
 
 ### validateMiddleware\_
 
@@ -128,8 +46,74 @@ Validates a middleware function, throws if fn is not of type function.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"fn","type":"`unknown`","description":"the middleware function to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"fn","type":"`unknown`","description":"the middleware function to validate.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateMiddleware_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"nothing if the middleware is a function","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"nothing if the middleware is a function","expandable":false,"children":[]}]}  sectionTitle="validateMiddleware_"/>
+
+### addPostAuthentication
+
+Adds a middleware function to be called after authentication is completed.
+
+#### Parameters
+
+<TypeList types={[{"name":"middleware","type":"`middlewareHandlerType`","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"the arguments that will be passed to the\n  middleware","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addPostAuthentication"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]}  sectionTitle="addPostAuthentication"/>
+
+### addPreAuthentication
+
+Adds a middleware function to be called before authentication is completed.
+
+#### Parameters
+
+<TypeList types={[{"name":"middleware","type":"`middlewareHandlerType`","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`Record<string, unknown>`","description":"the arguments that will be passed to the\n  middleware","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addPreAuthentication"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"void","expandable":false,"children":[]}]}  sectionTitle="addPreAuthentication"/>
+
+### addPreCartCreation
+
+Adds a middleware function to be called before cart creation
+
+#### Parameters
+
+<TypeList types={[{"name":"middleware","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;","description":"the middleware function. Should return a\n  middleware function.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addPreCartCreation"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Adds a middleware function to be called before cart creation","expandable":false,"children":[]}]}  sectionTitle="addPreCartCreation"/>
+
+### usePostAuthentication
+
+Adds post authentication middleware to an express app.
+
+#### Parameters
+
+<TypeList types={[{"name":"app","type":"`Router`","description":"the express app to add the middleware to","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="usePostAuthentication"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Adds post authentication middleware to an express app.","expandable":false,"children":[]}]}  sectionTitle="usePostAuthentication"/>
+
+### usePreAuthentication
+
+Adds pre authentication middleware to an express app.
+
+#### Parameters
+
+<TypeList types={[{"name":"app","type":"`Router`","description":"the express app to add the middleware to","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="usePreAuthentication"/>
+
+#### Returns
+
+<TypeList types={[{"name":"void","type":"`void`","optional":false,"defaultValue":"","description":"Adds pre authentication middleware to an express app.","expandable":false,"children":[]}]}  sectionTitle="usePreAuthentication"/>
+
+### usePreCartCreation
+
+#### Returns
+
+<TypeList types={[{"name":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","type":"RequestHandler&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="usePreCartCreation"/>

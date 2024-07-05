@@ -5,13 +5,14 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class ProductOption extends SoftDeletableEntity {
@@ -21,14 +22,14 @@ export class ProductOption extends SoftDeletableEntity {
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
     cascade: ["soft-remove", "remove"],
   })
-  values: ProductOptionValue[]
+  values: Relation<ProductOptionValue>[]
 
   @Column()
   product_id: string
 
   @ManyToOne(() => Product, (product) => product.options)
   @JoinColumn({ name: "product_id" })
-  product: Product
+  product: Relation<Product>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>

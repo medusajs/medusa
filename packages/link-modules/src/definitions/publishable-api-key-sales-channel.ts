@@ -1,5 +1,6 @@
+import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
-import { LINKS } from "../links"
+import { LINKS } from "@medusajs/utils"
 
 export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   serviceName: LINKS.PublishableApiKeySalesChannel,
@@ -10,24 +11,22 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "publishable_api_key_sales_channel",
-    },
-    {
-      name: "publishable_api_key_sales_channels",
+      name: [
+        "publishable_api_key_sales_channel",
+        "publishable_api_key_sales_channels",
+      ],
     },
   ],
   primaryKeys: ["id", "publishable_key_id", "sales_channel_id"],
   relationships: [
     {
-      serviceName: "publishableApiKeyService",
-      isInternalService: true,
+      serviceName: Modules.API_KEY,
       primaryKey: "id",
       foreignKey: "publishable_key_id",
-      alias: "publishable_key",
+      alias: "api_key",
     },
     {
-      serviceName: "salesChannelService",
-      isInternalService: true,
+      serviceName: Modules.SALES_CHANNEL,
       primaryKey: "id",
       foreignKey: "sales_channel_id",
       alias: "sales_channel",
@@ -35,13 +34,12 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
   ],
   extends: [
     {
-      serviceName: "publishableApiKeyService",
+      serviceName: Modules.API_KEY,
       fieldAlias: {
         sales_channels: "sales_channels_link.sales_channel",
       },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
-        isInternalService: true,
         primaryKey: "publishable_key_id",
         foreignKey: "id",
         alias: "sales_channels_link",
@@ -49,13 +47,15 @@ export const PublishableApiKeySalesChannel: ModuleJoinerConfig = {
       },
     },
     {
-      serviceName: "salesChannelService",
+      serviceName: Modules.SALES_CHANNEL,
+      fieldAlias: {
+        publishable_api_keys: "api_keys_link.api_key",
+      },
       relationship: {
         serviceName: LINKS.PublishableApiKeySalesChannel,
-        isInternalService: true,
         primaryKey: "sales_channel_id",
         foreignKey: "id",
-        alias: "publishable_keys_link",
+        alias: "api_keys_link",
         isList: true,
       },
     },

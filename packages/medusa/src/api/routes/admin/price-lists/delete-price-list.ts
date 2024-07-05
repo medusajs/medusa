@@ -1,6 +1,3 @@
-import { WorkflowTypes } from "@medusajs/types"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
-import { removePriceLists } from "@medusajs/core-flows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
@@ -86,34 +83,13 @@ import PriceListService from "../../../../services/price-list"
  */
 export default async (req, res) => {
   const { id } = req.params
-
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
-    MedusaV2Flag.key
-  )
-
-  if (isMedusaV2FlagEnabled) {
-    const removePriceListsWorkflow = removePriceLists(req.scope)
-
-    const input = {
-      price_lists: [id],
-    } as WorkflowTypes.PriceListWorkflow.RemovePriceListWorkflowInputDTO
-
-    await removePriceListsWorkflow.run({
-      input,
-      context: {
-        manager,
-      },
-    })
-  } else {
-    const priceListService: PriceListService =
-      req.scope.resolve("priceListService")
-    await manager.transaction(async (transactionManager) => {
-      await priceListService.withTransaction(transactionManager).delete(id)
-    })
-  }
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
+  await manager.transaction(async (transactionManager) => {
+    await priceListService.withTransaction(transactionManager).delete(id)
+  })
 
   res.json({
     id,

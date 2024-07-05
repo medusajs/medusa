@@ -1,20 +1,14 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import { MapToConfig } from "@medusajs/utils"
-import {
-  Currency,
-  MoneyAmount,
-  PriceList,
-  PriceSet,
-  PriceSetMoneyAmount,
-} from "@models"
+import { Price, PriceList, PriceSet, RuleType } from "@models"
+import schema from "./schema"
 
 export const LinkableKeys = {
-  money_amount_id: MoneyAmount.name,
-  currency_code: Currency.name,
   price_set_id: PriceSet.name,
   price_list_id: PriceList.name,
-  price_set_money_amount_id: PriceSetMoneyAmount.name,
+  price_id: Price.name,
+  rule_type_id: RuleType.name,
 }
 
 const entityLinkableKeysMap: MapToConfig = {}
@@ -32,47 +26,30 @@ export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRICING,
   primaryKeys: ["id"],
   linkableKeys: LinkableKeys,
+  schema,
   alias: [
     {
-      name: "price_set",
-    },
-    {
-      name: "price_sets",
-    },
-    {
-      name: "money_amount",
+      name: ["price_set", "price_sets"],
       args: {
-        methodSuffix: "MoneyAmounts",
+        entity: "PriceSet",
       },
     },
     {
-      name: "money_amounts",
-      args: {
-        methodSuffix: "MoneyAmounts",
-      },
-    },
-    {
-      name: "currency",
-      args: {
-        methodSuffix: "Currencies",
-      },
-    },
-    {
-      name: "currencies",
-      args: {
-        methodSuffix: "Currencies",
-      },
-    },
-    {
-      name: "price_list",
+      name: ["price_list", "price_lists"],
       args: {
         methodSuffix: "PriceLists",
       },
     },
     {
-      name: "price_lists",
+      name: ["price", "prices"],
       args: {
-        methodSuffix: "PriceLists",
+        methodSuffix: "Prices",
+      },
+    },
+    {
+      name: ["rule_type", "rule_types"],
+      args: {
+        methodSuffix: "RuleTypes",
       },
     },
   ],

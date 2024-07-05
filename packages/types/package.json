@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "1.11.10",
+  "version": "1.11.16",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "awilix": "^8.0.0",
+    "bignumber.js": "^9.1.2",
     "cross-env": "^5.2.1",
     "ioredis": "^5.2.5",
     "rimraf": "^5.0.1",

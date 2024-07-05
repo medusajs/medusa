@@ -4,7 +4,7 @@ slug: /references/workflows/transform
 sidebar_label: transform
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # transform - Workflows API Reference
 
@@ -55,12 +55,12 @@ const myWorkflow = createWorkflow<
 
 ## Type Parameters
 
-<ParameterTypes parameters={[{"name":"T","type":"`object` \\| [WorkflowDataProperties](../types/workflows.WorkflowDataProperties.mdx)&#60;unknown&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"RFinal","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"T","type":"`object` \\| [WorkflowData](../types/workflows.WorkflowData.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"RFinal","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transform"/>
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"values","type":"T","description":"The output(s) of other step functions.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"func","type":"[Func1&#60;T, RFinal&#62;]","description":"The transform function used to perform action on the runtime values of the provided `values`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"values","type":"T","description":"The output(s) of other step functions.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"func","type":"[Func1&#60;T, RFinal&#62;]","description":"The transform function used to perform action on the runtime values of the provided `values`.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="transform"/>
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"WorkflowData","type":"[WorkflowData](../types/workflows.WorkflowData.mdx)&#60;RFinal&#62;","optional":false,"defaultValue":"","description":"There's no expected value to be returned by the `transform` function.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"WorkflowData","type":"[WorkflowData](../types/workflows.WorkflowData.mdx)&#60;RFinal&#62;","optional":false,"defaultValue":"","description":"There's no expected value to be returned by the `transform` function.","expandable":false,"children":[]}]}  sectionTitle="transform"/>

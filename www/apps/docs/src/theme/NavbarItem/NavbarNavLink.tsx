@@ -12,6 +12,7 @@ export default function NavbarNavLink({
   label,
   html,
   prependBaseUrlToHref,
+  isDropdownLink,
   ...props
 }: Omit<Props, "key">): JSX.Element {
   // TODO all this seems hacky

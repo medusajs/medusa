@@ -31,7 +31,7 @@ It's assumed that you already have a Medusa backend installed and set up. If not
 
 ### Notification Provider
 
-To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an [existing plugin](../../../plugins/notifications/index.mdx) or [create your own](../../../development/notification/create-notification-provider.md).
+To send an email or another type of notification method, you must have a notification provider installed or configured. You can either install an [existing plugin](../../../plugins/notifications/index.mdx) or [create your own](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
 
 ---
 
@@ -149,6 +149,6 @@ Where `<NOTIFICATION_PROVIDER_IDENTIFIER>` is the identifier for your notifica
 
 :::note
 
-You can learn more about handling events with the Notification Service using [this documentation](../../../development/notification/create-notification-provider.md).
+You can learn more about handling events with the Notification Service using [this documentation](../../../references/notification/classes/notification.AbstractNotificationService.mdx).
 
 :::

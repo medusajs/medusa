@@ -1,0 +1,126 @@
+---
+description: "General steps for deploying the admin."
+addHowToData: true
+---
+
+import DetailsList from '@site/src/components/DetailsList'
+import CorsErrorSection from '../../troubleshooting/cors-issues.md'
+
+# General Deployment Guide for Medusa Admin
+
+In this guide, you’ll learn the general steps to follow when deploying the Medusa Admin separately from the backend. This guide isn’t tailored towards any hosting provider.
+
+## Prerequisites
+
+### Medusa Project
+
+Before you deploy the admin, you need a Medusa project with the backend and admin plugin. You can refer to [this guide to learn how to install it](../../create-medusa-app.mdx).
+
+### Deployed Medusa Backend
+
+The deployed admin must connect to a publicly deployed backend. So, deploy the backend first to obtain its URL.
+
+You can follow one of [these backend deployment guides](../server/index.mdx).
+
+---
+
+## (Optional) Step 1: Create GitHub Repository
+
+Many hosting providers allow you to deploy your project directly from GitHub. This makes it easier for you to push changes and updates without having to manually trigger the update in the hosting provider.
+
+If your hosting provider supports that, create a GitHub repository and push the Medusa backend project’s code to it:
+
+:::note
+
+Even though you’re just deploying the admin, you must include the entire Medusa backend project in the deployed repository. The build process of the admin uses many of the backend’s dependencies.
+
+:::
+
+```bash
+git init
+git remote add origin <GITHUB_URL>
+git add .
+git commit -m "initial commit"
+git push
+```
+
+---
+
+## Step 2: Configure Build Command
+
+In the `package.json` of the Medusa backend, add or change a build script for the admin:
+
+```json title="package.json"
+"scripts": {
+  // other scripts
+  "build:admin": "medusa-admin build --deployment",
+}
+```
+
+:::note
+
+When using the `--deployment` option, the backend's URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. You'll configure this environment variable in a later step.
+
+:::
+
+---
+
+## Step 3: Deploy to Hosting Provider
+
+The steps to deploy the admin can be different based on the hosting provider you use. The following points cover common configurations across hosting providers:
+
+- If your hosting provider supports choosing a Framework Preset, choose the “Other” option as the Medusa Admin doesn’t follow known framework presets.
+- Set the build command of your deployed project to use the `build:admin` command:
+
+```bash npm2yarn
+npm run build:admin
+```
+
+- Set the output directory of your deployed project to `build`.
+- Add the environment variable `MEDUSA_ADMIN_BACKEND_URL` and set its value to the URL of your deployed Medusa backend.
+- If your hosting provider supports URL rewrites, add a configuration to rewrite the `/(.*)` URL pattern to `/index.html`. For example, if you’re deploying to Vercel you add the following in `vercel.json`:
+
+```json
+{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
+---
+
+## Step 4: Configure CORS on the Deployed Backend
+
+To send requests from the admin dashboard to the Medusa backend, you must set the `ADMIN_CORS` environment variable on your backend to the admin’s URL:
+
+```bash
+ADMIN_CORS=<ADMIN_URL>
+```
+
+Where `<ADMIN_URL>` is the URL of your admin dashboard that you just deployed.
+
+Then, restart your Medusa backend. Once the backend is running again, you can use your admin dashboard.
+
+---
+
+## Step 5: (Optional) Create Admin User
+
+To log in to the admin dashboard, you must have an admin user. To create one, run the following command on your deployed backend:
+
+```bash
+npx medusa user --email admin@medusa-test.com --password supersecret
+```
+
+You can then log in using the specified email and password.
+
+---
+
+## Troubleshooting
+
+<DetailsList
+  sections={[
+    {
+      title: 'CORS Error',
+      content: <CorsErrorSection />
+    },
+  ]}
+/>

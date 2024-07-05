@@ -1,0 +1,87 @@
+name: Generate References for Docblocks (v1) [Automated]
+
+on:
+  pull_request:
+    branches:
+      - v1.x
+    types:
+      - closed
+  workflow_dispatch:
+    inputs:
+      referenceName:
+        description: 'Reference to Generate. Use either `all` or a name of a config file in `docs-util/packages/typedoc-config` such as `product`.'
+        required: false
+        default: 'all'
+
+jobs:
+  references:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || (startsWith(github.head_ref, 'chore/generate-tsdocs') && github.event.pull_request.merged == true)
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: "v1.x"
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.10.0"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install Docs dependencies
+        working-directory: www
+        run: yarn install
+
+      - name: Install Workspace dependencies
+        run: yarn install
+        working-directory: docs-util
+
+      - name: Build Workspace dependencies
+        run: yarn build
+        working-directory: docs-util
+
+      - name: Generate References
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: "yarn generate:reference ${{ github.event.inputs.referenceName }}"
+        working-directory: docs-util/packages/scripts
+
+      - name: Generate References
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        run: "yarn generate:reference all"
+        working-directory: docs-util/packages/scripts
+
+      - name: Generate Changeset
+        run: "yarn generate:changeset"
+        working-directory: docs-util/packages/scripts
+
+      - name: Get PR Message
+        id: pr-message
+        run: yarn generate:message
+        working-directory: docs-util/packages/scripts
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "chore(docs): Generated References (automated)"
+          base: "v1.x"
+          title: "chore(docs): Generated References"
+          labels: "type: chore"
+          add-paths: www/apps/docs/content/references/**
+          branch: "docs/generate-reference"
+          branch-suffix: "timestamp"
+          body: ${{ steps.pr-message.outputs.body }}

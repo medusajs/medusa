@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-description: 'Medusa admin allows merchants to manage their sales channels. Merchants can separate products into multiple sales channels.'
+description: 'Medusa Admin allows merchants to manage their sales channels. Merchants can separate products into multiple sales channels.'
 ---
 
 # Sales Channels Overview
@@ -21,7 +21,7 @@ Sales channels are associated with data and settings in your ecommerce store.
 
 For each sales channel, you can choose which products belong to that sales channel. A product can be available in more than one sales channel.
 
-Then, when customers place an order from a sales channel, the order is associated with that sales channel. You’ll be able to see the sales channel an order was placed from in the Medusa admin.
+Then, when customers place an order from a sales channel, the order is associated with that sales channel. You’ll be able to see the sales channel an order was placed from in the Medusa Admin.
 
 ---
 

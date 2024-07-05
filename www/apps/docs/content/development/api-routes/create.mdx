@@ -115,7 +115,7 @@ For example, if your API route accepts an author ID and a post ID, the path to y
 
 ## CORS Configuration
 
-The `cors` middleware, which enables Cross-Origin Resource Sharing (CORS), is automatically applied on custom API Routes defined under the `/store` or `/admin` path prefixes based on the respective [store_cors and admin_cors configurations](../backend/configurations.md#admin_cors-and-store_cors).
+The `cors` middleware, which enables Cross-Origin Resource Sharing (CORS), is automatically applied on custom API Routes defined under the `/store` or `/admin` path prefixes based on the respective [store_cors and admin_cors configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#admin_cors).
 
 To add CORS configurations to custom API routes under other path prefixes, or override the CORS configurations added by default, define a [middleware](./add-middleware.mdx) on your API routes and pass it the `cors` middleware. For example:
 
@@ -128,7 +128,7 @@ import cors from "cors"
 export const config: MiddlewaresConfig = {
   routes: [
     {
-      matcher: "/custom/*",
+      matcher: "/custom*",
       middlewares: [
         cors({
           origin: "*",

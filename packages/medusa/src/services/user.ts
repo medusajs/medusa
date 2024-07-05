@@ -1,17 +1,18 @@
+import { Selector } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOptionsWhere, ILike } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
 import { User } from "../models"
 import { UserRepository } from "../repositories/user"
 import { FindConfig } from "../types/common"
 import {
-    CreateUserInput,
-    FilterableUserProps,
-    UpdateUserInput,
+  CreateUserInput,
+  FilterableUserProps,
+  UpdateUserInput,
 } from "../types/user"
 import { buildQuery, setMetadata } from "../utils"
 import { validateEmail } from "../utils/is-email"
@@ -62,9 +63,86 @@ class UserService extends TransactionBaseService {
    * @param {Object} config - the configuration object for the query
    * @return {Promise} the result of the find operation
    */
-  async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
+  async list(
+    selector: Selector<FilterableUserProps> & { q?: string } = {},
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
+  ): Promise<User[]> {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
-    return await userRepo.find(buildQuery(selector, config))
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<FilterableUserProps>
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = [
+        {
+          ...where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
+    return await userRepo.find(query)
+  }
+
+  async listAndCount(
+    selector: Selector<FilterableUserProps> & { q?: string } = {},
+    config: FindConfig<FilterableUserProps> = { skip: 0, take: 50 }
+  ) {
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
+
+    let q: string | undefined
+
+    if (selector.q) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector, config)
+
+    if (q) {
+      const where = query.where as FindOptionsWhere<FilterableUserProps>
+
+      delete where.email
+      delete where.first_name
+      delete where.last_name
+
+      query.where = [
+        {
+          ...where,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          first_name: ILike(`%${q}%`),
+        },
+        {
+          ...where,
+          last_name: ILike(`%${q}%`),
+        },
+      ]
+    }
+
+    return await userRepo.findAndCount(query)
   }
 
   /**

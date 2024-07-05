@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/file-local",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Local file plugin for Medusa",
   "main": "dist/index.js",
   "files": [
@@ -17,8 +17,8 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "^1.17.4",
-    "@medusajs/types": "^1.11.6",
+    "@medusajs/medusa": "^1.20.1",
+    "@medusajs/types": "^1.11.11",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",

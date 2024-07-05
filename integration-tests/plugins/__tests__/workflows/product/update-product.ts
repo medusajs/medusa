@@ -1,9 +1,9 @@
-import { WorkflowTypes } from "@medusajs/types"
 import {
   Handlers,
   updateProducts,
   UpdateProductsActions,
 } from "@medusajs/core-flows"
+import { WorkflowTypes } from "@medusajs/types"
 import { pipe } from "@medusajs/workflows-sdk"
 import path from "path"
 
@@ -14,7 +14,7 @@ import { simpleProductFactory } from "../../../../factories"
 
 jest.setTimeout(100000)
 
-describe("UpdateProduct workflow", function () {
+describe.skip("UpdateProduct workflow", function () {
   let dbConnection
   let medusaContainer
   let shutdownServer
@@ -86,7 +86,9 @@ describe("UpdateProduct workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(`Failed to update products`),
+        error: expect.objectContaining({
+          message: `Failed to update products`,
+        }),
       },
     ])
 

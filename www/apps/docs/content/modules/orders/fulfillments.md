@@ -21,7 +21,7 @@ When a fulfillment is created for one or more item, shipments can then be create
 Some of the `Fulfillment` entity’s attributes include:
 
 - `provider_id`: a string indicating the ID of the fulfillment provider that processes this fulfillment. You can also access the provider by expanding the `provider` relation and accessing `fulfillment.provider`.
-- `location_id`: a string indicating where the fulfillment is being made from. When paired with the Stock Location module in the Medusa backend, this would be the ID of a `StockLocation`.
+- `location_id`: a string indicating where the fulfillment is being made from. When paired with the Stock Location Module in the Medusa backend, this would be the ID of a `StockLocation`.
 - `no_notification`: a boolean value indicating whether the customer should receive notifications for fulfillment updates.
 - `data`: an object that can hold any data relevant for the fulfillment provider.
 - `shipped_at`: a date indicating when the fulfillment was shipped.

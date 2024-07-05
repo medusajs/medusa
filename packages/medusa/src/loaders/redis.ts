@@ -15,23 +15,25 @@ async function redisLoader({
   container,
   configModule,
   logger,
-}: Options): Promise<void> {
+}: Options): Promise<{ shutdown: () => Promise<void> }> {
+  let client!: Redis | FakeRedis
+
   if (configModule.projectConfig.redis_url) {
-    const redisClient = new Redis(configModule.projectConfig.redis_url, {
+    client = new Redis(configModule.projectConfig.redis_url, {
       // Lazy connect to properly handle connection errors
       lazyConnect: true,
       ...(configModule.projectConfig.redis_options ?? {}),
     })
 
     try {
-      await redisClient.connect()
+      await client.connect()
       logger?.info(`Connection to Redis established`)
     } catch (err) {
       logger?.error(`An error occurred while connecting to Redis:${EOL} ${err}`)
     }
 
     container.register({
-      redisClient: asValue(redisClient),
+      redisClient: asValue(client),
     })
   } else {
     if (process.env.NODE_ENV === "production") {
@@ -43,11 +45,17 @@ async function redisLoader({
     logger.info("Using fake Redis")
 
     // Economical way of dealing with redis clients
-    const client = new FakeRedis()
+    client = new FakeRedis()
 
     container.register({
       redisClient: asValue(client),
     })
+  }
+
+  return {
+    shutdown: async () => {
+      client.disconnect()
+    },
   }
 }
 

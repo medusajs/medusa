@@ -14,8 +14,9 @@ const avatarVariants = cva({
       rounded: "rounded-full",
     },
     size: {
-      xsmall: "h-5 w-5",
-      small: "h-6 w-6",
+      "2xsmall": "h-5 w-5",
+      xsmall: "h-6 w-6",
+      small: "h-7 w-7",
       base: "h-8 w-8",
       large: "h-10 w-10",
       xlarge: "h-12 w-12",
@@ -24,8 +25,13 @@ const avatarVariants = cva({
   compoundVariants: [
     {
       variant: "squared",
+      size: "2xsmall",
+      className: "rounded-md",
+    },
+    {
+      variant: "squared",
       size: "xsmall",
-      className: "rounded-[4px]",
+      className: "rounded-md",
     },
     {
       variant: "squared",
@@ -62,14 +68,20 @@ const innerVariants = cva({
       rounded: "rounded-full",
     },
     size: {
-      xsmall: "txt-compact-xsmall-plus h-4 w-4",
-      small: "txt-compact-xsmall-plus h-5 w-5",
+      "2xsmall": "txt-compact-xsmall-plus h-4 w-4",
+      xsmall: "txt-compact-xsmall-plus h-5 w-5",
+      small: "txt-compact-small-plus h-6 w-6",
       base: "txt-compact-small-plus h-7 w-7",
       large: "txt-compact-medium-plus h-9 w-9",
       xlarge: "txt-compact-large-plus h-11 w-11",
     },
   },
   compoundVariants: [
+    {
+      variant: "squared",
+      size: "2xsmall",
+      className: "rounded-sm",
+    },
     {
       variant: "squared",
       size: "xsmall",

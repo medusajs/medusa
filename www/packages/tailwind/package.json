@@ -15,7 +15,7 @@
     "postcss.config.js"
   ],
   "dependencies": {
-    "@medusajs/ui-preset": "latest",
+    "@medusajs/ui-preset": "^1.1.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "peerDependencies": {

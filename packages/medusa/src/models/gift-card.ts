@@ -5,13 +5,14 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
-import { Order } from "./order"
-import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Order } from "./order"
+import { Region } from "./region"
 
 @Entity()
 export class GiftCard extends SoftDeletableEntity {
@@ -31,7 +32,7 @@ export class GiftCard extends SoftDeletableEntity {
 
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
-  region: Region
+  region: Relation<Region>
 
   @Index()
   @Column({ nullable: true })
@@ -39,7 +40,7 @@ export class GiftCard extends SoftDeletableEntity {
 
   @ManyToOne(() => Order)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @Column({ default: false })
   is_disabled: boolean

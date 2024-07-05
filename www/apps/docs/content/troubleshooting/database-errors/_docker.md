@@ -22,4 +22,4 @@ npx create-medusa-app@latest --db-url "postgres://user:password@localhost:<YOUR_
 
 Where `<YOUR_PORT>` is the exposed port if it's different than `5432`.
 
-Refer to the [database_url configuration documentation](../../development/backend/configurations.md#database_url) to learn how to set the database URL for an installed Medusa backend.
+Refer to the [database_url configuration documentation](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#database_url) to learn how to set the database URL for an installed Medusa backend.

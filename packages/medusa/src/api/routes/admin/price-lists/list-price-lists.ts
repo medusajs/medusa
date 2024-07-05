@@ -1,11 +1,8 @@
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request } from "express"
 import PriceListService from "../../../../services/price-list"
 import { FilterablePriceListProps } from "../../../../types/price-list"
-import { MedusaContainer } from "@medusajs/types"
-import { listAndCountPriceListPricingModule } from "./modules-queries"
 
 /**
  * @oas [get] /admin/price-lists
@@ -190,27 +187,14 @@ import { listAndCountPriceListPricingModule } from "./modules-queries"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res) => {
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-
   const validated = req.validatedQuery
-  let priceLists
-  let count
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
 
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    [priceLists, count] = await listAndCountPriceListPricingModule({
-      filters: req.filterableFields,
-      listConfig: req.listConfig,
-      container: req.scope as MedusaContainer,
-    })
-  } else {
-    const priceListService: PriceListService =
-      req.scope.resolve("priceListService")
-
-    ;[priceLists, count] = await priceListService.listAndCount(
-      req.filterableFields,
-      req.listConfig
-    )
-  }
+  const [priceLists, count] = await priceListService.listAndCount(
+    req.filterableFields,
+    req.listConfig
+  )
 
   res.json({
     price_lists: priceLists,

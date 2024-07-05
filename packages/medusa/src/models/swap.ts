@@ -6,7 +6,8 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne
+  OneToOne,
+  Relation,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -23,7 +24,7 @@ import { ShippingMethod } from "./shipping-method"
 
 /**
  * @enum
- * 
+ *
  * The swap's fulfillment status.
  */
 export enum SwapFulfillmentStatus {
@@ -55,7 +56,7 @@ export enum SwapFulfillmentStatus {
 
 /**
  * @enum
- * 
+ *
  * The swap's payment status.
  */
 export enum SwapPaymentStatus {
@@ -111,21 +112,21 @@ export class Swap extends SoftDeletableEntity {
 
   @ManyToOne(() => Order, (o) => o.swaps)
   @JoinColumn({ name: "order_id" })
-  order: Order
+  order: Relation<Order>
 
   @OneToMany(() => LineItem, (item) => item.swap, { cascade: ["insert"] })
-  additional_items: LineItem[]
+  additional_items: Relation<LineItem>[]
 
   @OneToOne(() => Return, (ret) => ret.swap, { cascade: ["insert"] })
-  return_order: Return
+  return_order: Relation<Return>
 
   @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.swap, {
     cascade: ["insert"],
   })
-  fulfillments: Fulfillment[]
+  fulfillments: Relation<Fulfillment>[]
 
   @OneToOne(() => Payment, (p) => p.swap, { cascade: ["insert"] })
-  payment: Payment
+  payment: Relation<Payment>
 
   @Column({ type: "int", nullable: true })
   difference_due: number
@@ -135,19 +136,19 @@ export class Swap extends SoftDeletableEntity {
 
   @ManyToOne(() => Address, { cascade: ["insert"] })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Relation<Address>
 
   @OneToMany(() => ShippingMethod, (method) => method.swap, {
     cascade: ["insert"],
   })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: Relation<ShippingMethod>[]
 
   @Column({ nullable: true })
   cart_id: string
 
   @OneToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
-  cart: Cart
+  cart: Relation<Cart>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at: Date

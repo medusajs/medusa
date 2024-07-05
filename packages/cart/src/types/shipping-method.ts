@@ -1,13 +1,15 @@
+import { BigNumberInput } from "@medusajs/types"
+
 export interface CreateShippingMethodDTO {
   name: string
-  cart_id: string
-  amount: number
+  shippingMethod_id: string
+  amount: BigNumberInput
   data?: Record<string, unknown>
 }
 
 export interface UpdateShippingMethodDTO {
   id: string
   name?: string
-  amount?: number
+  amount?: BigNumberInput
   data?: Record<string, unknown>
 }

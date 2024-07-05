@@ -1,6 +1,6 @@
-import { LINKS } from "../links"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { LINKS } from "@medusajs/utils"
 
 export const ProductVariantPriceSet: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantPriceSet,
@@ -11,10 +11,10 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   },
   alias: [
     {
-      name: "product_variant_price_set",
-    },
-    {
-      name: "product_variant_price_sets",
+      name: ["product_variant_price_set", "product_variant_price_sets"],
+      args: {
+        entity: "LinkProductVariantPriceSet",
+      },
     },
   ],
   primaryKeys: ["id", "variant_id", "price_set_id"],
@@ -41,11 +41,18 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
   extends: [
     {
       serviceName: Modules.PRODUCT,
+      fieldAlias: {
+        price_set: "price_set_link.price_set",
+        calculated_price: {
+          path: "price_set_link.price_set.calculated_price",
+          forwardArgumentsOnPath: ["price_set_link.price_set"],
+        },
+      },
       relationship: {
         serviceName: LINKS.ProductVariantPriceSet,
         primaryKey: "variant_id",
         foreignKey: "id",
-        alias: "price",
+        alias: "price_set_link",
       },
     },
     {
@@ -55,6 +62,9 @@ export const ProductVariantPriceSet: ModuleJoinerConfig = {
         primaryKey: "price_set_id",
         foreignKey: "id",
         alias: "variant_link",
+      },
+      fieldAlias: {
+        variant: "variant_link.variant",
       },
     },
   ],

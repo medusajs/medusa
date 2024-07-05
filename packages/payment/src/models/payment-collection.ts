@@ -1,3 +1,11 @@
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  PaymentCollectionStatus,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -6,23 +14,15 @@ import {
   Enum,
   Filter,
   ManyToMany,
-  OneToMany,
   OnInit,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-
-import {
-  DALUtils,
-  generateEntityId,
-  optionalNumericSerializer,
-  PaymentCollectionStatus,
-} from "@medusajs/utils"
+import Payment from "./payment"
 import PaymentProvider from "./payment-provider"
 import PaymentSession from "./payment-session"
-import Payment from "./payment"
 
 type OptionalPaymentCollectionProps = "status" | DAL.EntityDateColumns
 
@@ -37,25 +37,11 @@ export default class PaymentCollection {
   @Property({ columnType: "text" })
   currency_code: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  authorized_amount: number | null = null
-
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  refunded_amount: number | null = null
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text", index: "IDX_payment_collection_region_id" })
   region_id: string
@@ -98,14 +84,17 @@ export default class PaymentCollection {
   payment_providers = new Collection<PaymentProvider>(this)
 
   @OneToMany(() => PaymentSession, (ps) => ps.payment_collection, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   payment_sessions = new Collection<PaymentSession>(this)
 
   @OneToMany(() => Payment, (payment) => payment.payment_collection, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, "soft-remove"] as any,
   })
   payments = new Collection<Payment>(this)
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @BeforeCreate()
   onCreate() {

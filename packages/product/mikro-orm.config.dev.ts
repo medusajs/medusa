@@ -1,3 +1,4 @@
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import * as entities from "./src/models"
 
 module.exports = {
@@ -5,4 +6,7 @@ module.exports = {
   schema: "public",
   clientUrl: "postgres://postgres@localhost/medusa-products",
   type: "postgresql",
+  migrations: {
+    generator: TSMigrationGenerator,
+  },
 }

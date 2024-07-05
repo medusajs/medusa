@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # GiftCardService
 
@@ -12,13 +12,13 @@ Provides layer to manipulate gift cards.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new GiftCardService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardRepository_","type":"Repository&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardTransactionRepo_","type":"Repository&#60;[GiftCardTransaction](../../entities/classes/entities.GiftCardTransaction.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"gift_card.created\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardRepository_","type":"Repository&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"giftCardTransactionRepo_","type":"Repository&#60;[GiftCardTransaction](../../entities/classes/entities.GiftCardTransaction.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"regionService_","type":"[RegionService](services.RegionService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBus_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"gift_card.created\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="GiftCardService"/>
 
 ___
 
@@ -28,11 +28,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
+
+### withTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -42,157 +62,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
-
-___
-
-### create
-
-Creates a gift card with provided data given that the data is validated.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"giftCard","type":"`CreateGiftCardInput`","description":"the gift card data to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
-
-___
-
-### createTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"data","type":"`CreateGiftCardTransactionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### delete
-
-Deletes a gift card idempotently
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"giftCardId","type":"`string`","description":"id of gift card to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]} />
-
-___
-
-### list
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the configuration used to find the objects. contains relations, skip, and take.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
-
-### listAndCount
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the configuration used to find the objects. contains relations, skip, and take.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[GiftCard](../../entities/classes/entities.GiftCard.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
-
-### retrieve
-
-Gets a gift card by id.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"giftCardId","type":"`string`","description":"id of gift card to retrieve","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"optional values to include with gift card query","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the gift card","expandable":false,"children":[]}]} />
-
-___
-
-### retrieveByCode
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### retrieve\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### shouldRetryTransaction\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### update
-
-Updates a giftCard.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"giftCardId","type":"`string`","description":"giftCard id of giftCard to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateGiftCardInput`","description":"the data to update the giftCard with","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
-
-___
-
-### withTransaction
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### generateCode
 
@@ -200,9 +78,49 @@ Generates a 16 character gift card code
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"the generated gift card code","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"string","type":"`string`","optional":false,"defaultValue":"","description":"the generated gift card code","expandable":false,"children":[]}]}  sectionTitle="generateCode"/>
 
-___
+### listAndCount
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"[QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the configuration used to find the objects. contains relations, skip, and take.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[GiftCard](../../entities/classes/entities.GiftCard.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+
+### list
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"[QuerySelector](../../medusa/types/medusa.QuerySelector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"the configuration used to find the objects. contains relations, skip, and take.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+### createTransaction
+
+#### Parameters
+
+<TypeList types={[{"name":"data","type":"`CreateGiftCardTransactionInput`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createTransaction"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="createTransaction"/>
+
+### create
+
+Creates a gift card with provided data given that the data is validated.
+
+#### Parameters
+
+<TypeList types={[{"name":"giftCard","type":"`CreateGiftCardInput`","description":"the gift card data to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### resolveTaxRate
 
@@ -211,8 +129,64 @@ provided by the user or the tax rate. Based on these conditions, tax\_rate chang
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"giftCardTaxRate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"giftCardTaxRate","type":"`null` \\| `number`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"region","type":"[Region](../../entities/classes/entities.Region.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="resolveTaxRate"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"null \\| number","type":"`null` \\| `number`","optional":false,"defaultValue":"","description":"the tax rate for the gift card","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"null \\| number","type":"`null` \\| `number`","optional":false,"defaultValue":"","description":"the tax rate for the gift card","expandable":false,"children":[]}]}  sectionTitle="resolveTaxRate"/>
+
+### retrieve\_
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve_"/>
+
+### retrieve
+
+Gets a gift card by id.
+
+#### Parameters
+
+<TypeList types={[{"name":"giftCardId","type":"`string`","description":"id of gift card to retrieve","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"optional values to include with gift card query","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the gift card","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+
+### retrieveByCode
+
+#### Parameters
+
+<TypeList types={[{"name":"code","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveByCode"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveByCode"/>
+
+### update
+
+Updates a giftCard.
+
+#### Parameters
+
+<TypeList types={[{"name":"giftCardId","type":"`string`","description":"giftCard id of giftCard to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateGiftCardInput`","description":"the data to update the giftCard with","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="update"/>
+
+### delete
+
+Deletes a gift card idempotently
+
+#### Parameters
+
+<TypeList types={[{"name":"giftCardId","type":"`string`","description":"id of gift card to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [GiftCard](../../entities/classes/entities.GiftCard.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation","expandable":false,"children":[]}]}  sectionTitle="delete"/>

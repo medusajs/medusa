@@ -1,71 +1,57 @@
 import { DAL } from "@medusajs/types"
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, Searchable, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
-  Index,
+  Filter,
   ManyToMany,
-  ManyToOne,
   OnInit,
   OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import Address from "./address"
 import CustomerGroup from "./customer-group"
 import CustomerGroupCustomer from "./customer-group-customer"
-import Address from "./address"
 
 type OptionalCustomerProps =
   | "groups"
   | "addresses"
-  | "default_shipping_address"
-  | "default_billing_address"
-  | DAL.EntityDateColumns
+  | DAL.SoftDeletableEntityDateColumns
 
 @Entity({ tableName: "customer" })
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Customer {
   [OptionalProps]?: OptionalCustomerProps
 
   @PrimaryKey({ columnType: "text" })
   id: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   company_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   first_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   last_name: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   email: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   phone: string | null = null
 
-  @Index({ name: "IDX_customer_default_shipping_address_id" })
-  @Property({ columnType: "text", nullable: true })
-  default_shipping_address_id: string | null = null
-
-  @ManyToOne(() => Address, {
-    fieldName: "default_shipping_address_id",
-    nullable: true,
-  })
-  default_shipping_address: Address | null
-
-  @Index({ name: "IDX_customer_default_billing_address_id" })
-  @Property({ columnType: "text", nullable: true })
-  default_billing_address_id: string | null = null
-
-  @ManyToOne(() => Address, {
-    fieldName: "default_billing_address_id",
-    nullable: true,
-  })
-  default_billing_address: Address | null
+  @Property({ columnType: "boolean", default: false })
+  has_account: boolean = false
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null = null

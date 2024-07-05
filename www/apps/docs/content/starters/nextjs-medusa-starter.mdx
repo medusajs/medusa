@@ -4,10 +4,10 @@ description: 'Learn how to get started with a Next.js storefront and Medusa. The
 ---
 
 import Feedback from '@site/src/components/Feedback';
-import QueryNote from '@site/src/components/QueryNote';
 import DetailsList from '@site/src/components/DetailsList'
 import ModuleXErrorSection from '../troubleshooting/common-installation-errors/_module-x-error.mdx'
 import CorsErrorSection from '../troubleshooting/cors-issues.md'
+import CmaOptionSection from '../troubleshooting/nextjs/_cma-option.mdx'
 
 # Next.js Quickstart
 
@@ -37,7 +37,7 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 The Next.js storefront requires a Medusa backend to be installed and running to work. The Medusa backend is a headless commerce engine, so storefronts connect to it using the Store REST APIs to provide commerce features to customers.
 
-You can use the following command to install a full ecommerce store that includes the Medusa backend, Next.js storefront, and Medusa admin:
+You can use the following command to install a full ecommerce store that includes the Medusa backend, Next.js storefront, and Medusa Admin:
 
 ```bash
 npx create-medusa-app@latest --with-nextjs-starter
@@ -45,31 +45,17 @@ npx create-medusa-app@latest --with-nextjs-starter
 
 Refer to the [create-medusa-app](../create-medusa-app.mdx) documentation for more details on prerequisites, steps, and troubleshooting.
 
-### Troubleshooting: Next.js Storefront Not Working
-
-By default, the command above will start both the Medusa backend at `localhost:9000` and the Next.js storefront at `localhost:8000` once the installation finishes successfully. The Medusa admin will also open in your default browser.
-
-If, while following along the setup process, you try to access the Next.js storefront and it's not working, try to run the storefront manually while the Medusa backend is still running.
-
-To do that, first, change to the directory of the storefront. The directory name is `<PROJECT_NAME>-storefront`, where `<PROJECT_NAME>` is the name you chose for the project while running the `create-medusa-app` command. For example:
-
-```bash
-cd my-medusa-store-storefront
-```
-
-Then, run the following command to start the storefront:
-
-```bash npm2yarn
-npm run dev
-```
-
-The storefront should run on `localhost:8000` now.
-
 ---
 
 ## Option 2: Install Next.js Storefront Only
 
 If you already have a Medusa backend installed, you can install the Next.js storefront separately.
+
+:::warning
+
+Your backend must have at least one active region. Otherwise, the Next.js storefront will be stuck in a redirect loop.
+
+:::
 
 To do that, follow these steps:
 
@@ -107,6 +93,10 @@ Your Next.js Starter Storefront is now running at `localhost:8000`
 
 <DetailsList
   sections={[
+    {
+      title: "Next.js storefront not working using option 1",
+      content: <CmaOptionSection />
+    },
     {
       title: 'CORS Error',
       content: <CorsErrorSection />
@@ -331,56 +321,6 @@ Then, on your backend, update the environment variable `STORE_CORS` to the URL w
 ```bash
 STORE_CORS=http://localhost:<PORT>
 ```
-
-### Using Serverless Modules
-
-:::note
-
-Serverless Modules are currently in beta and, at the moment, they can't be used in the Next.js storefront without the Medusa backend running.
-
-:::
-
-This starter fully supports the experimental [Product](../experimental/product/overview.mdx) and [Pricing](../experimental/pricing/overview.mdx) modules for retrieving and manipulating product and pricing data directly from a serverless function. This keeps your logic close to the frontend, making it easy to customize or extend Medusa's core functionality from within your Next.js project.
-
-By default, this starter uses the standard Medusa API for product, collection, and pricing retrieval.
-
-To enable the usage of the experimental modules, first, set the following environment variables:
-
-- `POSTGRES_URL`: the URL of your PostgreSQL databsae.
-- `NEXT_PUBLIC_BASE_URL`: the URL of your storefront's base URL. For exmaple, if you're running it locally, it should be `http://localhost:8000`.
-
-Then, set the following environment variable in both the Next.js storefront and the [Medusa backend](../experimental/index.md#enabling-experimental-features):
-
-:::warning
-
-This is a one way process. Once you opt in to these features and update your database, there's no way back. Proceed with caution.
-
-:::
-
-```bash
-MEDUSA_FF_MEDUSA_V2=true
-```
-
-Finally, run migrations in your Medusa backend using the following commands:
-
-```bash
-npx medusa migrations run
-node node_modules/@medusajs/medusa/dist/scripts/migrate-to-pricing-module.js
-```
-
-You can now test it out now. Make sure the Medusa backend is running, then start (or restart) your Next.js storefront:
-
-```bash npm2yarn
-npm run start
-```
-
-If you go to `localhost:8000`, all product and collection data should now be coming from the module. The Product Module routes are all in the `src/app/api` directory for you to customize to your use case.
-
-:::info[Deploying to Vercel]
-
-If you're not planning on using the serverless modules, you might encounter errors when deploying to Vercel. You can safely delete or exclude `the src/app/api` folder before deploying. The API routes are only used by the serverless modules.
-
-:::
 
 ### Customization
 

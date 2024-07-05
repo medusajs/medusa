@@ -17,10 +17,30 @@ import {
 } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
+import { DateComparisonOperator } from "./common"
 import { ExactlyOne } from "./validators/exactly-one"
 
 export type QuerySelector = {
   q?: string
+}
+
+/**
+ * Filters to apply on discounts' rules.
+ */
+export class AdminGetDiscountsDiscountRuleParams {
+  /**
+   * Type to filter discount rules by.
+   */
+  @IsOptional()
+  @IsEnum(DiscountRuleType)
+  type?: DiscountRuleType
+
+  /**
+   * Allocation to filter discount rules by.
+   */
+  @IsOptional()
+  @IsEnum(AllocationType)
+  allocation?: AllocationType
 }
 
 export class FilterableDiscountProps {
@@ -46,25 +66,16 @@ export class FilterableDiscountProps {
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
   rule?: AdminGetDiscountsDiscountRuleParams
-}
 
-/**
- * Filters to apply on discounts' rules.
- */
-export class AdminGetDiscountsDiscountRuleParams {
-  /**
-   * Type to filter discount rules by.
-   */
   @IsOptional()
-  @IsEnum(DiscountRuleType)
-  type?: DiscountRuleType
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
 
-  /**
-   * Allocation to filter discount rules by.
-   */
   @IsOptional()
-  @IsEnum(AllocationType)
-  allocation?: AllocationType
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
 
 /**

@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # CustomerService
 
@@ -12,13 +12,13 @@ Provides layer to manipulate customers.
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`InjectedDependencies`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new CustomerService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressRepository_","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerRepository_","type":"Repository&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBusService_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.created\"","expandable":false,"children":[]},{"name":"Events.PASSWORD_RESET","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.password_reset\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.updated\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerRepository_","type":"Repository&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressRepository_","type":"Repository&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"eventBusService_","type":"[EventBusService](services.EventBusService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"Events.PASSWORD_RESET","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.password_reset\"","expandable":false,"children":[]},{"name":"Events.CREATED","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.created\"","expandable":false,"children":[]},{"name":"Events.UPDATED","type":"`string`","description":"","optional":false,"defaultValue":"\"customer.updated\"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CustomerService"/>
 
 ___
 
@@ -28,23 +28,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
 
-### addAddress
+### withTransaction
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address","type":"[AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
-___
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -54,58 +62,15 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
-
-___
-
-### count
-
-Return the total number of documents in database
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the result of the count operation","expandable":false,"children":[]}]} />
-
-___
-
-### create
-
-Creates a customer from an email - customers can have accounts associated,
-e.g. to login and view order history, etc. If a password is provided the
-customer will automatically get an account, otherwise the customer is just
-used to hold details of customers.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customer","type":"`CreateCustomerInput`","description":"the customer to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of create","expandable":false,"children":[]}]} />
-
-___
-
-### delete
-
-Deletes a customer from a given customer id.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"the id of the customer to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 ### generateResetPasswordToken
 
@@ -117,89 +82,49 @@ which is always 15 minutes.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"the customer to reset the password for","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customerId","type":"`string`","description":"the customer to reset the password for","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="generateResetPasswordToken"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"the generated JSON web token","expandable":false,"children":[]}]} />
-
-___
-
-### hashPassword\_
-
-Hashes a password
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"password","type":"`string`","description":"the value to hash","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"hashed password","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"the generated JSON web token","expandable":false,"children":[]}]}  sectionTitle="generateResetPasswordToken"/>
 
 ### list
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
 
 ### listAndCount
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[Customer](../../entities/classes/entities.Customer.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
 
-___
+### count
 
-### listByEmail
+Return the total number of documents in database
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;number&#62;","optional":false,"defaultValue":"","description":"the result of the count operation","expandable":false,"children":[]}]}  sectionTitle="count"/>
+
+### retrieve\_
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### removeAddress
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### retrieve
-
-Gets a customer by id.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"the id of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve_"/>
 
 ### retrieveByEmail
 
@@ -207,15 +132,43 @@ Gets a registered customer by email.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"the email of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"email","type":"`string`","description":"the email of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveByEmail"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]}  sectionTitle="retrieveByEmail"/>
 
 #### Deprecated
 
-___
+### retrieveUnregisteredByEmail
+
+#### Parameters
+
+<TypeList types={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveUnregisteredByEmail"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveUnregisteredByEmail"/>
+
+### retrieveRegisteredByEmail
+
+#### Parameters
+
+<TypeList types={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveRegisteredByEmail"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveRegisteredByEmail"/>
+
+### listByEmail
+
+#### Parameters
+
+<TypeList types={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listByEmail"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="listByEmail"/>
 
 ### retrieveByPhone
 
@@ -223,61 +176,50 @@ Gets a customer by phone.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"phone","type":"`string`","description":"the phone of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"phone","type":"`string`","description":"the phone of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieveByPhone"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]}  sectionTitle="retrieveByPhone"/>
 
-___
+### retrieve
 
-### retrieveRegisteredByEmail
+Gets a customer by id.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customerId","type":"`string`","description":"the id of the customer to get.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"the config object containing query settings","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer document.","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
-___
+### hashPassword\_
 
-### retrieveUnregisteredByEmail
+Hashes a password
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"email","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"password","type":"`string`","description":"the value to hash","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="hashPassword_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;string&#62;","optional":false,"defaultValue":"","description":"hashed password","expandable":false,"children":[]}]}  sectionTitle="hashPassword_"/>
 
-___
+### create
 
-### retrieve\_
+Creates a customer from an email - customers can have accounts associated,
+e.g. to login and view order history, etc. If a password is provided the
+customer will automatically get an account, otherwise the customer is just
+used to hold details of customers.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customer","type":"`CreateCustomerInput`","description":"the customer to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### shouldRetryTransaction\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of create","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 ### update
 
@@ -285,25 +227,11 @@ Updates a customer.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"the id of the variant. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateCustomerInput`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customerId","type":"`string`","description":"the id of the variant. Must be a string that\n  can be casted to an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`UpdateCustomerInput`","description":"an object with the update values.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]} />
-
-___
-
-### updateAddress
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address","type":"[StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"resolves to the update result.","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 ### updateBillingAddress\_
 
@@ -311,20 +239,50 @@ Updates the customers' billing address.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"the Customer to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`undefined` \\| `string` \\| DeepPartial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the billing address to","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customer","type":"[Customer](../../entities/classes/entities.Customer.mdx)","description":"the Customer to update","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressOrId","type":"`undefined` \\| `string` \\| DeepPartial&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","description":"the value to set the billing address to","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateBillingAddress_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"the result of the update operation","expandable":false,"children":[]}]}  sectionTitle="updateBillingAddress_"/>
 
-___
-
-### withTransaction
+### updateAddress
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address","type":"[StorePostCustomersCustomerAddressesAddressReq](../../medusa/classes/medusa.StorePostCustomersCustomerAddressesAddressReq.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="updateAddress"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="updateAddress"/>
+
+### removeAddress
+
+#### Parameters
+
+<TypeList types={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"addressId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeAddress"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="removeAddress"/>
+
+### addAddress
+
+#### Parameters
+
+<TypeList types={[{"name":"customerId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"address","type":"[AddressCreatePayload](../../medusa/classes/medusa.AddressCreatePayload.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addAddress"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[Customer](../../entities/classes/entities.Customer.mdx) \\| [Address](../../entities/classes/entities.Address.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="addAddress"/>
+
+### delete
+
+Deletes a customer from a given customer id.
+
+#### Parameters
+
+<TypeList types={[{"name":"customerId","type":"`string`","description":"the id of the customer to delete. Must be\n  castable as an ObjectId","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void \\| [Customer](../../entities/classes/entities.Customer.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the delete operation.","expandable":false,"children":[]}]}  sectionTitle="delete"/>

@@ -1,5 +1,6 @@
 import cors from "cors"
 import { Router } from "express"
+import { parseCorsOrigins } from "medusa-core-utils"
 import middlewares from "../../middlewares"
 import analyticsConfigs from "./analytics-configs"
 import appRoutes from "./apps"
@@ -18,16 +19,18 @@ import noteRoutes from "./notes"
 import notificationRoutes from "./notifications"
 import orderEditRoutes from "./order-edits"
 import orderRoutes from "./orders"
+import paymentCollectionRoutes from "./payment-collections"
+import paymentRoutes from "./payments"
 import priceListRoutes from "./price-lists"
+import productCategoryRoutes from "./product-categories"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
-import publishableApiKeyRoutes from "./publishable-api-keys"
 import productRoutes from "./products"
+import publishableApiKeyRoutes from "./publishable-api-keys"
 import regionRoutes from "./regions"
 import reservationRoutes from "./reservations"
 import returnReasonRoutes from "./return-reasons"
 import returnRoutes from "./returns"
-import reservationRoutes from "./reservations"
 import salesChannelRoutes from "./sales-channels"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -38,10 +41,7 @@ import taxRateRoutes from "./tax-rates"
 import uploadRoutes from "./uploads"
 import userRoutes, { unauthenticatedUserRoutes } from "./users"
 import variantRoutes from "./variants"
-import paymentCollectionRoutes from "./payment-collections"
-import paymentRoutes from "./payments"
-import productCategoryRoutes from "./product-categories"
-import { parseCorsOrigins } from "medusa-core-utils"
+import workflowRoutes from "./workflows-executions"
 
 const route = Router()
 
@@ -116,6 +116,7 @@ export default (app, container, config) => {
   paymentCollectionRoutes(route)
   paymentRoutes(route)
   productCategoryRoutes(route)
+  workflowRoutes(route)
 
   return app
 }

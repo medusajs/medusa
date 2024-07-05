@@ -5,6 +5,9 @@ import { useAdminGetSession } from "medusa-react"
 import { SearchProvider } from "../../../providers/search-provider"
 import { SidebarProvider } from "../../../providers/sidebar-provider"
 
+/**
+ * @deprecated - Delete once all V1 domains have been migrated to V2.
+ */
 export const ProtectedRoute = () => {
   const { user, isLoading } = useAdminGetSession()
   const location = useLocation()

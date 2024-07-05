@@ -110,7 +110,7 @@ You can retrieve users in a store by sending a request to the [List Users API Ro
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/users' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>
@@ -192,7 +192,7 @@ You can create a user by sending a request to the [Create User API Route](https:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "email": "user@example.com",
@@ -287,7 +287,7 @@ You can update a user’s details by sending a request to the [Update User API R
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "first_name": "Marcellus"
@@ -366,7 +366,7 @@ You can delete a user by sending a request to the [Delete User API Route](https:
 
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/users/<USER_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     ```
 
   </TabItem>

@@ -12,7 +12,7 @@ export const Kbd = ({ children, className, ...props }: KbdProps) => {
         "border-medusa-tag-neutral-border border",
         "bg-medusa-tag-neutral-bg",
         "text-medusa-tag-neutral-text",
-        "text-compact-x-small-plus font-monospace shadow-none",
+        "text-compact-x-small-plus font-base shadow-none",
         className
       )}
       {...props}

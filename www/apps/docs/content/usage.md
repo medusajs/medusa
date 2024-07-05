@@ -88,7 +88,7 @@ The following data is being collected on your admin:
 
 ### How to Enable Anonymization
 
-To enable anonymization of your data from the Medusa admin:
+To enable anonymization of your data from the Medusa Admin:
 
 1. Go to Settings → Personal Information.
 2. In the Usage insights section, click on the “Edit preferences” button.
@@ -97,7 +97,7 @@ To enable anonymization of your data from the Medusa admin:
 
 ### How to Opt-Out
 
-There are two ways to opt out of analytics collected in the Medusa admin:
+There are two ways to opt out of analytics collected in the Medusa Admin:
 
 1. Disable the feature flag that is enabled by default for the admin analytics feature:
 
@@ -105,7 +105,7 @@ There are two ways to opt out of analytics collected in the Medusa admin:
 MEDUSA_FF_ANALYTICS=false
 ```
 
-2\. Alternatively, on your Medusa admin, you can disable tracking by following these steps:
+2\. Alternatively, on your Medusa Admin, you can disable tracking by following these steps:
 
   1. Go to Settings → Personal Information.
   2. In the Usage insights section, click on the “Edit preferences” button.

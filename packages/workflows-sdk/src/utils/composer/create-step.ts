@@ -1,4 +1,13 @@
-import { resolveValue, StepResponse } from "./helpers"
+import {
+  TransactionStepsDefinition,
+  WorkflowManager,
+  WorkflowStepHandler,
+  WorkflowStepHandlerArguments,
+} from "@medusajs/orchestration"
+import { OrchestrationUtils, deepCopy, isString } from "@medusajs/utils"
+import { ulid } from "ulid"
+import { StepResponse, resolveValue } from "./helpers"
+import { proxify } from "./helpers/proxy"
 import {
   CreateWorkflowComposerContext,
   StepExecutionContext,
@@ -6,9 +15,6 @@ import {
   StepFunctionResult,
   WorkflowData,
 } from "./type"
-import { proxify } from "./helpers/proxy"
-import { TransactionStepsDefinition } from "@medusajs/orchestration"
-import { isString, OrchestrationUtils } from "@medusajs/utils"
 
 /**
  * The type of invocation function passed to a step.
@@ -116,16 +122,23 @@ function applyStep<
     }
 
     const handler = {
-      invoke: async (transactionContext) => {
+      invoke: async (stepArguments: WorkflowStepHandlerArguments) => {
+        const metadata = stepArguments.metadata
+        const idempotencyKey = metadata.idempotency_key
+
+        stepArguments.context!.idempotencyKey = idempotencyKey
         const executionContext: StepExecutionContext = {
-          container: transactionContext.container,
-          metadata: transactionContext.metadata,
-          context: transactionContext.context,
+          workflowId: metadata.model_id,
+          stepName: metadata.action,
+          action: "invoke",
+          idempotencyKey,
+          attempt: metadata.attempt,
+          container: stepArguments.container,
+          metadata,
+          context: stepArguments.context!,
         }
 
-        const argInput = input
-          ? await resolveValue(input, transactionContext)
-          : {}
+        const argInput = input ? await resolveValue(input, stepArguments) : {}
         const stepResponse: StepResponse<any, any> = await invokeFn.apply(
           this,
           [argInput, executionContext]
@@ -142,20 +155,30 @@ function applyStep<
         }
       },
       compensate: compensateFn
-        ? async (transactionContext) => {
+        ? async (stepArguments: WorkflowStepHandlerArguments) => {
+            const metadata = stepArguments.metadata
+            const idempotencyKey = metadata.idempotency_key
+
+            stepArguments.context!.idempotencyKey = idempotencyKey
+
             const executionContext: StepExecutionContext = {
-              container: transactionContext.container,
-              metadata: transactionContext.metadata,
-              context: transactionContext.context,
+              workflowId: metadata.model_id,
+              stepName: metadata.action,
+              action: "compensate",
+              idempotencyKey,
+              attempt: metadata.attempt,
+              container: stepArguments.container,
+              metadata,
+              context: stepArguments.context!,
             }
 
-            const stepOutput = transactionContext.invoke[stepName]?.output
+            const stepOutput = (stepArguments.invoke[stepName] as any)?.output
             const invokeResult =
               stepOutput?.__type ===
               OrchestrationUtils.SymbolWorkflowStepResponse
                 ? stepOutput.compensateInput &&
-                  JSON.parse(JSON.stringify(stepOutput.compensateInput))
-                : stepOutput && JSON.parse(JSON.stringify(stepOutput))
+                  deepCopy(stepOutput.compensateInput)
+                : stepOutput && deepCopy(stepOutput)
 
             const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
@@ -166,24 +189,101 @@ function applyStep<
         : undefined,
     }
 
-    stepConfig!.noCompensation = !compensateFn
+    wrapAsyncHandler(stepConfig, handler)
+
+    stepConfig.uuid = ulid()
+    stepConfig.noCompensation = !compensateFn
 
     this.flow.addAction(stepName, stepConfig)
-    this.handlers.set(stepName, handler)
+
+    if (!this.handlers.has(stepName)) {
+      this.handlers.set(stepName, handler)
+    }
 
     const ret = {
       __type: OrchestrationUtils.SymbolWorkflowStep,
       __step__: stepName,
-      config: (config: Pick<TransactionStepsDefinition, "maxRetries">) => {
-        this.flow.replaceAction(stepName, stepName, {
+      config: (
+        localConfig: { name?: string } & Omit<
+          TransactionStepsDefinition,
+          "next" | "uuid" | "action"
+        >
+      ) => {
+        const newStepName = localConfig.name ?? stepName
+
+        delete localConfig.name
+
+        this.handlers.set(newStepName, handler)
+
+        this.flow.replaceAction(stepConfig.uuid!, newStepName, {
           ...stepConfig,
-          ...config,
+          ...localConfig,
         })
+
+        ret.__step__ = newStepName
+        WorkflowManager.update(this.workflowId, this.flow, this.handlers)
+
         return proxify(ret)
       },
     }
 
     return proxify(ret)
+  }
+}
+
+/**
+ * @internal
+ *
+ * Internal function to handle async steps to be automatically marked as completed after they are executed.
+ *
+ * @param stepConfig
+ * @param handle
+ */
+function wrapAsyncHandler(
+  stepConfig: TransactionStepsDefinition,
+  handle: {
+    invoke: WorkflowStepHandler
+    compensate?: WorkflowStepHandler
+  }
+) {
+  if (stepConfig.async) {
+    if (typeof handle.invoke === "function") {
+      const originalInvoke = handle.invoke
+
+      handle.invoke = async (stepArguments: WorkflowStepHandlerArguments) => {
+        const response = (await originalInvoke(stepArguments)) as any
+        if (
+          response?.output?.__type !==
+          OrchestrationUtils.SymbolWorkflowStepResponse
+        ) {
+          return
+        }
+
+        stepArguments.step.definition.backgroundExecution = true
+        return response
+      }
+    }
+  }
+
+  if (stepConfig.compensateAsync) {
+    if (typeof handle.compensate === "function") {
+      const originalCompensate = handle.compensate!
+      handle.compensate = async (
+        stepArguments: WorkflowStepHandlerArguments
+      ) => {
+        const response = (await originalCompensate(stepArguments)) as any
+
+        if (
+          response?.output?.__type !==
+          OrchestrationUtils.SymbolWorkflowStepResponse
+        ) {
+          return
+        }
+        stepArguments.step.definition.backgroundExecution = true
+
+        return response
+      }
+    }
   }
 }
 
@@ -241,11 +341,14 @@ export function createStep<
   TInvokeResultCompensateInput
 >(
   /**
-   * The name of the step or its configuration (currently support maxRetries).
+   * The name of the step or its configuration.
    */
   nameOrConfig:
     | string
-    | ({ name: string } & Pick<TransactionStepsDefinition, "maxRetries">),
+    | ({ name: string } & Omit<
+        TransactionStepsDefinition,
+        "next" | "uuid" | "action"
+      >),
   /**
    * An invocation function that will be executed when the workflow is executed. The function must return an instance of {@link StepResponse}. The constructor of {@link StepResponse}
    * accepts the output of the step as a first argument, and optionally as a second argument the data to be passed to the compensation function as a parameter.

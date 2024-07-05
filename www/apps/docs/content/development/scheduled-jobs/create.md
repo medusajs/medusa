@@ -23,7 +23,7 @@ This guide explains how to create a scheduled job on your Medusa backend. The sc
 
 ## Prerequisites
 
-To use scheduled jobs, you must configure Redis in your Medusa backend. Learn more in the [Configurations documentation](../backend/configurations.md#redis_url).
+To use scheduled jobs, you must configure Redis in your Medusa backend. Learn more in the [Configurations documentation](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx#redis_url).
 
 ---
 
@@ -91,7 +91,7 @@ The function accepts a parameter of type `ScheduledJobArgs`, which has the follo
 
 - `container`: The [dependency container](../fundamentals/dependency-injection.md) that allows you to resolve Medusa resources, such as services.
 - `data`: The data passed in the [configuration object](#scheduled-job-configuration).
-- `pluginOptions`: When the scheduled job is created within a plugin, this object holds the plugin's options defined in the [Medusa configurations](../backend/configurations.md).
+- `pluginOptions`: When the scheduled job is created within a plugin, this object holds the plugin's options defined in the [Medusa configurations](../../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx).
 
 ---
 

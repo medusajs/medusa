@@ -14,7 +14,7 @@ class LocalService extends AbstractFileService implements IFileService {
   protected backendUrl_: string
 
   constructor({}, options) {
-    super({}, options)
+    super(arguments[0], options)
 
     this.uploadDir_ = options.upload_dir || "uploads"
     this.backendUrl_ = options.backend_url || "http://localhost:9000"

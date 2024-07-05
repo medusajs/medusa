@@ -231,7 +231,7 @@ module.exports = {
   // ...
   modules: { 
     // ...
-    cacheService: {
+    eventBus: {
         resolve: "path/to/custom-module", 
         options: { 
           // any necessary options

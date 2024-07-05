@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  Relation,
 } from "typeorm"
 
 import { DbAwareColumn, generateEntityId } from "../utils"
@@ -27,20 +28,23 @@ export class LineItemAdjustment {
 
   @ManyToOne(() => LineItem, (li) => li.adjustments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Column()
   description: string
 
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "discount_id" })
-  discount: Discount
+  discount: Relation<Discount>
 
   @Index()
   @Column({ nullable: true })
   discount_id: string
 
-  @Column({ type: "numeric", transformer: { to: (value) => value, from: (value) => parseFloat(value) } })
+  @Column({
+    type: "numeric",
+    transformer: { to: (value) => value, from: (value) => parseFloat(value) },
+  })
   amount: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })

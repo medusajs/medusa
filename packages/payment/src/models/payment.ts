@@ -1,3 +1,11 @@
+import { BigNumberRawValue, DAL } from "@medusajs/types"
+import {
+  BigNumber,
+  DALUtils,
+  MikroOrmBigNumberProperty,
+  Searchable,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -5,24 +13,17 @@ import {
   Entity,
   Filter,
   ManyToOne,
+  OnInit,
   OneToMany,
   OneToOne,
-  OnInit,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
-
-import {
-  DALUtils,
-  generateEntityId,
-  optionalNumericSerializer,
-} from "@medusajs/utils"
-import Refund from "./refund"
 import Capture from "./capture"
-import PaymentSession from "./payment-session"
 import PaymentCollection from "./payment-collection"
+import PaymentSession from "./payment-session"
+import Refund from "./refund"
 
 type OptionalPaymentProps = DAL.EntityDateColumns
 
@@ -34,18 +35,11 @@ export default class Payment {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
 
-  @Property({
-    columnType: "numeric",
-    nullable: true,
-    serializer: optionalNumericSerializer,
-  })
-  authorized_amount: number | null = null
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @Property({ columnType: "text" })
   currency_code: string
@@ -53,20 +47,23 @@ export default class Payment {
   @Property({ columnType: "text" })
   provider_id: string
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   cart_id: string | null = null
 
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   order_id: string | null = null
 
-  @Property({ columnType: "text", nullable: true })
-  order_edit_id: string | null = null
-
+  @Searchable()
   @Property({ columnType: "text", nullable: true })
   customer_id: string | null = null
 
   @Property({ columnType: "jsonb", nullable: true })
   data: Record<string, unknown> | null = null
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata: Record<string, unknown> | null = null
 
   @Property({
     onCreate: () => new Date(),
@@ -113,18 +110,31 @@ export default class Payment {
   captures = new Collection<Capture>(this)
 
   @ManyToOne({
-    index: "IDX_payment_payment_collection_id",
-    fieldName: "payment_collection_id",
+    entity: () => PaymentCollection,
+    persist: false,
   })
   payment_collection: PaymentCollection
 
-  @OneToOne({ owner: true, fieldName: "session_id" })
-  session: PaymentSession
+  @ManyToOne({
+    entity: () => PaymentCollection,
+    columnType: "text",
+    index: "IDX_payment_payment_collection_id",
+    fieldName: "payment_collection_id",
+    mapToPk: true,
+  })
+  payment_collection_id: string
+
+  @OneToOne({
+    owner: true,
+    fieldName: "payment_session_id",
+    index: "IDX_payment_payment_session_id",
+  })
+  payment_session: PaymentSession
 
   /** COMPUTED PROPERTIES START **/
 
-  // captured_amount: number // sum of the associated captures
-  // refunded_amount: number // sum of the associated refunds
+  captured_amount: number // sum of the associated captures
+  refunded_amount: number // sum of the associated refunds
 
   /** COMPUTED PROPERTIES END **/
 

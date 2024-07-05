@@ -62,6 +62,7 @@ export type FormattingOptionType = {
   }
   reflectionDescription?: string
   expandMembers?: boolean
+  expandProperties?: boolean
   showCommentsAsHeader?: boolean
   showCommentsAsDetails?: boolean
   parameterStyle?: ParameterStyle
@@ -71,6 +72,7 @@ export type FormattingOptionType = {
   mdxImports?: string[]
   maxLevel?: number
   fileNameSeparator?: string
+  endSections?: string[]
 }
 
 export declare module "typedoc" {
@@ -215,5 +217,13 @@ export declare module "typedoc" {
      * @defaultValue false
      */
     checkVariables: boolean
+    /**
+     * Whether to generate a Mermaid.js class diagram for data models in the reference.
+     */
+    generateModelsDiagram: boolean
+    /**
+     * The file to add the mermaid diagram to. The diagram is added as a package comment.
+     */
+    diagramAddToFile: string
   }
 }

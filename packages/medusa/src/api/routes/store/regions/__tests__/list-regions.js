@@ -15,15 +15,18 @@ describe("List regions", () => {
 
     it("calls list from region service", () => {
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(
+        RegionServiceMock.listAndCount.mock.calls[0][1].relations
+      ).toHaveLength(4)
       expect(RegionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
-          relations: [
+          relations: expect.arrayContaining([
             "countries",
             "currency",
             "fulfillment_providers",
             "payment_providers",
-          ],
+          ]),
           select: [
             "id",
             "name",

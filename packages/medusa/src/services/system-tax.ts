@@ -9,8 +9,10 @@ import { ProviderTaxLine } from "../types/tax-service"
 class SystemTaxService extends AbstractTaxService {
   static identifier = "system"
 
-  constructor() {
-    super({})
+  constructor(...args: any[]) {
+    // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
+    super(...arguments)
   }
 
   async getTaxLines(

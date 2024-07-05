@@ -23,8 +23,7 @@ const adminSessionOpts = {
   cookieName: "session",
   secret: "test",
 }
-export { adminSessionOpts }
-export { clientSessionOpts }
+export { adminSessionOpts, clientSessionOpts }
 
 const clientSessionOpts = {
   cookieName: "session",

@@ -4,6 +4,7 @@ import {
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
+  AdminGetDiscountParams,
   AdminGetDiscountsDiscountConditionsConditionParams,
   AdminGetDiscountsParams,
   AdminPostDiscountsDiscountConditions,
@@ -23,12 +24,12 @@ import BaseResource from "../base"
 /**
  * This class is used to send requests to [Admin Discount API Routes](https://docs.medusajs.com/api/admin#discounts). All its method
  * are available in the JS Client under the `medusa.admin.discounts` property.
- * 
+ *
  * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
- * 
+ *
  * Admins can create discounts with conditions and rules, providing them with advanced settings for variety of cases.
  * The methods in this class can be used to manage discounts, their conditions, resources, and more.
- * 
+ *
  * Related Guide: [How to manage discounts](https://docs.medusajs.com/modules/discounts/admin/manage-discounts).
  */
 class AdminDiscountsResource extends BaseResource {
@@ -38,7 +39,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} regionId - The ID of the region to add.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the discount's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -62,7 +63,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminPostDiscountsReq} payload - The discount to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the discount's details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
@@ -97,7 +98,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminPostDiscountsDiscountReq} payload - The attributes to update in the discount.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -124,7 +125,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminPostDiscountsDiscountDynamicCodesReq} payload - The dynamic code to create.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -151,7 +152,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} id - The discount's ID.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsDeleteRes>} Resolves to the delete operation details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -175,7 +176,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} code - The code of the dynamic code to delete.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -197,9 +198,10 @@ class AdminDiscountsResource extends BaseResource {
   /**
    * Retrieve a discount.
    * @param {string} id - The discount's ID.
+   * @param {AdminGetDiscountParams} query - Configurations to apply on the retrieved product category.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -211,9 +213,16 @@ class AdminDiscountsResource extends BaseResource {
    */
   retrieve(
     id: string,
+    query?: AdminGetDiscountParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}`
+    let path = `/admin/discounts/${id}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `${path}?${queryString}`
+    }
+
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
@@ -222,7 +231,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} code - The code of the discount.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -245,10 +254,10 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminGetDiscountsParams} query - Filters and pagination configurations to apply on the retrieved discounts.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsListRes>} Resolves to the list of discounts with pagination fields.
-   * 
+   *
    * @example
    * To list discounts:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -258,9 +267,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discounts.id);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the discounts:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -272,9 +281,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discounts.id);
    * })
    * ```
-   * 
+   *
    * By default, only the first `20` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -309,7 +318,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} regionId - The ID of the region to remove.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -329,17 +338,17 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * Create a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter, 
+   * Create a discount condition. Only one of `products`, `product_types`, `product_collections`, `product_tags`, and `customer_groups` should be provided in the `payload` parameter,
    * based on the type of discount condition. For example, if the discount condition's type is `products`, the `products` field should be provided in the `payload` parameter.
    * @param {string} discountId - The discount's ID.
    * @param {AdminPostDiscountsDiscountConditions} payload - The discount condition to create.
    * @param {AdminPostDiscountsDiscountConditionsParams} query - Configurations to apply on the returned discount.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * To create a condition in a discount:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * import { DiscountConditionOperator } from "@medusajs/medusa"
@@ -353,9 +362,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discount.id);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved as part of the response:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * import { DiscountConditionOperator } from "@medusajs/medusa"
@@ -397,10 +406,10 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminPostDiscountsDiscountConditionsConditionParams} query - Configurations to apply on the returned discount.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * To update a condition in a discount:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -414,9 +423,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discount.id);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved as part of the response:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -456,7 +465,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {string} conditionId - The ID of the discount condition.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsDeleteRes>} Resolves to the deletion operation details.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -482,10 +491,10 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminGetDiscountsDiscountConditionsConditionParams} query - Configurations to apply on the retrieved discount condition.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountConditionsRes>} Resolves to the discount condition details.
-   * 
+   *
    * @example
    * A simple example that retrieves a discount condition by its ID:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -495,9 +504,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discount_condition.id);
    * })
    * ```
-   * 
+   *
    * To specify relations that should be retrieved:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -535,10 +544,10 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminPostDiscountsDiscountConditionsConditionBatchParams} query - Configurations to apply on the retrieved discount.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * To add resources to a discount condition:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -550,9 +559,9 @@ class AdminDiscountsResource extends BaseResource {
    *   console.log(discount.id);
    * })
    * ```
-   * 
+   *
    * To specify relations to include in the returned discount:
-   * 
+   *
    * ```ts
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
@@ -591,7 +600,7 @@ class AdminDiscountsResource extends BaseResource {
    * @param {AdminDeleteDiscountsDiscountConditionsConditionBatchReq} payload - The resources to remove.
    * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
    * @returns {ResponsePromise<AdminDiscountsRes>} Resolves to the details of the discount.
-   * 
+   *
    * @example
    * import Medusa from "@medusajs/medusa-js"
    * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })

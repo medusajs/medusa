@@ -1,9 +1,9 @@
 type ArrayDifferenceElement = string | number
 
-export function arrayDifference(
-  mainArray: ArrayDifferenceElement[],
-  differingArray: ArrayDifferenceElement[]
-): ArrayDifferenceElement[] {
+export function arrayDifference<TElement = ArrayDifferenceElement>(
+  mainArray: TElement[],
+  differingArray: TElement[]
+): TElement[] {
   const mainArraySet = new Set(mainArray)
   const differingArraySet = new Set(differingArray)
 

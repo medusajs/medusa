@@ -2,7 +2,7 @@
 displayed_sidebar: workflowsSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # permanentFailure
 
@@ -82,8 +82,8 @@ myWorkflow()
 
 ## Parameters
 
-<ParameterTypes parameters={[{"name":"message","type":"`string`","description":"An optional message to be logged.","optional":false,"defaultValue":"\"Permanent failure\"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"message","type":"`string`","description":"An optional message to be logged.","optional":false,"defaultValue":"\"Permanent failure\"","expandable":false,"children":[]}]}  sectionTitle="permanentFailure"/>
 
 ## Returns
 
-<ParameterTypes parameters={[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"Creates a StepResponse that indicates that the step has failed and the retry mechanism should not kick in anymore.","expandable":false,"children":[]}]}  sectionTitle="permanentFailure"/>

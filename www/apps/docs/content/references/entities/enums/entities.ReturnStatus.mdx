@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # ReturnStatus
 
@@ -10,13 +10,11 @@ The return's status.
 
 ## Enumeration Members
 
-### CANCELED
+### REQUESTED
 
- **CANCELED** = `"canceled"`
+ **REQUESTED** = `"requested"`
 
-The return is canceled.
-
-___
+The return is requested.
 
 ### RECEIVED
 
@@ -24,18 +22,14 @@ ___
 
 The return is received.
 
-___
-
-### REQUESTED
-
- **REQUESTED** = `"requested"`
-
-The return is requested.
-
-___
-
 ### REQUIRES\_ACTION
 
  **REQUIRES\_ACTION** = `"requires_action"`
 
 The return is awaiting action.
+
+### CANCELED
+
+ **CANCELED** = `"canceled"`
+
+The return is canceled.

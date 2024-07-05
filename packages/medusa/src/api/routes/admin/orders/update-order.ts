@@ -9,10 +9,10 @@ import {
   ValidateNested,
 } from "class-validator"
 
-import { AddressPayload, FindParams } from "../../../../types/common"
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
-import { Type } from "class-transformer"
+import { AddressPayload, FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -133,6 +133,65 @@ export default async (req, res) => {
 }
 
 /**
+ * The attributes to update in the order's payment method.
+ */
+class PaymentMethod {
+  /**
+   * The ID of the payment provider used in the order.
+   */
+  @IsString()
+  @IsOptional()
+  provider_id?: string
+
+  /**
+   * The data to attach to the payment.
+   */
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
+}
+
+/**
+ * The attributes to update in the order's shipping method.
+ */
+class ShippingMethod {
+  /**
+   * The ID of the shipping provider used in the order.
+   */
+  @IsString()
+  @IsOptional()
+  provider_id?: string
+
+  /**
+   * The ID of the shipping profile used in the order.
+   */
+  @IsString()
+  @IsOptional()
+  profile_id?: string
+
+  /**
+   * The price of the shipping method.
+   */
+  @IsInt()
+  @IsOptional()
+  price?: number
+
+  /**
+   * The data to attach to the shipping method.
+   */
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
+
+  /**
+   * The line items associated with this shipping methods.
+   */
+  @IsArray()
+  @IsOptional()
+  items?: Record<string, unknown>[]
+}
+
+/**
  * @schema AdminPostOrdersOrderReq
  * type: object
  * description: "The details to update of the order."
@@ -242,65 +301,6 @@ export class AdminPostOrdersOrderReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
-}
-
-/**
- * The attributes to update in the order's payment method.
- */
-class PaymentMethod {
-  /**
-   * The ID of the payment provider used in the order.
-   */
-  @IsString()
-  @IsOptional()
-  provider_id?: string
-
-  /**
-   * The data to attach to the payment.
-   */
-  @IsObject()
-  @IsOptional()
-  data?: Record<string, unknown>
-}
-
-/**
- * The attributes to update in the order's shipping method.
- */
-class ShippingMethod {
-  /**
-   * The ID of the shipping provider used in the order.
-   */
-  @IsString()
-  @IsOptional()
-  provider_id?: string
-
-  /**
-   * The ID of the shipping profile used in the order.
-   */
-  @IsString()
-  @IsOptional()
-  profile_id?: string
-
-  /**
-   * The price of the shipping method.
-   */
-  @IsInt()
-  @IsOptional()
-  price?: number
-
-  /**
-   * The data to attach to the shipping method.
-   */
-  @IsObject()
-  @IsOptional()
-  data?: Record<string, unknown>
-
-  /**
-   * The line items associated with this shipping methods.
-   */
-  @IsArray()
-  @IsOptional()
-  items?: Record<string, unknown>[]
 }
 
 /**

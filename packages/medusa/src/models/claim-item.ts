@@ -8,16 +8,17 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Relation,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { ClaimImage } from "./claim-image"
 import { ClaimOrder } from "./claim-order"
 import { ClaimTag } from "./claim-tag"
-import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 import { ProductVariant } from "./product-variant"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",
@@ -31,7 +32,7 @@ export class ClaimItem extends SoftDeletableEntity {
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
-  images: ClaimImage[]
+  images: Relation<ClaimImage>[]
 
   @Index()
   @Column()
@@ -39,7 +40,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
-  claim_order: ClaimOrder
+  claim_order: Relation<ClaimOrder>
 
   @Index()
   @Column()
@@ -47,7 +48,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => LineItem)
   @JoinColumn({ name: "item_id" })
-  item: LineItem
+  item: Relation<LineItem>
 
   @Index()
   @Column()
@@ -55,10 +56,10 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @ManyToOne(() => ProductVariant)
   @JoinColumn({ name: "variant_id" })
-  variant: ProductVariant
+  variant: Relation<ProductVariant>
 
   @DbAwareColumn({ type: "enum", enum: ClaimReason })
-  reason: ClaimReason
+  reason: Relation<ClaimReason>
 
   @Column({ nullable: true })
   note: string
@@ -78,7 +79,7 @@ export class ClaimItem extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  tags: ClaimTag[]
+  tags: Relation<ClaimTag>[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>

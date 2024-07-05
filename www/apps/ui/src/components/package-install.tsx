@@ -1,5 +1,5 @@
 import { clx } from "@medusajs/ui"
-import { CodeTabs } from "docs-ui"
+import { LegacyCodeTabs } from "docs-ui"
 
 type PackageInstallProps = {
   packageName: string
@@ -21,7 +21,7 @@ const PackageInstall = ({
   const pnpm = `pnpm add ${devDependency ? "-D " : ""}${pkg}`
 
   return (
-    <CodeTabs
+    <LegacyCodeTabs
       tabs={[
         { code: { lang: "bash", source: npm }, label: "npm", value: "npm" },
         { code: { lang: "bash", source: yarn }, label: "yarn", value: "yarn" },

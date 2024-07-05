@@ -2,7 +2,7 @@
 displayed_sidebar: servicesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # CustomerGroupService
 
@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### Parameters
 
-<ParameterTypes parameters={[{"name":"__namedParameters","type":"`CustomerGroupConstructorProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"__namedParameters","type":"`CustomerGroupConstructorProps`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="new CustomerGroupService"/>
 
 ___
 
 ## Properties
 
-<ParameterTypes parameters={[{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerGroupRepository_","type":"Repository&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"manager_","type":"`EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"transactionManager_","type":"`undefined` \\| `EntityManager`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__container__","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerGroupRepository_","type":"Repository&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerService_","type":"[CustomerService](services.CustomerService.mdx)","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"__configModule__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"__moduleDeclaration__","type":"`Record<string, unknown>`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="CustomerGroupService"/>
 
 ___
 
@@ -26,25 +26,31 @@ ___
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"EntityManager","type":"`EntityManager`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="activeManager_"/>
 
 ___
 
 ## Methods
 
-### addCustomers
-
-Add a batch of customers to a customer group at once
+### withTransaction
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"id of the customer group to add customers to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerIds","type":"`string` \\| `string`[]","description":"customer id's to add to the group","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer group after insertion","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="withTransaction"/>
 
-___
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<TypeList types={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
+
+#### Returns
+
+<TypeList types={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="shouldRetryTransaction_"/>
 
 ### atomicPhase\_
 
@@ -54,17 +60,25 @@ transaction manager is created.
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"TResult","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TError","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"work","type":"(`transactionManager`: `EntityManager`) => Promise&#60;TResult&#62;","description":"the transactional work to be done","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"isolationOrErrorHandler","type":"`IsolationLevel` \\| (`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"the isolation level to be used for the work.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"maybeErrorHandlerOrDontFail","type":"(`error`: TError) => Promise&#60;void \\| TResult&#62;","description":"Potential error handler","optional":true,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;TResult&#62;","optional":false,"defaultValue":"","description":"the result of the transactional work","expandable":false,"children":[]}]}  sectionTitle="atomicPhase_"/>
 
-___
+### retrieve
+
+#### Parameters
+
+<TypeList types={[{"name":"customerGroupId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieve"/>
 
 ### create
 
@@ -72,105 +86,23 @@ Creates a customer group with the provided data.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"group","type":"DeepPartial&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the customer group to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"group","type":"DeepPartial&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the customer group to create","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the result of the create operation","expandable":false,"children":[]}]}  sectionTitle="create"/>
 
-___
+### addCustomers
 
-### delete
-
-Remove customer group
+Add a batch of customers to a customer group at once
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"groupId","type":"`string`","description":"id of the customer group to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"id","type":"`string`","description":"id of the customer group to add customers to","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerIds","type":"`string` \\| `string`[]","description":"customer id's to add to the group","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="addCustomers"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"a promise","expandable":false,"children":[]}]} />
-
-___
-
-### handleCreationFail
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;never&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### list
-
-List customer groups.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
-
-### listAndCount
-
-Retrieve a list of customer groups and total count of records that match the query.
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]} />
-
-___
-
-### removeCustomer
-
-Remove list of customers from a customergroup
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"id","type":"`string`","description":"id of the customer group from which the customers are removed","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerIds","type":"`string` \\| `string`[]","description":"id's of the customer to remove from group","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customergroup with the provided id","expandable":false,"children":[]}]} />
-
-___
-
-### retrieve
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"customerGroupId","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"config","type":"`object`","description":"","optional":false,"defaultValue":"{}","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
-
-### shouldRetryTransaction\_
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"err","type":"`Record<string, unknown>` \\| `object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
-
-___
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customer group after insertion","expandable":false,"children":[]}]}  sectionTitle="addCustomers"/>
 
 ### update
 
@@ -178,20 +110,66 @@ Update a customer group.
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"customerGroupId","type":"`string`","description":"id of the customer group","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`CustomerGroupUpdate`","description":"customer group partial data","optional":false,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"customerGroupId","type":"`string`","description":"id of the customer group","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"update","type":"`CustomerGroupUpdate`","description":"customer group partial data","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"resulting customer group","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"resulting customer group","expandable":false,"children":[]}]}  sectionTitle="update"/>
 
-___
+### delete
 
-### withTransaction
+Remove customer group
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"transactionManager","type":"`EntityManager`","description":"","optional":true,"defaultValue":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"groupId","type":"`string`","description":"id of the customer group to delete","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="delete"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} />
+<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"a promise","expandable":false,"children":[]}]}  sectionTitle="delete"/>
+
+### list
+
+List customer groups.
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="list"/>
+
+### listAndCount
+
+Retrieve a list of customer groups and total count of records that match the query.
+
+#### Parameters
+
+<TypeList types={[{"name":"selector","type":"[Selector](../../medusa/types/medusa.Selector.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62; & `object`","description":"the query object for find","optional":false,"defaultValue":"{}","expandable":false,"children":[]},{"name":"config","type":"[FindConfig](../../medusa/interfaces/medusa.FindConfig.mdx)&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","description":"the config to be used for find","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)[], number]&#62;","optional":false,"defaultValue":"","description":"the result of the find operation","expandable":false,"children":[]}]}  sectionTitle="listAndCount"/>
+
+### removeCustomer
+
+Remove list of customers from a customergroup
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"id of the customer group from which the customers are removed","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"customerIds","type":"`string` \\| `string`[]","description":"id's of the customer to remove from group","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="removeCustomer"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CustomerGroup](../../entities/classes/entities.CustomerGroup.mdx)&#62;","optional":false,"defaultValue":"","description":"the customergroup with the provided id","expandable":false,"children":[]}]}  sectionTitle="removeCustomer"/>
+
+### handleCreationFail
+
+#### Parameters
+
+<TypeList types={[{"name":"id","type":"`string`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"ids","type":"`string`[]","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"error","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="handleCreationFail"/>
+
+#### Returns
+
+<TypeList types={[{"name":"Promise","type":"Promise&#60;never&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="handleCreationFail"/>

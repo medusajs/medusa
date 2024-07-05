@@ -1,4 +1,5 @@
 import { Cart } from "@medusajs/medusa"
+import { generateEntityId } from "@medusajs/utils"
 import faker from "faker"
 import { DataSource } from "typeorm"
 import {
@@ -19,7 +20,6 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
-import { generateEntityId } from "@medusajs/utils"
 
 export type CartFactoryData = {
   id?: string

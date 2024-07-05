@@ -196,6 +196,16 @@ export const useAdminCancelClaim = (
 }
 
 /**
+ * The details of the claim's fulfillment.
+ */
+export type AdminFulfillClaimReq =  AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { 
+  /**
+   * The claim's ID.
+   */
+  claim_id: string
+}
+
+/**
  * This hook creates a Fulfillment for a Claim, and change its fulfillment status to `partially_fulfilled` or `fulfilled` depending on whether all the items were fulfilled.
  * It may also change the status to `requires_action` if any actions are required.
  * 
@@ -238,12 +248,7 @@ export const useAdminFulfillClaim = (
   options?: UseMutationOptions<
     Response<AdminOrdersRes>,
     Error,
-    AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { 
-      /**
-       * The claim's ID.
-       */
-      claim_id: string
-    }
+    AdminFulfillClaimReq
   >
 ) => {
   const { client } = useMedusa()
@@ -253,7 +258,7 @@ export const useAdminFulfillClaim = (
     ({
       claim_id,
       ...payload
-    }: AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { claim_id: string }) =>
+    }: AdminFulfillClaimReq) =>
       client.admin.orders.fulfillClaim(orderId, claim_id, payload),
     buildOptions(
       queryClient,

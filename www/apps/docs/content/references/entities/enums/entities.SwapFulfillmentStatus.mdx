@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # SwapFulfillmentStatus
 
@@ -10,13 +10,11 @@ The swap's fulfillment status.
 
 ## Enumeration Members
 
-### CANCELED
+### NOT\_FULFILLED
 
- **CANCELED** = `"canceled"`
+ **NOT\_FULFILLED** = `"not_fulfilled"`
 
-The swap's fulfillments are canceled.
-
-___
+The swap's items aren't fulfilled.
 
 ### FULFILLED
 
@@ -24,15 +22,11 @@ ___
 
 The swap's items are fulfilled.
 
-___
+### SHIPPED
 
-### NOT\_FULFILLED
+ **SHIPPED** = `"shipped"`
 
- **NOT\_FULFILLED** = `"not_fulfilled"`
-
-The swap's items aren't fulfilled.
-
-___
+The swap's items are shipped.
 
 ### PARTIALLY\_SHIPPED
 
@@ -40,18 +34,14 @@ ___
 
 Some of the swap's items are shipped.
 
-___
+### CANCELED
+
+ **CANCELED** = `"canceled"`
+
+The swap's fulfillments are canceled.
 
 ### REQUIRES\_ACTION
 
  **REQUIRES\_ACTION** = `"requires_action"`
 
 The swap's fulfillments require an action.
-
-___
-
-### SHIPPED
-
- **SHIPPED** = `"shipped"`
-
-The swap's items are shipped.

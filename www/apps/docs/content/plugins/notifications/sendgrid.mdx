@@ -25,6 +25,8 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 4. User-related events including reset passwords.
 5. Restock Notifications for when product stocks are low.
 
+You can also handle custom events.
+
 ---
 
 ## Prerequisites
@@ -69,13 +71,156 @@ Medusa supports localization so you can also create multiple templates for multi
 
 ---
 
+## Install the SendGrid Plugin
+
+In the directory of your Medusa backend run the following command to install the SendGrid plugin:
+
+```bash npm2yarn
+npm install medusa-plugin-sendgrid
+```
+
+Then, in your `.env` file add the API key you created earlier as well as the send from email:
+
+```bash
+SENDGRID_API_KEY=<API_KEY>
+SENDGRID_FROM=<SEND_FROM_EMAIL>
+```
+
+Make sure to replace the `<API_KEY>` with the SendGrid API key and the   `<SEND_FROM_EMAIL>` with the email you’re using in SendGrid as the single sender.
+
+Also, you should add the ID of each template you create in `.env` as well. For example:
+
+```bash
+SENDGRID_ORDER_PLACED_ID=<ORDER_PLACED_TEMPLATE_ID>
+```
+
+Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed emails.
+
+Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      api_key: process.env.SENDGRID_API_KEY,
+      from: process.env.SENDGRID_FROM,
+      order_placed_template: 
+        process.env.SENDGRID_ORDER_PLACED_ID,
+      localization: {
+        "de-DE": { // locale key
+          order_placed_template:
+            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
+        },
+      },
+    },
+  },
+]
+```
+
+The `api_key` and `from` options are required. Then, use the key of each template you create (from the [reference](#template-reference)) as the option name with the template ID as the value.
+
+You can also optionally pass the option `localization` if you want to support different languages. `localization` accepts an object that has the country and language codes as keys. The value for each code should be an object of template keys and their IDs as values. Make sure to include the localized template IDs in `.env` as well.
+
+:::note[Important]
+
+The keys you add should also be present in the context field of the cart under the locale key `cart.context.locale`. This is crucial to ensure that the templates are used correctly based on the cart's localization.
+
+:::
+
+### Custom Templates
+
+Aside from the supported templates defined in the [reference](#template-reference) section, you may specify templates for Medusa defined or custom events.
+
+For example:
+
+```js title="medusa-config.js"
+const plugins = [
+  // ...,
+  {
+    resolve: `medusa-plugin-sendgrid`,
+    options: {
+      // other options...
+      product_created_template: 
+        process.env.SENDGRID_ORDER_CREATED_ID,
+      my_custom_event_template:
+        process.env.SENDGRID_CUSTOM_EVENT_ID,
+    },
+  },
+]
+```
+
+Make sure to replace every `.` in the event's name with a `_`.
+
+When a template is specified for an event that isn't mentioned in the [reference](#template-reference), the data passed to the template is the data payload of the event.
+
+:::tip
+
+Refer to the [events reference](../../development/events/events-list.md) for the expected payload of Medusa events.
+
+:::
+
+---
+
+## Test it Out
+
+Run your backend now:
+
+```bash npm2yarn
+npx medusa develop
+```
+
+To test it out, perform an action that would trigger one of the emails being sent. For example, you can use your Medusa storefront to create an order. An email from your SendGrid account will be sent to the customer email.
+
+:::tip
+
+If you don’t have a storefront installed, check out the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx).
+
+:::
+
+You can also track analytics related to emails sent from the SendGrid dashboard.
+
+![SendGrid Analytics](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000788/Medusa%20Docs/SendGrid/X01LigH_mxmtbn.png)
+
+---
+
+## Dynamic usage
+
+You can resolve the SendGrid service to send emails from your custom services or other resources.
+
+For example, in an API Route:
+
+```ts title="src/api/store/email/route.ts"
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const POST = async (
+  req: MedusaRequest, 
+  res: MedusaResponse
+) => {
+  const sendgridService = req.scope.resolve("sendgridService")
+  const sendOptions =  {
+      templateId: "d-123....",
+      from: "ACME <acme@mail.com>",
+      to: "customer@mail.com",
+      dynamic_template_data: { dynamic: "data" },
+    }
+    sendgridService.sendEmail(sendOptions)
+}
+```
+
+---
+
 ## Template Reference
 
-This section covers the template types supported by the plugin and what variables you can expect in your dynamic template. You can use the variables to add Details like order total or customer name.
+This section covers the template types supported by the plugin and what variables you can expect in your dynamic template. You can use the variables to add details like order total or customer name.
 
 :::note
 
-You don’t have to create a template for every type in the reference. You can simply create templates for the type of emails you want to send using Medusa and SendGrid,
+You don’t have to create a template for every type in the reference. You can simply create templates for the type of emails you want to send.
 
 :::
 
@@ -3916,114 +4061,7 @@ You don’t have to create a template for every type in the reference. You can s
 
 ---
 
-## Install the SendGrid Plugin
-
-In the directory of your Medusa backend run the following command to install the SendGrid plugin:
-
-```bash npm2yarn
-npm install medusa-plugin-sendgrid
-```
-
-Then, in your `.env` file add the API key you created earlier as well as the send from email:
-
-```bash
-SENDGRID_API_KEY=<API_KEY>
-SENDGRID_FROM=<SEND_FROM_EMAIL>
-```
-
-Make sure to replace the `<API_KEY>` with the SendGrid API key and the   `<SEND_FROM_EMAIL>` with the email you’re using in SendGrid as the single sender.
-
-Also, you should add the ID of each template you create in `.env` as well. For example:
-
-```bash
-SENDGRID_ORDER_PLACED_ID=<ORDER_PLACED_TEMPLATE_ID>
-```
-
-Where `<ORDER_PLACED_TEMPLATE_ID` is the ID of your template for order placed emails.
-
-Finally, in your `medusa-config.js` file, add the SendGrid plugin into the array of plugins:
-
-```js title="medusa-config.js"
-const plugins = [
-  // ...,
-  {
-    resolve: `medusa-plugin-sendgrid`,
-    options: {
-      api_key: process.env.SENDGRID_API_KEY,
-      from: process.env.SENDGRID_FROM,
-      order_placed_template: 
-        process.env.SENDGRID_ORDER_PLACED_ID,
-      localization: {
-        "de-DE": { // locale key
-          order_placed_template:
-            process.env.SENDGRID_ORDER_PLACED_ID_LOCALIZED,
-        },
-      },
-    },
-  },
-]
-```
-
-The `api_key` and `from` options are required. Then, use the key of each template you create (from the [reference](#template-reference)) as the option name with the template ID as the value.
-
-You can also optionally pass the option `localization` if you want to support different languages. `localization` accepts an object that has the country and language codes as keys. The value for each code should be an object of template keys and their IDs as values. Make sure to include the localized template IDs in `.env` as well.
-
-It's important to note that the keys you add should also be present in the context field of the cart under the locale key `cart.context.locale`. This is crucial to ensure that the templates are used correctly based on the cart's localization.
-
----
-
-## Test it Out
-
-Run your backend now:
-
-```bash npm2yarn
-npx medusa develop
-```
-
-To test it out, perform an action that would trigger one of the emails being sent. For example, you can use your Medusa storefront to create an order. An email from your SendGrid account will be sent to the customer email.
-
-:::tip
-
-If you don’t have a storefront installed, check out the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx).
-
-:::
-
-You can also track analytics related to emails sent from the SendGrid dashboard.
-
-![SendGrid Analytics](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000788/Medusa%20Docs/SendGrid/X01LigH_mxmtbn.png)
-
----
-
-## Dynamic usage
-
-You can resolve the SendGrid service to send emails from your custom services or other resources.
-
-For example, in an API Route:
-
-```ts title="src/api/store/email/route.ts"
-import type { 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-
-export const POST = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const sendgridService = req.scope.resolve("sendgridService")
-  const sendOptions =  {
-      templateId: "d-123....",
-      from: "ACME <acme@mail.com>",
-      to: "customer@mail.com",
-      dynamic_template_data: { dynamic: "data" },
-    }
-    sendgridService.sendEmail(sendOptions)
-}
-```
-
----
-
 ## See Also
 
 - [Notifications Overview](../../development/notification/overview.mdx)
-- Install the [Medusa admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
+- Install the [Medusa Admin](../../admin/quickstart.mdx) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

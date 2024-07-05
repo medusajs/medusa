@@ -28,6 +28,21 @@
   }
 
   :root {
-    @apply bg-ui-bg-subtle text-ui-fg-base;
+    @apply bg-ui-bg-subtle text-ui-fg-base antialiased;
+    text-rendering: optimizeLegibility;
   }
+}
+
+@layer components {
+  .worfklow-grid {
+    background-image: radial-gradient(black 1px, transparent 0);
+    background-size: 40px 40px;
+    background: repeat;
+  }
+}
+
+.worfklow-grid {
+  background-image: radial-gradient(black 1px, transparent 0);
+  background-size: 40px 40px;
+  background: repeat;
 }

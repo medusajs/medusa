@@ -3,7 +3,7 @@ displayed_sidebar: jsClientSidebar
 slug: /references/js-client/AdminCustomResource
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminCustomResource
 
@@ -11,38 +11,6 @@ This class is used to send requests custom API Routes. All its method
 are available in the JS Client under the `medusa.admin.custom` property.
 
 ## Methods
-
-### delete
-
-Send a `DELETE` request to a custom API Route. The method accepts a type parameters `TResponse` indicating the type of response, which defaults to `any`.
-
-#### Example
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-// must be previously logged in or use api token
-medusa.admin.custom.delete(
-  `/blog/posts/${postId}`
-)
-.then(() => {
-  // deleted successfully
-})
-```
-
-#### Type Parameters
-
-<ParameterTypes parameters={[{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-#### Parameters
-
-<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-#### Returns
-
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
 
 ### get
 
@@ -68,17 +36,15 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TQuery","type":"`Record<string, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"TQuery","type":"`Record<string, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="get"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"TQuery","description":"Query path parameters to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"query","type":"TQuery","description":"Query path parameters to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="get"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
-
-___
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="get"/>
 
 ### post
 
@@ -110,12 +76,42 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
 
 #### Type Parameters
 
-<ParameterTypes parameters={[{"name":"TPayload","type":"`Record<string, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"TPayload","type":"`Record<string, any>`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="post"/>
 
 #### Parameters
 
-<ParameterTypes parameters={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"TPayload","description":"Body parameters to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"payload","type":"TPayload","description":"Body parameters to pass in the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="post"/>
 
 #### Returns
 
-<ParameterTypes parameters={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields"/>
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="post"/>
+
+### delete
+
+Send a `DELETE` request to a custom API Route. The method accepts a type parameters `TResponse` indicating the type of response, which defaults to `any`.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.custom.delete(
+  `/blog/posts/${postId}`
+)
+.then(() => {
+  // deleted successfully
+})
+```
+
+#### Type Parameters
+
+<TypeList types={[{"name":"TResponse","type":"`object`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
+
+#### Parameters
+
+<TypeList types={[{"name":"path","type":"`string`","description":"The path of the custom API Route.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"`RequestOptions`","description":"Configurations to apply on the request.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"customHeaders","type":"`Record<string, any>`","description":"Custom headers to attach to the request.","optional":true,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>
+
+#### Returns
+
+<TypeList types={[{"name":"ResponsePromise","type":"ResponsePromise&#60;TResponse&#62;","optional":false,"defaultValue":"","description":"The response data.","expandable":false,"children":[{"name":"TResponse","type":"TResponse","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/js-client/overview#expanding-fields" sectionTitle="delete"/>

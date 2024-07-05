@@ -202,8 +202,8 @@ export interface PaymentProcessor {
    *
    * @example
    * import {
-   *   PaymentContext,
-   *   PaymentSessionResponse,
+   *   PaymentProcessorContext,
+   *   PaymentProcessorSessionResponse,
    *   // ...
    * } from "@medusajs/medusa"
    *
@@ -652,8 +652,8 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
    * Additionally, if you’re creating your Payment Processor as an external plugin to be installed on any Medusa backend and you want to access the options added for the plugin,
    * you can access it in the constructor. The options are passed as a second parameter.
    *
-   * @param {MedusaContainer} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)
-   * @param {Record<string, unknown>} config - If this fulfillment provider is created in a plugin, the plugin's options are passed in this parameter.
+   * @param {Record<string, unknown>} container - An instance of `MedusaContainer` that allows you to access other resources, such as services, in your Medusa backend through [dependency injection](https://docs.medusajs.com/development/fundamentals/dependency-injection)
+   * @param {Record<string, unknown>} config - If this payment processor is created in a plugin, the plugin's options are passed in this parameter.
    *
    * @example
    * ```ts
@@ -672,12 +672,18 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
    * ```
    */
   protected constructor(
-    protected readonly container: MedusaContainer,
+    protected readonly container: Record<string, unknown>,
     protected readonly config?: Record<string, unknown> // eslint-disable-next-line @typescript-eslint/no-empty-function
   ) {}
 
+  /**
+   * @ignore
+   */
   static _isPaymentProcessor = true
 
+  /**
+   * @ignore
+   */
   static isPaymentProcessor(object): boolean {
     return object?.constructor?._isPaymentProcessor
   }

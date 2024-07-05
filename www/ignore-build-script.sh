@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ "$1" == "docs-new" ]]; then
+  echo "Can't build new docs"
+  exit 0;
+fi
+
 echo "VERCEL_ENV: $VERCEL_ENV"
 echo "VERCEL_GIT_COMMIT_REF: $VERCEL_GIT_COMMIT_REF"
 

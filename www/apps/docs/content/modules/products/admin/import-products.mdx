@@ -928,7 +928,7 @@ You can do that by sending the following request to the [Upload Files API Route]
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/uploads' \
-      -H 'Authorization: Bearer <API_TOKEN>' \
+      -H 'x-medusa-access-token: <API_TOKEN>' \
       -F 'files=@"<FILE_PATH_1>"'
     ```
 
@@ -1018,7 +1018,7 @@ You can do that by sending the following request to the [Create a Batch Job API 
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
-    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'x-medusa-access-token: <API_TOKEN>' \
     -H 'Content-Type: application/json' \
     --data-raw '{
         "type": "product-import",
@@ -1114,7 +1114,7 @@ You can retrieve all the details of the batch job, including its status and the 
 
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
 
@@ -1202,7 +1202,7 @@ To confirm a batch job send the following request:
 
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
-    -H 'Authorization: Bearer <API_TOKEN>'
+    -H 'x-medusa-access-token: <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
 

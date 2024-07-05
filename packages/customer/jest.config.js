@@ -8,7 +8,7 @@ module.exports = {
     "^.+\\.[jt]s?$": [
       "ts-jest",
       {
-        tsConfig: "tsconfig.spec.json",
+        tsconfig: "tsconfig.spec.json",
         isolatedModules: true,
       },
     ],
@@ -16,6 +16,4 @@ module.exports = {
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
   modulePathIgnorePatterns: ["dist/"],
-  setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
-  setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }

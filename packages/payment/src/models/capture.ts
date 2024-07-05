@@ -1,3 +1,9 @@
+import { BigNumberRawValue } from "@medusajs/types"
+import {
+  BigNumber,
+  MikroOrmBigNumberProperty,
+  generateEntityId,
+} from "@medusajs/utils"
 import {
   BeforeCreate,
   Entity,
@@ -7,8 +13,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-
-import { generateEntityId } from "@medusajs/utils"
 import Payment from "./payment"
 
 type OptionalCaptureProps = "created_at"
@@ -20,18 +24,18 @@ export default class Capture {
   @PrimaryKey({ columnType: "text" })
   id: string
 
-  @Property({
-    columnType: "numeric",
-    serializer: Number,
-  })
-  amount: number
+  @MikroOrmBigNumberProperty()
+  amount: BigNumber | number
+
+  @Property({ columnType: "jsonb" })
+  raw_amount: BigNumberRawValue
 
   @ManyToOne(() => Payment, {
     onDelete: "cascade",
     index: "IDX_capture_payment_id",
     fieldName: "payment_id",
   })
-  payment: Payment
+  payment!: Payment
 
   @Property({
     onCreate: () => new Date(),
@@ -39,6 +43,21 @@ export default class Capture {
     defaultRaw: "now()",
   })
   created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at: Date
+
+  @Property({
+    columnType: "timestamptz",
+    nullable: true,
+    index: "IDX_capture_deleted_at",
+  })
+  deleted_at: Date | null = null
 
   @Property({ columnType: "text", nullable: true })
   created_by: string | null = null

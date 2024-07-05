@@ -1,7 +1,6 @@
 export * from "./api"
 export * from "./api/middlewares"
 export * from "./interfaces"
-export * from "./joiner-config"
 export * from "./models"
 export * from "./modules-config"
 export * from "./services"

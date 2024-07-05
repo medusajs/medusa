@@ -19,7 +19,7 @@ get:
     - lang: tsx
       label: Medusa React
       source:
-        $ref: ../code_samples/tsx/store_swaps_{cart_id}/getundefined
+        $ref: ../code_samples/tsx/store_swaps_{cart_id}/get.tsx
     - lang: Shell
       label: cURL
       source:

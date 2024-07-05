@@ -22,10 +22,10 @@ const STORE_CORS =
   process.env.STORE_CORS || "http://localhost:8000"
 ```
 
-If you wish to run your storefront or Medusa admin on other ports, you should update the above settings accordingly.
+If you wish to run your storefront or Medusa Admin on other ports, you should update the above settings accordingly.
 
 ---
 
 ## See Also
 
-- [Configure your Medusa backend](../development/backend/configurations.md)
+- [Configure your Medusa backend](../references/medusa_config/interfaces/medusa_config.ConfigModule.mdx)

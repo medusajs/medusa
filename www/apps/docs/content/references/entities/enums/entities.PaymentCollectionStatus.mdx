@@ -2,7 +2,7 @@
 displayed_sidebar: entitiesSidebar
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # PaymentCollectionStatus
 
@@ -10,13 +10,11 @@ The payment collection's status.
 
 ## Enumeration Members
 
-### AUTHORIZED
+### NOT\_PAID
 
- **AUTHORIZED** = `"authorized"`
+ **NOT\_PAID** = `"not_paid"`
 
-The payment colleciton is authorized.
-
-___
+The payment collection isn't paid.
 
 ### AWAITING
 
@@ -24,26 +22,20 @@ ___
 
 The payment collection is awaiting payment.
 
-___
+### AUTHORIZED
 
-### CANCELED
+ **AUTHORIZED** = `"authorized"`
 
- **CANCELED** = `"canceled"`
-
-The payment collection is canceled.
-
-___
-
-### NOT\_PAID
-
- **NOT\_PAID** = `"not_paid"`
-
-The payment collection isn't paid.
-
-___
+The payment colleciton is authorized.
 
 ### PARTIALLY\_AUTHORIZED
 
  **PARTIALLY\_AUTHORIZED** = `"partially_authorized"`
 
 Some of the payments in the payment collection are authorized.
+
+### CANCELED
+
+ **CANCELED** = `"canceled"`
+
+The payment collection is canceled.

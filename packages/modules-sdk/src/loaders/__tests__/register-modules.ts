@@ -18,7 +18,6 @@ describe("module definitions loader", () => {
     label: "TestService",
     isLegacy: true,
     isRequired: false,
-    canOverride: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,
@@ -54,6 +53,32 @@ describe("module definitions loader", () => {
         },
       })
     )
+  })
+
+  it("Resolves a custom module without pre-defined definition", () => {
+    const res = registerMedusaModule("customModulesABC", {
+      options: {
+        test: 123,
+      },
+    })
+
+    expect(res).toEqual({
+      customModulesABC: expect.objectContaining({
+        resolutionPath: "@medusajs/test-service-resolved",
+        definition: expect.objectContaining({
+          key: "customModulesABC",
+          label: "Custom: customModulesABC",
+          registrationName: "customModulesABC",
+        }),
+        moduleDeclaration: {
+          resources: "shared",
+          scope: "internal",
+        },
+        options: {
+          test: 123,
+        },
+      }),
+    })
   })
 
   describe("boolean config", () => {

@@ -5,4 +5,4 @@ export * from "./medusa-app"
 export * from "./medusa-module"
 export * from "./remote-link"
 export * from "./remote-query"
-
+export * from "./utils/initialize-factory"

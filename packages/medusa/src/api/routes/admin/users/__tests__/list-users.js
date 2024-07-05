@@ -21,8 +21,15 @@ describe("GET /admin/users", () => {
     })
 
     it("calls service retrieve", () => {
-      expect(UserServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(UserServiceMock.list).toHaveBeenCalledWith({})
+      expect(UserServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(UserServiceMock.listAndCount).toHaveBeenCalledWith(
+        {},
+        expect.objectContaining({
+          order: { created_at: "DESC" },
+          skip: 0,
+          take: 50,
+        })
+      )
     })
   })
 })

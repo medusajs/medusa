@@ -2,7 +2,7 @@
 displayed_sidebar: homepage
 ---
 
-import ParameterTypes from "@site/src/components/ParameterTypes"
+import TypeList from "@site/src/components/TypeList"
 
 # AdminPaymentProvidersList
 
@@ -10,6 +10,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 The list of payment providers in a store.
 
-## Type declaration
+## Properties
 
-<ParameterTypes parameters={[{"name":"payment_providers","type":"[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]","description":"An array of payment providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment provider as given by the payment service.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_installed","type":"`boolean`","description":"Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records"/>
+<TypeList types={[{"name":"payment_providers","type":"[PaymentProvider](../../entities/classes/entities.PaymentProvider.mdx)[]","description":"An array of payment providers details.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment provider as given by the payment service.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"is_installed","type":"`boolean`","description":"Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.","optional":false,"defaultValue":"true","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/development/entities/repositories#retrieving-a-list-of-records" sectionTitle="AdminPaymentProvidersList"/>

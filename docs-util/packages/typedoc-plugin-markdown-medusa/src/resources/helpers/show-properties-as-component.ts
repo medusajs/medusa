@@ -7,8 +7,6 @@ export default function (theme: MarkdownTheme) {
     function (title: string) {
       const { parameterStyle } = theme.getFormattingOptionsForLocation()
 
-      // console.log(parameterStyle, title)
-
       return parameterStyle === "component" && title === "Properties"
     }
   )

@@ -9,6 +9,8 @@ packages/*
 !packages/medusa
 !packages/admin-ui
 !packages/admin
+!packages/admin-next
+!packages/admin-next/dashboard
 !packages/medusa-payment-stripe
 !packages/medusa-payment-paypal
 !packages/event-bus-redis
@@ -24,6 +26,12 @@ packages/*
 !packages/orchestration
 !packages/workflows-sdk
 !packages/core-flows
+!packages/types
+!packages/medusa-react
+!packages/workflow-engine-redis
+!packages/workflow-engine-inmemory
+!packages/fulfillment
+!packages/fulfillment-manual
 
 
 **/models/*

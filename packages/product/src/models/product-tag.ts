@@ -5,26 +5,36 @@ import {
   Filter,
   Index,
   ManyToMany,
-  OptionalProps,
+  OnInit,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { DALUtils, generateEntityId } from "@medusajs/utils"
+import {
+  DALUtils,
+  Searchable,
+  createPsqlIndexStatementHelper,
+  generateEntityId,
+} from "@medusajs/utils"
 import Product from "./product"
-import { DAL } from "@medusajs/types"
 
-type OptionalRelations = "products"
-type OptionalFields = DAL.SoftDeletableEntityDateColumns
+const tagValueIndexName = "IDX_tag_value_unique"
+const tagValueIndexStatement = createPsqlIndexStatementHelper({
+  name: tagValueIndexName,
+  tableName: "product_tag",
+  columns: ["value"],
+  unique: true,
+  where: "deleted_at IS NULL",
+})
 
+tagValueIndexStatement.MikroORMIndex()
 @Entity({ tableName: "product_tag" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductTag {
-  [OptionalProps]?: OptionalRelations | OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Searchable()
   @Property({ columnType: "text" })
   value: string
 
@@ -53,8 +63,9 @@ class ProductTag {
   @ManyToMany(() => Product, (product) => product.tags)
   products = new Collection<Product>(this)
 
+  @OnInit()
   @BeforeCreate()
-  onCreate() {
+  onInit() {
     this.id = generateEntityId(this.id, "ptag")
   }
 }

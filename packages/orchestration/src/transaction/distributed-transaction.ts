@@ -86,7 +86,7 @@ export class DistributedTransaction extends EventEmitter {
     this.keyValueStore = storage
   }
 
-  private static keyPrefix = "dtrans"
+  public static keyPrefix = "dtrans"
 
   constructor(
     private flow: TransactionFlow,
@@ -177,18 +177,18 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public hasTimeout(): boolean {
-    return !!this.getFlow().definition.timeout
+    return !!this.getTimeout()
   }
 
-  public getTimeoutInterval(): number | undefined {
-    return this.getFlow().definition.timeout
+  public getTimeout(): number | undefined {
+    return this.getFlow().options?.timeout
   }
 
   public async saveCheckpoint(
     ttl = 0
   ): Promise<TransactionCheckpoint | undefined> {
     const options = this.getFlow().options
-    if (!options?.storeExecution) {
+    if (!options?.store) {
       return
     }
 
@@ -226,31 +226,6 @@ export class DistributedTransaction extends EventEmitter {
     return null
   }
 
-  public async deleteCheckpoint(): Promise<void> {
-    const options = this.getFlow().options
-    if (!options?.storeExecution) {
-      return
-    }
-
-    const key = TransactionOrchestrator.getKeyName(
-      DistributedTransaction.keyPrefix,
-      this.modelId,
-      this.transactionId
-    )
-    await DistributedTransaction.keyValueStore.delete(key)
-  }
-
-  public async archiveCheckpoint(): Promise<void> {
-    const options = this.getFlow().options
-
-    const key = TransactionOrchestrator.getKeyName(
-      DistributedTransaction.keyPrefix,
-      this.modelId,
-      this.transactionId
-    )
-    await DistributedTransaction.keyValueStore.archive(key, options)
-  }
-
   public async scheduleRetry(
     step: TransactionStep,
     interval: number
@@ -269,6 +244,11 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public async scheduleTransactionTimeout(interval: number): Promise<void> {
+    // schedule transaction timeout only if there are async steps
+    if (!this.getFlow().hasAsyncSteps) {
+      return
+    }
+
     await this.saveCheckpoint()
     await DistributedTransaction.keyValueStore.scheduleTransactionTimeout(
       this,
@@ -278,6 +258,10 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public async clearTransactionTimeout(): Promise<void> {
+    if (!this.getFlow().hasAsyncSteps) {
+      return
+    }
+
     await DistributedTransaction.keyValueStore.clearTransactionTimeout(this)
   }
 
@@ -285,6 +269,11 @@ export class DistributedTransaction extends EventEmitter {
     step: TransactionStep,
     interval: number
   ): Promise<void> {
+    // schedule step timeout only if the step is async
+    if (!step.definition.async) {
+      return
+    }
+
     await this.saveCheckpoint()
     await DistributedTransaction.keyValueStore.scheduleStepTimeout(
       this,
@@ -295,6 +284,10 @@ export class DistributedTransaction extends EventEmitter {
   }
 
   public async clearStepTimeout(step: TransactionStep): Promise<void> {
+    if (!step.definition.async || step.isCompensating()) {
+      return
+    }
+
     await DistributedTransaction.keyValueStore.clearStepTimeout(this, step)
   }
 }

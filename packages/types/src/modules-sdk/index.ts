@@ -1,6 +1,7 @@
 import {
   JoinerRelationship,
   JoinerServiceConfig,
+  RemoteJoinerOptions,
   RemoteJoinerQuery,
 } from "../joiner"
 
@@ -10,6 +11,8 @@ import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
+export * from "./internal-module-service"
+export * from "./module-provider"
 
 export type LogLevel =
   | "query"
@@ -35,8 +38,8 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
-  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
-  resolve?: string
+  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  resolve?: string | ModuleExports
   options?: Record<string, unknown>
   /**
    * If multiple modules are registered with the same key, the alias can be used to differentiate them
@@ -46,11 +49,12 @@ export type InternalModuleDeclaration = {
    * If the module is the main module for the key when multiple ones are registered
    */
   main?: boolean
+  worker_mode?: "shared" | "worker" | "server"
 }
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  definition?: ModuleDefinition // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
+  definition?: Partial<ModuleDefinition> // That represent the definition of the module, such as the one we have for the medusa supported modules. This property is used for custom made modules.
   server?: {
     type: "http"
     url: string
@@ -81,13 +85,6 @@ export type ModuleDefinition = {
   registrationName: string
   defaultPackage: string | false
   label: string
-  /**
-   * @deprecated property will be removed in future versions
-   */
-  canOverride?: boolean
-  /**
-   * @deprecated property will be removed in future versions
-   */
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   isLegacy?: boolean // If the module is a legacy module TODO: Remove once all the legacy modules are migrated
@@ -121,6 +118,7 @@ export type LoaderOptions<TOptions = Record<string, unknown>> = {
   container: MedusaContainer
   options?: TOptions
   logger?: Logger
+  dataLoaderOnly?: boolean
 }
 
 export type ModuleLoaderFunction = (
@@ -149,7 +147,8 @@ export type ModuleJoinerConfig = Omit<
       | string
       | {
           path: string
-          forwardArgumentsOnPath: string[]
+          forwardArgumentsOnPath?: string[]
+          isList?: boolean
         }
     > // alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })
     relationship: ModuleJoinerRelationship
@@ -227,14 +226,20 @@ export declare type ModuleJoinerRelationship = JoinerRelationship & {
 export type ModuleExports = {
   service: Constructor<any>
   loaders?: ModuleLoaderFunction[]
+  /**
+   * @deprecated property will be removed in future versions
+   */
   migrations?: any[]
+  /**
+   * @deprecated property will be removed in future versions
+   */
   models?: Constructor<any>[]
   runMigrations?(
-    options: LoaderOptions,
+    options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
   revertMigration?(
-    options: LoaderOptions,
+    options: LoaderOptions<any>,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
 }
@@ -252,7 +257,9 @@ export interface ModuleServiceInitializeOptions {
     user?: string
     password?: string
     database?: string
-    driverOptions?: Record<string, unknown>
+    driverOptions?: Record<string, unknown> & {
+      connection?: Record<string, unknown>
+    }
     debug?: boolean
     pool?: Record<string, unknown>
   }
@@ -274,13 +281,22 @@ export type ModuleBootstrapDeclaration =
 
 export type RemoteQueryFunction = (
   query: string | RemoteJoinerQuery | object,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  options?: RemoteJoinerOptions
 ) => Promise<any> | null
 
 export interface IModuleService {
+  /**
+   * @ignore
+   */
   __joinerConfig?(): ModuleJoinerConfig
 
+  /**
+   * @ignore
+   */
   __hooks?: {
     onApplicationStart?: () => Promise<void>
+    onApplicationShutdown?: () => Promise<void>
+    onApplicationPrepareShutdown?: () => Promise<void>
   }
 }

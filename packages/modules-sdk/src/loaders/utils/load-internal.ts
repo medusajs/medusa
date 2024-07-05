@@ -9,17 +9,22 @@ import {
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  MedusaModuleType,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
 export async function loadInternalModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
-  logger: Logger
+  logger: Logger,
+  migrationOnly?: boolean,
+  loaderOnly?: boolean
 ): Promise<{ error?: Error } | void> {
-  const registrationName = resolution.definition.registrationName
+  const registrationName = !loaderOnly
+    ? resolution.definition.registrationName
+    : resolution.definition.registrationName + "__loaderOnly"
 
-  const { scope, resources } =
+  const { resources } =
     resolution.moduleDeclaration as InternalModuleDeclaration
 
   let loadedModule: ModuleExports
@@ -28,12 +33,12 @@ export async function loadInternalModule(
     // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
     // does not need to import the package that is currently being loaded as it would create a
     // circular reference.
-    const path = resolution.resolutionPath as string
+    const modulePath = resolution.resolutionPath as string
 
     if (resolution.moduleExports) {
       loadedModule = resolution.moduleExports
     } else {
-      loadedModule = await import(path)
+      loadedModule = await import(modulePath)
       loadedModule = (loadedModule as any).default
     }
   } catch (error) {
@@ -61,6 +66,17 @@ export async function loadInternalModule(
         "No service found in module. Make sure your module exports a service."
       ),
     }
+  }
+
+  if (migrationOnly) {
+    // Partially loaded module, only register the service __joinerConfig function to be able to resolve it later
+    const moduleService = {
+      __joinerConfig: loadedModule.service.prototype.__joinerConfig,
+    }
+    container.register({
+      [registrationName]: asValue(moduleService),
+    })
+    return
   }
 
   const localContainer = createMedusaContainer()
@@ -92,6 +108,7 @@ export async function loadInternalModule(
           container: localContainer,
           logger,
           options: resolution.options,
+          dataLoaderOnly: loaderOnly,
         },
         resolution.moduleDeclaration as InternalModuleDeclaration
       )
@@ -109,8 +126,10 @@ export async function loadInternalModule(
   }
 
   const moduleService = loadedModule.service
+
   container.register({
     [registrationName]: asFunction((cradle) => {
+      ;(moduleService as any).__type = MedusaModuleType
       return new moduleService(
         localContainer.cradle,
         resolution.options,
@@ -118,14 +137,23 @@ export async function loadInternalModule(
       )
     }).singleton(),
   })
+
+  if (loaderOnly) {
+    // The expectation is only to run the loader as standalone, so we do not need to register the service and we need to cleanup all services
+    const service = container.resolve(registrationName)
+    await service.__hooks?.onApplicationPrepareShutdown()
+    await service.__hooks?.onApplicationShutdown()
+  }
 }
 
 export async function loadModuleMigrations(
-  resolution: ModuleResolution
+  resolution: ModuleResolution,
+  moduleExports?: ModuleExports
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = await import(resolution.resolutionPath as string)
+    loadedModule =
+      moduleExports ?? (await import(resolution.resolutionPath as string))
 
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {

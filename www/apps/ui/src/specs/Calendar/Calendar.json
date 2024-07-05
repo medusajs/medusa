@@ -35,6 +35,248 @@
         "name": "boolean"
       },
       "required": false
+    },
+    "locale": {
+      "description": "The locale to use for formatting dates. To change the locale pass a date-fns locale object.",
+      "tsType": {
+        "name": "Locale",
+        "elements": [
+          {
+            "name": "signature",
+            "type": "object",
+            "raw": "&#123; code?: string ; formatDistance?: (...args: any[]) => any ; formatLong?: &#123; date: (...args: any[]) => any ; dateTime: (...args: any[]) => any ; time: (...args: any[]) => any  &#125; ; formatRelative?: (...args: any[]) => any ; localize?: &#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125; ; match?: &#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125; ; options?: &#123; firstWeekContainsDate?: 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7 ; weekStartsOn?: 0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6  &#125;  &#125;",
+            "signature": {
+              "properties": [
+                {
+                  "key": "code",
+                  "value": {
+                    "name": "string"
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "formatDistance",
+                  "value": {
+                    "name": "signature",
+                    "type": "function",
+                    "raw": "(...args: any[]) => any",
+                    "signature": {
+                      "arguments": [
+                        {
+                          "name": "args",
+                          "type": {
+                            "name": "any[]"
+                          },
+                          "rest": true
+                        }
+                      ],
+                      "return": {
+                        "name": "any"
+                      }
+                    }
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "formatLong",
+                  "value": {
+                    "name": "signature",
+                    "type": "object",
+                    "raw": "&#123; date: (...args: any[]) => any ; dateTime: (...args: any[]) => any ; time: (...args: any[]) => any  &#125;",
+                    "signature": {
+                      "properties": [
+                        {
+                          "key": "date",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "dateTime",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "time",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        }
+                      ]
+                    }
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "formatRelative",
+                  "value": {
+                    "name": "signature",
+                    "type": "function",
+                    "raw": "(...args: any[]) => any",
+                    "signature": {
+                      "arguments": [
+                        {
+                          "name": "args",
+                          "type": {
+                            "name": "any[]"
+                          },
+                          "rest": true
+                        }
+                      ],
+                      "return": {
+                        "name": "any"
+                      }
+                    }
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "localize",
+                  "value": {
+                    "name": "signature",
+                    "type": "object",
+                    "raw": "&#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125;",
+                    "signature": {
+                      "properties": [
+                        {
+                          "key": "day",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "dayPeriod",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "era",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "month",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "ordinalNumber",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "quarter",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        }
+                      ]
+                    }
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "match",
+                  "value": {
+                    "name": "signature",
+                    "type": "object",
+                    "raw": "&#123; day: (...args: any[]) => any ; dayPeriod: (...args: any[]) => any ; era: (...args: any[]) => any ; month: (...args: any[]) => any ; ordinalNumber: (...args: any[]) => any ; quarter: (...args: any[]) => any  &#125;",
+                    "signature": {
+                      "properties": [
+                        {
+                          "key": "day",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "dayPeriod",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "era",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "month",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "ordinalNumber",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "quarter",
+                          "value": {
+                            "name": "(...args: any[]) => any"
+                          },
+                          "description": ""
+                        }
+                      ]
+                    }
+                  },
+                  "description": ""
+                },
+                {
+                  "key": "options",
+                  "value": {
+                    "name": "signature",
+                    "type": "object",
+                    "raw": "&#123; firstWeekContainsDate?: 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7 ; weekStartsOn?: 0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6  &#125;",
+                    "signature": {
+                      "properties": [
+                        {
+                          "key": "firstWeekContainsDate",
+                          "value": {
+                            "name": "1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6 \\| 7"
+                          },
+                          "description": ""
+                        },
+                        {
+                          "key": "weekStartsOn",
+                          "value": {
+                            "name": "0 \\| 1 \\| 2 \\| 3 \\| 4 \\| 5 \\| 6"
+                          },
+                          "description": ""
+                        }
+                      ]
+                    }
+                  },
+                  "description": ""
+                }
+              ]
+            }
+          }
+        ],
+        "raw": "Locale"
+      }
     }
   }
 }
