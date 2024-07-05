@@ -1,4 +1,4 @@
-import { Button, Container, Heading } from "@medusajs/ui"
+import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -43,7 +43,12 @@ export const PriceListListTable = () => {
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>{t("priceLists.domain")}</Heading>
+        <div>
+          <Heading>{t("priceLists.domain")}</Heading>
+          <Text className="text-ui-fg-subtle" size="small">
+            {t("priceLists.subtitle")}
+          </Text>
+        </div>
         <Button size="small" variant="secondary" asChild>
           <Link to="create">{t("actions.create")}</Link>
         </Button>
