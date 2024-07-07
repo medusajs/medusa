@@ -1632,6 +1632,7 @@ export default class ProductModuleService
     if (productData.options?.length) {
       ;(productData as any).options = productData.options?.map((option) => {
         return {
+          id: option.id,
           title: option.title,
           values: option.values?.map((value) => {
             return {
