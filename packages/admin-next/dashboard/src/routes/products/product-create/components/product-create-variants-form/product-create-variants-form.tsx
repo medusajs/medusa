@@ -1,4 +1,4 @@
-import { HttpTypes, RegionDTO } from "@medusajs/types"
+import { HttpTypes } from "@medusajs/types"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -11,6 +11,8 @@ import { createDataGridHelper } from "../../../../../components/data-grid/utils"
 import { DataGridCurrencyCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-currency-cell"
 import { DataGridBooleanCell } from "../../../../../components/data-grid/data-grid-cells/data-grid-boolean-cell"
 import { useRegions } from "../../../../../hooks/api/regions"
+import { IncludesTaxTooltip } from "../../../../../components/common/tax-badge/tax-badge"
+import { usePricePreferences } from "../../../../../hooks/api/price-preferences"
 
 type ProductCreateVariantsFormProps = {
   form: UseFormReturn<ProductCreateSchemaType>
@@ -22,6 +24,8 @@ export const ProductCreateVariantsForm = ({
   const { regions } = useRegions({ limit: 9999 })
 
   const { store, isPending, isError, error } = useStore()
+
+  const { price_preferences: pricePreferences } = usePricePreferences({})
 
   const variants = useWatch({
     control: form.control,
@@ -39,6 +43,7 @@ export const ProductCreateVariantsForm = ({
     options,
     currencies: store?.supported_currencies?.map((c) => c.currency_code) || [],
     regions,
+    pricePreferences,
   })
 
   const variantData = useMemo(
@@ -67,10 +72,12 @@ const useColumns = ({
   options,
   currencies = [],
   regions = [],
+  pricePreferences = [],
 }: {
   options: any // CreateProductOptionSchemaType[]
   currencies?: string[]
-  regions: RegionDTO[]
+  regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
   const { t } = useTranslation()
 
@@ -167,10 +174,21 @@ const useColumns = ({
       }),
 
       ...currencies.map((currency) => {
+        const preference = pricePreferences.find(
+          (p) => p.attribute === "currency_code" && p.value === currency
+        )
+
         return columnHelper.column({
           id: `price_${currency}`,
           name: `Price ${currency.toUpperCase()}`,
-          header: `Price ${currency.toUpperCase()}`,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: currency,
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
           cell: (context) => {
             return (
               <DataGridCurrencyCell
@@ -184,10 +202,22 @@ const useColumns = ({
       }),
 
       ...regions.map((region) => {
+        const preference = pricePreferences.find(
+          (p) => p.attribute === "region_id" && p.value === region.id
+        )
+
         return columnHelper.column({
           id: `price_${region.id}`,
           name: `Price ${region.name}`,
-          header: `Price ${region.name}`,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: region.name,
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
+
           cell: (context) => {
             return (
               <DataGridCurrencyCell
@@ -200,6 +230,6 @@ const useColumns = ({
         })
       }),
     ],
-    [currencies, regions, options, t]
+    [currencies, regions, options, pricePreferences, t]
   )
 }

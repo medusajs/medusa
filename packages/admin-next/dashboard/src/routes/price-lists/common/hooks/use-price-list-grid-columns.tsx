@@ -8,6 +8,7 @@ import { DataGridCurrencyCell } from "../../../../components/data-grid/data-grid
 import { DataGridReadOnlyCell } from "../../../../components/data-grid/data-grid-cells/data-grid-readonly-cell"
 import { createDataGridHelper } from "../../../../components/data-grid/utils"
 import { isProductRow } from "../utils"
+import { IncludesTaxTooltip } from "../../../../components/common/tax-badge/tax-badge"
 
 const columnHelper = createDataGridHelper<
   HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
@@ -16,9 +17,11 @@ const columnHelper = createDataGridHelper<
 export const usePriceListGridColumns = ({
   currencies = [],
   regions = [],
+  pricePreferences = [],
 }: {
   currencies?: StoreCurrencyDTO[]
   regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
   const { t } = useTranslation()
 
@@ -54,10 +57,24 @@ export const usePriceListGridColumns = ({
         disableHiding: true,
       }),
       ...currencies.map((currency) => {
+        const preference = pricePreferences.find(
+          (p) =>
+            p.attribute === "currency_code" &&
+            p.value === currency.currency_code
+        )
+
         return columnHelper.column({
           id: `currency-price-${currency.currency_code}`,
           name: `Price ${currency.currency_code.toUpperCase()}`,
-          header: `Price ${currency.currency_code.toUpperCase()}`,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: currency.currency_code.toUpperCase(),
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
+
           cell: (context) => {
             const entity = context.row.original
 
@@ -76,10 +93,21 @@ export const usePriceListGridColumns = ({
         })
       }),
       ...regions.map((region) => {
+        const preference = pricePreferences.find(
+          (p) => p.attribute === "region_id" && p.value === region.id
+        )
+
         return columnHelper.column({
           id: `region-price-${region.id}`,
           name: `Price ${region.name}`,
-          header: `Price ${region.name}`,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: region.name,
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
           cell: (context) => {
             const entity = context.row.original
 
@@ -98,7 +126,7 @@ export const usePriceListGridColumns = ({
         })
       }),
     ]
-  }, [t, currencies, regions])
+  }, [t, currencies, regions, pricePreferences])
 
   return colDefs
 }

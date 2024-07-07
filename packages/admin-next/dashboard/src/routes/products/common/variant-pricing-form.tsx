@@ -1,4 +1,4 @@
-import { CurrencyDTO, HttpTypes, RegionDTO } from "@medusajs/types"
+import { CurrencyDTO, HttpTypes } from "@medusajs/types"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
@@ -11,6 +11,8 @@ import { useCurrencies } from "../../../hooks/api/currencies"
 import { useStore } from "../../../hooks/api/store"
 import { ProductCreateSchema } from "../product-create/constants"
 import { useRegions } from "../../../hooks/api/regions.tsx"
+import { IncludesTaxTooltip } from "../../../components/common/tax-badge/tax-badge.tsx"
+import { usePricePreferences } from "../../../hooks/api/price-preferences.tsx"
 
 type VariantPricingFormProps = {
   form: UseFormReturn<ProductCreateSchema>
@@ -30,9 +32,12 @@ export const VariantPricingForm = ({ form }: VariantPricingFormProps) => {
 
   const { regions } = useRegions({ limit: 9999 })
 
+  const { price_preferences: pricePreferences } = usePricePreferences({})
+
   const columns = useVariantPriceGridColumns({
     currencies,
     regions,
+    pricePreferences,
   })
 
   const variants = useWatch({
@@ -57,9 +62,11 @@ const columnHelper = createColumnHelper<HttpTypes.AdminProductVariant>()
 export const useVariantPriceGridColumns = ({
   currencies = [],
   regions = [],
+  pricePreferences = [],
 }: {
   currencies?: CurrencyDTO[]
-  regions?: RegionDTO[]
+  regions?: HttpTypes.AdminRegion[]
+  pricePreferences?: HttpTypes.AdminPricePreference[]
 }) => {
   const { t } = useTranslation()
 
@@ -80,8 +87,20 @@ export const useVariantPriceGridColumns = ({
         },
       }),
       ...currencies.map((currency) => {
+        const preference = pricePreferences.find(
+          (p) => p.attribute === "currency_code" && p.value === currency.code
+        )
+
         return columnHelper.display({
-          header: `Price ${currency.code.toUpperCase()}`,
+          id: currency.code,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: currency.code.toUpperCase(),
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
           cell: ({ row, table }) => {
             return (
               <CurrencyCell
@@ -94,8 +113,20 @@ export const useVariantPriceGridColumns = ({
         })
       }),
       ...regions.map((region) => {
+        const preference = pricePreferences.find(
+          (p) => p.attribute === "region_id" && p.value === region.id
+        )
+
         return columnHelper.display({
-          header: `Price ${region.name}`,
+          id: region.id,
+          header: () => (
+            <div className="flex w-full items-center justify-between gap-3">
+              {t("fields.priceTemplate", {
+                regionOrCountry: region.name,
+              })}
+              <IncludesTaxTooltip includesTax={preference?.is_tax_inclusive} />
+            </div>
+          ),
           cell: ({ row, table }) => {
             const currency = currencies.find(
               (c) => c.code === region.currency_code
@@ -104,6 +135,7 @@ export const useVariantPriceGridColumns = ({
             if (!currency) {
               return null
             }
+
             return (
               <CurrencyCell
                 currency={currency}
@@ -115,7 +147,7 @@ export const useVariantPriceGridColumns = ({
         })
       }),
     ]
-  }, [t, currencies, regions])
+  }, [t, currencies, regions, pricePreferences])
 
   return colDefs
 }

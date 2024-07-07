@@ -8,7 +8,8 @@ export const PriceListProductsAdd = () => {
   const { id } = useParams<{ id: string }>()
 
   const { price_list, isPending, isError, error } = usePriceList(id!)
-  const { currencies, regions, isReady } = usePriceListCurrencyData()
+  const { currencies, regions, pricePreferences, isReady } =
+    usePriceListCurrencyData()
 
   const ready = isReady && !isPending && !!price_list
 
@@ -23,6 +24,7 @@ export const PriceListProductsAdd = () => {
           priceList={price_list}
           currencies={currencies}
           regions={regions}
+          pricePreferences={pricePreferences}
         />
       )}
     </RouteFocusModal>
