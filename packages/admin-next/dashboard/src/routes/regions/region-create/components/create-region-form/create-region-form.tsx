@@ -35,6 +35,7 @@ import { formatProvider } from "../../../../../lib/format-provider"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
+import { useUpsertPricePreference } from "../../../../../hooks/api/price-preferences"
 
 type CreateRegionFormProps = {
   currencies: CurrencyInfo[]
@@ -45,6 +46,7 @@ const CreateRegionSchema = zod.object({
   name: zod.string().min(1),
   currency_code: zod.string().min(2, "Select a currency"),
   automatic_taxes: zod.boolean(),
+  is_tax_inclusive: zod.boolean(),
   countries: zod.array(zod.object({ code: zod.string(), name: zod.string() })),
   payment_providers: zod.array(zod.string()).min(1),
 })
@@ -65,6 +67,7 @@ export const CreateRegionForm = ({
       name: "",
       currency_code: "",
       automatic_taxes: true,
+      is_tax_inclusive: false,
       countries: [],
       payment_providers: [],
     },
@@ -79,10 +82,15 @@ export const CreateRegionForm = ({
 
   const { t } = useTranslation()
 
-  const { mutateAsync, isPending } = useCreateRegion()
+  const { mutateAsync: createRegion, isPending: isPendingRegion } =
+    useCreateRegion()
+  const {
+    mutateAsync: upsertPricePreferences,
+    isPending: isPendingPreference,
+  } = useUpsertPricePreference()
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    await mutateAsync(
+    const regionRes = await createRegion(
       {
         name: values.name,
         countries: values.countries.map((c) => c.code),
@@ -91,13 +99,6 @@ export const CreateRegionForm = ({
         automatic_taxes: values.automatic_taxes,
       },
       {
-        onSuccess: ({ region }) => {
-          toast.success(t("general.success"), {
-            description: t("regions.toast.create"),
-            dismissLabel: t("actions.close"),
-          })
-          handleSuccess(`../${region.id}`)
-        },
         onError: (e) => {
           toast.error(t("general.error"), {
             description: e.message,
@@ -106,6 +107,29 @@ export const CreateRegionForm = ({
         },
       }
     )
+
+    await upsertPricePreferences(
+      {
+        attribute: "region_id",
+        value: regionRes.region.id,
+        is_tax_inclusive: values.is_tax_inclusive,
+      },
+      {
+        onError: (e) => {
+          toast.error(t("general.error"), {
+            description: e.message,
+            dismissLabel: t("actions.close"),
+          })
+        },
+      }
+    )
+
+    toast.success(t("general.success"), {
+      description: t("regions.toast.create"),
+      dismissLabel: t("actions.close"),
+    })
+
+    handleSuccess(`../${regionRes.region.id}`)
   })
 
   const { searchParams, raw } = useCountryTableQuery({
@@ -206,7 +230,11 @@ export const CreateRegionForm = ({
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
+            <Button
+              size="small"
+              type="submit"
+              isLoading={isPendingRegion || isPendingPreference}
+            >
               {t("actions.save")}
             </Button>
           </div>
@@ -296,6 +324,35 @@ export const CreateRegionForm = ({
                             </div>
                             <Form.Hint>
                               {t("regions.automaticTaxesHint")}
+                            </Form.Hint>
+                            <Form.ErrorMessage />
+                          </div>
+                        </Form.Item>
+                      )
+                    }}
+                  />
+
+                  <Form.Field
+                    control={form.control}
+                    name="is_tax_inclusive"
+                    render={({ field: { value, onChange, ...field } }) => {
+                      return (
+                        <Form.Item>
+                          <div>
+                            <div className="flex items-start justify-between">
+                              <Form.Label>
+                                {t("fields.taxInclusivePricing")}
+                              </Form.Label>
+                              <Form.Control>
+                                <Switch
+                                  {...field}
+                                  checked={value}
+                                  onCheckedChange={onChange}
+                                />
+                              </Form.Control>
+                            </div>
+                            <Form.Hint>
+                              {t("regions.taxInclusiveHint")}
                             </Form.Hint>
                             <Form.ErrorMessage />
                           </div>

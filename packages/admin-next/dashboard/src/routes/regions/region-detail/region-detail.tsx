@@ -8,6 +8,7 @@ import { regionLoader } from "./loader"
 
 import after from "virtual:medusa/widgets/region/details/after"
 import before from "virtual:medusa/widgets/region/details/before"
+import { usePricePreferences } from "../../../hooks/api/price-preferences"
 
 export const RegionDetail = () => {
   const initialData = useLoaderData() as Awaited<
@@ -18,8 +19,8 @@ export const RegionDetail = () => {
   const {
     region,
     isPending: isLoading,
-    isError,
-    error,
+    isError: isRegionError,
+    error: regionError,
   } = useRegion(
     id!,
     { fields: "*payment_providers,*countries" },
@@ -28,13 +29,30 @@ export const RegionDetail = () => {
     }
   )
 
+  const {
+    price_preferences: pricePreferences,
+    isPending: isLoadingPreferences,
+    isError: isPreferencesError,
+    error: preferencesError,
+  } = usePricePreferences(
+    {
+      attribute: "region_id",
+      value: id,
+    },
+    { enabled: !!region }
+  )
+
   // TODO: Move to loading.tsx and set as Suspense fallback for the route
-  if (isLoading || !region) {
+  if (isLoading || isLoadingPreferences || !region) {
     return <div>Loading...</div>
   }
 
-  if (isError) {
-    throw error
+  if (isRegionError) {
+    throw regionError
+  }
+
+  if (isPreferencesError) {
+    throw preferencesError
   }
 
   return (
@@ -46,7 +64,10 @@ export const RegionDetail = () => {
           </div>
         )
       })}
-      <RegionGeneralSection region={region} />
+      <RegionGeneralSection
+        region={region}
+        pricePreferences={pricePreferences ?? []}
+      />
       <RegionCountrySection region={region} />
       {after.widgets.map((w, i) => {
         return (
