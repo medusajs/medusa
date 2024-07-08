@@ -18,7 +18,7 @@ export const pricePreferencesQueryKeys = queryKeysFactory(
 
 export const usePricePreference = (
   id: string,
-  query?: HttpTypes.AdminPricePreferenceListParams,
+  query?: HttpTypes.AdminPricePreferenceParams,
   options?: Omit<
     UseQueryOptions<
       HttpTypes.AdminPricePreferenceResponse,
