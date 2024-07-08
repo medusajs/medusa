@@ -26,7 +26,7 @@ import CustomerGroupCustomer from "./customer-group-customer"
 type OptionalCustomerProps =
   | "groups"
   | "addresses"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const CustomerUniqueEmail = createPsqlIndexStatementHelper({
   tableName: "customer",

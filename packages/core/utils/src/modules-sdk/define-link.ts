@@ -4,6 +4,11 @@ import { composeLinkName } from "../link"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
 
+export interface DefineLinkExport {
+  [DefineLinkSymbol]: boolean
+  serviceName: string
+}
+
 type InputSource = {
   serviceName: string
   field: string
@@ -18,7 +23,7 @@ type InputToJson = {
 type CombinedSource = Record<any, any> & InputToJson
 
 type InputOptions = {
-  source: CombinedSource | InputSource
+  linkable: CombinedSource | InputSource
   isList?: boolean
 }
 
@@ -47,7 +52,7 @@ type ModuleLinkableKeyConfig = {
 }
 
 function isInputOptions(input: any): input is InputOptions {
-  return isObject(input) && "source" in input
+  return isObject(input) && "linkable" in input
 }
 
 function isInputSource(input: any): input is InputSource {
@@ -62,7 +67,7 @@ export function defineLink(
   leftService: DefineLinkInputSource,
   rightService: DefineLinkInputSource,
   linkServiceOptions?: ExtraOptions
-) {
+): DefineLinkExport {
   let serviceAObj = {} as ModuleLinkableKeyConfig
   let serviceBObj = {} as ModuleLinkableKeyConfig
 
@@ -77,9 +82,9 @@ export function defineLink(
       module: source.serviceName,
     }
   } else if (isInputOptions(leftService)) {
-    const source = isToJSON(leftService.source)
-      ? leftService.source.toJSON()
-      : leftService.source
+    const source = isToJSON(leftService.linkable)
+      ? leftService.linkable.toJSON()
+      : leftService.linkable
 
     serviceAObj = {
       key: source.linkable,
@@ -103,9 +108,9 @@ export function defineLink(
       module: source.serviceName,
     }
   } else if (isInputOptions(rightService)) {
-    const source = isToJSON(rightService.source)
-      ? rightService.source.toJSON()
-      : rightService.source
+    const source = isToJSON(rightService.linkable)
+      ? rightService.linkable.toJSON()
+      : rightService.linkable
 
     serviceBObj = {
       key: source.linkable,

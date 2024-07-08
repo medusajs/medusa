@@ -56,6 +56,7 @@ tags:
   - name: Orders
   - name: Payments
   - name: Price Lists
+  - name: Price Preferences
   - name: Product Categories
     x-associatedSchema:
       $ref: ./components/schemas/AdminProductCategory.yaml
@@ -211,6 +212,10 @@ paths:
     $ref: paths/admin_price-lists_{id}_prices_batch.yaml
   /admin/price-lists/{id}/products:
     $ref: paths/admin_price-lists_{id}_products.yaml
+  /admin/price-preferences:
+    $ref: paths/admin_price-preferences.yaml
+  /admin/price-preferences/{id}:
+    $ref: paths/admin_price-preferences_{id}.yaml
   /admin/product-categories:
     $ref: paths/admin_product-categories.yaml
   /admin/product-categories/{id}:

@@ -26,7 +26,7 @@ import FulfillmentLabel from "./fulfillment-label"
 import FulfillmentProvider from "./fulfillment-provider"
 import ShippingOption from "./shipping-option"
 
-type FulfillmentOptionalProps = DAL.SoftDeletableEntityDateColumns
+type FulfillmentOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const FulfillmentDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "fulfillment",

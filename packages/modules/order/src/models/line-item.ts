@@ -20,7 +20,7 @@ import {
 import LineItemAdjustment from "./line-item-adjustment"
 import LineItemTaxLine from "./line-item-tax-line"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const ProductIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_line_item",

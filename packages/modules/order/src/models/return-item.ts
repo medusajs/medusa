@@ -17,7 +17,7 @@ import LineItem from "./line-item"
 import Return from "./return"
 import ReturnReason from "./return-reason"
 
-type OptionalLineItemProps = DAL.EntityDateColumns
+type OptionalLineItemProps = DAL.ModelDateColumns
 
 const ReturnIdIndex = createPsqlIndexStatementHelper({
   tableName: "return_item",

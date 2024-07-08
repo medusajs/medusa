@@ -27,7 +27,7 @@ import OrderShippingMethod from "./order-shipping-method"
 import Return from "./return"
 import Transaction from "./transaction"
 
-type OptionalOrderClaimProps = DAL.EntityDateColumns
+type OptionalOrderClaimProps = DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim",
