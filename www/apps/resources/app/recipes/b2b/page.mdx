@@ -281,10 +281,11 @@ Module Relationships is coming soon.
 
   ```ts title="src/modules/b2b/index.ts"
   import B2bModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("b2b", {
     service: B2bModuleService,
-  }
+  })
   ```
 
   Finally, add the module to the `modules` object in `medusa-config.js`:
@@ -640,7 +641,7 @@ export const checkCustomerHighlights = [
     AuthenticatedMedusaRequest, 
     MedusaResponse,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { ICustomerModuleService } from "@medusajs/types"
   import B2bModuleService from "../../../../modules/b2b/service"
   

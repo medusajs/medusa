@@ -13,7 +13,7 @@ import { NullableModifier } from "../../properties/nullable"
  * test.amount // valid | type = number
  * test.raw_amount // valid | type = Record<string, any>
  */
-type DMLSchemaWithBigNumber<T extends DMLSchema> = {
+export type DMLSchemaWithBigNumber<T extends DMLSchema> = {
   [K in keyof T]: T[K]
 } & {
   [K in keyof T as T[K] extends

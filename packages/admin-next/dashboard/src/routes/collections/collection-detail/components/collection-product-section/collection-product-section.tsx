@@ -129,6 +129,9 @@ export const CollectionProductSection = ({
             shortcut: "r",
           },
         ]}
+        noRecords={{
+          message: t("collections.products.list.noRecordsMessage"),
+        }}
       />
     </Container>
   )

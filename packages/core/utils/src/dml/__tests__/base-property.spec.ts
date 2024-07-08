@@ -34,7 +34,6 @@ describe("Base property", () => {
       dataType: {
         name: "text",
         options: {
-          primaryKey: false,
           searchable: true,
         },
       },

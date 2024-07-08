@@ -175,10 +175,11 @@ export const mainServiceHighlights = [
   
   ```ts title="src/modules/marketplace/index.ts"
   import MarketplaceModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("marketplace", {
     service: MarketplaceModuleService,
-  } 
+  })
   ```
   
   To use the module, add it to the `modules` object in `medusa-config.js`:
@@ -243,7 +244,7 @@ export const userSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IUserModuleService,
     IStoreModuleService,
@@ -336,7 +337,7 @@ export const productSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IProductModuleService,
   } from "@medusajs/types"
@@ -581,7 +582,7 @@ export const orderSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IOrderModuleService,
     CreateOrderDTO,

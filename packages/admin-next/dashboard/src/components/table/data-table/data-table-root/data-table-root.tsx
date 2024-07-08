@@ -5,7 +5,14 @@ import {
   Row,
   flexRender,
 } from "@tanstack/react-table"
-import { ComponentPropsWithoutRef, Fragment, UIEvent, useState } from "react"
+import {
+  ComponentPropsWithoutRef,
+  Fragment,
+  UIEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { NoResults } from "../../../common/empty-table-content"
@@ -79,6 +86,8 @@ export const DataTableRoot = <TData,>({
   const navigate = useNavigate()
   const [showStickyBorder, setShowStickyBorder] = useState(false)
 
+  const scrollableRef = useRef()
+
   const hasSelect = columns.find((c) => c.id === "select")
   const hasActions = columns.find((c) => c.id === "actions")
   const hasCommandBar = commands && commands.length > 0
@@ -105,6 +114,10 @@ export const DataTableRoot = <TData,>({
     })
   }
 
+  useEffect(() => {
+    scrollableRef.current?.scroll({ top: 0, left: 0 })
+  }, [pageIndex])
+
   return (
     <div
       className={clx("flex w-full flex-col overflow-hidden", {
@@ -112,6 +125,7 @@ export const DataTableRoot = <TData,>({
       })}
     >
       <div
+        ref={scrollableRef}
         onScroll={handleHorizontalScroll}
         className={clx("w-full", {
           "min-h-0 flex-grow overflow-auto": layout === "fill",

@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IAuthModuleService, IUserModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { getContainer } from "../environment-helpers/use-container"
 

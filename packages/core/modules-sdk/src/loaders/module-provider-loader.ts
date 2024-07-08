@@ -32,8 +32,7 @@ export async function loadModuleProvider(
   registerServiceFn?: (klass, container, moduleDetails) => Promise<void>
 ) {
   let loadedProvider: any
-
-  const moduleName = provider.resolve ?? provider.provider_name ?? ""
+  const moduleName = provider.resolve ?? ""
 
   try {
     loadedProvider = provider.resolve
@@ -60,7 +59,10 @@ export async function loadModuleProvider(
       const name = lowerCaseFirst(service.name)
       if (registerServiceFn) {
         // Used to register the specific type of service in the provider
-        await registerServiceFn(service, container, provider.options)
+        await registerServiceFn(service, container, {
+          id: provider.id,
+          options: provider.options,
+        })
       } else {
         container.register({
           [name]: asFunction(

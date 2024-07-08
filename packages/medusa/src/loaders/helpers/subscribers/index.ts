@@ -1,10 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IEventBusModuleService,
   MedusaContainer,
   Subscriber,
 } from "@medusajs/types"
-import { kebabCase } from "@medusajs/utils"
+import { ModuleRegistrationName, kebabCase } from "@medusajs/utils"
 import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 

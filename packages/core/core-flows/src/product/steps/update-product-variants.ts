@@ -1,7 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 import {
   MedusaError,
+  ModuleRegistrationName,
   getSelectsAndRelationsFromObjectArray,
 } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"

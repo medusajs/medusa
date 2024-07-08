@@ -87,6 +87,7 @@ export class RemoteQuery {
     select?: string[]
     relations: string[]
     args: JoinerArgument
+    take?: number | null
   } {
     expand = JSON.parse(JSON.stringify(expand))
 
@@ -220,6 +221,10 @@ export class RemoteQuery {
       throw new Error(
         `Method "${methodName}" does not exist on "${serviceConfig.serviceName}"`
       )
+    }
+
+    if (ids?.length && !hasPagination) {
+      options.take = null
     }
 
     const result = await service[methodName](filters, options)

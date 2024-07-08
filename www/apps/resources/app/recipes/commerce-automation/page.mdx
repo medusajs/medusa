@@ -153,10 +153,11 @@ export const restockModelHighlights = [
 
   ```ts title="src/modules/restock-notification/index.ts"
   import RestockNotificationModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("restock-notification", {
     service: RestockNotificationModuleService,
-  }
+  })
   ```
 
   Finally, add the module to the `modules` object in `medusa-config.js`:

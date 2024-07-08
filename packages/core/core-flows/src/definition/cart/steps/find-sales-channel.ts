@@ -1,10 +1,9 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ISalesChannelModuleService,
   IStoreModuleService,
   SalesChannelDTO,
 } from "@medusajs/types"
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { MedusaError, ModuleRegistrationName, isDefined } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

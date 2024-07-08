@@ -80,6 +80,10 @@ class Entity2 {
   @Property()
   title: string
 
+  @Unique()
+  @Property()
+  handle: string
+
   @Property({ nullable: true })
   deleted_at: Date | null
 
@@ -279,6 +283,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { title: "en1" },
       }
 
@@ -295,6 +300,7 @@ describe("mikroOrmRepository", () => {
     it("should successfully create the parent entity of a many-to-one", async () => {
       const entity2 = {
         id: "2",
+        handle: "some-handle",
         title: "en2",
       }
 
@@ -325,6 +331,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { id: "1" },
       }
 
@@ -357,6 +364,7 @@ describe("mikroOrmRepository", () => {
       const entity2 = {
         id: "2",
         title: "en2",
+        handle: "some-handle",
         entity1: { id: "1" },
       }
 
@@ -427,7 +435,10 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1" }, { title: "en2-2" }],
+        entity2: [
+          { title: "en2-1", handle: "some-handle" },
+          { title: "en2-2", handle: "some-other-handle" },
+        ],
       }
 
       const { performedActions: performedActions1 } =
@@ -477,7 +488,7 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1", entity1: null }],
+        entity2: [{ title: "en2-1", handle: "some-handle", entity1: null }],
       }
 
       const { performedActions: performedActions1 } =
@@ -521,7 +532,10 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2-1" }, { title: "en2-2" }],
+        entity2: [
+          { title: "en2-1", handle: "some-handle" },
+          { title: "en2-2", handle: "some-other-handle" },
+        ],
       }
 
       const { entities: entities1, performedActions: performedActions1 } =
@@ -540,7 +554,7 @@ describe("mikroOrmRepository", () => {
         deleted: {},
       })
 
-      entity1.entity2.push({ title: "en2-3" })
+      entity1.entity2.push({ title: "en2-3", handle: "some-new-handle" })
 
       const { performedActions: performedActions2 } =
         await manager1().upsertWithReplace([entity1], {
@@ -585,8 +599,8 @@ describe("mikroOrmRepository", () => {
         id: "1",
         title: "en1",
         entity2: [
-          { id: "2", title: "en2-1" },
-          { id: "3", title: "en2-2" },
+          { id: "2", title: "en2-1", handle: "some-handle" },
+          { id: "3", title: "en2-2", handle: "some-other-handle" },
         ] as any[],
       }
 
@@ -606,7 +620,10 @@ describe("mikroOrmRepository", () => {
         deleted: {},
       })
 
-      entity1.entity2 = [{ id: "2", title: "newen2-1" }, { title: "en2-3" }]
+      entity1.entity2 = [
+        { id: "2", title: "newen2-1" },
+        { title: "en2-3", handle: "some-new-handle" },
+      ]
 
       const { entities: entities2, performedActions: performedActions2 } =
         await manager1().upsertWithReplace([entity1], {
@@ -648,6 +665,45 @@ describe("mikroOrmRepository", () => {
           }),
           expect.objectContaining({
             title: "en2-3",
+          }),
+        ])
+      )
+    })
+
+    it("should update an entity with a one-to-many relation that has the same unique constraint key", async () => {
+      const entity1 = {
+        id: "1",
+        title: "en1",
+        entity2: [{ id: "2", title: "en2-1", handle: "some-handle" }] as any[],
+      }
+
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+
+      entity1.entity2 = [{ title: "newen2-1", handle: "some-handle" }]
+      await manager1().upsertWithReplace([entity1], {
+        relations: ["entity2"],
+      })
+
+      const listedEntities = await manager1().find({
+        where: { id: "1" },
+        options: { populate: ["entity2"] },
+      })
+
+      expect(listedEntities).toHaveLength(1)
+      expect(listedEntities[0]).toEqual(
+        expect.objectContaining({
+          id: "1",
+          title: "en1",
+        })
+      )
+      expect(listedEntities[0].entity2.getItems()).toHaveLength(1)
+      expect(listedEntities[0].entity2.getItems()).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            title: "newen2-1",
+            handle: "some-handle",
           }),
         ])
       )
@@ -875,7 +931,12 @@ describe("mikroOrmRepository", () => {
 
       // The sub-entity upsert should happen after the main was created
       await manager2().upsertWithReplace([
-        { id: "2", title: "en2", entity1_id: mainEntity[0].id },
+        {
+          id: "2",
+          title: "en2",
+          handle: "some-handle",
+          entity1_id: mainEntity[0].id,
+        },
       ])
 
       const listedEntities = await manager1().find({
@@ -910,7 +971,7 @@ describe("mikroOrmRepository", () => {
       const entity1 = {
         id: "1",
         title: "en1",
-        entity2: [{ title: "en2" }],
+        entity2: [{ title: "en2", handle: "some-handle" }],
         entity3: [{ title: "en3-1" }, { title: "en3-2" }] as any,
       }
 
@@ -1050,7 +1111,11 @@ describe("mikroOrmRepository", () => {
       )
     })
     it("should map ForeignKeyConstraintViolationException MedusaError on upsertWithReplace", async () => {
-      const entity2 = { title: "en2", entity1: { id: "1" } }
+      const entity2 = {
+        title: "en2",
+        handle: "some-handle",
+        entity1: { id: "1" },
+      }
       const err = await manager2()
         .upsertWithReplace([entity2])
         .catch((e) => e.message)

@@ -1,7 +1,6 @@
 import { UserModuleService } from "@services"
-import { ModuleExports } from "@medusajs/types"
+import { Module, Modules } from "@medusajs/utils"
 
-const moduleDefinition: ModuleExports = {
+export default Module(Modules.USER, {
   service: UserModuleService,
-}
-export default moduleDefinition
+})

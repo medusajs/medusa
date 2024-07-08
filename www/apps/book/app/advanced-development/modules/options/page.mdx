@@ -80,7 +80,7 @@ The object that a module’s loaders receive as a parameter has an `options` pro
 
 For example:
 
-```ts title="src/modules/hello/loaders/hello-world.ts" highlights={[["11"], ["16"]]}
+```ts title="src/modules/hello/loaders/hello-world.ts" highlights={[["11"], ["12", "ModuleOptions", "The type of expected module options."], ["16"]]}
 import {
   LoaderOptions,
 } from "@medusajs/modules-sdk"

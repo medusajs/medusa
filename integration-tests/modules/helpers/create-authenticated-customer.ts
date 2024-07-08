@@ -1,6 +1,6 @@
 import { CreateCustomerDTO, MedusaContainer } from "@medusajs/types"
 
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 
 export const createAuthenticatedCustomer = async (

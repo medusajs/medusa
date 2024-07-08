@@ -4,7 +4,6 @@ import {
   InternalModuleDeclaration,
   ITaxModuleService,
   ITaxProvider,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   TaxRegionDTO,
   TaxTypes,
@@ -20,7 +19,6 @@ import {
   promiseAll,
 } from "@medusajs/utils"
 import { TaxProvider, TaxRate, TaxRateRule, TaxRegion } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -44,7 +42,7 @@ export default class TaxModuleService
     TaxRegion: { dto: TaxTypes.TaxRegionDTO }
     TaxRateRule: { dto: TaxTypes.TaxRateRuleDTO }
     TaxProvider: { dto: TaxTypes.TaxProviderDTO }
-  }>(generateForModels, entityNameToLinkableKeysMap)
+  }>(generateForModels)
   implements ITaxModuleService
 {
   protected readonly container_: InjectedDependencies
@@ -73,10 +71,6 @@ export default class TaxModuleService
     this.taxRegionService_ = taxRegionService
     this.taxRateRuleService_ = taxRateRuleService
     this.taxProviderService_ = taxProviderService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

@@ -1,17 +1,9 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Container,
-  Heading,
-  StatusBadge,
-  Text,
-  toast,
-  usePrompt,
-} from "@medusajs/ui"
+import { Container, Heading, StatusBadge, Text } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
 import { ActionMenu } from "../../../../../components/common/action-menu"
-import { useDeleteProductCategory } from "../../../../../hooks/api/categories"
+import { useDeleteProductCategoryAction } from "../../../common/hooks/use-delete-product-category-action"
 import { getIsActiveProps, getIsInternalProps } from "../../../common/utils"
 
 type CategoryGeneralSectionProps = {
@@ -22,51 +14,11 @@ export const CategoryGeneralSection = ({
   category,
 }: CategoryGeneralSectionProps) => {
   const { t } = useTranslation()
-  const navigate = useNavigate()
-  const prompt = usePrompt()
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)
 
-  const { mutateAsync } = useDeleteProductCategory(category.id)
-
-  const handleDelete = async () => {
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("categories.delete.confirmation", {
-        name: category.name,
-      }),
-      confirmText: t("actions.delete"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (!res) {
-      return
-    }
-
-    await mutateAsync(undefined, {
-      onSuccess: () => {
-        toast.success(t("general.success"), {
-          description: t("categories.delete.successToast", {
-            name: category.name,
-          }),
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
-
-        navigate("/categories", {
-          replace: true,
-        })
-      },
-      onError: (e) => {
-        toast.error(t("general.error"), {
-          description: e.message,
-          dismissable: true,
-          dismissLabel: t("actions.close"),
-        })
-      },
-    })
-  }
+  const handleDelete = useDeleteProductCategoryAction(category)
 
   return (
     <Container className="divide-y p-0">

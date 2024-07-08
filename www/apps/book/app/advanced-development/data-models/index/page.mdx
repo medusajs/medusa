@@ -8,7 +8,7 @@ In this chapter, you’ll learn how to define indices on a data model.
 
 ## Define Index on Property
 
-Define an index on a property using the `model` utility's `index` method.
+Use the `index` method on a property's definition to define an index.
 
 For example:
 
@@ -38,12 +38,12 @@ In this example, you define an index on the `name` property.
 
 ## Define Index on Data Model
 
-A data model has an `indexes` method that defines indices on the data model.
+A data model has an `indexes` method that defines indices on its properties.
 
 The index can be on multiple columns (composite index). For example:
 
 export const dataModelIndexHighlights = [
-  ["7", "indexes", "Define indices on the data model."],
+  ["7", "indexes", "Define indices on the data model's properties."],
   ["9", "on", "Specify the properties to define the index on."]
 ]
 
@@ -53,7 +53,7 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
@@ -82,13 +82,13 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
     where: {
-      age: 30
-    }
+      age: 30,
+    },
   },
 ])
 
@@ -111,15 +111,15 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number().nullable()
+  age: model.number().nullable(),
 }).indexes([
   {
     on: ["name", "age"],
     where: {
       age: {
-        $ne: null
-      }
-    }
+        $ne: null,
+      },
+    },
   },
 ])
 
@@ -146,11 +146,11 @@ import { model } from "@medusajs/utils"
 const MyCustom = model.define("my_custom", {
   id: model.id().primaryKey(),
   name: model.text(),
-  age: model.number()
+  age: model.number(),
 }).indexes([
   {
     on: ["name", "age"],
-    unique: true
+    unique: true,
   },
 ])
 

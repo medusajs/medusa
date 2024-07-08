@@ -3,7 +3,6 @@ import {
   DAL,
   InternalModuleDeclaration,
   IStoreModuleService,
-  ModuleJoinerConfig,
   ModulesSdkTypes,
   StoreTypes,
 } from "@medusajs/types"
@@ -20,7 +19,6 @@ import {
 } from "@medusajs/utils"
 
 import { Store, StoreCurrency } from "@models"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
 import { UpdateStoreInput } from "@types"
 
 type InjectedDependencies = {
@@ -32,7 +30,7 @@ export default class StoreModuleService
   extends MedusaService<{
     Store: { dto: StoreTypes.StoreDTO }
     StoreCurrency: { dto: StoreTypes.StoreCurrencyDTO }
-  }>({ Store, StoreCurrency }, entityNameToLinkableKeysMap)
+  }>({ Store, StoreCurrency })
   implements IStoreModuleService
 {
   protected baseRepository_: DAL.RepositoryService
@@ -46,10 +44,6 @@ export default class StoreModuleService
     super(...arguments)
     this.baseRepository_ = baseRepository
     this.storeService_ = storeService
-  }
-
-  __joinerConfig(): ModuleJoinerConfig {
-    return joinerConfig
   }
 
   // @ts-expect-error

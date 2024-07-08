@@ -162,13 +162,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/api-key/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -371,13 +364,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/auth/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -880,13 +866,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/cart/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -990,13 +969,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/currency/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -1275,13 +1247,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/customer/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -1931,13 +1896,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/fulfillment/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -2293,13 +2251,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/inventory/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -2426,6 +2377,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/order/cancelClaim",
+                        "title": "cancelClaim",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelExchange",
+                        "title": "cancelExchange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/order/cancelFulfillment",
                         "title": "cancelFulfillment",
                         "children": []
@@ -2435,6 +2400,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/order/cancelOrderChange",
                         "title": "cancelOrderChange",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/order/cancelReturn",
+                        "title": "cancelReturn",
                         "children": []
                       },
                       {
@@ -3187,13 +3159,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/order/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -3557,13 +3522,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/payment/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -3669,6 +3627,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/createPricePreferences",
+                        "title": "createPricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/createPriceRules",
                         "title": "createPriceRules",
                         "children": []
@@ -3692,6 +3657,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/deletePriceLists",
                         "title": "deletePriceLists",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/deletePricePreferences",
+                        "title": "deletePricePreferences",
                         "children": []
                       },
                       {
@@ -3760,6 +3732,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/listPricePreferences",
+                        "title": "listPricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/listPriceRules",
                         "title": "listPriceRules",
                         "children": []
@@ -3802,6 +3781,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/restorePricePreferences",
+                        "title": "restorePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/restorePrices",
                         "title": "restorePrices",
                         "children": []
@@ -3818,6 +3804,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/retrievePriceListRule",
                         "title": "retrievePriceListRule",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/retrievePricePreference",
+                        "title": "retrievePricePreference",
                         "children": []
                       },
                       {
@@ -3851,6 +3844,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/softDeletePricePreferences",
+                        "title": "softDeletePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/softDeletePrices",
                         "title": "softDeletePrices",
                         "children": []
@@ -3872,6 +3872,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/updatePricePreferences",
+                        "title": "updatePricePreferences",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/updatePriceRules",
                         "title": "updatePriceRules",
                         "children": []
@@ -3881,6 +3888,13 @@ export const generatedSidebar = [
                         "isPathHref": true,
                         "path": "/references/pricing/updatePriceSets",
                         "title": "updatePriceSets",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
+                        "path": "/references/pricing/upsertPricePreferences",
+                        "title": "upsertPricePreferences",
                         "children": []
                       },
                       {
@@ -3933,6 +3947,13 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
+                        "path": "/references/pricing/models/PricePreference",
+                        "title": "PricePreference",
+                        "children": []
+                      },
+                      {
+                        "loaded": true,
+                        "isPathHref": true,
                         "path": "/references/pricing/models/PriceRule",
                         "title": "PriceRule",
                         "children": []
@@ -3947,13 +3968,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/pricing/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -4533,13 +4547,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/product/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -4881,13 +4888,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/promotion/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5047,27 +5047,20 @@ export const generatedSidebar = [
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/models/Region",
-                        "title": "Region",
+                        "path": "/references/region/models/Country",
+                        "title": "Country",
                         "children": []
                       },
                       {
                         "loaded": true,
                         "isPathHref": true,
-                        "path": "/references/region/models/RegionCountry",
-                        "title": "RegionCountry",
+                        "path": "/references/region/models/Region",
+                        "title": "Region",
                         "children": []
                       }
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/region/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5220,13 +5213,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/sales-channel/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5386,13 +5372,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/stock-location/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5545,13 +5524,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/store/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -5823,13 +5795,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/tax/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -6052,13 +6017,6 @@ export const generatedSidebar = [
                     ]
                   }
                 ]
-              },
-              {
-                "loaded": true,
-                "isPathHref": true,
-                "path": "/commerce-modules/user/events",
-                "title": "Events Reference",
-                "children": []
               }
             ]
           }
@@ -7915,13 +7873,6 @@ export const generatedSidebar = [
         "isPathHref": true,
         "path": "/medusa-container-resources",
         "title": "Medusa Container Resources",
-        "children": []
-      },
-      {
-        "loaded": true,
-        "isPathHref": true,
-        "path": "/events-reference",
-        "title": "Events",
         "children": []
       },
       {

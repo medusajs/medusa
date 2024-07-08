@@ -16,52 +16,43 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const stockLocationModuleService: IStockLocationService =
-      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const stockLocationModuleService: IStockLocationService =
+    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    const stockLocation = await stockLocationModuleService
-      .createStockLocations(
-        {
-          name: "Warehouse 1",
-        }
-      )
+  const stockLocation = await stockLocationModuleService.createStockLocations({
+    name: "Warehouse 1",
+  })
 
-    res.json({
-      stock_location: stockLocation,
-    })
-  }
-  ```
+  res.json({
+    stock_location: stockLocation,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/stock-location-next"
 
-  export async function POST(request: Request) {
-    const stockLocationModuleService =
-      await initializeStockLocationModule({})
+export async function POST(request: Request) {
+  const stockLocationModuleService = await initializeStockLocationModule({})
 
-    const stockLocation = await stockLocationModuleService
-      .createStockLocations(
-        {
-          name: "Warehouse 1",
-        }
-      )
+  const stockLocation = await stockLocationModuleService.createStockLocations({
+    name: "Warehouse 1",
+  })
 
-    return NextResponse.json({ stock_location: stockLocation })
-  }
-  ```
+  return NextResponse.json({ stock_location: stockLocation })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -76,42 +67,37 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const stockLocationModuleService: IStockLocationService =
-      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const stockLocationModuleService: IStockLocationService =
+    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    res.json({
-      stock_locations: await stockLocationModuleService
-        .listStockLocations({}),
-    })
-  }
-  ```
+  res.json({
+    stock_locations: await stockLocationModuleService.listStockLocations({}),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/stock-location-next"
 
-  export async function GET(request: Request) {
-    const stockLocationModuleService =
-      await initializeStockLocationModule({})
+export async function GET(request: Request) {
+  const stockLocationModuleService = await initializeStockLocationModule({})
 
-    return NextResponse.json({
-      stock_locations: await stockLocationModuleService
-        .listStockLocations({}),
-    })
-  }
-  ```
+  return NextResponse.json({
+    stock_locations: await stockLocationModuleService.listStockLocations({}),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -126,64 +112,57 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const stockLocationModuleService: IStockLocationService =
-      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const stockLocationModuleService: IStockLocationService =
+    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    const stockLocation = await stockLocationModuleService
-      .updateStockLocations({
-        id: "sloc_123",
-        address: {
-          country_code: "US",
-          city: "New York City",
-          address_1: "52 Stone St",
-          postal_code: "10004",
-        },
-      })
+  const stockLocation = await stockLocationModuleService.updateStockLocations({
+    id: "sloc_123",
+    address: {
+      country_code: "US",
+      city: "New York City",
+      address_1: "52 Stone St",
+      postal_code: "10004",
+    },
+  })
 
-    res.json({
-      stock_location: stockLocation,
-    })
-  }
-  ```
+  res.json({
+    stock_location: stockLocation,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/stock-location-next"
 
-  export async function POST(
-    request: Request
-  ) {
-    const stockLocationModuleService =
-      await initializeStockLocationModule({})
+export async function POST(request: Request) {
+  const stockLocationModuleService = await initializeStockLocationModule({})
 
-    const stockLocation = await stockLocationModuleService
-      .updateStockLocations({
-        id: "sloc_123",
-        address: {
-          country_code: "us",
-          city: "New York City",
-          address_1: "52 Stone St",
-          postal_code: "10004",
-        },
-      })
+  const stockLocation = await stockLocationModuleService.updateStockLocations({
+    id: "sloc_123",
+    address: {
+      country_code: "us",
+      city: "New York City",
+      address_1: "52 Stone St",
+      postal_code: "10004",
+    },
+  })
 
-    return NextResponse.json({
-      stock_location: stockLocation,
-    })
-  }
-  ```
+  return NextResponse.json({
+    stock_location: stockLocation,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -198,44 +177,35 @@ In this document, you’ll find common examples of how you can use the Stock Loc
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStockLocationService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const stockLocationModuleService: IStockLocationService =
-      request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
+export async function DELETE(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const stockLocationModuleService: IStockLocationService =
+    request.scope.resolve(ModuleRegistrationName.STOCK_LOCATION)
 
-    await stockLocationModuleService.deleteStockLocations(
-      "sloc_123"
-    )
+  await stockLocationModuleService.deleteStockLocations("sloc_123")
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStockLocationModule,
-  } from "@medusajs/stock-location-next"
+import { initialize as initializeStockLocationModule } from "@medusajs/stock-location-next"
 
-  export async function DELETE(
-    request: Request
-  ) {
-    const stockLocationModuleService =
-      await initializeStockLocationModule({})
+export async function DELETE(request: Request) {
+  const stockLocationModuleService = await initializeStockLocationModule({})
 
-    await stockLocationModuleService.deleteStockLocations(
-      "sloc_123"
-    )
-  }
-  ```
+  await stockLocationModuleService.deleteStockLocations("sloc_123")
+}
+```
 
   </CodeTab>
 </CodeTabs>

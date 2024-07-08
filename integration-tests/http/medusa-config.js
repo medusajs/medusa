@@ -12,11 +12,7 @@ process.env.LOG_LEVEL = "error"
 
 const customFulfillmentProvider = {
   resolve: "@medusajs/fulfillment-manual",
-  options: {
-    config: {
-      "test-provider": {},
-    },
-  },
+  id: "test-provider",
 }
 
 module.exports = defineConfig({
@@ -41,11 +37,10 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "@medusajs/file-local-next",
+            id: "local",
             options: {
-              config: {
-                // This is the directory where we can reliably write in CI environments
-                local: { upload_dir: path.join(os.tmpdir(), "uploads") },
-              },
+              // This is the directory where we can reliably write in CI environments
+              upload_dir: path.join(os.tmpdir(), "uploads"),
             },
           },
         ],

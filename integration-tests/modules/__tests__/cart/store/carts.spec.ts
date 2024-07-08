@@ -1,8 +1,4 @@
-import {
-  LinkModuleUtils,
-  ModuleRegistrationName,
-  RemoteLink,
-} from "@medusajs/modules-sdk"
+import { RemoteLink } from "@medusajs/modules-sdk"
 import PaymentModuleService from "@medusajs/payment/dist/services/payment-module"
 import {
   IApiKeyModuleService,
@@ -21,6 +17,7 @@ import {
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  ModuleRegistrationName,
   Modules,
   ProductStatus,
   PromotionRuleOperator,
@@ -71,7 +68,7 @@ medusaIntegrationTestRunner({
         productModule = appContainer.resolve(ModuleRegistrationName.PRODUCT)
         pricingModule = appContainer.resolve(ModuleRegistrationName.PRICING)
         apiKeyModule = appContainer.resolve(ModuleRegistrationName.API_KEY)
-        remoteLink = appContainer.resolve(LinkModuleUtils.REMOTE_LINK)
+        remoteLink = appContainer.resolve(ContainerRegistrationKeys.REMOTE_LINK)
         promotionModule = appContainer.resolve(ModuleRegistrationName.PROMOTION)
         taxModule = appContainer.resolve(ModuleRegistrationName.TAX)
         regionService = appContainer.resolve(ModuleRegistrationName.REGION)

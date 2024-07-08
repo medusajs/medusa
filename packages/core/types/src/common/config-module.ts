@@ -127,7 +127,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
    *   projectConfig: {
-   *     databaseName: process.env.DATABASE_NAME || 
+   *     databaseName: process.env.DATABASE_NAME ||
    *       "medusa-store",
    *     // ...
    *   },
@@ -223,37 +223,6 @@ export type ProjectConfigOptions = {
   databaseType?: string
 
   /**
-   * An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is
-   * `ssl` which enables support for TLS/SSL connections.
-   *
-   * This is useful for production databases, which can be supported by setting the `rejectUnauthorized` attribute of `ssl` object to `false`.
-   * During development, it’s recommended not to pass this option.
-   *
-   * @example
-   * ```js title="medusa-config.js"
-   * module.exports = defineConfig({
-   *   projectConfig: {
-   *     databaseExtra: process.env.NODE_ENV !== "development" ?
-   *       { ssl: { rejectUnauthorized: false } } : {}
-   *     // ...
-   *   },
-   *   // ...
-   * })
-   * ```
-   */
-  databaseExtra?: Record<string, unknown> & {
-    /**
-     * Configure support for TLS/SSL connection
-     */
-    ssl: {
-      /**
-       * Whether to fail connection if the server certificate is verified against the list of supplied CAs and the hostname and no match is found.
-       */
-      rejectUnauthorized: false
-    }
-  }
-
-  /**
    * An object that includes additional configurations to pass to the database connection for v2. You can pass any configuration. One defined configuration to pass is
    * `ssl` which enables support for TLS/SSL connections.
    *
@@ -307,7 +276,7 @@ export type ProjectConfigOptions = {
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
    *   projectConfig: {
-   *     redisUrl: process.env.REDIS_URL || 
+   *     redisUrl: process.env.REDIS_URL ||
    *       "redis://localhost:6379",
    *     // ...
    *   },
@@ -344,7 +313,7 @@ export type ProjectConfigOptions = {
    * module.exports = defineConfig({
    *   projectConfig: {
    *     redisOptions: {
-   *       connectionName: process.env.REDIS_CONNECTION_NAME || 
+   *       connectionName: process.env.REDIS_CONNECTION_NAME ||
    *         "medusa",
    *     }
    *     // ...
@@ -777,7 +746,7 @@ export type ConfigModule = {
    * ```js title="medusa-config.js"
    * module.exports = defineConfig({
    *   admin: {
-   *     backendUrl: process.env.MEDUSA_BACKEND_URL || 
+   *     backendUrl: process.env.MEDUSA_BACKEND_URL ||
    *       "http://localhost:9000"
    *   },
    *   // ...
@@ -816,9 +785,9 @@ export type ConfigModule = {
    *   // ...
    * }
    * ```
-   * 
+   *
    * @ignore
-   * 
+   *
    * @privateRemarks
    * Added the `@\ignore` tag for now so it's not generated in the main docs until we figure out what to do with plugins
    */

@@ -4,29 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-This chapter lists some constraints to keep in mind when defining Workflow constructor functions.
-
-## No Arrow Functions
-
-The function passed to the `createWorkflow` function can’t be an arrow function:
-
-```ts highlights={[["5", "=>", "Function can't be an arrow function"], ["13", "", "Correct way of defining the function."]]}
-// Don't
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", (input) => {
-  // ...
-})
-
-// Do
-const myWorkflow = createWorkflow<
-  WorkflowInput,
-  WorkflowOutput
->("hello-world", function (input) {
-  // ...
-})
-```
+This chapter lists some constraints to keep in mind when defining a workflow's constructor function.
 
 ## No Async Functions
 
@@ -49,6 +27,8 @@ const myWorkflow = createWorkflow<
   // ...
 })
 ```
+
+---
 
 ## No Direct Data Manipulation
 

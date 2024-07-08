@@ -2,7 +2,8 @@ import { resolve } from "path"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
 import { Entity, PrimaryKey } from "@mikro-orm/core"
 import { IFileModuleService } from "@medusajs/types"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { FileModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -20,11 +21,7 @@ const moduleOptions = {
         process.cwd() +
           "/integration-tests/__fixtures__/providers/default-provider"
       ),
-      options: {
-        config: {
-          "default-provider": {},
-        },
-      },
+      id: "default-provider",
     },
   ],
 }
@@ -35,6 +32,20 @@ moduleIntegrationTestRunner<IFileModuleService>({
   moduleModels: [DummyEntity],
   testSuite: ({ service }) => {
     describe("File Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.FILE, {
+          service: FileModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({})
+      })
+
       it("creates and gets a file", async () => {
         const res = await service.createFiles({
           filename: "test.jpg",

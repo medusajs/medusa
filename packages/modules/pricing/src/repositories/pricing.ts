@@ -83,10 +83,6 @@ export class PricingRepository
         )
       })
       .leftJoin("price_list_rule as plr", "plr.price_list_id", "pl.id")
-      .orderBy([
-        { column: "rules_count", order: "desc" },
-        { column: "pl.rules_count", order: "desc" },
-      ])
       .groupBy("price.id", "pl.id")
       .having(
         knex.raw(
@@ -163,16 +159,18 @@ export class PricingRepository
         pl_rules_count: "price.pl_rules_count",
         price_list_type: "price.pl_type",
         price_list_id: "price.price_list_id",
+        all_rules_count: knex.raw(
+          "COALESCE(price.rules_count, 0) + COALESCE(price.pl_rules_count, 0)"
+        ),
       })
       .join(priceSubQueryKnex.as("price"), "price.price_set_id", "ps.id")
-      .leftJoin("price_rule as pr", "pr.price_id", "price.id")
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("price.currency_code", "=", currencyCode)
 
       .orderBy([
         { column: "price.has_price_list", order: "asc" },
+        { column: "all_rules_count", order: "desc" },
         { column: "amount", order: "asc" },
-        { column: "rules_count", order: "desc" },
       ])
 
     if (quantity) {
