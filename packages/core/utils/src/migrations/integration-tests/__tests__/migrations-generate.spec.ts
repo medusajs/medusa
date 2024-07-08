@@ -23,6 +23,12 @@ const pgGodCredentials = {
   host: DB_HOST,
 }
 
+export function getDatabaseURL(): string {
+  return `postgres://${DB_USERNAME}${
+    DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+  }@${DB_HOST}/${dbName}`
+}
+
 describe("Generate migrations", () => {
   beforeEach(async () => {
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
@@ -45,6 +51,7 @@ describe("Generate migrations", () => {
     })
 
     const config = defineMikroOrmCliConfig(moduleName, {
+      clientUrl: getDatabaseURL(),
       entities: [User],
       databaseName: dbName,
       migrations: {
@@ -80,6 +87,7 @@ describe("Generate migrations", () => {
     })
 
     const config = defineMikroOrmCliConfig(moduleName, {
+      clientUrl: getDatabaseURL(),
       entities: [User, Car],
       databaseName: dbName,
       migrations: {
@@ -102,6 +110,7 @@ describe("Generate migrations", () => {
   test("generate new file when entities are added", async () => {
     function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
+        clientUrl: getDatabaseURL(),
         entities,
         databaseName: dbName,
         migrations: {
