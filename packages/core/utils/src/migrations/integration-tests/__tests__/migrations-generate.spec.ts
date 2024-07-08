@@ -45,7 +45,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User],
-      dbName: dbName,
+      databaseName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -80,7 +80,7 @@ describe("Generate migrations", () => {
 
     const config = defineMikroOrmCliConfig(moduleName, {
       entities: [User, Car],
-      dbName: dbName,
+      databaseName: dbName,
       migrations: {
         path: fs.basePath,
       },
@@ -102,7 +102,7 @@ describe("Generate migrations", () => {
     function run(entities: DmlEntity<any, any>[]) {
       const config = defineMikroOrmCliConfig(moduleName, {
         entities,
-        dbName: dbName,
+        databaseName: dbName,
         migrations: {
           path: fs.basePath,
         },
