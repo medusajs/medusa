@@ -45,7 +45,7 @@ const inviteDeletedAtIndexStatement = createPsqlIndexStatementHelper({
 type OptionalFields =
   | "metadata"
   | "accepted"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 @Entity({ tableName: "invite" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 export default class Invite {

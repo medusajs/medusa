@@ -2,6 +2,8 @@ import {
   createStep,
   createWorkflow,
   StepResponse,
+  transform,
+  when,
   WorkflowData,
 } from "./composer"
 
@@ -29,7 +31,16 @@ const workflow = createWorkflow(
 
 const workflow2 = createWorkflow("workflow", function () {
   const step1Res = step1()
-  step3()
+
+  const step3Res = when({ value: true }, ({ value }) => {
+    return value
+  }).then(() => {
+    return step3()
+  })
+
+  transform({ step3Res }, ({ step3Res }) => {
+    console.log(step3Res)
+  })
 
   const workflowRes = workflow.asStep({ outsideWorkflowData: step1Res.step1 })
 

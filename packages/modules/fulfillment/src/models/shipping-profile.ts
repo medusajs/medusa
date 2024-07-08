@@ -20,7 +20,7 @@ import {
 } from "@mikro-orm/core"
 import ShippingOption from "./shipping-option"
 
-type ShippingProfileOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ShippingProfileOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const DeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "shipping_profile",

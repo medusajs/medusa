@@ -30,7 +30,7 @@ type OptionalLineItemProps =
   | "compare_at_unit_price"
   | "requires_shipping"
   | "cart"
-  | DAL.SoftDeletableEntityDateColumns
+  | DAL.SoftDeletableModelDateColumns
 
 const CartIdIndex = createPsqlIndexStatementHelper({
   name: "IDX_line_item_cart_id",
