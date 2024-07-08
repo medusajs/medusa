@@ -10,6 +10,7 @@ import * as React from "react"
 
 import type { ToastAction, ToastVariant } from "@/types"
 import { clx } from "@/utils/clx"
+import { toast } from "sonner"
 import { IconButton } from "../icon-button"
 
 interface ToastComponentProps {
@@ -18,7 +19,7 @@ interface ToastComponentProps {
   title: string
   description?: string
   action?: ToastAction
-  onDismiss?: () => void
+  dismissable?: boolean
 }
 
 /**
@@ -54,13 +55,11 @@ export const Toast = ({
    */
   action,
   /**
-   * @ignore
-   *
-   * @privateRemarks
-   * The `toast` utility functions don't allow
-   * passing this prop.
+   * Whether to show the dismiss button.
+   * 
+   * @default true
    */
-  onDismiss,
+  dismissable = true,
 }: ToastComponentProps) => {
   let icon = undefined
 
@@ -85,7 +84,7 @@ export const Toast = ({
   }
 
   return (
-    <div className="shadow-elevation-flyout bg-ui-bg-base flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3">
+    <div className="shadow-elevation-flyout bg-ui-bg-base flex w-fit min-w-[360px] max-w-[440px] gap-x-3 overflow-hidden rounded-lg p-3 bg-red-500">
       <div
         className={clx("grid flex-1 items-start gap-2", {
           "grid-cols-[20px_1fr]": !!icon,
@@ -127,18 +126,18 @@ export const Toast = ({
           )}
         </div>
       </div>
-      {!!onDismiss && (
+      {!!dismissable && 
         <div>
           <IconButton
             size="2xsmall"
             variant="transparent"
             type="button"
-            onClick={onDismiss}
+            onClick={() => toast.dismiss(id)}
           >
             <XMark />
           </IconButton>
         </div>
-      )}
+      }
     </div>
   )
 }

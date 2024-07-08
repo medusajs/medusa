@@ -7,6 +7,7 @@ interface BaseToastProps {
   id?: string | number
   position?: ToasterPosition
   duration?: number
+  dismissable?: boolean
 }
 
 interface ToastProps extends BaseToastProps {
@@ -25,14 +26,12 @@ function create(variant: ToastVariant, title: string, props: ToastProps = {}) {
   }
 
   return toastFn.custom((t) => {
-    const dismissFn = () => toastFn.dismiss(t)
-
     return (
       <Toast
         id={t}
         title={title}
         description={props.description}
-        onDismiss={dismissFn}
+        dismissable={props.dismissable}
         variant={variant}
         action={props.action}
       />
@@ -84,7 +83,7 @@ function success(
   /**
    * The props of the toast.
    */
-  props: ToastProps = {}
+  props: ToastProps = { dismissable: true }
 ) {
   return create("success", title, props)
 }
@@ -101,8 +100,6 @@ function warning(
   return create("warning", title, props)
 }
 
-type LoadingToastProps = Omit<ToastProps, "dismissable" | "dismissLabel">
-
 function loading(
   /**
    * The title of the toast.
@@ -112,7 +109,7 @@ function loading(
    */
   props: ToastProps = {}
 ) {
-  return create("loading", title, { ...props })
+  return create("loading", title, { ...props, dismissable: false })
 }
 
 type PromiseStateProps =
@@ -156,6 +153,7 @@ async function promise<TData>(
           ? undefined
           : props.loading.description,
       duration: Infinity,
+      dismissable: false,
     }
   )
 
