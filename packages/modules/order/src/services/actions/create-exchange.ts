@@ -129,7 +129,9 @@ async function processAdditionalItems(
 
   createItems.forEach((item, index) => {
     const addedItem = itemsToAdd[index]
+
     additionalNewItems[index].item_id = item.id
+
     actions.push({
       action: ChangeActionType.ITEM_ADD,
       exchange_id: exchangeReference.id,
