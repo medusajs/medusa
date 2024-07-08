@@ -24,7 +24,6 @@ const pgGodCredentials = {
 
 describe("Generate migrations", () => {
   beforeEach(async () => {
-    jest.setTimeout(300000)
     await createDatabase({ databaseName: dbName }, pgGodCredentials)
   })
 
@@ -35,7 +34,7 @@ describe("Generate migrations", () => {
     )
     await fs.cleanup()
     MetadataStorage.clear()
-  })
+  }, 300 * 1000)
 
   test("generate migrations for a single entity", async () => {
     const User = model.define("User", {
