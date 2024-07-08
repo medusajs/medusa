@@ -14,27 +14,11 @@ The remote query fetches data across modules. It’s a function registered in th
 
 In your resources, such as API routes or workflows, you can resolve the remote query to fetch data across custom modules and Medusa’s commerce modules.
 
----
+<Note type="check">
 
-## isQueryable Configuration
+- [Enable the isQueryable configuration of the module](../module-links/page.mdx#prerequisite-isqueryable-configuration)
 
-Before you use remote query on your module, you must enable the `isQueryable` configuration of the module.
-
-For example:
-
-```js
-module.exports = defineConfig({
-  // ...
-  modules: {
-    helloModuleService: {
-      resolve: "./modules/hello",
-      definition: {
-        isQueryable: true,
-      },
-    },
-  },
-})
-```
+</Note>
 
 ---
 
@@ -90,6 +74,48 @@ Then, you create a query using the `remoteQueryObjectFromString` utility functio
 - `fields`: An array of the data model’s properties to retrieve in the result.
 
 You then pass the query to the `remoteQuery` function to retrieve the results.
+
+---
+
+## Retrieve Linked Records
+
+Retrieve the records of a linked data model by passing in `fields` the data model's name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "product.*"
+  ],
+})
+```
+
+<Note title="Tip">
+
+`.*` means that all of data model's properties should be retrieved. To retrieve a specific property, replace the `*` with the property's name. For example, `product.title`.
+
+</Note>
+
+### Retrieve List Link Records
+
+If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.*`.
+
+For example:
+
+```ts highlights={[["6"]]}
+const query = remoteQueryObjectFromString({
+  entryPoint: "my_custom",
+  fields: [
+    "id", 
+    "name",
+    "products.*"
+  ],
+})
+```
 
 ---
 
@@ -258,6 +284,8 @@ The remote query function alternatively accepts a string with GraphQL syntax as 
           }
         }
       `
+
+      const result = await remoteQuery(query)
 
       res.json({
         my_customs: result,

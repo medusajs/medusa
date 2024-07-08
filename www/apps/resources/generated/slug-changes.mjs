@@ -5,29 +5,29 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.authenticate/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.create",
-    "newSlug": "/references/api-key/create",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.create/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.createApiKeys",
+    "newSlug": "/references/api-key/createApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.createApiKeys/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.delete",
-    "newSlug": "/references/api-key/delete",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.delete/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.deleteApiKeys",
+    "newSlug": "/references/api-key/deleteApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.deleteApiKeys/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.list",
-    "newSlug": "/references/api-key/list",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.list/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCountApiKeys",
+    "newSlug": "/references/api-key/listAndCountApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCountApiKeys/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCount",
-    "newSlug": "/references/api-key/listAndCount",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listApiKeys",
+    "newSlug": "/references/api-key/listApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.listApiKeys/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieve",
-    "newSlug": "/references/api-key/retrieve",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieve/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieveApiKey",
+    "newSlug": "/references/api-key/retrieveApiKey",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.retrieveApiKey/page.mdx"
   },
   {
     "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.revoke",
@@ -35,14 +35,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.revoke/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.update",
-    "newSlug": "/references/api-key/update",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.update/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.updateApiKeys",
+    "newSlug": "/references/api-key/updateApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.updateApiKeys/page.mdx"
   },
   {
-    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsert",
-    "newSlug": "/references/api-key/upsert",
-    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsert/page.mdx"
+    "origSlug": "/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsertApiKeys",
+    "newSlug": "/references/api-key/upsertApiKeys",
+    "filePath": "/www/apps/resources/references/api_key/IApiKeyModuleService/methods/api_key.IApiKeyModuleService.upsertApiKeys/page.mdx"
   },
   {
     "origSlug": "/references/api_key/interfaces/api_key.IApiKeyModuleService",
@@ -60,34 +60,34 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.create",
-    "newSlug": "/references/auth/create",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.create/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities",
+    "newSlug": "/references/auth/createAuthIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.createAuthIdentities/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.delete",
-    "newSlug": "/references/auth/delete",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.delete/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteAuthIdentities",
+    "newSlug": "/references/auth/deleteAuthIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.deleteAuthIdentities/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.list",
-    "newSlug": "/references/auth/list",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.list/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities",
+    "newSlug": "/references/auth/listAndCountAuthIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCount",
-    "newSlug": "/references/auth/listAndCount",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities",
+    "newSlug": "/references/auth/listAuthIdentities",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAuthIdentities/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieve",
-    "newSlug": "/references/auth/retrieve",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieve/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity",
+    "newSlug": "/references/auth/retrieveAuthIdentity",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.retrieveAuthIdentity/page.mdx"
   },
   {
-    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.update",
-    "newSlug": "/references/auth/update",
-    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.update/page.mdx"
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites",
+    "newSlug": "/references/auth/updateAuthIdentites",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.updateAuthIdentites/page.mdx"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback",
@@ -103,6 +103,11 @@ export const slugChanges = [
     "origSlug": "/references/auth_models/classes/auth_models.AuthIdentity",
     "newSlug": "/references/auth/models/AuthIdentity",
     "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.AuthIdentity/page.mdx"
+  },
+  {
+    "origSlug": "/references/auth_models/classes/auth_models.ProviderIdentity",
+    "newSlug": "/references/auth/models/ProviderIdentity",
+    "filePath": "/www/apps/resources/references/auth_models/classes/auth_models.ProviderIdentity/page.mdx"
   },
   {
     "origSlug": "/references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider",
@@ -140,24 +145,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.addShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.create",
-    "newSlug": "/references/cart/create",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.create/page.mdx"
-  },
-  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.createAddresses",
     "newSlug": "/references/cart/createAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.createAddresses/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.delete",
-    "newSlug": "/references/cart/delete",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.delete/page.mdx"
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.createCarts",
+    "newSlug": "/references/cart/createCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.createCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteAddresses",
     "newSlug": "/references/cart/deleteAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteAddresses/page.mdx"
+  },
+  {
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteCarts",
+    "newSlug": "/references/cart/deleteCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteLineItemAdjustments",
@@ -190,19 +195,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.deleteShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.list",
-    "newSlug": "/references/cart/list",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.list/page.mdx"
-  },
-  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAddresses",
     "newSlug": "/references/cart/listAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAddresses/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCount",
-    "newSlug": "/references/cart/listAndCount",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCountCarts",
+    "newSlug": "/references/cart/listAndCountCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listAndCountCarts/page.mdx"
+  },
+  {
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listCarts",
+    "newSlug": "/references/cart/listCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.listLineItemAdjustments",
@@ -235,14 +240,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.listShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restore",
-    "newSlug": "/references/cart/restore",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restore/page.mdx"
-  },
-  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreAddresses",
     "newSlug": "/references/cart/restoreAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreAddresses/page.mdx"
+  },
+  {
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreCarts",
+    "newSlug": "/references/cart/restoreCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreLineItemAdjustments",
@@ -275,9 +280,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.restoreShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieve",
-    "newSlug": "/references/cart/retrieve",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieve/page.mdx"
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveCart",
+    "newSlug": "/references/cart/retrieveCart",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveCart/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.retrieveLineItem",
@@ -305,14 +310,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.setShippingMethodTaxLines/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDelete",
-    "newSlug": "/references/cart/softDelete",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDelete/page.mdx"
-  },
-  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteAddresses",
     "newSlug": "/references/cart/softDeleteAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteAddresses/page.mdx"
+  },
+  {
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteCarts",
+    "newSlug": "/references/cart/softDeleteCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteLineItemAdjustments",
@@ -345,14 +350,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.softDeleteShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.update",
-    "newSlug": "/references/cart/update",
-    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.update/page.mdx"
-  },
-  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateAddresses",
     "newSlug": "/references/cart/updateAddresses",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateAddresses/page.mdx"
+  },
+  {
+    "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateCarts",
+    "newSlug": "/references/cart/updateCarts",
+    "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateCarts/page.mdx"
   },
   {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.updateLineItems",
@@ -430,29 +435,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/currency_models/variables/currency_models.Currency/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses",
-    "newSlug": "/references/customer/addAddresses",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addAddresses/page.mdx"
-  },
-  {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addCustomerToGroup",
     "newSlug": "/references/customer/addCustomerToGroup",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.addCustomerToGroup/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.create",
-    "newSlug": "/references/customer/create",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.create/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses",
+    "newSlug": "/references/customer/createAddresses",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createAddresses/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroup",
-    "newSlug": "/references/customer/createCustomerGroup",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroup/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroups",
+    "newSlug": "/references/customer/createCustomerGroups",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomerGroups/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.delete",
-    "newSlug": "/references/customer/delete",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.delete/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomers",
+    "newSlug": "/references/customer/createCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.createCustomers/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteAddresses",
@@ -465,19 +465,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomerGroups/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.list",
-    "newSlug": "/references/customer/list",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.list/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomers",
+    "newSlug": "/references/customer/deleteCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.deleteCustomers/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses",
     "newSlug": "/references/customer/listAddresses",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAddresses/page.mdx"
-  },
-  {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCount",
-    "newSlug": "/references/customer/listAndCount",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCount/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountAddresses",
@@ -490,6 +485,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomerGroups/page.mdx"
   },
   {
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers",
+    "newSlug": "/references/customer/listAndCountCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listAndCountCustomers/page.mdx"
+  },
+  {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroupCustomers",
     "newSlug": "/references/customer/listCustomerGroupCustomers",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroupCustomers/page.mdx"
@@ -500,14 +500,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomerGroups/page.mdx"
   },
   {
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomers",
+    "newSlug": "/references/customer/listCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.listCustomers/page.mdx"
+  },
+  {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup",
     "newSlug": "/references/customer/removeCustomerFromGroup",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.removeCustomerFromGroup/page.mdx"
-  },
-  {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restore",
-    "newSlug": "/references/customer/restore",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restore/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomerGroups",
@@ -515,9 +515,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomerGroups/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieve",
-    "newSlug": "/references/customer/retrieve",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieve/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomers",
+    "newSlug": "/references/customer/restoreCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.restoreCustomers/page.mdx"
+  },
+  {
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomer",
+    "newSlug": "/references/customer/retrieveCustomer",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomer/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomerGroup",
@@ -525,19 +530,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.retrieveCustomerGroup/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDelete",
-    "newSlug": "/references/customer/softDelete",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDelete/page.mdx"
-  },
-  {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomerGroups",
     "newSlug": "/references/customer/softDeleteCustomerGroups",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomerGroups/page.mdx"
   },
   {
-    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.update",
-    "newSlug": "/references/customer/update",
-    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.update/page.mdx"
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomers",
+    "newSlug": "/references/customer/softDeleteCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.softDeleteCustomers/page.mdx"
   },
   {
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateAddresses",
@@ -548,6 +548,11 @@ export const slugChanges = [
     "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerGroups",
     "newSlug": "/references/customer/updateCustomerGroups",
     "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomerGroups/page.mdx"
+  },
+  {
+    "origSlug": "/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomers",
+    "newSlug": "/references/customer/updateCustomers",
+    "filePath": "/www/apps/resources/references/customer/ICustomerModuleService/methods/customer.ICustomerModuleService.updateCustomers/page.mdx"
   },
   {
     "origSlug": "/references/customer/interfaces/customer.ICustomerModuleService",
@@ -575,6 +580,126 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/customer_models/classes/customer_models.CustomerGroupCustomer/page.mdx"
   },
   {
+    "origSlug": "/references/dml/Model_Methods/methods/dml.Model_Methods.cascades",
+    "newSlug": "/references/data-model/model-methods/cascades",
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.cascades/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Model_Methods/methods/dml.Model_Methods.indexes",
+    "newSlug": "/references/data-model/model-methods/indexes",
+    "filePath": "/www/apps/resources/references/dml/Model_Methods/methods/dml.Model_Methods.indexes/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.default",
+    "newSlug": "/references/data-model/property-configuration/default",
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.default/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.index",
+    "newSlug": "/references/data-model/property-configuration/index",
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.index/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.nullable",
+    "newSlug": "/references/data-model/property-configuration/nullable",
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.nullable/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.unique",
+    "newSlug": "/references/data-model/property-configuration/unique",
+    "filePath": "/www/apps/resources/references/dml/Property_Configuration_Methods/methods/dml.Property_Configuration_Methods.unique/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.array",
+    "newSlug": "/references/data-model/property-types/array",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.array/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.bigNumber",
+    "newSlug": "/references/data-model/property-types/bignumber",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.bigNumber/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.boolean",
+    "newSlug": "/references/data-model/property-types/boolean",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.boolean/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.dateTime",
+    "newSlug": "/references/data-model/property-types/datetime",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.dateTime/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.enum",
+    "newSlug": "/references/data-model/property-types/enum",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.enum/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.id",
+    "newSlug": "/references/data-model/property-types/id",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.id/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.json",
+    "newSlug": "/references/data-model/property-types/json",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.json/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.number",
+    "newSlug": "/references/data-model/property-types/number",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.number/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Property_Types/methods/dml.Property_Types.text",
+    "newSlug": "/references/data-model/property-types/text",
+    "filePath": "/www/apps/resources/references/dml/Property_Types/methods/dml.Property_Types.text/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.belongsTo",
+    "newSlug": "/references/data-model/relationship-methods/belongsto",
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.belongsTo/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasMany",
+    "newSlug": "/references/data-model/relationship-methods/hasmany",
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasMany/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasOne",
+    "newSlug": "/references/data-model/relationship-methods/hasone",
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.hasOne/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.manyToMany",
+    "newSlug": "/references/data-model/relationship-methods/manytomany",
+    "filePath": "/www/apps/resources/references/dml/Relationship_Methods/methods/dml.Relationship_Methods.manyToMany/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/dml.Model_Methods",
+    "newSlug": "/references/data-model/model-methods",
+    "filePath": "/www/apps/resources/references/dml/dml.Model_Methods/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/dml.Property_Configuration_Methods",
+    "newSlug": "/references/data-model/property-configuration",
+    "filePath": "/www/apps/resources/references/dml/dml.Property_Configuration_Methods/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/dml.Property_Types",
+    "newSlug": "/references/data-model/property-types",
+    "filePath": "/www/apps/resources/references/dml/dml.Property_Types/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/dml.Relationship_Methods",
+    "newSlug": "/references/data-model/relationship-methods",
+    "filePath": "/www/apps/resources/references/dml/dml.Relationship_Methods/page.mdx"
+  },
+  {
+    "origSlug": "/references/dml/entity_builder/EntityBuilder/methods/dml.entity_builder.EntityBuilder.define",
+    "newSlug": "/references/data-model/define",
+    "filePath": "/www/apps/resources/references/dml/entity_builder/EntityBuilder/methods/dml.entity_builder.EntityBuilder.define/page.mdx"
+  },
+  {
     "origSlug": "/references/file/classes/file.AbstractFileProviderService",
     "newSlug": "/references/file-provider-module",
     "filePath": "/www/apps/resources/references/file/classes/file.AbstractFileProviderService/page.mdx"
@@ -585,19 +710,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.cancelFulfillment/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.create",
-    "newSlug": "/references/fulfillment/create",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.create/page.mdx"
-  },
-  {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillment",
     "newSlug": "/references/fulfillment/createFulfillment",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillment/page.mdx"
   },
   {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillmentSets",
+    "newSlug": "/references/fulfillment/createFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createFulfillmentSets/page.mdx"
+  },
+  {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createGeoZones",
     "newSlug": "/references/fulfillment/createGeoZones",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createGeoZones/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createReturnFulfillment",
+    "newSlug": "/references/fulfillment/createReturnFulfillment",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createReturnFulfillment/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createServiceZones",
@@ -620,9 +750,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.createShippingProfiles/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.delete",
-    "newSlug": "/references/fulfillment/delete",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.delete/page.mdx"
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteFulfillmentSets",
+    "newSlug": "/references/fulfillment/deleteFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteFulfillmentSets/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteGeoZones",
@@ -655,14 +785,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.deleteShippingProfiles/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.list",
-    "newSlug": "/references/fulfillment/list",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCount",
-    "newSlug": "/references/fulfillment/listAndCount",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillmentSets",
+    "newSlug": "/references/fulfillment/listAndCountFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillmentSets/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listAndCountFulfillments",
@@ -705,6 +830,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentProviders/page.mdx"
   },
   {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentSets",
+    "newSlug": "/references/fulfillment/listFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillmentSets/page.mdx"
+  },
+  {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillments",
     "newSlug": "/references/fulfillment/listFulfillments",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listFulfillments/page.mdx"
@@ -745,9 +875,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.listShippingProfiles/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restore",
-    "newSlug": "/references/fulfillment/restore",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restore/page.mdx"
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreFulfillmentSets",
+    "newSlug": "/references/fulfillment/restoreFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreFulfillmentSets/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreGeoZones",
@@ -770,11 +900,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.restoreShippingProfiles/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieve",
-    "newSlug": "/references/fulfillment/retrieve",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieve/page.mdx"
-  },
-  {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillment",
     "newSlug": "/references/fulfillment/retrieveFulfillment",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillment/page.mdx"
@@ -783,6 +908,11 @@ export const slugChanges = [
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentOptions",
     "newSlug": "/references/fulfillment/retrieveFulfillmentOptions",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentOptions/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentSet",
+    "newSlug": "/references/fulfillment/retrieveFulfillmentSet",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveFulfillmentSet/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveGeoZone",
@@ -815,9 +945,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.retrieveShippingProfile/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDelete",
-    "newSlug": "/references/fulfillment/softDelete",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDelete/page.mdx"
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteFulfillmentSets",
+    "newSlug": "/references/fulfillment/softDeleteFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteFulfillmentSets/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteGeoZones",
@@ -840,14 +970,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.softDeleteShippingProfiles/page.mdx"
   },
   {
-    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.update",
-    "newSlug": "/references/fulfillment/update",
-    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.update/page.mdx"
-  },
-  {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillment",
     "newSlug": "/references/fulfillment/updateFulfillment",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillment/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillmentSets",
+    "newSlug": "/references/fulfillment/updateFulfillmentSets",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateFulfillmentSets/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.updateGeoZones",
@@ -883,6 +1013,11 @@ export const slugChanges = [
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingOptions",
     "newSlug": "/references/fulfillment/upsertShippingOptions",
     "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingOptions/page.mdx"
+  },
+  {
+    "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles",
+    "newSlug": "/references/fulfillment/upsertShippingProfiles",
+    "filePath": "/www/apps/resources/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.upsertShippingProfiles/page.mdx"
   },
   {
     "origSlug": "/references/fulfillment/IFulfillmentModuleService/methods/fulfillment.IFulfillmentModuleService.validateFulfillmentOption",
@@ -965,179 +1100,184 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/fulfillment_provider/classes/fulfillment_provider.AbstractFulfillmentProviderService/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.adjustInventory",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory",
     "newSlug": "/references/inventory-next/adjustInventory",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.adjustInventory/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.adjustInventory/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.confirmInventory",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.confirmInventory",
     "newSlug": "/references/inventory-next/confirmInventory",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.confirmInventory/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.confirmInventory/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.create",
-    "newSlug": "/references/inventory-next/create",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.create/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryItems",
+    "newSlug": "/references/inventory-next/createInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryLevels",
     "newSlug": "/references/inventory-next/createInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createReservationItems",
     "newSlug": "/references/inventory-next/createReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.createReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.createReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.delete",
-    "newSlug": "/references/inventory-next/delete",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.delete/page.mdx"
-  },
-  {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryItemLevelByLocationId",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItemLevelByLocationId",
     "newSlug": "/references/inventory-next/deleteInventoryItemLevelByLocationId",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryItemLevelByLocationId/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItemLevelByLocationId/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevel",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItems",
+    "newSlug": "/references/inventory-next/deleteInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevel",
     "newSlug": "/references/inventory-next/deleteInventoryLevel",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevel/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevel/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevels",
     "newSlug": "/references/inventory-next/deleteInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemByLocationId",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemByLocationId",
     "newSlug": "/references/inventory-next/deleteReservationItemByLocationId",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemByLocationId/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemByLocationId/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItems",
     "newSlug": "/references/inventory-next/deleteReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemsByLineItem",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemsByLineItem",
     "newSlug": "/references/inventory-next/deleteReservationItemsByLineItem",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.deleteReservationItemsByLineItem/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.deleteReservationItemsByLineItem/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.list",
-    "newSlug": "/references/inventory-next/list",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.list/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryItems",
+    "newSlug": "/references/inventory-next/listAndCountInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCount",
-    "newSlug": "/references/inventory-next/listAndCount",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCount/page.mdx"
-  },
-  {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryLevels",
     "newSlug": "/references/inventory-next/listAndCountInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountReservationItems",
     "newSlug": "/references/inventory-next/listAndCountReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listAndCountReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listAndCountReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryItems",
+    "newSlug": "/references/inventory-next/listInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryItems/page.mdx"
+  },
+  {
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryLevels",
     "newSlug": "/references/inventory-next/listInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listReservationItems",
     "newSlug": "/references/inventory-next/listReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.listReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.listReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restore",
-    "newSlug": "/references/inventory-next/restore",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restore/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryItems",
+    "newSlug": "/references/inventory-next/restoreInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryLevels",
     "newSlug": "/references/inventory-next/restoreInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItems",
     "newSlug": "/references/inventory-next/restoreReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.restoreReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieve",
-    "newSlug": "/references/inventory-next/retrieve",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieve/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItemsByLineItem",
+    "newSlug": "/references/inventory-next/restoreReservationItemsByLineItem",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.restoreReservationItemsByLineItem/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveAvailableQuantity",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveAvailableQuantity",
     "newSlug": "/references/inventory-next/retrieveAvailableQuantity",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveAvailableQuantity/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveAvailableQuantity/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevel",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryItem",
+    "newSlug": "/references/inventory-next/retrieveInventoryItem",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevel",
     "newSlug": "/references/inventory-next/retrieveInventoryLevel",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevel/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevel/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevelByItemAndLocation",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevelByItemAndLocation",
     "newSlug": "/references/inventory-next/retrieveInventoryLevelByItemAndLocation",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveInventoryLevelByItemAndLocation/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveInventoryLevelByItemAndLocation/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservationItem",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservationItem",
     "newSlug": "/references/inventory-next/retrieveReservationItem",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservationItem/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservationItem/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservedQuantity",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservedQuantity",
     "newSlug": "/references/inventory-next/retrieveReservedQuantity",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveReservedQuantity/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveReservedQuantity/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveStockedQuantity",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveStockedQuantity",
     "newSlug": "/references/inventory-next/retrieveStockedQuantity",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.retrieveStockedQuantity/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.retrieveStockedQuantity/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDelete",
-    "newSlug": "/references/inventory-next/softDelete",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDelete/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryItems",
+    "newSlug": "/references/inventory-next/softDeleteInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryLevels",
     "newSlug": "/references/inventory-next/softDeleteInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteReservationItems",
     "newSlug": "/references/inventory-next/softDeleteReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.softDeleteReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.softDeleteReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.update",
-    "newSlug": "/references/inventory-next/update",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.update/page.mdx"
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryItems",
+    "newSlug": "/references/inventory-next/updateInventoryItems",
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateInventoryLevels",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryLevels",
     "newSlug": "/references/inventory-next/updateInventoryLevels",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateInventoryLevels/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateInventoryLevels/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateReservationItems",
+    "origSlug": "/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateReservationItems",
     "newSlug": "/references/inventory-next/updateReservationItems",
-    "filePath": "/www/apps/resources/references/inventory_next/IInventoryServiceNext/methods/inventory_next.IInventoryServiceNext.updateReservationItems/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/IInventoryService/methods/inventory_next.IInventoryService.updateReservationItems/page.mdx"
   },
   {
-    "origSlug": "/references/inventory_next/interfaces/inventory_next.IInventoryServiceNext",
+    "origSlug": "/references/inventory_next/interfaces/inventory_next.IInventoryService",
     "newSlug": "/references/inventory-next",
-    "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IInventoryServiceNext/page.mdx"
+    "filePath": "/www/apps/resources/references/inventory_next/interfaces/inventory_next.IInventoryService/page.mdx"
   },
   {
     "origSlug": "/references/inventory_next_models/classes/inventory_next_models.InventoryItem",
@@ -1820,6 +1960,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/modules/customer_models/page.mdx"
   },
   {
+    "origSlug": "/references/modules/dml",
+    "newSlug": "/references/data-model",
+    "filePath": "/www/apps/resources/references/modules/dml/page.mdx"
+  },
+  {
     "origSlug": "/references/modules/fulfillment_models",
     "newSlug": "/references/fulfillment/models",
     "filePath": "/www/apps/resources/references/modules/fulfillment_models/page.mdx"
@@ -1900,9 +2045,39 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addOrderAction/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions",
+    "newSlug": "/references/order/addTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.addTransactions/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.applyPendingOrderActions",
     "newSlug": "/references/order/applyPendingOrderActions",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.applyPendingOrderActions/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.archive",
+    "newSlug": "/references/order/archive",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.archive/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel",
+    "newSlug": "/references/order/cancel",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancel/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim",
+    "newSlug": "/references/order/cancelClaim",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelClaim/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange",
+    "newSlug": "/references/order/cancelExchange",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelExchange/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment",
+    "newSlug": "/references/order/cancelFulfillment",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelFulfillment/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange",
@@ -1910,19 +2085,34 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelOrderChange/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn",
+    "newSlug": "/references/order/cancelReturn",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.cancelReturn/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder",
+    "newSlug": "/references/order/completeOrder",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.completeOrder/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.confirmOrderChange",
     "newSlug": "/references/order/confirmOrderChange",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.confirmOrderChange/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.create",
-    "newSlug": "/references/order/create",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.create/page.mdx"
-  },
-  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses",
     "newSlug": "/references/order/createAddresses",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createAddresses/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim",
+    "newSlug": "/references/order/createClaim",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createClaim/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createExchange",
+    "newSlug": "/references/order/createExchange",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createExchange/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createLineItemAdjustments",
@@ -1945,6 +2135,21 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrderChange/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders",
+    "newSlug": "/references/order/createOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn",
+    "newSlug": "/references/order/createReturn",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturn/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons",
+    "newSlug": "/references/order/createReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createReturnReasons/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments",
     "newSlug": "/references/order/createShippingMethodAdjustments",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.createShippingMethodAdjustments/page.mdx"
@@ -1963,11 +2168,6 @@ export const slugChanges = [
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange",
     "newSlug": "/references/order/declineOrderChange",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.declineOrderChange/page.mdx"
-  },
-  {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.delete",
-    "newSlug": "/references/order/delete",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.delete/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteAddresses",
@@ -1990,6 +2190,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteLineItems/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders",
+    "newSlug": "/references/order/deleteOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons",
+    "newSlug": "/references/order/deleteReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteReturnReasons/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments",
     "newSlug": "/references/order/deleteShippingMethodAdjustments",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethodAdjustments/page.mdx"
@@ -2005,9 +2215,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.list",
-    "newSlug": "/references/order/list",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.list/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions",
+    "newSlug": "/references/order/deleteTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.deleteTransactions/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses",
@@ -2015,9 +2225,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAddresses/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCount",
-    "newSlug": "/references/order/listAndCount",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderClaims",
+    "newSlug": "/references/order/listAndCountOrderClaims",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderExchanges",
+    "newSlug": "/references/order/listAndCountOrderExchanges",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrderExchanges/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrders",
+    "newSlug": "/references/order/listAndCountOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountReturns",
+    "newSlug": "/references/order/listAndCountReturns",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listAndCountReturns/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItemAdjustments",
@@ -2035,6 +2260,31 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listLineItems/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderClaims",
+    "newSlug": "/references/order/listOrderClaims",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderClaims/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderExchanges",
+    "newSlug": "/references/order/listOrderExchanges",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrderExchanges/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders",
+    "newSlug": "/references/order/listOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturnReasons",
+    "newSlug": "/references/order/listReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturnReasons/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns",
+    "newSlug": "/references/order/listReturns",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listReturns/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments",
     "newSlug": "/references/order/listShippingMethodAdjustments",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethodAdjustments/page.mdx"
@@ -2050,9 +2300,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restore",
-    "newSlug": "/references/order/restore",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restore/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions",
+    "newSlug": "/references/order/listTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.listTransactions/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn",
+    "newSlug": "/references/order/receiveReturn",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.receiveReturn/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerFulfillment",
+    "newSlug": "/references/order/registerFulfillment",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerFulfillment/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerShipment",
+    "newSlug": "/references/order/registerShipment",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.registerShipment/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreAddresses",
@@ -2075,6 +2340,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreLineItems/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders",
+    "newSlug": "/references/order/restoreOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturnReasons",
+    "newSlug": "/references/order/restoreReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreReturnReasons/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments",
     "newSlug": "/references/order/restoreShippingMethodAdjustments",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethodAdjustments/page.mdx"
@@ -2090,14 +2365,44 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieve",
-    "newSlug": "/references/order/retrieve",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieve/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions",
+    "newSlug": "/references/order/restoreTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.restoreTransactions/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem",
     "newSlug": "/references/order/retrieveLineItem",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveLineItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder",
+    "newSlug": "/references/order/retrieveOrder",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrder/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderClaim",
+    "newSlug": "/references/order/retrieveOrderClaim",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderClaim/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderExchange",
+    "newSlug": "/references/order/retrieveOrderExchange",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveOrderExchange/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn",
+    "newSlug": "/references/order/retrieveReturn",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturn/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturnReason",
+    "newSlug": "/references/order/retrieveReturnReason",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.retrieveReturnReason/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.revertLastVersion",
+    "newSlug": "/references/order/revertLastVersion",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.revertLastVersion/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.setLineItemAdjustments",
@@ -2120,11 +2425,6 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.setShippingMethodTaxLines/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDelete",
-    "newSlug": "/references/order/softDelete",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDelete/page.mdx"
-  },
-  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses",
     "newSlug": "/references/order/softDeleteAddresses",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteAddresses/page.mdx"
@@ -2145,6 +2445,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteLineItems/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders",
+    "newSlug": "/references/order/softDeleteOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturnReasons",
+    "newSlug": "/references/order/softDeleteReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteReturnReasons/page.mdx"
+  },
+  {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments",
     "newSlug": "/references/order/softDeleteShippingMethodAdjustments",
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethodAdjustments/page.mdx"
@@ -2160,9 +2470,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteShippingMethods/page.mdx"
   },
   {
-    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.update",
-    "newSlug": "/references/order/update",
-    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.update/page.mdx"
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions",
+    "newSlug": "/references/order/softDeleteTransactions",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.softDeleteTransactions/page.mdx"
   },
   {
     "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateAddresses",
@@ -2180,6 +2490,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrderItem/page.mdx"
   },
   {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders",
+    "newSlug": "/references/order/updateOrders",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateOrders/page.mdx"
+  },
+  {
+    "origSlug": "/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturnReasons",
+    "newSlug": "/references/order/updateReturnReasons",
+    "filePath": "/www/apps/resources/references/order/IOrderModuleService/methods/order.IOrderModuleService.updateReturnReasons/page.mdx"
+  },
+  {
     "origSlug": "/references/order/interfaces/order.IOrderModuleService",
     "newSlug": "/references/order",
     "filePath": "/www/apps/resources/references/order/interfaces/order.IOrderModuleService/page.mdx"
@@ -2188,6 +2508,21 @@ export const slugChanges = [
     "origSlug": "/references/order_models/classes/order_models.Address",
     "newSlug": "/references/order/models/Address",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.Address/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.ClaimItem",
+    "newSlug": "/references/order/models/ClaimItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.ClaimItemImage",
+    "newSlug": "/references/order/models/ClaimItemImage",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ClaimItemImage/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.ExchangeItem",
+    "newSlug": "/references/order/models/ExchangeItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ExchangeItem/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.LineItem",
@@ -2220,14 +2555,44 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderChangeAction/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderClaim",
+    "newSlug": "/references/order/models/OrderClaim",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderClaim/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.OrderExchange",
+    "newSlug": "/references/order/models/OrderExchange",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderExchange/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderItem",
     "newSlug": "/references/order/models/OrderItem",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderItem/page.mdx"
   },
   {
+    "origSlug": "/references/order_models/classes/order_models.OrderShippingMethod",
+    "newSlug": "/references/order/models/OrderShippingMethod",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderShippingMethod/page.mdx"
+  },
+  {
     "origSlug": "/references/order_models/classes/order_models.OrderSummary",
     "newSlug": "/references/order/models/OrderSummary",
     "filePath": "/www/apps/resources/references/order_models/classes/order_models.OrderSummary/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.Return",
+    "newSlug": "/references/order/models/Return",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.Return/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.ReturnItem",
+    "newSlug": "/references/order/models/ReturnItem",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ReturnItem/page.mdx"
+  },
+  {
+    "origSlug": "/references/order_models/classes/order_models.ReturnReason",
+    "newSlug": "/references/order/models/ReturnReason",
+    "filePath": "/www/apps/resources/references/order_models/classes/order_models.ReturnReason/page.mdx"
   },
   {
     "origSlug": "/references/order_models/classes/order_models.ShippingMethod",
@@ -2345,6 +2710,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentCollection/page.mdx"
   },
   {
+    "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession",
+    "newSlug": "/references/payment/retrievePaymentSession",
+    "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.retrievePaymentSession/page.mdx"
+  },
+  {
     "origSlug": "/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePayment",
     "newSlug": "/references/payment/updatePayment",
     "filePath": "/www/apps/resources/references/payment/IPaymentModuleService/methods/payment.IPaymentModuleService.updatePayment/page.mdx"
@@ -2420,24 +2790,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addPrices/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addRules",
-    "newSlug": "/references/pricing/addRules",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.addRules/page.mdx"
-  },
-  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.calculatePrices",
     "newSlug": "/references/pricing/calculatePrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.calculatePrices/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.create",
-    "newSlug": "/references/pricing/create",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.create/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceListRules",
-    "newSlug": "/references/pricing/createPriceListRules",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceListRules/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceLists",
@@ -2445,19 +2800,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences",
+    "newSlug": "/references/pricing/createPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules",
     "newSlug": "/references/pricing/createPriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceRules/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createRuleTypes",
-    "newSlug": "/references/pricing/createRuleTypes",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createRuleTypes/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.delete",
-    "newSlug": "/references/pricing/delete",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.delete/page.mdx"
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceSets",
+    "newSlug": "/references/pricing/createPriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.createPriceSets/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceListRules",
@@ -2470,24 +2825,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences",
+    "newSlug": "/references/pricing/deletePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceRules",
     "newSlug": "/references/pricing/deletePriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceRules/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deleteRuleTypes",
-    "newSlug": "/references/pricing/deleteRuleTypes",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deleteRuleTypes/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.list",
-    "newSlug": "/references/pricing/list",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCount",
-    "newSlug": "/references/pricing/listAndCount",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceSets",
+    "newSlug": "/references/pricing/deletePriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.deletePriceSets/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceListRules",
@@ -2505,14 +2855,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceRules/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceSets",
+    "newSlug": "/references/pricing/listAndCountPriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPriceSets/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices",
     "newSlug": "/references/pricing/listAndCountPrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountPrices/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountRuleTypes",
-    "newSlug": "/references/pricing/listAndCountRuleTypes",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listAndCountRuleTypes/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceListRules",
@@ -2525,19 +2875,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences",
+    "newSlug": "/references/pricing/listPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules",
     "newSlug": "/references/pricing/listPriceRules",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceRules/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceSets",
+    "newSlug": "/references/pricing/listPriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPriceSets/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices",
     "newSlug": "/references/pricing/listPrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listPrices/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listRuleTypes",
-    "newSlug": "/references/pricing/listRuleTypes",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.listRuleTypes/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removePriceListRules",
@@ -2550,24 +2905,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removePrices/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removeRules",
-    "newSlug": "/references/pricing/removeRules",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.removeRules/page.mdx"
-  },
-  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists",
     "newSlug": "/references/pricing/restorePriceLists",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences",
+    "newSlug": "/references/pricing/restorePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices",
     "newSlug": "/references/pricing/restorePrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.restorePrices/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieve",
-    "newSlug": "/references/pricing/retrieve",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieve/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceList",
@@ -2580,14 +2930,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceListRule/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference",
+    "newSlug": "/references/pricing/retrievePricePreference",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePricePreference/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceRule",
     "newSlug": "/references/pricing/retrievePriceRule",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceRule/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieveRuleType",
-    "newSlug": "/references/pricing/retrieveRuleType",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrieveRuleType/page.mdx"
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceSet",
+    "newSlug": "/references/pricing/retrievePriceSet",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.retrievePriceSet/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.setPriceListRules",
@@ -2600,14 +2955,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePriceLists/page.mdx"
   },
   {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences",
+    "newSlug": "/references/pricing/softDeletePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePricePreferences/page.mdx"
+  },
+  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices",
     "newSlug": "/references/pricing/softDeletePrices",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.softDeletePrices/page.mdx"
-  },
-  {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.update",
-    "newSlug": "/references/pricing/update",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.update/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListPrices",
@@ -2615,14 +2970,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListPrices/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListRules",
-    "newSlug": "/references/pricing/updatePriceListRules",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceListRules/page.mdx"
-  },
-  {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceLists",
     "newSlug": "/references/pricing/updatePriceLists",
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceLists/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences",
+    "newSlug": "/references/pricing/updatePricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePricePreferences/page.mdx"
   },
   {
     "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules",
@@ -2630,14 +2985,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceRules/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updateRuleTypes",
-    "newSlug": "/references/pricing/updateRuleTypes",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updateRuleTypes/page.mdx"
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets",
+    "newSlug": "/references/pricing/updatePriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.updatePriceSets/page.mdx"
   },
   {
-    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsert",
-    "newSlug": "/references/pricing/upsert",
-    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsert/page.mdx"
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences",
+    "newSlug": "/references/pricing/upsertPricePreferences",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPricePreferences/page.mdx"
+  },
+  {
+    "origSlug": "/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets",
+    "newSlug": "/references/pricing/upsertPriceSets",
+    "filePath": "/www/apps/resources/references/pricing/IPricingModuleService/methods/pricing.IPricingModuleService.upsertPriceSets/page.mdx"
   },
   {
     "origSlug": "/references/pricing/interfaces/pricing.IPricingModuleService",
@@ -2660,9 +3020,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceListRule/page.mdx"
   },
   {
-    "origSlug": "/references/pricing_models/classes/pricing_models.PriceListRuleValue",
-    "newSlug": "/references/pricing/models/PriceListRuleValue",
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceListRuleValue/page.mdx"
+    "origSlug": "/references/pricing_models/classes/pricing_models.PricePreference",
+    "newSlug": "/references/pricing/models/PricePreference",
+    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PricePreference/page.mdx"
   },
   {
     "origSlug": "/references/pricing_models/classes/pricing_models.PriceRule",
@@ -2675,294 +3035,319 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceSet/page.mdx"
   },
   {
-    "origSlug": "/references/pricing_models/classes/pricing_models.PriceSetRuleType",
-    "newSlug": "/references/pricing/models/PriceSetRuleType",
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.PriceSetRuleType/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCategories",
+    "newSlug": "/references/product/createProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/pricing_models/classes/pricing_models.RuleType",
-    "newSlug": "/references/pricing/models/RuleType",
-    "filePath": "/www/apps/resources/references/pricing_models/classes/pricing_models.RuleType/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections",
+    "newSlug": "/references/product/createProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.create",
-    "newSlug": "/references/product/create",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.create/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions",
+    "newSlug": "/references/product/createProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createCategory",
-    "newSlug": "/references/product/createCategory",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createCategory/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTags",
+    "newSlug": "/references/product/createProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createCollections",
-    "newSlug": "/references/product/createCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTypes",
+    "newSlug": "/references/product/createProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createOptions",
-    "newSlug": "/references/product/createOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProductVariants",
+    "newSlug": "/references/product/createProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createTags",
-    "newSlug": "/references/product/createTags",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createTags/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createProducts",
+    "newSlug": "/references/product/createProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createTypes",
-    "newSlug": "/references/product/createTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCategories",
+    "newSlug": "/references/product/deleteProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.createVariants",
-    "newSlug": "/references/product/createVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.createVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections",
+    "newSlug": "/references/product/deleteProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.delete",
-    "newSlug": "/references/product/delete",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.delete/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions",
+    "newSlug": "/references/product/deleteProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCategory",
-    "newSlug": "/references/product/deleteCategory",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCategory/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTags",
+    "newSlug": "/references/product/deleteProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCollections",
-    "newSlug": "/references/product/deleteCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTypes",
+    "newSlug": "/references/product/deleteProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteOptions",
-    "newSlug": "/references/product/deleteOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductVariants",
+    "newSlug": "/references/product/deleteProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTags",
-    "newSlug": "/references/product/deleteTags",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTags/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProducts",
+    "newSlug": "/references/product/deleteProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTypes",
-    "newSlug": "/references/product/deleteTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCategories",
+    "newSlug": "/references/product/listAndCountProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.deleteVariants",
-    "newSlug": "/references/product/deleteVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.deleteVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections",
+    "newSlug": "/references/product/listAndCountProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.list",
-    "newSlug": "/references/product/list",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.list/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions",
+    "newSlug": "/references/product/listAndCountProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCount",
-    "newSlug": "/references/product/listAndCount",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTags",
+    "newSlug": "/references/product/listAndCountProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCategories",
-    "newSlug": "/references/product/listAndCountCategories",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCategories/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTypes",
+    "newSlug": "/references/product/listAndCountProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCollections",
-    "newSlug": "/references/product/listAndCountCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductVariants",
+    "newSlug": "/references/product/listAndCountProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountOptions",
-    "newSlug": "/references/product/listAndCountOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProducts",
+    "newSlug": "/references/product/listAndCountProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTags",
-    "newSlug": "/references/product/listAndCountTags",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTags/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCategories",
+    "newSlug": "/references/product/listProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTypes",
-    "newSlug": "/references/product/listAndCountTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections",
+    "newSlug": "/references/product/listProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountVariants",
-    "newSlug": "/references/product/listAndCountVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listAndCountVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions",
+    "newSlug": "/references/product/listProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listCategories",
-    "newSlug": "/references/product/listCategories",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listCategories/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTags",
+    "newSlug": "/references/product/listProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listCollections",
-    "newSlug": "/references/product/listCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTypes",
+    "newSlug": "/references/product/listProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listOptions",
-    "newSlug": "/references/product/listOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProductVariants",
+    "newSlug": "/references/product/listProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listTags",
-    "newSlug": "/references/product/listTags",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listTags/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listProducts",
+    "newSlug": "/references/product/listProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listTypes",
-    "newSlug": "/references/product/listTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCategories",
+    "newSlug": "/references/product/restoreProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.listVariants",
-    "newSlug": "/references/product/listVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.listVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections",
+    "newSlug": "/references/product/restoreProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restore",
-    "newSlug": "/references/product/restore",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restore/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions",
+    "newSlug": "/references/product/restoreProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreCollections",
-    "newSlug": "/references/product/restoreCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTags",
+    "newSlug": "/references/product/restoreProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreOptions",
-    "newSlug": "/references/product/restoreOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTypes",
+    "newSlug": "/references/product/restoreProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreTypes",
-    "newSlug": "/references/product/restoreTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductVariants",
+    "newSlug": "/references/product/restoreProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreVariants",
-    "newSlug": "/references/product/restoreVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProducts",
+    "newSlug": "/references/product/restoreProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.restoreProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieve",
-    "newSlug": "/references/product/retrieve",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieve/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProduct",
+    "newSlug": "/references/product/retrieveProduct",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProduct/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCategory",
-    "newSlug": "/references/product/retrieveCategory",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCategory/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCategory",
+    "newSlug": "/references/product/retrieveProductCategory",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCategory/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCollection",
-    "newSlug": "/references/product/retrieveCollection",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveCollection/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCollection",
+    "newSlug": "/references/product/retrieveProductCollection",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductCollection/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveOption",
-    "newSlug": "/references/product/retrieveOption",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveOption/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductOption",
+    "newSlug": "/references/product/retrieveProductOption",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductOption/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveTag",
-    "newSlug": "/references/product/retrieveTag",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveTag/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductTag",
+    "newSlug": "/references/product/retrieveProductTag",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductTag/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveType",
-    "newSlug": "/references/product/retrieveType",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveType/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductType",
+    "newSlug": "/references/product/retrieveProductType",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductType/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveVariant",
-    "newSlug": "/references/product/retrieveVariant",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveVariant/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductVariant",
+    "newSlug": "/references/product/retrieveProductVariant",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.retrieveProductVariant/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDelete",
-    "newSlug": "/references/product/softDelete",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDelete/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCategories",
+    "newSlug": "/references/product/softDeleteProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteCollections",
-    "newSlug": "/references/product/softDeleteCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections",
+    "newSlug": "/references/product/softDeleteProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteOptions",
-    "newSlug": "/references/product/softDeleteOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions",
+    "newSlug": "/references/product/softDeleteProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteTypes",
-    "newSlug": "/references/product/softDeleteTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTags",
+    "newSlug": "/references/product/softDeleteProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteVariants",
-    "newSlug": "/references/product/softDeleteVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTypes",
+    "newSlug": "/references/product/softDeleteProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.update",
-    "newSlug": "/references/product/update",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.update/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductVariants",
+    "newSlug": "/references/product/softDeleteProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateCategory",
-    "newSlug": "/references/product/updateCategory",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateCategory/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProducts",
+    "newSlug": "/references/product/softDeleteProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.softDeleteProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateCollections",
-    "newSlug": "/references/product/updateCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCategories",
+    "newSlug": "/references/product/updateProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateOptions",
-    "newSlug": "/references/product/updateOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections",
+    "newSlug": "/references/product/updateProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductCollections/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateTypes",
-    "newSlug": "/references/product/updateTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions",
+    "newSlug": "/references/product/updateProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductOptions/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateVariants",
-    "newSlug": "/references/product/updateVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTags",
+    "newSlug": "/references/product/updateProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTags/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsert",
-    "newSlug": "/references/product/upsert",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsert/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTypes",
+    "newSlug": "/references/product/updateProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductTypes/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertCollections",
-    "newSlug": "/references/product/upsertCollections",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertCollections/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductVariants",
+    "newSlug": "/references/product/updateProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProductVariants/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertOptions",
-    "newSlug": "/references/product/upsertOptions",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertOptions/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.updateProducts",
+    "newSlug": "/references/product/updateProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.updateProducts/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertTypes",
-    "newSlug": "/references/product/upsertTypes",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertTypes/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCategories",
+    "newSlug": "/references/product/upsertProductCategories",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCategories/page.mdx"
   },
   {
-    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertVariants",
-    "newSlug": "/references/product/upsertVariants",
-    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertVariants/page.mdx"
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCollections",
+    "newSlug": "/references/product/upsertProductCollections",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductCollections/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductOptions",
+    "newSlug": "/references/product/upsertProductOptions",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductOptions/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTags",
+    "newSlug": "/references/product/upsertProductTags",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTags/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTypes",
+    "newSlug": "/references/product/upsertProductTypes",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductTypes/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductVariants",
+    "newSlug": "/references/product/upsertProductVariants",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProductVariants/page.mdx"
+  },
+  {
+    "origSlug": "/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProducts",
+    "newSlug": "/references/product/upsertProducts",
+    "filePath": "/www/apps/resources/references/product/IProductModuleService/methods/product.IProductModuleService.upsertProducts/page.mdx"
   },
   {
     "origSlug": "/references/product/interfaces/product.IProductModuleService",
@@ -3030,14 +3415,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionTargetRules/page.mdx"
   },
   {
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionsToCampaign",
+    "newSlug": "/references/promotion/addPromotionsToCampaign",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.addPromotionsToCampaign/page.mdx"
+  },
+  {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions",
     "newSlug": "/references/promotion/computeActions",
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.computeActions/page.mdx"
-  },
-  {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.create",
-    "newSlug": "/references/promotion/create",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.create/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createCampaigns",
@@ -3045,9 +3430,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createCampaigns/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.delete",
-    "newSlug": "/references/promotion/delete",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.delete/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createPromotions",
+    "newSlug": "/references/promotion/createPromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.createPromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deleteCampaigns",
@@ -3055,19 +3440,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deleteCampaigns/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.list",
-    "newSlug": "/references/promotion/list",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCount",
-    "newSlug": "/references/promotion/listAndCount",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deletePromotions",
+    "newSlug": "/references/promotion/deletePromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.deletePromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountCampaigns",
     "newSlug": "/references/promotion/listAndCountCampaigns",
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountCampaigns/page.mdx"
+  },
+  {
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountPromotions",
+    "newSlug": "/references/promotion/listAndCountPromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listAndCountPromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listCampaigns",
@@ -3078,6 +3463,11 @@ export const slugChanges = [
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotionRules",
     "newSlug": "/references/promotion/listPromotionRules",
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotionRules/page.mdx"
+  },
+  {
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotions",
+    "newSlug": "/references/promotion/listPromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.listPromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.registerUsage",
@@ -3100,9 +3490,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionTargetRules/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restore",
-    "newSlug": "/references/promotion/restore",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restore/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionsFromCampaign",
+    "newSlug": "/references/promotion/removePromotionsFromCampaign",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.removePromotionsFromCampaign/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restoreCampaigns",
@@ -3110,9 +3500,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restoreCampaigns/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieve",
-    "newSlug": "/references/promotion/retrieve",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieve/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restorePromotions",
+    "newSlug": "/references/promotion/restorePromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.restorePromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieveCampaign",
@@ -3120,9 +3510,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrieveCampaign/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDelete",
-    "newSlug": "/references/promotion/softDelete",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDelete/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion",
+    "newSlug": "/references/promotion/retrievePromotion",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.retrievePromotion/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns",
@@ -3130,9 +3520,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeleteCampaigns/page.mdx"
   },
   {
-    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.update",
-    "newSlug": "/references/promotion/update",
-    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.update/page.mdx"
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeletePromotions",
+    "newSlug": "/references/promotion/softDeletePromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.softDeletePromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updateCampaigns",
@@ -3143,6 +3533,11 @@ export const slugChanges = [
     "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotionRules",
     "newSlug": "/references/promotion/updatePromotionRules",
     "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotionRules/page.mdx"
+  },
+  {
+    "origSlug": "/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotions",
+    "newSlug": "/references/promotion/updatePromotions",
+    "filePath": "/www/apps/resources/references/promotion/IPromotionModuleService/methods/promotion.IPromotionModuleService.updatePromotions/page.mdx"
   },
   {
     "origSlug": "/references/promotion/interfaces/promotion.IPromotionModuleService",
@@ -3180,24 +3575,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion_models/classes/promotion_models.PromotionRuleValue/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.create",
-    "newSlug": "/references/region/create",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.create/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.createRegions",
+    "newSlug": "/references/region/createRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.createRegions/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.delete",
-    "newSlug": "/references/region/delete",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.delete/page.mdx"
-  },
-  {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.list",
-    "newSlug": "/references/region/list",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCount",
-    "newSlug": "/references/region/listAndCount",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.deleteRegions",
+    "newSlug": "/references/region/deleteRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.deleteRegions/page.mdx"
   },
   {
     "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountCountries",
@@ -3205,19 +3590,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountCountries/page.mdx"
   },
   {
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountRegions",
+    "newSlug": "/references/region/listAndCountRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listAndCountRegions/page.mdx"
+  },
+  {
     "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listCountries",
     "newSlug": "/references/region/listCountries",
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listCountries/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.restore",
-    "newSlug": "/references/region/restore",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.restore/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.listRegions",
+    "newSlug": "/references/region/listRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.listRegions/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieve",
-    "newSlug": "/references/region/retrieve",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieve/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.restoreRegions",
+    "newSlug": "/references/region/restoreRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.restoreRegions/page.mdx"
   },
   {
     "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveCountry",
@@ -3225,19 +3615,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveCountry/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDelete",
-    "newSlug": "/references/region/softDelete",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDelete/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveRegion",
+    "newSlug": "/references/region/retrieveRegion",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.retrieveRegion/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.update",
-    "newSlug": "/references/region/update",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.update/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDeleteRegions",
+    "newSlug": "/references/region/softDeleteRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.softDeleteRegions/page.mdx"
   },
   {
-    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsert",
-    "newSlug": "/references/region/upsert",
-    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsert/page.mdx"
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.updateRegions",
+    "newSlug": "/references/region/updateRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.updateRegions/page.mdx"
+  },
+  {
+    "origSlug": "/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsertRegions",
+    "newSlug": "/references/region/upsertRegions",
+    "filePath": "/www/apps/resources/references/region/IRegionModuleService/methods/region.IRegionModuleService.upsertRegions/page.mdx"
   },
   {
     "origSlug": "/references/region/interfaces/region.IRegionModuleService",
@@ -3245,59 +3640,59 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/region/interfaces/region.IRegionModuleService/page.mdx"
   },
   {
-    "origSlug": "/references/region_models/classes/region_models.Country",
+    "origSlug": "/references/region_models/variables/region_models.Country",
     "newSlug": "/references/region/models/Country",
-    "filePath": "/www/apps/resources/references/region_models/classes/region_models.Country/page.mdx"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Country/page.mdx"
   },
   {
-    "origSlug": "/references/region_models/classes/region_models.Region",
+    "origSlug": "/references/region_models/variables/region_models.Region",
     "newSlug": "/references/region/models/Region",
-    "filePath": "/www/apps/resources/references/region_models/classes/region_models.Region/page.mdx"
+    "filePath": "/www/apps/resources/references/region_models/variables/region_models.Region/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.create",
-    "newSlug": "/references/sales-channel/create",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.create/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.createSalesChannels",
+    "newSlug": "/references/sales-channel/createSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.createSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.delete",
-    "newSlug": "/references/sales-channel/delete",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.delete/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.deleteSalesChannels",
+    "newSlug": "/references/sales-channel/deleteSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.deleteSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.list",
-    "newSlug": "/references/sales-channel/list",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.list/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCountSalesChannels",
+    "newSlug": "/references/sales-channel/listAndCountSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCountSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCount",
-    "newSlug": "/references/sales-channel/listAndCount",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listSalesChannels",
+    "newSlug": "/references/sales-channel/listSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.listSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restore",
-    "newSlug": "/references/sales-channel/restore",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restore/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restoreSalesChannels",
+    "newSlug": "/references/sales-channel/restoreSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.restoreSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieve",
-    "newSlug": "/references/sales-channel/retrieve",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieve/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieveSalesChannel",
+    "newSlug": "/references/sales-channel/retrieveSalesChannel",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.retrieveSalesChannel/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDelete",
-    "newSlug": "/references/sales-channel/softDelete",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDelete/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDeleteSalesChannels",
+    "newSlug": "/references/sales-channel/softDeleteSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.softDeleteSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.update",
-    "newSlug": "/references/sales-channel/update",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.update/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.updateSalesChannels",
+    "newSlug": "/references/sales-channel/updateSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.updateSalesChannels/page.mdx"
   },
   {
-    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsert",
-    "newSlug": "/references/sales-channel/upsert",
-    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsert/page.mdx"
+    "origSlug": "/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsertSalesChannels",
+    "newSlug": "/references/sales-channel/upsertSalesChannels",
+    "filePath": "/www/apps/resources/references/sales_channel/ISalesChannelModuleService/methods/sales_channel.ISalesChannelModuleService.upsertSalesChannels/page.mdx"
   },
   {
     "origSlug": "/references/sales_channel/interfaces/sales_channel.ISalesChannelModuleService",
@@ -3315,54 +3710,54 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/search/classes/search.AbstractSearchService/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.create",
-    "newSlug": "/references/stock-location-next/create",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.create/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.createStockLocations",
+    "newSlug": "/references/stock-location-next/createStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.createStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.delete",
-    "newSlug": "/references/stock-location-next/delete",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.delete/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.deleteStockLocations",
+    "newSlug": "/references/stock-location-next/deleteStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.deleteStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.list",
-    "newSlug": "/references/stock-location-next/list",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.list/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listAndCountStockLocations",
+    "newSlug": "/references/stock-location-next/listAndCountStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listAndCountStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.listAndCount",
-    "newSlug": "/references/stock-location-next/listAndCount",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.listAndCount/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listStockLocations",
+    "newSlug": "/references/stock-location-next/listStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.listStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.restore",
-    "newSlug": "/references/stock-location-next/restore",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.restore/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.restoreStockLocations",
+    "newSlug": "/references/stock-location-next/restoreStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.restoreStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.retrieve",
-    "newSlug": "/references/stock-location-next/retrieve",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.retrieve/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.retrieveStockLocation",
+    "newSlug": "/references/stock-location-next/retrieveStockLocation",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.retrieveStockLocation/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.softDelete",
-    "newSlug": "/references/stock-location-next/softDelete",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.softDelete/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.softDeleteStockLocations",
+    "newSlug": "/references/stock-location-next/softDeleteStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.softDeleteStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.update",
-    "newSlug": "/references/stock-location-next/update",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.update/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.updateStockLocations",
+    "newSlug": "/references/stock-location-next/updateStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.updateStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.upsert",
-    "newSlug": "/references/stock-location-next/upsert",
-    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationServiceNext/methods/stock_location_next.IStockLocationServiceNext.upsert/page.mdx"
+    "origSlug": "/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.upsertStockLocations",
+    "newSlug": "/references/stock-location-next/upsertStockLocations",
+    "filePath": "/www/apps/resources/references/stock_location_next/IStockLocationService/methods/stock_location_next.IStockLocationService.upsertStockLocations/page.mdx"
   },
   {
-    "origSlug": "/references/stock_location_next/interfaces/stock_location_next.IStockLocationServiceNext",
+    "origSlug": "/references/stock_location_next/interfaces/stock_location_next.IStockLocationService",
     "newSlug": "/references/stock-location-next",
-    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.IStockLocationServiceNext/page.mdx"
+    "filePath": "/www/apps/resources/references/stock_location_next/interfaces/stock_location_next.IStockLocationService/page.mdx"
   },
   {
     "origSlug": "/references/stock_location_next_models/classes/stock_location_next_models.StockLocation",
@@ -3375,49 +3770,49 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/stock_location_next_models/classes/stock_location_next_models.StockLocationAddress/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.create",
-    "newSlug": "/references/store/create",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.create/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.createStores",
+    "newSlug": "/references/store/createStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.createStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.delete",
-    "newSlug": "/references/store/delete",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.delete/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.deleteStores",
+    "newSlug": "/references/store/deleteStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.deleteStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.list",
-    "newSlug": "/references/store/list",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.list/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCountStores",
+    "newSlug": "/references/store/listAndCountStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCountStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCount",
-    "newSlug": "/references/store/listAndCount",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.listStores",
+    "newSlug": "/references/store/listStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.listStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.restore",
-    "newSlug": "/references/store/restore",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.restore/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.restoreStores",
+    "newSlug": "/references/store/restoreStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.restoreStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieve",
-    "newSlug": "/references/store/retrieve",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieve/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieveStore",
+    "newSlug": "/references/store/retrieveStore",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.retrieveStore/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDelete",
-    "newSlug": "/references/store/softDelete",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDelete/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDeleteStores",
+    "newSlug": "/references/store/softDeleteStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.softDeleteStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.update",
-    "newSlug": "/references/store/update",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.update/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.updateStores",
+    "newSlug": "/references/store/updateStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.updateStores/page.mdx"
   },
   {
-    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsert",
-    "newSlug": "/references/store/upsert",
-    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsert/page.mdx"
+    "origSlug": "/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsertStores",
+    "newSlug": "/references/store/upsertStores",
+    "filePath": "/www/apps/resources/references/store/IStoreModuleService/methods/store.IStoreModuleService.upsertStores/page.mdx"
   },
   {
     "origSlug": "/references/store/interfaces/store.IStoreModuleService",
@@ -3430,9 +3825,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/store_models/classes/store_models.Store/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.create",
-    "newSlug": "/references/tax/create",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.create/page.mdx"
+    "origSlug": "/references/store_models/classes/store_models.StoreCurrency",
+    "newSlug": "/references/store/models/StoreCurrency",
+    "filePath": "/www/apps/resources/references/store_models/classes/store_models.StoreCurrency/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRateRules",
@@ -3440,19 +3835,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRateRules/page.mdx"
   },
   {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRates",
+    "newSlug": "/references/tax/createTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRates/page.mdx"
+  },
+  {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRegions",
     "newSlug": "/references/tax/createTaxRegions",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.createTaxRegions/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.delete",
-    "newSlug": "/references/tax/delete",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.delete/page.mdx"
-  },
-  {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRateRules",
     "newSlug": "/references/tax/deleteTaxRateRules",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRateRules/page.mdx"
+  },
+  {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRates",
+    "newSlug": "/references/tax/deleteTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRates/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRegions",
@@ -3465,14 +3865,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.getTaxLines/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.list",
-    "newSlug": "/references/tax/list",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCount",
-    "newSlug": "/references/tax/listAndCount",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCountTaxRates",
+    "newSlug": "/references/tax/listAndCountTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listAndCountTaxRates/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRateRules",
@@ -3480,14 +3875,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRateRules/page.mdx"
   },
   {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRates",
+    "newSlug": "/references/tax/listTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRates/page.mdx"
+  },
+  {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions",
     "newSlug": "/references/tax/listTaxRegions",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.listTaxRegions/page.mdx"
-  },
-  {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restore",
-    "newSlug": "/references/tax/restore",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restore/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRateRules",
@@ -3495,19 +3890,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRateRules/page.mdx"
   },
   {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRates",
+    "newSlug": "/references/tax/restoreTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRates/page.mdx"
+  },
+  {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRegions",
     "newSlug": "/references/tax/restoreTaxRegions",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.restoreTaxRegions/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieve",
-    "newSlug": "/references/tax/retrieve",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieve/page.mdx"
-  },
-  {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDelete",
-    "newSlug": "/references/tax/softDelete",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDelete/page.mdx"
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieveTaxRate",
+    "newSlug": "/references/tax/retrieveTaxRate",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.retrieveTaxRate/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRateRules",
@@ -3515,19 +3910,24 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRateRules/page.mdx"
   },
   {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRates",
+    "newSlug": "/references/tax/softDeleteTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRates/page.mdx"
+  },
+  {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRegions",
     "newSlug": "/references/tax/softDeleteTaxRegions",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.softDeleteTaxRegions/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.update",
-    "newSlug": "/references/tax/update",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.update/page.mdx"
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.updateTaxRates",
+    "newSlug": "/references/tax/updateTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.updateTaxRates/page.mdx"
   },
   {
-    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsert",
-    "newSlug": "/references/tax/upsert",
-    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsert/page.mdx"
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsertTaxRates",
+    "newSlug": "/references/tax/upsertTaxRates",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.upsertTaxRates/page.mdx"
   },
   {
     "origSlug": "/references/tax/interfaces/tax.ITaxModuleService",
@@ -3560,19 +3960,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/tax_provider/interfaces/tax_provider.ITaxProvider/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.create",
-    "newSlug": "/references/user/create",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.create/page.mdx"
-  },
-  {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.createInvites",
     "newSlug": "/references/user/createInvites",
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.createInvites/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.delete",
-    "newSlug": "/references/user/delete",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.delete/page.mdx"
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.createUsers",
+    "newSlug": "/references/user/createUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.createUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.deleteInvites",
@@ -3580,14 +3975,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.deleteInvites/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.list",
-    "newSlug": "/references/user/list",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.list/page.mdx"
-  },
-  {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCount",
-    "newSlug": "/references/user/listAndCount",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCount/page.mdx"
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.deleteUsers",
+    "newSlug": "/references/user/deleteUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.deleteUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountInvites",
@@ -3595,9 +3985,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountInvites/page.mdx"
   },
   {
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountUsers",
+    "newSlug": "/references/user/listAndCountUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listAndCountUsers/page.mdx"
+  },
+  {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.listInvites",
     "newSlug": "/references/user/listInvites",
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listInvites/page.mdx"
+  },
+  {
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.listUsers",
+    "newSlug": "/references/user/listUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.listUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.refreshInviteTokens",
@@ -3605,19 +4005,14 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.refreshInviteTokens/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.restore",
-    "newSlug": "/references/user/restore",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restore/page.mdx"
-  },
-  {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.restoreInvites",
     "newSlug": "/references/user/restoreInvites",
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restoreInvites/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieve",
-    "newSlug": "/references/user/retrieve",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieve/page.mdx"
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.restoreUsers",
+    "newSlug": "/references/user/restoreUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.restoreUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveInvite",
@@ -3625,9 +4020,9 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveInvite/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDelete",
-    "newSlug": "/references/user/softDelete",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDelete/page.mdx"
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveUser",
+    "newSlug": "/references/user/retrieveUser",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.retrieveUser/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteInvites",
@@ -3635,14 +4030,19 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteInvites/page.mdx"
   },
   {
-    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.update",
-    "newSlug": "/references/user/update",
-    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.update/page.mdx"
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteUsers",
+    "newSlug": "/references/user/softDeleteUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.softDeleteUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.updateInvites",
     "newSlug": "/references/user/updateInvites",
     "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.updateInvites/page.mdx"
+  },
+  {
+    "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.updateUsers",
+    "newSlug": "/references/user/updateUsers",
+    "filePath": "/www/apps/resources/references/user/IUserModuleService/methods/user.IUserModuleService.updateUsers/page.mdx"
   },
   {
     "origSlug": "/references/user/IUserModuleService/methods/user.IUserModuleService.validateInviteToken",
@@ -3683,5 +4083,10 @@ export const slugChanges = [
     "origSlug": "/references/workflows/functions/workflows.transform",
     "newSlug": "/references/workflows/transform",
     "filePath": "/www/apps/resources/references/workflows/functions/workflows.transform/page.mdx"
+  },
+  {
+    "origSlug": "/references/workflows/functions/workflows.when",
+    "newSlug": "/references/workflows/when",
+    "filePath": "/www/apps/resources/references/workflows/functions/workflows.when/page.mdx"
   }
 ]

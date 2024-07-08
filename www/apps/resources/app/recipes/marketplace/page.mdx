@@ -69,7 +69,7 @@ Module Relationships is coming soon.
   import { model } from "@medusajs/utils"
 
   const StoreUser = model.define("store_user", {
-    id: model.id(),
+    id: model.id().primaryKey(),
     store_id: model.text(),
     user_id: model.text(),
   })
@@ -86,8 +86,8 @@ Module Relationships is coming soon.
   ```ts title="src/modules/marketplace/models/store-product.ts"
   import { model } from "@medusajs/utils"
 
-  const StoreProduct = model.define("store_user", {
-    id: model.id(),
+  const StoreProduct = model.define("store_product", {
+    id: model.id().primaryKey(),
     store_id: model.text(),
     product_id: model.text(),
   })
@@ -104,8 +104,8 @@ Module Relationships is coming soon.
   ```ts title="src/modules/marketplace/models/store-order.ts"
   import { model } from "@medusajs/utils"
 
-  const StoreOrder = model.define("store_user", {
-    id: model.id(),
+  const StoreOrder = model.define("store_order", {
+    id: model.id().primaryKey(),
     store_id: model.text(),
     order_id: model.text(),
     parent_order_id: model.text(),
@@ -175,10 +175,11 @@ export const mainServiceHighlights = [
   
   ```ts title="src/modules/marketplace/index.ts"
   import MarketplaceModuleService from "./service"
-  
-  export default {
+  import { Module } from "@medusajs/utils"
+
+  export default Module("marketplace", {
     service: MarketplaceModuleService,
-  } 
+  })
   ```
   
   To use the module, add it to the `modules` object in `medusa-config.js`:
@@ -243,7 +244,7 @@ export const userSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IUserModuleService,
     IStoreModuleService,
@@ -336,7 +337,7 @@ export const productSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IProductModuleService,
   } from "@medusajs/types"
@@ -581,7 +582,7 @@ export const orderSubscriberHighlights = [
     SubscriberArgs, 
     SubscriberConfig,
   } from "@medusajs/medusa"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { 
     IOrderModuleService,
     CreateOrderDTO,

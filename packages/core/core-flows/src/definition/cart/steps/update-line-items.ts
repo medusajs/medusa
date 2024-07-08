@@ -1,10 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   UpdateLineItemWithSelectorDTO,
 } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
-import { createStep, StepResponse } from "@medusajs/workflows-sdk"
+import {
+  ModuleRegistrationName,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/utils"
+import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {
   id: string

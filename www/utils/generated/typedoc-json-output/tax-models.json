@@ -1,5 +1,5 @@
 {
-	"id": 518,
+	"id": 12828,
 	"name": "tax-models",
 	"variant": "project",
 	"kind": 1,
@@ -18,28 +18,28 @@
 	},
 	"children": [
 		{
-			"id": 581,
+			"id": 12891,
 			"name": "TaxProvider",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 582,
+					"id": 12892,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 583,
+							"id": 12893,
 							"name": "new TaxProvider",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 581,
+								"target": 12891,
 								"name": "TaxProvider",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"id": 586,
+					"id": 12896,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -61,7 +61,7 @@
 					}
 				},
 				{
-					"id": 584,
+					"id": 12894,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -72,7 +72,7 @@
 					}
 				},
 				{
-					"id": 585,
+					"id": 12895,
 					"name": "is_enabled",
 					"variant": "declaration",
 					"kind": 1024,
@@ -88,42 +88,42 @@
 				{
 					"title": "Constructors",
 					"children": [
-						582
+						12892
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						586,
-						584,
-						585
+						12896,
+						12894,
+						12895
 					]
 				}
 			]
 		},
 		{
-			"id": 563,
+			"id": 12873,
 			"name": "TaxRateRule",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 564,
+					"id": 12874,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 565,
+							"id": 12875,
 							"name": "new TaxRateRule",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 563,
+								"target": 12873,
 								"name": "TaxRateRule",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -132,7 +132,7 @@
 					]
 				},
 				{
-					"id": 580,
+					"id": 12890,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -150,7 +150,7 @@
 					}
 				},
 				{
-					"id": 566,
+					"id": 12876,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -161,7 +161,7 @@
 					}
 				},
 				{
-					"id": 567,
+					"id": 12877,
 					"name": "tax_rate_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -172,7 +172,7 @@
 					}
 				},
 				{
-					"id": 568,
+					"id": 12878,
 					"name": "reference_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -183,7 +183,7 @@
 					}
 				},
 				{
-					"id": 569,
+					"id": 12879,
 					"name": "reference",
 					"variant": "declaration",
 					"kind": 1024,
@@ -194,21 +194,21 @@
 					}
 				},
 				{
-					"id": 570,
+					"id": 12880,
 					"name": "tax_rate",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 519,
+						"target": 12829,
 						"name": "TaxRate",
 						"package": "@medusajs/tax",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 571,
+					"id": 12881,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -244,7 +244,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 572,
+					"id": 12882,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -260,7 +260,7 @@
 					}
 				},
 				{
-					"id": 573,
+					"id": 12883,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -276,7 +276,7 @@
 					}
 				},
 				{
-					"id": 574,
+					"id": 12884,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -297,7 +297,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 575,
+					"id": 12885,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -323,14 +323,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 576,
+					"id": 12886,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 577,
+							"id": 12887,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -343,14 +343,14 @@
 					]
 				},
 				{
-					"id": 578,
+					"id": 12888,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 579,
+							"id": 12889,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -367,57 +367,57 @@
 				{
 					"title": "Constructors",
 					"children": [
-						564
+						12874
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						580,
-						566,
-						567,
-						568,
-						569,
-						570,
-						571,
-						572,
-						573,
-						574,
-						575
+						12890,
+						12876,
+						12877,
+						12878,
+						12879,
+						12880,
+						12881,
+						12882,
+						12883,
+						12884,
+						12885
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						576,
-						578
+						12886,
+						12888
 					]
 				}
 			]
 		},
 		{
-			"id": 519,
+			"id": 12829,
 			"name": "TaxRate",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 520,
+					"id": 12830,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 521,
+							"id": 12831,
 							"name": "new TaxRate",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 519,
+								"target": 12829,
 								"name": "TaxRate",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -426,7 +426,7 @@
 					]
 				},
 				{
-					"id": 540,
+					"id": 12850,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -444,7 +444,7 @@
 					}
 				},
 				{
-					"id": 522,
+					"id": 12832,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -455,7 +455,7 @@
 					}
 				},
 				{
-					"id": 523,
+					"id": 12833,
 					"name": "rate",
 					"variant": "declaration",
 					"kind": 1024,
@@ -476,7 +476,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 524,
+					"id": 12834,
 					"name": "code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -497,7 +497,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 525,
+					"id": 12835,
 					"name": "name",
 					"variant": "declaration",
 					"kind": 1024,
@@ -508,7 +508,7 @@
 					}
 				},
 				{
-					"id": 526,
+					"id": 12836,
 					"name": "is_default",
 					"variant": "declaration",
 					"kind": 1024,
@@ -520,7 +520,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 527,
+					"id": 12837,
 					"name": "is_combinable",
 					"variant": "declaration",
 					"kind": 1024,
@@ -532,7 +532,7 @@
 					"defaultValue": "false"
 				},
 				{
-					"id": 528,
+					"id": 12838,
 					"name": "tax_region_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -543,21 +543,21 @@
 					}
 				},
 				{
-					"id": 529,
+					"id": 12839,
 					"name": "tax_region",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 541,
+						"target": 12851,
 						"name": "TaxRegion",
 						"package": "@medusajs/tax",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 530,
+					"id": 12840,
 					"name": "rules",
 					"variant": "declaration",
 					"kind": 1024,
@@ -571,7 +571,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 563,
+								"target": 12873,
 								"name": "TaxRateRule",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -587,7 +587,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 531,
+					"id": 12841,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -623,7 +623,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 532,
+					"id": 12842,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -639,7 +639,7 @@
 					}
 				},
 				{
-					"id": 533,
+					"id": 12843,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -655,7 +655,7 @@
 					}
 				},
 				{
-					"id": 534,
+					"id": 12844,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -676,7 +676,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 535,
+					"id": 12845,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -702,14 +702,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 536,
+					"id": 12846,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 537,
+							"id": 12847,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -722,14 +722,14 @@
 					]
 				},
 				{
-					"id": 538,
+					"id": 12848,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 539,
+							"id": 12849,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -746,61 +746,61 @@
 				{
 					"title": "Constructors",
 					"children": [
-						520
+						12830
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						540,
-						522,
-						523,
-						524,
-						525,
-						526,
-						527,
-						528,
-						529,
-						530,
-						531,
-						532,
-						533,
-						534,
-						535
+						12850,
+						12832,
+						12833,
+						12834,
+						12835,
+						12836,
+						12837,
+						12838,
+						12839,
+						12840,
+						12841,
+						12842,
+						12843,
+						12844,
+						12845
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						536,
-						538
+						12846,
+						12848
 					]
 				}
 			]
 		},
 		{
-			"id": 541,
+			"id": 12851,
 			"name": "TaxRegion",
 			"variant": "declaration",
 			"kind": 128,
 			"flags": {},
 			"children": [
 				{
-					"id": 542,
+					"id": 12852,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 543,
+							"id": 12853,
 							"name": "new TaxRegion",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 541,
+								"target": 12851,
 								"name": "TaxRegion",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -809,7 +809,7 @@
 					]
 				},
 				{
-					"id": 562,
+					"id": 12872,
 					"name": "[OptionalProps]",
 					"variant": "declaration",
 					"kind": 1024,
@@ -827,7 +827,7 @@
 					}
 				},
 				{
-					"id": 544,
+					"id": 12854,
 					"name": "id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -838,7 +838,7 @@
 					}
 				},
 				{
-					"id": 545,
+					"id": 12855,
 					"name": "provider_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -859,21 +859,21 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 546,
+					"id": 12856,
 					"name": "provider",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 581,
+						"target": 12891,
 						"name": "TaxProvider",
 						"package": "@medusajs/tax",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 547,
+					"id": 12857,
 					"name": "country_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -884,7 +884,7 @@
 					}
 				},
 				{
-					"id": 548,
+					"id": 12858,
 					"name": "province_code",
 					"variant": "declaration",
 					"kind": 1024,
@@ -905,7 +905,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 549,
+					"id": 12859,
 					"name": "parent_id",
 					"variant": "declaration",
 					"kind": 1024,
@@ -926,21 +926,21 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 550,
+					"id": 12860,
 					"name": "parent",
 					"variant": "declaration",
 					"kind": 1024,
 					"flags": {},
 					"type": {
 						"type": "reference",
-						"target": 541,
+						"target": 12851,
 						"name": "TaxRegion",
 						"package": "@medusajs/tax",
 						"qualifiedName": "default"
 					}
 				},
 				{
-					"id": 551,
+					"id": 12861,
 					"name": "tax_rates",
 					"variant": "declaration",
 					"kind": 1024,
@@ -954,7 +954,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 519,
+								"target": 12829,
 								"name": "TaxRate",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -970,7 +970,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 552,
+					"id": 12862,
 					"name": "children",
 					"variant": "declaration",
 					"kind": 1024,
@@ -984,7 +984,7 @@
 						"typeArguments": [
 							{
 								"type": "reference",
-								"target": 541,
+								"target": 12851,
 								"name": "TaxRegion",
 								"package": "@medusajs/tax",
 								"qualifiedName": "default"
@@ -1000,7 +1000,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 553,
+					"id": 12863,
 					"name": "metadata",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1036,7 +1036,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 554,
+					"id": 12864,
 					"name": "created_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1052,7 +1052,7 @@
 					}
 				},
 				{
-					"id": 555,
+					"id": 12865,
 					"name": "updated_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1068,7 +1068,7 @@
 					}
 				},
 				{
-					"id": 556,
+					"id": 12866,
 					"name": "created_by",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1089,7 +1089,7 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 557,
+					"id": 12867,
 					"name": "deleted_at",
 					"variant": "declaration",
 					"kind": 1024,
@@ -1115,14 +1115,14 @@
 					"defaultValue": "null"
 				},
 				{
-					"id": 558,
+					"id": 12868,
 					"name": "onCreate",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 559,
+							"id": 12869,
 							"name": "onCreate",
 							"variant": "signature",
 							"kind": 4096,
@@ -1135,14 +1135,14 @@
 					]
 				},
 				{
-					"id": 560,
+					"id": 12870,
 					"name": "onInit",
 					"variant": "declaration",
 					"kind": 2048,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 561,
+							"id": 12871,
 							"name": "onInit",
 							"variant": "signature",
 							"kind": 4096,
@@ -1159,34 +1159,34 @@
 				{
 					"title": "Constructors",
 					"children": [
-						542
+						12852
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						562,
-						544,
-						545,
-						546,
-						547,
-						548,
-						549,
-						550,
-						551,
-						552,
-						553,
-						554,
-						555,
-						556,
-						557
+						12872,
+						12854,
+						12855,
+						12856,
+						12857,
+						12858,
+						12859,
+						12860,
+						12861,
+						12862,
+						12863,
+						12864,
+						12865,
+						12866,
+						12867
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						558,
-						560
+						12868,
+						12870
 					]
 				}
 			]
@@ -1196,256 +1196,256 @@
 		{
 			"title": "Classes",
 			"children": [
-				581,
-				563,
-				519,
-				541
+				12891,
+				12873,
+				12829,
+				12851
 			]
 		}
 	],
 	"packageName": "@medusajs/tax",
 	"symbolIdMap": {
-		"518": {
+		"12828": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/index.ts",
 			"qualifiedName": ""
 		},
-		"519": {
+		"12829": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default"
 		},
-		"522": {
+		"12832": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.id"
 		},
-		"523": {
+		"12833": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.rate"
 		},
-		"524": {
+		"12834": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.code"
 		},
-		"525": {
+		"12835": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.name"
 		},
-		"526": {
+		"12836": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.is_default"
 		},
-		"527": {
+		"12837": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.is_combinable"
 		},
-		"528": {
+		"12838": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.tax_region_id"
 		},
-		"529": {
+		"12839": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.tax_region"
 		},
-		"530": {
+		"12840": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.rules"
 		},
-		"531": {
+		"12841": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"532": {
+		"12842": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"533": {
+		"12843": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"534": {
+		"12844": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"535": {
+		"12845": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"536": {
+		"12846": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"537": {
+		"12847": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"538": {
+		"12848": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"539": {
+		"12849": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"540": {
+		"12850": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"541": {
+		"12851": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default"
 		},
-		"544": {
+		"12854": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.id"
 		},
-		"545": {
+		"12855": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.provider_id"
 		},
-		"546": {
+		"12856": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.provider"
 		},
-		"547": {
+		"12857": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.country_code"
 		},
-		"548": {
+		"12858": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.province_code"
 		},
-		"549": {
+		"12859": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.parent_id"
 		},
-		"550": {
+		"12860": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.parent"
 		},
-		"551": {
+		"12861": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.tax_rates"
 		},
-		"552": {
+		"12862": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.children"
 		},
-		"553": {
+		"12863": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"554": {
+		"12864": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"555": {
+		"12865": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"556": {
+		"12866": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"557": {
+		"12867": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"558": {
+		"12868": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"559": {
+		"12869": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"560": {
+		"12870": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"561": {
+		"12871": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"562": {
+		"12872": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-region.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"563": {
+		"12873": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default"
 		},
-		"566": {
+		"12876": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.id"
 		},
-		"567": {
+		"12877": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.tax_rate_id"
 		},
-		"568": {
+		"12878": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.reference_id"
 		},
-		"569": {
+		"12879": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.reference"
 		},
-		"570": {
+		"12880": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.tax_rate"
 		},
-		"571": {
+		"12881": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.metadata"
 		},
-		"572": {
+		"12882": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.created_at"
 		},
-		"573": {
+		"12883": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.updated_at"
 		},
-		"574": {
+		"12884": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.created_by"
 		},
-		"575": {
+		"12885": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.deleted_at"
 		},
-		"576": {
+		"12886": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"577": {
+		"12887": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.onCreate"
 		},
-		"578": {
+		"12888": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"579": {
+		"12889": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.onInit"
 		},
-		"580": {
+		"12890": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-rate-rule.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		},
-		"581": {
+		"12891": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-provider.ts",
 			"qualifiedName": "default"
 		},
-		"584": {
+		"12894": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-provider.ts",
 			"qualifiedName": "default.id"
 		},
-		"585": {
+		"12895": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-provider.ts",
 			"qualifiedName": "default.is_enabled"
 		},
-		"586": {
+		"12896": {
 			"sourceFileName": "../../../../packages/modules/tax/src/models/tax-provider.ts",
 			"qualifiedName": "default.[OptionalProps]"
 		}
@@ -1455,7 +1455,7 @@
 			"1": "../../../../packages/modules/tax/src/models/index.ts"
 		},
 		"reflections": {
-			"1": 518
+			"1": 12828
 		}
 	}
 }

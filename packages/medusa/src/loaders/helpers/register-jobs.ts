@@ -45,6 +45,7 @@ export const registerJobs = async (plugins) => {
 }
 
 const createJob = async ({ config, handler }) => {
+  const workflowName = `job-${config.name}`
   const step = createStep(
     `${config.name}-as-step`,
     async (stepInput, stepContext) => {
@@ -56,7 +57,7 @@ const createJob = async ({ config, handler }) => {
 
   createWorkflow(
     {
-      name: config.name,
+      name: workflowName,
       schedule: {
         cron: config.schedule,
         numberOfExecutions: config.numberOfExecutions,

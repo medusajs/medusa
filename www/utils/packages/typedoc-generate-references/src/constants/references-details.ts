@@ -25,4 +25,4 @@ export const customModulesOptions: Record<string, Partial<TypeDocOptions>> = {
 }
 
 // a list of modules that now support DML
-export const dmlModules = ["currency"]
+export const dmlModules = ["currency", "region"]

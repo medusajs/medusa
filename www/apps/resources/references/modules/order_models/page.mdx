@@ -13,17 +13,44 @@ This documentation provides a reference to the data models in the Order Module
 
 ```mermaid
 erDiagram
+	OrderClaim }|--|{ Order : order
+	OrderClaim ||--|| Return : return
+	OrderClaim ||--|| ClaimItem : additional_items
+	OrderClaim ||--|| OrderShippingMethod : shipping_methods
+	OrderClaim ||--|| Transaction : transactions
+	ClaimItem ||--|| ClaimItemImage : images
+	ClaimItem }|--|{ LineItem : item
+	OrderExchange }|--|{ Order : order
+	OrderExchange ||--|| Return : return
+	OrderExchange ||--|| ExchangeItem : additional_items
+	OrderExchange ||--|| OrderShippingMethod : shipping_methods
+	OrderExchange ||--|| Transaction : transactions
+	ExchangeItem }|--|{ LineItem : item
 	LineItem ||--|| LineItemTaxLine : tax_lines
 	LineItem ||--|| LineItemAdjustment : adjustments
 	Order }|--|{ Address : shipping_address
 	Order ||--|| OrderSummary : summary
 	Order ||--|| OrderItem : items
-	Order ||--|| ShippingMethod : shipping_methods
+	Order ||--|| OrderShippingMethod : shipping_methods
 	Order ||--|| Transaction : transactions
 	OrderChange }|--|{ Order : order
+	OrderChange }|--|{ Return : return
+	OrderChange }|--|{ OrderClaim : claim
+	OrderChange }|--|{ OrderExchange : exchange
 	OrderChange ||--|| OrderChangeAction : actions
 	OrderChangeAction }|--|{ Order : order
+	OrderChangeAction }|--|{ Return : return
+	OrderChangeAction }|--|{ OrderClaim : claim
+	OrderChangeAction }|--|{ OrderExchange : exchange
 	OrderItem }|--|{ LineItem : item
+	OrderShippingMethod }|--|{ Return : return
+	OrderShippingMethod }|--|{ ShippingMethod : shipping_method
+	Return }|--|{ Order : order
+	Return ||--|| ReturnItem : items
+	Return ||--|| Transaction : transactions
+	ReturnItem }|--|{ ReturnReason : reason
+	ReturnItem }|--|{ LineItem : item
+	ReturnReason }|--|{ ReturnReason : parent_return_reason
 	ShippingMethod ||--|| ShippingMethodTaxLine : tax_lines
 	ShippingMethod ||--|| ShippingMethodAdjustment : adjustments
 
@@ -32,14 +59,23 @@ erDiagram
 ## Classes
 
 - [Address](../../order_models/classes/order_models.Address/page.mdx)
+- [ClaimItemImage](../../order_models/classes/order_models.ClaimItemImage/page.mdx)
+- [ClaimItem](../../order_models/classes/order_models.ClaimItem/page.mdx)
+- [OrderClaim](../../order_models/classes/order_models.OrderClaim/page.mdx)
+- [ExchangeItem](../../order_models/classes/order_models.ExchangeItem/page.mdx)
+- [OrderExchange](../../order_models/classes/order_models.OrderExchange/page.mdx)
 - [LineItemAdjustment](../../order_models/classes/order_models.LineItemAdjustment/page.mdx)
 - [LineItemTaxLine](../../order_models/classes/order_models.LineItemTaxLine/page.mdx)
 - [LineItem](../../order_models/classes/order_models.LineItem/page.mdx)
 - [OrderChangeAction](../../order_models/classes/order_models.OrderChangeAction/page.mdx)
 - [OrderChange](../../order_models/classes/order_models.OrderChange/page.mdx)
 - [OrderItem](../../order_models/classes/order_models.OrderItem/page.mdx)
+- [OrderShippingMethod](../../order_models/classes/order_models.OrderShippingMethod/page.mdx)
 - [OrderSummary](../../order_models/classes/order_models.OrderSummary/page.mdx)
 - [Order](../../order_models/classes/order_models.Order/page.mdx)
+- [ReturnItem](../../order_models/classes/order_models.ReturnItem/page.mdx)
+- [ReturnReason](../../order_models/classes/order_models.ReturnReason/page.mdx)
+- [Return](../../order_models/classes/order_models.Return/page.mdx)
 - [ShippingMethodAdjustment](../../order_models/classes/order_models.ShippingMethodAdjustment/page.mdx)
 - [ShippingMethodTaxLine](../../order_models/classes/order_models.ShippingMethodTaxLine/page.mdx)
 - [ShippingMethod](../../order_models/classes/order_models.ShippingMethod/page.mdx)

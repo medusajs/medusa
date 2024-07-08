@@ -1,5 +1,5 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IPromotionModuleService, LinkWorkflowInput } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, WorkflowData, createStep } from "@medusajs/workflows-sdk"
 
 export const addOrRemoveCampaignPromotionsStepId =

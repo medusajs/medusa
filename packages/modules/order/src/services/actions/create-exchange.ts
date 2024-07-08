@@ -162,9 +162,9 @@ async function processShippingMethods(
       const methods = await service.createShippingMethods(
         [
           {
+            ...shippingMethod,
             order_id: data.order_id,
             exchange_id: exchangeReference.id,
-            ...shippingMethod,
           },
         ],
         sharedContext
@@ -208,10 +208,10 @@ async function processReturnShipping(
     const methods = await service.createShippingMethods(
       [
         {
+          ...data.return_shipping,
           order_id: data.order_id,
           exchange_id: exchangeReference.id,
           return_id: returnReference.id,
-          ...data.return_shipping,
         },
       ],
       sharedContext

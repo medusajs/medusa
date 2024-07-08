@@ -6,8 +6,7 @@ import {
   ParameterType,
   ReferenceType,
 } from "typedoc"
-import { getDmlProperties, isDmlEntity } from "utils"
-import { RELATION_NAMES } from "./constants"
+import { RELATION_NAMES, getDmlProperties, isDmlEntity } from "utils"
 
 export class DmlRelationsResolver {
   private app: Application
@@ -15,10 +14,15 @@ export class DmlRelationsResolver {
     reflection: DeclarationReflection
     properties: DeclarationReflection[]
   }[]
+  private relationProperties: {
+    property: DeclarationReflection
+    target: DeclarationReflection
+  }[]
 
   constructor(app: Application) {
     this.app = app
     this.dmlReflectionsAndProperties = []
+    this.relationProperties = []
 
     this.app.options.addDeclaration({
       name: "resolveDmlRelations",
@@ -34,8 +38,15 @@ export class DmlRelationsResolver {
 
     this.app.converter.on(
       Converter.EVENT_RESOLVE_BEGIN,
-      this.resolveRelations.bind(this)
+      this.resolveRelationReferences.bind(this),
+      1
     )
+
+    // this.app.converter.on(
+    //   Converter.EVENT_RESOLVE_BEGIN,
+    //   this.resolveRelationTargets.bind(this),
+    //   -1
+    // )
   }
 
   addReflection(_context: Context, reflection: DeclarationReflection) {
@@ -50,10 +61,11 @@ export class DmlRelationsResolver {
     }
   }
 
-  resolveRelations(context: Context) {
+  resolveRelationReferences(context: Context) {
     if (!this.app.options.getValue("resolveDmlRelations")) {
       return
     }
+
     this.dmlReflectionsAndProperties.forEach(({ properties }) => {
       properties.forEach((property) => {
         if (
@@ -90,7 +102,29 @@ export class DmlRelationsResolver {
             context.project
           ),
         ]
+        this.relationProperties.push({
+          property,
+          target: relatedReflection,
+        })
       })
+    })
+  }
+
+  resolveRelationTargets(context: Context) {
+    if (!this.app.options.getValue("resolveDmlRelations")) {
+      return
+    }
+    this.relationProperties.forEach(({ property, target }) => {
+      const targetSymbol = context.project.getSymbolFromReflection(target)
+      if (property.type?.type !== "reference" || !targetSymbol) {
+        return
+      }
+      // change reference to the target itself.
+      property.type = ReferenceType.createResolvedReference(
+        `DmlEntity`,
+        target,
+        context.project
+      )
     })
   }
 

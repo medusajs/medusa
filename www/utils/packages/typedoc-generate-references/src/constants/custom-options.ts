@@ -126,6 +126,7 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
       "**/pricing/builders.ts",
       "**/search/**",
       "**/totals/**",
+      "**/dml/**",
     ],
   }),
   workflows: getOptions({

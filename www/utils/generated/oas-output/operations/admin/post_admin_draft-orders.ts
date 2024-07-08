@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -56,17 +66,11 @@
  *         type: object
  *         description: SUMMARY
  *         required:
- *           - status
  *           - sales_channel_id
  *           - email
  *           - customer_id
- *           - billing_address
- *           - shipping_address
- *           - items
  *           - region_id
- *           - promo_codes
  *           - currency_code
- *           - no_notification_order
  *           - shipping_methods
  *           - metadata
  *         properties:
@@ -146,7 +150,6 @@
  *               metadata:
  *                 type: object
  *                 description: The billing address's metadata.
- *                 properties: {}
  *           shipping_address:
  *             type: object
  *             description: The draft order's shipping address.
@@ -206,7 +209,6 @@
  *               metadata:
  *                 type: object
  *                 description: The shipping address's metadata.
- *                 properties: {}
  *           items:
  *             type: array
  *             description: The draft order's items.
@@ -267,7 +269,6 @@
  *                 metadata:
  *                   type: object
  *                   description: The item's metadata.
- *                   properties: {}
  *           region_id:
  *             type: string
  *             title: region_id
@@ -298,7 +299,6 @@
  *                 - order_id
  *                 - name
  *                 - option_id
- *                 - data
  *                 - amount
  *               properties:
  *                 shipping_method_id:
@@ -320,7 +320,6 @@
  *                 data:
  *                   type: object
  *                   description: The shipping method's data.
- *                   properties: {}
  *                 amount:
  *                   oneOf:
  *                     - type: string
@@ -346,7 +345,6 @@
  *           metadata:
  *             type: object
  *             description: The draft order's metadata.
- *             properties: {}
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -355,59 +353,17 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "status": false,
  *         "sales_channel_id": "{value}",
- *         "email": "Trent_Reilly67@gmail.com",
+ *         "email": "Bartholome.Goodwin90@yahoo.com",
  *         "customer_id": "{value}",
- *         "billing_address": {
- *           "first_name": "{value}",
- *           "last_name": "{value}",
- *           "phone": "{value}",
- *           "company": "{value}",
- *           "address_1": "{value}",
- *           "address_2": "{value}",
- *           "city": "{value}",
- *           "country_code": "{value}",
- *           "province": "{value}",
- *           "postal_code": "{value}",
- *           "metadata": {}
- *         },
- *         "shipping_address": {
- *           "first_name": "{value}",
- *           "last_name": "{value}",
- *           "phone": "{value}",
- *           "company": "{value}",
- *           "address_1": "{value}",
- *           "address_2": "{value}",
- *           "city": "{value}",
- *           "country_code": "{value}",
- *           "province": "{value}",
- *           "postal_code": "{value}",
- *           "metadata": {}
- *         },
- *         "items": [
- *           {
- *             "title": "{value}",
- *             "sku": "{value}",
- *             "barcode": "{value}",
- *             "variant_id": "{value}",
- *             "quantity": 4713312751190016,
- *             "metadata": {}
- *           }
- *         ],
  *         "region_id": "{value}",
- *         "promo_codes": [
- *           "{value}"
- *         ],
  *         "currency_code": "{value}",
- *         "no_notification_order": false,
  *         "shipping_methods": [
  *           {
  *             "shipping_method_id": "{value}",
  *             "order_id": "{value}",
- *             "name": "Golden",
- *             "option_id": "{value}",
- *             "data": {}
+ *             "name": "Cheyanne",
+ *             "option_id": "{value}"
  *           }
  *         ],
  *         "metadata": {}
@@ -415,6 +371,8 @@
  * tags:
  *   - Draft Orders
  * responses:
+ *   "200":
+ *     description: OK
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,10 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   IPaymentModuleService,
   Logger,
   PaymentSessionDTO,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 interface StepInput {

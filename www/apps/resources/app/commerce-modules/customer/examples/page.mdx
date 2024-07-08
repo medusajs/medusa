@@ -16,51 +16,47 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    const customer = await customerModuleService.createCustomers({
-      first_name: "Peter",
-      last_name: "Hayes",
-      email: "peter.hayes@example.com",
-    })
+  const customer = await customerModuleService.createCustomers({
+    first_name: "Peter",
+    last_name: "Hayes",
+    email: "peter.hayes@example.com",
+  })
 
-    res.json({
-      customer,
-    })
-  }
-  ```
+  res.json({
+    customer,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCustomerModule,
-  } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/customer"
 
-  export async function POST(request: Request) {
-    const customerModuleService = await initializeCustomerModule()
+export async function POST(request: Request) {
+  const customerModuleService = await initializeCustomerModule()
 
-    const customer = await customerModuleService.createCustomers({
-      first_name: "Peter",
-      last_name: "Hayes",
-      email: "peter.hayes@example.com",
-    })
+  const customer = await customerModuleService.createCustomers({
+    first_name: "Peter",
+    last_name: "Hayes",
+    email: "peter.hayes@example.com",
+  })
 
-    return NextResponse.json({
-      customer,
-    })
-  }
-  ```
+  return NextResponse.json({
+    customer,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -75,49 +71,43 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    const customerGroup =
-      await customerModuleService.createCustomerGroups({
-        name: "VIP",
-      })
+  const customerGroup = await customerModuleService.createCustomerGroups({
+    name: "VIP",
+  })
 
-    res.json({
-      customer_group: customerGroup,
-    })
-  }
-  ```
+  res.json({
+    customer_group: customerGroup,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCustomerModule,
-  } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/customer"
 
-  export async function POST(request: Request) {
-    const customerModuleService = await initializeCustomerModule()
+export async function POST(request: Request) {
+  const customerModuleService = await initializeCustomerModule()
 
-    const customerGroup =
-      await customerModuleService.createCustomerGroups({
-        name: "VIP",
-      })
+  const customerGroup = await customerModuleService.createCustomerGroups({
+    name: "VIP",
+  })
 
-    return NextResponse.json({
-      customer_group: customerGroup,
-    })
-  }
-  ```
+  return NextResponse.json({
+    customer_group: customerGroup,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -132,45 +122,41 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    await customerModuleService.addCustomerToGroup({
-      customer_id: "cus_123",
-      customer_group_id: "cusgroup_123",
-    })
+  await customerModuleService.addCustomerToGroup({
+    customer_id: "cus_123",
+    customer_group_id: "cusgroup_123",
+  })
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeCustomerModule,
-  } from "@medusajs/customer"
+import { initialize as initializeCustomerModule } from "@medusajs/customer"
 
-  export async function POST(request: Request) {
-    const customerModuleService = await initializeCustomerModule()
+export async function POST(request: Request) {
+  const customerModuleService = await initializeCustomerModule()
 
-    await customerModuleService.addCustomerToGroup({
-      customer_id: "cus_123",
-      customer_group_id: "cusgroup_123",
-    })
+  await customerModuleService.addCustomerToGroup({
+    customer_id: "cus_123",
+    customer_group_id: "cusgroup_123",
+  })
 
-    return NextResponse.json({}, { status: 200 })
-  }
-  ```
+  return NextResponse.json({}, { status: 200 })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -185,46 +171,42 @@ In this guide, you’ll find common examples of how you can use the Customer Mod
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { ICustomerModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ) {
-    const customerModuleService: ICustomerModuleService =
-      request.scope.resolve(ModuleRegistrationName.CUSTOMER)
+export async function POST(request: MedusaRequest, res: MedusaResponse) {
+  const customerModuleService: ICustomerModuleService = request.scope.resolve(
+    ModuleRegistrationName.CUSTOMER
+  )
 
-    await customerModuleService.removeCustomerFromGroup({
-      customer_id: "cus_123",
-      customer_group_id: "cusgroup_123",
-    })
+  await customerModuleService.removeCustomerFromGroup({
+    customer_id: "cus_123",
+    customer_group_id: "cusgroup_123",
+  })
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  // eslint-disable-next-line prettier/prettier
-  import {
-    initialize as initializeCustomerModule,
-  } from "@medusajs/customer"
+// eslint-disable-next-line prettier/prettier
+import { initialize as initializeCustomerModule } from "@medusajs/customer"
 
-  export async function POST(request: Request) {
-    const customerModuleService = await initializeCustomerModule()
+export async function POST(request: Request) {
+  const customerModuleService = await initializeCustomerModule()
 
-    await customerModuleService.removeCustomerFromGroup({
-      customer_id: "cus_123",
-      customer_group_id: "cusgroup_123",
-    })
+  await customerModuleService.removeCustomerFromGroup({
+    customer_id: "cus_123",
+    customer_group_id: "cusgroup_123",
+  })
 
-    return NextResponse.json({}, { status: 200 })
-  }
-  ```
+  return NextResponse.json({}, { status: 200 })
+}
+```
 
   </CodeTab>
 </CodeTabs>

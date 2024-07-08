@@ -64,11 +64,11 @@ export default Return
 
 #### Mutation Function Parameters
 
-<TypeList types={[{"name":"AdminPostReturnsReturnReceiveReq","type":"[AdminPostReturnsReturnReceiveReq](../../../../medusa/classes/medusa.AdminPostReturnsReturnReceiveReq/page.mdx)","optional":false,"defaultValue":"","description":"The details of the received return.","expandable":false,"children":[{"name":"items","type":"[Item](../../../../medusa/classes/medusa.Item-4/page.mdx)[]","description":"The Line Items that have been received.","optional":false,"defaultValue":"","expandable":false,"children":[{"name":"item_id","type":"`string`","description":"The ID of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"quantity","type":"`number`","description":"The quantity of the Line Item.","optional":false,"defaultValue":"","expandable":false,"children":[]}]},{"name":"refund","type":"`number`","description":"The amount to refund.","optional":true,"defaultValue":"","expandable":false,"children":[]},{"name":"location_id","type":"`string`","description":"The ID of the location to return items from.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
+<TypeList types={[{"name":"AdminPostReturnsReturnReceiveReq","type":"`AdminPostReturnsReturnReceiveReq`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"AdminReturnsRes","type":"[AdminReturnsRes](../../../../medusa/types/medusa.AdminReturnsRes/page.mdx)","optional":false,"defaultValue":"","description":"The return's details.","expandable":false,"children":[{"name":"return","type":"`Return`","description":"Return details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
+<TypeList types={[{"name":"AdminReturnsRes","type":"`AdminReturnsRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReceiveReturn"/>
 
 ### useAdminCancelReturn
 
@@ -110,7 +110,7 @@ export default Return
 
 #### Mutation Function Returned Data
 
-<TypeList types={[{"name":"AdminReturnsCancelRes","type":"[AdminReturnsCancelRes](../../../../medusa/types/medusa.AdminReturnsCancelRes/page.mdx)","optional":false,"defaultValue":"","description":"The associated order's details.","expandable":false,"children":[{"name":"order","type":"[Order](../../../../types/types/types.Order/page.mdx)","description":"Order details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelReturn"/>
+<TypeList types={[{"name":"AdminReturnsCancelRes","type":"`AdminReturnsCancelRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminCancelReturn"/>
 
 ___
 
@@ -153,4 +153,4 @@ export default Returns
 
 #### Query Returned Data
 
-<TypeList types={[{"name":"limit","type":"`number`","description":"The maximum number of items that can be returned in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"offset","type":"`number`","description":"The number of items skipped before the returned items in the list.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"count","type":"`number`","description":"The total number of items available.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"returns","type":"`Return`[]","description":"An array of returns details.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReturns"/>
+<TypeList types={[{"name":"AdminReturnsListRes","type":"`AdminReturnsListRes`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/medusa-react/overview#expanding-fields" sectionTitle="useAdminReturns"/>

@@ -15,7 +15,7 @@ import {
 } from "@mikro-orm/core"
 import ClaimItem from "./claim-item"
 
-type OptionalClaimItemImageProps = DAL.EntityDateColumns
+type OptionalClaimItemImageProps = DAL.ModelDateColumns
 
 const ClaimItemImageDeletedAtIndex = createPsqlIndexStatementHelper({
   tableName: "order_claim_item_image",

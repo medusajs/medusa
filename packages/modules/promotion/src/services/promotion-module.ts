@@ -23,7 +23,6 @@ import {
   MedusaContext,
   MedusaError,
   MedusaService,
-  ModulesSdkUtils,
   PromotionType,
   transformPropertiesToBigNumber,
 } from "@medusajs/utils"
@@ -54,7 +53,7 @@ import {
   validateApplicationMethodAttributes,
   validatePromotionRuleAttributes,
 } from "@utils"
-import { entityNameToLinkableKeysMap, joinerConfig } from "../joiner-config"
+import { joinerConfig } from "../joiner-config"
 import { CreatePromotionRuleValueDTO } from "../types/promotion-rule-value"
 
 type InjectedDependencies = {
@@ -75,17 +74,14 @@ export default class PromotionModuleService
     CampaignBudget: { dto: PromotionTypes.CampaignBudgetDTO }
     PromotionRule: { dto: PromotionTypes.PromotionRuleDTO }
     PromotionRuleValue: { dto: PromotionTypes.PromotionRuleValueDTO }
-  }>(
-    {
-      Promotion,
-      ApplicationMethod,
-      Campaign,
-      CampaignBudget,
-      PromotionRule,
-      PromotionRuleValue,
-    },
-    entityNameToLinkableKeysMap
-  )
+  }>({
+    Promotion,
+    ApplicationMethod,
+    Campaign,
+    CampaignBudget,
+    PromotionRule,
+    PromotionRuleValue,
+  })
   implements PromotionTypes.IPromotionModuleService
 {
   protected baseRepository_: DAL.RepositoryService

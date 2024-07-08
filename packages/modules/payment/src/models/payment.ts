@@ -26,7 +26,7 @@ import PaymentCollection from "./payment-collection"
 import PaymentSession from "./payment-session"
 import Refund from "./refund"
 
-type OptionalPaymentProps = DAL.EntityDateColumns
+type OptionalPaymentProps = DAL.ModelDateColumns
 
 @Entity({ tableName: "payment" })
 @Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)

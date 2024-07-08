@@ -2,6 +2,7 @@ import { IPromotionModuleService } from "@medusajs/types"
 import {
   ApplicationMethodType,
   CampaignBudgetType,
+  Module,
   Modules,
   PromotionType,
 } from "@medusajs/utils"
@@ -12,6 +13,7 @@ import {
   createDefaultPromotions,
   createPromotions,
 } from "../../../__fixtures__/promotion"
+import { PromotionModuleService } from "@services"
 
 jest.setTimeout(30000)
 
@@ -24,6 +26,49 @@ moduleIntegrationTestRunner({
     describe("Promotion Service", () => {
       beforeEach(async () => {
         await createCampaigns(MikroOrmWrapper.forkManager())
+      })
+
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.PROMOTION, {
+          service: PromotionModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual([
+          "promotion",
+          "campaign",
+          "promotionRule",
+        ])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          promotion: {
+            id: {
+              linkable: "promotion_id",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "promotion",
+            },
+          },
+          campaign: {
+            id: {
+              linkable: "campaign_id",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "campaign",
+            },
+          },
+          promotionRule: {
+            id: {
+              linkable: "promotion_rule_id",
+              primaryKey: "id",
+              serviceName: "promotion",
+              field: "promotionRule",
+            },
+          },
+        })
       })
 
       describe("create", () => {

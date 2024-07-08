@@ -11,8 +11,7 @@ import {
   ReflectionKind,
   TypeDocOptionMap,
 } from "typedoc"
-import { RELATION_NAMES } from "./constants"
-import { getDmlProperties, isDmlEntity } from "utils"
+import { RELATION_NAMES, getDmlProperties, isDmlEntity } from "utils"
 
 type Relations = Map<
   string,

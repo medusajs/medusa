@@ -13,4 +13,5 @@ export * from "./medusa-internal-service"
 export * from "./medusa-service"
 export * from "./migration-scripts"
 export * from "./mikro-orm-cli-config-builder"
-
+export * from "./module"
+export * from "./define-link"

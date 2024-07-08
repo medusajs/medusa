@@ -1,10 +1,12 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   FilterableApiKeyProps,
   IApiKeyModuleService,
   UpdateApiKeyDTO,
 } from "@medusajs/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/utils"
+import {
+  ModuleRegistrationName,
+  getSelectsAndRelationsFromObjectArray,
+} from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
 
 type UpdateApiKeysStepInput = {

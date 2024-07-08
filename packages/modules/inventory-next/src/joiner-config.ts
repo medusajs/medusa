@@ -1,9 +1,4 @@
-import {
-  buildEntitiesNameToLinkableKeysMap,
-  defineJoinerConfig,
-  MapToConfig,
-  Modules,
-} from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/utils"
 
 export const joinerConfig = defineJoinerConfig(Modules.INVENTORY, {
   alias: [
@@ -12,13 +7,6 @@ export const joinerConfig = defineJoinerConfig(Modules.INVENTORY, {
       args: {
         entity: "InventoryItem",
         methodSuffix: "InventoryItems",
-      },
-    },
-    {
-      name: ["inventory_level", "inventory_levels"],
-      args: {
-        entity: "InventoryLevel",
-        methodSuffix: "InventoryLevels",
       },
     },
     {
@@ -35,6 +23,3 @@ export const joinerConfig = defineJoinerConfig(Modules.INVENTORY, {
     },
   ],
 })
-
-export const entityNameToLinkableKeysMap: MapToConfig =
-  buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)

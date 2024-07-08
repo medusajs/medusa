@@ -9,6 +9,15 @@ import { TypeList } from "docs-ui"
 
 This documentation provides a reference to the data models in the Auth Module
 
+## Relations Overview
+
+```mermaid
+erDiagram
+	AuthIdentity ||--|| ProviderIdentity : provider_identities
+
+```
+
 ## Classes
 
 - [AuthIdentity](../../auth_models/classes/auth_models.AuthIdentity/page.mdx)
+- [ProviderIdentity](../../auth_models/classes/auth_models.ProviderIdentity/page.mdx)

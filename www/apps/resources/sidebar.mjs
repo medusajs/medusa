@@ -65,10 +65,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/api-key/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/api-key/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -156,10 +156,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/auth/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/auth/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -224,10 +224,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/cart/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/cart/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -280,10 +280,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/currency/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/currency/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -340,10 +340,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/customer/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/customer/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -417,10 +417,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/fulfillment/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/fulfillment/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -464,7 +464,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     title: "Methods",
                     hasTitleStyling: true,
                     autogenerate_path:
-                      "/references/inventory_next/IInventoryServiceNext/methods",
+                      "/references/inventory_next/IInventoryService/methods",
                   },
                 ],
               },
@@ -482,10 +482,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/inventory/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/inventory/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -558,10 +558,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/order/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/order/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -657,10 +657,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/payment/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/payment/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -725,10 +725,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/pricing/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/pricing/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -781,10 +781,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/product/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/product/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -853,10 +853,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/promotion/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/promotion/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -905,14 +905,14 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   {
                     title: "Data Models",
                     hasTitleStyling: true,
-                    autogenerate_path: "/references/region_models/classes",
+                    autogenerate_path: "/references/region_models/variables",
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/region/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/region/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -971,10 +971,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/sales-channel/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/sales-channel/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1015,7 +1015,7 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                     title: "Methods",
                     hasTitleStyling: true,
                     autogenerate_path:
-                      "/references/stock_location_next/IStockLocationServiceNext/methods",
+                      "/references/stock_location_next/IStockLocationService/methods",
                   },
                 ],
               },
@@ -1034,10 +1034,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/stock-location/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/stock-location/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1090,10 +1090,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/store/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/store/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1131,10 +1131,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           {
             title: "References",
             children: [
-              // {
-              //   path: "/references/tax/provider",
-              //   title: "Tax Provider Reference",
-              // },
+              {
+                path: "/references/tax/provider",
+                title: "Tax Provider Reference",
+              },
               {
                 path: "/references/tax",
                 title: "Main Service Reference",
@@ -1162,10 +1162,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/tax/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/tax/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -1222,10 +1222,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
                   },
                 ],
               },
-              {
-                path: "/commerce-modules/user/events",
-                title: "Events Reference",
-              },
+              // {
+              //   path: "/commerce-modules/user/events",
+              //   title: "Events Reference",
+              // },
             ],
           },
         ],
@@ -2104,10 +2104,10 @@ export const sidebar = sidebarAttachHrefCommonOptions([
         path: "/medusa-container-resources",
         title: "Medusa Container Resources",
       },
-      {
-        path: "/events-reference",
-        title: "Events",
-      },
+      // {
+      //   path: "/events-reference",
+      //   title: "Events",
+      // },
       {
         path: "/admin-widget-injection-zones",
         title: "Admin Widget Injection Zones",
@@ -2130,44 +2130,44 @@ export const sidebar = sidebarAttachHrefCommonOptions([
           },
         ],
       },
-      // {
-      //   path: "/references/data-model",
-      //   title: "Data Model API",
-      //   childSidebarTitle: "Data Model API Reference",
-      //   isChildSidebar: true,
-      //   children: [
-      //     {
-      //       path: "/references/data-model/define",
-      //       title: "Define Method",
-      //       hasTitleStyling: true,
-      //     },
-      //     {
-      //       path: "/references/data-model/property-types",
-      //       title: "Property Types",
-      //       hasTitleStyling: true,
-      //       autogenerate_path: "/references/dml/Property_Types/methods",
-      //     },
-      //     {
-      //       path: "/references/data-model/relationship-methods",
-      //       title: "Relationship Methods",
-      //       hasTitleStyling: true,
-      //       autogenerate_path: "/references/dml/Relationship_Methods/methods",
-      //     },
-      //     {
-      //       path: "/references/data-model/model-methods",
-      //       title: "Model Methods",
-      //       hasTitleStyling: true,
-      //       autogenerate_path: "/references/dml/Model_Methods/methods",
-      //     },
-      //     {
-      //       path: "/references/data-model/property-configuration",
-      //       title: "Property Configuration Methods",
-      //       hasTitleStyling: true,
-      //       autogenerate_path:
-      //         "/references/dml/Property_Configuration_Methods/methods",
-      //     },
-      //   ],
-      // },
+      {
+        path: "/references/data-model",
+        title: "Data Model API",
+        childSidebarTitle: "Data Model API Reference",
+        isChildSidebar: true,
+        children: [
+          {
+            path: "/references/data-model/define",
+            title: "Define Method",
+            hasTitleStyling: true,
+          },
+          {
+            path: "/references/data-model/property-types",
+            title: "Property Types",
+            hasTitleStyling: true,
+            autogenerate_path: "/references/dml/Property_Types/methods",
+          },
+          {
+            path: "/references/data-model/relationship-methods",
+            title: "Relationship Methods",
+            hasTitleStyling: true,
+            autogenerate_path: "/references/dml/Relationship_Methods/methods",
+          },
+          {
+            path: "/references/data-model/model-methods",
+            title: "Model Methods",
+            hasTitleStyling: true,
+            autogenerate_path: "/references/dml/Model_Methods/methods",
+          },
+          {
+            path: "/references/data-model/property-configuration",
+            title: "Property Configuration Methods",
+            hasTitleStyling: true,
+            autogenerate_path:
+              "/references/dml/Property_Configuration_Methods/methods",
+          },
+        ],
+      },
     ],
   },
   {

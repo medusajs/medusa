@@ -1,4 +1,5 @@
 import { RelationshipType } from "@medusajs/types"
+import { IsRelationship } from "./base"
 
 const IsNullableModifier = Symbol.for("isNullableModifier")
 
@@ -8,7 +9,8 @@ const IsNullableModifier = Symbol.for("isNullableModifier")
 export class NullableModifier<T, Relation extends RelationshipType<T>>
   implements RelationshipType<T | null>
 {
-  [IsNullableModifier]: true = true
+  [IsNullableModifier]: true = true;
+  [IsRelationship]: true = true
 
   static isNullableModifier<T>(
     modifier: any
@@ -16,7 +18,7 @@ export class NullableModifier<T, Relation extends RelationshipType<T>>
     return !!modifier?.[IsNullableModifier]
   }
 
-  declare type: RelationshipType<T>["type"]
+  declare type: Relation["type"]
 
   /**
    * A type-only property to infer the JavScript data-type

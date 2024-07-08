@@ -25,86 +25,87 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     IAuthModuleService,
     AuthenticationInput,
   } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { MedusaError } from "@medusajs/utils"
   import jwt from "jsonwebtoken"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    const { success, authIdentity, location, error } =
-      await authModuleService.authenticate("emailpass", {
-        url: req.url,
-        headers: req.headers,
-        query: req.query,
-        body: req.body,
-        authScope: "admin",
-        protocol: req.protocol,
-      } as AuthenticationInput)
+  const { success, authIdentity, location, error } =
+    await authModuleService.authenticate("emailpass", {
+      url: req.url,
+      headers: req.headers,
+      query: req.query,
+      body: req.body,
+      authScope: "admin",
+      protocol: req.protocol,
+    } as AuthenticationInput)
 
-    if (!success) {
-      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
-    }
-
-    if (location) {
-      res.redirect(location)
-      return
-    }
-
-    const { jwtSecret } =
-      req.scope.resolve("configModule").projectConfig.http
-    const token = jwt.sign(authIdentity, jwtSecret)
-
-    res.status(200).json({ token })
+  if (!success) {
+    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
   }
-  ```
+
+  if (location) {
+    res.redirect(location)
+    return
+  }
+
+  const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http
+  const token = jwt.sign(authIdentity, jwtSecret)
+
+  res.status(200).json({ token })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  export async function POST(request: Request) {
-    const authModuleService = await initializeAuthModule()
-    const url = new URL(request.url)
+export async function POST(request: Request) {
+  const authModuleService = await initializeAuthModule()
+  const url = new URL(request.url)
 
-    const { success, authIdentity, location, error } =
-      await authModuleService.authenticate("emailpass", {
-        url: request.url,
-        headers: Object.fromEntries(request.headers),
-        query: Object.fromEntries(url.searchParams),
-        body: await request.json(),
-        authScope: "admin",
-        protocol: url.protocol,
-      } as AuthenticationInput)
+  const { success, authIdentity, location, error } =
+    await authModuleService.authenticate("emailpass", {
+      url: request.url,
+      headers: Object.fromEntries(request.headers),
+      query: Object.fromEntries(url.searchParams),
+      body: await request.json(),
+      authScope: "admin",
+      protocol: url.protocol,
+    } as AuthenticationInput)
 
-    if (!success) {
-      throw new Error(error)
-    }
-
-    if (location) {
-      return NextResponse.redirect(location)
-      return
-    }
-
-    const token = jwt.sign(authIdentity, "supersecret")
-
-    return NextResponse.json({
-      token,
-    }, {
-      status: 200,
-    })
+  if (!success) {
+    throw new Error(error)
   }
-  ```
+
+  if (location) {
+    return NextResponse.redirect(location)
+    return
+  }
+
+  const token = jwt.sign(authIdentity, "supersecret")
+
+  return NextResponse.json(
+    {
+      token,
+    },
+    {
+      status: 200,
+    }
+  )
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -128,90 +129,91 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
     IAuthModuleService,
     AuthenticationInput,
   } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
   import { MedusaError } from "@medusajs/utils"
   import jwt from "jsonwebtoken"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    const { success, authIdentity, error, successRedirectUrl } =
-      await authModuleService.validateCallback("google", {
-        url: req.url,
-        headers: req.headers,
-        query: req.query,
-        body: req.body,
-        authScope: "admin",
-        protocol: req.protocol,
-      } as AuthenticationInput)
+  const { success, authIdentity, error, successRedirectUrl } =
+    await authModuleService.validateCallback("google", {
+      url: req.url,
+      headers: req.headers,
+      query: req.query,
+      body: req.body,
+      authScope: "admin",
+      protocol: req.protocol,
+    } as AuthenticationInput)
 
-    if (!success) {
-      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
-    }
-
-    const { jwtSecret } =
-      req.scope.resolve("configModule").projectConfig.http
-    const token = jwt.sign(authIdentity, jwtSecret)
-
-    if (successRedirectUrl) {
-      const url = new URL(successRedirectUrl!)
-      url.searchParams.append("auth_token", token)
-
-      return res.redirect(url.toString())
-    }
-
-    res.status(200).json({ token })
+  if (!success) {
+    throw new MedusaError(MedusaError.Types.UNAUTHORIZED, error)
   }
-  ```
+
+  const { jwtSecret } = req.scope.resolve("configModule").projectConfig.http
+  const token = jwt.sign(authIdentity, jwtSecret)
+
+  if (successRedirectUrl) {
+    const url = new URL(successRedirectUrl!)
+    url.searchParams.append("auth_token", token)
+
+    return res.redirect(url.toString())
+  }
+
+  res.status(200).json({ token })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts collapsibleLines="1-7" expandButtonLabel="Show Imports"
-  import { NextResponse } from "next/server"
+```ts collapsibleLines="1-7" expandButtonLabel="Show Imports"
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  export async function POST(request: Request) {
-    const authModuleService = await initializeAuthModule()
-    const url = new URL(request.url)
+export async function POST(request: Request) {
+  const authModuleService = await initializeAuthModule()
+  const url = new URL(request.url)
 
-    const { success, authIdentity, location, error } =
-      await authModuleService.authenticate("google", {
-        url: request.url,
-        headers: Object.fromEntries(request.headers),
-        query: Object.fromEntries(url.searchParams),
-        body: await request.json(),
-        authScope: "admin",
-        protocol: url.protocol,
-      } as AuthenticationInput)
+  const { success, authIdentity, location, error } =
+    await authModuleService.authenticate("google", {
+      url: request.url,
+      headers: Object.fromEntries(request.headers),
+      query: Object.fromEntries(url.searchParams),
+      body: await request.json(),
+      authScope: "admin",
+      protocol: url.protocol,
+    } as AuthenticationInput)
 
-    if (!success) {
-      throw new Error(error)
-    }
-
-    const token = jwt.sign(authIdentity, "supersecret")
-
-    if (successRedirectUrl) {
-      const url = new URL(successRedirectUrl!)
-      url.searchParams.append("auth_token", token)
-
-      return NextResponse.redirect(url.toString())
-    }
-
-    return NextResponse.json({
-      token,
-    }, {
-      status: 200,
-    })
+  if (!success) {
+    throw new Error(error)
   }
-  ```
+
+  const token = jwt.sign(authIdentity, "supersecret")
+
+  if (successRedirectUrl) {
+    const url = new URL(successRedirectUrl!)
+    url.searchParams.append("auth_token", token)
+
+    return NextResponse.redirect(url.toString())
+  }
+
+  return NextResponse.json(
+    {
+      token,
+    },
+    {
+      status: 200,
+    }
+  )
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -226,51 +228,48 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    const authIdentity = await authModuleService
-      .createAuthIdentities({
-        provider: "emailpass",
-        entity_id: "user@example.com",
-        scope: "admin",
-      })
+  const authIdentity = await authModuleService.createAuthIdentities({
+    provider: "emailpass",
+    entity_id: "user@example.com",
+    scope: "admin",
+  })
 
-    res.json({ auth_identity: authIdentity })
-  }
-  ```
+  res.json({ auth_identity: authIdentity })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  export async function POST(request: Request) {
-    const authModuleService = await initializeAuthModule()
+export async function POST(request: Request) {
+  const authModuleService = await initializeAuthModule()
 
-    const authIdentity = await authModuleService
-      .createAuthIdentities({
-        provider: "emailpass",
-        entity_id: "user@example.com",
-        scope: "admin",
-      })
+  const authIdentity = await authModuleService.createAuthIdentities({
+    provider: "emailpass",
+    entity_id: "user@example.com",
+    scope: "admin",
+  })
 
-    return NextResponse.json({
-      auth_identity: authIdentity,
-    })
-  }
-  ```
+  return NextResponse.json({
+    auth_identity: authIdentity,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -285,41 +284,38 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function GET(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    res.json({
-      auth_identitys: 
-        await authModuleService.listAuthIdentities(),
-    })
-  }
-  ```
+  res.json({
+    auth_identitys: await authModuleService.listAuthIdentities(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  export async function GET(request: Request) {
-    const authModuleService = await initializeAuthModule()
+export async function GET(request: Request) {
+  const authModuleService = await initializeAuthModule()
 
-    return NextResponse.json({
-      auth_identities: 
-        await authModuleService.listAuthIdentities(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    auth_identities: await authModuleService.listAuthIdentities(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -334,64 +330,58 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    const authIdentity = await authModuleService
-      .updateAuthIdentites({
-        id: "authusr_123",
-        provider_metadata: {
-          test: true,
-        },
-      })
+  const authIdentity = await authModuleService.updateAuthIdentites({
+    id: "authusr_123",
+    provider_metadata: {
+      test: true,
+    },
+  })
 
-    res.json({
-      auth_identity: authIdentity,
-    })
-  }
-  ```
+  res.json({
+    auth_identity: authIdentity,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
+type ContextType = {
+  params: {
+    id: string
   }
+}
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const authModuleService = await initializeAuthModule()
+export async function POST(request: Request, { params }: ContextType) {
+  const authModuleService = await initializeAuthModule()
 
-    const authIdentity = await authModuleService
-      .updateAuthIdentites({
-        id: "authusr_123",
-        provider_metadata: {
-          test: true,
-        },
-      })
+  const authIdentity = await authModuleService.updateAuthIdentites({
+    id: "authusr_123",
+    provider_metadata: {
+      test: true,
+    },
+  })
 
-    return NextResponse.json({
-      auth_identity: authIdentity,
-    })
-  }
-  ```
+  return NextResponse.json({
+    auth_identity: authIdentity,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -406,50 +396,42 @@ This example uses the [jsonwebtoken NPM package](https://www.npmjs.com/package/j
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IAuthModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    req: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const authModuleService: IAuthModuleService =
-      req.scope.resolve(ModuleRegistrationName.AUTH)
+export async function DELETE(
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const authModuleService: IAuthModuleService = req.scope.resolve(
+    ModuleRegistrationName.AUTH
+  )
 
-    await authModuleService.deleteAuthIdentities([
-      "authusr_123",
-    ])
+  await authModuleService.deleteAuthIdentities(["authusr_123"])
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeAuthModule,
-  } from "@medusajs/auth"
+import { initialize as initializeAuthModule } from "@medusajs/auth"
 
-  type ContextType = {
-    params: {
-      id: string
-    }
+type ContextType = {
+  params: {
+    id: string
   }
+}
 
-  export async function DELETE(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const authModuleService = await initializeAuthModule()
+export async function DELETE(request: Request, { params }: ContextType) {
+  const authModuleService = await initializeAuthModule()
 
-    await authModuleService.deleteAuthIdentities([
-      "authusr_123",
-    ])
-  }
-  ```
+  await authModuleService.deleteAuthIdentities(["authusr_123"])
+}
+```
 
   </CodeTab>
 </CodeTabs>

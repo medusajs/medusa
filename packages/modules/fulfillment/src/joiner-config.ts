@@ -1,9 +1,4 @@
-import {
-  buildEntitiesNameToLinkableKeysMap,
-  defineJoinerConfig,
-  MapToConfig,
-  Modules,
-} from "@medusajs/utils"
+import { defineJoinerConfig, Modules } from "@medusajs/utils"
 import {
   Fulfillment,
   FulfillmentSet,
@@ -19,6 +14,3 @@ export const joinerConfig = defineJoinerConfig(Modules.FULFILLMENT, {
     shipping_option_rule_id: ShippingOptionRule.name,
   },
 })
-
-export const entityNameToLinkableKeysMap: MapToConfig =
-  buildEntitiesNameToLinkableKeysMap(joinerConfig.linkableKeys)

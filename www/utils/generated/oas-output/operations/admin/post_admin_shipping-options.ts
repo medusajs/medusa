@@ -15,12 +15,18 @@
  *       description: Comma-separated relations that should be expanded in the returned data.
  *   - name: fields
  *     in: query
- *     description: Comma-separated fields that should be included in the returned data.
+ *     description: >-
+ *       Comma-separated fields that should be included in the returned data.
+ *        * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *        * without prefix it will replace the entire default fields.
  *     required: false
  *     schema:
  *       type: string
  *       title: fields
- *       description: Comma-separated fields that should be included in the returned data.
+ *       description: >-
+ *         Comma-separated fields that should be included in the returned data.
+ *          * if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields.
+ *          * without prefix it will replace the entire default fields.
  *   - name: offset
  *     in: query
  *     description: The number of items to skip when retrieving a list.
@@ -39,12 +45,16 @@
  *       description: Limit the number of items returned in the list.
  *   - name: order
  *     in: query
- *     description: Field to sort items in the list by.
+ *     description: The field to sort the data by. By default, the sort order is
+ *       ascending. To change the order to descending, prefix the field name with
+ *       `-`.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: Field to sort items in the list by.
+ *       description: The field to sort the data by. By default, the sort order is
+ *         ascending. To change the order to descending, prefix the field name with
+ *         `-`.
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -59,12 +69,10 @@
  *           - name
  *           - service_zone_id
  *           - shipping_profile_id
- *           - data
  *           - price_type
  *           - provider_id
  *           - type
  *           - prices
- *           - rules
  *         properties:
  *           name:
  *             type: string
@@ -81,9 +89,11 @@
  *           data:
  *             type: object
  *             description: The shipping option's data.
- *             properties: {}
  *           price_type:
  *             type: string
+ *             enum:
+ *               - calculated
+ *               - flat
  *           provider_id:
  *             type: string
  *             title: provider_id
@@ -154,6 +164,15 @@
  *               properties:
  *                 operator:
  *                   type: string
+ *                   enum:
+ *                     - in
+ *                     - eq
+ *                     - ne
+ *                     - gt
+ *                     - gte
+ *                     - lt
+ *                     - lte
+ *                     - nin
  *                 attribute:
  *                   type: string
  *                   title: attribute
@@ -177,22 +196,17 @@
  *       -H 'x-medusa-access-token: {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *         "name": "Caitlyn",
+ *         "name": "Julie",
  *         "service_zone_id": "{value}",
  *         "shipping_profile_id": "{value}",
- *         "data": {},
+ *         "price_type": "{value}",
  *         "provider_id": "{value}",
  *         "type": {
  *           "label": "{value}",
  *           "description": "{value}",
  *           "code": "{value}"
  *         },
- *         "prices": [],
- *         "rules": [
- *           {
- *             "attribute": "{value}"
- *           }
- *         ]
+ *         "prices": []
  *       }'
  * tags:
  *   - Shipping Options
@@ -202,7 +216,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminShippingOptionRetrieveResponse"
+ *           $ref: "#/components/schemas/AdminShippingOptionResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

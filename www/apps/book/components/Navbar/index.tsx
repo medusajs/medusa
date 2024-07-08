@@ -31,6 +31,7 @@ const Navbar = () => {
         mobileSidebarOpen,
       }}
       isLoading={false}
+      showSearchOpener
     />
   )
 }

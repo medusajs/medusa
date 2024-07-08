@@ -24,7 +24,7 @@ import FulfillmentSet from "./fulfillment-set"
 import GeoZone from "./geo-zone"
 import ShippingOption from "./shipping-option"
 
-type ServiceZoneOptionalProps = DAL.SoftDeletableEntityDateColumns
+type ServiceZoneOptionalProps = DAL.SoftDeletableModelDateColumns
 
 const deletedAtIndexName = "IDX_service_zone_deleted_at"
 const deletedAtIndexStatement = createPsqlIndexStatementHelper({

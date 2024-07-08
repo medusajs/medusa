@@ -87,7 +87,7 @@ export interface CreateCampaignDTO {
   /**
    * The associated campaign budget.
    */
-  budget?: CreateCampaignBudgetDTO
+  budget?: CreateCampaignBudgetDTO | null
 }
 
 /**

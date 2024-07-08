@@ -1,4 +1,3 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import {
   ICartModuleService,
   IFulfillmentModuleService,
@@ -10,7 +9,10 @@ import {
   IRegionModuleService,
   IStockLocationServiceNext,
 } from "@medusajs/types"
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  ModuleRegistrationName,
+} from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
 import {
   adminHeaders,

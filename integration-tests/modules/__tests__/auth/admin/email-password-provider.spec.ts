@@ -1,7 +1,7 @@
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 import { IAuthModuleService } from "@medusajs/types"
-import Scrypt from "scrypt-kdf"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { medusaIntegrationTestRunner } from "medusa-test-utils"
+import Scrypt from "scrypt-kdf"
 import {
   adminHeaders,
   createAdminUser,

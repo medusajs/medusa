@@ -1,6 +1,7 @@
 import { ICurrencyModuleService } from "@medusajs/types"
 import { moduleIntegrationTestRunner } from "medusa-test-utils"
-import { Modules } from "@medusajs/utils"
+import { Module, Modules } from "@medusajs/utils"
+import { CurrencyModuleService } from "@services"
 
 jest.setTimeout(100000)
 
@@ -8,6 +9,29 @@ moduleIntegrationTestRunner<ICurrencyModuleService>({
   moduleName: Modules.CURRENCY,
   testSuite: ({ service }) => {
     describe("Currency Module Service", () => {
+      it(`should export the appropriate linkable configuration`, () => {
+        const linkable = Module(Modules.CURRENCY, {
+          service: CurrencyModuleService,
+        }).linkable
+
+        expect(Object.keys(linkable)).toEqual(["currency"])
+
+        Object.keys(linkable).forEach((key) => {
+          delete linkable[key].toJSON
+        })
+
+        expect(linkable).toEqual({
+          currency: {
+            code: {
+              linkable: "currency_code",
+              primaryKey: "code",
+              serviceName: "currency",
+              field: "currency",
+            },
+          },
+        })
+      })
+
       describe("list", () => {
         it("list currencies", async () => {
           const currenciesResult = await service.listCurrencies(

@@ -1,6 +1,6 @@
 import { GroupCustomerPair, ICustomerModuleService } from "@medusajs/types"
+import { ModuleRegistrationName } from "@medusajs/utils"
 import { StepResponse, createStep } from "@medusajs/workflows-sdk"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 export const deleteCustomerGroupCustomersStepId =
   "delete-customer-group-customers"

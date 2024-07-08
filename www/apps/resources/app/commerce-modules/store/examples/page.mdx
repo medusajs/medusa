@@ -16,59 +16,58 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    const store = await storeModuleService.createStores({
-      name: "My Store",
-      supported_currencies: [
-        {
-          currency_code: "usd",
-          is_default: true,
-        },
-      ],
-    })
+  const store = await storeModuleService.createStores({
+    name: "My Store",
+    supported_currencies: [
+      {
+        currency_code: "usd",
+        is_default: true,
+      },
+    ],
+  })
 
-    res.json({
-      store,
-    })
-  }
-  ```
+  res.json({
+    store,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStoreModule,
-  } from "@medusajs/store"
+import { initialize as initializeStoreModule } from "@medusajs/store"
 
-  export async function POST(request: Request) {
-    const storeModuleService = await initializeStoreModule()
+export async function POST(request: Request) {
+  const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.createStores({
-      name: "My Store",
-      supported_currencies: [
-        {
-          currency_code: "usd",
-          is_default: true,
-        },
-      ],
-    })
+  const store = await storeModuleService.createStores({
+    name: "My Store",
+    supported_currencies: [
+      {
+        currency_code: "usd",
+        is_default: true,
+      },
+    ],
+  })
 
-    res.json({
-      store,
-    })
-  }
-  ```
+  res.json({
+    store,
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -83,41 +82,40 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    res.json({
-      stores: await storeModuleService.listStores(),
-    })
-  }
-  ```
+  res.json({
+    stores: await storeModuleService.listStores(),
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStoreModule,
-  } from "@medusajs/store"
+import { initialize as initializeStoreModule } from "@medusajs/store"
 
-  export async function GET(request: Request) {
-    const storeModuleService = await initializeStoreModule()
+export async function GET(request: Request) {
+  const storeModuleService = await initializeStoreModule()
 
-    const salesChannels = await storeModuleService.listStores()
+  const salesChannels = await storeModuleService.listStores()
 
-    return NextResponse.json({
-      stores: await storeModuleService.list(),
-    })
-  }
-  ```
+  return NextResponse.json({
+    stores: await storeModuleService.list(),
+  })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -132,48 +130,40 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function GET(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function GET(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    const store = await storeModuleService.retrieveStore(
-      "store_123"
-    )
+  const store = await storeModuleService.retrieveStore("store_123")
 
-    res.json({
-      store,
-    })
-  }
-  ```
+  res.json({
+    store,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStoreModule,
-  } from "@medusajs/store"
+import { initialize as initializeStoreModule } from "@medusajs/store"
 
-  export async function GET(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const storeModuleService = await initializeStoreModule()
+export async function GET(request: Request, { params }: ContextType) {
+  const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService.retrieveStore(
-      "store_123"
-    )
+  const store = await storeModuleService.retrieveStore("store_123")
 
-    return NextResponse.json({ store })
-  }
-  ```
+  return NextResponse.json({ store })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -188,50 +178,44 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function POST(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function POST(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    const store = await storeModuleService
-      .updateStores("store_123", {
-        name: "Change Store",
-      })
+  const store = await storeModuleService.updateStores("store_123", {
+    name: "Change Store",
+  })
 
-    res.json({
-      store,
-    })
-  }
-  ```
+  res.json({
+    store,
+  })
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStoreModule,
-  } from "@medusajs/store"
+import { initialize as initializeStoreModule } from "@medusajs/store"
 
-  export async function POST(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const storeModuleService = await initializeStoreModule()
+export async function POST(request: Request, { params }: ContextType) {
+  const storeModuleService = await initializeStoreModule()
 
-    const store = await storeModuleService
-      .updateStores("store_123", {
-        name: "Change Store",
-      })
+  const store = await storeModuleService.updateStores("store_123", {
+    name: "Change Store",
+  })
 
-    return NextResponse.json({ store })
-  }
-  ```
+  return NextResponse.json({ store })
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -246,40 +230,36 @@ In this guide, you’ll find common examples of how you can use the Store Module
   ```ts
   import { MedusaRequest, MedusaResponse } from "@medusajs/medusa"
   import { IStoreModuleService } from "@medusajs/types"
-  import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+  import { ModuleRegistrationName } from "@medusajs/utils"
 
-  export async function DELETE(
-    request: MedusaRequest,
-    res: MedusaResponse
-  ): Promise<void> {
-    const storeModuleService: IStoreModuleService =
-      request.scope.resolve(ModuleRegistrationName.STORE)
+export async function DELETE(
+  request: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> {
+  const storeModuleService: IStoreModuleService = request.scope.resolve(
+    ModuleRegistrationName.STORE
+  )
 
-    await storeModuleService.deleteStores("store_123")
+  await storeModuleService.deleteStores("store_123")
 
-    res.status(200)
-  }
-  ```
+  res.status(200)
+}
+```
 
   </CodeTab>
   <CodeTab label="Next.js App Router" value="nextjs">
 
-  ```ts
-  import { NextResponse } from "next/server"
+```ts
+import { NextResponse } from "next/server"
 
-  import {
-    initialize as initializeStoreModule,
-  } from "@medusajs/store"
+import { initialize as initializeStoreModule } from "@medusajs/store"
 
-  export async function DELETE(
-    request: Request,
-    { params }: ContextType
-  ) {
-    const storeModuleService = await initializeStoreModule()
+export async function DELETE(request: Request, { params }: ContextType) {
+  const storeModuleService = await initializeStoreModule()
 
-    await storeModuleService.deleteStores("store_123")
-  }
-  ```
+  await storeModuleService.deleteStores("store_123")
+}
+```
 
   </CodeTab>
 </CodeTabs>
@@ -289,4 +269,3 @@ In this guide, you’ll find common examples of how you can use the Store Module
 ## More Examples
 
 The [Store Module's main service reference](/references/store) provides a reference to all the methods available for use with examples for each.
-

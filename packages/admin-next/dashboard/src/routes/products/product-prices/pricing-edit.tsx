@@ -46,7 +46,7 @@ export const PricingEdit = ({
       acc[reg.id] = reg.currency_code
       return acc
     }, {})
-  }, regions)
+  }, [regions])
 
   const variants = variantId
     ? product.variants.filter((v) => v.id === variantId)
@@ -93,7 +93,9 @@ export const PricingEdit = ({
               )?.id
             } else {
               existingId = variants[ind].prices.find(
-                (p) => p.currency_code === currencyCode
+                (p) =>
+                  p.currency_code === currencyCode &&
+                  Object.keys(p.rules ?? {}).length === 0
               )?.id
             }
 
@@ -103,7 +105,6 @@ export const PricingEdit = ({
               ? {
                   id: existingId,
                   amount,
-                  currency_code: currencyCode,
                 }
               : { currency_code: currencyCode, amount }
 

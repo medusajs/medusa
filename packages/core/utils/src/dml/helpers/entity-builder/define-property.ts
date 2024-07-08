@@ -2,6 +2,7 @@ import {
   EntityConstructor,
   KnownDataTypes,
   PropertyMetadata,
+  PropertyType,
 } from "@medusajs/types"
 import { MikroOrmBigNumberProperty } from "../../../dal"
 import { generateEntityId, isDefined } from "../../../common"
@@ -14,6 +15,7 @@ import {
   Property,
   Utils,
 } from "@mikro-orm/core"
+import { PrimaryKeyModifier } from "../../properties/primary-key"
 
 /**
  * DML entity data types to PostgreSQL data types via
@@ -91,8 +93,10 @@ const SPECIAL_PROPERTIES: {
  */
 export function defineProperty(
   MikroORMEntity: EntityConstructor<any>,
-  field: PropertyMetadata
+  propertyName: string,
+  property: PropertyType<any>
 ) {
+  const field = property.parse(propertyName)
   /**
    * Here we initialize nullable properties with a null value
    */
@@ -169,7 +173,7 @@ export function defineProperty(
    * Defining an id property
    */
   if (field.dataType.name === "id") {
-    const IdDecorator = field.dataType.options?.primaryKey
+    const IdDecorator = PrimaryKeyModifier.isPrimaryKeyModifier(property)
       ? PrimaryKey({
           columnType: "text",
           type: "string",
@@ -211,7 +215,7 @@ export function defineProperty(
   /**
    * Defining a primary key property
    */
-  if (field.dataType.options?.primaryKey) {
+  if (PrimaryKeyModifier.isPrimaryKeyModifier(property)) {
     PrimaryKey({
       columnType,
       type: propertyType,

@@ -25,10 +25,9 @@ import { ReturnItem, Transaction } from "@models"
 import Claim from "./claim"
 import Exchange from "./exchange"
 import Order from "./order"
-import OrderItem from "./order-item"
 import OrderShippingMethod from "./order-shipping-method"
 
-type OptionalReturnProps = DAL.EntityDateColumns
+type OptionalReturnProps = DAL.ModelDateColumns
 
 const DisplayIdIndex = createPsqlIndexStatementHelper({
   tableName: "return",
@@ -131,7 +130,7 @@ export default class Return {
   @OneToMany(() => ReturnItem, (itemDetail) => itemDetail.return, {
     cascade: [Cascade.PERSIST],
   })
-  items = new Collection<Rel<OrderItem>>(this)
+  items = new Collection<Rel<ReturnItem>>(this)
 
   @OneToMany(
     () => OrderShippingMethod,

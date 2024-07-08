@@ -10,9 +10,7 @@ describe("Id property", () => {
       fieldName: "id",
       dataType: {
         name: "id",
-        options: {
-          primaryKey: true,
-        },
+        options: {},
       },
       nullable: false,
       indexes: [],
@@ -21,20 +19,19 @@ describe("Id property", () => {
   })
 
   test("create id property type with marking it as a primary key", () => {
-    const property = new IdProperty({ primaryKey: false })
+    const property = new IdProperty().primaryKey()
 
     expectTypeOf(property["$dataType"]).toEqualTypeOf<string>()
     expect(property.parse("id")).toEqual({
       fieldName: "id",
       dataType: {
         name: "id",
-        options: {
-          primaryKey: false,
-        },
+        options: {},
       },
       nullable: false,
       indexes: [],
       relationships: [],
+      primaryKey: true,
     })
   })
 })

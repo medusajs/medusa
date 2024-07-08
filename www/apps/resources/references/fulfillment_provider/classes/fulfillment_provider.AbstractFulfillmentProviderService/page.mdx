@@ -42,128 +42,6 @@ export default MyFulfillmentProviderService
 
 <TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="isFulfillmentService"/>
 
-### getIdentifier
-
-#### Returns
-
-<TypeList types={[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="getIdentifier"/>
-
-### getFulfillmentOptions
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;Record&#60;string, unknown&#62;[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record&#60;string, unknown&#62;[]","type":"`Record<string, unknown>`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"Record","type":"`Record<string, unknown>`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getFulfillmentOptions"/>
-
-### validateFulfillmentData
-
-#### Parameters
-
-<TypeList types={[{"name":"optionData","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"context","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateFulfillmentData"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="validateFulfillmentData"/>
-
-### validateOption
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="validateOption"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;boolean&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"boolean","type":"`boolean`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="validateOption"/>
-
-### canCalculate
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="canCalculate"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="canCalculate"/>
-
-### calculatePrice
-
-#### Parameters
-
-<TypeList types={[{"name":"optionData","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"cart","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="calculatePrice"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="calculatePrice"/>
-
-### createFulfillment
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"items","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"order","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"fulfillment","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createFulfillment"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="createFulfillment"/>
-
-### cancelFulfillment
-
-#### Parameters
-
-<TypeList types={[{"name":"fulfillment","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="cancelFulfillment"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="cancelFulfillment"/>
-
-### getFulfillmentDocuments
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getFulfillmentDocuments"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getFulfillmentDocuments"/>
-
-### createReturnFulfillment
-
-#### Parameters
-
-<TypeList types={[{"name":"fromData","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="createReturnFulfillment"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;any&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"any","type":"`any`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}  sectionTitle="createReturnFulfillment"/>
-
-### getReturnDocuments
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getReturnDocuments"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getReturnDocuments"/>
-
-### getShipmentDocuments
-
-#### Parameters
-
-<TypeList types={[{"name":"data","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="getShipmentDocuments"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;never[]&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never[]","type":"`never`[]","optional":false,"defaultValue":"","description":"","expandable":false,"children":[{"name":"never","type":"`never`","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}]}]}  sectionTitle="getShipmentDocuments"/>
-
-### retrieveDocuments
-
-#### Parameters
-
-<TypeList types={[{"name":"fulfillmentData","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"documentType","type":"`any`","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="retrieveDocuments"/>
-
-#### Returns
-
-<TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"","expandable":false,"children":[]}]}  sectionTitle="retrieveDocuments"/>
-
 ---
 
 ## 3. Create Module Definition File
@@ -172,10 +50,11 @@ Create the file `src/modules/my-fulfillment/index.ts` with the following content
 
 ```ts title="src/modules/my-fulfillment/index.ts"
 import MyFulfillmentProviderService from "./service"
+import { Module } from "@medusajs/utils"
 
-export default {
+export default Module("my-fulfillment", {
   service: MyFulfillmentProviderService,
-}
+})
 ```
 
 This exports the module's definition, indicating that the `MyFulfillmentProviderService` is the main service of the module.
@@ -187,7 +66,7 @@ This exports the module's definition, indicating that the `MyFulfillmentProvider
 To use your Fulfillment Provider Module, add it to the `providers` array of the Fulfillment Module:
 
 ```js title="medusa-config.js"
-const { Modules } = require("@medusajs/modules-sdk")
+import { Modules } from "@medusajs/utils"
 
 // ...
 
@@ -200,12 +79,9 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: "./modules/my-fulfillment",
+            id: "my-fulfillment",
             options: {
-              config: {
-                "my-fulfillment": {
-                  // provider options...
-                },
-              },
+              // provider options...
             },
           },
         ],

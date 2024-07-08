@@ -1,0 +1,31 @@
+---
+slug: /references/data-model/relationship-methods/belongsto
+sidebar_label: belongsTo
+---
+
+import { TypeList } from "docs-ui"
+
+# belongsTo Relationship Method - API Reference
+
+This method defines the inverse of the [hasOne](../dml.Relationship_Methods.hasOne/page.mdx) or [hasMany](../dml.Relationship_Methods.hasMany/page.mdx) relationship.
+
+For example, a product "belongsTo" a store.
+
+## Example
+
+```ts
+const Product = model.define("product", {
+  id: model.id(),
+  store: model.belongsTo(() => Store, {
+    mappedBy: "products",
+  }),
+})
+```
+
+## Type Parameters
+
+<TypeList types={[{"name":"T","type":"`object`","description":"The type of the entity builder passed as a first parameter. By default, it's\na function returning the related model.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}  sectionTitle="belongsTo"/>
+
+## Parameters
+
+<TypeList types={[{"name":"entityBuilder","type":"T","description":"A function that returns the data model this model is related to.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"options","type":"[RelationshipOptions](../../../../types/DmlTypes/types/types.DmlTypes.RelationshipOptions/page.mdx)","description":"The relationship's options.","optional":true,"defaultValue":"","expandable":false,"children":[{"name":"mappedBy","type":"`string`","description":"The name of the relationship as defined in the other\ndata model. This is only required by the `belongsTo`\nrelationship method.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]}  sectionTitle="belongsTo"/>

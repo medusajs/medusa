@@ -122,6 +122,10 @@ export interface CalculatedPriceSet {
    */
   is_calculated_price_price_list?: boolean
   /**
+   * Whether the calculated price is tax inclusive or not.
+   */
+  is_calculated_price_tax_inclusive?: boolean
+  /**
    * The amount of the calculated price, or `null` if there isn't a calculated price.
    */
   calculated_amount: BigNumberValue | null
@@ -131,6 +135,10 @@ export interface CalculatedPriceSet {
    * the original price will be the same as the calculated price. In that case, the value of this property is `true`.
    */
   is_original_price_price_list?: boolean
+  /**
+   * Whether the original price is tax inclusive or not.
+   */
+  is_original_price_tax_inclusive?: boolean
   /**
    * The amount of the original price, or `null` if there isn't a calculated price.
    */
@@ -284,5 +292,5 @@ export interface FilterablePriceSetProps
   /**
    * Filters to apply on a price set's associated money amounts.
    */
-  money_amounts?: FilterableMoneyAmountProps
+  prices?: FilterableMoneyAmountProps
 }
