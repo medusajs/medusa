@@ -7931,6 +7931,13 @@ export const generatedSidebar = [
                 "path": "/references/workflows/transform",
                 "title": "transform",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "path": "/references/workflows/when",
+                "title": "when",
+                "children": []
               }
             ]
           }
