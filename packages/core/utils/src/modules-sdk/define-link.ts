@@ -4,6 +4,11 @@ import { composeLinkName } from "../link"
 
 export const DefineLinkSymbol = Symbol.for("DefineLink")
 
+export interface DefineLinkExport {
+  [DefineLinkSymbol]: boolean
+  serviceName: string
+}
+
 type InputSource = {
   serviceName: string
   field: string
@@ -62,7 +67,7 @@ export function defineLink(
   leftService: DefineLinkInputSource,
   rightService: DefineLinkInputSource,
   linkServiceOptions?: ExtraOptions
-) {
+): DefineLinkExport {
   let serviceAObj = {} as ModuleLinkableKeyConfig
   let serviceBObj = {} as ModuleLinkableKeyConfig
 
